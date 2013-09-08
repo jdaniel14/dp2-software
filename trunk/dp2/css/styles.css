@@ -1,0 +1,85 @@
+* {     
+    margin: 0; 
+} 
+html, body{     
+    height: 100%; 
+     background: rgb(105, 77, 104);
+} 
+
+#wrapper{    
+    min-height: 100%;     
+    height: auto !important;     
+    height: 100%;     
+    margin: 0 auto -150px; /* el magin-bottom es el valor negativo de     
+    la altura del footer */ 
+} 
+
+#footer {     
+   min-height: 150px; /* la altura del push es la misma que la altura     
+
+    del footer */ 
+  font-family:Courier;
+  color: #CCCCCC;
+  background: #2E2929;
+  border: 3px double #CCCCCC;
+  
+}
+
+#header{
+	color: #333;
+	width: 100%;
+	float: left;
+	height: 350px;
+	margin: 0;
+	text-align: center;
+	background: rgb(240, 240, 240);
+	margin: 0 auto; 
+}
+
+#header .title {
+	margin-left: 30px;
+	position: absolute;
+	top: 70px;
+	left: 0px;
+	-webkit-transform: rotate(-8deg);
+	-moz-transform: rotate(-8deg);
+	font-size: 100px;
+}
+
+#push {
+	position: absolute;
+	top: 250px;
+	left: 25%;
+}
+
+#push #imgizq{
+	float: left;
+	margin-right: 20px;
+	cursor : pointer;
+}
+
+#push #imgder{
+	float: left;
+	cursor : pointer;
+}
+
+#imgizq {
+	padding: 8px;
+	background-color: #f5f5f5;
+	border: 1px solid #999999;
+}
+
+#imgder {
+	padding: 8px;
+	background-color: #f5f5f5;
+	border: 1px solid #999999;
+}
+
+#barra{
+	height: 25px;
+	width: 100%;
+}
+
+#parameters{
+	padding: 10px;
+}
