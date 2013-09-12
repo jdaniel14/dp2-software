@@ -1,0 +1,22 @@
+[
+    {"From" : 11, "To" : 17, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 12, "To" : 17, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 13, "To" : 17, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 17, "To" : 34, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 10, "To" : 22, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 22, "To" : 23, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 23, "To" : 24, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 24, "To" : 9, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 9, "To" : 7, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 21, "To" : 5, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 17, "To" : 14, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 17, "To" : 16, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 16, "To" : 20, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 16, "To" : 19, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 16, "To" : 18, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 18, "To" : 21, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 5, "To" : 25, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 5, "To" : 26, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 5, "To" : 27, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"},
+    {"From" : 27, "To" : 10, "Type" : 2, "Lag" : 0, "Cls" : "", "LagUnit" : "d"}
+]
