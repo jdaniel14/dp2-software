@@ -1,0 +1,6 @@
+backend -> logica de servicios
+views   -> Front end (html) (divida por modulos)
+static  -> javascript, img
+assets  -> static del bootsrap
+bootstrap -> framework front-end
+api -> framework back end
