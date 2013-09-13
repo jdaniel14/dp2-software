@@ -1,4 +1,4 @@
-var rootURL = "api/efectopucp";
+var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
 var codProyecto='1';
 
 var arregloProyecto= new Array(new Array('Ladrillo', '','Soles'));
@@ -6,18 +6,24 @@ var arregloProyecto= new Array(new Array('Ladrillo', '','Soles'));
 iniciaRecursos();
 
 function iniciaRecursos(){
-	
-	/*
+		
 	$.ajax({
 		type: 'GET',
 		url: rootURL,
 		dataType: "json", // data type of response
-		success: añadeDataFila
+		success: anadeDataFila,
+		fail: codigoError
 	});
-	*/
 	
 	
-	anadeDataFila( null );
+	
+	//anadeDataFila( null );
+
+}
+
+function codigoError(){
+
+	alert('Error');
 
 }
 
