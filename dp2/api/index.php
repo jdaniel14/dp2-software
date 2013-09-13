@@ -21,6 +21,10 @@ require 'Slim/Slim.php';
  */
 $app = new \Slim\Slim();
 
+require '../backend/alcance/serviciosAlcance.php';
+
+
+
 /**
  * Step 3: Define the Slim application routes
  *
@@ -30,8 +34,9 @@ $app = new \Slim\Slim();
  * is an anonymous function.
  */
 
+/*
 // GET route
-$app->get('/efectopucp', 'getPhotos');
+$app->get('/efectopucp', 'getEdt');
 
 // POST route
 $app->post(
@@ -61,21 +66,17 @@ $app->delete(
         echo 'This is a DELETE route';
     }
 );
-
+*/
 /**
  * Step 4: Run the Slim application
  *
  * This method should be called last. This executes the Slim application
  * and returns the HTTP response to the HTTP client.
  */
-$app->run();
 
-function getPhotos(){
-    $cats=array("http://2.bp.blogspot.com/_7Dz2jUSPC1E/TDYR5gq_eaI/AAAAAAAAEN8/ZbZ4LDNfnIs/s400/gato-malo.jpg","http://www.pueblagentegrande.com/imgs/art/ctpmtxvsh49fh5xrngnt6xchrk.jpg","http://animalmascota.com/wp-content/2013/02/Curar-una-herida-a-un-gato.jpg","http://images02.olx.com.pe/ui/18/66/32/1375842123_183916432_2-Fotos-de--Gato-macho-persa-legitimo-blanco-para-monta.jpg");
-    echo json_encode($cats);
-    //http://2.bp.blogspot.com/_7Dz2jUSPC1E/TDYR5gq_eaI/AAAAAAAAEN8/ZbZ4LDNfnIs/s400/gato-malo.jpg
-    //http://www.pueblagentegrande.com/imgs/art/ctpmtxvsh49fh5xrngnt6xchrk.jpg
-    //http://animalmascota.com/wp-content/2013/02/Curar-una-herida-a-un-gato.jpg
-    //http://images02.olx.com.pe/ui/18/66/32/1375842123_183916432_2-Fotos-de--Gato-macho-persa-legitimo-blanco-para-monta.jpg
-}
+$app->run();
+   // require("../backend/alcance/getEdt.php");
+
+
+
 ?>
