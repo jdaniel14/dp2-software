@@ -1,23 +1,28 @@
 var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
 var codProyecto='1';
 
-var arregloProyecto= new Array(new Array('Ladrillo', '','Soles'));
+var arregloProyecto= new Array(
+							new Array('Unidad','Ladrillo', '2','Soles'),
+							new Array('Unidad','Bote de pintura', '8','Soles'),
+							new Array('Litro','Cemento', '','Soles'),
+							new Array('Kilo','Fierro', '10','Soles')
+								);
 
 iniciaRecursos();
 
 function iniciaRecursos(){
 		
-	$.ajax({
+	/*$.ajax({
 		type: 'GET',
 		url: rootURL,
 		dataType: "json", // data type of response
 		success: anadeDataFila,
 		fail: codigoError
 	});
+	*/
 	
 	
-	
-	//anadeDataFila( null );
+	agregaDataFila( null );
 
 }
 
@@ -27,22 +32,22 @@ function codigoError(){
 
 }
 
-function anadeDataFila(data){
+function agregaDataFila(data){
 	arreglo=arregloProyecto;
 	if (data!=null){
 		arreglo=data;
 	}
 	for (i=0; i<arreglo.length;i++){
 		
-		anadeFilaRecurso(arreglo[i],i);
+		agregaFilaRecurso(arreglo[i],i);
 	}
 }
 
-function anadeFilaRecurso(arreglo,i){
+function agregaFilaRecurso(arreglo,i){
 	a=i;
 	a++;
-	input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+arreglo[1]+'">';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+arreglo[0]+'</td><td>'+input+'</td><td>'+arreglo[2]+'</td></tr>');
+	input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+arreglo[2]+'">';
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+arreglo[0]+' de '+arreglo[1]+'</td><td>'+input+'</td><td>'+arreglo[3]+'</td></tr>');
 	
 
 }
