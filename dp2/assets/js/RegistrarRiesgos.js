@@ -50,7 +50,7 @@ function agregaFilaRiesgo(arreglo,i){
 	//input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+arreglo[2]+'">';
 	severidad = Math.floor(parseFloat(arreglo[3])*parseFloat(arreglo[4]) * 100) / 100;
 	console.log(severidad);
-	$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td><input type="button" value="Calcular"></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td></td><td></td><td></td></tr>');
+	$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"glyphicon glyphicon-calendar\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a href=\"#\" ><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a href=\"#\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a href=\"#\" ><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>');
 	
 
 
