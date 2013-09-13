@@ -53,7 +53,24 @@ function agregaFilaRecurso(arreglo,i){
 }
 
 
+$("#btnGrabar").click(function(){
+
+	/*
+		VERIFICAR LA NUMEROSIDAD DE LOS COSTOS UNITARIOS
+	
+	
+	*/
 
 
 
 
+	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+		grabarRecursos();
+	}
+});
+
+function grabarRecursos(){
+	
+	alert("Se grabó");
+
+}
