@@ -8,7 +8,20 @@ $app = new Slim();
 //routes like Java routing
 $app->get('/obtenerArregloRecursos', 'getRecursos'){
 	return true;
-} //route - method
+}
+
+$app->get('/yolo', function () use ($app) {
+	$costosJson = $app->request()->params('costos');
+	$costos = json_decode($costosJson);
+	
+	/*
+	
+	*/
+	
+	echo $costosJson;
+});
+
+//route - method
 //run restfull
 $app->run();
 
