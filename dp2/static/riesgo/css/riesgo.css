@@ -1,0 +1,16 @@
+body {
+  padding-top: 50px;
+}
+.h1-title {
+  padding: 40px 15px;
+  text-align: center;
+}
+.input-xlarge {
+  width: 270px;
+}
+.titulo-tabla {
+  font-size: 13px;
+}
+.cuerpo-tabla {
+  font-size: 11px;
+}
