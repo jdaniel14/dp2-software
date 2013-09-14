@@ -8,7 +8,11 @@ var arregloProyecto= new Array(
 							new Array('Kilo','Fierro', '10','Soles')
 								);
 
-								
+var arregloActividades= new Array(
+
+							new Array('1', 'Actividad 1'),
+							new Array('2', 'Actividad 2')
+							);
 
 var arregloActividad1= new Array(
 							new Array('Unidad','Ladrillo', '2','Soles', '5'),
@@ -21,17 +25,38 @@ var arregloActividad2= new Array(
 							new Array('Litro','Cemento', '','Soles','10'),
 							new Array('Kilo','Fierro', '10','Soles','30')
 								);
-								
+
+iniciaActividades();								
 iniciaRecursos();
+
+function iniciaActividades(){
+
+	arreglo=obtenActividades(/*idProyecto*/);
+	$("#listado").append('<li class="active"><a href="javascript:cambiaCostoUnitario();">Costos unitarios por recurso</a></li>');
+	$("#listado").append('<li>Resumen por actividad</li>');
+	
+	for(i=0; i<arreglo.length; i++){
+		actividad=arreglo[i];
+		armaActividad(actividad[0],actividad[1]);
+		
+	}
+	
+}
+
+function obtenActividades(/*idProyecto*/){
+
+	return arregloActividades;
+
+}
 
 function iniciaRecursos(){
 		
 	/*$.ajax({
 		type: 'GET',
 		url: rootURL,
+		data: 'idProyecto=' + 1,
 		dataType: "json", // data type of response
-		success: anadeDataFila,
-		fail: codigoError
+		success: anadeDataFila		
 	});
 	*/
 	
@@ -45,6 +70,15 @@ function codigoError(){
 	alert('Error');
 
 }
+
+function armaActividad( id, nombre){
+	
+	objetoLi='<li><a href='+"'"+'javascript:cambiaActividad("' + id + '", "' + nombre + '");'+"'"+'>' + nombre + '</a></li>';
+	
+	$("#listado").append(objetoLi);
+	
+}
+
 
 function agregaDataFila(data){
 	arreglo=arregloProyecto;
@@ -102,6 +136,11 @@ function cambiaActividad(idActividad, nombreActividad){
 	$("#ResumenCostosRecursos").show();
 	 obtenDatosActividad(idActividad);
 	$("#tituloActividad").html(nombreActividad);
+}
+
+function cambiaCostoUnitario(){
+	$("#AsignarCostosRecursos").show();
+	$("#ResumenCostosRecursos").hide();	
 }
 
 
