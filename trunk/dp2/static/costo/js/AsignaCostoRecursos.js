@@ -97,10 +97,11 @@ $("#btnResumen").click(function(){
 	 obtenDatosActividad('1');
 });
 
-function cambiaActividad(idActividad){
+function cambiaActividad(idActividad, nombreActividad){
 	$("#AsignarCostosRecursos").hide();
 	$("#ResumenCostosRecursos").show();
 	 obtenDatosActividad(idActividad);
+	$("#tituloActividad").html(nombreActividad);
 }
 
 
@@ -108,10 +109,10 @@ function obtenDatosActividad(idActividad){
 	
 	/*$.ajax({
 		type: 'GET',
+		data: 'idActividad=' + idActividad,
 		url: rootURLResumen,
 		dataType: "json", // data type of response
-		success: agregaDataFilaResumen,
-		fail: codigoError
+		success: agregaDataFilaResumen
 	});
 	*/
 	
@@ -135,6 +136,9 @@ function agregaDataFilaResumen(arreglo){
 		arreglo=new Array();
 		alert("Ocurrio un error");
 	}
+	
+	limpiaTablaResumen();
+	
 	for (i=0; i<arreglo.length;i++){
 		
 		agregaFilaActividadResumen(arreglo[i],i);
@@ -147,5 +151,12 @@ function agregaFilaActividadResumen(arreglo,i){
 	a++;	
 	$("#tablaResumen").append('<tr><td>'+arreglo[0]+' de '+arreglo[1]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td>'+arreglo[2]+'</td></tr>');
 	
+
+}
+
+function limpiaTablaResumen(){
+	$("#tablaResumen").html('');
+	$("#tablaResumen").append('<tr><td width="40%"><b>Recurso</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td><td width="20%"><b>Costo Unitario</b></td></tr>');
+		
 
 }
