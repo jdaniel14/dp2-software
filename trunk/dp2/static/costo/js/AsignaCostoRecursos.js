@@ -97,8 +97,14 @@ $("#btnResumen").click(function(){
 	 obtenDatosActividad('1');
 });
 
+function cambiaActividad(idActividad){
+	$("#AsignarCostosRecursos").hide();
+	$("#ResumenCostosRecursos").show();
+	 obtenDatosActividad(idActividad);
+}
 
-function obtenDatosActividad(codActividad){
+
+function obtenDatosActividad(idActividad){
 	
 	/*$.ajax({
 		type: 'GET',
@@ -109,13 +115,13 @@ function obtenDatosActividad(codActividad){
 	});
 	*/
 	
-	if (codActividad=='1'){
+	if (idActividad=='1'){
 		
 		agregaDataFilaResumen(arregloActividad1);
 		
 	}
 	
-	if (codActividad=='2'){
+	if (idActividad=='2'){
 		
 		agregaDataFilaResumen(arregloActividad2);
 		
