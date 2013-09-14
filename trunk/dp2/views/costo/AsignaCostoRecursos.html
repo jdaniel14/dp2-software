@@ -54,8 +54,8 @@
 			<ul class="nav" id="listado">
 			<li class="active"><a href="#">Costos unitarios por recurso</a></li>
 			<li>Resumen por actividad</li>
-			<li><a href="javaScript:cambiaActividad('1')">Actividad 1</a></li>
-			<li><a href="javaScript:cambiaActividad('2')">Actividad 2</a></li>
+			<li><a href="javaScript:cambiaActividad('1', 'Actividad 1')">Actividad 1</a></li>
+			<li><a href="javaScript:cambiaActividad('2', 'Actividad 2')">Actividad 2</a></li>
 			</ul>
 			
 	  
@@ -109,7 +109,7 @@
 	  </div>
 	  
 	  <div id="ResumenCostosRecursos" style="display:none;">
-		<h2>Actividad 1</h2>
+		<h2 id="tituloActividad"></h2>
 		
 		<table><tr>&nbsp
 			</tr>
@@ -118,15 +118,7 @@
 			</tr></table>
 		
 		<table class="table-striped table-bordered" width="90%" id="tablaResumen">
-			
-			<tr>
-				
-				<td width="40%"><b>Recurso</b></td>
-				<td width="20%"><b>Unidad de Moneda</b></td>
-				<td width="20%"><b>Cantidad</b></td>
-				<td width="20%"><b>Costo Unitario</b></td>
-			</tr>
-				
+
 		</table>
 						 
 	  
