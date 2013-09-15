@@ -2,7 +2,7 @@ var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
 var codProyecto='1';
 
 var arregloProyecto= new Array(
-							'Mi proyecto'													
+							'Mi proyecto', '566', '1.5'
 								);
 
 var arregloRecursos= new Array(
@@ -114,24 +114,32 @@ function obtenDatosActividad(idActividad){
 //Funciones para pasar los datos de ajax
 
 function iniciaRecursos(){
-			
+	limpiaTablaRecursos();
 	arreglo= obtenRecursos(/*idProyecto*/);
-	agregaDataFila( arreglo );
+	agregaDataFila( arreglo, 0 );
 
 }
 
-function agregaDataFila(arreglo){
+function iniciaConfirmaRecursos(){
+	limpiaTablaRecursos();
+	iniciaProyecto();		
+	arreglo= obtenRecursos(/*idProyecto*/);
+	agregaDataFila( arreglo, 1 );
+
+}
+
+function agregaDataFila(arreglo, tipo){
 	
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaRecurso(i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3]);
+		agregaFilaRecurso(tipo,i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3]);
 	}
 }
 
 function iniciaProyecto(){
 			
 	proyecto= obtenProyecto(/*idProyecto*/);
-	agregaDatosProyecto( proyecto[0] );
+	agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
 
 }
 
@@ -141,7 +149,9 @@ function iniciaActividades(){
 
 	arreglo=obtenActividades(/*idProyecto*/);
 	
+	$("#listado").append('<li>Costo unitario y resumen</li>');
 	$("#listado").append('<li class="active"><a href="javascript:cambiaCostoUnitario();">Costos unitarios por recurso</a></li>');
+	if(puedeConfirmar=='1') $("#listado").append('<li class="active"><a href="javascript:cambiaConfirmaPresupuesto();">Confirmar presupuesto</a></li>');
 	$("#listado").append('<li>Resumen por actividad</li>');
 	
 	for(i=0; i<arreglo.length; i++){
@@ -168,8 +178,12 @@ function agregaDataFilaResumen(arreglo){
 	}
 }
 
-function agregaDatosProyecto(nombreProyecto){
+function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva){
 	$("#nombreProyecto").html(nombreProyecto);
+	$("#inputMontoSinReserva").val(montoSinReserva);
+	$("#inputReserva").val(porcentajeReserva);
+	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
+	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 }
 
 function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
@@ -195,10 +209,13 @@ function armaActividad( id, nombre){
 
 //Funcion para ingresar un recurso en los resumenes de actividades
 
-function agregaFilaRecurso(i, unidadMedida, nombreRecurso, costoUnitario, moneda){
+function agregaFilaRecurso(tipo,i, unidadMedida, nombreRecurso, costoUnitario, moneda){
 	a=i;
 	a++;
-	input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'">';
+	
+	//Si es para confirmar	
+	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'">';
+	if (tipo==1)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'" readOnly="readOnly" disabled>';
 	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input+'</td><td>'+moneda+'</td></tr>');
 	
 
@@ -241,6 +258,24 @@ function cambiaActividad(idActividad, nombreActividad){
 function cambiaCostoUnitario(){
 	$("#AsignarCostosRecursos").show();
 	$("#ResumenCostosRecursos").hide();	
+	iniciaRecursos();
+	$("#inputReserva").removeAttr('disabled');
+	$("#inputReserva").removeAttr('readOnly');
+	$("#btnGrabar").show();
+	$("#btnCancelar").show();
+	$("#btnConfirmar").hide();
+}
+
+function cambiaConfirmaPresupuesto(){
+	
+	$("#AsignarCostosRecursos").show();
+	$("#ResumenCostosRecursos").hide();
+	iniciaConfirmaRecursos();
+	$("#inputReserva").attr('disabled', 'disabled');
+	$("#inputReserva").attr('readOnly', 'readOnly');
+	$("#btnGrabar").hide();
+	$("#btnCancelar").hide();
+	$("#btnConfirmar").show();
 }
 
 //Fin de funciones para el uso del sidebar
@@ -251,5 +286,12 @@ function limpiaTablaResumen(){
 	$("#tablaResumen").html('');
 	$("#tablaResumen").append('<tr><td width="40%"><b>Recurso</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td><td width="20%"><b>Costo Unitario</b></td></tr>');
 		
+
+}
+
+function limpiaTablaRecursos(){
+	$("#tablaRecursos").html('');
+	$("#tablaRecursos").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="30%"><b>Moneda</b></td></tr>');
+			
 
 }
