@@ -69,9 +69,42 @@
 	  
 	  <div class="" id="AsignarCostosRecursos">
 	  
-	  
-		<form role="form" name="formRecursos">
 		
+		<form class="form-horizontal" name="formReserva" id="formReserva">
+			
+			<div class="form-group">			
+				<label class="col-lg-2 control-label">Monto Total sin reserva</label>
+				<div class="col-lg-4">
+				  <input type="text" class="form-control" id="inputMontoSinReserva" placeholder="Monto sin reserva" readOnly="readOnly" disabled>
+				</div>
+			</div>
+			
+			
+			
+			<div class="form-group">
+			
+				<label class="col-lg-2 control-label">% para monto de reserva</label>
+				<div class="col-lg-4">
+				  <input type="text" class="form-control" id="inputReserva" placeholder="% reserva">
+				</div>
+				<label class="col-lg-2 control-label">Monto de reserva total</label>
+				<div class="col-lg-4">
+				  <input type="text" class="form-control" id="reservaTotal" placeholder="Reserva Total" readOnly="readOnly" disabled>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-lg-2 control-label">Monto Total con reserva</label>
+				<div class="col-lg-4">
+				  <input type="text" class="form-control" id="inputMontoConReserva" placeholder="Monto con reserva" readOnly="readOnly" disabled>
+				</div>
+			</div>
+		
+		</form>
+		
+		
+		<form role="form" name="formRecursos">
+					
 			<table class="table-striped table-bordered" width="90%" id="tablaRecursos">
 			
 				<tr>
@@ -92,8 +125,10 @@
 			<table width="100%">
 			
 				<tr width="100%">
-				<td width="50%" align="right"> <button type="button" class="btn btn-default" id="btnGrabar">Grabar</button> </td>
-				<td width="50%" align="left"> <button type="button" class="btn btn-default" id="btnCancelar">Cancelar</button> </td>
+				<td width="100%" align="center"> 
+				<button type="button" class="btn btn-default" id="btnGrabar">Grabar</button>
+				<button type="button" class="btn btn-default" id="btnCancelar">Cancelar</button>
+				<button type="button" class="btn btn-default" id="btnConfirmar" style="display:none;">Confirmar</button> </td>
 				</tr>
 			
 			</table>
@@ -125,9 +160,15 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+	<script>
+	var puedeConfirmar='1';
+	
+	</script>
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
 	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
 	<script src="../../static/costo/js/AsignaCostoRecursos.js"></script>
+	
+	
   </body>
 </html>
