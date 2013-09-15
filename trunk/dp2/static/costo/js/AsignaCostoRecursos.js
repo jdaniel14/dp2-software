@@ -1,6 +1,10 @@
 var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
 var codProyecto='1';
 
+var arregloProyecto= new Array(
+							'Mi proyecto'													
+								);
+
 var arregloRecursos= new Array(
 							new Array('Unidad','Ladrillo', '2','Soles'),
 							new Array('Unidad','Bote de pintura', '8','Soles'),
@@ -26,11 +30,13 @@ var arregloActividad2= new Array(
 							new Array('Kilo','Fierro', '10','Soles','30')
 								);
 
-iniciaActividades();								
+iniciaActividades();
+iniciaProyecto();		
 iniciaRecursos();
 
 
 //Funciones para obtener datos de AJAX
+
 
 function obtenActividades(/*idProyecto*/){
 	
@@ -38,7 +44,7 @@ function obtenActividades(/*idProyecto*/){
 	/*$.ajax({
 		type: 'GET',
 		url: rootURL,
-		data: 'idProyecto=' + 1,
+		data: 'idProyecto=' + idProyecto,
 		dataType: "json", // data type of response
 		success: anadeDataFila		
 	});
@@ -48,12 +54,27 @@ function obtenActividades(/*idProyecto*/){
 
 }
 
+function obtenProyecto(/*idProyecto*/){
+	
+	/*$.ajax({
+		type: 'GET',
+		url: rootURL,
+		data: 'idProyecto=' + idProyecto,
+		dataType: "json", // data type of response
+		success: anadeDataFila		
+	});
+	*/
+	
+	return arregloProyecto;
+
+}
+
 function obtenRecursos(/*idProyecto*/){
 
 	/*$.ajax({
 		type: 'GET',
 		url: rootURL,
-		data: 'idProyecto=' + 1,
+		data: 'idProyecto=' + idProyecto,
 		dataType: "json", // data type of response
 		success: anadeDataFila		
 	});
@@ -107,6 +128,15 @@ function agregaDataFila(arreglo){
 	}
 }
 
+function iniciaProyecto(){
+			
+	proyecto= obtenProyecto(/*idProyecto*/);
+	agregaDatosProyecto( proyecto[0] );
+
+}
+
+
+
 function iniciaActividades(){
 
 	arreglo=obtenActividades(/*idProyecto*/);
@@ -138,6 +168,9 @@ function agregaDataFilaResumen(arreglo){
 	}
 }
 
+function agregaDatosProyecto(nombreProyecto){
+	$("#nombreProyecto").html(nombreProyecto);
+}
 
 function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
 	a=i;
