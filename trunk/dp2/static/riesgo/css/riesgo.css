@@ -23,3 +23,6 @@ body {
 	width:16px;
 	
 }
+textarea{
+	resize:none;
+}

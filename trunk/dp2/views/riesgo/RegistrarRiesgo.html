@@ -102,22 +102,64 @@
                           <div class="form-group">
                             <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
                             <div class="col-lg-10">
-                              <input type="text" class="form-control" id="nomRiesgo" placeholder="Nombre de Riesgo">
+                              <input type="text" class="form-control" id="nomRiesgo" placeholder="(*)Nombre de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
                             <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
                             <div class="col-lg-10">
                               <select class="form-control" id="paqEdt">
-                                <option value="0" selected="selected">Escoge un paquete del EDT</option>
+                                <option value="0" disabled selected>(*)Escoge un paquete del EDT</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
                             <div class="col-lg-10">
                               <select class="form-control" id="objAfe">
-                                <option value="0" selected="selected">Escoge un objetivo afectado</option>
+                                <option value="0" disabled selected>(*)Escoge un objetivo afectado</option>
                               </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <select class="form-control" id="impRiesgo">
+                                <option value="0" disabled selected>(*)Escoge un nivel de impacto</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <input type="number" step="positive floating-point number" class="form-control" id="proRiesgo" min="1" max="100" placeholder="(*)Probabilidad de Riesgo">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <textarea class="form-control" id="accEsp" placeholder="Acciones Específicas" rows="5"></textarea>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <input type="number" step="positive floating-point number" class="form-control" id="costRiesgo" placeholder="(*)Costo estimado de Riesgo">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgo" placeholder="(*)Tiempo estimado de Riesgo">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <select class="form-control" id="equRes">
+                                <option value="0" disabled selected>(*)Escoge un equipo responsable</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-lg-2 control-label">Los campos con (*) son obligatorios</label>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                              <button class="btn btn-default" id="btnRegistrar">Registrar</button>
                             </div>
                           </div>
                         </div>
@@ -142,20 +184,76 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Modificación de Riesgo</h4>
+                <h4 class="modal-title">Modificación de Riesgo</h4>               
               </div>
               <div class="modal-body">
-                ...
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
+                    <div class="col-lg-10">
+                      <input type="text" class="form-control" id="nomRiesgoM" placeholder="(*)Nombre de Riesgo">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
+                    <div class="col-lg-10">
+                      <select class="form-control" id="paqEdtM">
+                        <option value="0" disabled selected>(*)Escoge un paquete del EDT</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <select class="form-control" id="objAfeM">
+                        <option value="0" disabled selected>(*)Escoge un objetivo afectado</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <select class="form-control" id="impRiesgo">
+                      <option value="0" disabled selected>(*)Escoge un nivel de impacto</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <input type="number" step="positive floating-point number" class="form-control" id="proRiesgoM" min="1" max="100" placeholder="(*)Probabilidad de Riesgo">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <textarea class="form-control" id="accEspM" placeholder="Acciones Específicas" rows="5"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <input type="number" step="positive floating-point number" class="form-control" id="costRiesgoM" placeholder="(*)Costo estimado de Riesgo">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgoM" placeholder="(*)Tiempo estimado de Riesgo">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10">
+                      <select class="form-control" id="equResM">
+                        <option value="0" disabled selected>(*)Escoge un equipo responsable</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
-                <a href="#" class="btn">Close</a>
+                <button class="btn" data-dismiss="modal">Close</button>
                 <a href="#" class="btn btn-primary">Save changes</a>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div>   
-    <script src="../../static/riesgo/js/jquery.js"></script>
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
     <script src="../../static/riesgo/js/RegistrarRiesgos.js"></script>
   </body>
