@@ -1,4 +1,5 @@
-var rootURL = "../../backend/general/obtenerArregloProyectos";
+var rootURL = "../../api/G_listaProyecto";
+
 var codProyecto='1';
 
 var arregloProyecto= new Array(
@@ -25,18 +26,21 @@ var arregloActividad2= new Array(
 iniciaProyectos();
 
 function iniciaProyectos(){
-		
-	/*$.ajax({
+	
+	$.ajax({
 		type: 'GET',
 		url: rootURL,
-		dataType: "json", // data type of response
-		success: anadeDataFila,
-		fail: codigoError
+		dataType: "json", // data type of response	
+		fail: codigoError,
+                success: function(data){
+                    
+                    agregaDataFila(data);
+                }
 	});
-	*/
 	
 	
-	agregaDataFila(null);
+	
+	
 
 }
 
