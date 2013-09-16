@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Detalle del Diccionario</title>
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/alcance/css/diccionario.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DP2</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="h1-title">
+        <h1 id="nombreProyecto">Proyecto 1</h1>
+      </div>
+      <div class="h2-title">
+        <h2 id="nombrePaquete">Paquete de Trabajo</h2>
+      </div>  
+      <div class="container">
+        <form id="form-paquete" role="form">
+          <div class="row">
+            <!--Id-->
+            <div class="form-group col-md-2">
+              <label for="id_paquete_trabajo">Id</label>
+              <p class="form-control-static" id="id_paquete_trabajo"></p>
+            </div>
+            <!--Cuenta control-->
+            <div class="form-group col-md-2">
+              <label for="version">Versión</label>
+              <p class="form-control-static" id="version"></p>
+            </div>
+            <!--Ultima actualizacion-->
+            <div class="form-group col-md-3">
+              <label for="ultima_actualizacion">Ultima Actualización</label>
+              <p class="form-control-static" id="ultima_actualizacion"></p>
+            </div>
+            <!--Responsable-->
+            <div class="form-group col-md-5">
+              <label for="empleado">Responsable</label>
+              <p class="form-control-static" id="empleado"></p>
+            </div>
+          </div>
+          <!--Descripcion del paquete de trabajo-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="descripcion">Descripción</label>
+              <p class="form-control-static" id="descripcion"></p>
+            </div>
+          </div>
+          <!--Criterio de aceptacion-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="criterios_aceptacion">Criterio de aceptación</label>
+              <p class="form-control-static" id="criterios_aceptacion"></p>
+            </div>
+          </div>
+          <!--Entregables-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="entregables">Entregables</label>
+              <p class="form-control-static" id="entregables"></p>
+            </div>
+          </div>
+          <!--Supuestos-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="supuestos">Supuestos</label>
+              <p class="form-control-static" id="supuestos"></p>
+            </div>
+          </div>
+          <!--Recursos-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="recursos">Recursos</label>
+              <p class="form-control-static" id="recursos"></p>
+            </div>
+          </div>
+          <!--Duracion-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="duracion">Duración</label>
+              <p class="form-control-static" id="duracion"></p>
+            </div>
+          </div>
+          <!--Hitos-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="hitos">Hitos</label>
+              <p class="form-control-static" id="hitos"></p>
+            </div>
+          </div>
+          <!--Costo-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="costo">Costo</label>
+              <p class="form-control-static" id="costo"></p>
+            </div>
+          </div>
+          <!--Interdependencias-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="interdependencias">Interdependencias</label>
+              <p class="form-control-static" id="interdependencias"></p>
+            </div>
+          </div>
+          <!--Organización responsable-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="compania_responsable">Organización responsable</label>
+              <p class="form-control-static" id="compania_responsable"></p>
+            </div>
+          </div>
+          <!--Requisitos de calidad-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="requisitos_calidad">Requisitos de calidad</label>
+              <p class="form-control-static" id="requisitos_calidad"></p>
+            </div>
+          </div>
+          <!--Referencias tecnicas-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="referencias_tecnicas">Referencias técnicas</label>
+              <p class="form-control-static" id="referencias_tecnicas"></p>
+            </div>
+          </div>
+          <!--Información del contrato-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="informacion_contrato">Información del contrato</label>
+              <p class="form-control-static" id="informacion_contrato"></p>
+            </div>
+          </div>
+          <!--Estado-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="estado">Estado</label>
+              <p class="form-control-static" id="estado"></p>
+            </div>
+          </div>
+          <!--Submit-->
+          <div class="row">
+            <div class="col-md-1" id="submit">
+              <button type="submit" class="btn btn-default">Guardar</button>
+            </div>
+          </div>
+        </form>     
+      </div>  
+    </div>
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/alcance/js/paquete.js"></script>
+  </body>
+</html>

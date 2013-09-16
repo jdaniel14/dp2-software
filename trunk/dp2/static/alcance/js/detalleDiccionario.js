@@ -23,3 +23,18 @@ $(document).ready(function(){
 		success: cargaData
 	});*/
 });
+
+function editarPaquete(){
+	var data = $(".form-control");
+	var obj;
+	for(var i=0; i < data.length; i++){
+		obj[data[i]["id"]]=data[i]["value"];
+	}
+	$.ajax({
+		type:'POST',
+		url: '../../backend/alcance/editarPaquete',
+		data: JSON.stringify(obj),
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+	});
+}
