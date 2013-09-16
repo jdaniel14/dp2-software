@@ -14,3 +14,12 @@ body {
 .cuerpo-tabla {
   font-size: 11px;
 }
+.imagen-calculadora {
+	
+	background-image: url('../image/calculator.png');
+	background-repeat: no-repeat;
+	display: block;  /* may not need this, but I've found I do */
+	height:16px;
+	width:16px;
+	
+}
