@@ -11,7 +11,7 @@
 	    }
 
 
-	    function getDameAlgo(){
+	    function getDameAlgoGeneral(){
 	    	//$miconexion = new conexion();
 	    	echo "sape";
 	    }
