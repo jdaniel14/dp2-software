@@ -6,10 +6,10 @@ var arregloProyecto= new Array(
 								);
 
 var arregloRecursos= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles'),
-							new Array('Unidad','Bote de pintura', '8','Soles'),
-							new Array('Litro','Cemento', '','Soles'),
-							new Array('Kilo','Fierro', '10','Soles')
+							new Array('Unidad','Ladrillo', '2','Soles','85'),
+							new Array('Unidad','Bote de pintura', '8','Soles','12'),
+							new Array('Litro','Cemento', '','Soles','10'),
+							new Array('Kilo','Fierro', '10','Soles','30')
 								);
 
 var arregloActividades= new Array(
@@ -19,15 +19,19 @@ var arregloActividades= new Array(
 							);
 
 var arregloActividad1= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles', '5'),
-							new Array('Unidad','Bote de pintura', '8','Soles','12')
+									'Actividad 1','106','Soles',new Array(
+									new Array('Unidad','Ladrillo', '2','Soles', '5'),
+									new Array('Unidad','Bote de pintura', '8','Soles','12')
+									)
 								);
 								
 
 var arregloActividad2= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles','80'),
-							new Array('Litro','Cemento', '','Soles','10'),
-							new Array('Kilo','Fierro', '10','Soles','30')
+									'Actividad 2', '460','Soles',new Array(
+									new Array('Unidad','Ladrillo', '2','Soles','80'),
+									new Array('Litro','Cemento', '','Soles','10'),
+									new Array('Kilo','Fierro', '10','Soles','30')
+									)
 								);
 
 iniciaActividades();
@@ -106,6 +110,8 @@ function obtenDatosActividad(idActividad){
 		agregaDataFilaResumen(arregloActividad2);
 		
 	}
+	
+	
 
 }
 
@@ -132,7 +138,7 @@ function agregaDataFila(arreglo, tipo){
 	
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaRecurso(tipo,i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3]);
+		agregaFilaRecurso(tipo,i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3],filaRecurso[4]);
 	}
 }
 
@@ -159,11 +165,16 @@ function iniciaActividades(){
 		armaActividad(actividad[0],actividad[1]);
 		
 	}
-	
+		
 
 }
 
-function agregaDataFilaResumen(arreglo){
+function agregaDataFilaResumen(datosActividad){
+	
+	nombreActividad= datosActividad[0];
+	subTotalActividad= datosActividad[1];	
+	moneda= datosActividad[2];
+	arreglo= datosActividad[3];
 	
 	if (arreglo==null){
 		arreglo=new Array();
@@ -176,6 +187,10 @@ function agregaDataFilaResumen(arreglo){
 		recurso=arreglo[i];
 		agregaFilaActividadResumen(i, recurso[0], recurso[1], recurso[3], recurso[4], recurso[2]);
 	}
+	
+	$("#tituloActividad").html(nombreActividad);
+	$("#tablaTotalActividad").html('<tr width="100%"><td width="40%"><b>Total</b></td><td width="20%"><b>'+subTotalActividad+'</b></td><td width="40%">'+moneda+'</td></tr>');
+		
 }
 
 function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva){
@@ -189,7 +204,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
 	a=i;
 	a++;	
-	$("#tablaResumen").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+moneda+'</td><td>'+cantidad+'</td><td>'+costoUnitario+'</td></tr>');
+	$("#tablaResumen").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+costoUnitario+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
 	
 
 }
@@ -200,7 +215,7 @@ function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cant
 
 function armaActividad( id, nombre){
 	
-	objetoLi='<li><a href='+"'"+'javascript:cambiaActividad("' + id + '", "' + nombre + '");'+"'"+'>' + nombre + '</a></li>';
+	objetoLi='<li><a href='+"'"+'javascript:cambiaActividad("' + id + '");'+"'"+'>' + nombre + '</a></li>';
 	
 	$("#listado").append(objetoLi);
 	
@@ -209,14 +224,14 @@ function armaActividad( id, nombre){
 
 //Funcion para ingresar un recurso en los resumenes de actividades
 
-function agregaFilaRecurso(tipo,i, unidadMedida, nombreRecurso, costoUnitario, moneda){
+function agregaFilaRecurso(tipo,i, unidadMedida, nombreRecurso, costoUnitario, moneda, canidadTotal){
 	a=i;
 	a++;
 	
 	//Si es para confirmar	
 	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'">';
 	if (tipo==1)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'" readOnly="readOnly" disabled>';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input+'</td><td>'+moneda+'</td></tr>');
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr>');
 	
 
 }
@@ -248,11 +263,10 @@ function grabarRecursos(){
 
 //Funciones para el uso del sidebar
 
-function cambiaActividad(idActividad, nombreActividad){
+function cambiaActividad(idActividad){
 	$("#AsignarCostosRecursos").hide();
 	$("#ResumenCostosRecursos").show();
-	 obtenDatosActividad(idActividad);
-	$("#tituloActividad").html(nombreActividad);
+	 obtenDatosActividad(idActividad);	
 }
 
 function cambiaCostoUnitario(){
@@ -284,14 +298,14 @@ function cambiaConfirmaPresupuesto(){
 //Limpia la tabla
 function limpiaTablaResumen(){
 	$("#tablaResumen").html('');
-	$("#tablaResumen").append('<tr><td width="40%"><b>Recurso</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td><td width="20%"><b>Costo Unitario</b></td></tr>');
+	$("#tablaResumen").append('<tr><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>');
 		
 
 }
 
 function limpiaTablaRecursos(){
 	$("#tablaRecursos").html('');
-	$("#tablaRecursos").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="30%"><b>Moneda</b></td></tr>');
-			
+	$("#tablaRecursos").append('<tr><td width="10%"><b>#</b></td><td width="30%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Moneda</b></td><td width="20%"><b>Cantidad Total</b></td></tr>');
+	
 
 }
