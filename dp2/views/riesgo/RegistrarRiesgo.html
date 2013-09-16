@@ -58,7 +58,7 @@
             <thead class="titulo-tabla">
               <th>ID</th>
               <th>Nombre de Riesgo</th>
-              <th>Actividad</th>
+              <th>Paquete de EDT</th>
               <th>Objetivo afectado</th>
               <th>Impacto</th>
               <th colspan="2">Probabilidad</th>
@@ -85,26 +85,48 @@
               </div>
               <div class="modal-body">
                 <div class="row">
-                  
-                    <div class="tabbable">
-                      <ul class="nav nav-tabs">
-                        <li class="active">
-                          <a href="#pane1" data-toggle="tab">Registrar Nuevo Riesgo</a>
-                        </li>
-                        <li>
-                          <a href="#pane2" data-toggle="tab">Buscar en los Riesgos Comunes</a>
-                        </li>
-                      </ul>
-                      <div class="tab-content">
-                        <div id="pane1" class="tab-pane active">
-                          <h3>Registrar</h3>
-                        </div>
-                        <div id="pane2" class="tab-pane">
-                          <h3>Buscar</h3>
+                  <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                      <li class="active">
+                        <a href="#pane1" data-toggle="tab">Registrar Nuevo Riesgo</a>
+                      </li>
+                      <li>
+                        <a href="#pane2" data-toggle="tab">Buscar en los Riesgos Comunes</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div id="pane1" class="tab-pane active">
+                        <br>
+                        <div class="form-horizontal">
+                          <legend>Ingrese los campos</legend>
+                          <div class="form-group">
+                            <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
+                            <div class="col-lg-10">
+                              <input type="text" class="form-control" id="nomRiesgo" placeholder="Nombre de Riesgo">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
+                            <div class="col-lg-10">
+                              <select class="form-control" id="paqEdt">
+                                <option value="0" selected="selected">Escoge un paquete del EDT</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-lg-10">
+                              <select class="form-control" id="objAfe">
+                                <option value="0" selected="selected">Escoge un objetivo afectado</option>
+                              </select>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <div id="pane2" class="tab-pane">
+                        <h3>Buscar</h3>
+                      </div>
                     </div>
-                  
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -135,7 +157,6 @@
     </div>   
     <script src="../../static/riesgo/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    
     <script src="../../static/riesgo/js/RegistrarRiesgos.js"></script>
   </body>
 </html>
