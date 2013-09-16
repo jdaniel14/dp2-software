@@ -1,5 +1,6 @@
-var rootURL = "../../backend/riesgo/obtenerArregloRiesgos";
-var codRiesgo='1';
+var getAllItems = "../../backend/riesgo/obtenerArregloRiesgos";
+var getItem = "../../backend/riesgo/obtenerRiesgo";
+var addItem = "../../backend/riesgo/agregarRiesgo";
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -12,9 +13,57 @@ $(document).ready(main);
 
 function main(){
 	iniciaRiesgos();
-	//$(".glyphicon.glyphicon-edit").one('click',function(){
-	//	$("#myModal").modal('toggle');
-	//});
+	$(".glyphicon.glyphicon-edit").one('click',function(){
+		var data = {
+			id: $(this).closest("tr").attr("id")
+		};
+		var jsonData = JSON.stringify(data);
+		console.log(jsonData);
+		$.ajax({
+			type: 'GET',
+			url: getItem,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				$('#nomRiesgoM').val(item.nombre);
+				$('#paqEdtM').val(item.paquete);
+				$('#objAfeM').val(item.objeto);
+				$('#impRiesgoM').val(item.impacto);
+				$('#proRiesgoM').val(item.probabilidad);
+				$('#accEspM').val(item.acciones);
+				$('#costRiesgoM').val(item.costo);
+				$('#tiemRiesgoM').val(item.tiempo);
+				$('#equResM').val(item.equipo);
+			},
+			fail: codigoError
+		});
+	});
+
+	$("#btnRegistrar").one('click', function(){
+		var data = {
+			nombre: $('#nomRiesgo').val(),
+			paquete: $('#paqEdt').val(),
+			objeto: $('#objAfe').val(),
+			impacto: $('#impRiesgo').val(),
+			probabilidad: $('#proRiesgo').val(),
+			acciones: $('#accEsp').val(),
+			costo: $('#costRiesgo').val(),
+			tiempo: $('#tiemRiesgo').val(),
+			equipo: $('#equRes').val()
+		};
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'POST',
+			url: addItem,
+			data: jsonData,
+			dataType: "json",
+			success: function(){
+				alert("Se registró exitosamente el Riesgo");
+			},
+			fail: codigoError
+		});
+	});
 }
 
 function iniciaRiesgos(){
@@ -57,10 +106,7 @@ function agregaFilaRiesgo(arreglo,i){
 	severidad = Math.floor(parseFloat(arreglo[3])*parseFloat(arreglo[4]) * 100) / 100;
 	console.log(severidad);
 	$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a href=\"#\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a href=\"#\" ><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>');
-	
 
-
-	
 }
 
 
