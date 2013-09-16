@@ -1,7 +1,5 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+        $app->post('/listaJefeProyectos', 'getListaJP'); //insertar
+	$app->get('/dameAlgo', 'getDameAlgo'); // traer info
 ?>
