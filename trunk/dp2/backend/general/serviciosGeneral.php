@@ -1,7 +1,7 @@
 <?php
 
         include('routesGeneral.php');
-	include_once '../backend/conexion.php';
+	//include_once '../backend/conexion.php';
 
 	   function getListaJP(){
 	       $request = \Slim\Slim::getInstance()->request(); //json parameters
@@ -12,7 +12,7 @@
 
 
 	    function getDameAlgo(){
-	    	$miconexion = new conexion();
+	    	//$miconexion = new conexion();
 	    	echo "sape";
 	    }
 ?>
