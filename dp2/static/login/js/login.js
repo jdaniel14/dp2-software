@@ -1,5 +1,5 @@
 $("#ingresarSistema").click(function(){
-	var url = "views/cronograma/CronogramaV2/Cronograma/advanced";    
+	var url = "views/general/ListaProyectos.html";    
 	$(location).attr('href',url);
 	return false;
 })
