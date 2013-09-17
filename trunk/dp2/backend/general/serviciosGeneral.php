@@ -6,7 +6,4 @@
         
 	//include_once '../backend/conexion.php';
 
-	   
-            
-            
 ?>
