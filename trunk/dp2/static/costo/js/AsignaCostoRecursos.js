@@ -1,15 +1,15 @@
 var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
 var codProyecto='1';
-
+var numRecursos= 0;
 var arregloProyecto= new Array(
 							'Mi proyecto', '566', '1.5'
 								);
 
 var arregloRecursos= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles','85'),
-							new Array('Unidad','Bote de pintura', '8','Soles','12'),
-							new Array('Litro','Cemento', '','Soles','10'),
-							new Array('Kilo','Fierro', '10','Soles','30')
+							new Array('1','Unidad','Ladrillo', '2','Soles','85'),
+							new Array('2','Unidad','Bote de pintura', '8','Soles','12'),
+							new Array('3','Litro','Cemento', '','Soles','10'),
+							new Array('4','Kilo','Fierro', '10','Soles','30')
 								);
 
 var arregloActividades= new Array(
@@ -138,7 +138,8 @@ function agregaDataFila(arreglo, tipo){
 	
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaRecurso(tipo,i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3],filaRecurso[4]);
+		agregaFilaRecurso(tipo,i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3],filaRecurso[4],filaRecurso[5]);
+		numRecursos=i;
 	}
 }
 
@@ -224,14 +225,14 @@ function armaActividad( id, nombre){
 
 //Funcion para ingresar un recurso en los resumenes de actividades
 
-function agregaFilaRecurso(tipo,i, unidadMedida, nombreRecurso, costoUnitario, moneda, canidadTotal){
+function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUnitario, moneda, canidadTotal){
 	a=i;
 	a++;
 	
 	//Si es para confirmar	
 	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'">';
 	if (tipo==1)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'" readOnly="readOnly" disabled>';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr>');
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'+(a)+'" value="'+idRecurso+'">');
 	
 
 }
@@ -255,8 +256,27 @@ $("#btnGrabar").click(function(){
 });
 
 function grabarRecursos(){
+	idRecursos="";
+	costoRecursos="";
+	porcentajeReserva=0;
 	
-	alert("Se grabó");
+	num=numRecursos;
+	num++;
+	for (i=1; i<=num;i++){
+	
+		if (i>1){
+			idRecursos+=",";
+			costoRecursos+=",";
+		}
+		idRecursos+= document.getElementById("idRecurso"+i).value;
+		costoRecursos+=document.getElementById("costoUnitario"+i).value;
+	
+	}
+	porcentajeReserva=document.getElementById("inputReserva").value;
+	
+	
+	alert("Se grabó " + idRecursos + " " + costoRecursos+ " " + porcentajeReserva);
+	
 
 }
 //Fin funciones para grabar
