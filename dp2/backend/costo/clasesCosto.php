@@ -8,10 +8,10 @@ class CO_Proyecto {
 	
 	//constructor
 	function __construct($idProyecto, $nombre, $presupuestoTotal, $porcentajeReserva) {
-		$this->$idProyecto = $idProyecto;
-		$this->$nombre = $nombre;
-		$this->$presupuestoTotal = $presupuestoTotal;
-		$this->$porcentajeReserva = $porcentajeReserva;
+		$this->idProyecto = $idProyecto;
+		$this->nombre = $nombre;
+		$this->presupuestoTotal = $presupuestoTotal;
+		$this->porcentajeReserva = $porcentajeReserva;
 	}
 }
 
@@ -49,7 +49,27 @@ class CO_Actividad {
 	   $this->costoSubtotal = $costoSubtotal;
 	   $this->costoTotal = $costoTotal;
 	   $this->listaRecursos = $listaRecursos;
-   }
+	}
+}
+
+class CO_Paquete {
+	public $nombre;
+	public $sumaCostosPaquetesHijo;
+	public $listaPaquetesHijo;
+	
+	function __construct($nombre, $listaPaquetesHijo) {
+       $this->nombre = $nombre;
+	   $this->sumaCostosPaquetesHijo = 0;
+	   $this->listaPaquetesHijo = $listaPaquetesHijo;
+	   
+	   $this->sumarCostosPaqueteHijo();
+	}
+   
+	function sumarCostosPaqueteHijo() {
+		if ($this->listaPaquetesHijo != null) {
+			$this->sumaCostosPaquetesHijo = 0;
+		}
+	}
 }
 
 class CO_ContenedorCUR { //Costo Unitario de Recursos + porcentaje de reserva
