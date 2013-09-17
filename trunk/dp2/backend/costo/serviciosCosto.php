@@ -3,60 +3,62 @@
 	include('clasesCosto.php');
 	include_once '../backend/conexion.php';
 
-	function CO_getInfoProyecto($json) {
-		//$proy = json_decode($json);
-		$infoProyecto = CO_consultarInfoProyecto(/*$proy->idProyecto*/ 1);
+	function CO_getInfoProyecto($json) { //servicio1
+		$proy = json_decode($json);
+		$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
 		
 		echo json_encode($infoProyecto);
 	}
 	
-	function CO_getListaRecursos($json) {
-		//$proy = json_decode($json);
-		$listaRecursos = CO_consultarListaRecursos(/*$proy->idProyecto*/ 1);
+	function CO_getListaRecursos($json) { //servicio2
+		$proy = json_decode($json);
+		$listaRecursos = CO_consultarListaRecursos($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaRecursos;
 		
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getListaActividades($json) {
-		//$proy = json_decode($json);
-		$listaActividades = CO_consultarListaActividades(/*$proy->idProyecto*/ 1);
+	function CO_getListaActividades($json) { //servicio3
+		$proy = json_decode($json);
+		$listaActividades = CO_consultarListaActividades($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaActividades;
 		
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getInfoActividad($json) {
-		//$proy = json_decode($json);
-		$infoActividad = CO_consultarInfoActividad(/*$proy->idProyecto*/ 1);
+	function CO_getInfoActividad($json) { //servicio4
+		$proy = json_decode($json);
+		$infoActividad = CO_consultarInfoActividad($proy->idProyecto, $proy->idActividad);
 		
 		echo json_encode($infoActividad);
 	}
 	
-	function CO_saveCURecursos($json) {
+	function CO_saveCURecursos($json) { //servicio5
 		$objeto = json_decode($json);
 		$jsonRespuesta = CO_guardarCURyPorcReserva($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getListaPaquetes($json) {
-		//$proy = json_decode($json);
-		$listaPaquetes = CO_consultarListaPaquetes(/*$proy->idProyecto*/ 1);
+	function CO_getListaPaquetes($json) { //servicio6
+		$proy = json_decode($json);
+		$listaPaquetes = CO_consultarListaPaquetes($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaPaquetes;
 		
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_saveTipoCuenta($json) { //falta implementar!
-		//$proy = json_decode($json);
+	function CO_saveTipoCuenta($json) { //servicio 7
+		$objeto = json_decode($json);
+		$jsonRespuesta = CO_guardarTipoCuenta($objeto);
 		
-		echo 'Under construction. Add me ANG Lyon FNC OMG SKT CLG C9 D9 blood999';
+		echo json_encode($jsonRespuesta);
 	}
 	
+	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.
 	function CO_consultarInfoProyecto($idProyecto) {
 		//$connection = new conexion();
@@ -69,7 +71,7 @@
 		return $proyecto;
 	}
 	
-	function CO_consultarInfoActividad($idProyecto) {
+	function CO_consultarInfoActividad($idProyecto, $idActividad) {
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
@@ -115,9 +117,33 @@
 	
 	function CO_guardarCURyPorcReserva($obj) {
 		//insertar en la bd...
+		/*
+		$obj->idProyecto;
+		$obj->listaRecursos;
+			$obj->listaRecursos[0];
+		$obj->listaCUR;
+			$obj->listaCU[0];
+		$obj->porcReserva;
+		*/
 		
 		//obtener respuesta falsa;
 		$respuesta = CO_obtenerRespuestaNegativaDeGuardadoFalsa();
+		
+		return $respuesta;
+	}
+	
+	function CO_guardarTipoCuenta($obj) {
+		//insertar en la bd...
+		/*
+		$obj->idProyecto;
+		$obj->listaActividades;
+			$obj->listaActividades[0];
+		$obj->listaTipoCuenta;
+			$obj->listaTipoCuenta[0];
+		*/
+		
+		//obtener respuesta falsa;
+		$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
 		
 		return $respuesta;
 	}
