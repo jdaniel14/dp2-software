@@ -14,4 +14,14 @@
 	    	$miconexion = new conexion();
 	    	echo "sape";
 	    }
+
+	    function getComboEstado(){
+	    	$miConexion = new conexion();
+	    	$result = mysqli_query($miConexion,'SELECT * FROM ESTADO_EDT');
+			$lista = array();
+			while ($estado = mysqli_fetch_array($result)){
+				$lista[]=$estado;
+			}
+			echo json_encode($lista);
+	    }
 ?>

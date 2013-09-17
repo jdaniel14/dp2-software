@@ -81,7 +81,7 @@ $(document).ready(function(){
 
 function editarPaquete(){
 	var data = $(".form-control");
-	var obj;
+	var obj = new Object();
 	for(var i=0; i < data.length; i++){
 		obj[data[i]["id"]]=data[i]["value"];
 	}
