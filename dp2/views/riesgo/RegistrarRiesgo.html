@@ -45,10 +45,15 @@
           <div class="col-lg-12">
             <form class="well" action="#" method="get">
               <fieldset>
-                <label class="control-label"> Ingrese el nombre del riesgo a buscar: </label>
-                <input class="input-xlarge" type="text" name="search" id="search">
-                <button class="btn btn-primary" type="submit">Buscar</button>
-                <a data-toggle="modal" href="#myModalRegister" class="btn btn-primary">Agregar Riesgo</a>
+                  <label class="control-label pull-left"> Ingrese el nombre del riesgo a buscar:</label>
+                <div class="col-lg-4">
+                  <input class="form-control pull-left" type="text" name="search" id="search">
+                </div>
+                  <button class="btn btn-primary pull-left" type="submit"> Buscar </button>
+                <div class="col-lg-1 col-lg-offset-2">
+                  <a data-toggle="modal" href="#myModalRegister" class="btn btn-primary pull-right">Agregar Riesgo</a>
+                </div>
+                
               </fieldset>
             </form>
           </div>
@@ -101,78 +106,106 @@
                           <legend>Ingrese los campos</legend>
                           <div class="form-group">
                             <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
-                            <div class="col-lg-10">
-                              <input type="text" class="form-control" id="nomRiesgo" placeholder="(*)Nombre de Riesgo">
+                            <label class="col-lg-4 control-label">*Nombre de Riesgo</label>
+                            <div class="col-lg-8">
+                              <input type="text" class="form-control" id="nomRiesgo" placeholder="*Nombre de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
                             <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
-                            <div class="col-lg-10">
+                            <label class="col-lg-4 control-label">*Paquete de EDT</label>
+                            <div class="col-lg-8">
                               <select class="form-control" id="paqEdt">
-                                <option value="0" disabled selected>(*)Escoge un paquete del EDT</option>
+                                <option value="0" disabled selected>*Escoge un paquete del EDT</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
+                            <label class="col-lg-4 control-label">*Objetivo afectado</label>
+                            <div class="col-lg-8">
                               <select class="form-control" id="objAfe">
-                                <option value="0" disabled selected>(*)Escoge un objetivo afectado</option>
+                                <option value="0" disabled selected>*Escoge un objetivo afectado</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
+                            <label class="col-lg-4 control-label">*Nivel de impacto</label>
+                            <div class="col-lg-8">
                               <select class="form-control" id="impRiesgo">
-                                <option value="0" disabled selected>(*)Escoge un nivel de impacto</option>
+                                <option value="0" disabled selected>*Escoge un nivel de impacto</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
-                              <input type="number" step="positive floating-point number" class="form-control" id="proRiesgo" min="1" max="100" placeholder="(*)Probabilidad de Riesgo">
+                            <label class="col-lg-4 control-label">*Probabilidad de riesgo</label>
+                            <div class="col-lg-8">
+                              <input type="number" step="positive floating-point number" class="form-control" id="proRiesgo" min="1" max="100" placeholder="*Probabilidad de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
+                            <label class="col-lg-4 control-label">Acciones especificas</label>
+                            <div class="col-lg-8">
                               <textarea class="form-control" id="accEsp" placeholder="Acciones Específicas" rows="5"></textarea>
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
-                              <input type="number" step="positive floating-point number" class="form-control" id="costRiesgo" placeholder="(*)Costo estimado de Riesgo">
+                            <label class="col-lg-4 control-label">Costo Estimado</label>
+                            <div class="col-lg-8">
+                              <input type="number" step="positive floating-point number" class="form-control" id="costRiesgo" placeholder="Costo estimado de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
-                              <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgo" placeholder="(*)Tiempo estimado de Riesgo">
+                            <label class="col-lg-4 control-label">Tiempo Estimado</label>
+                            <div class="col-lg-8">
+                              <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgo" placeholder="Tiempo estimado de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-10">
+                          <label class="col-lg-4 control-label">*Equipo Responsable</label>
+                            <div class="col-lg-8">
                               <select class="form-control" id="equRes">
-                                <option value="0" disabled selected>(*)Escoge un equipo responsable</option>
+                                <option value="0" disabled selected>*Escoge un equipo responsable</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-2 control-label">Los campos con (*) son obligatorios</label>
+                            <label class="col-lg-4 col-lg-offset-8 control-label">Los campos con (*) son obligatorios</label>
                           </div>
                           <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                              <button class="btn btn-default" id="btnRegistrar">Registrar</button>
+                            <div class="col-lg-2 col-lg-offset-10">
+                              <button class="btn btn-success pull-right" id="btnRegistrar">Registrar</button>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div id="pane2" class="tab-pane">
-                        <h3>Buscar</h3>
+                        <br/>
+                        <div class="form-horizontal">
+                          <legend>Riesgos comunes</legend>
+                          <div class="well well-lg col-lg-12">
+                            <table class="table table-striped">
+                              <thead class="titulo-tabla">
+                                <th>ID</th>
+                                <th>Nombre de Riesgo</th>
+                                <th>Última Probabilidad</th>
+                                <th>Último Impacto</th>
+                                <th>Última Severidad</th>
+                                <th>Agregar</th>
+                              </thead>
+                              <tbody class="cuerpo-tabla" id="tablaRiesgosComunes">
+                              
+                              </tbody>
+                            </table>
+                            <button class="btn btn-success pull-right" >Confirmar</button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">Close</button>
+                <button class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
