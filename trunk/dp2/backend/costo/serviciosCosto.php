@@ -51,7 +51,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_saveTipoCuenta($json) { //falta implementar
+	function CO_saveTipoCuenta($json) { //falta implementar!
 		//$proy = json_decode($json);
 		
 		echo 'Under construction. Add me ANG Lyon FNC OMG SKT CLG C9 D9 blood999';
