@@ -4,8 +4,63 @@ function cargaData(data){
 	}
 }
 
+function cargarComboResponsable(){
+	$.ajax({
+		type: 'GET',
+		url : '../../backend/alcance/comboResponsables',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(obj["id_empleado"]);
+				opt.html(obj["nombre"]);
+				$("#empleado").append(opt);
+			}
+		}
+	});
+}
+
+function cargarComboEstado(){
+	$.ajax({
+		type: 'GET',
+		url : '../../backend/alcance/comboEstado',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(obj["id_estado"]);
+				opt.html(obj["descripcion"]);
+				$("#estado").append(opt);
+			}
+		}
+	});
+}
+
+function cargarComboCompania(){
+	$.ajax({
+		type: 'GET',
+		url : '../../backend/alcance/comboCompania',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(obj["id_compania"]);
+				opt.html(obj["descripcion"]);
+				$("#compania_responsable").append(opt);
+			}
+		}
+	});
+}
+
 $(document).ready(function(){
-	//loadCombos
+	//cargar Combos
+	cargarComboResponsable();
+	cargarComboCompania();
+	cargarComboEstado();
+
 	var inData = {
 		id_paquete : 1//esto sera actualizado luego sacado de la url
 	};
@@ -14,14 +69,14 @@ $(document).ready(function(){
 		nombre : "fer"
 	};
 	cargaData(outData);
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
 		url : '../../backend/alcance/detallePaquete',
 		data: JSON.stringify(inData),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
-	});*/
+	});
 });
 
 function editarPaquete(){
