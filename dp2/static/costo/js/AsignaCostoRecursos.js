@@ -1,5 +1,6 @@
-var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
+var rootURL = "../../api/";
 var codProyecto='1';
+var idProyecto=1;
 var numRecursos= 0;
 var arregloProyecto= new Array(
 							'Mi proyecto', '566', '1.5'
@@ -45,44 +46,50 @@ iniciaRecursos();
 function obtenActividades(/*idProyecto*/){
 	
 	
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
 		url: rootURL,
 		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
+		dataType: "json" // data type of response		
 	});
-	*/
+	
 	
 	return arregloActividades;
 
 }
 
+/*esta es la que vale! has todas asi*/
 function obtenProyecto(/*idProyecto*/){
-	
-	/*$.ajax({
+	var obj ={
+		idProyecto : idProyecto,
+		atributo2 : "holi"
+	}
+	var datita;
+	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
+		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
+		dataType: "json",
+		async: false,
+		success:function(data){
+			datita=data;
+		}	
+
 	});
-	*/
+	return datita;	
 	
-	return arregloProyecto;
+	//return arregloProyecto;
 
 }
-
+/*aca temrmina*/
 function obtenRecursos(/*idProyecto*/){
 
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
 		url: rootURL,
 		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
+		dataType: "json"		
 	});
-	*/
+	
 	
 	return arregloRecursos;
 
@@ -90,14 +97,14 @@ function obtenRecursos(/*idProyecto*/){
 
 function obtenDatosActividad(idActividad){
 	
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
 		data: 'idActividad=' + idActividad,
 		url: rootURLResumen,
 		dataType: "json", // data type of response
 		success: agregaDataFilaResumen
 	});
-	*/
+	
 	
 	if (idActividad=='1'){
 		
@@ -145,8 +152,9 @@ function agregaDataFila(arreglo, tipo){
 
 function iniciaProyecto(){
 			
-	proyecto= obtenProyecto(/*idProyecto*/);
-	agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
+	proy= obtenProyecto(/*idProyecto*/);
+	//var proy = JSON.parse(proyecto);
+	agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
 
 }
 
