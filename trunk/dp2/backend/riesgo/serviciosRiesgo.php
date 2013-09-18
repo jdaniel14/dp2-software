@@ -9,8 +9,8 @@
     function R_getListaPaquetesEDT($idProyecto){
 
         $arregloListaPaquetesEDT= array(
-            array('1'.'alcance'),
-            array('2'.'alcance2')
+            array('id' => '1','descripcion' => 'alcance'),
+            array('id' => '2','descripcion' => 'alcance2')
         );
                 
         echo json_encode($arregloListaPaquetesEDT);       

@@ -3,7 +3,7 @@ var getItem = "../../backend/riesgo/routesRiesgo/R_obtenerRiesgo";
 var addItem = "../../backend/riesgo/routesRiesgo/R_registrarRiesgo";
 var updateItem = "../../backend/riesgo/routesRiesgo/R_modificarRiesgo";
 var deleteItem = "../../backend/riesgo/routesRiesgo/R_eliminarRiesgo";
-var getAllPackets = "../../backend/riesgo/routesRiesgo/R_listaPaquetesEDT";
+var getAllPackets = "../../api/R_listaPaquetesEDT";
 var getAllObjects = "../../backend/riesgo/routesRiesgo/R_listaObjetosAfectados";
 var getAllImpactLevels = "../../backend/riesgo/routesRiesgo/R_listaNivelesImpacto";
 var getAllTeams = "../../backend/riesgo/routesRiesgo/R_listaEquipoRiesgo";
@@ -26,7 +26,7 @@ $(document).ready(main);
 
 function main(){
 	$("#idProyecto").hide();
-	//listarPaquetesTrabajo();
+	listarPaquetesTrabajo();
 	//listarObjetosAfectados();
 	//listarNivelesImpacto();
 	//listarEquipos();
@@ -151,8 +151,7 @@ function listarPaquetesTrabajo(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllPackets,
-		data: jsonData,
+		url: getAllPackets + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
