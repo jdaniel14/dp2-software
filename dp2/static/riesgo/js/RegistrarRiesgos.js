@@ -27,10 +27,9 @@ $(document).ready(main);
 function main(){
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
-	//listarObjetosAfectados();
-	//listarNivelesImpacto();
-	//listarEquipos();
-	console.log($("#idProyecto").val());
+	listarObjetosAfectados();
+	listarNivelesImpacto();
+	listarEquipos();
 	listarRiesgos();
 	$(".glyphicon.glyphicon-search").one('click',function(){
 		obtenerRiesgo();
@@ -198,8 +197,7 @@ function listarObjetosAfectados(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllObjects,
-		data: jsonData,
+		url: getAllObjects + '/idProyecto=' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
@@ -218,8 +216,7 @@ function listarNivelesImpacto(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllImpactLevels,
-		data: jsonData,
+		url: getAllImpactLevels + '/idProyecto=' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
@@ -238,8 +235,7 @@ function listarEquipos(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllTeams,
-		data: jsonData,
+		url: getAllTeams + '/idProyecto=' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
