@@ -15,7 +15,7 @@
         echo json_encode($arregloListaPaquetesEDT);
     }
 
-    function R_getListaObjetosAfectados(json){
+    function R_getListaObjetosAfectados($json){
         $idProyecto = json_decode($json);
         $arregloListaObjetosAfectados= array(
             array('1'.'costo'),
@@ -24,7 +24,7 @@
         echo json_encode($arregloListaObjetosAfectados);
     }
 
-    function R_getListaNivelesImpacto(json){
+    function R_getListaNivelesImpacto($json){
         $idProyecto = json_decode($json);
         $arregloListaNivelesImpacto= array(
             array('1'.'alto'),
@@ -33,7 +33,7 @@
         echo json_encode($arregloListaNivelesImpacto);
     }
 
-    function R_getListaEquipoRiesgo(json){
+    function R_getListaEquipoRiesgo($json){
         $idProyecto = json_decode($json);
         $arregloListaEquipoRiesgo= array(
             array('1'.'equipoA'),
