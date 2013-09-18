@@ -9,6 +9,8 @@ var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
 var getAllTeams = "../../api/R_listaEquipoRiesgo";
 var getAllKnownItems = "../../api/R_listarRiesgoComun";
 var addList = "../../api/R_asignarRiesgoComun"
+var addConfg = "../../api/R_asignarConfiguracionProyecto";
+var getConfg = "../../api/R_listarConfiguracionProyecto"
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -23,7 +25,7 @@ var arregloRiesgoComunes = new Array(
 								new Array('RSK12', 'Riesgo Común 12','0.1','0.8','0.08'),
 								new Array('RSK13', 'Riesgo Común 13','0.5','0.7','0.35')
 							);
-
+var arregloConfiguraciones = new Array(1,0,0,0,0,0);
 $(document).ready(main);
 
 function main(){
@@ -34,6 +36,7 @@ function main(){
 	listarEquipos();
 	listarRiesgos();
 	listarRiesgosComunes();
+	listarConfiguracion();
 	$(".glyphicon.glyphicon-search").one('click',function(){
 		obtenerRiesgo();
 		deshabilitarCampos();
@@ -157,7 +160,35 @@ function main(){
 			}
 		});
 	});
+
+
+	//Boton guardar datos en la ventana de configuración
+	$("#btnConfiguracion").one('click', function(){
+		var data = {
+			idProyecto: $('#idProyecto').val(),
+			muyBajo: $('#muyBajo').val(),
+			bajo: $('#bajo').val(),
+			medio: $('#medio').val(),
+			alto: $('#alto').val(),
+			muyAlto: $('#muyAlto').val()
+		};
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'POST',
+			url: addConfg,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				alert(data.me);
+			},
+			fail: function(data){
+				alert(data.me);
+			}
+		});
+	});
 }
+
+
 function deshabilitarCampos(){
 	$('#btnModificar').hide();
 	$('#nomRiesgoM').prop( "disabled", true );
@@ -169,6 +200,41 @@ function deshabilitarCampos(){
 	$('#costRiesgoM').prop( "disabled", true );
 	$('#tiemRiesgoM').prop( "disabled", true );
 	$('#equResM').prop( "disabled", true );
+}
+
+function listarConfiguracion(){
+
+		/*var data = {
+		idProyecto: $('#idProyecto').val()
+		};
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'GET',
+			url: getConfg,
+			dataType: "json",
+			success: function(data){
+				listarConfiguracion2(data);			
+			},
+			fail: codigoError
+		});*/
+		listarConfiguracion2(null);
+}
+
+function listarConfiguracion2(data){
+	
+	if (data!=null){
+		$('#muyBajo').val(data[1]);
+		$('#bajo').val(data[2]);
+		$('#medio').val(data[3]);
+		$('#alto').val(data[4]);
+		$('#muyAlto').val(data[5]);
+	} else {
+		$('#muyBajo').val(arregloConfiguraciones[1]);
+		$('#bajo').val(arregloConfiguraciones[2]);
+		$('#medio').val(arregloConfiguraciones[3]);
+		$('#alto').val(arregloConfiguraciones[4]);
+		$('#muyAlto').val(arregloConfiguraciones[5]);
+	};
 }
 
 function listarPaquetesTrabajo(){
@@ -394,3 +460,4 @@ $("#btnGrabar").click(function(){
 function grabarRiesgos(){
 	alert("Se grabó");
 }
+
