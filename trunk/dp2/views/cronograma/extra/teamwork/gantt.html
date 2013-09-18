@@ -1,6 +1,23 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+<!-- 
+
+	Sacar el "rol" de la ventana de editar los tasks.
+	Cambiar el sgte por esfuerzo
+	
+	Separar por tipo de recurso
+	
+	
+	
+	
+	
+
+
+ -->
+
+
   <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Teamwork</title>
@@ -31,6 +48,7 @@
 </head>
 <body style="background-color: #fff;">
 
+<button id = 'chris'>hola</button>
 
 <div id="ndo" style="position:absolute;right:5px;top:5px;width:378px;padding:5px;background-color: #FFF5E6; border:1px solid #F9A22F; font-size:12px" class="noprint">
   This Gantt can be used in a complete project management solution - imports your Gantt and more - <a href="http://twproject.com" target="_blank">Teamwork: give it a try</a>.
@@ -341,6 +359,16 @@ function saveInLocalStorage() {
   }
 }
 
+$(document).ready(function(){
+	//alert("redy");
+	//alert(ge);
+	//console.log(ge);
+	//console.log(ge.saveProject());
+	$("#chris").click(function(){
+		alert("click");
+		console.log(ge.saveProject());
+	})
+});
 
 </script>
 
@@ -542,6 +570,7 @@ function saveInLocalStorage() {
 
   });
 </script>
+
 
 
 
