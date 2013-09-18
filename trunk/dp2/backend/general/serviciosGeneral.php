@@ -4,18 +4,9 @@
         
         
 	//include_once '../backend/conexion.php';
-        //Alfonso
-        function G_putActa(){
-	    	//$miconexion = new conexion();
-	    	echo "put Acta";
-	    }
-            
-            function G_getActa(){
-	    	//$miconexion = new conexion();
-	    	echo "get acta";
-	    }
-            
-            function getListaJP(){
+        
+        //jose
+        function getListaJP(){
 	       $request = \Slim\Slim::getInstance()->request(); //json parameters
 	       $edt = json_decode($request->getBody()); //object convert
 	       //var_dump($wine);
@@ -44,4 +35,17 @@
                 
                 echo json_encode($arregloProyecto);
 	    }
+        
+        //Alfonso
+        function G_putActa(){
+	    	//$miconexion = new conexion();
+	    	echo "put Acta";
+	    }
+            
+            function G_getActa(){
+	    	//$miconexion = new conexion();
+	    	echo "get acta";
+	    }
+            
+            
 ?>
