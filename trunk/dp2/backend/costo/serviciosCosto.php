@@ -77,7 +77,7 @@
 		//hacer consulta a la bd...
 		
 		//se llamara una funcion que devuelve data falsa por mientras.	
-		$actividad = CO_obtenerInfoActividadFalsa();
+		$actividad = CO_obtenerInfoActividadFalsa($idActividad);
 		
 		return $actividad;
 	}
@@ -156,10 +156,17 @@
 		return $proyecto;
 	}
 	
-	function CO_obtenerInfoActividadFalsa() {
-		$actividad = new CO_Actividad(1, 'Actividad paranormal', 2, 30.0, 50.5, CO_obtenerListaRecursosFalsa());
+	function CO_obtenerInfoActividadFalsa($idActividad) {
 		
-		return $actividad;
+		$actividad = new CO_Actividad(1, 'Actividad paranormal', 2, 30.0, 50.5, CO_obtenerListaRecursosFalsa());
+		$listaActividades = array();
+		$listaRecursos = CO_obtenerListaRecursosFalsa();
+		$actividad1 = new CO_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
+		$actividad2 = new CO_Actividad(2, 'Actividad2', 1, 20.0, 25.0, $listaRecursos);
+		$actividad3 = new CO_Actividad(3, 'Actividad3', 2, 30.5, 40.0, null);
+		array_push($listaActividades, $actividad1, $actividad2, $actividad3);
+		
+		return $listaActividades[$idActividad-1];
 	}
 	
 	function CO_obtenerListaRecursosFalsa() {
