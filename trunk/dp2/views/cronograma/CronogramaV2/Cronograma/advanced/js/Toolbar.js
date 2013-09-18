@@ -23,8 +23,17 @@ Ext.define("MyApp.Toolbar", {
                 {
                     xtype   : 'buttongroup',
                     title   : 'View tools',
-                    columns : 3,
+                    columns : 4,
                     items   : [
+						{
+							text 	: 'Guardar progreso',
+							iconCls	: 'action',
+							handler	: function () {
+								alert("guardar");
+								console.log(taskStore.toArray()[0].childNodes[0].childNodes[1]);
+								console.log(taskStore.toArray()[0].childNodes[0].childNodes[1].getAssignmentStore());
+							}
+						},
                         {
                             iconCls : 'icon-prev',
                             text    : 'Previous',
