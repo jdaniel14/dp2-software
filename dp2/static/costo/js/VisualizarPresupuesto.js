@@ -1,6 +1,8 @@
 var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
 var codProyecto='1';
-
+var arregloProyecto= new Array(
+							'Mi proyecto', '566', '1.5'
+								);
 
 iniciaProyecto();		
 creaDesplegable();
@@ -62,7 +64,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			  '<div class="panel-body">'+
 				'Costo subtotal:'+ paquete.subtotal + ' ';
 	if (paquete.hijos != null)
-		for (int i = 0;i<paquete.hijos.lenght;i++)
+		for (var i = 0;i<paquete.hijos.lenght;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete,nombrePropio,i)
 	cadenaHTML += '</div>'+'</div>'+'</div>';
 	return cadenaHTML;
