@@ -18,8 +18,8 @@
     function R_getListaObjetosAfectados($json){
         $idProyecto = json_decode($json);
         $arregloListaObjetosAfectados= array(
-            array('1'.'costo'),
-            array('2'.'tiempo')
+            array('id' => '1','descripcion' => 'costo'),
+            array('id' => '2','descripcion' => 'tiempo')            
         );
         echo json_encode($arregloListaObjetosAfectados);
     }
@@ -27,8 +27,8 @@
     function R_getListaNivelesImpacto($json){
         $idProyecto = json_decode($json);
         $arregloListaNivelesImpacto= array(
-            array('1'.'alto'),
-            array('2'.'medio')
+            array('idImpacto' => '1','descripcion' => 'alto'),
+            array('idImpacto' => '2','descripcion' => 'medio')          
         );
         echo json_encode($arregloListaNivelesImpacto);
     }
@@ -36,8 +36,8 @@
     function R_getListaEquipoRiesgo($json){
         $idProyecto = json_decode($json);
         $arregloListaEquipoRiesgo= array(
-            array('1'.'equipoA'),
-            array('2'.'equipoB')
+            array('idEquipo' => '1','nombre' => 'equipoA'),
+            array('idEquipo' => '2','nombre' => 'equipoB')
         );
         echo json_encode($arregloListaEquipoRiesgo);
     }
