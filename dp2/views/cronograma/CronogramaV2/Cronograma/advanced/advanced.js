@@ -1,5 +1,10 @@
 Ext.ns('App');
 
+var taskStore;
+var dependencyStore;
+var resourceStore;
+var assignmentStore;
+
 Ext.Loader.setConfig({
     enabled: true,
     disableCaching : true,
@@ -18,6 +23,9 @@ Ext.onReady(function() {
     App.Gantt.init();
 
     Ext.QuickTips.init();
+    
+    //alert("done");
+    //console.log(taskStore.toArray());
 });
 //$('bryntum-trial').hide();
 App.Gantt = {
@@ -45,7 +53,7 @@ App.Gantt = {
             ]
         });
 
-        var taskStore = Ext.create("Gnt.data.TaskStore", {
+        taskStore = Ext.create("Gnt.data.TaskStore", {
             model : 'MyTaskModel',
             proxy : {
                 type    : 'ajax',
@@ -63,7 +71,7 @@ App.Gantt = {
             }
         });
 
-        var dependencyStore = Ext.create("Gnt.data.DependencyStore", {
+        dependencyStore = Ext.create("Gnt.data.DependencyStore", {
             autoLoad : true,
             proxy: {
                 type : 'ajax',
@@ -75,11 +83,11 @@ App.Gantt = {
             }
         });
 
-        var resourceStore = Ext.create('Gnt.data.ResourceStore', {
+        resourceStore = Ext.create('Gnt.data.ResourceStore', {
             model : 'Gnt.model.Resource'
         });
 
-        var assignmentStore = Ext.create('Gnt.data.AssignmentStore', {
+        assignmentStore = Ext.create('Gnt.data.AssignmentStore', {
             autoLoad    : true,
             // Must pass a reference to resource store
             resourceStore : resourceStore,
@@ -95,9 +103,12 @@ App.Gantt = {
             listeners : {
                 load : function() {
                     resourceStore.loadData(this.proxy.reader.jsonData.resources);
+                    
                 }
             }
         });
+        
+        
 
         var g = Ext.create("MyApp.DemoGanttPanel", {
             region          : 'center',
@@ -131,8 +142,14 @@ App.Gantt = {
                 Ext.Msg.alert('Hey', 'You click header cell : ' + Ext.Date.format(start, 'Y-m-d') + ' - ' + Ext.Date.format(end, 'Y-m-d'));
             }
         });
-
+        
+        
+        //console.log(assignmentStore.getTaskStore());
+        //alert(g);
+        //console.log(taskStore.toArray());
         return g;
     }
 };
+
+
 
