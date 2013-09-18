@@ -16,12 +16,28 @@
 	    }
 
 	    function getComboEstado(){
-	    	$miConexion = new conexion();
-	    	$result = mysqli_query($miConexion,'SELECT * FROM ESTADO_EDT');
+	    	$con=mysqli_connect("localhost","root","","dp2");
+			// Verificar conexión
+			if (mysqli_connect_errno()){
+			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
+			}
+	    	$result = mysqli_query($con,'SELECT * FROM ESTADO_EDT');
 			$lista = array();
 			while ($estado = mysqli_fetch_array($result)){
 				$lista[]=$estado;
 			}
 			echo json_encode($lista);
 	    }
+
+	    function detallePaquete($id_paquete){
+			$request = \Slim\Slim::getInstance()->request();
+			$con=mysqli_connect("localhost","root","","dp2");
+			// Verificar conexión
+			if (mysqli_connect_errno()){
+			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
+			}
+			$result = mysqli_query($con,"SELECT * FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=" . $id_paquete);
+			$paquete = mysqli_fetch_array($result);
+			echo json_encode($paquete);
+		}
 ?>

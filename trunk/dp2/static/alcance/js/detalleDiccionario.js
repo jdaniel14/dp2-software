@@ -7,14 +7,14 @@ function cargaData(data){
 function cargarComboResponsable(){
 	$.ajax({
 		type: 'GET',
-		url : '../../backend/alcance/comboResponsables',
+		url : '../../api/comboResponsables',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(obj["id_empleado"]);
-				opt.html(obj["nombre"]);
+				opt.val(data[obj]["id_empleado"]);
+				opt.html(data[obj]["nombre"]);
 				$("#empleado").append(opt);
 			}
 		}
@@ -24,14 +24,14 @@ function cargarComboResponsable(){
 function cargarComboEstado(){
 	$.ajax({
 		type: 'GET',
-		url : '../../backend/alcance/comboEstado',
+		url : '../../api/comboEstado',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(obj["id_estado"]);
-				opt.html(obj["descripcion"]);
+				opt.val(data[obj]["id_estado"]);
+				opt.html(data[obj]["descripcion"]);
 				$("#estado").append(opt);
 			}
 		}
@@ -41,14 +41,14 @@ function cargarComboEstado(){
 function cargarComboCompania(){
 	$.ajax({
 		type: 'GET',
-		url : '../../backend/alcance/comboCompania',
+		url : '../../api/comboCompania',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(obj["id_compania"]);
-				opt.html(obj["descripcion"]);
+				opt.val(data[obj]["id_compania"]);
+				opt.html(data[obj]["descripcion"]);
 				$("#compania_responsable").append(opt);
 			}
 		}
@@ -61,18 +61,10 @@ $(document).ready(function(){
 	cargarComboCompania();
 	cargarComboEstado();
 
-	var inData = {
-		id_paquete : 1//esto sera actualizado luego sacado de la url
-	};
-	var outData = {
-		id : 1,
-		nombre : "fer"
-	};
-	cargaData(outData);
+	var id_paquete = 1;//esto sera actualizado luego sacado de la url
 	$.ajax({
 		type: 'GET',
-		url : '../../backend/alcance/detallePaquete',
-		data: JSON.stringify(inData),
+		url : '../../api/detallePaquete/'+id_paquete,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
@@ -87,7 +79,7 @@ function editarPaquete(){
 	}
 	$.ajax({
 		type:'POST',
-		url: '../../backend/alcance/editarPaquete',
+		url: '../../api/editarPaquete',
 		data: JSON.stringify(obj),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
