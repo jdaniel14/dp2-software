@@ -38,21 +38,6 @@ function obtenProyecto(/*idProyecto*/){
 
 }
 
-function obtenActividades(/*idProyecto*/){
-
-	/*$.ajax({
-		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
-	});
-	*/
-	
-	return arregloRecursos;
-
-}
-
 function obtenDatosActividad(idActividad){
 	
 	/*$.ajax({
