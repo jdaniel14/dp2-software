@@ -65,13 +65,14 @@ class CR_CalendarioBase {
 	public $mesesAnho;
 
 	function __construct($idCalendarioBase,$horaInicioUno,$horaFinUno,$horaInicioDos,$horaFinDos,$horasDia,$diasMes,$mesesAnho){
-           $this->idCalendarioBase = $idActividad;
-	   $this->horaInicioUno = $nombre;
-	   $this->horaFinUno = $tipoCuenta;
-	   $this->horaInicioDos = $costoSubtotal;
-	   $this->HoraFinDos = $costoTotal;
-	   $this->listaRecursos = $listaRecursos;
-	
+       $this->idCalendarioBase = $idCalendarioBase;
+	   $this->horaInicioUno = $horaInicioUno;
+	   $this->horaFinUno = $horaFinUno;
+	   $this->horaInicioDos = $horaInicioDos;
+	   $this->horaFinDos = $horaFinDos;
+	   $this->horasDia = $horasDia;
+	   $this->diasMes = $diasMes;
+	   $this->mesesAnho = $mesesAnho;
 
 	}
 
