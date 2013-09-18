@@ -7,6 +7,8 @@ var getAllPackets = "../../api/R_listaPaquetesEDT";
 var getAllObjects = "../../api/R_listaObjetosAfectados";
 var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
 var getAllTeams = "../../api/R_listaEquipoRiesgo";
+var getAllKnownItems = "../../api/R_listarRiesgoComun";
+var addList = "../../api/R_asignarRiesgoComun"
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -31,6 +33,7 @@ function main(){
 	listarNivelesImpacto();
 	listarEquipos();
 	listarRiesgos();
+	listarRiesgosComunes();
 	$(".glyphicon.glyphicon-search").one('click',function(){
 		obtenerRiesgo();
 		deshabilitarCampos();
@@ -127,6 +130,31 @@ function main(){
 				listarRiesgos();
 			},
 			fail: codigoError
+		});
+	});
+	//Función para agregar los riesgos conocidos al proyecto
+	$("#btnAgregar").one('click', function(){
+		var data = [];
+    	$('#tablaRiesgosComunes input[type="checkbox"]:checked').each(function(){
+	        var $row = $(this).parents('tr'); 
+	        data.push($row.find('td:eq(5) input').val());
+    	});
+
+		var jsonData = JSON.stringify(data);
+		alert(data);
+		$.ajax({
+			type: 'POST',
+			url: addList,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				alert("Se agregaron exitosamente los " + item.length + " riesgos");
+				listarRiesgos();
+			},
+			fail: function(data){
+				alert(data.me);
+			}
 		});
 	});
 }
@@ -260,6 +288,20 @@ function listarRiesgos(){
 	
 	
 	agregaDataFila(null);
+
+}
+
+function listarRiesgosComunes(){
+		
+	/*$.ajax({
+		type: 'GET',
+		url: getAllKnownItems,
+		dataType: "json",
+		success: agregaDataComunFila(data),
+		fail: codigoError
+	});*/
+	
+	
 	agregaDataComunFila (null);
 
 }
@@ -327,10 +369,18 @@ function agregaFilaRiesgo(arreglo,i){
 function agregaFilaRiesgoComun(arreglo,i){
 	a=i;
 	a++;
-	//input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+arreglo[2]+'">';
+	/*$("#tablaRiesgosComunes").append("<tr id='" + arreglo.idRiesgo + 
+							  '"><td>" + arreglo.idRiesgo + 
+							  "</td><td>" + arreglo.nombre + 
+							  "</td><td>" + arreglo.probabilidad + 
+							  "</td><td>" + arreglo.impacto + 
+							  "</td><td>" + arreglo.severidad +
+							  "</td><td><input type=\"checkbox\" name=\"'+arreglo.idRiesgo+'\">
+							  "</td></tr>");
+	*/
 	
 	
-	$("#tablaRiesgosComunes").append('<tr id='+arreglo[0]+'><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td><input type=\"checkbox\" name=\"'+arreglo[0]+'\"></td></tr>');
+	$("#tablaRiesgosComunes").append('<tr id='+arreglo[0]+'><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td><input type=\"checkbox\" value=\"'+arreglo[0]+'\"></td></tr>');
 
 }
 
