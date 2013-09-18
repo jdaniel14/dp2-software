@@ -5,7 +5,7 @@
     function R_getListaRiesgos(){
         echo "Probando :D";
 	}
-
+	
     function R_getListaPaquetesEDT($idProyecto){
         $idProyectoDecode = json_decode($idProyecto);
         $arregloListaPaquetesEDT= array(
