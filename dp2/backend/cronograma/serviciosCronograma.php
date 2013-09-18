@@ -38,7 +38,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CR_getRecursos($json) { //servicio 5
+	function CR_getRecursos($json) { //servicio5
 	
 		$proy = json_decode($json);
 		$infoRecursos =CR_consultarRecursos($proy->idProyecto);
