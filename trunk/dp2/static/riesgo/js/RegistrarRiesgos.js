@@ -1,12 +1,12 @@
-var getAllItems = "../../backend/riesgo/routesRiesgo/R_listaRiesgo";
-var getItem = "../../backend/riesgo/routesRiesgo/R_obtenerRiesgo";
-var addItem = "../../backend/riesgo/routesRiesgo/R_registrarRiesgo";
-var updateItem = "../../backend/riesgo/routesRiesgo/R_modificarRiesgo";
-var deleteItem = "../../backend/riesgo/routesRiesgo/R_eliminarRiesgo";
+var getAllItems = "../../api/R_listaRiesgo";
+var getItem = "../../api/R_obtenerRiesgo";
+var addItem = "../../api/R_registrarRiesgo";
+var updateItem = "../../api/R_modificarRiesgo";
+var deleteItem = "../../api/R_eliminarRiesgo";
 var getAllPackets = "../../api/R_listaPaquetesEDT";
-var getAllObjects = "../../backend/riesgo/routesRiesgo/R_listaObjetosAfectados";
-var getAllImpactLevels = "../../backend/riesgo/routesRiesgo/R_listaNivelesImpacto";
-var getAllTeams = "../../backend/riesgo/routesRiesgo/R_listaEquipoRiesgo";
+var getAllObjects = "../../api/R_listaObjetosAfectados";
+var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
+var getAllTeams = "../../api/R_listaEquipoRiesgo";
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -151,7 +151,7 @@ function listarPaquetesTrabajo(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllPackets + '/' + data.idProyecto,
+		url: getAllPackets + '/idProyecto=' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
