@@ -42,6 +42,7 @@
     <div class="container">
       <div class="h1-title">
           <h1>Mi Proyecto</h1>
+          <button data-toggle="modal" href="#modalConfiguracion" class="btn btn-info">Conf</button>
           <input id="idProyecto" value="1">
           <div class="col-lg-12">
             <form class="well" action="#" method="get">
@@ -126,7 +127,7 @@
                             <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
                             <label class="col-lg-4 control-label">*Nombre de Riesgo</label>
                             <div class="col-lg-8">
-                              <input type="text" class="form-control" id="nomRiesgo" placeholder="*Nombre de Riesgo">
+                              <input type="text" class="form-control" id="nomRiesgo" placeholder="Nombre de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
@@ -134,7 +135,7 @@
                             <label class="col-lg-4 control-label">*Paquete de EDT</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="paqEdt">
-                                <option value="0" disabled selected>*Escoge un paquete del EDT</option>
+                                <option value="0" disabled selected>Escoge un paquete del EDT</option>
                               </select>
                             </div>
                           </div>
@@ -142,7 +143,7 @@
                             <label class="col-lg-4 control-label">*Objetivo afectado</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="objAfe">
-                                <option value="0" disabled selected>*Escoge un objetivo afectado</option>
+                                <option value="0" disabled selected>Escoge un objetivo afectado</option>
                               </select>
                             </div>
                           </div>
@@ -150,14 +151,14 @@
                             <label class="col-lg-4 control-label">*Nivel de impacto</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="impRiesgo">
-                                <option value="0" disabled selected>*Escoge un nivel de impacto</option>
+                                <option value="0" disabled selected>Escoge un nivel de impacto</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="col-lg-4 control-label">*Probabilidad de riesgo</label>
                             <div class="col-lg-8">
-                              <input type="number" step="positive floating-point number" class="form-control" id="proRiesgo" min="1" max="100" placeholder="*Probabilidad de Riesgo">
+                              <input type="number" step="positive floating-point number" class="form-control" id="proRiesgo" min="1" max="100" placeholder="Probabilidad de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
@@ -182,12 +183,12 @@
                           <label class="col-lg-4 control-label">*Equipo Responsable</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="equRes">
-                                <option value="0" disabled selected>*Escoge un equipo responsable</option>
+                                <option value="0" disabled selected>Escoge un equipo responsable</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-4 col-lg-offset-8 control-label">Los campos con (*) son obligatorios</label>
+                            <label class="col-lg-4 col-lg-offset-8 control-label">Los campos con * son obligatorios</label>
                           </div>
                           <div class="form-group">
                             <div class="col-lg-2 col-lg-offset-10">
@@ -201,7 +202,7 @@
                         <div class="form-horizontal">
                           <legend>Riesgos comunes</legend>
                           <div class="well well-lg col-lg-12">
-                            <table class="table table-striped">
+                            <table id="tablaRiesgosComunes" class="table table-striped">
                               <thead class="titulo-tabla">
                                 <th>ID</th>
                                 <th>Nombre de Riesgo</th>
@@ -210,11 +211,11 @@
                                 <th>Última Severidad</th>
                                 <th>Agregar</th>
                               </thead>
-                              <tbody class="cuerpo-tabla" id="tablaRiesgosComunes">
+                              <tbody class="cuerpo-tabla">
                               
                               </tbody>
                             </table>
-                            <button class="btn btn-success pull-right" >Confirmar</button>
+                            <button class="btn btn-success pull-right" id="btnAgregar">Confirmar</button>
                           </div>
                         </div>
                       </div>
@@ -238,67 +239,134 @@
                 <h4 class="modal-title">Modificación de Riesgo</h4>               
               </div>
               <div class="modal-body">
+
                 <div class="form-horizontal">
                   <div class="form-group">
                     <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" id="nomRiesgoM" placeholder="(*)Nombre de Riesgo">
+                    <label class="col-lg-4 control-label">*Nombre de Riesgo</label>
+                    <div class="col-lg-8">
+                      <input type="text" class="form-control" id="nomRiesgoM" placeholder="Nombre de Riesgo">
                     </div>
                   </div>
                   <div class="form-group">
                     <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
-                    <div class="col-lg-10">
+                    <label class="col-lg-4 control-label">*Paquete de EDT</label>
+                    <div class="col-lg-8">
                       <select class="form-control" id="paqEdtM">
-                        <option value="0" disabled selected>(*)Escoge un paquete del EDT</option>
+                        <option value="0" disabled selected>Escoge un paquete del EDT</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
+                    <label class="col-lg-4 control-label">*Objetivo afectado</label>
+                    <div class="col-lg-8">
                       <select class="form-control" id="objAfeM">
-                        <option value="0" disabled selected>(*)Escoge un objetivo afectado</option>
+                        <option value="0" disabled selected>Escoge un objetivo afectado</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
+                    <label class="col-lg-4 control-label">*Nivel de impacto</label>
+                    <div class="col-lg-8">
                       <select class="form-control" id="impRiesgo">
-                      <option value="0" disabled selected>(*)Escoge un nivel de impacto</option>
+                      <option value="0" disabled selected>Escoge un nivel de impacto</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
-                      <input type="number" step="positive floating-point number" class="form-control" id="proRiesgoM" min="1" max="100" placeholder="(*)Probabilidad de Riesgo">
+                    <label class="col-lg-4 control-label">*Probabilidad de riesgo</label>
+                    <div class="col-lg-8">
+                      <input type="number" step="positive floating-point number" class="form-control" id="proRiesgoM" min="1" max="100" placeholder="Probabilidad de Riesgo">
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
+                    <label class="col-lg-4 control-label">Acciones especificas</label>
+                    <div class="col-lg-8">
                       <textarea class="form-control" id="accEspM" placeholder="Acciones Específicas" rows="5"></textarea>
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
-                      <input type="number" step="positive floating-point number" class="form-control" id="costRiesgoM" placeholder="(*)Costo estimado de Riesgo">
+                    <label class="col-lg-4 control-label">Costo Estimado</label>
+                    <div class="col-lg-8">
+                      <input type="number" step="positive floating-point number" class="form-control" id="costRiesgoM" placeholder="Costo estimado de Riesgo">
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
-                      <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgoM" placeholder="(*)Tiempo estimado de Riesgo">
+                    <label class="col-lg-4 control-label">Tiempo Estimado</label>
+                    <div class="col-lg-8">
+                      <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgoM" placeholder="Tiempo estimado de Riesgo">
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-lg-10">
+                    <label class="col-lg-4 control-label">*Equipo Responsable</label>
+                    <div class="col-lg-8">
                       <select class="form-control" id="equResM">
-                        <option value="0" disabled selected>(*)Escoge un equipo responsable</option>
+                        <option value="0" disabled selected>Escoge un equipo responsable</option>
                       </select>
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-lg-4 col-lg-offset-8 control-label">Los campos con * son obligatorios</label>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
                 <button class="btn" data-dismiss="modal">Cerrar</button>
-                <button class="btn btn-primary" id="btnModificar">Guardar Cambios</button>
+                <button class="btn btn-success" id="btnModificar">Guardar Cambios</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- Modal para la venta de configuración -->
+        <div id="modalConfiguracion" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Pantalla de configuración de riesgos</h4>
+              </div>
+              <div class="modal-body titulo-tabla col-lg-12">
+                <div class="well">
+                  <div class="col-lg-12">
+                    <legend>Impacto</legend>
+                  </div>
+                  <div class="form-horizontal col-lg-12">
+                    <div class="form-group">
+                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Muy Bajo:</label>
+                      <div class="col-lg-3">
+                        <input type="text" class="form-control" id="muyBajo">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Bajo:</label>
+                      <div class="col-lg-3">
+                        <input type="text" class="form-control" id="bajo">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Medio:</label>
+                      <div class="col-lg-3">
+                        <input type="text" class="form-control" id="medio">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Alto:</label>
+                      <div class="col-lg-3">
+                        <input type="text" class="form-control" id="alto">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Muy Alto:</label>
+                      <div class="col-lg-3">
+                        <input type="text" class="form-control" id="muyAlto">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
