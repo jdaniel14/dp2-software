@@ -1,25 +1,27 @@
 <?php
 	include('routesCronograma.php');
+	include('clasesCronograma.php');
 
 //Servicios
 
+
 	function CR_getActividades($json) {//servicio1
 		$proy = json_decode($json);
+		//$oscar=$proy->idProyecto;
 		$infoActividades = CR_consultarInfoActividades($proy->idProyecto);
 
 		echo json_encode($infoActividades);
 	}
 
 
-
 	function CR_guardarActividades($json) { //servicio2
 		$objeto = json_decode($json);
-		$jsonRespuesta = CR_guardarActividades($objeto);
+		$jsonRespuesta = CR_guardarActividadesBD($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
-
-
+	
+	
 	function CR_getCalendarioBase($json) {//servicio3
 		$proy = json_decode($json);
 		$infoCalendarioBase = CR_consultarCalendarioBase($proy->idProyecto);
@@ -31,12 +33,18 @@
 
 	function CR_guardarCalendarioBase($json) { //servicio4
 		$objeto = json_decode($json);
-		$jsonRespuesta = CR_guardarcalendarioBase($objeto);
+		$jsonRespuesta = CR_guardarcalendarioBaseBD($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
 
-
+	function CR_getRecursos($json) { //servicio 5
+	
+		$proy = json_decode($json);
+		$infoRecursos =CR_consultarRecursos($proy->idProyecto);
+		
+		echo json_encode($infoRecursos);
+	}
 
 
 //Funciones implementadas que necesitan los servicios
@@ -56,7 +64,41 @@
 		return $actividades;
 	}
 
+	function CR_guardarActividadesBD($objecto){
 	
+	
+		return CR_obtenerRespuestaExito();
+	
+	}
+	function CR_consultarCalendarioBase($idProyecto){
+		//realizar la conexion a la BD
+		//$conexion=Conectarse();
+		//Desconectarse(conexion);
+		
+		
+		
+		//Hardcode
+		$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
+		
+		return $calendarioBase;
+	
+	}
+	function CR_guardarcalendarioBaseBD($objeto){
+	
+		return CR_obtenerRespuestaExito();
+	
+	}
+	
+	
+	function CR_consultarRecursos($idProyecto){
+	
+	
+		$listaRecursos=CR_obtenerListaRecursosFalsa();
+		return $listaRecursos;
+		
+	}
+	
+	//funciones de conexion
 	function Conectarse(){ //realizar conexion con la BD
 	   if (!($link=mysql_connect("localhost","usuario","Password"))) 
 	   { 
@@ -76,6 +118,22 @@
 		mysql_close($link);//cierra la conexion
 	}	
 	
+//Funciones de tipo de respuesta
+	function CR_obtenerRespuestaExito() {
+		$respuesta = new stdClass();
+		$respuesta->codRespuesta = 1;
+		$respuesta->mensaje = 'Success';
+		
+		return $respuesta;
+	}
+
+	function CR_obtenerRespuestaFracaso() {
+		$respuesta = new stdClass();
+		$respuesta->codRespuesta = 0;
+		$respuesta->mensaje = 'Error';
+		
+		return $respuesta;
+	}
 //Funciones hardcode
 
 	function CR_obtenerListaRecursosFalsa() {
@@ -100,9 +158,13 @@
 		
 		return $listaActividades;
 	}
-
-
-
+	
+	function CR_obtenerInfoCalendarioBaseFalsa(){
+		
+		$calendarioBase1= new CR_CalendarioBase(1,'08:30','12:00','01:00','06:30',8,20,12);
+		return $calendarioBase1;
+	
+	}
 
 
 ?>
