@@ -44,13 +44,16 @@ iniciaRecursos();
 
 
 function obtenActividades(/*idProyecto*/){
-	
+	var obj ={
+		idProyecto : idProyecto
+	}
 	
 	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json" // data type of response		
+		url: rootURL + 'CO_obtenerListaActividades/' + JSON.stringify(obj) ,		
+		dataType: "json", // data type of response
+		async: true,
+		success:imprimeListaActividades	
 	});
 	
 	
@@ -61,51 +64,56 @@ function obtenActividades(/*idProyecto*/){
 /*esta es la que vale! has todas asi*/
 function obtenProyecto(/*idProyecto*/){
 	var obj ={
-		idProyecto : idProyecto,
-		atributo2 : "holi"
+		idProyecto : idProyecto
 	}
-	var datita;
+	
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
 		dataType: "json",
-		async: false,
-		success:function(data){
-			datita=data;
-		}	
+		async: true,
+		success:agregarDataProyecto	
 
-	});
-	return datita;	
-	
+	});		
 	//return arregloProyecto;
 
 }
 /*aca temrmina*/
-function obtenRecursos(/*idProyecto*/){
-
+function obtenRecursos(/*idProyecto,*/tipo){
+	var obj ={
+		idProyecto : idProyecto
+	}
+	
 	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json"		
+		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFila(data,tipo);}
 	});
 	
 	
-	return arregloRecursos;
+	//return arregloRecursos;
 
 }
 
 function obtenDatosActividad(idActividad){
 	
+	var obj ={
+		idProyecto : idProyecto,
+		idActividad : idActividad
+	}
+
+	
 	$.ajax({
 		type: 'GET',
 		data: 'idActividad=' + idActividad,
-		url: rootURLResumen,
+		url: rootURL + 'CO_obtenerInfoActividad/' + JSON.stringify(obj),
 		dataType: "json", // data type of response
 		success: agregaDataFilaResumen
 	});
 	
-	
+	/*
 	if (idActividad=='1'){
 		
 		agregaDataFilaResumen(arregloActividad1);
@@ -117,7 +125,7 @@ function obtenDatosActividad(idActividad){
 		agregaDataFilaResumen(arregloActividad2);
 		
 	}
-	
+	*/
 	
 
 }
@@ -128,73 +136,76 @@ function obtenDatosActividad(idActividad){
 
 function iniciaRecursos(){
 	limpiaTablaRecursos();
-	arreglo= obtenRecursos(/*idProyecto*/);
-	agregaDataFila( arreglo, 0 );
+	arreglo= obtenRecursos(/*idProyecto,*/0);
+	//agregaDataFila( arreglo, 0);
 
 }
 
 function iniciaConfirmaRecursos(){
 	limpiaTablaRecursos();
 	iniciaProyecto();		
-	arreglo= obtenRecursos(/*idProyecto*/);
-	agregaDataFila( arreglo, 1 );
+	arreglo= obtenRecursos(/*idProyecto,*/1);
+	//agregaDataFila( arreglo, 1 );
 
 }
 
-function agregaDataFila(arreglo, tipo){
-	
+function agregaDataFila(data, tipo){
+	arreglo=data.lista;
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaRecurso(tipo,i,filaRecurso[0],filaRecurso[1],filaRecurso[2],filaRecurso[3],filaRecurso[4],filaRecurso[5]);
+		agregaFilaRecurso(tipo,i,filaRecurso.idRecurso,filaRecurso.unidadMedida,filaRecurso.nombre,filaRecurso.costoUnitario,filaRecurso.moneda,filaRecurso.cantidadUsada);
 		numRecursos=i;
 	}
 }
 
 function iniciaProyecto(){
 			
-	proy= obtenProyecto(/*idProyecto*/);
+	obtenProyecto(/*idProyecto*/);
 	//var proy = JSON.parse(proyecto);
-	agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
+	//agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
 
 }
 
-
+function agregarDataProyecto(data){
+	proy=data;
+	agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
+}
 
 function iniciaActividades(){
 
-	arreglo=obtenActividades(/*idProyecto*/);
-	
 	$("#listado").append('<li>Costo unitario y resumen</li>');
 	$("#listado").append('<li class="active"><a href="javascript:cambiaCostoUnitario();">Costos unitarios por recurso</a></li>');
 	if(puedeConfirmar=='1') $("#listado").append('<li class="active"><a href="javascript:cambiaConfirmaPresupuesto();">Confirmar presupuesto</a></li>');
 	$("#listado").append('<li>Resumen por actividad</li>');
 	
+	obtenActividades(/*idProyecto*/);	
+}
+
+function imprimeListaActividades(data){
+	var arreglo = data.lista;
 	for(i=0; i<arreglo.length; i++){
 		actividad=arreglo[i];
-		armaActividad(actividad[0],actividad[1]);
+		armaActividad(actividad.idActividad,actividad.nombre);
 		
 	}
-		
-
 }
 
 function agregaDataFilaResumen(datosActividad){
 	
-	nombreActividad= datosActividad[0];
-	subTotalActividad= datosActividad[1];	
-	moneda= datosActividad[2];
-	arreglo= datosActividad[3];
+	nombreActividad= datosActividad.nombre;
+	subTotalActividad= datosActividad.costoSubtotal;	
+	moneda= "Soles"; // Arreglar
+	arreglo= datosActividad.listaRecursos;
 	
 	if (arreglo==null){
-		arreglo=new Array();
-		alert("Ocurrio un error");
+		arreglo=new Array();		
 	}
 	
 	limpiaTablaResumen();
 	
 	for (i=0; i<arreglo.length;i++){
 		recurso=arreglo[i];
-		agregaFilaActividadResumen(i, recurso[0], recurso[1], recurso[3], recurso[4], recurso[2]);
+		agregaFilaActividadResumen(i, recurso.unidadMedida, recurso.nombre, recurso.moneda, recurso.cantidadUsada, recurso.costoUnitario);
 	}
 	
 	$("#tituloActividad").html(nombreActividad);
