@@ -8,7 +8,7 @@ $app->get('/G_listaProyecto', 'G_getListaProyecto'); //lista de los proyectos
 
 //Alfonso
 $app->put('/G_registrarActa', 'G_putActa'); //registar un acta de constitucion
-$app->get('/G_vizualizarActa/:iduser', 'G_getActa'); //registar un acta de constitucion
+$app->get('/G_vizualizarActa/:id', 'G_getActa'); //registar un acta de constitucion
 
 
 	
