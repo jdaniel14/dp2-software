@@ -1,3 +1,11 @@
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+
+var id_edt = getURLParameter("id_edt");
+
 function cargaLista(data){
 	for(var i=0; i < data.lenght ; i++){
 		var fila = "<tr>";
@@ -12,13 +20,12 @@ function cargaLista(data){
 }
 
 $(document).ready(function(){
-	var id_edt = 1//esto sera actualizado luego sacado de la url
 
 	var outData = {
 		id : 1,
 		nombre : "fer"
 	};
-	cargaData(outData);
+	//cargaLista(outData);
 	$.ajax({
 		type: 'GET',
 		url : '../../api/listaDiccionario'+ id_edt,
