@@ -2,6 +2,7 @@ function cargaData(data){
 	for(key in data){
 		if($('#'+key).is("select"))continue;
 		$('#'+key).html(data[key]);
+		$('#'+key).val(data[key])
 	}
 	var estado = $("#id_estado");
 	var responsable = $("#id_empleado_responsable");
@@ -25,9 +26,9 @@ function cargarComboResponsable(){
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id_empleado_responsable"]);
-				opt.html(data[obj]["nombre"]);
-				$("#id_empleado_responsable").append(opt);
+				opt.val(data[obj]["id_empleado"]);
+				opt.html(data[obj]["nombre_completo"]);
+				$("#id_empleado").append(opt);
 			}
 		}
 	});
@@ -51,7 +52,7 @@ function cargarComboEstado(){
 	});
 }
 
-function cargarComboCompania(){
+/*function cargarComboCompania(){
 	$.ajax({
 		type: 'GET',
 		url : '../../api/comboCompania',
@@ -67,12 +68,12 @@ function cargarComboCompania(){
 			}
 		}
 	});
-}
+}*/
 
 $(document).ready(function(){
 	//cargar Combos
 	cargarComboResponsable();
-	cargarComboCompania();
+	//cargarComboCompania();
 	cargarComboEstado();
 
 	var id_paquete = 1;//esto sera actualizado luego sacado de la url

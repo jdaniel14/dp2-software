@@ -4,27 +4,29 @@ function cargaLista(data){
 		for(key in data[i]){
 			fila += "<td>"+data[i][key]+"</td>";
 		}
-		//falta la columna con las acciones
+		fila+= '<td><a href="verPaquete.html?id_paquete='+data[i]["id_paquete_trabajo"]+'""><span class="glyphicon glyphicon-search"></a></td>';
+		fila+= '<td><a href="editarPaquete.html?id_paquete='+data[i]["id_paquete_trabajo"]+'""><span class="glyphicon glyphicon-edit"></a></td>';
 		fila += "</tr>";
 		$('#diccionario').append(fila);
 	}
 }
 
 $(document).ready(function(){
-	var inData = {
-		id_edt : 1//esto sera actualizado luego sacado de la url
-	};
+	var id_edt = 1//esto sera actualizado luego sacado de la url
+
 	var outData = {
 		id : 1,
 		nombre : "fer"
 	};
 	cargaData(outData);
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
-		url : '../../backend/alcance/listaDiccionario',
+		url : '../../api/listaDiccionario'+ id_edt,
 		data: JSON.stringify(inData),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaLista
-	});*/
+	});
 });
+
+/*id_paquete_trabajo, nombre, descripcion,version, ultima_actualizacion,estado*/
