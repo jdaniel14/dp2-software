@@ -59,9 +59,10 @@
 		
 		
 		//Hardcode
+		 
 		$actividades = CR_obtenerInfoActividadesFalsa();
-		
-		return $actividades;
+		$proyecto =new CR_ProyectoJSON($actividades,0,array(),true,true);
+		return $proyecto;
 	}
 
 	function CR_guardarActividadesBD($objecto){
@@ -150,11 +151,22 @@
 	function CR_obtenerInfoActividadesFalsa(){
 
 		$listaActividades = array();
-		$listaRecursos = CR_obtenerListaRecursosFalsa();
-		$actividad1 = new CR_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
+		//$listaRecursos = CR_obtenerListaRecursosFalsa();
+		$actividad1= new CR_Actividad(-1,"Gantt editor","GE",0,"STATUS_ACTIVE",1346623200000,16,1348523999999,true,false,array(),"","",0);
+        $actividad2= new CR_Actividad(-2,"coding","CO",1,"STATUS_ACTIVE",1346623200000,10,1347659999999,false,false,array(),"","",0);
+    	$actividad3= new CR_Actividad(-3,"gant part","GP",2,"STATUS_ACTIVE",1346623200000,2,1346795999999,false,false,array(),"","",0);
+    	$actividad4= new CR_Actividad(-4,"editor part","EP",2,"STATUS_SUSPENDED",1346796000000,4,1347314399999,false,false,array(),"3","",0);
+    	$actividad5= new CR_Actividad(-5,"testing","TE",1,"STATUS_SUSPENDED",1347832800000,6,1348523999999,false,false,array(),"2:5","",0);
+    	$actividad6= new CR_Actividad(-6,"test on safari","TS",2,"STATUS_SUSPENDED",1347832800000,2,1348005599999,false,false,array(),"","",0);
+    	$actividad7= new CR_Actividad(-7,"test on ie","TI",2,"STATUS_SUSPENDED",1348005600000,3,1348264799999,false,false,array(),"6","",0);
+    	$actividad8= new CR_Actividad(-8,"test on chrome","TC",2,"STATUS_SUSPENDED",1348005600000,2,1348178399999,false,false,array(),"6","",0);
+		
+		
+		/*$actividad1 = new CR_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
 		$actividad2 = new CR_Actividad(2, 'Actividad2', 1, 20.0, 25.0, $listaRecursos);
 		$actividad3 = new CR_Actividad(3, 'Actividad3', 2, 30.5, 40.0, null);
-		array_push($listaActividades, $actividad1, $actividad2, $actividad3);
+		*/
+		array_push($listaActividades, $actividad1, $actividad2, $actividad3,$actividad4,$actividad5,$actividad6,$actividad7,$actividad8);
 		
 		return $listaActividades;
 	}

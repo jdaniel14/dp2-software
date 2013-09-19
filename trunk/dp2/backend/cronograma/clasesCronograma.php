@@ -15,6 +15,23 @@ class CR_Proyecto {
 	}
 }
 
+class CR_ProyectoJSON {
+	public $tasks= array();
+	public $selectedRow;
+	public $deletedTaskIds=array();
+	public $canWrite;
+	public $canWriteOnParent;
+	
+	//constructor
+	function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent) {
+		$this->tasks = $tasks;
+		$this->selectedRow = $selectedRow;
+		$this->deletedTaskIds = $deletedTaskIds;
+		$this->canWrite = $canWrite;
+		$this->canWriteOnParent = $canWriteOnParent;
+	}
+}
+
 class CR_Recurso {
 	public $idRecurso;
 	public $unidadMedida;
@@ -35,21 +52,36 @@ class CR_Recurso {
 }
 
 class CR_Actividad {
-	public $idActividad;
-	public $nombre;
-	public $tipoCuenta;
-	public $costoSubtotal;
-	public $costoTotal;
-	public $listaRecursos = array();
-	public $dependencias = array();
+	public $id;
+	public $name;
+	public $code;
+	public $level;
+	public $status;
+	public $start;
+	public $duration;
+	public $end;
+	public $startIsMilestone;
+	public $endIsMilestone;
+	public $assigs = array();
+	public $description;
+	public $depends;
+	public $progress;
 	
-	function __construct($idActividad, $nombre, $tipoCuenta, $costoSubtotal, $costoTotal, $listaRecursos) {
-           $this->idActividad = $idActividad;
-	   $this->nombre = $nombre;
-	   $this->tipoCuenta = $tipoCuenta;
-	   $this->costoSubtotal = $costoSubtotal;
-	   $this->costoTotal = $costoTotal;
-	   $this->listaRecursos = $listaRecursos;
+	function __construct($id, $name, $code, $level, $status, $start, $duration, $end , $startIsMilestone, $endIsMilestone, $assigs, $depends, $description, $progress) {
+    $this->id=$id;
+	$this->name=$name;
+	$this->code=$code;
+	$this->level=$level;
+	$this->status=$status;
+	$this->start=$start;
+	$this->duration=$duration;
+	$this->end=$end;
+	$this->startIsMilestone=$startIsMilestone;
+	$this->endIsMilestone=$endIsMilestone;
+	$this->assigs = $assigs;
+	$this->description = $description;
+	$this->depends =$depends;
+	$this->progress =$progress;
 	}
 }
 
