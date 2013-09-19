@@ -2,6 +2,8 @@
 
 	include('routesRiesgo.php');
 
+    //Henry
+
     function R_getListaRiesgos(){
         echo "Probando :D";
 	}
@@ -43,6 +45,21 @@
     }
 
     function R_postRegistrarRiesgo(){
+        $request = Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+    }
+
+    //Julio
+
+    function R_getListaRiesgoComun(){
+        $idProyectoDecode = json_decode($idProyecto);
+        $arregloListaRiesgoComun= array(
+            array()
+        );
+        echo json_encode($arregloListaRiesgoComun);
+    }
+
+    function R_postAsignarRiesgoComun(){
         $request = Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
     }
