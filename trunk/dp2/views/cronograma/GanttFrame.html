@@ -48,11 +48,9 @@
 </head>
 <body style="background-color: #fff;">
 
-<button id = 'chris'>hola</button>
+<button id = 'chris' style="display:none;">hola</button>
 
-<div id="ndo" style="position:absolute;right:5px;top:5px;width:378px;padding:5px;background-color: #FFF5E6; border:1px solid #F9A22F; font-size:12px" class="noprint">
-  This Gantt can be used in a complete project management solution - imports your Gantt and more - <a href="http://twproject.com" target="_blank">Teamwork: give it a try</a>.
-</div>
+
 <div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>
 
 <div id="taZone" style="display:none;" class="noprint">
@@ -92,7 +90,8 @@
 
 <script type="text/javascript">
 
-var ge;  //this is the hugly but very friendly global var for the gantt editor
+var ge;
+var ret;  //this is the hugly but very friendly global var for the gantt editor
 $(function() {
 
   //load templates
@@ -108,7 +107,8 @@ $(function() {
   $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>clear</button>")
           .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
           .append("<button onclick='openResourceEditor();' class='button'>edit resources</button>")
-          .append("<button onclick='getFile();' class='button'>export</button>");
+          /*.append("<button onclick='getFile();' class='button'>export</button>");*/
+		  .append("<button  class='button'>export</button>");
   $(".ganttButtonBar h1").html("<img src='../../static/cronograma/css/twGanttSmall.png'>");
   $(".ganttButtonBar div").addClass('buttons');
   //overwrite with localized ones
@@ -326,7 +326,7 @@ Storage.prototype.getObject = function(key) {
 
 
 function loadFromLocalStorage() {
-  var ret;
+  
   if (localStorage) {
     if (localStorage.getObject("teamworkGantDemo")) {
       ret = localStorage.getObject("teamworkGantDemo");
@@ -335,20 +335,53 @@ function loadFromLocalStorage() {
     $("#taZone").show();
   }
   if (!ret || !ret.tasks || ret.tasks.length == 0){
-    ret = JSON.parse($("#ta").val());
+	var idProyecto=1;
+    var objProy ={
+		idProyecto : idProyecto
+	}
+	var rootURL = "../../api/CR_getActividades/"+JSON.stringify(objProy);
+	var cadena1="";
+	$.ajax({
+		type: 'GET',
+		url: rootURL,
+		dataType: "json", // data type of response	
+		async: true,
+		fail: codigoError,
+                success: function(data){
+                    completarData(data);
+                    //ret = data;
+                }
+		
+	});
+	
+	
+	
+    /*ret = JSON.parse("{\"tasks\":[{\"id\":-1,\"name\":\"Gantt editor\",\"code\":\"\",\"level\":0,\"status\":\"STATUS_ACTIVE\",\"start\":1346623200000,\"duration\":1,\"end\":1346623200000,\"startIsMilestone\":true,\"endIsMilestone\":false,\"assigs\":[]}],\"selectedRow\":0,\"deletedTaskIds\":[],\"canWrite\":true,\"canWriteOnParent\":true }");JSON.parse($("#ta").val());*/
 
-
+	//console.log(ret);
     //actualiza data
-    var offset=new Date().getTime()-ret.tasks[0].start;
+    /*var offset=new Date().getTime()-ret.tasks[0].start;
     for (var i=0;i<ret.tasks.length;i++)
-      ret.tasks[i].start=ret.tasks[i].start+offset;
+      ret.tasks[i].start=ret.tasks[i].start+offset;*/
 
 
   }
-  ge.loadProject(ret);
+  else ge.loadProject(ret);
   ge.checkpoint(); //empty the undo stack
 }
+function completarData(data){
+	ret=data;
+	var offset=new Date().getTime()-ret.tasks[0].start;
+    for (var i=0;i<ret.tasks.length;i++)
+      ret.tasks[i].start=ret.tasks[i].start+offset;
+	  
+	ge.loadProject(ret)
+}
+function codigoError(){
 
+	alert('Error');
+
+}
 
 function saveInLocalStorage() {
   var prj = ge.saveProject();
@@ -365,8 +398,14 @@ $(document).ready(function(){
 	//console.log(ge);
 	//console.log(ge.saveProject());
 	$("#chris").click(function(){
-		alert("click");
-		console.log(ge.saveProject());
+		console.log(ge);
+		alert(ge.tasks[0].name);
+		ge.tasks[0]['name']="gigi";
+		alert(ge.saveProject().tasks[0].name);
+		console.log(ge.tasks);
+		console.log(ge);
+		//console.log(ge.saveProject());
+		
 	})
 });
 
@@ -399,24 +438,25 @@ $(document).ready(function(){
     </div></div>
   --></div>
 
-  <div class="__template__" type="TASKSEDITHEAD"><!--
+  <div class="__template__" type="TASKSEDITHEAD">
   <table class="gdfTable" cellspacing="0" cellpadding="0">
     <thead>
     <tr style="height:40px">
       <th class="gdfColHeader" style="width:35px;"></th>
       <th class="gdfColHeader" style="width:25px;"></th>
-      <th class="gdfColHeader gdfResizable" style="width:30px;">code/short name</th>
-      <th class="gdfColHeader gdfResizable" style="width:10px;"></th>
+      <th class="gdfColHeader gdfResizable" style="width:30px;">code</th>
+      <th class="gdfColHeader gdfResizable" style="width:30px;">costo</th>
       <th class="gdfColHeader gdfResizable" style="width:200px;">name</th>
       <th class="gdfColHeader gdfResizable" style="width:80px;">start</th>
       <th class="gdfColHeader gdfResizable" style="width:80px;">end</th>
       <th class="gdfColHeader gdfResizable" style="width:50px;">dur.</th>
       <th class="gdfColHeader gdfResizable" style="width:50px;">dep.</th>
       <th class="gdfColHeader gdfResizable" style="width:200px;">assignees</th>
+	   
     </tr>
     </thead>
   </table>
-  --></div>
+  </div>
 
   <div class="__template__" type="TASKROW"><!--
   <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)">
