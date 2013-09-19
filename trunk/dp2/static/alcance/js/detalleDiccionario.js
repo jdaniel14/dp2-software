@@ -1,6 +1,17 @@
 function cargaData(data){
 	for(key in data){
+		if($('#'+key).is("select"))continue;
 		$('#'+key).html(data[key]);
+	}
+	var estado = $("#id_estado");
+	var responsable = $("#id_empleado_responsable");
+	var organizacion = $("#id_compania_responsable");
+	var arreglo = $("select");
+	for (var i = 0; i < arreglo.length; i++) {
+		$(arreglo[i]).val(data[arreglo[i].id]);
+		if($(arreglo[i]).hasClass("changeable")){
+			$(arreglo[i]).attr("disabled","disabled");
+		}
 	}
 }
 
@@ -10,12 +21,13 @@ function cargarComboResponsable(){
 		url : '../../api/comboResponsables',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+		async:false,
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id_empleado"]);
+				opt.val(data[obj]["id_empleado_responsable"]);
 				opt.html(data[obj]["nombre"]);
-				$("#empleado").append(opt);
+				$("#id_empleado_responsable").append(opt);
 			}
 		}
 	});
@@ -26,13 +38,14 @@ function cargarComboEstado(){
 		type: 'GET',
 		url : '../../api/comboEstado',
 		dataType: "json",
+		async:false,
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
 				opt.val(data[obj]["id_estado"]);
 				opt.html(data[obj]["descripcion"]);
-				$("#estado").append(opt);
+				$("#id_estado").append(opt);
 			}
 		}
 	});
@@ -44,12 +57,13 @@ function cargarComboCompania(){
 		url : '../../api/comboCompania',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+		async:false,
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id_compania"]);
+				opt.val(data[obj]["id_compania_responsable"]);
 				opt.html(data[obj]["descripcion"]);
-				$("#compania_responsable").append(opt);
+				$("#id_compania_responsable").append(opt);
 			}
 		}
 	});
