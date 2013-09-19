@@ -1,12 +1,17 @@
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+
+var id_paquete = getURLParameter("id_paquete");
+
 function cargaData(data){
 	for(key in data){
 		if($('#'+key).is("select"))continue;
 		$('#'+key).html(data[key]);
 		$('#'+key).val(data[key])
 	}
-	var estado = $("#id_estado");
-	var responsable = $("#id_empleado_responsable");
-	var organizacion = $("#id_compania_responsable");
 	var arreglo = $("select");
 	for (var i = 0; i < arreglo.length; i++) {
 		$(arreglo[i]).val(data[arreglo[i].id]);
@@ -76,7 +81,6 @@ $(document).ready(function(){
 	//cargarComboCompania();
 	cargarComboEstado();
 
-	var id_paquete = 1;//esto sera actualizado luego sacado de la url
 	$.ajax({
 		type: 'GET',
 		url : '../../api/detallePaquete/'+id_paquete,
