@@ -1,9 +1,6 @@
-var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
+var rootURL = "../../api/";
 var codProyecto='1';
-var arregloProyecto= new Array(
-							'Mi proyecto', '566', '1.5'
-								);
-
+var idProyecto=1;
 iniciaProyecto();		
 creaDesplegable();
 
@@ -11,30 +8,39 @@ creaDesplegable();
 //Funciones para obtener datos de AJAX
 
 
-function obtenPaquetes(/*idProyecto*/){
+function obtenPaquetes(){
 	
-	/*$.ajax({
+	var obj ={
+		idProyecto : idProyecto
+	}
+	
+	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
-	});
-	*/
-	return arregloPaquetes;
+		url: rootURL + 'CO_getListaPaquetes/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:creaDesplegable	
+
+	});	
+	
+	return arregloProyecto;
 
 }
 
 function obtenProyecto(/*idProyecto*/){
 	
-	/*$.ajax({
+	var obj ={
+		idProyecto : idProyecto
+	}
+	
+	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
-	});
-	*/
+		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:agregarDataProyecto	
+
+	});	
 	
 	return arregloProyecto;
 
@@ -46,8 +52,8 @@ function obtenProyecto(/*idProyecto*/){
 
 function iniciaCuentaxActividad(){
 	limpiaTablaCuentaxActividad();
-	arreglo= obtenPaquetes(/*idProyecto*/);
-	creaDesplegable( arreglo );
+	arreglo= obtenPaquetes();
+	//creaDesplegable( arreglo );
 
 }
 function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
@@ -62,10 +68,10 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.subtotal + ' ';
-	if (paquete.hijos != null)
-		for (var i = 0;i<paquete.hijos.lenght;i++)
-			cadenaHTML += obtieneHTMLHijoNodo(paquete,nombrePropio,i)
+				'Costo subtotal:'+ paquete.sumaCostosPaquetesHijo + ' ';
+	if (paquete.listaPaquetesHijo != null)
+		for (var i = 0;i<paquete.listaPaquetesHijo.lenght;i++)
+			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
 	cadenaHTML += '</div>'+'</div>'+'</div>';
 	return cadenaHTML;
 }
@@ -82,12 +88,15 @@ function creaDesplegable(paquetes){
 
 function iniciaProyecto(){
 			
-	proyecto= obtenProyecto(/*idProyecto*/);
-	agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
+	proyecto= obtenProyecto();
+	//agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
 
 }
 
-function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva){
+function agregarDataProyecto(proyecto){
+	var nombreProyecto = proyecto.nombre;
+	var montoSinReserva = proyecto.presupuestoTotal;
+	var porcentajeReserva = proyecto.porcentajeReserva;
 	$("#nombreProyecto").html(nombreProyecto);
 	$("#inputMontoSinReserva").val(montoSinReserva);
 	$("#inputReserva").val(porcentajeReserva);

@@ -1,6 +1,6 @@
-var rootURL = "../../backend/presupuesto/obtenerArregloRecursos";
+var rootURL = "../../api/";
 var codProyecto='1';
-
+var idProyecto=1;
 
 iniciaProyecto();		
 iniciaCuentaxActividad();
@@ -9,57 +9,39 @@ iniciaCuentaxActividad();
 //Funciones para obtener datos de AJAX
 
 
-function obtenActividades(/*idProyecto*/){
+function obtenActividades(){
+	var obj ={
+		idProyecto : idProyecto
+	}
 	
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
+		url: rootURL + 'CO_obtenerListaActividades/' + JSON.stringify(obj) ,		
 		dataType: "json", // data type of response
-		success: anadeDataFila		
+		async: true,
+		success:agregaDataFila	
 	});
-	*/
+	
 	return arregloActividades;
 
 }
 
 function obtenProyecto(/*idProyecto*/){
 	
-	/*$.ajax({
+	var obj ={
+		idProyecto : idProyecto
+	}
+	
+	$.ajax({
 		type: 'GET',
-		url: rootURL,
-		data: 'idProyecto=' + idProyecto,
-		dataType: "json", // data type of response
-		success: anadeDataFila		
-	});
-	*/
+		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:agregarDataProyecto	
+
+	});	
 	
 	return arregloProyecto;
-
-}
-
-function obtenDatosActividad(idActividad){
-	
-	/*$.ajax({
-		type: 'GET',
-		data: 'idActividad=' + idActividad,
-		url: rootURLResumen,
-		dataType: "json", // data type of response
-		success: agregaDataFilaResumen
-	});
-	*/
-	
-	if (idActividad=='1'){
-		
-		agregaDataFilaResumen(arregloActividad1);
-		
-	}
-	
-	if (idActividad=='2'){
-		
-		agregaDataFilaResumen(arregloActividad2);
-		
-	}
 
 }
 
@@ -74,26 +56,36 @@ function iniciaCuentaxActividad(){
 
 }
 
+function agregarDataProyecto(proyecto){
+	var nombreProyecto = proyecto.nombre;
+	var montoSinReserva = proyecto.presupuestoTotal;
+	var porcentajeReserva = proyecto.porcentajeReserva;
+	$("#nombreProyecto").html(nombreProyecto);
+	$("#inputMontoSinReserva").val(montoSinReserva);
+	$("#inputReserva").val(porcentajeReserva);
+	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
+	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+}
 function iniciaConfirmaCuentaxActividad(){
 	limpiaTablaCuentaxActividad();
 	iniciaProyecto();		
 	arreglo= obtenActividades(/*idProyecto*/);
-	agregaDataFila( arreglo, 1 );
+	//agregaDataFila( arreglo, 1 );
 
 }
 
-function agregaDataFila(arreglo, tipo){
+function agregaDataFila(arreglo){
 	
 	for (i=0; i<arreglo.length;i++){
 		var filaAct=arreglo[i];
-		agregaFilaCuentaActividad(tipo,i,filaAct[0],filaAct[1],filaAct[2],filaAct[3]);
+		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,"Moneda");
 	}
 }
 
 function iniciaProyecto(){
 			
-	proyecto= obtenProyecto(/*idProyecto*/);
-	agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
+	proyecto= obtenProyecto();
+	//agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
 
 }
 
@@ -105,23 +97,15 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 }
 
-function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
-	a=i;
-	a++;	
-	$("#tablaResumen").append('<tr><td>'+unidadMedida+nombreRecurso+'</td><td>'+moneda+'</td><td>'+cantidad+'</td><td>'+costoUnitario+'</td></tr>');
-	
-
-}
-
 //Fin funciones para pasar los datos de ajax
 
 //Funcion para ingresar una fila de actividad en la tabla cuentaxacticidad en los resumenes de actividades
 
-function agregaFilaCuentaActividad(tipo,i, unidadMedida, nombreRecurso, costoUnitario, moneda){
+function agregaFilaCuentaActividad(i, nombreRecurso, costoUnitario, moneda){
 	a=i;
 	a++;
 	input= '<select id="tipoCuenta'+(a)+'"><option>Equipo</option><option>Maquinaria</option><option>Mano de obra</option><option>Capital</option></select>';
-	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+unidadMedida+''+nombreRecurso+'</td><td>'+input+'</td><td>'+'X soles'+'</td></tr>');
+	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'++nombreRecurso+'</td><td>'+input+'</td><td>'+'X soles'+'</td></tr>');
 }
 
 //Funciones para grabar
