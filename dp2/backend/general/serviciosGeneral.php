@@ -42,9 +42,13 @@
 	    	echo "put Acta";
 	    }
             
-            function G_getActa(){
+            function G_getActa($iduser){
 	    	//$miconexion = new conexion();
-	    	echo "get acta";
+                
+                if($iduser==1){
+                    echo "uno";
+                }
+	    	echo "dos";
 	    }
             
             
