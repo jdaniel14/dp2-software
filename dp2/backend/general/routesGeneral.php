@@ -12,7 +12,7 @@ $app->get('/G_listaProyecto', 'G_getListaProyecto'); //lista de los proyectos
 $app->get('/G_listaTipoProyecto', 'G_getListaTipoProyecto'); //lista de los proyectos  
 
 //Alfonso
-$app->put('/G_registrarActa', 'G_putActa'); //registar un acta de constitucion
+$app->put('/G_registrarActa', 'G_addActa'); //registar un acta de constitucion
 $app->get('/G_vizualizarActa/:id', 'G_getActa'); //registar un acta de constitucion
 
 
