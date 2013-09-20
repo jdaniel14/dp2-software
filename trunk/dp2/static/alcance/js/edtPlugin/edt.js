@@ -22,10 +22,7 @@
             var html = '<li>' + titleParent;
             
           }
-            for (int i = 0; i < hijos; i++ ){
-                html += '<ul>';
-                html += 
-            }
+            
         }
   
         $("#MostrarEdt").click(function(){
