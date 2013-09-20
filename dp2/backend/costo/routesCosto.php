@@ -6,4 +6,5 @@
 	$app->get('/CO_enviarCURecursos/:parametro', 'CO_saveCURecursos'); //servicio5
 	$app->get('/CO_obtenerListaPaquetes/:parametro', 'CO_getListaPaquetes'); //servicio6
 	$app->get('/CO_enviarTipoCuenta/:parametro', 'CO_saveTipoCuenta'); //servicio7
+	$app->get('/CO_obtenerListaMonedas/', 'CO_getListaMonedas'); //servicio8
 ?>
