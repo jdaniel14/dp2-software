@@ -40,9 +40,12 @@
       </div>
     </div>  
     <div class="container">
+      <div class="col-lg-12">
+        <button data-toggle="modal" href="#modalConfiguracion" class="btn btn-success pull-right">Configuración</button>
+      </div>
       <div class="h1-title">
           <h1>Mi Proyecto</h1>
-          <button data-toggle="modal" href="#modalConfiguracion" class="btn btn-info">Conf</button>
+          
           <input id="idProyecto" value="1">
           <div class="col-lg-12">
             <form class="well" action="#" method="get">
@@ -215,7 +218,7 @@
                               
                               </tbody>
                             </table>
-                            <button class="btn btn-success pull-right" id="btnAgregar">Confirmar</button>
+                            <button class="btn btn-success pull-right" id="btnAgregar" data-dismiss="modal">Confirmar</button>
                           </div>
                         </div>
                       </div>
@@ -367,7 +370,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" id="btnConfiguracion" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnConfiguracion" class="btn btn-primary" data-dismiss="modal">Guardar</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
