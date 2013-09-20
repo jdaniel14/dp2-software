@@ -379,7 +379,7 @@ function grabarRecursos(){
 		
 		
 	}
-	
+	/*
 	$.ajax({
 		type: 'POST',
 		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
@@ -387,7 +387,7 @@ function grabarRecursos(){
 		async: true,
 		success:function(data){if (data!=null) alert("se grabó");}
 	});
-	
+	*/
 	//CO_enviarCURecursos
 	
 }
