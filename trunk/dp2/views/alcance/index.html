@@ -7,13 +7,22 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-    <title>Jumbotron Template for Bootstrap</title>
+
+
+    <title>EDT</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="../../static/alcance/css/jumbotron.css" rel="stylesheet">
+
+     <link rel="stylesheet" href="../../static/alcance/css/edtCss/edtChart.css"/>
+    <!--
+    <link rel="stylesheet" href="css/custom.css"/>
+    -->
+    <link rel="stylesheet" href="../../static/alcance/css/edtCss/prettify.css"/>
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -72,43 +81,111 @@
       <div class="container">
         <h1>Alcance :)</h1>
         <p>In this section you will create / modify / delete the EDT</p>
-        <p><a id ="MostrarEdt" class="btn btn-primary btn-lg">Mostrar EDT &raquo;</a></p>
+        <p><a id ="MostrarEdt" class="btn btn-primary btn-lg">Mostrar EDT &raquo;</a>
+
+          <div id = "controllerButton" style = "display:none">
+             <h6> Utilitarios del EDT:   </h6>   
+               <button id = "editarEdt" type="button" class="btn btn-success">Editar</button>
+               <a id = "eliminarEdt" class="btn btn-danger">Eliminar</a>
+          </div>
+        </p>
       </div>
     </div>
 
-    <div class="container" style = "display:none">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-       </div>
-        <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-        </div>
-      </div>
+    <div id = "containerEdt" class="container" style = "display:none">
+                    
+    <pre class="prettyprint lang-html" id="list-html" style="display:none"></pre>       
+      
+    <ul id="org" style="display:none">
+    <li>
+       Food
+       <ul>
+         <li id="beer">Beer</li>
+         <li>Vegetables
+           <a href="http://wesnolte.com" target="_blank">Click me</a>
+           <ul>
+             <li>Pumpkin</li>
+             <li>
+                <a href="http://tquila.com" target="_blank">Aubergine</a>
+                <p>A link and paragraph is all we need.</p>
+             </li>
+           </ul>
+         </li>
+         <li class="fruit">Fruit
+           <ul>
+             <li>Apple
+               <ul>
+                 <li>Granny Smith</li>
+               </ul>
+             </li>
+             <li>Berries
+               <ul>
+                 <li>Blueberry</li>
 
-      <hr>
+                 <li>Cucumber</li>
+               </ul>
+             </li>
+           </ul>
+         </li>
+         <li>Bread</li>
+         <li class="collapsed">Chocolate
+           <ul>
+             <li>Topdeck</li>
+             <li>Reese's Cups</li>
+           </ul>
+         </li>
+       </ul>
+     </li>
+   </ul>            
+
+     
+       <div id="chart" class="orgChart">
+         
+
+       </div>
 
       <footer>
         <p>&copy; Company 2013</p>
       </footer>
+    
+     <!-- Button trigger modal -->
+
+  <!-- Modal -->
+ <!-- Button trigger modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"> <span class="glyphicon glyphicon-info-sign"></span> Advertencia</h4>
+        </div>
+        <div class="modal-body">
+         Esta seguro que desea eliminar el EDT?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id = "eliminarConfirmacion" type="button" class="btn btn-danger">Eliminar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
     </div> <!-- /container -->
 
-
+    
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
      <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../static/alcance/js/edt.js"></script>
+
+     <script type="text/javascript" src="../../static/alcance/js/edtPlugin/prettify.js"></script>
+     <script type="text/javascript" src="../../assets/js/jquery-ui-1.8.16.js"></script>
+    
+    <script src="../../static/alcance/js/edtPlugin/jquery.jOrgChart.js"></script>
+
+
+    <script src="../../static/alcance/js/edtPlugin/edt.js"></script>
   </body>
 </html>

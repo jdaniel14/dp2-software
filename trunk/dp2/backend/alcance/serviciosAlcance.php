@@ -13,14 +13,21 @@
 	   function getEdt(){
 	       $request = \Slim\Slim::getInstance()->request(); //json parameters
 	       $edt = json_decode($request->getBody()); //object convert
-	       //var_dump($wine);
+	       //var_dump($edt);
 	       echo json_encode($edt); //json return
+	    	//echo "sape";
 	    }
 
 
 	    function getDameAlgo(){
+	    	$sql = 'SELECT * FROM ESTADO_EDT';
 	    	$miconexion = new conexion();
-	    	echo "sape";
+	   		var_dump($miconexion);
+	    	$stmt = $miconexion->query($sql);
+	    	echo $stmt;
+	    	
+
+	    	//echo "sape";
 	    }
 
 	    function getComboEstado(){

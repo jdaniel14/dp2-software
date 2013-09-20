@@ -8,10 +8,10 @@
 	private $Error = "";
 
 	function Conexion() {
-		$this->BaseDatos = "";
-		$this->Servidor = "";
-		$this->Usuario = "root";
-		$this->Clave = "";
+		$this->BaseDatos = "dp2";
+		$this->Servidor = "200.16.7.112";
+		$this->Usuario = "dp_usuario";
+		$this->Clave = "usuario.2013.";
 	}
 
 	function conectar(){
