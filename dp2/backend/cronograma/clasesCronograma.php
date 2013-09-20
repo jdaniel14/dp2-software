@@ -90,13 +90,20 @@ class CR_RecursoAsignado {
     public $effort;
     public $resourceId;
     public $roleId;
-
+	public $typeCost;
+	public $costRate;
+	public $value;
+	public $totalValue;
     //constructor
-    function __construct($id, $effort, $resourceId, $roleId) {
+    function __construct($id, $effort, $resourceId, $roleId,$typeCost,$costRate,$value,$totalValue) {
         $this->id = $id;
         $this->effort = $effort;
         $this->resourceId = $resourceId;
         $this->roleId = $roleId;
+		$this->typeCost=$typeCost;
+		$this->costRate=$costRate;
+		$this->value=$value;
+		$this->totalValue=$totalValue;
     }
 
 }
