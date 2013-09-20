@@ -173,8 +173,8 @@
 		$listaRecursos = array();
 								 //id,                effort, resourceId, role_id	
 		$recurso1 = new CR_RecursoAsignado("tmp_1", 13800000, "tmp_5", "tmp_3");
-		$recurso2 = new CR_RecursoAsignado("tmp_2", 9600000, "tmp_3", "tmp_3");
-		$recurso3 = new CR_RecursoAsignado("tmp_3", 6600000, "tmp_9", "tmp_3");
+		$recurso2 = new CR_RecursoAsignado("tmp_2", 9600000, "tmp_3", "tmp_2");
+		$recurso3 = new CR_RecursoAsignado("tmp_3", 6600000, "tmp_9", "tmp_1");
 		array_push($listaRecursos, $recurso1, $recurso2, $recurso3);
 		
 		return $listaRecursos;

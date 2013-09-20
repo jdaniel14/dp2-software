@@ -63,14 +63,14 @@ class CR_RecursoAsignado {
 	public $id;
 	public $effort;
 	public $resourceId;
-	public $roledId;
+	public $roleId;
 	
 	//constructor
-	function __construct($id, $effort, $resourceId, $roledId) {
+	function __construct($id, $effort, $resourceId, $roleId) {
        $this->id = $id;
 	   $this->effort = $effort;
 	   $this->resourceId = $resourceId;
-	   $this->roledId = $roledId;
+	   $this->roleId = $roleId;
    }
 }
 
