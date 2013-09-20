@@ -287,7 +287,7 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 	a++;
 	
 	//Si es para confirmar	
-	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'">';
+	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'"  onChange="actualizaCostos();" >';
 	if (tipo==1)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'" readOnly="readOnly" disabled>';
 	inputMoneda= creaInputMoneda(a);
 	inputHidden='<input type="hidden" id="tipoCambio'+(a)+'" value="">';
@@ -301,7 +301,7 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 
 function creaInputMoneda(num){
 
-	combo='<select id="comboMoneda'+num+'" >'+ comboMoneda + '</select>';
+	combo='<select id="comboMoneda'+num+'" onChange="actualizaCostos();" >'+ comboMoneda + '</select>';
 	return combo;
 	
 }
@@ -446,3 +446,61 @@ function limpiaTablaRecursos(){
 	
 
 }
+
+function actualizaCostos(){
+
+	num=numRecursos;
+	num++;
+	
+	var costoRecursos=new Array();
+	var tipoCambiosMonedas=new Array();
+	
+	for (i=1; i<=num;i++){
+			
+		costoRecursos.push(document.getElementById("costoUnitario"+i).value);
+		tipoCambiosMonedas.push(HashTipoCambio[document.getElementById("comboMoneda"+i).options[document.getElementById("comboMoneda"+i).selectedIndex].value]);
+	
+	}
+	porcentajeReserva=document.getElementById("inputReserva").value;
+	
+	valorSinReserva= sacaValorSinReserva(costoRecursos,tipoCambiosMonedas);
+	
+	$('#inputMontoSinReserva').val(valorSinReserva);
+	
+	reserva = $('#inputReserva').val();
+	
+	if (isNaN(reserva)){
+		
+		reserva=0;	
+	
+	}
+	
+	montoReserva= reserva*valorSinReserva/100;
+	
+	$('#reservaTotal').val(montoReserva);
+	
+	montoReserva++;
+	valorSinReserva++;
+	
+	$('#inputMontoConReserva').val( montoReserva - 2 + valorSinReserva );
+
+}
+
+function sacaValorSinReserva(costoRecursos,tipoCambiosMonedas){
+
+	val=0;
+	
+	for (i=0; i<costoRecursos.length;i++){
+	
+		if (!isNaN(costoRecursos[i])){
+			
+			val+=costoRecursos[i]*tipoCambiosMonedas[i];
+			
+		}
+	
+	}
+	
+	return val;
+
+}
+
