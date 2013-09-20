@@ -9,7 +9,7 @@ var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
 var getAllTeams = "../../api/R_listaEquipoRiesgo";
 var getAllKnownItems = "../../api/R_listarRiesgoComun";
 var addList = "../../api/R_asignarRiesgoComun"
-var addConfg = "../../api/R_asignarConfiguracionProyecto";
+var addConfg = "../../api/R_registrarConfiguracionProyecto";
 var getConfg = "../../api/R_listarConfiguracionProyecto"
 
 var arregloRiesgo = new Array(
