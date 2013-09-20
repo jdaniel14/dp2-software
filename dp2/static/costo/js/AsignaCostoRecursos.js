@@ -2,6 +2,9 @@ var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=1;
 var numRecursos= 0;
+var comboMoneda='';
+var HashTipoCambio='';
+
 var arregloProyecto= new Array(
 							'Mi proyecto', '566', '1.5'
 								);
@@ -34,6 +37,16 @@ var arregloActividad2= new Array(
 									new Array('Kilo','Fierro', '10','Soles','30')
 									)
 								);
+								
+var arregloMoneda= new Array(
+									new Array(
+									new Array('2','Sol', '1'),
+									new Array('1','Dolar','2.8'),
+									new Array('3','Euro', '4')
+									)
+								);
+								
+
 
 iniciaActividades();
 iniciaProyecto();		
@@ -107,26 +120,25 @@ function obtenDatosActividad(idActividad){
 	
 	$.ajax({
 		type: 'GET',
-		data: 'idActividad=' + idActividad,
 		url: rootURL + 'CO_obtenerInfoActividad/' + JSON.stringify(obj),
 		dataType: "json", // data type of response
 		success: agregaDataFilaResumen
 	});
-	
+
+}
+
+function obtenMoneda(){
+		
 	/*
-	if (idActividad=='1'){
-		
-		agregaDataFilaResumen(arregloActividad1);
-		
-	}
+	$.ajax({
+		type: 'GET',		
+		url: rootURL + 'CO_obtenerInfoActividad/',
+		dataType: "json", // data type of response
+		success: agregaDataFilaResumen
+	});*/
 	
-	if (idActividad=='2'){
-		
-		agregaDataFilaResumen(arregloActividad2);
-		
-	}
-	*/
 	
+	creaComboMoneda(arregloMoneda);
 
 }
 
@@ -136,6 +148,7 @@ function obtenDatosActividad(idActividad){
 
 function iniciaRecursos(){
 	limpiaTablaRecursos();
+	obtenMoneda();
 	arreglo= obtenRecursos(/*idProyecto,*/0);
 	//agregaDataFila( arreglo, 0);
 
@@ -143,7 +156,8 @@ function iniciaRecursos(){
 
 function iniciaConfirmaRecursos(){
 	limpiaTablaRecursos();
-	iniciaProyecto();		
+	obtenMoneda();
+	iniciaProyecto();			
 	arreglo= obtenRecursos(/*idProyecto,*/1);
 	//agregaDataFila( arreglo, 1 );
 
@@ -229,7 +243,31 @@ function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cant
 
 }
 
+function creaComboMoneda(data){
+	HashTipoCambio= {};
+	comboMoneda='';
+	arreglo=data[0];
+	
+	for (i=0; i<arreglo.length;i++){
+		moneda=arreglo[i];
+		agregaOpcion(moneda[0], moneda[1], moneda[2]);
+		
+	}		
+	
+}
+
 //Fin funciones para pasar los datos de ajax
+
+//Funcion para agregar una opcion de moneda
+
+function agregaOpcion(idMoneda, nombre, tipoCambio){
+
+	comboMoneda+='<option value="'+idMoneda+'">'+nombre+'</option>';
+	HashTipoCambio[idMoneda]= tipoCambio;
+
+}
+
+
 
 //Función para insertar una actividad en el sidebar
 
@@ -251,8 +289,49 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 	//Si es para confirmar	
 	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'">';
 	if (tipo==1)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'" readOnly="readOnly" disabled>';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'+(a)+'" value="'+idRecurso+'">');
+	inputMoneda= creaInputMoneda(a);
+	inputHidden='<input type="hidden" id="tipoCambio'+(a)+'" value="">';
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input
+								+'</td><td>'+inputMoneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
+								+(a)+'" value="'+idRecurso+'">'+inputHidden);
+	obtenMonedaSeleccionada(a,moneda);
+	if (tipo==1) desabilitaMoneda(a);
+
+}
+
+function creaInputMoneda(num){
+
+	combo='<select id="comboMoneda'+num+'" >'+ comboMoneda + '</select>';
+	return combo;
 	
+}
+
+//Desabilita el input moneda
+
+function desabilitaMoneda(a){
+	
+	idSelect='#comboMoneda'+a;
+	$(idSelect).attr('disabled', 'disabled');
+}
+
+//obtener la seleccionada moneda
+
+function obtenMonedaSeleccionada(a,moneda){
+
+	idSelect='#comboMoneda'+a;
+	if (moneda!='' && moneda!=null){
+	
+		
+		$(idSelect).val(moneda);
+		var indiceDatos = $(idSelect)[0].selectedIndex;
+		if (indiceDatos!=null && indiceDatos!='')
+			$(idSelect)[0].options[indiceDatos].setAttribute('selected','selected');
+	}else{
+		if ($(idSelect)[0].options.length>0){
+			$(idSelect)[0].options[0].setAttribute('selected','selected');
+		}
+	
+	}
 
 }
 
