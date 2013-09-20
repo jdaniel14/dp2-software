@@ -4,15 +4,35 @@
             chartElement : '#chart',
             dragAndDrop  : true
         });
+
+
+        function armaNodo(){
+
+        }
+
+        function recursiveArbol(){
+          
+        }
+
+        function armarEdt( data , flag ){
+          if ( flag == 0 ){
+            console.log( data.title );
+            var titleParent = data.title;
+            var hijos = parseInt(data.hijos);
+            var html = '<li>' + titleParent;
+            
+          }
+            for (int i = 0; i < hijos; i++ ){
+                html += '<ul>';
+                html += 
+            }
+        }
   
         $("#MostrarEdt").click(function(){
             //$(".container").show("slow");
 
             var jsonCliente = {
-                  nombre : "sape",
-                  email  : "hola",
-                  fono   : "1234",
-                  mensaje : "hola"
+                  idcliente : "1"
                   };
 
                   $.ajax({
@@ -23,7 +43,7 @@
                       url: "../../api/traerEdt",
                       success: function (data) {
                           /* Custom jQuery for the example */
-                           
+                            //armarEdt( data, 0 );
                             console.log("sape1");
                             $('#list-html').text($('#org').html());
                             
