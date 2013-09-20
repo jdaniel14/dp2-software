@@ -11,10 +11,10 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		  ge.init(workSpace);
 		
 		  //inject some buttons (for this demo only)
-		  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>clear</button>")
+		  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>Limpiar</button>")
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-		          .append("<button onclick='openResourceEditor();' class='button'>edit resources</button>")
-		          .append("<button onclick='getFile();' class='button'>export</button>");
+		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
+		          .append("<button onclick='getFile();' class='button'>Exportar</button>");
 		  $(".ganttButtonBar h1").html("<img src='twGanttSmall.png'>");
 		  $(".ganttButtonBar div").addClass('buttons');
 		  //overwrite with localized ones
@@ -220,7 +220,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		    editor.append(inp).append("<br>");
 		  }
 		
-		  var sv = $("<div>save</div>").css("float", "right").addClass("button").click(function() {
+		  var sv = $("<div>Guardar</div>").css("float", "right").addClass("button").click(function() {
 		    $(this).closest(".resEdit").find("input").each(function() {
 		      var el = $(this);
 		      var pos = el.attr("pos");

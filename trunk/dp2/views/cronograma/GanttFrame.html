@@ -104,9 +104,9 @@ $(function() {
   ge.init(workSpace);
 
   //inject some buttons (for this demo only)
-  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>clear</button>")
+  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>Limpiar</button>")
           .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-          .append("<button onclick='openResourceEditor();' class='button'>edit resources</button>")
+          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
           /*.append("<button onclick='getFile();' class='button'>export</button>");*/
 		  .append("<button  class='button'>export</button>");
   $(".ganttButtonBar h1").html("<img src='../../static/cronograma/css/twGanttSmall.png'>");
@@ -288,7 +288,7 @@ function openResourceEditor() {
     editor.append(inp).append("<br>");
   }
 
-  var sv = $("<div>save</div>").css("float", "right").addClass("button").click(function() {
+  var sv = $("<div>Guardar</div>").css("float", "right").addClass("button").click(function() {
     $(this).closest(".resEdit").find("input").each(function() {
       var el = $(this);
       var pos = el.attr("pos");
@@ -453,7 +453,7 @@ $(document).ready(function(){
     <span class="ganttButtonSeparator"></span>
     <button onclick="$('#workSpace').trigger('deleteCurrentTask.gantt');" class="button textual" title="delete"><span class="teamworkIcon">&cent;</span></button>
       &nbsp; &nbsp; &nbsp; &nbsp;
-      <button onclick="saveGanttOnServer();" class="button first big" title="save">save</button>
+      <button onclick="saveGanttOnServer();" class="button first big" title="save">Guardar</button>
     </div></div>
   --></div>
 
