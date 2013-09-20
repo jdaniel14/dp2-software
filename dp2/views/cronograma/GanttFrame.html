@@ -48,7 +48,7 @@
 </head>
 <body style="background-color: #fff;">
 
-<button id = 'chris' style="display:none;">hola</button>
+<button id = 'chris' style="display:none">hola</button>
 
 
 <div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>
@@ -366,16 +366,26 @@ function loadFromLocalStorage() {
 
 
   }
-  else ge.loadProject(ret);
+  else {
+	ge.loadProject(ret);
+
+  }
+  //console.log(ge);
   ge.checkpoint(); //empty the undo stack
+  
 }
 function completarData(data){
 	ret=data;
 	var offset=new Date().getTime()-ret.tasks[0].start;
     for (var i=0;i<ret.tasks.length;i++)
       ret.tasks[i].start=ret.tasks[i].start+offset;
-	  
-	ge.loadProject(ret)
+	
+	//setResource();
+	//setRoles();
+	
+	ge.loadProject(ret);
+	//setResource();
+	//setRoles();
 }
 function codigoError(){
 
@@ -399,11 +409,11 @@ $(document).ready(function(){
 	//console.log(ge.saveProject());
 	$("#chris").click(function(){
 		console.log(ge);
-		alert(ge.tasks[0].name);
+		/*alert(ge.tasks[0].name);
 		ge.tasks[0]['name']="gigi";
 		alert(ge.saveProject().tasks[0].name);
 		console.log(ge.tasks);
-		console.log(ge);
+		console.log(ge);*/
 		//console.log(ge.saveProject());
 		
 	})
