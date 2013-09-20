@@ -95,6 +95,14 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		
 		function saveGanttOnServer() {
 		
+			
+			if(confirm("Esta seguro que desea guardar los cambios?")){
+				var prj = ge.saveProject();
+				  
+				alert("Los datos se almacenaron con exito");
+			
+			}
+			
 		  //this is a simulation: save data to the local storage or to the textarea
 		  saveInLocalStorage();
 		
