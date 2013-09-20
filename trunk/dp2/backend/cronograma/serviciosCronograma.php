@@ -213,14 +213,14 @@ function CR_obtenerInfoActividadesFalsa() {
     $listaActividades = array();
     $listaRecursos = array();
     $listaRecursos = CR_obtenerListaRecursosAsignadosFalsa();
-    $actividad1 = new CR_Actividad(-1, "Proyecto 1", "P1", 0, "STATUS_ACTIVE", 1346623200000, 16, 1348523999999, true, false, array(), "", "", 0, 100);
-    $actividad2 = new CR_Actividad(-2, "Analisis", "AN", 1, "STATUS_ACTIVE", 1346623200000, 10, 1347659999999, false, false, $listaRecursos, "", "", 0, 99);
-    $actividad3 = new CR_Actividad(-3, "Busqueda de proveedores", "BP", 2, "STATUS_ACTIVE", 1346623200000, 2, 1346795999999, false, false, array(), "", "", 0, 98);
-    $actividad4 = new CR_Actividad(-4, "Busqueda de clientes", "BC", 2, "STATUS_SUSPENDED", 1346796000000, 4, 1347314399999, false, false, array(), "3", "", 0, 97);
-    $actividad5 = new CR_Actividad(-5, "Implementacion", "IE", 1, "STATUS_SUSPENDED", 1347832800000, 6, 1348523999999, false, false, array(), "2:5", "", 0, 96);
-    $actividad6 = new CR_Actividad(-6, "Desarrollo", "DE", 2, "STATUS_SUSPENDED", 1347832800000, 2, 1348005599999, false, false, array(), "", "", 0, 95);
-    $actividad7 = new CR_Actividad(-7, "Pruebas de integracion", "PI", 2, "STATUS_SUSPENDED", 1348005600000, 3, 1348264799999, false, false, array(), "6", "", 0, 94);
-    $actividad8 = new CR_Actividad(-8, "Implantacion", "IA", 2, "STATUS_SUSPENDED", 1348005600000, 2, 1348178399999, false, false, array(), "6", "", 0, 93);
+    $actividad1 = new CR_Actividad(-1, "Proyecto 1", "P1", 0, "STATUS_ACTIVE", 1346623200000, 16, 1348523999999, true, false, array(), "", "", 0, 100,"");
+    $actividad2 = new CR_Actividad(-2, "Analisis", "AN", 1, "STATUS_ACTIVE", 1346623200000, 10, 1347659999999, false, false, $listaRecursos, "", "", 0, 99,"1: Paquete 1");
+    $actividad3 = new CR_Actividad(-3, "Busqueda de proveedores", "BP", 2, "STATUS_ACTIVE", 1346623200000, 2, 1346795999999, false, false, array(), "", "", 0, 98,"1.1: Paquete 1.1");
+    $actividad4 = new CR_Actividad(-4, "Busqueda de clientes", "BC", 2, "STATUS_SUSPENDED", 1346796000000, 4, 1347314399999, false, false, array(), "3", "", 0, 97,"1.2: Paquete 1.2");
+    $actividad5 = new CR_Actividad(-5, "Implementacion", "IE", 1, "STATUS_SUSPENDED", 1347832800000, 6, 1348523999999, false, false, array(), "2:5", "", 0, 96,"2: paquete 2");
+    $actividad6 = new CR_Actividad(-6, "Desarrollo", "DE", 2, "STATUS_SUSPENDED", 1347832800000, 2, 1348005599999, false, false, array(), "", "", 0, 95,"2.1: paquete 2.1");
+    $actividad7 = new CR_Actividad(-7, "Pruebas de integracion", "PI", 2, "STATUS_SUSPENDED", 1348005600000, 3, 1348264799999, false, false, array(), "6", "", 0, 94,"2.2: paquete 2.2");
+    $actividad8 = new CR_Actividad(-8, "Implantacion", "IA", 2, "STATUS_SUSPENDED", 1348005600000, 2, 1348178399999, false, false, array(), "6", "", 0, 93,"2.3: paquete 2.3");
 
 
     /* $actividad1 = new CR_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
