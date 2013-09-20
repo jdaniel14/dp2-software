@@ -1,4 +1,4 @@
-var rootURL = "../../api/G_listaProyecto";
+var rootURL = "../../api/G_listaTipoProyecto";
 
 /*
 var codProyecto='1';
@@ -23,18 +23,17 @@ var arregloActividad2= new Array(
 							new Array('Litro','Cemento', '','Soles','10'),
 							new Array('Kilo','Fierro', '10','Soles','30')
 								);
-*/
-								
-iniciaProyectos();
+*/								
+iniciaTipoProyectos();
 
-function iniciaProyectos(){
+function iniciaTipoProyectos(){
 	
 	$.ajax({
 		type: 'GET',
 		url: rootURL,
 		dataType: "json", // data type of response	
 		fail: codigoError,
-        success: function(data){                    
+        success: function(data){
             agregaDataFila(data);
         }
 	});
@@ -52,7 +51,7 @@ function agregaDataFila(data){
 		arreglo=data;
 	}
 	for (i=0; i<arreglo.length;i++){		
-		agregaFilaProyecto(arreglo[i],i);
+		agregaFilaTipoProyecto(arreglo[i],i);
 	}
 }
 
@@ -60,7 +59,7 @@ function agregaFilaProyecto(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	$("#listaProyectos").append('<tr><td>'+ a + '</td><td>' + arreglo[0] + '</td><td>' + arreglo[1] + '</td><td>' + arreglo[2] + '</td><td>' + arreglo[3] +'</td><td><a href=RegistrarActaConstitucion.html>Ver/Registrar</a></td></tr>');
+	$("#listaTipoProyectos").append('<option value="'+ a + '">' + arreglo[0] + '</option>');
 }
 
 
