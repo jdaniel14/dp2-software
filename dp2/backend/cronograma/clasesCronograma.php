@@ -89,8 +89,9 @@ class CR_Actividad {
 	public $description;
 	public $depends;
 	public $progress;
+	public $cost;
 	
-	function __construct($id, $name, $code, $level, $status, $start, $duration, $end , $startIsMilestone, $endIsMilestone, $assigs, $depends, $description, $progress) {
+	function __construct($id, $name, $code, $level, $status, $start, $duration, $end , $startIsMilestone, $endIsMilestone, $assigs, $depends, $description, $progress,$cost) {
     $this->id=$id;
 	$this->name=$name;
 	$this->code=$code;
@@ -105,6 +106,7 @@ class CR_Actividad {
 	$this->description = $description;
 	$this->depends =$depends;
 	$this->progress =$progress;
+	$this->cost=$cost;
 	}
 }
 

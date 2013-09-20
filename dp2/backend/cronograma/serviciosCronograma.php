@@ -1,6 +1,7 @@
 <?php
 	include('routesCronograma.php');
 	include('clasesCronograma.php');
+	include_once '../backend/conexion.php';
 
 //Servicios
 
@@ -53,11 +54,13 @@
 
 	function CR_consultarInfoActividades($idProyecto) {
 		//realizar la conexion a la BD
-		//$conexion=Conectarse();
-		//Desconectarse(conexion);
-		
-		
-		
+		//$link=mysql_connect("200.16.7.112","dp_usuario","usuario.2013.")))
+		/*$con=mysqli_connect("200.16.7.112","dp_usuario","usuario.2013.","dp2");
+			// Verificar conexión
+			if (mysqli_connect_errno()){
+			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
+			}
+		*/
 		//Hardcode
 		 
 		$actividades = CR_obtenerInfoActividadesFalsa();
@@ -103,13 +106,14 @@
 	}
 	
 	//funciones de conexion
-	function Conectarse(){ //realizar conexion con la BD
-	   if (!($link=mysql_connect("localhost","usuario","Password"))) 
+	function Conectarse(){ //realizar conexion con la BD 
+		echo "Conectando"; 
+	   if (!($link=mysql_connect("200.16.7.112","dp_usuario","usuario.2013."))) 
 	   { 
 	      echo "Error conectando a la base de datos."; 
 	      exit(); 
 	   } 
-	   if (!mysql_select_db("base_datos",$link)) 
+	   if (!mysql_select_db("dp2",$link)) 
 	   { 
 	      echo "Error seleccionando la base de datos."; 
 	      exit(); 
@@ -185,14 +189,14 @@
 		$listaActividades = array();
 		$listaRecursos = array();
 		$listaRecursos=CR_obtenerListaRecursosAsignadosFalsa();
-		$actividad1= new CR_Actividad(-1,"Proyecto 1","P1",0,"STATUS_ACTIVE",1346623200000,16,1348523999999,true,false,array(),"","",0);
-        $actividad2= new CR_Actividad(-2,"Analisis","AN",1,"STATUS_ACTIVE",1346623200000,10,1347659999999,false,false,$listaRecursos,"","",0);
-    	$actividad3= new CR_Actividad(-3,"Busqueda de proveedores","BP",2,"STATUS_ACTIVE",1346623200000,2,1346795999999,false,false,array(),"","",0);
-    	$actividad4= new CR_Actividad(-4,"Busqueda de clientes","BC",2,"STATUS_SUSPENDED",1346796000000,4,1347314399999,false,false,array(),"3","",0);
-    	$actividad5= new CR_Actividad(-5,"Implementacion","IE",1,"STATUS_SUSPENDED",1347832800000,6,1348523999999,false,false,array(),"2:5","",0);
-    	$actividad6= new CR_Actividad(-6,"Desarrollo","DE",2,"STATUS_SUSPENDED",1347832800000,2,1348005599999,false,false,array(),"","",0);
-    	$actividad7= new CR_Actividad(-7,"Pruebas de integracion","PI",2,"STATUS_SUSPENDED",1348005600000,3,1348264799999,false,false,array(),"6","",0);
-    	$actividad8= new CR_Actividad(-8,"Implantacion","IA",2,"STATUS_SUSPENDED",1348005600000,2,1348178399999,false,false,array(),"6","",0);
+		$actividad1= new CR_Actividad(-1,"Proyecto 1","P1",0,"STATUS_ACTIVE",1346623200000,16,1348523999999,true,false,array(),"","",0,100);
+        $actividad2= new CR_Actividad(-2,"Analisis","AN",1,"STATUS_ACTIVE",1346623200000,10,1347659999999,false,false,$listaRecursos,"","",0,99);
+    	$actividad3= new CR_Actividad(-3,"Busqueda de proveedores","BP",2,"STATUS_ACTIVE",1346623200000,2,1346795999999,false,false,array(),"","",0,98);
+    	$actividad4= new CR_Actividad(-4,"Busqueda de clientes","BC",2,"STATUS_SUSPENDED",1346796000000,4,1347314399999,false,false,array(),"3","",0,97);
+    	$actividad5= new CR_Actividad(-5,"Implementacion","IE",1,"STATUS_SUSPENDED",1347832800000,6,1348523999999,false,false,array(),"2:5","",0,96);
+    	$actividad6= new CR_Actividad(-6,"Desarrollo","DE",2,"STATUS_SUSPENDED",1347832800000,2,1348005599999,false,false,array(),"","",0,95);
+    	$actividad7= new CR_Actividad(-7,"Pruebas de integracion","PI",2,"STATUS_SUSPENDED",1348005600000,3,1348264799999,false,false,array(),"6","",0,94);
+    	$actividad8= new CR_Actividad(-8,"Implantacion","IA",2,"STATUS_SUSPENDED",1348005600000,2,1348178399999,false,false,array(),"6","",0,93);
 		
 		
 		/*$actividad1 = new CR_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
