@@ -70,7 +70,7 @@ function main(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'DELETE',
-			url: deleteItem,
+			url: deleteItem + '/' + data.id,
 			data: jsonData,
 			dataType: "json",
 			success: function(data){
@@ -110,6 +110,7 @@ function main(){
 	});
 	$('#btnModificar').one('click',function(){
 		var data = {
+			id: $('#idRiesgoM').val(),
 			idProyecto: $('#idProyecto').val(),
 			nombre: $('#nomRiesgoM').val(),
 			idPaquete: $('#paqEdtM').val(),
@@ -124,7 +125,7 @@ function main(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'PUT',
-			url: updateItem,
+			url: updateItem + '/' + data.id,
 			data: jsonData,
 			dataType: "json",
 			success: function(data){
@@ -265,11 +266,12 @@ function obtenerRiesgo(){
 	console.log(jsonData);
 	$.ajax({
 		type: 'GET',
-		url: getItem,
+		url: getItem + '/' + data.id,
 		data: jsonData,
 		dataType: "json",
 		success: function(data){
 			var item = data;
+			$('#idRiesgoM').val(item.id);
 			$('#nomRiesgoM').val(item.nombre);
 			$('#paqEdtM').val(item.paquete);
 			$('#objAfeM').val(item.objeto);
