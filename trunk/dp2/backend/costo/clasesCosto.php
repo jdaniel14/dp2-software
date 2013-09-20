@@ -5,13 +5,15 @@ class CO_Proyecto {
 	public $nombre;
 	public $presupuestoTotal;
 	public $porcentajeReserva;
+	public $presupuestoMaximo;
 	
 	//constructor
-	function __construct($idProyecto, $nombre, $presupuestoTotal, $porcentajeReserva) {
+	function __construct($idProyecto, $nombre, $presupuestoTotal, $porcentajeReserva, $presupuestoMaximo) {
 		$this->idProyecto = $idProyecto;
 		$this->nombre = $nombre;
 		$this->presupuestoTotal = $presupuestoTotal;
 		$this->porcentajeReserva = $porcentajeReserva;
+		$this->presupuestoMaximo = $presupuestoMaximo;
 	}
 }
 
@@ -69,6 +71,18 @@ class CO_Paquete {
 		if ($this->listaPaquetesHijo != null) {
 			$this->sumaCostosPaquetesHijo = 0;
 		}
+	}
+}
+
+class CO_Moneda {
+	public $idMoneda;
+	public $nombre;
+	public $tipoCambioASoles;
+
+	function __construct($idMoneda, $nombre, $tipoCambioASoles) {
+		$this->idMoneda = $idMoneda;
+		$this->nombre = $nombre;
+		$this->tipoCambioASoles = $tipoCambioASoles;
 	}
 }
 

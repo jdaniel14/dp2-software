@@ -57,6 +57,14 @@
 		
 		echo json_encode($jsonRespuesta);
 	}
+
+	function CO_getListaMonedas() {
+		$listaMonedas = CO_consultarListaMonedas();
+		$jsonRespuesta = new stdClass();
+		$jsonRespuesta->lista = $listaMonedas;
+
+		echo json_encode($jsonRespuesta);
+	}
 	
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.
@@ -114,6 +122,17 @@
 		
 		return $listaPaquetes;
 	}
+
+	function CO_consultarListaMonedas() {
+		//$connection = new conexion();
+		
+		//hacer consulta a la bd...
+		
+		//se llamara una funcion que devuelve data falsa por mientras.		
+		$listaMonedas = CO_obtenerListaMonedasFalsa();
+		
+		return $listaMonedas;
+	}	
 	
 	function CO_guardarCURyPorcReserva($obj) {
 		//insertar en la bd...
@@ -121,8 +140,9 @@
 		$obj->idProyecto;
 		$obj->listaRecursos;
 			$obj->listaRecursos[0];
-		$obj->listaCUR;
-			$obj->listaCU[0];
+				$obj->listaRecursos[0]->idRecurso;
+				$obj->listaRecursos[0]->costoUnitario;
+				$obj->listaRecursos[0]->idMoneda;
 		$obj->porcReserva;
 		*/
 		
@@ -151,7 +171,7 @@
 	//---------------------------------------------------------------
 	//funciones de llenado falso de datos para pruebas.
 	function CO_obtenerInfoProyectoFalsa() {
-		$proyecto = new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2);
+		$proyecto = new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
 		
 		return $proyecto;
 	}
@@ -209,6 +229,15 @@
 		array_push($listaPaquetes, $paquete1, $paquete2, $paquete3);
 		
 		return $listaPaquetes;
+	}
+
+	function CO_obtenerListaMonedasFalsa() {
+		$listaMonedas = array();
+		$moneda1 = new CO_Moneda(1, "Euro", 4.1);
+		$moneda2 = new CO_Moneda(1, "Dólar", 2.7);
+		array_push($listaMonedas, $moneda1, $moneda2);
+		
+		return $listaMonedas;
 	}
 	
 	function CO_obtenerRespuestaPositivaDeGuardadoFalsa() {
