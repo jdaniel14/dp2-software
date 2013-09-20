@@ -99,7 +99,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 			if(confirm("Esta seguro que desea guardar los cambios?")){
 				var prj = ge.saveProject();
 				  
-				alert("Los datos se almacenaron con exito");
+				alert("Los datos se almacenaron con éxito");
 			
 			}
 			
