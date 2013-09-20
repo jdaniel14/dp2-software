@@ -48,7 +48,7 @@
 </head>
 <body style="background-color: #fff;">
 
-<button id = 'chris' style="display:none">hola</button>
+<button id = 'chris' >hola</button>
 
 
 <div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>
@@ -394,12 +394,21 @@ function codigoError(){
 }
 
 function saveInLocalStorage() {
-  var prj = ge.saveProject();
-  if (localStorage) {
-    localStorage.setObject("teamworkGantDemo", prj);
-  } else {
-    $("#ta").val(JSON.stringify(prj));
+ if(confirm("Esta seguro que desea guardar los cambios?")){
+	  var prj = ge.saveProject();
+	  if (localStorage) {
+		localStorage.setObject("teamworkGantDemo", prj);
+	  } else {
+		$("#ta").val(JSON.stringify(prj));
+	  }
+	  alert("Los datos se almacenaron con exito");
+  
   }
+  
+  
+  
+  
+  
 }
 
 $(document).ready(function(){
