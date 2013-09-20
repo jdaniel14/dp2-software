@@ -164,7 +164,7 @@ function CR_obteneListaDependenciaFalsa() {
     $dep1 = new CR_Dependencia("1", "11-11-2013","14-11-2013","0");
     $dep2 = new CR_Dependencia("2", "15-11-2013","18-11-2013","1");
     $dep3 = new CR_Dependencia("3", "19-11-2013","23-11-2013","2");
-    array_push($listaDependencias, $rol1, $rol2, $rol3);
+    array_push($listaDependencias, $dep1, $dep2, $dep3);
 
     return $listaDependencias;
 }
