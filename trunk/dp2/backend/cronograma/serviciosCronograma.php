@@ -61,7 +61,10 @@
 		//Hardcode
 		 
 		$actividades = CR_obtenerInfoActividadesFalsa();
-		$proyecto =new CR_ProyectoJSON($actividades,0,array(),true,true);
+		$roles=CR_obtenerRolesTotalFalsa();
+		$recursos=CR_obtenerRecursosTotalFalsa();
+		
+		$proyecto =new CR_ProyectoJSON($actividades,0,array(),true,true,$roles,$recursos);
 		return $proyecto;
 	}
 
@@ -137,13 +140,42 @@
 	}
 //Funciones hardcode
 
-	function CR_obtenerListaRecursosFalsa() {
+
+	function CR_obtenerRolesTotalFalsa(){
+		$listaRoles = array();
+								 //id,                name	
+		$rol1 = new CR_Recurso("tmp_1", "Project Manager");
+		$rol2 = new CR_Recurso("tmp_2", "Worker");
+		$rol3 = new CR_Recurso("tmp_3", "Stakeholder/Customer");
+		array_push($listaRoles, $rol1, $rol2, $rol3);
+		
+		return $listaRoles;
+
+	}
+	function CR_obtenerRecursosTotalFalsa(){
 		$listaRecursos = array();
-		$recurso1 = new CR_Recurso(1, 1, 'Recurso1', 10.0, 1, 50);
-		$recurso2 = new CR_Recurso(2, 1, 'Recurso2', 20.0, 1, 10);
-		$recurso3 = new CR_Recurso(3, 2, 'Recurso3', 30.5, 2, 20);
-		$recurso4 = new CR_Recurso(4, 3, 'Recurso4', 25.0, 1, 40);
-		array_push($listaRecursos, $recurso1, $recurso2, $recurso3, $recurso4);
+		$recurso1 = new CR_Recurso("tmp_1", "Recurso 1");
+		$recurso2 = new CR_Recurso("tmp_2", "Recurso 2");
+		$recurso3 = new CR_Recurso("tmp_3", "Recurso 3");
+		$recurso4 = new CR_Recurso("tmp_4", "Recurso 4");
+		$recurso5 = new CR_Recurso("tmp_5", "Recurso 5");
+		$recurso6 = new CR_Recurso("tmp_6", "Recurso 6");
+		$recurso7 = new CR_Recurso("tmp_7", "Recurso 7");
+		$recurso8 = new CR_Recurso("tmp_8", "Recurso 8");
+		$recurso9 = new CR_Recurso("tmp_9", "Recurso 9");
+		$recurso10 = new CR_Recurso("tmp_10", "Recurso 10");
+		array_push($listaRecursos, $recurso1, $recurso2, $recurso3, $recurso4, $recurso5, $recurso6,$recurso7, $recurso8, $recurso9, $recurso10);
+		
+		return $listaRecursos;
+	
+	}
+	function CR_obtenerListaRecursosAsignadosFalsa() {
+		$listaRecursos = array();
+								 //id,                effort, resourceId, role_id	
+		$recurso1 = new CR_RecursoAsignado("tmp_1", 13800000, "tmp_5", "tmp_3");
+		$recurso2 = new CR_RecursoAsignado("tmp_2", 9600000, "tmp_3", "tmp_3");
+		$recurso3 = new CR_RecursoAsignado("tmp_3", 6600000, "tmp_9", "tmp_3");
+		array_push($listaRecursos, $recurso1, $recurso2, $recurso3);
 		
 		return $listaRecursos;
 	}
@@ -151,15 +183,16 @@
 	function CR_obtenerInfoActividadesFalsa(){
 
 		$listaActividades = array();
-		//$listaRecursos = CR_obtenerListaRecursosFalsa();
-		$actividad1= new CR_Actividad(-1,"Gantt editor","GE",0,"STATUS_ACTIVE",1346623200000,16,1348523999999,true,false,array(),"","",0);
-        $actividad2= new CR_Actividad(-2,"coding","CO",1,"STATUS_ACTIVE",1346623200000,10,1347659999999,false,false,array(),"","",0);
-    	$actividad3= new CR_Actividad(-3,"gant part","GP",2,"STATUS_ACTIVE",1346623200000,2,1346795999999,false,false,array(),"","",0);
-    	$actividad4= new CR_Actividad(-4,"editor part","EP",2,"STATUS_SUSPENDED",1346796000000,4,1347314399999,false,false,array(),"3","",0);
-    	$actividad5= new CR_Actividad(-5,"testing","TE",1,"STATUS_SUSPENDED",1347832800000,6,1348523999999,false,false,array(),"2:5","",0);
-    	$actividad6= new CR_Actividad(-6,"test on safari","TS",2,"STATUS_SUSPENDED",1347832800000,2,1348005599999,false,false,array(),"","",0);
-    	$actividad7= new CR_Actividad(-7,"test on ie","TI",2,"STATUS_SUSPENDED",1348005600000,3,1348264799999,false,false,array(),"6","",0);
-    	$actividad8= new CR_Actividad(-8,"test on chrome","TC",2,"STATUS_SUSPENDED",1348005600000,2,1348178399999,false,false,array(),"6","",0);
+		$listaRecursos = array();
+		$listaRecursos=CR_obtenerListaRecursosAsignadosFalsa();
+		$actividad1= new CR_Actividad(-1,"Proyecto 1","P1",0,"STATUS_ACTIVE",1346623200000,16,1348523999999,true,false,array(),"","",0);
+        $actividad2= new CR_Actividad(-2,"Analisis","AN",1,"STATUS_ACTIVE",1346623200000,10,1347659999999,false,false,$listaRecursos,"","",0);
+    	$actividad3= new CR_Actividad(-3,"Busqueda de proveedores","BP",2,"STATUS_ACTIVE",1346623200000,2,1346795999999,false,false,array(),"","",0);
+    	$actividad4= new CR_Actividad(-4,"Busqueda de clientes","BC",2,"STATUS_SUSPENDED",1346796000000,4,1347314399999,false,false,array(),"3","",0);
+    	$actividad5= new CR_Actividad(-5,"Implementacion","IE",1,"STATUS_SUSPENDED",1347832800000,6,1348523999999,false,false,array(),"2:5","",0);
+    	$actividad6= new CR_Actividad(-6,"Desarrollo","DE",2,"STATUS_SUSPENDED",1347832800000,2,1348005599999,false,false,array(),"","",0);
+    	$actividad7= new CR_Actividad(-7,"Pruebas de integracion","PI",2,"STATUS_SUSPENDED",1348005600000,3,1348264799999,false,false,array(),"6","",0);
+    	$actividad8= new CR_Actividad(-8,"Implantacion","IA",2,"STATUS_SUSPENDED",1348005600000,2,1348178399999,false,false,array(),"6","",0);
 		
 		
 		/*$actividad1 = new CR_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);

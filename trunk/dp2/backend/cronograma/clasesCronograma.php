@@ -19,35 +19,58 @@ class CR_ProyectoJSON {
 	public $tasks= array();
 	public $selectedRow;
 	public $deletedTaskIds=array();
+	public $roles=array();
+	public $resources=array();
 	public $canWrite;
 	public $canWriteOnParent;
 	
 	//constructor
-	function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent) {
+	function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent,$roles,$resources) {
 		$this->tasks = $tasks;
 		$this->selectedRow = $selectedRow;
 		$this->deletedTaskIds = $deletedTaskIds;
 		$this->canWrite = $canWrite;
 		$this->canWriteOnParent = $canWriteOnParent;
+		$this->roles = $roles;
+		$this->resources = $resources;
 	}
 }
+class CR_Rol{
 
-class CR_Recurso {
-	public $idRecurso;
-	public $unidadMedida;
-	public $nombre;
-	public $costoUnitario;
-	public $moneda;
-	public $cantidadUsada;
+	public $id;
+	public $name;
 	
 	//constructor
-	function __construct($idRecurso, $unidadMedida, $nombre, $costoUnitario, $moneda, $cantidadUsada) {
-       $this->idRecurso = $idRecurso;
-	   $this->unidadMedida = $unidadMedida;
-	   $this->nombre = $nombre;
-	   $this->costoUnitario = $costoUnitario;
-	   $this->moneda = $moneda;
-	   $this->cantidadUsada = $cantidadUsada;
+	function __construct($id, $name) {
+       $this->id = $id;
+	   $this->name = $name;
+   }
+
+
+}
+class CR_Recurso {
+	public $id;
+	public $name;
+	
+	//constructor
+	function __construct($id, $name) {
+       $this->id = $id;
+	   $this->name = $name;
+   }
+}
+
+class CR_RecursoAsignado {
+	public $id;
+	public $effort;
+	public $resourceId;
+	public $roledId;
+	
+	//constructor
+	function __construct($id, $effort, $resourceId, $roledId) {
+       $this->id = $id;
+	   $this->effort = $effort;
+	   $this->resourceId = $resourceId;
+	   $this->roledId = $roledId;
    }
 }
 
