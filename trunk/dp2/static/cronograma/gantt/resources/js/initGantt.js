@@ -187,7 +187,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		}
 		
 		function loadI18n() {
-		  GanttMaster.messages = {
+		  GanttMaster.messages = {//MENSAJES PARA SER CAMBIADOS AL ESPAÑOL
 		    "CHANGE_OUT_OF_SCOPE":"NO_RIGHTS_FOR_UPDATE_PARENTS_OUT_OF_EDITOR_SCOPE",
 		    "START_IS_MILESTONE":"START_IS_MILESTONE",
 		    "END_IS_MILESTONE":"END_IS_MILESTONE",
