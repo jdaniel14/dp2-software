@@ -218,9 +218,9 @@
 	    <tr>
 	      <th style="width:100px;">Nombre</th>
 	      <th style="width:70px;display:none">Tol</th>
-	      <th>Tipo de Recurso</th>
-	      <th>Recursos Totales</th>
-	      <th style="width:30px;">Esfuerzo.</th>
+	      <th style="width:80px;">Tipo de Costo</th>
+	      <th style="width:50px;">Costo unitario</th>
+	      <th style="width:30px;">Valor asignado</th>
 	      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
 	    </tr>
 	  </table>
@@ -234,9 +234,10 @@
 	  <tr taskId="(#=obj.task.id#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
 	    <td ><select name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
 	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
-	    <td>Humano</td>
-	    <td>100s</td>
-	    <td ><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
+	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
+		<td name="costRate">(#=obj.assig.costRate#)</td>
+		<td ><input type="text" name="value" value="(#=obj.assig.value#)" size="5" class="formElements"></td>
+	    <td style ="display:none;"><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
 	  </tr>
 	  --></div>
