@@ -354,29 +354,46 @@ $("#btnGrabar").click(function(){
 });
 
 function grabarRecursos(){
-	idRecursos="";
-	costoRecursos="";
+	var idRecursos=new Array();
+	var costoRecursos=new Array();
+	var idmonedas=new Array();
 	porcentajeReserva=0;
 	
 	num=numRecursos;
 	num++;
 	for (i=1; i<=num;i++){
 	
-		if (i>1){
-			idRecursos+=",";
-			costoRecursos+=",";
-		}
-		idRecursos+= document.getElementById("idRecurso"+i).value;
-		costoRecursos+=document.getElementById("costoUnitario"+i).value;
+		idRecursos.push(document.getElementById("idRecurso"+i).value);
+		costoRecursos.push(document.getElementById("costoUnitario"+i).value);
+		idmonedas.push(document.getElementById("comboMoneda"+i).options[document.getElementById("comboMoneda"+i).selectedIndex].value);
 	
 	}
 	porcentajeReserva=document.getElementById("inputReserva").value;
 	
 	
-	alert("Se grabó " + idRecursos + " " + costoRecursos+ " " + porcentajeReserva);
+	var obj={
+		idProyecto: idProyecto,
+		listaRecursos: idRecursos,
+		listaCUR: costoRecursos,
+		porcReserva: idmonedas
+		
+		
+	}
 	
-
+	$.ajax({
+		type: 'POST',
+		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){if (data!=null) alert("se grabó");}
+	});
+	
+	//CO_enviarCURecursos
+	
 }
+
+
+
 //Fin funciones para grabar
 
 //Funciones para el uso del sidebar
