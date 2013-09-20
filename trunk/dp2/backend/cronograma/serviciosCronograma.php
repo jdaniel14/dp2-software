@@ -13,6 +13,19 @@ function CR_getActividades($json) {//servicio1
     $infoActividades = CR_consultarInfoActividades($proy->idProyecto);
 
     echo json_encode($infoActividades);
+    
+    
+}
+
+function CR_postActividades() {//servicio1
+    /*$proy = json_decode($json);
+    //$oscar=$proy->idProyecto;
+    $infoActividades = CR_consultarInfoActividades($proy->idProyecto);
+
+    echo json_encode($infoActividades);*/
+    
+    $request = \Slim\Slim::getInstance()->request();
+    $proj = json_decode($request->getBody());
 }
 
 function CR_guardarActividades($json) { //servicio2
