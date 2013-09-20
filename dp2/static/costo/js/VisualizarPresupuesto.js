@@ -2,8 +2,7 @@ var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=1;
 iniciaProyecto();		
-creaDesplegable();
-
+iniciaPaquetes();
 
 //Funciones para obtener datos de AJAX
 
@@ -16,18 +15,18 @@ function obtenPaquetes(){
 	
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_getListaPaquetes/'+JSON.stringify(obj),
+		url: rootURL + 'CO_obtenerListaPaquetes/'+JSON.stringify(obj),
 		dataType: "json",
 		async: true,
 		success:creaDesplegable	
 
 	});	
 	
-	return arregloProyecto;
+	//return arregloProyecto;
 
 }
 
-function obtenProyecto(/*idProyecto*/){
+function obtenProyecto(){
 	
 	var obj ={
 		idProyecto : idProyecto
@@ -42,7 +41,7 @@ function obtenProyecto(/*idProyecto*/){
 
 	});	
 	
-	return arregloProyecto;
+	//return arregloProyecto;
 
 }
 
@@ -50,9 +49,9 @@ function obtenProyecto(/*idProyecto*/){
 
 //Funciones para pasar los datos de ajax
 
-function iniciaCuentaxActividad(){
-	limpiaTablaCuentaxActividad();
-	arreglo= obtenPaquetes();
+function iniciaPaquetes(){
+	//limpiaTablaCuentaxActividad();
+	obtenPaquetes();
 	//creaDesplegable( arreglo );
 
 }
@@ -70,7 +69,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			  '<div class="panel-body">'+
 				'Costo subtotal:'+ paquete.sumaCostosPaquetesHijo + ' ';
 	if (paquete.listaPaquetesHijo != null)
-		for (var i = 0;i<paquete.listaPaquetesHijo.lenght;i++)
+		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
 	cadenaHTML += '</div>'+'</div>'+'</div>';
 	return cadenaHTML;
@@ -78,10 +77,11 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 function insertaHijoAcordeon(paquete,nombrePadre,numeroHijo){
 	$("#nodoPaquete").append(obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo));
 }
-function creaDesplegable(paquetes){
+function creaDesplegable(data){
+	var paquetes = data.lista;
 	var nombrePadre='nodoPaquete';
 	$("#nodoPaquete").html('');
-	for (var i=0;i<paquetes.lenght;i++){
+	for (var i=0;i<paquetes.length;i++){
 		insertaHijoAcordeon(paquetes[i],nombrePadre,i);
 	}
 }

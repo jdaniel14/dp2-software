@@ -22,8 +22,6 @@ function obtenActividades(){
 		success:agregaDataFila	
 	});
 	
-	return arregloActividades;
-
 }
 
 function obtenProyecto(/*idProyecto*/){
@@ -41,7 +39,8 @@ function obtenProyecto(/*idProyecto*/){
 
 	});	
 	
-	return arregloProyecto;
+	//return arregloProyecto;
+
 
 }
 
@@ -51,8 +50,8 @@ function obtenProyecto(/*idProyecto*/){
 
 function iniciaCuentaxActividad(){
 	limpiaTablaCuentaxActividad();
-	arreglo= obtenActividades(/*idProyecto*/);
-	agregaDataFila( arreglo, 0 );
+	obtenActividades(/*idProyecto*/);
+	//agregaDataFila( arreglo, 0 );
 
 }
 
@@ -66,25 +65,18 @@ function agregarDataProyecto(proyecto){
 	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 }
-function iniciaConfirmaCuentaxActividad(){
-	limpiaTablaCuentaxActividad();
-	iniciaProyecto();		
-	arreglo= obtenActividades(/*idProyecto*/);
-	//agregaDataFila( arreglo, 1 );
 
-}
-
-function agregaDataFila(arreglo){
-	
+function agregaDataFila(data){
+	var arreglo = data.lista;
 	for (i=0; i<arreglo.length;i++){
 		var filaAct=arreglo[i];
-		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,"Moneda");
+		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,"Soles");
 	}
 }
 
 function iniciaProyecto(){
 			
-	proyecto= obtenProyecto();
+	obtenProyecto();
 	//agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
 
 }
@@ -101,11 +93,11 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 
 //Funcion para ingresar una fila de actividad en la tabla cuentaxacticidad en los resumenes de actividades
 
-function agregaFilaCuentaActividad(i, nombreRecurso, costoUnitario, moneda){
+function agregaFilaCuentaActividad(i, nombreAct, costoUnitario, moneda){
 	a=i;
 	a++;
 	input= '<select id="tipoCuenta'+(a)+'"><option>Equipo</option><option>Maquinaria</option><option>Mano de obra</option><option>Capital</option></select>';
-	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'++nombreRecurso+'</td><td>'+input+'</td><td>'+'X soles'+'</td></tr>');
+	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
 }
 
 //Funciones para grabar
