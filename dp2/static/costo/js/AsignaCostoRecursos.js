@@ -388,6 +388,8 @@ function grabarRecursos(){
 		success:function(data){if (data!=null) alert("se grabó");}
 	});
 	*/
+	alert("se grabó");
+	
 	//CO_enviarCURecursos
 	
 }
