@@ -212,9 +212,11 @@
 	    <h2>assignments</h2>
 	  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
 	    <tr>
-	      <th style="width:100px;">name</th>
-	      <th style="width:70px;">role</th>
-	      <th style="width:30px;">est.wklg.</th>
+	      <th style="width:100px;">Nombre</th>
+	      <th style="width:70px;display:none">Tol</th>
+	      <th>Tipo de Recurso</th>
+	      <th>Recursos Totales</th>
+	      <th style="width:30px;">Esfuerzo.</th>
 	      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
 	    </tr>
 	  </table>
@@ -222,16 +224,21 @@
 	  <div style="text-align: right; padding-top: 20px"><button id="saveButton" class="button big">save</button></div>
 	  </div>
 	  --></div>
-	
+	<!-- !!! En este modigique el 2do th (role project) -->
 	
 	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
 	  <tr taskId="(#=obj.task.id#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
 	    <td ><select name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
-	    <td ><select type="select" name="roleId"  class="formElements"></select></td>
+	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
+	    <td>Humano</td>
+	    <td>100s</td>
 	    <td ><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
 	  </tr>
 	  --></div>
+	  
+	  <!-- !! En este modifique el 2do td (role project)  -->
+	  
 	</div>
 	
 	<script type="text/javascript" src = "resources/js/decorator.js"></script>
