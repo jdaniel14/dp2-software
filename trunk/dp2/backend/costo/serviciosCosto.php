@@ -3,6 +3,17 @@
 	include('clasesCosto.php');
 	include_once '../backend/conexion.php';
 
+	/*
+	function getConexionLocal(){
+		$con=mysqli_connect("localhost","root","","dp2");
+		// Verificar conexión
+		if (mysqli_connect_errno()){
+		  echo "Error al conectar con MySQL: " . mysqli_connect_error();
+		}
+		return $con;
+	}
+	*/
+	
 	function CO_getInfoProyecto($json) { //servicio1
 		$proy = json_decode($json);
 		$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
@@ -69,9 +80,12 @@
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.
 	function CO_consultarInfoProyecto($idProyecto) {
-		//$connection = new conexion();
+		//$con=getConexionLocal();
 		
 		//hacer consulta a la bd...
+		//$query = "";
+		//$result = mysqli_query($con, $query);
+		//$proyecto = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.	
 		$proyecto = CO_obtenerInfoProyectoFalsa();
@@ -83,6 +97,9 @@
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
+		//$query = "";
+		//$result = mysqli_query($con, $query);
+		//$actividad = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.	
 		$actividad = CO_obtenerInfoActividadFalsa($idActividad);
@@ -94,6 +111,9 @@
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
+		//$query = "";
+		//$result = mysqli_query($con, $query);
+		//$listaRecursos = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		$listaRecursos = CO_obtenerListaRecursosFalsa();
@@ -105,6 +125,9 @@
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
+		//$query = "";
+		//$result = mysqli_query($con, $query);
+		//$listaActividades = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		$listaActividades = CO_obtenerListaActividadesFalsa();
@@ -116,6 +139,9 @@
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
+		//$query = "";
+		//$result = mysqli_query($con, $query);
+		//$listaPaquetes = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		$listaPaquetes = CO_obtenerListaPaquetesFalsa();
@@ -127,6 +153,9 @@
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
+		//$query = "";
+		//$result = mysqli_query($con, $query);
+		//$listaMonedas = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		$listaMonedas = CO_obtenerListaMonedasFalsa();
@@ -146,6 +175,50 @@
 		$obj->porcReserva;
 		*/
 		
+		/*
+		$con= getConexionLocal(); //cambiar por insert
+		$pstmt = mysqli_prepare($con,"UPDATE PAQUETE_TRABAJO SET 
+			descripcion=?,
+			supuestos=?,
+			fecha_inicio=?,
+			fecha_final=?,
+			porcentaje_completo=?,  
+			ultima_actualizacion=?,
+			criterios_aceptacion=?,
+			entregables=?,
+			hitos=?,
+			interdependencias=?,
+			requisitos_calidad=?,
+			referencias_tecnicas=?,
+			informacion_contrato=?,
+			id_estado=?
+			" . " WHERE id_paquete_trabajo=" . $val["id_paquete_trabajo"]
+		);
+
+		mysqli_stmt_bind_param($pstmt,'ssbbdbsssssssi',
+			$val["descripcion"],
+			$val["supuestos"],
+			$val["fecha_inicio"],
+			$val["fecha_final"],
+			$val["porcentaje_completo"], 
+			date('yyyy-mm-dd hh:ii:ss'),
+			$val["criterios_aceptacion"],
+			$val["entregables"],
+			$val["hitos"],
+			$val["interdependencias"],
+			$val["requisitos_calidad"],
+			$val["referencias_tecnicas"],
+			$val["informacion_contrato"],
+			$val["id_estado"]
+		);
+
+		mysqli_stmt_execute($pstmt);
+		echo mysqli_stmt_error ( $pstmt );
+		mysqli_stmt_close($pstmt);
+		*/
+		
+		
+		
 		//obtener respuesta falsa;
 		$respuesta = CO_obtenerRespuestaNegativaDeGuardadoFalsa();
 		
@@ -161,6 +234,49 @@
 		$obj->listaTipoCuenta;
 			$obj->listaTipoCuenta[0];
 		*/
+		
+		/*
+		$con= getConexionLocal(); //cambiar por insert
+		$pstmt = mysqli_prepare($con,"UPDATE PAQUETE_TRABAJO SET 
+			descripcion=?,
+			supuestos=?,
+			fecha_inicio=?,
+			fecha_final=?,
+			porcentaje_completo=?,  
+			ultima_actualizacion=?,
+			criterios_aceptacion=?,
+			entregables=?,
+			hitos=?,
+			interdependencias=?,
+			requisitos_calidad=?,
+			referencias_tecnicas=?,
+			informacion_contrato=?,
+			id_estado=?
+			" . " WHERE id_paquete_trabajo=" . $val["id_paquete_trabajo"]
+		);
+
+		mysqli_stmt_bind_param($pstmt,'ssbbdbsssssssi',
+			$val["descripcion"],
+			$val["supuestos"],
+			$val["fecha_inicio"],
+			$val["fecha_final"],
+			$val["porcentaje_completo"], 
+			date('yyyy-mm-dd hh:ii:ss'),
+			$val["criterios_aceptacion"],
+			$val["entregables"],
+			$val["hitos"],
+			$val["interdependencias"],
+			$val["requisitos_calidad"],
+			$val["referencias_tecnicas"],
+			$val["informacion_contrato"],
+			$val["id_estado"]
+		);
+
+		mysqli_stmt_execute($pstmt);
+		echo mysqli_stmt_error ( $pstmt );
+		mysqli_stmt_close($pstmt);
+		*/
+		
 		
 		//obtener respuesta falsa;
 		$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();

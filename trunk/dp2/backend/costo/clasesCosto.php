@@ -68,8 +68,13 @@ class CO_Paquete {
 	}
    
 	function sumarCostosPaqueteHijo() {
-		if ($this->listaPaquetesHijo != null) {
-			$this->sumaCostosPaquetesHijo = 0;
+		if (($this->listaPaquetesHijo != null) && (sizeof($this->listaPaquetesHijo) > 0)) {
+			foreach ($this->listaPaquetesHijo as $paquete) {
+				$this->sumaCostosPaquetesHijo += $paquete->sumaCostosPaquetesHijo;
+			}
+			unset($paquete);
+		} else {
+			$this->sumaCostosPaquetesHijo = 1; //corregir
 		}
 	}
 }
