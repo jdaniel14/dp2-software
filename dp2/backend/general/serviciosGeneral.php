@@ -1,9 +1,9 @@
 <?php
 
-        include('routesGeneral.php');
+  include('routesGeneral.php');
         
         
-	//include_once '../backend/conexion.php';
+	include_once '../backend/conexion.php';
         
         //jose
 	function G_getListaJP(){
@@ -48,13 +48,29 @@
             
   function G_getListaProyecto(){
 		//$miconexion = new conexion();
-		$arregloProyecto= array(
+/*		$arregloProyecto= array(
 	  	array('Proyecto1','Bonnie Carranza','13/05/2013','23/06/2013'),
 	  	array('Proyecto2','Alfonso Bedoya','01/06/2013','14/10/2013'),
 	  	array('Proyecto3','Jose Astuvilca','15/06/2013','13/09/2013'),
 	  	array('Proyecto4','Bonnie Carranza','21/08/2013','21/10/2013')
     );
-  	echo json_encode($arregloProyecto);
+  	echo json_encode($arregloProyecto);*/
+
+		$sql = "select id_proyecto, nombre_proyecto, '', '' FROM PROYECTO ";
+    try {
+            //echo "1";
+            $db = getConnection();
+            //echo "2";
+            $stmt = $db->query($sql);
+            //echo "3";
+            //$stmt->execute();
+            $wines = $stmt->fetchAll(/*PDO::FETCH_OBJ*/)                    ;
+            $db = null;
+            echo json_encode($wines) ;
+    } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+
 	}
 
 	function G_getListaTipoProyecto(){
