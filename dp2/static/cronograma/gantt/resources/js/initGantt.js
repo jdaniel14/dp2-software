@@ -99,10 +99,27 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 			
 			if(confirm("Esta seguro que desea guardar los cambios?")){
 				var prj = ge.saveProject();
+                                
+                                                                		
+			var objProy ={
+				idProyecto : prj
+			};
+			
+			var rootURL = "../../../api/CR_postActividades/";
+			$.ajax({
+				type: 'POST',
+				url: rootURL,
+                                                                data:JSON.stringify(objProy),
+				dataType: "json", 
+                                
+                                
+		        success: completadoAJAX				
+			});		
+		}
 				  
 				alert("Los datos se almacenaron con éxito");
 			
-			}
+			
 			
 		  //this is a simulation: save data to the local storage or to the textarea
 		  saveInLocalStorage();
