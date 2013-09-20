@@ -14,7 +14,8 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>Limpiar</button>")
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
 		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
-		          .append("<button onclick='getFile();' class='button'>Exportar</button>");
+				  .append("<button  class='button'>Exportar</button>");
+		          //.append("<button onclick='getFile();' class='button'>Exportar</button>");
 		  $(".ganttButtonBar h1").html("<img src='twGanttSmall.png'>");
 		  $(".ganttButtonBar div").addClass('buttons');
 		  //overwrite with localized ones
