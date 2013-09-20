@@ -19,5 +19,6 @@ $app->post('/G_registrarAutoridadActa', 'G_addAutoridadActa'); //registar Autori
 $app->get('/G_devuelveActa/:id', 'G_getActa'); //devuelve el acta de constitucion de un proyecto
 
 
+
 	
 ?>
