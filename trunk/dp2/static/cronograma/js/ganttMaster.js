@@ -357,7 +357,7 @@ GanttMaster.prototype.loadTasks = function(tasks, selectedRow) {
     //add Link collection in memory
     var linkLoops = !this.updateLinks(task);
 
-    if (linkLoops || !task.setPeriod(task.start, task.end)) {
+    if (linkLoops || !task.setPeriod(task.start, task.end)) {//ERROR ESPAÑOL
       alert(GanttMaster.messages.GANNT_ERROR_LOADING_DATA_TASK_REMOVED+"\n" + task.name+"\n"+
             (linkLoops?GanttMaster.messages.CIRCULAR_REFERENCE:GanttMaster.messages.ERROR_SETTING_DATES));
 
