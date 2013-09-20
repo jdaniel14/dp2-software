@@ -7,7 +7,9 @@ function getURLParameter(name) {
 var id_edt = getURLParameter("id_edt");
 
 function cargaLista(data){
-	for(var i=0; i < data.lenght ; i++){
+	console.log("cargo!");
+	console.log(data);
+	for(var i=0; i < data.length ; i++){
 		var fila = "<tr>";
 		for(key in data[i]){
 			fila += "<td>"+data[i][key]+"</td>";
@@ -20,19 +22,21 @@ function cargaLista(data){
 }
 
 $(document).ready(function(){
-
-	var outData = {
-		id : 1,
-		nombre : "fer"
-	};
-	//cargaLista(outData);
 	$.ajax({
 		type: 'GET',
-		url : '../../api/listaDiccionario'+ id_edt,
-		data: JSON.stringify(inData),
+		url : '../../api/listaDiccionario/'+ id_edt,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaLista
+	});
+	$.ajax({
+		type: 'GET',
+		url : '../../api/infoProyectoFromEDT/'+id_edt,
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success: function(data){
+			$("#nombre_proyecto").html(data["nombre_proyecto"]);
+		}
 	});
 });
 

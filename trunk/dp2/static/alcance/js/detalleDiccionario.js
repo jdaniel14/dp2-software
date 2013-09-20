@@ -19,12 +19,21 @@ function cargaData(data){
 			$(arreglo[i]).attr("disabled","disabled");
 		}
 	}
+	$.ajax({
+		type: 'GET',
+		url : '../../api/infoProyectoFromEDT/'+data["id_edt"],
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success: function(datos){
+			$("#nombre_proyecto").html(datos["nombre_proyecto"]);
+		}
+	});
 }
 
 function cargarComboResponsable(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboResponsables',
+		url : '../../api/comboMiembrosEquipo/'+1,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		async:false,
@@ -92,15 +101,19 @@ $(document).ready(function(){
 
 function editarPaquete(){
 	var data = $(".form-control");
-	var obj = new Object();
+	var obj = {};
 	for(var i=0; i < data.length; i++){
 		obj[data[i]["id"]]=data[i]["value"];
 	}
+	obj["id_paquete_trabajo"]=id_paquete;
 	$.ajax({
 		type:'POST',
-		url: '../../api/editarPaquete',
+		url: '../../api/modificaPaquete',
 		data: JSON.stringify(obj),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			console.log(data);
+		}
 	});
 }

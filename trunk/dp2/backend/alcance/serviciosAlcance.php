@@ -1,6 +1,14 @@
 <?php
 	include('routesAlcance.php');
 	include_once '../backend/conexion.php';
+		function getConexionLocal(){
+			$con=mysqli_connect("localhost","root","","dp2");
+			// Verificar conexión
+			if (mysqli_connect_errno()){
+			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
+			}
+			return $con;
+		}
 
 	   function getEdt(){
 	       $request = \Slim\Slim::getInstance()->request(); //json parameters
@@ -16,132 +24,104 @@
 	    }
 
 	    function getComboEstado(){
-	    	/*
-	    	$con=mysqli_connect("localhost","root","","dp2");
-			// Verificar conexión
-			if (mysqli_connect_errno()){
-			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
-			}
-			*/
+	    	
+	    	$con=getConexionLocal();
+			
 	    	$result = mysqli_query($con,'SELECT * FROM ESTADO_EDT');
 			$lista = array();
-			while ($estado = mysqli_fetch_array($result)){
+			while ($estado = mysqli_fetch_array($result,MYSQLI_ASSOC)){
 				$lista[]=$estado;
 			}
 			echo json_encode($lista);
 	    }
 
 	    function detallePaquete($id_paquete){
-			/*
-			$con=mysqli_connect("localhost","root","","dp2");
-			// Verificar conexión
-			if (mysqli_connect_errno()){
-			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
-			}
-			*/
+			$con=getConexionLocal();
 			$result = mysqli_query($con,"SELECT * FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=" . $id_paquete);
-			$paquete = mysqli_fetch_array($result);
+			$paquete = mysqli_fetch_array($result,MYSQLI_ASSOC);
 			echo json_encode($paquete);
 		}
 
 		function listaDiccionario($id_edt){
-			/*
-			$con=mysqli_connect("localhost","root","","dp2");
-			// Verificar conexión
-			if (mysqli_connect_errno()){
-			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
-			}
-			*/
-			$result = mysqli_query($con,"SELECT  * /*Columnas que quiera FRONT*/ FROM PAQUETE_TRABAJO WHERE id_edt=" . $id_edt);
 
+			$con = getConexionLocal();
+			
+			$result = mysqli_query($con,"SELECT  P.id_paquete_trabajo, P.nombre, P.descripcion, P.version, P.ultima_actualizacion, E.descripcion as estado  ".
+				"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
+				"WHERE E.id_estado = P.id_estado AND P.id_edt=".$id_edt);
 			$lista = array();
 
-			while ($paquete = mysqli_fetch_array($result)){
+			while ($paquete = mysqli_fetch_array($result,MYSQLI_ASSOC)){
 				$lista[]=$paquete;
 			}
-
 			echo json_encode($lista);
 
 		}
 		function modificaPaquete(){
 
 			$request = \Slim\Slim::getInstance()->request();
-			$val = json_decode($request->getBody()); 
-
+			$val = json_decode($request->getBody(),TRUE);
 			//i integer
 			//d double
-
-			/*
-			$con=mysqli_connect("localhost","root","","dp2");
-			// Verificar conexión
-			if (mysqli_connect_errno()){
-			  echo "Error al conectar con MySQL: " . mysqli_connect_error();
-			}
-			*/
-
-			$pstmt = mysqli_prepare($con,"UPDATE PAQUETE_TRABAJO SET nombre=?,
+			$con= getConexionLocal();
+			$pstmt = mysqli_prepare($con,"UPDATE PAQUETE_TRABAJO SET 
 				descripcion=?,
 				supuestos=?,
 				fecha_inicio=?,
 				fecha_final=?,
-				porcentaje_completo=?, 
-				version=?, 
+				porcentaje_completo=?,  
 				ultima_actualizacion=?,
 				criterios_aceptacion=?,
 				entregables=?,
-				costo=?,
+				hitos=?,
 				interdependencias=?,
 				requisitos_calidad=?,
 				referencias_tecnicas=?,
 				informacion_contrato=?,
-				numero_serie=?,
-				id_estado=?, 
-				id_edt=?
-				" . "WHERE id_paquete_trabajo=" . $val["id"]);
+				id_estado=?
+				" . " WHERE id_paquete_trabajo=" . $val["id_paquete_trabajo"]);
 
-			mysqli_bind_param($pstmt,"sssbdsbsssdsssssii",
-				$val["nombre"],
+			mysqli_stmt_bind_param($pstmt,'ssbbdbsssssssi',
 				$val["descripcion"],
 				$val["supuestos"],
 				$val["fecha_inicio"],
 				$val["fecha_final"],
 				$val["porcentaje_completo"], 
-				$val["version"],
-				$val["ultima_actualizacion"],
+				date('yyyy-mm-dd hh:ii:ss'),
 				$val["criterios_aceptacion"],
 				$val["entregables"],
 				$val["hitos"],
-				$val["costo"],
 				$val["interdependencias"],
 				$val["requisitos_calidad"],
 				$val["referencias_tecnicas"],
 				$val["informacion_contrato"],
-				$val["numero_serie"],
-				$val["id_estado"],
-				$val["id_edt"]
+				$val["id_estado"]
 				);
 
-			mysqli_stmt_execute($pstmt);
-			mysqli_stmt_close($pstmt);
 
-			echo json_encode($paquete);
+			mysqli_stmt_execute($pstmt);
+			echo mysqli_stmt_error ( $pstmt );
+			mysqli_stmt_close($pstmt);
 		}
 
 		function getComboMiembrosEquipo($id_proyecto){
-	    	//devolver una lista con id y nombre del miembro de el proyecto determinado(id_proyecto)
-	    	//tabla MIEMBROS_EQUIPO,id_empelado que viene de tabla EMPLEADO que tiene un id_contacto que viene de la tabla CONTACTO
-	    	/* json de salida
-	    		[
-	    			{
-						id_empleado: 1,
-						nombre_completo: "Fernando Moreno Valles"
-	    			},
-	    			{
-						id_empleado: 2,
-						nombre_completo: "Marcela Araujo Falcón"
-	    			}
-	    		]
-	    	*/
-	    	//puedes usar de ejemplo la función getComboEstado() de este mismo archivo
+			$con=getConexionLocal();
+	    	$result = mysqli_query($con,"SELECT M.id_empleado, C.nombre_completo FROM MIEMBROS_EQUIPO M, CONTACTO C, EMPLEADO E WHERE M.id_proyecto=" . $id_proyecto
+				. " AND E.id_contacto = C.id_contacto AND C.id_contacto = M.id_empleado");
+			$lista = array();
+
+			while ($miembro = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+				$lista[]=$miembro;
+			}
+
+			echo json_encode($lista);
+	    }
+
+	    function getInfoProyectoFromEDT($id_edt){
+	    	$con=getConexionLocal();
+	    	$result = mysqli_query($con,"SELECT * FROM PROYECTO P, EDT E WHERE E.id_edt=" . $id_edt
+				. " AND E.id_proyecto = P.id_proyecto");
+	    	$proy = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			echo json_encode($proy);
 	    }
 ?>
