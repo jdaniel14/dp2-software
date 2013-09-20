@@ -1,6 +1,10 @@
 <?php
 	//$app->get('/', '');
 
+	//Activando Slim (?)
+
+	//$app = new Slim();
+
 	//Henry
 
 	//Registrar riesgo

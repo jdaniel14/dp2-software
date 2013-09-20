@@ -52,16 +52,35 @@
     //Julio
 
     function R_getListaRiesgoComun(){
-        $idProyectoDecode = json_decode($idProyecto);
-        $arregloListaRiesgoComun= array(
-            array()
-        );
-        echo json_encode($arregloListaRiesgoComun);
+        $sql = "SELECT id_riesgo, nombre, ult_probabilidad, ult_impacto, ult_severidad FROM RIESGO WHERE id_categoria_riesgo = (SELECT id_categoria_riesgo FROM CATEGORIA_RIESGO WHERE tipo_riesgo = 1)"; //o cualquiera que sea el tipo de riesgo comun
+        try{
+            $db = getConnection();
+            $stmt = $db->query($sql);
+            $arregloListaRiesgoComun = $stmt->fetchAll();
+            $db = null;
+            echo json_encode($arregloListaRiesgoComun);
+        } catch(PDOException $e){
+            echo 'ERROR EN R_getListaRiesgoComun: {"error":{"text":'. $e->getMessage() .'}}';
+        }
     }
 
-    function R_postAsignarRiesgoComun(){
-        $request = Slim::getInstance()->request();
-        $riesgo = json_decode($request->getBody());
+    function R_postAsignarRiesgoComun($id_riesgo, $id_proyecto, $id_paquete_trabajo){
+        //$request = Slim::getInstance()->request();
+        $arregloAsignarRiesgoComun = json_decode($request->getBody());
+        $sql = "INSERT INTO RIESGOXPAQUETE_TRABAJO (id_riesgo, id_proyecto, id_paquete_trabajo) VALUES (:id_riesgo, :id_proyecto, :id_paquete_trabajo)";
+        try{
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("id_riesgo",$id_riesgo);
+            $stmt->bindParam("id_proyecto",$id_riesgo);
+            $stmt->bindParam("id_paquete_trabajo",$id_riesgo);
+            $stmt->execute();
+            $arregloAsignarRiesgoComun = $db->lastInsertId();
+            $db = null;
+            echo json_encode($arregloAsignarRiesgoComun);
+        } catch(PDOException $e){
+            echo 'ERROR EN R_postAsignarRiesgoComun: {"error":{"text":'. $e->getMessage() .'}}';
+        }
     }
 
     
