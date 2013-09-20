@@ -112,6 +112,8 @@
 	      <th class="gdfColHeader gdfResizable" style="width:50px;">Duración</th>
 	      <th class="gdfColHeader gdfResizable" style="width:50px;">Dependencias</th>
 	      <th class="gdfColHeader gdfResizable" style="width:200px;">Recursos</th>
+		  <th class="gdfColHeader gdfResizable" style="width:50px;">Costo S/.</th>
+		  <th class="gdfColHeader gdfResizable" style="width:70px;">Paquete de trabajo</th>
 	    </tr>
 	    </thead>
 	  </table>
@@ -131,6 +133,8 @@
 	    <td class="gdfCell"><input type="text" name="duration" value="(#=obj.duration#)"></td>
 	    <td class="gdfCell"><input type="text" name="depends" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#)></td>
 	    <td class="gdfCell taskAssigs">(#=obj.getAssigsString()#)</td>
+		<td class="gdfCell"  ><input  type="text" name="cost"  value="(#=obj.cost#)" readonly></td>
+		<td class="gdfCell"  ><input  type="text" name="wbsNode"  value="(#=obj.wbsNode#)" readonly></td>
 	  </tr>
 	  --></div>
 	
