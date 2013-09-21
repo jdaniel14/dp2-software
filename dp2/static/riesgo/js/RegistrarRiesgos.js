@@ -218,7 +218,7 @@ function listarConfiguracion(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'GET',
-			url: getConfg + '/idProyecto=' + data.idProyectos,
+			url: getConfg +  '/' + data.idProyecto,
 			dataType: "json",
 			success: function(data){
 				listarConfiguracion2(data);			
@@ -308,7 +308,7 @@ function listarObjetosAfectados(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllObjects + '/idProyecto=' + data.idProyecto,
+		url: getAllObjects + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
@@ -327,7 +327,7 @@ function listarNivelesImpacto(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllImpactLevels + '/idProyecto=' + data.idProyecto,
+		url: getAllImpactLevels + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
@@ -346,7 +346,7 @@ function listarEquipos(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllTeams + '/idProyecto=' + data.idProyecto,
+		url: getAllTeams + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
@@ -370,7 +370,7 @@ function listarRiesgos(search){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllItems + '/idProyecto=' + data.idProyecto + '&buscar='+data.buscar ,
+		url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
 		dataType: "json",
 		success: agregaDataFila(data),
 		fail: codigoError
