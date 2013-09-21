@@ -3,6 +3,16 @@
 	include('routesRiesgo.php');
 
     //Henry
+    function getConnectionLocal() {
+        $dbhost="localhost";
+        $dbuser="root";
+        $dbpass="";
+        $dbname="dp2";
+        $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $dbh;
+    }
+
 
     function R_getListaRiesgos(){
         echo "Probando :D";
@@ -201,6 +211,52 @@ materializado 0
         }
     }
 
+
+
+    //CONFIGURACION
+
+    function R_postRegistrarConfiguracionProyecto(){
+        //echo "Entra";
+        $request = \Slim\Slim::getInstance()->request();
+        $configuracion = json_decode($request->getBody());
+        $sql = "INSERT INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)";
+        try {
+            $db = getConnectionLocal();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("id_proyecto", $configuracion->idProyecto);
+            $stmt->bindParam("muy_bajo", $configuracion->muyBajo);
+            $stmt->bindParam("bajo", $configuracion->bajo);
+            $stmt->bindParam("medio", $configuracion->medio);
+            $stmt->bindParam("alto", $configuracion->alto);
+            $stmt->bindParam("muy_alto", $configuracion->muyAlto);
+            $stmt->execute();
+            $configuracion->id_configuracion_riesgo = $db->lastInsertId();
+            $db = null;
+            echo json_encode(array("me"=>"", "id"=>$configuracion->id_configuracion_riesgo));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }    
+
+
+    function R_getListaConfiguracionProyecto($idProyecto){
+        $query = "SELECT * FROM configuracion_riesgo WHERE id_proyecto=".$idProyecto;
+        $listaConfiguracionProyecto= array();
+        try {
+            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
+            $result = mysqli_query($con,$query) or die(mysqli_error($con));
+            while ($row=mysqli_fetch_array($result)){
+                $arregloListaEquipoRiesgo= array("muyBajo" => $row['muy_bajo'], "bajo" => $row['bajo'],"medio" => $row['medio'],"alto" => $row['alto'],"muyAlto" => $row['muy_alto']);
+                array_push($listaConfiguracionProyecto,$data);
+            }
+            //FALTA CERRAR LA CONEXION 
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+        echo json_encode($listaConfiguracionProyecto);
+    }
 
     //Julio
 
