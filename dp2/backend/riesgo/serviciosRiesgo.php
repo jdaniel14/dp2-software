@@ -69,25 +69,19 @@
     }
 
     function R_getListaNivelesImpacto($idProyecto){
-        /*
-        $idProyectoDecode = json_decode($idProyecto);
-        $arregloListaNivelesImpacto= array(
-            array('idImpacto' => '1','descripcion' => 'alto'),
-            array('idImpacto' => '2','descripcion' => 'medio')          
-        );
-        echo json_encode($arregloListaNivelesImpacto);
-        */
-
-        $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
+        
+        $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
         $arregloListaNivelesImpacto= array();
         try {
             $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
             $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            
             while ($row=mysqli_fetch_array($result)){
-                //$id = $row['id_proyecto'];
-                //$nombre = $row['nombre_proyecto'];
-                $data = array("id" => $row['idImpacto'], "descripcion" => $row['descripcion']);
+                $data = array("muyBajo" => $row['muy_bajo'],
+                            "bajo" => $row['bajo'],
+                            "medio" => $row['medio'],
+                            "alto" => $row['alto'],
+                            "muyAlto" => $row['muy_alto']);
+                ;
                 array_push($arregloListaNivelesImpacto,$data);
             }
             //FALTA CERRAR LA CONEXION 
@@ -95,18 +89,9 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
         echo json_encode($arregloListaNivelesImpacto);
-
     }
 
     function R_getListaEquipoRiesgo($idProyecto){
-        /*
-        $idProyectoDecode = json_decode($idProyecto);
-        $arregloListaEquipoRiesgo= array(
-            array('idEquipo' => '1','nombre' => 'equipoA'),
-            array('idEquipo' => '2','nombre' => 'equipoB')
-        );
-        echo json_encode($arregloListaEquipoRiesgo);
-        */
         $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
         $arregloListaEquipoRiesgo= array();
         try {
@@ -218,7 +203,8 @@ materializado 0
         //echo "Entra";
         $request = \Slim\Slim::getInstance()->request();
         $configuracion = json_decode($request->getBody());
-        $sql = "INSERT INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)";
+        $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)
+        where id_proyecto =".$configuracion->idProyecto;
         try {
             $db = getConnectionLocal();
             $stmt = $db->prepare($sql);
