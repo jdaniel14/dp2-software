@@ -1,4 +1,5 @@
 <?php
+    header("Content-type: text/html; charset=utf8");
 	include('routesAlcance.php');
 	include ('modelAlcance.php');
 	include_once '../backend/conexion.php';
@@ -66,6 +67,7 @@
 			$con=getConexionLocal();
 			$result = mysqli_query($con,"SELECT * FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=" . $id_paquete);
 			$paquete = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			$paquete["id_empleado"]= $paquete["id_miembros_equipo"];
 			echo json_encode($paquete);
 		}
 
@@ -105,16 +107,17 @@
 				requisitos_calidad=?,
 				referencias_tecnicas=?,
 				informacion_contrato=?,
-				id_estado=?
+				id_estado=?,
+				id_miembros_equipo=?
 				" . " WHERE id_paquete_trabajo=" . $val["id_paquete_trabajo"]);
 
-			mysqli_stmt_bind_param($pstmt,'ssbbdbsssssssi',
+			mysqli_stmt_bind_param($pstmt,'ssbbdssssssssii',
 				$val["descripcion"],
 				$val["supuestos"],
 				$val["fecha_inicio"],
 				$val["fecha_final"],
 				$val["porcentaje_completo"], 
-				date('yyyy-mm-dd hh:ii:ss'),
+				date('yyyy-mm-dd'),
 				$val["criterios_aceptacion"],
 				$val["entregables"],
 				$val["hitos"],
@@ -122,7 +125,8 @@
 				$val["requisitos_calidad"],
 				$val["referencias_tecnicas"],
 				$val["informacion_contrato"],
-				$val["id_estado"]
+				$val["id_estado"],
+				$val["id_empleado"]
 				);
 
 

@@ -112,8 +112,9 @@ function editarPaquete(){
 		data: JSON.stringify(obj),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
-		success:function(data){
-			console.log(data);
+		success:function(){
+			alert("Se registraron las modificaciones con éxito.");
 		}
 	});
+	alert("Se registraron las modificaciones con éxito.");
 }
