@@ -32,7 +32,7 @@
 	}
             
   function G_postRegistrarProyecto(){
-		$request = Slim::getInstance()->request();
+		$request = \Slim\Slim::getInstance()->request();
     $proj = json_decode($request->getBody());
     $sql = "INSERT INTO PROYECTO () VALUES (:iduser, :idjp, :f_ini, :f_fin)";
     try {
@@ -68,7 +68,7 @@
 			$stmt = $db->query($sql);
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proj = array($p["id_proyecto"], $p["nombre_proyecto"], '', '');
+					$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
 					array_push($lista_project, $proj);
 			}
 
