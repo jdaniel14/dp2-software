@@ -29,9 +29,9 @@
 }*/
 
 	function getConnection() {
-		  $dbhost="127.0.0.1:3306";
-		  $dbuser="usuario";
-		  $dbpass="usuario.2013.";
+		  $dbhost="localhost";
+		  $dbuser="root";
+		  $dbpass="";
 		  $dbname="dp2";
 		  $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
 		  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
