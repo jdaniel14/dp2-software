@@ -21,10 +21,15 @@
 	
 	$app->get('/R_modificarRiesgo/:id','R_putRiesgo');
 	
-
-
 	//Registrar configuracion riesgo
 	$app->post('/R_registrarRiesgo', 'R_postRegistrarRiesgo');//Registrar un riesgo
+
+
+	//Registrar configuracion 
+	$app->get('/R_listarConfiguracionProyecto/:idProyecto', 'R_getListaConfiguracionProyecto');//Obtener los valores de Configuracion de un Proyecto
+	$app->post('/R_registrarConfiguracionProyecto', 'R_postRegistrarConfiguracionProyecto');//Registrar configuracion
+
+
 
 	//Julio
 
