@@ -31,23 +31,21 @@
         }        
     }
 
-    function R_getListaObjetosAfectados(){
+    function R_getListaCategoriaRiesgo(){
         $sql = "SELECT * FROM CATEGORIA_RIESGO";
         try {
-            $arregloListaObjetosAfectados= array();
+            $arregloListaCategoriaRiesgo= array();
             $db=getConnection();
             $stmt = $db->query($sql);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['id_categoria_riesgo'], "descripcion" => $row['descripcion']);
-                array_push($arregloListaObjetosAfectados,$data);
+                array_push($arregloListaCategoriaRiesgo,$data);
             }
             $db = null;
-            echo json_encode($arregloListaObjetosAfectados);
+            echo json_encode($arregloListaCategoriaRiesgo);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
-        
-
     }
 
     function R_getListaNivelesImpacto($idProyecto){
@@ -57,17 +55,11 @@
             $stmt = $db->prepare($query);
             $stmt->execute();
             $row = $stmt->fetchObject();
-            //while (
-                //$row=$stmt->fetch(PDO::FETCH_ASSOC);//){
-            //echo $row;
-                $data = array("muyBajo" => $row->muy_bajo,
-                            "bajo" => $row->bajo,
-                            "medio" => $row->medio,
-                            "alto" => $row->alto,
-                            "muyAlto" => $row->muy_alto);
-                //;
-                //array_push($arregloListaNivelesImpacto,$data);
-            //}
+            $data = array("muyBajo" => $row->muy_bajo,
+                        "bajo" => $row->bajo,
+                        "medio" => $row->medio,
+                        "alto" => $row->alto,
+                        "muyAlto" => $row->muy_alto);
             $db = null;
             echo json_encode($data);
         } catch(PDOException $e) {
@@ -97,12 +89,12 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo (nombre,id_categoria_riesgo) VALUES (:nombre_riesgo,:id_categoria_riesgo)";
+        $query = "INSERT INTO riesgo (nombre,id_categoria_riesgo) VALUES (:nombre_riesgo,+:id_categoria_riesgo)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
-            $stmt->bindParam("id_categoria_riesgo", $riesgo->idObjeto);
+            $stmt->bindParam("id_categoria_riesgo", $riesgo->id_categoria_riesgo);
             $stmt->execute();
             $riesgo->id_riesgo = $db->lastInsertId();
             $db = null;
@@ -111,7 +103,7 @@
             echo json_encode(array("me"=> $e->getMessage()));
                 //'{"error":{"text":'. $e->getMessage() .'}}';
         }
-
+/*
 
         
         $stmt->bindParam("id_riesgo", $riesgo->name);
@@ -121,6 +113,7 @@
 
         $sql = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto, id_riesgo,id_paquete_trabajo,id_categoria_riesgos,
             country, region, year, description) VALUES (:name, :grapes, :country, :region, :year, :description)";
+            */
 
     }
 
