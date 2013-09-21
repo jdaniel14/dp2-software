@@ -1,29 +1,25 @@
 <?php
 
 	include('routesRiesgo.php');
-
     //Henry
-    function getConnectionLocal() {
-        $dbhost="localhost";
-        $dbuser="root";
-        $dbpass="";
-        $dbname="dp2";
-        $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $dbh;
-    }
-
-
-    function R_getListaRiesgos(){
+    function R_prueba(){
+        /*
+        $idProyectoDecode = json_decode($idProyecto);
+        $arregloListaObjetosAfectados= array(
+            array('id' => '1','descripcion' => 'costo'),
+            array('id' => '2','descripcion' => 'tiempo')            
+        );
+        echo json_encode($arregloListaObjetosAfectados);
+        */
         echo "Probando :D";
 	}
 	
     function R_getListaPaquetesEDT($idProyecto){
         $sql = "SELECT * FROM edt WHERE id_proyecto=".$idProyecto;
         try {
+            $arregloListaPaquetesEDT= array();
             $db=getConnection();
             $stmt = $db->query($sql);
-            $arregloListaPaquetesEDT= array();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['id_edt'], "descripcion" => $row['version']);
                 array_push($arregloListaPaquetesEDT,$data);
@@ -35,76 +31,67 @@
         }        
     }
 
-
-
     function R_getListaObjetosAfectados(){
-        /*
-        $idProyectoDecode = json_decode($idProyecto);
-        $arregloListaObjetosAfectados= array(
-            array('id' => '1','descripcion' => 'costo'),
-            array('id' => '2','descripcion' => 'tiempo')            
-        );
-        echo json_encode($arregloListaObjetosAfectados);
-        */
-        $query = "SELECT * FROM CATEGORIA_RIESGO";
-        $arregloListaObjetosAfectados= array();
+        $sql = "SELECT * FROM CATEGORIA_RIESGO";
         try {
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            while ($row=mysqli_fetch_array($result)){
+            $arregloListaObjetosAfectados= array();
+            $db=getConnection();
+            $stmt = $db->query($sql);
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['id_categoria_riesgo'], "descripcion" => $row['descripcion']);
                 array_push($arregloListaObjetosAfectados,$data);
             }
-            //FALTA CERRAR LA CONEXION 
+            $db = null;
+            echo json_encode($arregloListaObjetosAfectados);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
-        echo json_encode($arregloListaObjetosAfectados);
+        
 
     }
 
     function R_getListaNivelesImpacto($idProyecto){
-        
         $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
-        $arregloListaNivelesImpacto= array();
         try {
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            while ($row=mysqli_fetch_array($result)){
-                $data = array("muyBajo" => $row['muy_bajo'],
-                            "bajo" => $row['bajo'],
-                            "medio" => $row['medio'],
-                            "alto" => $row['alto'],
-                            "muyAlto" => $row['muy_alto']);
-                ;
-                array_push($arregloListaNivelesImpacto,$data);
-            }
-            //FALTA CERRAR LA CONEXION 
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            //while (
+                //$row=$stmt->fetch(PDO::FETCH_ASSOC);//){
+            //echo $row;
+                $data = array("muyBajo" => $row->muy_bajo,
+                            "bajo" => $row->bajo,
+                            "medio" => $row->medio,
+                            "alto" => $row->alto,
+                            "muyAlto" => $row->muy_alto);
+                //;
+                //array_push($arregloListaNivelesImpacto,$data);
+            //}
+            $db = null;
+            echo json_encode($data);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
-        echo json_encode($arregloListaNivelesImpacto);
+        
     }
 
     function R_getListaEquipoRiesgo($idProyecto){
         $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
-        $arregloListaEquipoRiesgo= array();
+        
         try {
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            
-            while ($row=mysqli_fetch_array($result)){
-                //$id = $row['id_proyecto'];
-                //$nombre = $row['nombre_proyecto'];
+            $arregloListaEquipoRiesgo= array();
+            $db=getConnection();
+            $stmt = $db->query($sql);
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['idEquipo'], "nombre" => $row['nombre']);
                 array_push($arregloListaEquipoRiesgo,$data);
             }
-            //FALTA CERRAR LA CONEXION 
+            $db = null;
+            echo json_encode($arregloListaEquipoRiesgo);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
-        echo json_encode($arregloListaEquipoRiesgo);
-
     }
 
     function R_postRegistrarRiesgo(){
