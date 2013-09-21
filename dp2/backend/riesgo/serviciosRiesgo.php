@@ -19,25 +19,20 @@
 	}
 	
     function R_getListaPaquetesEDT($idProyecto){
-        
-        $query = "SELECT * FROM edt WHERE id_proyecto=".$idProyecto;
-        
-        $arregloListaPaquetesEDT= array();
+        $sql = "SELECT * FROM edt WHERE id_proyecto=".$idProyecto;
         try {
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            
-            while ($row=mysqli_fetch_array($result)){
-                //$id = $row['id_proyecto'];
-                //$nombre = $row['nombre_proyecto'];
+            $db=getConnection();
+            $stmt = $db->query($sql);
+            $arregloListaPaquetesEDT= array();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['id_edt'], "descripcion" => $row['version']);
                 array_push($arregloListaPaquetesEDT,$data);
             }
-            //FALTA CERRAR LA CONEXION 
+            $db = null;
+            echo json_encode($arregloListaPaquetesEDT);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
-        echo json_encode($arregloListaPaquetesEDT);
     }
 
 
@@ -206,7 +201,7 @@ materializado 0
         $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)
         where id_proyecto =".$configuracion->idProyecto;
         try {
-            $db = getConnectionLocal();
+            $db = getConnection();
             $stmt = $db->prepare($sql);
             $stmt->bindParam("id_proyecto", $configuracion->idProyecto);
             $stmt->bindParam("muy_bajo", $configuracion->muyBajo);
