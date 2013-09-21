@@ -183,7 +183,7 @@ function CR_guardar_actividades_BD($actividad){
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nombre_actividad", $actividad->name);
         $stmt->execute();
-        //$proj->id = $db->lastInsertId();
+        //$proj->id = $db->lastInsertId();//ESTO SE PUEDE BOTAR A LA BD
         $db = null;
         
     } catch(PDOException $e) {
