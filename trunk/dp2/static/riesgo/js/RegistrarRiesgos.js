@@ -28,24 +28,31 @@ var arregloRiesgoComunes = new Array(
 var arregloConfiguraciones = new Array(1,0,0,0,0,0);
 $(document).ready(main);
 
+var buscar = "";
+
 function main(){
+
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
 	listarObjetosAfectados();
 	listarNivelesImpacto();
 	listarEquipos();
-	listarRiesgos();
+	listarRiesgos(buscar);
 	listarRiesgosComunes();
 	listarConfiguracion();
-	$(".glyphicon.glyphicon-search").one('click',function(){
+	$(".glyphicon.glyphicon-search").click(function(){
 		obtenerRiesgo();
 		deshabilitarCampos();
 	});
-	$(".glyphicon.glyphicon-edit").one('click',function(){
+	$(".glyphicon.glyphicon-edit").click(function(){
 		obtenerRiesgo();
 	});
+	$("#btnBuscar").click(function(){
+		buscar = $("#buscar").val();
+		listarRiesgos(buscar);
+	});
 
-	$(".glyphicon.glyphicon-remove").one('click', function(){
+	$(".glyphicon.glyphicon-remove").click( function(){
 //		var id = $(this).closest("tr").attr("id");
 //		$("#dialog-confirm").dialog({
 //			resizable: false,
@@ -81,7 +88,7 @@ function main(){
 		});
 	});
 
-	$("#btnRegistrar").one('click', function(){
+	$("#btnRegistrar").click( function(){
 		var data = {
 			idProyecto: $('#idProyecto').val(),
 			nombre: $('#nomRiesgo').val(),
@@ -108,7 +115,7 @@ function main(){
 			fail: codigoError
 		});
 	});
-	$('#btnModificar').one('click',function(){
+	$('#btnModificar').click(function(){
 		var data = {
 			id: $('#idRiesgoM').val(),
 			idProyecto: $('#idProyecto').val(),
@@ -137,7 +144,7 @@ function main(){
 		});
 	});
 	//Función para agregar los riesgos conocidos al proyecto
-	$("#btnAgregar").one('click', function(){
+	$("#btnAgregar").click( function(){
 		var data = [];
     	$('#tablaRiesgosComunes input[type="checkbox"]:checked').each(function(){
 	        var $row = $(this).parents('tr'); 
@@ -164,7 +171,7 @@ function main(){
 
 
 	//Boton guardar datos en la ventana de configuración
-	$("#btnConfiguracion").one('click', function(){
+	$("#btnConfiguracion").click( function(){
 		var data = {
 			idProyecto: $('#idProyecto').val(),
 			muyBajo: $('#muyBajo').val(),
@@ -344,15 +351,20 @@ function listarEquipos(){
 	});
 }
 
-function listarRiesgos(){
-		
-	/*$.ajax({
+function listarRiesgos(search){
+
+	var data = {
+		idProyecto: $('#idProyecto').val(),
+		buscar: search
+	};
+	var jsonData = JSON.stringify(data);
+	$.ajax({
 		type: 'GET',
-		url: getAllItems,
+		url: getAllItems + '/idProyecto=' + data.idProyecto + '&buscar='+data.buscar ,
 		dataType: "json",
-		success: agregarDataFila(data),
+		success: agregaDataFila(data),
 		fail: codigoError
-	});*/
+	});
 	
 	
 	agregaDataFila(null);
