@@ -49,7 +49,7 @@ function codigoError(){
 function agregaDataFila(data){
 	//arreglo=arregloProyecto;
 	if (data!=null){
-		arreglo=data;
+		arreglo=data["prs"];
 	}
 	for (i=0; i<arreglo.length;i++){		
 		agregaFilaProyecto(arreglo[i],i);
