@@ -19,7 +19,9 @@
 	}
 	
     function R_getListaPaquetesEDT($idProyecto){
-        $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
+        
+        $query = "SELECT * FROM edt WHERE id_proyecto=".$idProyecto;
+        
         $arregloListaPaquetesEDT= array();
         try {
             $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
@@ -28,7 +30,7 @@
             while ($row=mysqli_fetch_array($result)){
                 //$id = $row['id_proyecto'];
                 //$nombre = $row['nombre_proyecto'];
-                $data = array("id" => $row['id_edt'], "nombre" => $row['version']);
+                $data = array("id" => $row['id_edt'], "descripcion" => $row['version']);
                 array_push($arregloListaPaquetesEDT,$data);
             }
             //FALTA CERRAR LA CONEXION 
@@ -40,7 +42,7 @@
 
 
 
-    function R_getListaObjetosAfectados($idProyecto){
+    function R_getListaObjetosAfectados(){
         /*
         $idProyectoDecode = json_decode($idProyecto);
         $arregloListaObjetosAfectados= array(
@@ -49,16 +51,13 @@
         );
         echo json_encode($arregloListaObjetosAfectados);
         */
-        $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM CATEGORIA_RIESGO";
         $arregloListaObjetosAfectados= array();
         try {
             $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
             $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            
             while ($row=mysqli_fetch_array($result)){
-                //$id = $row['id_proyecto'];
-                //$nombre = $row['nombre_proyecto'];
-                $data = array("id" => $row['id_proyecto'], "descripcion" => $row['nombre_proyecto']);
+                $data = array("id" => $row['id_categoria_riesgo'], "descripcion" => $row['descripcion']);
                 array_push($arregloListaObjetosAfectados,$data);
             }
             //FALTA CERRAR LA CONEXION 
@@ -242,7 +241,7 @@ materializado 0
 
 
     function R_getListaConfiguracionProyecto($idProyecto){
-        $query = "SELECT * FROM configuracion_riesgo WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
         $listaConfiguracionProyecto= array();
         try {
             $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");

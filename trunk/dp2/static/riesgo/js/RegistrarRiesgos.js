@@ -259,9 +259,10 @@ function listarPaquetesTrabajo(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllPackets + '/idProyecto=' + data.idProyecto,
+		url: getAllPackets +'/'+ data.idProyecto,
 		dataType: "json",
 		success: function(data){
+			console.log(data);
 			var lista = data;
 			$.each(lista, function (i, value){
 				$('#paqEdt').append("<option value="+ value.id +">" + value.descripcion + "</option>");
