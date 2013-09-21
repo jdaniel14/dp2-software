@@ -109,7 +109,7 @@
         function G_addInformacionActa(){
 	    	//$miconexion = new conexion();
             try{
-                $request = Slim::getInstance()->request();
+                $request = \Slim\Slim::getInstance()->request();
                 $acta = json_decode($request->getBody());
                 
                 echo json_encode($acta);
@@ -123,7 +123,7 @@
         function G_addDescripcionActa(){
 	    	//$miconexion = new conexion();
             try{
-                $request = Slim::getInstance()->request();
+                $request = \Slim\Slim::getInstance()->request();
                 $acta = json_decode($request->getBody());
                 echo json_encode($acta);
                
@@ -137,7 +137,7 @@
         function G_addObjetivosActa(){
 	    	//$miconexion = new conexion();
             try{
-                $request = Slim::getInstance()->request();
+                $request = \Slim\Slim::getInstance()->request();
                 $acta = json_decode($request->getBody());
                 echo json_encode($acta);
                
@@ -151,7 +151,7 @@
         function G_addAutoridadActa(){
 	    	//$miconexion = new conexion();
             try{
-                $request = Slim::getInstance()->request();
+                $request = \Slim\Slim::getInstance()->request();
                 $acta = json_decode($request->getBody());
                 echo json_encode($acta);
                
