@@ -18,14 +18,19 @@ function CR_getActividades($json) {//servicio1
 }
 
 function CR_postActividades() {//servicio1
-    /*$proy = json_decode($json);
-    //$oscar=$proy->idProyecto;
-    $infoActividades = CR_consultarInfoActividades($proy->idProyecto);
+   
 
-    echo json_encode($infoActividades);*/
     
     $request = \Slim\Slim::getInstance()->request();
-    $proj = json_decode($request->getBody());
+    $actividades = json_decode($request->getBody());
+    
+
+    $arreglo_actividades=$actividades->idProyecto->tasks;
+    
+    
+    for ($i=0;$i<sizeof($arreglo_actividades);$i++) CR_guardar_actividades_BD($arreglo_actividades[0]);
+    
+    echo json_encode($jsonRespuesta);
 }
 
 function CR_guardarActividades($json) { //servicio2
@@ -168,6 +173,25 @@ function CR_obtenerRespuestaFracaso() {
     $respuesta->mensaje = 'Error';
 
     return $respuesta;
+}
+
+function CR_guardar_actividades_BD($actividad){
+    
+        $sql = "INSERT INTO ACTIVIDAD () VALUES (:nombre_actividad)";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("nombre_actividad", $actividad->name);
+        $stmt->execute();
+        //$proj->id = $db->lastInsertId();
+        $db = null;
+        
+    } catch(PDOException $e) {
+        echo json_encode(array("me"=> $e->getMessage()));
+				//'{"error":{"text":'. $e->getMessage() .'}}';
+    }
+    
+    
 }
 
 //Funciones hardcode
