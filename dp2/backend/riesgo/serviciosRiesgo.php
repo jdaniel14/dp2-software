@@ -95,12 +95,25 @@
     }
 
     function R_postRegistrarRiesgo(){
-        $request = Slim::getInstance()->request();
+        $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
+        $query = "INSERT INTO riesgo (nombre,id_categoria_riesgo) VALUES (:nombre_riesgo,:id_categoria_riesgo)";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
+            $stmt->bindParam("id_categoria_riesgo", $riesgo->idObjeto);
+            $stmt->execute();
+            $riesgo->id_riesgo = $db->lastInsertId();
+            $db = null;
+            echo json_encode(array("me"=>"", "id"=>$riesgo->nombre_riesgo));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
 
-        $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-        $stmt = $con->prepare($sql);
-        $sql = "INSERT INTO riesgo (id_riesgo,nombre_riesgo) VALUES (:id_riesgo,:nombre_riesgo)";
+
+        
         $stmt->bindParam("id_riesgo", $riesgo->name);
         $stmt->bindParam("nombre_riesgo", $riesgo->nombre_riesgo);
         $stmt->execute();
@@ -108,48 +121,6 @@
 
         $sql = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto, id_riesgo,id_paquete_trabajo,id_categoria_riesgos,
             country, region, year, description) VALUES (:name, :grapes, :country, :region, :year, :description)";
-/*
-
-{, “idObjeto”:”1”, “idImpacto”:”1” ,
- “probabilidad”:”0.5” , “acciones”:”texto …”, “costo”:”100” , “tiempo”:”2” , “idEquipo”:”1”}
-
-id_proyecto
-id_riesgo
-nombre_riesgo
-id_paquete_trabajo
-impacto
-probabilidad
-descripcion
-costoPotencial
-
-
-codigoRiesgo 0
-fechaOrigen 0
-demoraPotencial 0
-disparador 0
-severidad 0
-materializado 0
-
-
-        try {
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            $stmt = $con->prepare($sql);
-            $stmt->bindParam("name", $wine->name);
-            $stmt->bindParam("grapes", $wine->grapes);
-            $stmt->bindParam("country", $wine->country);
-            $stmt->bindParam("region", $wine->region);
-            $stmt->bindParam("year", $wine->year);
-            $stmt->bindParam("description", $wine->description);
-            $stmt->execute();
-            $wine->id = $con->lastInsertId();
-            $con = null;
-            echo json_encode($wine);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
-*/
-
 
     }
 
