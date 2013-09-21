@@ -73,7 +73,7 @@
 			}
 
 			$db = null;
-			echo json_encode($lista_project) ;
+			echo json_encode(array("prs"=>$lista_project)) ;
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         echo json_encode(array("me"=> $e->getMessage()));
