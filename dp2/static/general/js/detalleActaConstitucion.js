@@ -1,6 +1,6 @@
 var rootURL = "../../api/G_registrarActa";
-var rootURLdevuelveActa = "../../api/G_devuelveActa"
-
+var rootURLdevuelveActa = "../../api/G_devuelveActa";
+var rootURLregistrarInfoActa = "../../api/G_registrarInformacionActa";
 var codProyecto='1';
 
 $(document).ready(function() {
@@ -21,8 +21,35 @@ $("#btnGrabar").click(function(){
 		grabarRecursos();
 	}
 });
+$("#btnGrabarInformacion").click(function(){
+	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+		grabarInformacionActa();
+	}
+});
 function grabarRecursos(){
 	alert("Se grabó");
+}
+function grabarInformacionActa(){
+	var obj ={
+		"idProyecto": $("#idProyecto").val(),
+		"np": $("#nombreProyecto").val(),
+		"pap": $("#patrocinador").val(),
+		"fpp": $("#preparacionFecha").val(),
+		"tp": $("#tipoProyecto").val(),
+		"pp": $("#prioridadProyecto").val()
+	}; 
+	
+	$.ajax({
+		type: 'POST',
+		url: rootURLregistrarInfoActa,
+		dataType: "json", // data type of response	
+		data: JSON.stringify(obj),
+		fail: codigoError,
+                success: function(data){
+                    
+                    alert("Grabando Informacion Acta");
+                }
+	});
 }
 
 function iniciaActa(){
@@ -40,20 +67,4 @@ function iniciaActa(){
 }
 function codigoError(){
 	alert('Error');
-}
-function llenaActa(data){
-	for(key in data){i
-		if($('#'+key)I/html(data[key]);
-		$('#'+key).val(data[key])
-	}
-	var estado = $("#id_estado");
-	var responsable = $("#id_empleado_responsable");
-	var organizacion = $("#id_compania_responsable");
-	var arreglo = $("select");
-	for (var i = 0; i < arreglo.length; i++) {
-		$(arreglo[i]).val(data[arreglo[i].id]);
-		if($(arreglo[i]).hasClass("changeable")){
-			$(arreglo[i]).attr("disabled","disabled");
-		}
-	}
 }
