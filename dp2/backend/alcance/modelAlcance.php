@@ -4,7 +4,7 @@
 Precondicion -> EDTARBOL
 	[
         {
-          title : inicio,
+          title : DP2,
           hijos : 1,
           nodos : [ 
               {

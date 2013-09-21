@@ -94,7 +94,7 @@
 
           <div id = "controllerButton" style = "display:none">
              <h6> Utilitarios del EDT:   </h6>   
-               <button id = "editarEdt" type="button" class="btn btn-success">Editar</button>
+               <a id ="editarEdt" class="btn btn-success">Editar &raquo;</a>
                <a id = "eliminarEdt" class="btn btn-danger">Eliminar</a>
           </div>
         </p>
@@ -125,6 +125,8 @@
 
       -->
     <ul id="org" style="display:none">
+
+    <!--
     <li>
        DP2
        <ul>
@@ -151,6 +153,8 @@
          <li class="collapsed">Cierre</li>
        </ul>
      </li>
+     -->
+
    </ul>            
 
      
@@ -185,6 +189,29 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
+
+
+   <!-- Modal for editar -->
+
+   <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"> <span class="glyphicon glyphicon-info-sign"></span> Editar EDT</h4>
+        </div>
+        <div id = "cuerpoEditar" class="modal-body">
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id = "eliminarConfirmacion" type="button" class="btn btn-warning">Editar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 
     </div> <!-- /container -->
 
