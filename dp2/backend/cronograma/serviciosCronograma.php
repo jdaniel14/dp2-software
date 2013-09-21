@@ -28,7 +28,7 @@ function CR_postActividades() {//servicio1
     $arreglo_actividades=$actividades->idProyecto->tasks;
     
     
-    for ($i=0;$i<sizeof($arreglo_actividades);$i++) CR_guardar_actividades_BD($arreglo_actividades[0]);
+    for ($i=0;$i<sizeof($arreglo_actividades);$i++) CR_guardar_actividades_BD($arreglo_actividades[$i]);
     
     echo json_encode($jsonRespuesta);
 }
