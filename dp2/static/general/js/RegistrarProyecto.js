@@ -46,7 +46,7 @@ function codigoError(){
 }
 
 function agregaDataFila(data){
-	arreglo=arregloProyecto;
+	//arreglo=arregloProyecto;
 	if (data!=null){
 		arreglo=data;
 	}
