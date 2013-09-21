@@ -29,6 +29,7 @@ $("#btnGrabarInformacion").click(function(){
 function grabarRecursos(){
 	alert("Se grabó");
 }
+
 function grabarInformacionActa(){
 	var obj ={
 		"idProyecto": $("#idProyecto").val(),
@@ -47,7 +48,7 @@ function grabarInformacionActa(){
 		fail: codigoError,
                 success: function(data){
                     
-                    alert("Grabando Informacion Acta");
+                    alert(data);
                 }
 	});
 }
