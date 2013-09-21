@@ -8,7 +8,7 @@
 	//Henry
 
 	//Registrar riesgo
-	$app->get('/R_listaRiesgos', 'R_getListaRiesgos'); // Prueba
+	$app->get('/R_prueba', 'R_prueba'); // Prueba
 
 
 	$app->get('/R_listaPaquetesEDT/:id', 'R_getListaPaquetesEDT');//Obtener los paquetes de un proyecto
