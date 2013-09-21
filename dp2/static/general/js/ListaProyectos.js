@@ -60,7 +60,7 @@ function agregaFilaProyecto(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	$("#listaProyectos").append('<tr><td>'+ a + '</td><td>' + arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + '</td><td><a href=RegistrarActaConstitucion.html>Ver/Registrar</a></td></tr>');
+	$("#listaProyectos").append('<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + '</td><td><a href=RegistrarActaConstitucion.html>Ver/Registrar</a></td></tr>');
 }
 
 
