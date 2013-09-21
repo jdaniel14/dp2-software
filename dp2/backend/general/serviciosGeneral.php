@@ -79,7 +79,7 @@
         echo json_encode(array("me"=> $e->getMessage()));
 		}
 	}
-
+//CAMBIO PRUEBA
 	function G_getListaTipoProyecto(){
 /*		$sql = "SELECT * FROM TipoDeProyectos";
 		try {
@@ -109,18 +109,18 @@
 	function G_addInformacionActa(){
 		$request = \Slim\Slim::getInstance()->request();
     $acta = json_decode($request->getBody());
-    $sql = "UPDATE PROYECTO SET comentario_cierre = :patro, prioridad=:priori, id_tipo_contrato=:tipo WHERE id_proyecto=:id_proy ";
+    $sql = "UPDATE PROYECTO SET comentarios_cierre = :patro , prioridad=:priori, anho_presupuestario=:tipo  WHERE id_proyecto=:id_proy ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("patro", $proj->pap);
-        $stmt->bindParam("priori", $proj->pp);
-        $stmt->bindParam("tipo", $proj->tp);
-        $stmt->bindParam("id_proy", $proj->idProyecto);
+        $stmt->bindParam("patro", $acta->pap);
+        $stmt->bindParam("priori", $acta->pp);
+        $stmt->bindParam("tipo", $acta->tp);
+        $stmt->bindParam("id_proy", $acta->idProyecto);
         $stmt->execute();
-        $proj->id = $db->lastInsertId();
+        //$proj->id = $db->lastInsertId();
         $db = null;
-        echo json_encode(array("me"=>"", "id"=>$proj->id));
+        echo json_encode(array("me"=>"", "id"=>$acta->idProyecto));
 		  } catch(PDOException $e) {
 		      echo json_encode(array("me"=> $e->getMessage()));
 					//'{"error":{"text":'. $e->getMessage() .'}}';
