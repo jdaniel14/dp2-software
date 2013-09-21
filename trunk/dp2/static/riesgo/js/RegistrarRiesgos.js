@@ -212,7 +212,7 @@ function deshabilitarCampos(){
 
 function listarConfiguracion(){
 
-		/*var data = {
+		var data = {
 		idProyecto: $('#idProyecto').val()
 		};
 		var jsonData = JSON.stringify(data);
@@ -224,18 +224,20 @@ function listarConfiguracion(){
 				listarConfiguracion2(data);			
 			},
 			fail: codigoError
-		});*/
-		listarConfiguracion2(null);
+		});
+		//listarConfiguracion2(null);
 }
 
 function listarConfiguracion2(data){
-	
-	if (data!=null){
-		$('#muyBajo').val(data[1]);
-		$('#bajo').val(data[2]);
-		$('#medio').val(data[3]);
-		$('#alto').val(data[4]);
-		$('#muyAlto').val(data[5]);
+	console.log(data);
+	var arreglo= new array();
+	arreglo=data;
+	if (arreglo!=null){
+		$('#muyBajo').val(arreglo[0]);
+		$('#bajo').val(arreglo[1]);
+		$('#medio').val(arreglo[2]);
+		$('#alto').val(arreglo[3]);
+		$('#muyAlto').val(arreglo[4]);
 	} else {
 		$('#muyBajo').val(arregloConfiguraciones[1]);
 		$('#bajo').val(arregloConfiguraciones[2]);
