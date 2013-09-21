@@ -33,11 +33,43 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">General<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../../views/general/RegistrarProyecto.html">Registrar Proyecto</a></li>           
+              </ul>
+            </li>
+            <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Alcance<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../../views/alcance/index.html">Ver EDT</a></li>
+                <li><a href="../../views/alcance/diccionario.html?id_edt=1">Diccionario EDT</a></li>            
+              </ul>
+            </li>
+            <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cronograma<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../../views/cronograma/index.html">Mostrar Gantt</a></li>            
+              </ul>
+            </li>
+            <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Costo<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../../views/costo/AsignaCostoRecursos.html">Registrar presupuesto</a></li>
+                <li><a href="../../views/costo/VisualizarPresupuesto.html">Visualizar Presupuesto</a></li>
+                <li><a href="../../views/costo/AsignaCuenta.html">Asignar cuenta contable</a></li>
+              </ul>
+            </li>
+            <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Riesgos<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../../views/riesgo/registrarRiesgo.html">Mostrar riesgos</a></li>          
+              </ul>
+            </li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
 
@@ -61,23 +93,7 @@
               <th colspan="3">Acciones</th>
             </thead>
             <tbody class="cuerpo-tabla" id="diccionario">
-                <tr>
-                    <td>1</td>
-                    <td>Implementación</td>
-                    <td>Etapa en la cual se realiza la implementación del proyecto</td>
-                    <td>1.3</td>
-                    <td>14/09/13</td>
-                    <td>Aprobado</td>
-                    <td>
-                        <a href="verPaquete.html?id_paquete=1"><span class="glyphicon glyphicon-search"></a>
-                    </td>
-                    <td>
-                        <a href="editarPaquete.html?id_paquete=1"><span class="glyphicon glyphicon-edit"></a>
-                    </td>
-                    <!--<td>
-                        <a href="#"><span class="glyphicon glyphicon-remove"></a>
-                    </td>-->
-                </tr>
+                
             </tbody>
           </table>
         </div>      
