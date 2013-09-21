@@ -213,12 +213,12 @@ function deshabilitarCampos(){
 function listarConfiguracion(){
 
 		var data = {
-		idProyecto: $('#idProyecto').val()
+			idProyecto: $('#idProyecto').val()
 		};
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'GET',
-			url: getConfg,
+			url: getConfg + '/idProyecto=' + data.idProyectos,
 			dataType: "json",
 			success: function(data){
 				listarConfiguracion2(data);			
@@ -226,6 +226,10 @@ function listarConfiguracion(){
 			fail: codigoError
 		});
 		//listarConfiguracion2(null);
+
+		var data = {
+		idProyecto: $('#idProyecto').val()
+	};
 }
 
 function listarConfiguracion2(data){
@@ -249,8 +253,9 @@ function listarConfiguracion2(data){
 
 function listarPaquetesTrabajo(){
 	var data = {
-		idProyecto: $('#idProyecto').val()
+		idProyecto: $('#idProyecto').attr('value')
 	};
+	console.log(data);
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
@@ -351,10 +356,12 @@ function listarEquipos(){
 		},
 		fail: codigoError
 	});
+
+
 }
 
 function listarRiesgos(search){
-
+/*
 	var data = {
 		idProyecto: $('#idProyecto').val(),
 		buscar: search
@@ -367,7 +374,7 @@ function listarRiesgos(search){
 		success: agregaDataFila(data),
 		fail: codigoError
 	});
-	
+	*/
 	
 	agregaDataFila(null);
 
