@@ -4,7 +4,7 @@ var addItem = "../../api/R_registrarRiesgo";
 var updateItem = "../../api/R_modificarRiesgo";
 var deleteItem = "../../api/R_eliminarRiesgo";
 var getAllPackets = "../../api/R_listaPaquetesEDT";
-var getAllObjects = "../../api/R_listaObjetosAfectados";
+var getAllCategories = "../../api/R_listaCategoriaRiesgo";
 var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
 var getAllTeams = "../../api/R_listaEquipoRiesgo";
 var getAllKnownItems = "../../api/R_listarRiesgoComun";
@@ -34,7 +34,7 @@ function main(){
 
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
-	listarObjetosAfectados();
+	listarCategoriasRiesgo();
 	listarNivelesImpacto();
 	listarEquipos();
 	listarRiesgos(buscar);
@@ -93,7 +93,7 @@ function main(){
 			idProyecto: $('#idProyecto').val(),
 			nombre: $('#nomRiesgo').val(),
 			idPaquete: $('#paqEdt').val(),
-			idObjeto: $('#objAfe').val(),
+			idCategoria: $('#objAfe').val(),
 			idImpacto: $('#impRiesgo').val(),
 			probabilidad: $('#proRiesgo').val(),
 			acciones: $('#accEsp').val(),
@@ -121,7 +121,7 @@ function main(){
 			idProyecto: $('#idProyecto').val(),
 			nombre: $('#nomRiesgoM').val(),
 			idPaquete: $('#paqEdtM').val(),
-			idObjeto: $('#objAfeM').val(),
+			idCategoria: $('#objAfeM').val(),
 			idImpacto: $('#impRiesgoM').val(),
 			probabilidad: $('#proRiesgoM').val(),
 			acciones: $('#accEspM').val(),
@@ -255,14 +255,12 @@ function listarPaquetesTrabajo(){
 	var data = {
 		idProyecto: $('#idProyecto').attr('value')
 	};
-	console.log(data);
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
 		url: getAllPackets +'/'+ data.idProyecto,
 		dataType: "json",
 		success: function(data){
-			console.log(data);
 			var lista = data;
 			$.each(lista, function (i, value){
 				$('#paqEdt').append("<option value="+ value.id +">" + value.descripcion + "</option>");
@@ -301,21 +299,23 @@ function obtenerRiesgo(){
 	});
 }
 
-function listarObjetosAfectados(){
+function listarCategoriasRiesgo(){
 	var data = {
-		idProyecto: $('#idProyecto').val()
+		id: $('#idProyecto').val()
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllObjects + '/' + data.idProyecto,
+		url: getAllCategories,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
+			
 			$.each(lista, function (i, value){
 				$('#objAfe').append("<option value="+ value.id +">" + value.descripcion + "</option>");
 				$('#objAfeM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
-			});			
+			});	
+				
 		},
 		fail: codigoError
 	});
