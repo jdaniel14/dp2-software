@@ -101,13 +101,14 @@
 
 
             //2da parte
-            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial) 
+            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_proyecto,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial) 
             VALUES (:id_riesgo,:id_paquete_trabajo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_riesgo", $riesgo->id_riesgo);
+            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
             $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("impacto", $riesgo->impaco);
+            $stmt->bindParam("impacto", $riesgo->impacto);
             $stmt->bindParam("probabilidad", $riesgo->probabilidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
