@@ -27,10 +27,22 @@
 		return $this->link;
 	}
 }*/
-
-	function getConnection() {
+        //conexion para el servidor
+	/*function getConnection() {
 
 		$dbhost="127.0.0.1:3306";
+		$dbuser="usuario";
+		$dbpass="usuario.2013.";
+		$dbname="dp2";
+		$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		return $dbh;		  
+	}*/
+        
+        //conexion para local
+        function getConnection() {
+
+		$dbhost="127.0.0.1";
 		$dbuser="usuario";
 		$dbpass="usuario.2013.";
 		$dbname="dp2";
