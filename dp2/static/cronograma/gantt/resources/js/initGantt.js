@@ -90,12 +90,14 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		      ret.tasks[i].start=ret.tasks[i].start+offset;
 		
 		    ge.loadProject(ret);
-		    ge.checkpoint(); //empty the undo stack	
+		    ge.checkpoint(); //empty the undo stack
+		    console.log("GEEEEEE:");
+		    console.log(ge);
 		}
 		
 		
 		function saveGanttOnServer() {
-		
+			console.log(ge);
 			
 			if(confirm("Esta seguro que desea guardar los cambios?")){
 				var prj = ge.saveProject();
@@ -280,6 +282,8 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		
 		function saveInLocalStorage() {
 		  var prj = ge.saveProject();
+		  console.log("JSON prj");
+		  console.log(prj);
 		  if (localStorage) {
 		    localStorage.setObject("teamworkGantDemo", prj);
 		  } else {

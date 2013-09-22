@@ -369,6 +369,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   for (var i = 0; i < task.assigs.length; i++) {
     var assig = task.assigs[i];
     var assigRow = $.JST.createFromTemplate({task:task, assig:assig}, "ASSIGNMENT_ROW");
+    //console.log(assigRow);
     assigsTable.append(assigRow);
   }
 
@@ -462,23 +463,32 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         var resId = trAss.find("[name=resourceId]").val();
         var roleId = trAss.find("[name=roleId]").val();
         var effort = millisFromString(trAss.find("[name=effort]").val());
-
+        var typeCost = trAss.find("[name=typeCost]").text();
+        var costRate = trAss.find("[name=costRate]").text();
+        var value = trAss.find("[name=value]").attr("value");
+        console.log(value);
 
         //check if an existing assig has been deleted and re-created with the same values
         var found = false;
         for (var i = 0; i < task.assigs.length; i++) {
           var ass = task.assigs[i];
-
+          
           if (assId == ass.id) {
             ass.effort = effort;
             ass.roleId = roleId;
             ass.resourceId = resId;
+            ass.typeCost = typeCost;
+            ass.costRate = costRate;
+            ass.value = value;
             ass.touched = true;
             found = true;
             break;
 
           } else if (roleId == ass.roleId && resId == ass.resourceId) {
             ass.effort = effort;
+            ass.typeCost = typeCost;
+            ass.costRate = costRate;
+            ass.value = value;
             ass.touched = true;
             found = true;
             break;
@@ -487,7 +497,9 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         }
 
         if (!found) { //insert
-          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort);
+        	console.log("Valor nuevo: " + value);
+          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort, typeCost, costRate,value);
+          console.log(ass);
           ass.touched = true;
         }
 
