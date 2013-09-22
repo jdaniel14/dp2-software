@@ -233,7 +233,14 @@
 	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
 	  <tr taskId="(#=obj#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
 	    <td ><select onchange = "
-	    $.each($(this.parentNode.parentNode).children('td'),function(index,column){if(index==1){var sel = $(this).find('select');console.log(sel.attr('value'));}});" name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
+	    $.each($(this.parentNode.parentNode).children('td'),function(index,column){
+	    	if(index==0){
+	    		var sel = $(this).find('select');
+	    		console.log(sel.attr('value'));
+	    		
+	    	}
+	    });
+	    " name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
 	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
 	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
 		<td name="costRate">(#=obj.assig.costRate#)</td>
