@@ -231,8 +231,9 @@
 	<!-- !!! En este modigique el 2do th (role project) -->
 	
 	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
-	  <tr taskId="(#=obj.task.id#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
-	    <td ><select name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
+	  <tr taskId="(#=obj#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
+	    <td ><select onchange = "
+	    $.each($(this.parentNode.parentNode).children('td'),function(index,column){if(index==1){var sel = $(this).find('select');console.log(sel.attr('value'));}});" name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
 	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
 	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
 		<td name="costRate">(#=obj.assig.costRate#)</td>
@@ -241,6 +242,8 @@
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
 	  </tr>
 	  --></div>
+	  
+	  
 	  
 	  <!-- !! En este modifique el 2do td (role project)  -->
 	  
