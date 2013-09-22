@@ -92,13 +92,13 @@ function main(){
 		var data = {
 			idProyecto: $('#idProyecto').val(),
 			nombre: $('#nomRiesgo').val(),
-			idPaquete: $('#paqEdt').val(),
-			idCategoria: $('#objAfe').val(),
-			idImpacto: $('#impRiesgo').val(),
+			idPaqueteTrabajo: $('#paqEdt').val(),
+			idCategoriaRiesgo: $('#objAfe').val(),
+			impacto: $('#impRiesgo').val(),
 			probabilidad: $('#proRiesgo').val(),
 			acciones: $('#accEsp').val(),
-			costo: $('#costRiesgo').val(),
-			tiempo: $('#tiemRiesgo').val(),
+			costoPotencial: $('#costRiesgo').val(),
+			demoraPotencial: $('#tiemRiesgo').val(),
 			idEquipo: $('#equRes').val()
 		};
 		var jsonData = JSON.stringify(data);
@@ -121,7 +121,7 @@ function main(){
 			idProyecto: $('#idProyecto').val(),
 			nombre: $('#nomRiesgoM').val(),
 			idPaquete: $('#paqEdtM').val(),
-			idCategoria: $('#objAfeM').val(),
+			idCategoriaRiesgo: $('#objAfeM').val(),
 			idImpacto: $('#impRiesgoM').val(),
 			probabilidad: $('#proRiesgoM').val(),
 			acciones: $('#accEspM').val(),
