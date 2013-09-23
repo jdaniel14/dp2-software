@@ -136,15 +136,19 @@
 
     }
 
-    function R_deleteRiesgo($id){
-        $query = "UPDATE RIESGO_X_PAQUETE_EDT SET estado_logico = 0 WHERE id_riesgo_x_actividad=".$id;
-        try{
-           $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
+    function R_postRiesgo($id){
 
-           mysqli_query($con,$query) or die(mysqli_error($con));      
+        $sql = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("id", $id);
+            $stmt->execute();
+            $db = null;
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
+
     }
 
     function R_putRiesgo($id){
@@ -158,6 +162,7 @@
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
+
     }
 
 
@@ -168,8 +173,8 @@
         //echo "Entra";
         $request = \Slim\Slim::getInstance()->request();
         $configuracion = json_decode($request->getBody());
-        $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)
-        where id_proyecto =".$configuracion->idProyecto;
+        $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto);
+        -- where id_proyecto =".$configuracion->idProyecto;
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
@@ -191,7 +196,7 @@
     }    
 
 
-    function R_getListaConfiguracionProyecto($idProyecto){
+    /*function R_getListaConfiguracionProyecto($idProyecto){
         $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
         $listaConfiguracionProyecto= array();
         try {
@@ -206,7 +211,26 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
         echo json_encode($listaConfiguracionProyecto);
-    }
+
+        $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
+        try {
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $data = array("muyBajo" => $row->muy_bajo,
+                        "bajo" => $row->bajo,
+                        "medio" => $row->medio,
+                        "alto" => $row->alto,
+                        "muyAlto" => $row->muy_alto);
+            $db = null;
+            echo json_encode($data);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+        
+
+    }*/
 
     //Julio
 

@@ -15,7 +15,7 @@
 	$app->get('/R_listaCategoriaRiesgo', 'R_getListaCategoriaRiesgo');//Obtener la lista de objetos afectados de un proyecto
 	$app->get('/R_listaNivelesImpacto/:id', 'R_getListaNivelesImpacto');//Obtener la lista de niveles de impacto
 	$app->get('/R_listaEquipoRiesgo/:id', 'R_getListaEquipoRiesgo');//Obtener la lista de equipos de riesgo
-	$app->get('/R_eliminarRiesgo/:id','R_deleteRiesgo');
+	$app->post('/R_eliminarRiesgo/:id','R_postRiesgo');
 
 	$app->post('/R_registrarRiesgo', 'R_postRegistrarRiesgo');//Registrar un riesgo
 	
@@ -26,7 +26,7 @@
 
 
 	//Registrar configuracion 
-	$app->get('/R_listarConfiguracionProyecto/:idProyecto', 'R_getListaConfiguracionProyecto');//Obtener los valores de Configuracion de un Proyecto
+	//$app->get('/R_listarConfiguracionProyecto/:idProyecto', 'R_getListaConfiguracionProyecto');//Obtener los valores de Configuracion de un Proyecto
 	$app->post('/R_registrarConfiguracionProyecto', 'R_postRegistrarConfiguracionProyecto');//Registrar configuracion
 
 
