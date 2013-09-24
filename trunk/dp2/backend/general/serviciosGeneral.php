@@ -107,65 +107,91 @@
         //registar la informacion general
 	function G_addInformacionActa(){
 		$request = \Slim\Slim::getInstance()->request();
-    $acta = json_decode($request->getBody());
-    $sql = "UPDATE PROYECTO SET comentarios_cierre = :patro , prioridad=:priori, anho_presupuestario=:tipo  WHERE id_proyecto=:id_proy ";
-    try {
-        $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("patro", $acta->pap);
-        $stmt->bindParam("priori", $acta->pp);
-        $stmt->bindParam("tipo", $acta->tp);
-        $stmt->bindParam("id_proy", $acta->idProyecto);
-        $stmt->execute();
-        //$proj->id = $db->lastInsertId();
-        $db = null;
-        echo json_encode(array("me"=>"", "id"=>$acta->idProyecto));
-		  } catch(PDOException $e) {
-		      echo json_encode(array("me"=> $e->getMessage()));
-					//'{"error":{"text":'. $e->getMessage() .'}}';
+		$acta = json_decode($request->getBody());
+		$sql = "UPDATE PROYECTO SET f_preparacion=:p_f_preparacion, 
+									prioridad=:p_prioridad,											
+									tipo_proyecto=:p_tipo_proyecto
+				WHERE id_proyecto=:p_id_proy ";
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam("p_f_preparacion", $acta->fpp);
+			$stmt->bindParam("p_prioridad", $acta->pp);
+			$stmt->bindParam("p_tipo_proyecto", $acta->tp);
+			$stmt->bindParam("p_id_proy", $acta->idProyecto);
+			$stmt->execute();
+			$proj->id = $db->lastInsertId();
+			$db = null;
+			echo json_encode(array("me"=>"", "id"=>$acta->id));
+		} catch(PDOException $e) {
+			  echo json_encode(array("me"=> $e->getMessage()));
 		}
 	}
-  //registar descripcion del proyecto
-  function G_addDescripcionActa(){
-	//$miconexion = new conexion();
-      try{
-          $request = \Slim\Slim::getInstance()->request();
-          $acta = json_decode($request->getBody());
-          echo json_encode($acta);
-         
-      }              
-			catch (PDOException $e){
-				echo '{"error":{"text":'. $e->getMessage() .'}}';
-			}
+	  //registar descripcion del proyecto
+	function G_addDescripcionActa(){
+		$request = \Slim\Slim::getInstance()->request();
+		$acta = json_decode($request->getBody());
+		$sql = "UPDATE PROYECTO SET descripcion=:p_descripcion
+				WHERE id_proyecto=:p_id_proy ";
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam("p_descripcion", $acta->dp);
+			$stmt->bindParam("p_id_proy", $acta->idProyecto);
+			$stmt->execute();
+			$proj->id = $db->lastInsertId();
+			$db = null;
+			echo json_encode(array("me"=>"", "id"=>$acta->id));
+		} catch(PDOException $e) {
+			  echo json_encode(array("me"=> $e->getMessage()));
+		}
+	}
+			
+	//registar objetivos del proyecto
+	function G_addObjetivosActa(){
+		$request = \Slim\Slim::getInstance()->request();
+		$acta = json_decode($request->getBody());
+		$sql = "UPDATE PROYECTO SET costos=:p_costos,
+									duracion=:p_duracion,
+									calidad=:p_calidad
+				WHERE id_proyecto=:p_id_proy ";
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam("p_costos", $acta->cp);
+			$stmt->bindParam("p_duracion", $acta->plp);
+			$stmt->bindParam("p_calidad", $acta->cap);
+			$stmt->bindParam("p_id_proy", $acta->idProyecto);
+			$stmt->execute();
+			$proj->id = $db->lastInsertId();
+			$db = null;
+			echo json_encode(array("me"=>"", "id"=>$acta->id));
+		} catch(PDOException $e) {
+			  echo json_encode(array("me"=> $e->getMessage()));
+		}
 	}
         
-        //registar objetivos del proyecto
-        function G_addObjetivosActa(){
-	    	//$miconexion = new conexion();
-            try{
-                $request = \Slim\Slim::getInstance()->request();
-                $acta = json_decode($request->getBody());
-                echo json_encode($acta);
-               
-            }              
-            catch (PDOException $e){
-	    	echo '{"error":{"text":'. $e->getMessage() .'}}';
-	    }
-        }
-        
-        //registar Autoridad del proyecto
-        function G_addAutoridadActa(){
-	    	//$miconexion = new conexion();
-            try{
-                $request = \Slim\Slim::getInstance()->request();
-                $acta = json_decode($request->getBody());
-                echo json_encode($acta);
-               
-            }              
-            catch (PDOException $e){
-	    	echo '{"error":{"text":'. $e->getMessage() .'}}';
-	    }
-        }
+	//registar Autoridad del proyecto
+	function G_addAutoridadActa(){
+		$request = \Slim\Slim::getInstance()->request();
+		$acta = json_decode($request->getBody());
+		$sql = "UPDATE PROYECTO SET jefe_comite=:p_jefe_comite,
+									patrocinador=:p_patrocinador
+				WHERE id_proyecto=:p_id_proy ";
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam("p_jefe_comite", $acta->jcp);
+			$stmt->bindParam("p_patrocinador", $acta->sp);
+			$stmt->bindParam("p_id_proy", $acta->idProyecto);
+			$stmt->execute();
+			$proj->id = $db->lastInsertId();
+			$db = null;
+			echo json_encode(array("me"=>"", "id"=>$acta->id));
+		} catch(PDOException $e) {
+			  echo json_encode(array("me"=> $e->getMessage()));
+		}
+	}
         
         function G_getActa($id){
             //$miconexion = new conexion();
