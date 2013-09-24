@@ -193,22 +193,41 @@
 		}
 	}
         
-        function G_getActa($id){
-            //$miconexion = new conexion();
-						$sql = "SELECT comentario_cierre, prioridad, id_tipo_contrato FROM PROYECTO WHERE id_proyecto =:id";
-						try {
-							$db = getConnection();
-			        $stmt = $db->prepare($sql);
-			        $stmt->bindParam("id", $id);
-
-							$stmt = $db->query($sql);
-							$acta = $stmt->fetchAll(PDO::FETCH_OBJ);
-							$db = null;
-							echo json_encode($acta);
-						} catch(PDOException $e) {
-								echo json_encode(array("me"=> $e->getMessage()));
-						}
-        }
+	function G_getActa($id){
+	
+		$sql = "SELECT f_preparacion,
+						prioridad,
+						tipo_proyecto,
+						descripcion,
+						costos,
+						duracion,
+						calidad,
+						jefe_comite,
+						patrocinador
+				FROM PROYECTO WHERE id_proyecto =:id";
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			 $stmt->bindParam("id", $id);
+			$stmt = $db->query($sql);			
+			$p = $stmt->fetch(PDO::FETCH_ASSOC);
+			$proj = array("pap"=>$p["patrocinador"],
+							"fpp"=>$p["f_preparacion"],
+							"tp"=>$p["tipo_proyecto"],
+							"pp"=>$p["prioridad"],
+							"dp"=>$p["descripcion"],
+							"cp"=>$p["costos"],
+							"plp"=>$p["duracion"],
+							"calp"=>$p["calidad"],
+							"jcp"=>$p["jefe_comite"]);
+			
+			$db = null;
+			echo json_encode(array("prs"=>$proj)) ;
+		} catch(PDOException $e) {
+			echo json_encode(array("me"=> $e->getMessage()));
+		}
+	
+	}
             
             
 ?>
