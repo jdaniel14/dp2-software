@@ -102,7 +102,25 @@ function CR_consultarInfoActividades($idProyecto) {
       }
      */
     //Hardcode
+	/*
+	$sql = "SELECT * FROM ACTIVIDAD ";
+		try {
+			$db = getConnection();
+			$stmt = $db->query($sql);
+			$lista_actividad = array();
+			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+					$actividad = array("id"=>-$p["id_actividad"], "name"=>$p["nombre_actividad"], "wbsNode"=>$p["id_paquete_trabajo"], "start"=>$p["fecha_plan_inicio"],"end"=>$p["fecha_plan_fin"],"fila"=>$p["numero_fila"], "level"=>$p["profundidad"], "depends"=>$p["predecesores"], "progress"=>$p["avance"] );
+					array_push($lista_actividad, $actividad);
+			}
 
+			$db = null;
+			echo json_encode(array("tasks"=>$lista_actividad)) ;
+		} catch(PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+			echo json_encode(array("me"=> $e->getMessage()));
+		}
+	echo "Hardcode";
+	*/
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
     $recursos = CR_obtenerRecursosTotalFalsa();
@@ -219,16 +237,16 @@ function CR_obtenerRolesTotalFalsa() {
 
 function CR_obtenerRecursosTotalFalsa() {
     $listaRecursos = array();
-    $recurso1 = new CR_Recurso("tmp_1", "Recurso 1");
-    $recurso2 = new CR_Recurso("tmp_2", "Recurso 2");
-    $recurso3 = new CR_Recurso("tmp_3", "Recurso 3");
-    $recurso4 = new CR_Recurso("tmp_4", "Recurso 4");
-    $recurso5 = new CR_Recurso("tmp_5", "Recurso 5");
-    $recurso6 = new CR_Recurso("tmp_6", "Recurso 6");
-    $recurso7 = new CR_Recurso("tmp_7", "Recurso 7");
-    $recurso8 = new CR_Recurso("tmp_8", "Recurso 8");
-    $recurso9 = new CR_Recurso("tmp_9", "Recurso 9");
-    $recurso10 = new CR_Recurso("tmp_10", "Recurso 10");
+    $recurso1 = new CR_Recurso("tmp_1", "Recurso 1","Dias",90);
+    $recurso2 = new CR_Recurso("tmp_2", "Recurso 2","Servicio",2500);
+    $recurso3 = new CR_Recurso("tmp_3", "Recurso 3","Horas",26);
+    $recurso4 = new CR_Recurso("tmp_4", "Recurso 4","Dias",90);
+    $recurso5 = new CR_Recurso("tmp_5", "Recurso 5","Unidades",1200);
+    $recurso6 = new CR_Recurso("tmp_6", "Recurso 6","Horas",26);
+    $recurso7 = new CR_Recurso("tmp_7", "Recurso 7","Servicio",2500);
+    $recurso8 = new CR_Recurso("tmp_8", "Recurso 8","Horas",26);
+    $recurso9 = new CR_Recurso("tmp_9", "Recurso 9","Dias",90);
+    $recurso10 = new CR_Recurso("tmp_10", "Recurso 10","Servicio",2500);
     array_push($listaRecursos, $recurso1, $recurso2, $recurso3, $recurso4, $recurso5, $recurso6, $recurso7, $recurso8, $recurso9, $recurso10);
 
     return $listaRecursos;
@@ -251,6 +269,16 @@ function CR_obtenerInfoActividadesFalsa() {
     $listaActividades = array();
     $listaRecursos = array();
     $listaRecursos = CR_obtenerListaRecursosAsignadosFalsa();
+		//Date.prototype.toInt = function () {
+		//   return this.getFullYear()*10000+(this.getMonth()+1)*100+this.getDate();
+	//};
+	/*
+	Date.fromInt=function (dateInt){
+ var year = parseInt(dateInt/10000);
+ var month = parseInt((dateInt-year*10000)/100);
+ var day = parseInt(dateInt-year*10000-month*100);
+ return new Date(year,month-1,day,12,00,00);
+};*/
     $actividad1 = new CR_Actividad(-1, "Proyecto 1", "P1", 0, "STATUS_ACTIVE", 1346623200000, 16, 1348523999999, true, false, array(), "", "", 0, 100,"");
     $actividad2 = new CR_Actividad(-2, "Analisis", "AN", 1, "STATUS_ACTIVE", 1346623200000, 10, 1347659999999, false, false, $listaRecursos, "", "", 0, 99,"1: Paquete 1");
     $actividad3 = new CR_Actividad(-3, "Busqueda de proveedores", "BP", 2, "STATUS_ACTIVE", 1346623200000, 2, 1346795999999, false, false, array(), "", "", 0, 98,"1.1: Paquete 1.1");
