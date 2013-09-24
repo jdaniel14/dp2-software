@@ -7,4 +7,6 @@
 	$app->get('/CO_obtenerListaPaquetes/:parametro', 'CO_getListaPaquetes'); //servicio6
 	$app->get('/CO_enviarTipoCuenta/:parametro', 'CO_saveTipoCuenta'); //servicio7
 	$app->get('/CO_obtenerListaMonedas/', 'CO_getListaMonedas'); //servicio8
+
+	$app->get('/CO_test/', 'CO_testFunction');
 ?>
