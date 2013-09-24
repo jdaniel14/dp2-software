@@ -134,8 +134,9 @@
             $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgo);
             $stmt->execute();
             $row = $stmt->fetchObject();
+            $data=array("id" => $row->id_riesgo_x_proyecto, "estado" => $row->estado_logico);
             $db = null;
-            echo json_encode(array("id" => $row['id_riesgo_x_proyecto'], "estado" => $row['estado']));
+            echo json_encode($data);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
@@ -143,11 +144,12 @@
 
     function R_getListaRiesgo($idProyecto){
 
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_proyecto=$idProyecto AND estado_logico='1'";
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO";// WHERE id_proyecto=:id_proyecto";
         try {
             $arregloListaRiesgo= array();
             $db=getConnection();
             $stmt = $db->query($sql);
+            $stmt->bindParam("id_proyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre'],
@@ -165,7 +167,7 @@
                 array_push($arregloListaRiesgo,$data);
             }
             $db = null;
-            echo json_encode($arregloListaPaquetesEDT);
+            echo json_encode($arregloListaRiesgo);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        

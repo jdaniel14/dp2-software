@@ -16,6 +16,7 @@
 	$app->get('/R_listaNivelesImpacto/:id', 'R_getListaNivelesImpacto');//Obtener la lista de niveles de impacto
 	$app->get('/R_listaEquipoRiesgo/:id', 'R_getListaEquipoRiesgo');//Obtener la lista de equipos de riesgo
 	$app->get('/R_estadoLogicoRiesgo/:id', 'R_getEstadoLogicoRiesgo');
+	$app->get('/R_listaRiesgo/:id', 'R_getListaRiesgo');
 
 
 	$app->put('/R_cambiarEstadoLogicoRiesgo/:id', 'R_setEstadoLogicoRiesgo');
