@@ -201,13 +201,13 @@ function main(){
 	$(".glyphicon.glyphicon-ok").click( function(){
 		
 		var data = {
-			id: $(this).closest("tr").attr("id")
+			idRiesgo: $(this).closest("tr").attr("id")
 		};
 		idArray = [];
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'GET',
-			url: getStatus +  '/' + data.idProyecto,
+			url: getStatus +  '/' + data.idRiesgo,
 			dataType: "json",
 			success: function(data){
 				idArray = data;
@@ -222,7 +222,7 @@ function main(){
 		var jsonData = JSON.stringify(idArray);
 		$.ajax({
 			type: 'PUT',
-			url: updateStatus + '/' + idArray.idRiesgo + '/' + idArray.estado,
+			url: updateStatus + '/' + idArray.idRiesgo + '/' + 2,
 			data: jsonData,
 			dataType: "json",
 			success: function(data){
