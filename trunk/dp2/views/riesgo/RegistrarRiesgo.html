@@ -126,7 +126,7 @@
                 <label class="col-lg-12 control-label">Esta seguro que desea eliminar este riesgo</label>
               </div>
               <div class="modal-footer">
-                <button class="btn btn-danger" data-dismiss="modal">Eliminar</button>
+                <button class="btn btn-danger" data-dismiss="modal" id="btnEliminar">Eliminar</button>
                 <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -402,6 +402,25 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 <button type="button" id="btnConfiguracion" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- Modal para la confirmación de riesgo -->
+        <div id="confirmRisk" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmación de Riesgo</h4>
+              </div>
+              <div class="modal-body titulo-tabla">
+                <label class="col-lg-12 control-label">¿Esta seguro que desea confirmar este riesgo?</label>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" id="btnConfirmar">Confirmar</button>
+                <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
