@@ -14,6 +14,46 @@
         echo "Probando :D";
 	}
 	
+
+    function R_postRegistrarRiesgo(){
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        $query = "INSERT INTO riesgo (nombre,id_categoria_riesgo) VALUES (:nombre_riesgo,:id_categoria_riesgo)";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
+            $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
+            $stmt->execute();
+            $riesgo->id_riesgo = $db->lastInsertId();
+            $db = null;
+
+
+            //2da parte
+            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_proyecto,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial) 
+            VALUES (:id_riesgo,:id_proyecto,:id_paquete_trabajo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo", $riesgo->id_riesgo);
+            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
+            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
+            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
+            $stmt->execute();
+            
+            $db = null;
+
+
+            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
     function R_getListaPaquetesEDT($idProyecto){
         $sql = "SELECT * FROM edt WHERE id_proyecto=".$idProyecto;
         try {
@@ -86,63 +126,44 @@
         }        
     }
 
-    function R_postRegistrarRiesgo(){
-        $request = \Slim\Slim::getInstance()->request();
-        $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo (nombre,id_categoria_riesgo) VALUES (:nombre_riesgo,:id_categoria_riesgo)";
+    function R_getEstadoLogicoRiesgo($idRiesgo){
+        $query = "SELECT * FROM RIESGO_X_PROYECTO WHERE riesgo=:riesgo";
         try {
-            $db = getConnection();
+            $db=getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
-            $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
+            $stmt->bindParam("riesgo", $idRiesgo);
             $stmt->execute();
-            $riesgo->id_riesgo = $db->lastInsertId();
+            $row = $stmt->fetchObject();
             $db = null;
-
-
-            //2da parte
-            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_proyecto,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial) 
-            VALUES (:id_riesgo,:id_proyecto,:id_paquete_trabajo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo", $riesgo->id_riesgo);
-            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("impacto", $riesgo->impacto);
-            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
-            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
-            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
-            $stmt->execute();
-            
-            $db = null;
-
-
-            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
+            echo json_encode($row['estado']);
         } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
-        }
-/*
-
-        
-        $stmt->bindParam("id_riesgo", $riesgo->name);
-        $stmt->bindParam("nombre_riesgo", $riesgo->nombre_riesgo);
-        $stmt->execute();
-        $riesgo->id_riesgo = $con->lastInsertId();
-
-        $sql = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto, id_riesgo,id_paquete_trabajo,id_categoria_riesgos,
-            country, region, year, description) VALUES (:name, :grapes, :country, :region, :year, :description)";
-            */
-
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
     }
 
-    function R_postRiesgo($id){
+    function R_setEstadoLogicoRiesgo($idRiesgo){
 
         $sql = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
-            $stmt->bindParam("id", $id);
+            $stmt->bindParam("id", $idRiesgo);
+            $stmt->execute();
+            $db = null;
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
+    function R_deleteRiesgo($idRiesgo){
+
+        $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_actividad=:id";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("id", $idRiesgo);
             $stmt->execute();
             $db = null;
         } catch(PDOException $e) {
@@ -173,8 +194,8 @@
         //echo "Entra";
         $request = \Slim\Slim::getInstance()->request();
         $configuracion = json_decode($request->getBody());
-        $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto);
-        -- where id_proyecto =".$configuracion->idProyecto;
+        $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)";
+        //-- where id_proyecto =".$configuracion->idProyecto;
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
@@ -195,42 +216,6 @@
 
     }    
 
-
-    /*function R_getListaConfiguracionProyecto($idProyecto){
-        $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
-        $listaConfiguracionProyecto= array();
-        try {
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            $result = mysqli_query($con,$query) or die(mysqli_error($con));
-            while ($row=mysqli_fetch_array($result)){
-                $arregloListaEquipoRiesgo= array("muyBajo" => $row['muy_bajo'], "bajo" => $row['bajo'],"medio" => $row['medio'],"alto" => $row['alto'],"muyAlto" => $row['muy_alto']);
-                array_push($listaConfiguracionProyecto,$data);
-            }
-            //FALTA CERRAR LA CONEXION 
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-        echo json_encode($listaConfiguracionProyecto);
-
-        $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
-        try {
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data = array("muyBajo" => $row->muy_bajo,
-                        "bajo" => $row->bajo,
-                        "medio" => $row->medio,
-                        "alto" => $row->alto,
-                        "muyAlto" => $row->muy_alto);
-            $db = null;
-            echo json_encode($data);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-        
-
-    }*/
 
     //Julio
 
