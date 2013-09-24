@@ -127,15 +127,15 @@
     }
 
     function R_getEstadoLogicoRiesgo($idRiesgo){
-        $query = "SELECT * FROM RIESGO_X_PROYECTO WHERE riesgo=:riesgo";
+        $query = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("riesgo", $idRiesgo);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgo);
             $stmt->execute();
             $row = $stmt->fetchObject();
             $db = null;
-            echo json_encode($row['estado']);
+            echo json_encode(array("id" => $row['id_riesgo_x_proyecto'], "estado" => $row['estado']));
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
