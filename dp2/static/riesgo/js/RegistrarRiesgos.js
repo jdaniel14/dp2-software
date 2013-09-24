@@ -10,7 +10,9 @@ var getAllTeams = "../../api/R_listaEquipoRiesgo";
 var getAllKnownItems = "../../api/R_listarRiesgoComun";
 var addList = "../../api/R_asignarRiesgoComun"
 var addConfg = "../../api/R_registrarConfiguracionProyecto";
-var getConfg = "../../api/R_listarConfiguracionProyecto"
+var updateStatus = "../../api/R_modificarRiesgo";
+var getStatus = "../../api/R_estadoLogicoRiesgo";
+//var getConfg = "../../api/R_listarConfiguracionProyecto"
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -29,9 +31,10 @@ var arregloConfiguraciones = new Array(1,0,0,0,0,0);
 $(document).ready(main);
 
 var buscar = "";
+var idArray = [];
 
 function main(){
-
+	
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
@@ -53,31 +56,19 @@ function main(){
 	});
 
 	$(".glyphicon.glyphicon-remove").click( function(){
-//		var id = $(this).closest("tr").attr("id");
-//		$("#dialog-confirm").dialog({
-//			resizable: false,
-//			modal: true,
-//			height: 140,
-//			buttons: {
-//				Yes: function (){
-//					
-//					$(this).dialog("close");
-//				},
-//				No: function (){
-//					$(this).dialog("close");
-//				}
-//			},
-//			close: function (event, ui){
-//				$(this).remove();
-//			}
-//		});
+		
 		var data = {
 			id: $(this).closest("tr").attr("id")
 		};
-		var jsonData = JSON.stringify(data);
+		idArray = [];
+		idArray = data;
+	});
+
+	$("#btnEliminar").click( function(){
+		var jsonData = JSON.stringify(idArray);
 		$.ajax({
-			type: 'DELETE',
-			url: deleteItem + '/' + data.id,
+			type: 'POST',
+			url: deleteItem + '/' + idArray.id,
 			data: jsonData,
 			dataType: "json",
 			success: function(data){
@@ -87,6 +78,8 @@ function main(){
 			fail: codigoError
 		});
 	});
+
+
 
 	$("#btnRegistrar").click( function(){
 		var data = {
@@ -194,6 +187,52 @@ function main(){
 			}
 		});
 	});
+
+	$("#listarConf").click( function(){
+		$('#muyBajo').val('');
+		$('#bajo').val('');
+		$('#medio').val('');
+		$('#alto').val('');
+		$('#muyAlto').val('');
+		listarConfiguracion()
+	});
+
+	//Boton para confirmar un riesgo
+	$(".glyphicon.glyphicon-ok").click( function(){
+		
+		var data = {
+			id: $(this).closest("tr").attr("id")
+		};
+		idArray = [];
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'GET',
+			url: getStatus +  '/' + data.idProyecto,
+			dataType: "json",
+			success: function(data){
+				idArray = data;
+			},
+			fail: codigoError
+		});
+		console.log(idArray);
+	});
+
+	$("#btnConfirmar").click( function(){
+		console.log(idArray);
+		var jsonData = JSON.stringify(idArray);
+		$.ajax({
+			type: 'PUT',
+			url: updateStatus + '/' + idArray.idRiesgo + '/' + idArray.estado,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				alert("Se ha confirmado el riesgo");
+				listarRiesgos();
+			},
+			fail: codigoError
+		});
+	});
+
 }
 
 
@@ -218,7 +257,7 @@ function listarConfiguracion(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'GET',
-			url: getConfg +  '/' + data.idProyecto,
+			url: getAllImpactLevels +  '/' + data.idProyecto,
 			dataType: "json",
 			success: function(data){
 				listarConfiguracion2(data);			
@@ -233,15 +272,14 @@ function listarConfiguracion(){
 }
 
 function listarConfiguracion2(data){
-	console.log(data);
-	var arreglo= new array();
+	var arreglo = [];
 	arreglo=data;
 	if (arreglo!=null){
-		$('#muyBajo').val(arreglo[0]);
-		$('#bajo').val(arreglo[1]);
-		$('#medio').val(arreglo[2]);
-		$('#alto').val(arreglo[3]);
-		$('#muyAlto').val(arreglo[4]);
+		$('#muyBajo').val(arreglo.muyBajo);
+		$('#bajo').val(arreglo.bajo);
+		$('#medio').val(arreglo.medio);
+		$('#alto').val(arreglo.alto);
+		$('#muyAlto').val(arreglo.muyAlto);
 	} else {
 		$('#muyBajo').val(arregloConfiguraciones[1]);
 		$('#bajo').val(arregloConfiguraciones[2]);
@@ -331,10 +369,19 @@ function listarNivelesImpacto(){
 		dataType: "json",
 		success: function(data){
 			var lista = data;
-			$.each(lista, function (i, value){
-				$('#impRiesgo').append("<option value="+ value.idImpacto +">" + value.descripcion + "</option>");
-				$('#impRiesgoM').append("<option value="+ value.idImpacto +">" + value.descripcion + "</option>");
-			});			
+			
+				$('#impRiesgo').append("<option value="+ lista.muyBajo +">Muy Bajo</option>" +
+					"<option value="+ lista.bajo +">Bajo</option>" +
+					"<option value="+ lista.medio +">Medio</option>" +
+					"<option value="+ lista.alto +">Alto</option>" +
+					"<option value="+ lista.muyAlto +">Muy Alto</option>");
+
+				$('#impRiesgoM').append("<option value="+ lista.muyBajo +">Muy Bajo</option>" +
+					"<option value="+ lista.bajo +">Bajo</option>" +
+					"<option value="+ lista.medio +">Medio</option>" +
+					"<option value="+ lista.alto +">Alto</option>" +
+					"<option value="+ lista.muyAlto +">Muy Alto</option>");
+					
 		},
 		fail: codigoError
 	});
@@ -452,7 +499,7 @@ function agregaFilaRiesgo(arreglo,i){
 							  "</td></tr>");
 	*/
 	severidad = Math.floor(parseFloat(arreglo[3])*parseFloat(arreglo[4]) * 100) / 100;
-	$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a href=\"#\" ><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>');
+	$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a></td></tr>');
 
 }
 
