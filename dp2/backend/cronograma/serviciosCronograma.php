@@ -234,8 +234,8 @@ function CR_obtenerRolesTotalFalsa() {
     $listaRoles = array();
     //id,                name	
     $rol1 = new CR_Rol("tmp_1", "Project Manager");
-    $rol2 = new CR_Rol("tmp_1", "Worker");
-    $rol3 = new CR_Rol("tmp_1", "Stakeholder/Customer");
+    $rol2 = new CR_Rol("tmp_2", "Worker");
+    $rol3 = new CR_Rol("tmp_3", "Stakeholder/Customer");
     array_push($listaRoles, $rol1, $rol2, $rol3);
 
     return $listaRoles;
@@ -261,8 +261,8 @@ function CR_obtenerRecursosTotalFalsa() {
 function CR_obtenerListaRecursosAsignadosFalsa() {
     $listaRecursos = array();
     //id,                effort, resourceId, role_id	
-    $recurso1 = new CR_RecursoAsignado("tmp_1", 13800000, "tmp_5", "tmp_3","Unidades",1200,1,1200);
-    $recurso2 = new CR_RecursoAsignado("tmp_2", 9600000, "tmp_3", "tmp_2","Horas",26,8,208);
+    $recurso1 = new CR_RecursoAsignado("tmp_1", 13800000, "tmp_5", "tmp_1","Unidades",1200,1,1200);
+    $recurso2 = new CR_RecursoAsignado("tmp_2", 9600000, "tmp_3", "tmp_1","Horas",26,8,208);
     $recurso3 = new CR_RecursoAsignado("tmp_3", 6600000, "tmp_9", "tmp_1","Dias",90,3,270);
 	$recurso4 = new CR_RecursoAsignado("tmp_4", 6600000, "tmp_2", "tmp_1","servicio",2500,1,2500);
     array_push($listaRecursos, $recurso1, $recurso2, $recurso3,$recurso4);
