@@ -28,20 +28,19 @@
       array('id'=>2, 'nom'=>'Alfonso Bedoya'),
       array('id'=>3, 'nom'=>'Jose Astuvilca'),
       array('id'=>4, 'nom'=>'Irvin Vargas'));
-		echo json_encode(array('l_jefes'=>$arregloProyecto));
+		echo json_encode($arregloProyecto);
 	}
             
   function G_postRegistrarProyecto(){
 		$request = \Slim\Slim::getInstance()->request();
     $proj = json_decode($request->getBody());
-    $sql = "INSERT INTO PROYECTO () VALUES (:iduser, :idjp, :f_ini, :f_fin)";
+    $sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada) VALUES (:nom, :fi, :ff)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("iduser", $proj->iduser);
-        $stmt->bindParam("idjp", $proj->idjp);
-        $stmt->bindParam("f_ini", $proj->f_ini);
-        $stmt->bindParam("f_fin", $proj->f_fin);
+        $stmt->bindParam("nom", $proj->nom);
+        $stmt->bindParam("fi", $proj->fi);
+        $stmt->bindParam("ff", $proj->ff);
         $stmt->execute();
         $proj->id = $db->lastInsertId();
         $db = null;
