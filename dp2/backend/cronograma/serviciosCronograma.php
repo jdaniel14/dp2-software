@@ -104,12 +104,18 @@ function CR_consultarInfoActividades($idProyecto) {
     //Hardcode
 	/*
 	$sql = "SELECT * FROM ACTIVIDAD ";
+	$sql2= "SELECT * FROM PAQUETE_TRABAJO wHERE id_edt=?";
 		try {
 			$db = getConnection();
-			$stmt = $db->query($sql);
+			$stmt = $db->prepare($sql);
 			$lista_actividad = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$actividad = array("id"=>-$p["id_actividad"], "name"=>$p["nombre_actividad"], "wbsNode"=>$p["id_paquete_trabajo"], "start"=>$p["fecha_plan_inicio"],"end"=>$p["fecha_plan_fin"],"fila"=>$p["numero_fila"], "level"=>$p["profundidad"], "depends"=>$p["predecesores"], "progress"=>$p["avance"],"cost"=>$p["costo"],"cost"=>$p["costo"],"code"=>$p["codigo"] ,"duration"=>$p["dias"]);
+					$detalle_paquete="";
+					if ($p["id_paquete_trabajo"]!=NULL){
+						$stmt2 = $db->query($sql2);
+						if ($p2 = $stmt->fetch(PDO::FETCH_ASSOC))$detalle_paquete=$p2["nombre"];
+					}
+					$actividad = array("id_task"=>$p["id_actividad"], "name"=>$p["nombre_actividad"], "id_Wbs"=>$p["id_paquete_trabajo"],"wbsNode"=>$detalle_paquete, "start"=>$p["fecha_plan_inicio"],"end"=>$p["fecha_plan_fin"],"id"=>-$p["numero_fila"], "level"=>$p["profundidad"], "depends"=>$p["predecesores"], "progress"=>$p["avance"],"cost"=>$p["costo"],"cost"=>$p["costo"],"code"=>$p["codigo"] ,"duration"=>$p["dias"]);
 					array_push($lista_actividad, $actividad);
 			}
 
@@ -228,8 +234,8 @@ function CR_obtenerRolesTotalFalsa() {
     $listaRoles = array();
     //id,                name	
     $rol1 = new CR_Rol("tmp_1", "Project Manager");
-    $rol2 = new CR_Rol("tmp_2", "Worker");
-    $rol3 = new CR_Rol("tmp_3", "Stakeholder/Customer");
+    $rol2 = new CR_Rol("tmp_1", "Worker");
+    $rol3 = new CR_Rol("tmp_1", "Stakeholder/Customer");
     array_push($listaRoles, $rol1, $rol2, $rol3);
 
     return $listaRoles;
