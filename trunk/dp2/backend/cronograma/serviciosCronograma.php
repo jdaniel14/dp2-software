@@ -153,7 +153,7 @@ function CR_guardarcalendarioBaseBD($objeto) {
 function CR_consultarRecursos($idProyecto) {
 
 
-    $listaRecursos = CR_obtenerListaRecursosFalsa();
+    $listaRecursos = CR_obtenerRecursosTotalFalsa();
     return $listaRecursos;
 }
 
