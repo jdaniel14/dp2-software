@@ -1,32 +1,8 @@
-var rootURL = "../../api/G_listaTipoProyecto";
 
 /*
-var codProyecto='1';
+iniciaJefeProyectos();
 
-var arregloProyecto= new Array(
-							new Array('Proyecto1','Bonnie Carranza','13/05/2013','23/06/2013'),
-							new Array('Proyecto2','Alfonso Bedoya','01/06/2013','14/10/2013'),
-							new Array('Proyecto3','Jose Astuvilca','15/06/2013','13/09/2013'),
-							new Array('Proyecto4','Bonnie Carranza','21/08/2013','21/10/2013')
-								);
-
-								
-
-var arregloActividad1= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles', '5'),
-							new Array('Unidad','Bote de pintura', '8','Soles','12')
-								);
-								
-
-var arregloActividad2= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles','80'),
-							new Array('Litro','Cemento', '','Soles','10'),
-							new Array('Kilo','Fierro', '10','Soles','30')
-								);
-*/								
-iniciaTipoProyectos();
-
-function iniciaTipoProyectos(){
+function iniciaJefeProyectos(){
 	
 	$.ajax({
 		type: 'GET',
@@ -37,12 +13,6 @@ function iniciaTipoProyectos(){
             agregaDataFila(data);
         }
 	});
-}
-
-function codigoError(){
-
-	alert('Error');
-
 }
 
 function agregaDataFila(data){
@@ -59,26 +29,59 @@ function agregaFilaProyecto(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	$("#listaTipoProyectos").append('<option value="'+ a + '">' + arreglo[0] + '</option>');
+	$("#jefeProyectos").append('<option value="'+ a + '">' + arreglo[0] + '</option>');
+}
+*/
+
+function cargarComboJefeProyecto(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_listaJefeProyectos',
+		dataType: "json",
+		async:false,
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(data[obj]["id"]);
+				opt.html(data[obj]["nom"]);
+				$("#jefeProyecto").append(opt);
+			}
+		}
+	});
 }
 
+$(document).ready(function(){
+	//cargar Combos
+	cargarComboJefeProyecto();
+	//cargarComboCompania();
+	//cargarComboEstado();
+});
 
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
+		registrarProyecto();
 	}
 });
 
-function grabarRecursos(){
-	
-	alert("Se grabó");
+function registrarProyectos(){
+	var jsonCliente = {
+		nom : $("#nombreProyecto").val(),
+		jp  : $("#jefeProyecto").val(),
+		tp  : $("#tipoProyecto").val(),
+		fi  : $("#fechaInicio").val(),
+		ff  : $("#fechaFin").val()
+    };
 
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(jsonCliente),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        url: "../../api/G_registrarProyecto",
+        success: function (data) {
+            alert("Se registró con éxito");
+        }
+    });
 }
 
-
-$("#btnResumen").click(function(){
-	
-	$("#AsignarCostosRecursos").hide();
-	$("#ResumenCostosRecursos").show();
-	 obtenDatosActividad('1');
-});
