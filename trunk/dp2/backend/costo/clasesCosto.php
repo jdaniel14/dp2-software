@@ -3,36 +3,36 @@
 class CO_Proyecto {
 	public $idProyecto;
 	public $nombre;
-	public $presupuestoTotal;
 	public $porcentajeReserva;
-	public $presupuestoMaximo;
+	public $presupuesto;
 	
 	//constructor
-	function __construct($idProyecto, $nombre, $presupuestoTotal, $porcentajeReserva, $presupuestoMaximo) {
+	function __construct($idProyecto, $nombre, $porcentajeReserva, $presupuesto) {
 		$this->idProyecto = $idProyecto;
 		$this->nombre = $nombre;
-		$this->presupuestoTotal = $presupuestoTotal;
 		$this->porcentajeReserva = $porcentajeReserva;
-		$this->presupuestoMaximo = $presupuestoMaximo;
+		$this->presupuesto = $presupuesto;
 	}
 }
 
 class CO_Recurso {
 	public $idRecurso;
-	public $unidadMedida;
-	public $nombre;
-	public $costoUnitario;
+	public $idUnidadMedida;
+	public $descripcion;
 	public $moneda;
-	public $cantidadUsada;
+	public $unidadMedida;
+	public $cantidadEstimada;
+	public $costoUnitario;
 	
 	//constructor
-	function __construct($idRecurso, $unidadMedida, $nombre, $costoUnitario, $moneda, $cantidadUsada) {
+	function __construct($idRecurso, $idUnidadMedida, $descripcion, $moneda, $unidadMedida, $cantidadEstimada, $costoUnitario) {
        $this->idRecurso = $idRecurso;
-	   $this->unidadMedida = $unidadMedida;
-	   $this->nombre = $nombre;
-	   $this->costoUnitario = $costoUnitario;
+	   $this->idUnidadMedida = $idUnidadMedida;
+	   $this->descripcion = $descripcion;
 	   $this->moneda = $moneda;
-	   $this->cantidadUsada = $cantidadUsada;
+	   $this->unidadMedida = $unidadMedida;
+	   $this->cantidadEstimada = $cantidadEstimada;
+	   $this->costoUnitario = $costoUnitario;
    }
 }
 
