@@ -57,11 +57,14 @@ class CR_Recurso {
 
     public $id;
     public $name;
-
+	public $typeCost;
+	public $costRate;
     //constructor
-    function __construct($id, $name) {
+    function __construct($id, $name,$typeCost,$costRate) {
         $this->id = $id;
         $this->name = $name;
+		$this->typeCost=$typeCost;
+		$this->costRate=$costRate;
     }
 
 }
