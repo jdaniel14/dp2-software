@@ -14,7 +14,7 @@
         echo "Probando :D";
 	}
 	
-
+    //--------------------------------------RIESGO--------------------------------------
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
@@ -30,7 +30,7 @@
 
 
             //2da parte
-            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_proyecto,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial) 
+            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_proyecto,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial,) 
             VALUES (:id_riesgo,:id_proyecto,:id_paquete_trabajo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -141,6 +141,36 @@
         }        
     }
 
+    function R_getListaRiesgo($idProyecto){
+
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_proyecto=$idProyecto AND estado_logico='1'";
+        try {
+            $arregloListaRiesgo= array();
+            $db=getConnection();
+            $stmt = $db->query($sql);
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
+                            "nombre" => $row['nombre'],
+                            "paqueteTrabajo" => $row['id_paquete_trabajo'],//X
+                            "categoria" => $row['version'],//X
+                            "impacto" => $row['impacto'],
+                            "probabilidad" => $row['probabilidad'],
+                            "severidad" => $row['severidad'],
+                            "estrategia" => $row['nombre'],//X
+                            "accionesEspecificas" => $row['nombre'],//X
+                            "costoEsperado" => $row['impacto'],//X
+                            "tiempoEsperado" => $row['fecha_origen'],//X
+                            "equipoEesponsable" => $row['impacto']//X
+                            );
+                array_push($arregloListaRiesgo,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaPaquetesEDT);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
     function R_setEstadoLogicoRiesgo($idRiesgo){
 
         $sql = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
@@ -157,6 +187,21 @@
 
     }
 
+    function R_setRiesgo($id){
+        $request = Slim::getInstance()->request();
+        $body = $request->getBody();
+        $risk = json_decode($body);    
+        $query = "UPDATE RIESGO_X_PROYECTO SET nombre = ". $risk->nombre. ", idPaquete = ". $risk->idPaquete . ", idObjeto = ". $risk->idObjeto .", idImpacto = ". $risk->idImpacto .", probabilidad= ". $risk->probabilidad .", acciones= ". $risk->acciones .", costo=". $risk->costo . ", tiempo=". $risk->tiempo . ", equipo=". $risk->idEquipo. " where id_riesgo_x_actividad = ".$id;
+        try{
+            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
+            mysqli_query($con,$query) or die(mysqli_error($con));
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
+
     function R_deleteRiesgo($idRiesgo){
 
         $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_actividad=:id";
@@ -172,23 +217,7 @@
 
     }
 
-    function R_putRiesgo($id){
-        $request = Slim::getInstance()->request();
-        $body = $request->getBody();
-        $risk = json_decode($body);    
-        $query = "UPDATE RIESGO_X_PROYECTO SET nombre = ". $risk->nombre. ", idPaquete = ". $risk->idPaquete . ", idObjeto = ". $risk->idObjeto .", idImpacto = ". $risk->idImpacto .", probabilidad= ". $risk->probabilidad .", acciones= ". $risk->acciones .", costo=". $risk->costo . ", tiempo=". $risk->tiempo . ", equipo=". $risk->idEquipo. " where id_riesgo_x_actividad = ".$id;
-        try{
-            $con=mysqli_connect("localhost","root","","dp2") or die("Error con la conexion");
-            mysqli_query($con,$query) or die(mysqli_error($con));
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
-    }
-
-
-
-    //CONFIGURACION
+    //--------------------------------------CONFIGURACION--------------------------------------
 
     function R_postRegistrarConfiguracionProyecto(){
         //echo "Entra";
