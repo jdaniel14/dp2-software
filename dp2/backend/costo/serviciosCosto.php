@@ -433,7 +433,7 @@
 		return $listaPaquetes;
 	}
 
-	function CO_consultarListaMonedas() {
+	function CO_consultarListaMonedas() { //FALTA
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
@@ -510,7 +510,7 @@
 		return $respuesta;
 	}
 	
-	function CO_guardarTipoCuenta($obj) {
+	function CO_guardarTipoCuenta($obj) { //FALTA
 		//insertar en la bd...
 		/*
 		$obj->idProyecto;
@@ -520,47 +520,6 @@
 			$obj->listaTipoCuenta[0];
 		*/
 		
-		/*
-		$con= getConexionLocal(); //cambiar por insert
-		$pstmt = mysqli_prepare($con,"UPDATE PAQUETE_TRABAJO SET 
-			descripcion=?,
-			supuestos=?,
-			fecha_inicio=?,
-			fecha_final=?,
-			porcentaje_completo=?,  
-			ultima_actualizacion=?,
-			criterios_aceptacion=?,
-			entregables=?,
-			hitos=?,
-			interdependencias=?,
-			requisitos_calidad=?,
-			referencias_tecnicas=?,
-			informacion_contrato=?,
-			id_estado=?
-			" . " WHERE id_paquete_trabajo=" . $val["id_paquete_trabajo"]
-		);
-
-		mysqli_stmt_bind_param($pstmt,'ssbbdbsssssssi',
-			$val["descripcion"],
-			$val["supuestos"],
-			$val["fecha_inicio"],
-			$val["fecha_final"],
-			$val["porcentaje_completo"], 
-			date('yyyy-mm-dd hh:ii:ss'),
-			$val["criterios_aceptacion"],
-			$val["entregables"],
-			$val["hitos"],
-			$val["interdependencias"],
-			$val["requisitos_calidad"],
-			$val["referencias_tecnicas"],
-			$val["informacion_contrato"],
-			$val["id_estado"]
-		);
-
-		mysqli_stmt_execute($pstmt);
-		echo mysqli_stmt_error ( $pstmt );
-		mysqli_stmt_close($pstmt);
-		*/
 		
 		
 		//obtener respuesta falsa;
