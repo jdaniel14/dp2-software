@@ -211,7 +211,7 @@
 			 $stmt->bindParam("id", $id);
 			$stmt = $db->query($sql);			
 			$p = $stmt->fetch(PDO::FETCH_ASSOC);
-			$proj = array("pap"=>$p["patrocinador"],
+			$acta = array("pap"=>$p["patrocinador"],
 							"fpp"=>$p["f_preparacion"],
 							"tp"=>$p["tipo_proyecto"],
 							"pp"=>$p["prioridad"],
@@ -222,7 +222,7 @@
 							"jcp"=>$p["jefe_comite"]);
 			
 			$db = null;
-			echo json_encode(array("prs"=>$proj)) ;
+			echo json_encode(array("acta"=>$acta)) ;
 		} catch(PDOException $e) {
 			echo json_encode(array("me"=> $e->getMessage()));
 		}
