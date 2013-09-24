@@ -60,7 +60,7 @@ $(document).ready(function(){
 
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		registrarProyecto();
+		registrarProyectos();
 	}
 });
 
