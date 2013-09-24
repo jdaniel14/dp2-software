@@ -109,7 +109,7 @@ function CR_consultarInfoActividades($idProyecto) {
 			$stmt = $db->query($sql);
 			$lista_actividad = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$actividad = array("id"=>-$p["id_actividad"], "name"=>$p["nombre_actividad"], "wbsNode"=>$p["id_paquete_trabajo"], "start"=>$p["fecha_plan_inicio"],"end"=>$p["fecha_plan_fin"],"fila"=>$p["numero_fila"], "level"=>$p["profundidad"], "depends"=>$p["predecesores"], "progress"=>$p["avance"] );
+					$actividad = array("id"=>-$p["id_actividad"], "name"=>$p["nombre_actividad"], "wbsNode"=>$p["id_paquete_trabajo"], "start"=>$p["fecha_plan_inicio"],"end"=>$p["fecha_plan_fin"],"fila"=>$p["numero_fila"], "level"=>$p["profundidad"], "depends"=>$p["predecesores"], "progress"=>$p["avance"],"cost"=>$p["costo"],"cost"=>$p["costo"],"code"=>$p["codigo"] ,"duration"=>$p["dias"]);
 					array_push($lista_actividad, $actividad);
 			}
 
@@ -227,9 +227,9 @@ function CR_obteneListaDependenciaFalsa() {
 function CR_obtenerRolesTotalFalsa() {
     $listaRoles = array();
     //id,                name	
-    $rol1 = new CR_Recurso("tmp_1", "Project Manager");
-    $rol2 = new CR_Recurso("tmp_2", "Worker");
-    $rol3 = new CR_Recurso("tmp_3", "Stakeholder/Customer");
+    $rol1 = new CR_Rol("tmp_1", "Project Manager");
+    $rol2 = new CR_Rol("tmp_2", "Worker");
+    $rol3 = new CR_Rol("tmp_3", "Stakeholder/Customer");
     array_push($listaRoles, $rol1, $rol2, $rol3);
 
     return $listaRoles;
