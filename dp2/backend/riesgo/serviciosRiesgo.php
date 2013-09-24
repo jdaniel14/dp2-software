@@ -55,13 +55,15 @@
     }
 
     function R_getListaPaquetesEDT($idProyecto){
-        $sql = "SELECT * FROM edt WHERE id_proyecto=".$idProyecto;
+        $sql = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
+        echo $sql;
         try {
             $arregloListaPaquetesEDT= array();
             $db=getConnection();
             $stmt = $db->query($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("id" => $row['id_edt'], "descripcion" => $row['version']);
+                $data = array("id" => $row['id_edt'], "descripcion" => $row['nombre']);
                 array_push($arregloListaPaquetesEDT,$data);
             }
             $db = null;
@@ -144,12 +146,13 @@
 
     function R_getListaRiesgo($idProyecto){
 
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO";// WHERE id_proyecto=:id_proyecto";
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_proyecto=".$idProyecto;
+        echo $sql;
         try {
             $arregloListaRiesgo= array();
             $db=getConnection();
             $stmt = $db->query($sql);
-            $stmt->bindParam("id_proyecto", $idProyecto);
+            //$stmt->bindParam("id_proyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre'],
