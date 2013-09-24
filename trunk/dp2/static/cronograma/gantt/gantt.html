@@ -233,13 +233,19 @@
 	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
 	  <tr taskId="(#=obj#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
 	    <td ><select onchange = "
-	    $.each($(this.parentNode.parentNode).children('td'),function(index,column){
-	    	if(index==0){
-	    		var sel = $(this).find('select');
-	    		console.log(sel.attr('value'));
-	    		
-	    	}
-	    });
+	    /***** onchange del SELECT de recurso******/
+	    
+	    var select = $(this.parentNode.parentNode).children('td')[0];
+	    select = $(select).find('select').attr('value');
+	    console.log('select: ' + select);
+		
+		var td1 = $(this.parentNode.parentNode).children('td')[2];
+		$(td1).text(select);
+		
+		var td2 = $(this.parentNode.parentNode).children('td')[3];
+		$(td2).text(select);
+	    
+	    /***** Fin onchange *****/
 	    " name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
 	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
 	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
