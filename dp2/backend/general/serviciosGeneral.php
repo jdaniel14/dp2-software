@@ -8,13 +8,13 @@
         
         //jose
 	function G_getListaJP(){
-		/*$sql = "SELECT id_jp, nombre_jp FROM JP ";
+		$sql = "SELECT id_recurso, nombre_recurso FROM RECURSO_HUMANO ";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
 			$lista_jp = array();
 			while($j = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$jp = array("id"=>$j["id_jp"], "nombre"=>$j["nombre_jp"]);
+					$jp = array("id"=>$j["id_recurso"], "nom"=>$j["nombre_recurso"]);
 					array_push($lista_jp, $jp);
 			}
 
@@ -22,25 +22,27 @@
 			echo json_encode($lista_jp) ;
 		} catch(PDOException $e) {
       echo json_encode(array("me"=> $e->getMessage()));
-		}	*/
-		$arregloProyecto= array(
+		}	
+	/*	$arregloProyecto= array(
       array('id'=>1, 'nom'=>'Bonnie Carranza'),
       array('id'=>2, 'nom'=>'Alfonso Bedoya'),
       array('id'=>3, 'nom'=>'Jose Astuvilca'),
       array('id'=>4, 'nom'=>'Irvin Vargas'));
-		echo json_encode($arregloProyecto);
+		echo json_encode($arregloProyecto);*/
 	}
             
   function G_postRegistrarProyecto(){
 		$request = \Slim\Slim::getInstance()->request();
     $proj = json_decode($request->getBody());
-    $sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada) VALUES (:nom, :fi, :ff)";
+    $sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto, id_jefe_proyecto) VALUES (:nom, :fi, :ff, :tp, :jp)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
         $stmt->bindParam("fi", $proj->fi);
         $stmt->bindParam("ff", $proj->ff);
+        $stmt->bindParam("tp", $proj->tp);
+        $stmt->bindParam("jp", $proj->jp);
         $stmt->execute();
         $proj->id = $db->lastInsertId();
         $db = null;
@@ -61,13 +63,15 @@
 			                        array('Proyecto4','Bonnie Carranza','21/08/2013','21/10/2013'));
 		echo json_encode($arregloProyecto);*/
 		//con base de datos
-		$sql = "SELECT id_proyecto, nombre_proyecto FROM PROYECTO ";
+		$sql = "SELECT P.id_proyecto, P.nombre_proyecto, R.nombre_recurso, T.nombre_tipo_proyecto, DATE(P.fecha_inicio_planificada) as fi, DATE(P.fecha_fin_planificada) as ff 
+FROM PROYECTO P, RECURSO_HUMANO R, TIPO_PROYECTO T
+WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proyecto";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
+					$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>$p["nombre_recurso"], "tp"=>$p["nombre_tipo_proyecto"], "fi"=>$p["fi"], "ff"=>$p["ff"], "es"=>"Ok");
 					array_push($lista_project, $proj);
 			}
 
@@ -80,13 +84,13 @@
 	}
 //CAMBIO PRUEBA
 	function G_getListaTipoProyecto(){
-/*		$sql = "SELECT * FROM TipoDeProyectos";
+		$sql = "SELECT id_tipo_proyecto, nombre_tipo_proyecto FROM TIPO_PROYECTO";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
 			$lista_tipoProject = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$tipo = array("id"=>$p["id_tipoProyecto"], "nombre"=>$p["nombre_tipoProyecto"]);
+					$tipo = array("id"=>$p["id_tipo_proyecto"], "nom"=>$p["nombre_tipo_proyecto"]);
 					array_push($lista_tipoProject, $tipo);
 			}
 
@@ -94,13 +98,13 @@
 			echo json_encode($lista_tipoProject) ;
 		} catch(PDOException $e) {
         echo json_encode(array("me"=> $e->getMessage()));
-		}	*/
-		$arregloTipoProyecto= array(
+		}	
+/*		$arregloTipoProyecto= array(
       array("id"=> 1, "nom" => "Pequenho"),
       array("id"=> 2, "nom" => "Mediano"),
       array("id"=> 3, "nom" => "Grandre")
 		);
-		echo json_encode(array("lTipoProyecto"=>$arregloTipoProyecto));
+		echo json_encode(array("lTipoProyecto"=>$arregloTipoProyecto));*/
 	}
         //***********************************************************************************
         //Alfonso
