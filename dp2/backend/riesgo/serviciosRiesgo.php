@@ -159,7 +159,7 @@
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre'],
-                            "paqueteTrabajo" => $arregloPaqueteTrabajo($row['id_paquete_trabajo']),//X
+                            "paqueteTrabajo" => $row['id_paquete_trabajo'],//X
                             "categoria" => $row['version'],//X
                             "impacto" => $row['impacto'],
                             "probabilidad" => $row['probabilidad'],
