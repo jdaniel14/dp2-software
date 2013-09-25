@@ -32,9 +32,7 @@
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->execute();
-            
             $db = null;
-
 
             echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
         } catch(PDOException $e) {
@@ -137,7 +135,7 @@
     function R_getListaRiesgo($idProyecto){
 
         $sql = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_proyecto=".$idProyecto;
-        echo $sql;
+        
         try {
             $arregloListaRiesgo= array();
             $db=getConnection();
