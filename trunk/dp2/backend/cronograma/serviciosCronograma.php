@@ -105,11 +105,12 @@ function CR_consultarInfoActividades($idProyecto) {
 	
 	$sql = "SELECT * FROM ACTIVIDAD WHERE id_proyecto=? order by numero_fila";
 	$sql2= "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=?";
+	$lista_actividad = array();	
 		try {
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
 			$stmt->execute(array($idProyecto));
-			$lista_actividad = array();
+			
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$detalle_paquete="";
 					
