@@ -134,6 +134,21 @@
 
     function R_getListaRiesgo($idProyecto){
 
+        $query = "SELECT * FROM PAQUETE_TRABAJO";
+        $arregloPaqueteTrabajo= array();
+        try {
+            $db=getConnection();
+            $stmt = $db->query($query);
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("id" => $row['id_paquete_trabajo'], "nombre" => $row['nombre']);
+                array_push($arregloPaqueteTrabajo,$data);
+            }
+            echo var_dump($arregloPaqueteTrabajo);
+            $db = null;
+        } catch(PDOException $e) {
+            echo '{"erroR":{"text":'. $e->getMessage() .'}}';
+        }
+
         $sql = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_proyecto=".$idProyecto;
         
         try {
@@ -144,7 +159,7 @@
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre'],
-                            "paqueteTrabajo" => $row['id_paquete_trabajo'],//X
+                            "paqueteTrabajo" => $arregloPaqueteTrabajo($row['id_paquete_trabajo']),//X
                             "categoria" => $row['version'],//X
                             "impacto" => $row['impacto'],
                             "probabilidad" => $row['probabilidad'],
