@@ -17,21 +17,7 @@ function CR_getActividades($json) {//servicio1
     
 }
 
-function CR_postActividades() {//servicio1
-   
 
-    
-    $request = \Slim\Slim::getInstance()->request();
-    $actividades = json_decode($request->getBody());
-    
-
-    $arreglo_actividades=$actividades->idProyecto->tasks;
-    
-    
-    for ($i=0;$i<sizeof($arreglo_actividades);$i++) CR_guardar_actividades_BD($arreglo_actividades[$i]);
-    
-    echo json_encode($jsonRespuesta);
-}
 
 function CR_guardarActividades($json) { //servicio2
     $objeto = json_decode($json);
@@ -82,7 +68,21 @@ function CR_getDependencias($json) {//servicio6
 
      * ESTO SOLO SI SE NECESITA LOS ID DE TODAS LAS LISTAS, PARA EL GANTT NO ES NECESARIO YA QUE LA API LO ARMA SEGÚN LO ALAMCENAMOS EN BD */
 }
+function CR_postActividades() {//servicio7
+   
 
+    
+    $request = \Slim\Slim::getInstance()->request();
+    $actividades = json_decode($request->getBody());
+    
+
+    $arreglo_actividades=$actividades->idProyecto->tasks;
+    
+    
+    for ($i=0;$i<sizeof($arreglo_actividades);$i++) CR_guardar_actividades_BD($arreglo_actividades[$i]);
+    
+    echo json_encode($jsonRespuesta);
+}
 //Funciones implementadas que necesitan los servicios
 function CR_consultarListaDependencia($idProyecto){
     
@@ -102,36 +102,55 @@ function CR_consultarInfoActividades($idProyecto) {
       }
      */
     //Hardcode
-	/*
-	$sql = "SELECT * FROM ACTIVIDAD ";
-	$sql2= "SELECT * FROM PAQUETE_TRABAJO wHERE id_edt=?";
+	
+	$sql = "SELECT * FROM ACTIVIDAD WHERE id_proyecto=? order by numero_fila";
+	$sql2= "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=?";
 		try {
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
+			$stmt->execute(array($idProyecto));
 			$lista_actividad = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$detalle_paquete="";
+					
 					if ($p["id_paquete_trabajo"]!=NULL){
-						$stmt2 = $db->query($sql2);
-						if ($p2 = $stmt->fetch(PDO::FETCH_ASSOC))$detalle_paquete=$p2["nombre"];
+						//echo "{ ". ($p["id_paquete_trabajo"]!=NULL) ."}";
+						$stmt2 = $db->prepare($sql2);
+						$stmt2->execute(array($p["id_paquete_trabajo"]));
+						if ($p2 = $stmt2->fetch(PDO::FETCH_ASSOC))$detalle_paquete=$p2["nombre"];
 					}
-					$actividad = array("id_task"=>$p["id_actividad"], "name"=>$p["nombre_actividad"], "id_Wbs"=>$p["id_paquete_trabajo"],"wbsNode"=>$detalle_paquete, "start"=>$p["fecha_plan_inicio"],"end"=>$p["fecha_plan_fin"],"id"=>-$p["numero_fila"], "level"=>$p["profundidad"], "depends"=>$p["predecesores"], "progress"=>$p["avance"],"cost"=>$p["costo"],"cost"=>$p["costo"],"code"=>$p["codigo"] ,"duration"=>$p["dias"]);
+					$lista_recursos_asignados=CR_obtenerListaRecursosAsignadosFalsa();
+					$actividad = array("id_task"=>$p["id_actividad"]+0, "name"=>$p["nombre_actividad"], "id_Wbs"=>$p["id_paquete_trabajo"]+0,"wbsNode"=>$detalle_paquete, "start_date"=>$p["fecha_plan_inicio"],"end_date"=>$p["fecha_plan_fin"],"id"=>-$p["numero_fila"]+0, "level"=>$p["profundidad"]+0, "depends"=>$p["predecesores"], "progress"=>$p["avance"],"cost"=>$p["costo"]+0,"status"=>$p["estado"],"code"=>$p["codigo"] ,"duration"=>$p["dias"]+0,"description"=>$p["descripcion"],"assigs"=>array(),"start"=>$p["inicio_hash"]+0,"end"=>$p["fin_hash"]+0,"startIsMilestone"=>false,"endIsMilestone"=>false);
 					array_push($lista_actividad, $actividad);
 			}
 
 			$db = null;
-			echo json_encode(array("tasks"=>$lista_actividad)) ;
+			////////echo json_encode(array("tasks"=>$lista_actividad)) ;
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
 			echo json_encode(array("me"=> $e->getMessage()));
 		}
-	echo "Hardcode";
-	*/
-    $actividades = CR_obtenerInfoActividadesFalsa();
+	//echo "Hardcode";
+	
+	date_default_timezone_set('America/Lima');
+	
+	$milliseconds = round(microtime(true) * 1000);
+	$offset=$milliseconds-1346623200000;
+	$mil =1348005600000+$offset;
+	$mil2=1348178399999+$offset;
+	      //
+	$seconds = $mil / 1000;
+	$seconds2 = $mil2 / 1000;
+	//echo $offset.'\n';
+	//echo date("d-m-Y", $seconds).'\n';
+	//echo date("d-m-Y", $seconds2).'\n';
+    //1380080255779
+	
+	$actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
     $recursos = CR_obtenerRecursosTotalFalsa();
 
-    $proyecto = new CR_ProyectoJSON($actividades, 0, array(), true, true, $roles, $recursos);
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos);
     return $proyecto;
 }
 
@@ -201,7 +220,8 @@ function CR_obtenerRespuestaFracaso() {
 
 function CR_guardar_actividades_BD($actividad){
     
-        $sql = "INSERT INTO ACTIVIDAD () VALUES (:nombre_actividad)";
+	echo $actividad->start ." ". $actividad->end;
+   /*     $sql = "INSERT INTO ACTIVIDAD () VALUES (:nombre_actividad)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -214,7 +234,7 @@ function CR_guardar_actividades_BD($actividad){
         echo json_encode(array("me"=> $e->getMessage()));
 				//'{"error":{"text":'. $e->getMessage() .'}}';
     }
-    
+    */
     
 }
 
@@ -285,7 +305,7 @@ function CR_obtenerInfoActividadesFalsa() {
  var day = parseInt(dateInt-year*10000-month*100);
  return new Date(year,month-1,day,12,00,00);
 };*/
-    $actividad1 = new CR_Actividad(-1, "Proyecto 1", "P1", 0, "STATUS_ACTIVE", 1346623200000, 16, 1348523999999, true, false, array(), "", "", 0, 100,"");
+    $actividad1 = new CR_Actividad(-1, "Proyecto 1", "P1", 0, "STATUS_ACTIVE", 1346623200000, 21, 1348523999999, true, false, array(), "", "", 0, 100,"");
     $actividad2 = new CR_Actividad(-2, "Analisis", "AN", 1, "STATUS_ACTIVE", 1346623200000, 10, 1347659999999, false, false, $listaRecursos, "", "", 0, 99,"1: Paquete 1");
     $actividad3 = new CR_Actividad(-3, "Busqueda de proveedores", "BP", 2, "STATUS_ACTIVE", 1346623200000, 2, 1346795999999, false, false, array(), "", "", 0, 98,"1.1: Paquete 1.1");
     $actividad4 = new CR_Actividad(-4, "Busqueda de clientes", "BC", 2, "STATUS_SUSPENDED", 1346796000000, 4, 1347314399999, false, false, array(), "3", "", 0, 97,"1.2: Paquete 1.2");
@@ -293,7 +313,7 @@ function CR_obtenerInfoActividadesFalsa() {
     $actividad6 = new CR_Actividad(-6, "Desarrollo", "DE", 2, "STATUS_SUSPENDED", 1347832800000, 2, 1348005599999, false, false, $listaRecursos, "", "", 0, 95,"2.1: paquete 2.1");
     $actividad7 = new CR_Actividad(-7, "Pruebas de integracion", "PI", 2, "STATUS_SUSPENDED", 1348005600000, 3, 1348264799999, false, false, array(), "6", "", 0, 94,"2.2: paquete 2.2");
     $actividad8 = new CR_Actividad(-8, "Implantacion", "IA", 2, "STATUS_SUSPENDED", 1348005600000, 2, 1348178399999, false, false, array(), "6", "", 0, 93,"2.3: paquete 2.3");
-
+	//1380079042846
 
     /* $actividad1 = new CR_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
       $actividad2 = new CR_Actividad(2, 'Actividad2', 1, 20.0, 25.0, $listaRecursos);
