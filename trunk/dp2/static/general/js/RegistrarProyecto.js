@@ -1,38 +1,3 @@
-
-/*
-iniciaJefeProyectos();
-
-function iniciaJefeProyectos(){
-	
-	$.ajax({
-		type: 'GET',
-		url: rootURL,
-		dataType: "json", // data type of response	
-		fail: codigoError,
-        success: function(data){
-            agregaDataFila(data);
-        }
-	});
-}
-
-function agregaDataFila(data){
-	//arreglo=arregloProyecto;
-	if (data!=null){
-		arreglo=data;
-	}
-	for (i=0; i<arreglo.length;i++){		
-		agregaFilaTipoProyecto(arreglo[i],i);
-	}
-}
-
-function agregaFilaProyecto(arreglo,i){
-	a=i;
-	a++;
-	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	$("#jefeProyectos").append('<option value="'+ a + '">' + arreglo[0] + '</option>');
-}
-*/
-
 function cargarComboJefeProyecto(){
 	$.ajax({
 		type: 'GET',
@@ -51,10 +16,28 @@ function cargarComboJefeProyecto(){
 	});
 }
 
+function cargarComboTipoProyecto(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_listaTipoProyecto',
+		dataType: "json",
+		async:false,
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(data[obj]["id"]);
+				opt.html(data[obj]["nom"]);
+				$("#tipoProyecto").append(opt);
+			}
+		}
+	});
+}
+
 $(document).ready(function(){
 	//cargar Combos
 	cargarComboJefeProyecto();
-	//cargarComboCompania();
+	cargarComboTipoProyecto();
 	//cargarComboEstado();
 });
 
