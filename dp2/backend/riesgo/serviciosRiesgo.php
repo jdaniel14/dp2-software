@@ -18,23 +18,13 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo (nombre,id_categoria_riesgo) VALUES (:nombre_riesgo,:id_categoria_riesgo)";
+        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,costo_potencial,demora_potencial,) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
             $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
-            $stmt->execute();
-            $riesgo->id_riesgo = $db->lastInsertId();
-            $db = null;
-
-
-            //2da parte
-            $query = "INSERT INTO riesgo_x_proyecto (id_riesgo,id_proyecto,id_paquete_trabajo,impacto,probabilidad,costo_potencial,demora_potencial,) 
-            VALUES (:id_riesgo,:id_proyecto,:id_paquete_trabajo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo", $riesgo->id_riesgo);
             $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
             $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
             $stmt->bindParam("impacto", $riesgo->impacto);
