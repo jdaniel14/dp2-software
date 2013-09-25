@@ -26,15 +26,6 @@ function cargaData(data){
 			$(arreglo[i]).attr("disabled","disabled");
 		}
 	}
-	$.ajax({
-		type: 'GET',
-		url : '../../api/infoProyectoFromEDT/'+data["id_edt"],
-		dataType: "json",
-		contentType: "application/json; charset=utf-8",
-		success: function(datos){
-			$("#nombre_proyecto").html(datos["nombre_proyecto"]);
-		}
-	});
 }
 
 $(document).ready(function() {
@@ -51,6 +42,17 @@ $(document).ready(function() {
     $("#modificacionFecha").attr("value", today);
 
 
+    cargarComboTipoproyecto();
+	
+	cargarComboPrioridadproyecto();
+
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_devuelveActa/:'+id_paquete,
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success: cargaData
+	});
 });
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
@@ -85,7 +87,6 @@ function grabarInformacionActa(){
 	var obj ={
 		"idProyecto": $("#idProyecto").val(),
 		"np": $("#nombreProyecto").val(),
-		"pap": $("#patrocinador").val(),
 		"fpp": $("#preparacionFecha").val(),
 		"tp": $("#tipoProyecto").val(),
 		"pp": $("#prioridadProyecto").val()
@@ -148,7 +149,7 @@ function grabarAutoridadActa(){
 		"carp": $("#autoCargoProyecto").val(),
 		"jp": $("#gerenteProyecto").val(),
 		"jcp": $("#comiteProyecto").val(),
-		"sp": $("#patrocinador").val()
+		"pap": $("#patrocinador").val(),
 	}; 
 	
 	$.ajax({
@@ -164,19 +165,40 @@ function grabarAutoridadActa(){
 	});
 }
 
-function iniciaActa(){
-	
-	$.ajax({
-		type: 'GET',
-		url: rootURLdevuelveActa,
-		dataType: "json", // data type of response	
-		fail: codigoError,
-                success: function(data){
-                    
-                    llenaActa(data);
-                }
-	});
-}
 function codigoError(){
 	alert('Error');
+}
+function cargarComboTipoproyecto(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/cargarComboTipoproyecto/',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		async:false,
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(data[obj]["idTipoProyecto"]);
+				opt.html(data[obj]["descripcionTipoProyecto"]);
+				$("#tp").append(opt);
+			}
+		}
+	});
+}
+function cargarComboPrioridadproyecto(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/cargarComboPrioridadproyecto/',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		async:false,
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(data[obj]["idPrioridadProyecto"]);
+				opt.html(data[obj]["descripcionPrioridadProyecto"]);
+				$("#pp").append(opt);
+			}
+		}
+	});
 }
