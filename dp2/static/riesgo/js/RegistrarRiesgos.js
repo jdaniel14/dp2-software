@@ -409,22 +409,27 @@ function listarEquipos(){
 }
 
 function listarRiesgos(search){
-/*
+
 	var data = {
-		idProyecto: $('#idProyecto').val(),
-		buscar: search
+		idProyecto: $('#idProyecto').val()
+		//buscar: search
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
+		//url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
+		url: getAllItems + '/' + data.idProyecto,
 		dataType: "json",
-		success: agregaDataFila(data),
+		success: function(data){
+			var lista = data;
+			agregaDataFila(data);
+
+		},
 		fail: codigoError
 	});
-	*/
 	
-	agregaDataFila(null);
+	
+	//agregaDataFila(null);
 
 }
 
@@ -450,14 +455,15 @@ function codigoError(){
 }
 
 function agregaDataFila(data){
-	arreglo=arregloRiesgo;
-	if (data!=null){
-		arreglo=data;
-	}
-	for (i=0; i<arreglo.length;i++){
-		
-		agregaFilaRiesgo(arreglo[i],i);
-		//agregaFilaRiesgo(arreglo[i]);
+	arreglo=data;
+	alert(arreglo);
+	if (arreglo!=null){
+		alert(arreglo.size);
+		for (i=0; i<arreglo.length;i++){
+
+			agregaFilaRiesgo(arreglo[i],i);
+			//agregaFilaRiesgo(arreglo[i]);
+		}
 	}
 }
 
@@ -477,29 +483,28 @@ function agregaFilaRiesgo(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+arreglo[2]+'">';
-	/*
-	severidad = Math.floor(parseFloat(arreglo.Impacto)*parseFloat(arreglo.Probabilidad)*100) / 100;
-	$("#tablaRiesgos").append("<tr id='" + arreglo.idRiesgo + 
-							  '"><td>" + arreglo.CodigoRiesgo + 
-							  "</td><td>" + arreglo.NombreRiesgo + 
-							  "</td><td>" + arreglo.Actividad + 
-							  "</td><td>" + arreglo.Objetivo + 
-							  "</td><td>" + arreglo.Impacto +
-							  "</td><td>" + arreglo.Probabilidad +
-							  "</td><td><a href='#'><span class='imagen-calculadora'></span></a>" +
-							  "</td><td>" + severidad +
-							  "</td><td>" + arreglo.Estrategia +
-							  "</td><td>" + arreglo.AccionEspecifica +
-							  "</td><td>" + arreglo.CostoEsperado +
-							  "</td><td>" + arreglo.TiempoEsperado +
-							  "</td><td>" + arreglo.Equipo + 
-							  "</td><td><a data-toggle='modal' href='#myModal'><span class='glyphicon glyphicon-edit'></span></a>" + 
-							  "</td><td><a href='#'><span class='glyphicon glyphicon-remove'></span></a>" + 
-							  "</td><td><a href='#'><span class='glyphicon glyphicon-search'></span></a>" +
+	
+	// severidad = Math.floor(parseFloat(arreglo.Impacto)*parseFloat(arreglo.Probabilidad)*100) / 100;
+	$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
+							  "\"><td>" + arreglo.idRiesgoProyecto + 
+							  "</td><td>" + arreglo.nombre + 
+							  "</td><td>" + arreglo.paqueteTrabajo + 
+							  "</td><td>" + arreglo.categoria + 
+							  "</td><td>" + arreglo.impacto + 
+							  "</td><td>" + arreglo.probabilidad +
+							  "</td><td>" + arreglo.severidad +
+							  "</td><td>" + arreglo.estrategia +
+							  "</td><td>" + arreglo.accionesEspecificas +
+							  "</td><td>" + arreglo.costoEsperado +
+							  "</td><td>" + arreglo.tiempoEsperado +
+							  "</td><td>" + arreglo.equipoEesponsable + 
+							  "</td><td><a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
+							  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
+							  "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
 							  "</td></tr>");
-	*/
-	severidad = Math.floor(parseFloat(arreglo[3])*parseFloat(arreglo[4]) * 100) / 100;
-	$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a></td></tr>');
+	
+	
+	//$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a></td></tr>');
 
 }
 
@@ -532,3 +537,33 @@ function grabarRiesgos(){
 	alert("Se grabó");
 }
 
+/*------------------------------------VALIDACIONES-----------------------------------------*/
+
+//Calculo automatico de Severidad
+$('#impRiesgo').change(
+    function(){
+         if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
+         	$('#svrRiesgo').val(Math.round(( $('#proRiesgo').val()*$('#impRiesgo').val() * 100 )) / 100);
+         }
+    });
+
+$('#proRiesgo').change(
+	function(){
+		if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
+         	$('#svrRiesgo').val(Math.round(( $('#proRiesgo').val()*$('#impRiesgo').val() * 100 )) / 100);
+         }
+	});
+$('#impRiesgoM').change(
+    function(){
+         if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
+         	$('#svrRiesgoM').val(Math.round(( $('#proRiesgoM').val()*$('#impRiesgoM').val() * 100 )) / 100);
+         }
+    });
+
+$('#proRiesgoM').change(
+	function(){
+		if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
+         	$('#svrRiesgoM').val(Math.round(( $('#proRiesgoM').val()*$('#impRiesgoM').val() * 100 )) / 100);
+         }
+	});
+//Calculo automatico de Severidad - Fin
