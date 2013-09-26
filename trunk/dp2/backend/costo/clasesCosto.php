@@ -57,28 +57,44 @@ class CO_Actividad {
 }
 
 class CO_Paquete {
+	public $idPaquete;
 	public $nombre;
-	public $sumaCostosPaquetesHijo;
+	public $costoPaquete;
+	public $costoTotalPaquete;
 	public $listaPaquetesHijo;
 	
-	function __construct($nombre, $listaPaquetesHijo) {
-       $this->nombre = $nombre;
-	   $this->sumaCostosPaquetesHijo = 0;
-	   $this->listaPaquetesHijo = $listaPaquetesHijo;
-	   
-	   $this->sumarCostosPaqueteHijo();
+	function __construct($idPaquete, $nombre, $costoPaquete, $listaPaquetesHijo) {
+		$this->idPaquete = $idPaquete;
+		$this->nombre = $nombre;
+		$this->costoPaquete = $costoPaquete;
+		$this->costoTotalPaquete = 0;
+		$this->listaPaquetesHijo = $listaPaquetesHijo;
 	}
    
-	function sumarCostosPaqueteHijo() {
+	function sumarCostosPaquete() {
+		$this->costoTotalPaquete = $this->costoPaquete;
+		
+		//en caso tenga hijos, se le suma el costo de los hijos.
 		if (($this->listaPaquetesHijo != null) && (sizeof($this->listaPaquetesHijo) > 0)) {
 			foreach ($this->listaPaquetesHijo as $paquete) {
-				$this->sumaCostosPaquetesHijo += $paquete->sumaCostosPaquetesHijo;
+				$paquete->sumarCostosPaquete();
+				$this->costoTotalPaquete += $paquete->costoTotalPaquete;
 			}
 			unset($paquete);
-		} else {
-			$this->sumaCostosPaquetesHijo = 1; //corregir
 		}
 	}
+	
+	/*
+	function obtenerCosto() {
+		$costo = $costoPaquete;
+		if ($this->listaPaquetesHijo != null) {
+			foreach ($this->listaPaquetesHijo as $paquete) {
+				$costo += $paquete->costoTotalPaquete;
+			}
+			unset($paquete);
+		}
+	}
+	*/
 }
 
 class CO_Moneda {

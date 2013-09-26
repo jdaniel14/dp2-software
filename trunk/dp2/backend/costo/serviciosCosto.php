@@ -472,13 +472,121 @@
 	}
 
 	function CO_consultarListaPaquetes($idProyecto) { //FALTA
-		
+		$sql = "
+		select
+		A.ID_PROYECTO,
+		Y.ID_PAQUETE_TRABAJO,
+		Y.NOMBRE NOMBRE_PAQUETE,
+		SUM(C.CANTIDADESTIMADA*(D.COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL)) COSTO_PAQUETE_SOLES
+		from 
+		PROYECTO A 
+		JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+		JOIN PAQUETE_TRABAJO Y ON Z.ID_EDT=Y.ID_EDT
+		JOIN ACTIVIDAD B ON Y.ID_PAQUETE_TRABAJO=B.ID_PAQUETE_TRABAJO
+		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+		JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		WHERE
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND Z.ID_ESTADO<>4
+		AND D.ESTADO<>'ELIMINADO' AND Y.ID_COMPONENTE_PADRE IS NULL
+		AND
+		A.ID_PROYECTO= :idProyecto
+		GROUP BY
+		A.ID_PROYECTO,
+		Y.ID_PAQUETE_TRABAJO,
+		Y.NOMBRE;";
 
+		$paqueteRaiz = null;
+		$listaPaquetes = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+												//id paqute, nombre paquete, lista de paquetes hijo
+				$paqueteRaiz = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+			}
 
+			if ($paqueteRaiz != null) {
+				CO_obtenerPaquetesHijo($paqueteRaiz);
+				$jsonRespuesta = new stdClass();
+				$jsonRespuesta->raiz = $paqueteRaiz;
+				//echo 'aaaa';
+				$paqueteRaiz->sumarCostosPaquete();
+				array_push($listaPaquetes, $paqueteRaiz);
+			}
+
+		} catch(PDOException $e) {
+			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+			$listaPaquetes = null;
+		}
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
 		
 		return $listaPaquetes;
+	}
+
+	function CO_obtenerPaquetesHijo(&$paquete) {
+		if ($paquete != null) {
+
+			$sql = "
+			select
+			A.ID_PROYECTO,
+			Y.ID_PAQUETE_TRABAJO,
+			Y.NOMBRE NOMBRE_PAQUETE,
+			SUM(C.CANTIDADESTIMADA*(D.COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL)) COSTO_PAQUETE_SOLES
+			from 
+			PROYECTO A 
+			JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+			JOIN PAQUETE_TRABAJO Y ON Z.ID_EDT=Y.ID_EDT
+			LEFT JOIN ACTIVIDAD B ON Y.ID_PAQUETE_TRABAJO=B.ID_PAQUETE_TRABAJO
+			LEFT JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+			LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+			LEFT JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+			WHERE
+			Y.ID_COMPONENTE_PADRE= :idPaquete AND (
+			(B.ID_PAQUETE_TRABAJO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL)
+			OR
+			(DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND Z.ID_ESTADO<>4 AND D.ESTADO<>'ELIMINADO')
+			)
+			GROUP BY
+			A.ID_PROYECTO,
+			Y.ID_PAQUETE_TRABAJO,
+			Y.NOMBRE;";
+
+			$listaPaquetesHijo = array();
+			try {
+				$db = getConnection();
+	        	$stmt = $db->prepare($sql);
+	        	$stmt->bindParam("idPaquete", $paquete->idPaquete);
+	        	$stmt->execute();
+	        	$db = null;
+	        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+													//id paqute, nombre paquete, lista de paquetes hijo
+					$paqueteHijo = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+					array_push($listaPaquetesHijo, $paqueteHijo);
+				}
+
+				$paquete->listaPaquetesHijo = $listaPaquetesHijo;
+
+			} catch(PDOException $e) {
+				$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+				$listaPaquetes = null;
+				echo json_encode($respuesta);
+				return;
+			}
+
+			//echo 'paquete <' . $paquete->idPaquete . '>';
+			//echo sizeof($paquete->listaPaquetesHijo);
+			foreach ($paquete->listaPaquetesHijo as $hijo) {
+				CO_obtenerPaquetesHijo($hijo);
+			}
+
+			return;
+		}
+		return;
 	}
 	
 	function CO_guardarTipoCuenta($obj) { //COMPLETO
