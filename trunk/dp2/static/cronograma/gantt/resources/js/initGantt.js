@@ -82,6 +82,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		}
 		
 		function completadoAJAX(data){
+			console.log("Data recibida del servidor:");
 			console.log(data);
             ret = data;
             
@@ -91,7 +92,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		
 		    ge.loadProject(ret);
 		    ge.checkpoint(); //empty the undo stack
-		    console.log("GEEEEEE:");
+		    console.log("Variable Global ge:");
 		    console.log(ge);
 		}
 		
@@ -104,7 +105,8 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 				console.log("Guardando...");
 				console.log(prj);
 				var objProy ={
-					idProyecto: prj
+					idProyecto: "1",
+					task:prj.tasks
 				};
 				var rootURL = "../../../api/CR_postActividades/";
 				$.ajax({
@@ -113,9 +115,14 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 	                data: JSON.stringify(objProy),
 					dataType: "json",
 					beforeSend:function(){
-						alert("enviando");
+						console.log("Enviando...")
+					},
+					fail:function(data){
+						console.log("Error");
+						console.log(data);
 					},
 			        success: function(data){
+			        	console.log("Recibido...")
 			        	console.log(data);
 						alert("Los datos se almacenaron con éxito");
 						
