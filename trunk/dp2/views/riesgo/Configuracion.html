@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Configuracion</title>
+        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">DP2</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">General<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../../views/general/RegistrarProyecto.html">Registrar Proyecto</a></li>           
+                            </ul>
+                        </li>
+                        <li class="active" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Alcance<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../../views/alcance/index.html">Ver EDT</a></li>
+                                <li><a href="../../views/alcance/diccionario.html">Diccionario EDT</a></li>            
+                            </ul>
+                        </li>
+                        <li class="active" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cronograma<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../../views/cronograma/index.html">Mostrar Gantt</a></li>            
+                            </ul>
+                        </li>
+                        <li class="active" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Costo<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../../views/costo/AsignaCostoRecursos.html">Registrar presupuesto</a></li>
+                                <li><a href="../../views/costo/VisualizarPresupuesto.html">Visualizar Presupuesto</a></li>
+                                <li><a href="../../views/costo/AsignaCuenta.html">Asignar cuenta contable</a></li>
+                            </ul>
+                        </li>
+                        <li class="active" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Riesgos<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../../views/riesgo/registrarRiesgo.html">Mostrar riesgos</a></li>          
+                            </ul>
+                        </li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+
+        <div class="ui-container-fluid">
+            <div class="ui-sidebar">
+                <div class="well">
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+
+
+            <div class="col-md-3" >
+
+                <div class="well" id="sideBarNavegacion" >
+                    <ul class="nav nav-pills nav-stacked">
+                        <li ><a href="#">Acuerdos y Modificaciones</a></li>
+                        <li ><a href="#" >Plan de Riesgos</a></li>
+                        <li class="active"><a href="#">Configuración</a></li>
+                    </ul>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-9" role="main">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Tipos de Riesgo </h3>
+                        <form  name="form1">
+
+                            <table class="table-striped table-bordered" width="90%" id="tablaRecursos">
+
+                                <tr>
+                                    <td width="30%"><b>Tipo de Riesgo</b></td>
+                                    <td width="20%"><b>Acciones</b></td>
+                                    <td width="20%"><b> </b></td>
+                                </tr>
+                            </table>
+
+                            <table><tr>&nbsp;
+                                </tr>
+                                <tr>&nbsp;
+                                </tr><tr>&nbsp;
+                                </tr></table>
+                            <div  class="col-md-8" style="text-align:center">
+                                <button type="button" class="btn btn-primary" id="btnGrabar">Guardar</button>
+                            </div>
+
+                        </form>  
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Probabilidad </h3>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Muy Bajo</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idMuyBajo1" > -
+                                    <input type="text" class="input-sm" id="idMuyBajo2" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Bajo</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idBajo1" > -
+                                    <input type="text" class="input-sm" id="idBajo2" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Medio</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idMedio1" > -
+                                    <input type="text" class="input-sm" id="idMedio2" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Alto</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idAlto1" > -
+                                    <input type="text" class="input-sm" id="idAlto2" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Muy Alto</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idMuyAlto1" > -
+                                    <input type="text" class="input-sm" id="idMuyAlto2" >
+                                </div>
+                            </div>
+
+                            <div  class="col-md-8" style="text-align:center">
+                                <button type="button" class="btn btn-primary" id="btnAceptar">Aceptar</button>
+                                <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                            </div>
+                        </form>  
+                    </div>
+                </div>     
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Impacto </h3>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Muy Bajo</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idMuyBajo" > 
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Bajo</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idBajo" > 
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Medio</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idMedio" > 
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Alto</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idAlto" > 
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-lg-2 control-label">Muy Alto</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="input-sm" id="idMuyAlto1" > 
+
+                                </div>
+                            </div>
+
+                            <div  class="col-md-8" style="text-align:center">
+                                <button type="button" class="btn btn-primary" id="btnAceptar">Aceptar</button>
+                                <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                            </div>
+                        </form>  
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div><!-- /.container -->
+
+</body>
+</html>
