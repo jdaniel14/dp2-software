@@ -34,3 +34,9 @@ textarea{
   margin-right: 10px;
   margin-left: 1px;
 }
+.big-alert{
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
