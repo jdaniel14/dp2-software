@@ -226,6 +226,7 @@
 	      <th style="width:80px;">Tipo de Costo</th>
 	      <th style="width:50px;">Costo unitario</th>
 	      <th style="width:30px;">Valor asignado</th>
+	      <th style="width:30px">Costo Real</th>
 	      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
 	    </tr>
 	  </table>
@@ -266,6 +267,8 @@
 	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
 		<td name="costRate">(#=obj.assig.costRate#)</td>
 		<td ><input type="text" name="value" value="(#=obj.assig.value#)" size="5" class="formElements"></td>
+		<td name = "realCost"><input value = (#=obj.assig.realCost#)></td>
+		
 	    <td style ="display:none;"><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
 	  </tr>
