@@ -100,14 +100,14 @@
               <th>ID</th>
               <th>Nombre de Riesgo</th>
               <th>Paquete de EDT</th>
-              <th>Objetivo afectado</th>
+              <th>Categoria Riesgo</th>
               <th>Impacto</th>
               <th>Probabilidad</th>
               <th>Severidad</th>
               <th>Estrategia</th>
               <th>Acciones Específicas</th>
-              <th>Costo Esperado</th>
-              <th>Tiempo Esperado</th>
+              <th>Costo Potencial</th>
+              <th>Demora Potencial</th>
               <th>Equipo Responsable</th>
               <th colspan="3">Acciones</th>
             </thead>
@@ -166,7 +166,7 @@
                           </div>
                           <div class="form-group">
                             <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
-                            <label class="col-lg-4 control-label">*Paquete de EDT</label>
+                            <label class="col-lg-4 control-label">Paquete de EDT</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="paqEdt">
                                 <option value="0" disabled selected>Escoge un paquete del EDT</option>
@@ -174,7 +174,7 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-4 control-label">*Objetivo afectado</label>
+                            <label class="col-lg-4 control-label">Categoria Riesgo</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="objAfe">
                                 <option value="0" disabled selected>Escoge un objetivo afectado</option>
@@ -182,7 +182,7 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-4 control-label">*Nivel de impacto</label>
+                            <label class="col-lg-4 control-label">Nivel de impacto</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="impRiesgo">
                                 <option value="0" disabled selected>Escoge un nivel de impacto</option>
@@ -190,7 +190,7 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-4 control-label">*Probabilidad de riesgo</label>
+                            <label class="col-lg-4 control-label">Probabilidad de riesgo</label>
                             <div class="col-lg-8">
                               <input type="number" step="0.1" class="form-control" id="proRiesgo" min="0.1" max="1" placeholder="Probabilidad de Riesgo">
                             </div>
@@ -208,19 +208,19 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-4 control-label">Costo Estimado</label>
+                            <label class="col-lg-4 control-label">Costo Potencial</label>
                             <div class="col-lg-8">
                               <input type="number" step="positive floating-point number" class="form-control" id="costRiesgo" placeholder="Costo estimado de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="col-lg-4 control-label">Tiempo Estimado</label>
+                            <label class="col-lg-4 control-label">Demora Potencial</label>
                             <div class="col-lg-8">
                               <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgo" placeholder="Tiempo estimado de Riesgo">
                             </div>
                           </div>
                           <div class="form-group">
-                          <label class="col-lg-4 control-label">*Equipo Responsable</label>
+                          <label class="col-lg-4 control-label">Equipo Responsable</label>
                             <div class="col-lg-8">
                               <select class="form-control" id="equRes">
                                 <option value="0" disabled selected>Escoge un equipo responsable</option>
@@ -291,7 +291,7 @@
                   </div>
                   <div class="form-group">
                     <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
-                    <label class="col-lg-4 control-label">*Paquete de EDT</label>
+                    <label class="col-lg-4 control-label">Paquete de EDT</label>
                     <div class="col-lg-8">
                       <select class="form-control" id="paqEdtM">
                         <option value="0" disabled selected>Escoge un paquete del EDT</option>
@@ -299,7 +299,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-4 control-label">*Objetivo afectado</label>
+                    <label class="col-lg-4 control-label">Categoria Riesgo</label>
                     <div class="col-lg-8">
                       <select class="form-control" id="objAfeM">
                         <option value="0" disabled selected>Escoge un objetivo afectado</option>
@@ -307,7 +307,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-4 control-label">*Nivel de impacto</label>
+                    <label class="col-lg-4 control-label">Nivel de impacto</label>
                     <div class="col-lg-8">
                       <select class="form-control" id="impRiesgoM">
                       <option value="0" disabled selected>Escoge un nivel de impacto</option>
@@ -315,7 +315,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-4 control-label">*Probabilidad de riesgo</label>
+                    <label class="col-lg-4 control-label">Probabilidad de riesgo</label>
                     <div class="col-lg-8">
                       <input type="number" step="0.1" class="form-control" id="proRiesgoM" min="0.1" max="1" placeholder="Probabilidad de Riesgo">
                     </div>
@@ -333,19 +333,19 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-4 control-label">Costo Estimado</label>
+                    <label class="col-lg-4 control-label">Costo Potencial</label>
                     <div class="col-lg-8">
                       <input type="number" step="positive floating-point number" class="form-control" id="costRiesgoM" placeholder="Costo estimado de Riesgo">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-4 control-label">Tiempo Estimado</label>
+                    <label class="col-lg-4 control-label">Demora Potencial</label>
                     <div class="col-lg-8">
                       <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgoM" placeholder="Tiempo estimado de Riesgo">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-4 control-label">*Equipo Responsable</label>
+                    <label class="col-lg-4 control-label">Equipo Responsable</label>
                     <div class="col-lg-8">
                       <select class="form-control" id="equResM">
                         <option value="0" disabled selected>Escoge un equipo responsable</option>
@@ -379,41 +379,70 @@
                   </div>
                   <div class="form-horizontal col-lg-12">
                     <div class="form-group">
-                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Muy Bajo:</label>
+                      <div class="col-lg-9">
+                        <label class=" control-label">Ingrese el valor del impacto Muy Bajo:</label>
+                      </div>
                       <div class="col-lg-3">
                         <input type="text" class="form-control" id="muyBajo">
                       </div>
+                      <div class="alert alert-danger" id="errorMuyBajo" style="display: none;">
+                        <span class="pull-right">Por favor, corrija el valor del impacto muy bajo</span>
+                      </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Bajo:</label>
+                      <div class="col-lg-9"> 
+                        <label class="control-label">Ingrese el valor del impacto Bajo:</label>
+                      </div>
                       <div class="col-lg-3">
                         <input type="text" class="form-control" id="bajo">
                       </div>
+                      <div class="alert alert-danger" id="errorBajo" style="display: none;">
+                        <span class="pull-right">Por favor, corrija el valor del impacto bajo</span>
+                      </div>
                     </div>
+                    
                     <div class="form-group">
-                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Medio:</label>
+                      <div class="col-lg-9">
+                        <label class="control-label">Ingrese el valor del impacto Medio:</label>
+                      </div>
                       <div class="col-lg-3">
                         <input type="text" class="form-control" id="medio">
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Alto:</label>
-                      <div class="col-lg-3">
-                        <input type="text" class="form-control" id="alto">
+                      <div class="alert alert-danger" id="errorMedio" style="display: none;">
+                        <span class="pull-right">Por favor, corrija el valor del impacto medio</span>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-8 control-label">Ingrese el valor del impacto Muy Alto:</label>
+                      <div class="col-lg-9">
+                        <label class="control-label">Ingrese el valor del impacto Alto:</label>
+                      </div>
+                      <div class="col-lg-3">
+                        <input type="text" class="form-control" id="alto">
+                      </div>
+                      <div class="alert alert-danger" id="errorAlto" style="display: none;">
+                        <span class="pull-right">Por favor, corrija el valor del impacto alto</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-lg-9">
+                        <label class="control-label">Ingrese el valor del impacto Muy Alto:</label>
+                      </div>
                       <div class="col-lg-3">
                         <input type="text" class="form-control" id="muyAlto">
+                      </div>
+                      <div class="alert alert-danger" id="errorMuyAlto" style="display: none;">
+                        <span class="pull-right" >Por favor, corrija el valor del impacto muy alto</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
+                <div class="big-alert alert-danger" id="errorImpactos" style="display: none;">
+                  <span class="pull-right" >Muy bajo &lt; bajo &lt; medio &lt; alto &lt; muy alto</span>
+                </div>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" id="btnConfiguracion" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button" id="btnConfiguracion" class="btn btn-primary">Guardar</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
