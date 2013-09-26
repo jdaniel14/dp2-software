@@ -35,6 +35,13 @@
 		$request = \Slim\Slim::getInstance()->request();
     $proj = json_decode($request->getBody());
     $sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto, id_jefe_proyecto) VALUES (:nom, :fi, :ff, :tp, :jp)";
+		
+		$file = "temp.txt";
+//		echo "LOG: ------------------> ".$sql;
+		$f1 = fopen($file, "a");
+		$output = $sql . PHP_EOL;
+		fwrite($f1, $output);
+		fclose($f1);
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -65,7 +72,7 @@
 		//con base de datos
 		$sql = "SELECT P.id_proyecto, P.nombre_proyecto, R.nombre_recurso, T.nombre_tipo_proyecto, DATE(P.fecha_inicio_planificada) as fi, DATE(P.fecha_fin_planificada) as ff 
 FROM PROYECTO P, RECURSO_HUMANO R, TIPO_PROYECTO T
-WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proyecto";
+WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proyecto ORDER BY P.id_proyecto";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
