@@ -257,6 +257,7 @@
 			$listaRecursos = CO_consultarRecursosXActividad($idProyecto, $actividad->idActividad);
 			$actividad->listaRecursos = $listaRecursos;
 		}
+		unset($actividad);
 		
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		//$listaActividades = CO_obtenerListaActividadesFalsa();
@@ -413,6 +414,7 @@
 		        	$stmt->execute();
 		        	$db = null;
 				}
+				unset($recurso);
 			}
 
 			//Para crear recursos
@@ -434,6 +436,7 @@
 		        	$stmt->execute();
 		        	$db = null;
 				}
+				unset($recurso);
 			}
 
 			//Para eliminar lógicamente los recursos
@@ -453,6 +456,7 @@
 		        	$stmt->execute();
 		        	$db = null;
 				}
+				unset($recurso);
 			}
 
         	$respuesta = CO_crearRespuesta(0, 'Ok');
@@ -468,15 +472,11 @@
 	}
 
 	function CO_consultarListaPaquetes($idProyecto) { //FALTA
-		//$connection = new conexion();
 		
-		//hacer consulta a la bd...
-		//$query = "";
-		//$result = mysqli_query($con, $query);
-		//$listaPaquetes = mysqli_fetch_array($result,MYSQLI_ASSOC);
-		
+
+
 		//se llamara una funcion que devuelve data falsa por mientras.		
-		$listaPaquetes = CO_obtenerListaPaquetesFalsa();
+		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
 		
 		return $listaPaquetes;
 	}
@@ -510,6 +510,7 @@
 		        	$stmt->execute();
 		        	$db = null;
 				}
+				unset($actividad);
 			}
 
         	$respuesta = CO_crearRespuesta(0, 'Ok');
