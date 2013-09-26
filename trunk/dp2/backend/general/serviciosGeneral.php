@@ -218,12 +218,13 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 						calidad,
 						jefe_comite,
 						patrocinador
-				FROM PROYECTO WHERE id_proyecto =1";
+				FROM PROYECTO WHERE id_proyecto =:id";
 		try {
+                        
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
-			 $stmt->bindParam("id", $id);
-			$stmt = $db->query($sql);			
+			$stmt->bindParam("id", $id);
+                        $stmt->execute();		
 			$p = $stmt->fetch(PDO::FETCH_ASSOC);
 			$acta = array("pap"=>$p["patrocinador"],
 							"fpp"=>$p["f_preparacion"],
