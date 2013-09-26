@@ -54,7 +54,7 @@ function obtenProyecto(/*idProyecto*/){
 		idProyecto : idProyecto
 	}
 	
-	/*
+	
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
@@ -63,9 +63,9 @@ function obtenProyecto(/*idProyecto*/){
 		success:agregarDataProyecto	
 
 	});		
-	*/
 	
-	agregarDataProyecto	(arregloProyecto);
+	
+	//agregarDataProyecto	(arregloProyecto);
 	
 	//return arregloProyecto;
 
@@ -76,7 +76,7 @@ function obtenRecursos(/*idProyecto,*/tipo){
 		idProyecto : idProyecto
 	}
 	
-	/*
+	
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
@@ -85,9 +85,9 @@ function obtenRecursos(/*idProyecto,*/tipo){
 		success:function(data){agregaDataFila(data,tipo);}
 	});
 	
-	*/
 	
-	agregaDataFila(arregloRecursos,tipo);
+	
+	//agregaDataFila(arregloRecursos,tipo);
 	
 	//return arregloRecursos;
 
@@ -95,32 +95,32 @@ function obtenRecursos(/*idProyecto,*/tipo){
 
 function obtenMoneda(){
 		
-	/*
+	
 	$.ajax({
 		type: 'GET',		
-		url: rootURL + 'CO_obtenerInfoActividad/',
+		url: rootURL + 'CO_obtenerListaMonedas/',
 		dataType: "json", // data type of response
-		success: agregaDataFilaResumen
-	});*/
+		success: creaComboMoneda
+	});
 	
 	
-	creaComboMoneda(arregloMoneda);
+	//creaComboMoneda(arregloMoneda);
 
 }
 
 function obtenUnidadMedida(){
 
-	/*
+	
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_obtenerUnidadesMedidas/',		
 		dataType: "json",
 		async: true,
-		success:function(data){agregaDataFila(data,tipo);}
+		success:creaComboUnidadMedida
 	});
 	
-	*/
-	creaComboUnidadMedida(arregloUnidadMedida);
+	
+	//creaComboUnidadMedida(arregloUnidadMedida);
 
 }
 
@@ -139,10 +139,11 @@ function iniciaRecursos(tipo){
 
 
 function agregaDataFila(data, tipo){
-	arreglo=data;
+	arreglo=data.lista;
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaconRecursos(tipo,i,filaRecurso[0],filaRecurso[2],filaRecurso[1],filaRecurso[3] ,'Recurso Material',filaRecurso[6],filaRecurso[7], filaRecurso[4]);
+		//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
+		agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario ,'Recurso Material',filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda);
 		numRecursos=i;
 	}
 }
@@ -162,7 +163,7 @@ function iniciaUnidadMedida(){
 
 function agregarDataProyecto(data){
 	proy=data;
-	agregaDatosProyecto( /*proy.nombre*/ proy[0]);
+	agregaDatosProyecto( proy.nombre);
 }
 
 
@@ -206,11 +207,11 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 
 function creaComboMoneda(data){
 	comboMoneda='';
-	arreglo=data[0];
+	arreglo=data.lista;
 	
 	for (i=0; i<arreglo.length;i++){
 		moneda=arreglo[i];
-		agregaOpcionMoneda(moneda[0], moneda[1]);
+		agregaOpcionMoneda(moneda.idMoneda, moneda.nombre);
 		
 	}		
 	
@@ -220,11 +221,11 @@ function creaComboMoneda(data){
 function creaComboUnidadMedida(data){
 
 	comboUnidadMedida='';
-	arreglo=data[0];
+	arreglo=data.lista;
 	
 	for (i=0; i<arreglo.length;i++){
 		unidad=arreglo[i];
-		agregaOpcionUnidadMedida(unidad[0], unidad[1]);
+		agregaOpcionUnidadMedida(unidad.idUM, unidad.descripcion);
 		
 	}
 
