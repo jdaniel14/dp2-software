@@ -68,16 +68,47 @@ function CR_getDependencias($json) {//servicio6
 function CR_postActividades() {//servicio7
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
-
-
-    $arreglo_actividades = $actividades->idProyecto->tasks;
-
-
-    for ($i = 0; $i < sizeof($arreglo_actividades); $i++)
-        CR_guardar_actividades_BD($arreglo_actividades[$i]);
-
-    echo json_encode($jsonRespuesta);
+	//echo $actividades;
+	
+	$idProyecto = $actividades->idProyecto;
+	
+    $arreglo_actividades = $actividades->task;
+	
+	//CR_Eliminacion_Logica_Actividades($idProyecto);
+    
+	//for ($i = 0; $i < sizeof($arreglo_actividades); $i++)
+     //   CR_guardar_actividades_BD($arreglo_actividades[$i]);
+	//CR_guardar_actividades_BD($arreglo_actividades);
+	
+    //return json_encode(CR_obtenerRespuestaExito());
+	echo json_encode($actividades);
+	//return json_encode(CR_obtenerRespuestaExito());
+	//echo json_encode($actividades);
 }
+
+function CR_Eliminacion_Logica_Actividades($idProyecto){
+
+
+
+	$sql = "UPDATE ACTIVIDAD SET eliminado=1 WHERE id_proyecto=? and eliminado=0; COMMIT;";
+    //$lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+   
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+
+}
+
+
+
 
 //Funciones implementadas que necesitan los servicios
 function CR_consultarListaDependencia($idProyecto) {
@@ -95,10 +126,11 @@ function CR_consultarInfoActividades($idProyecto) {
       echo "Error al conectar con MySQL: " . mysqli_connect_error();
       }
      */
-    //Hardcode
-
-    $sql = "SELECT * FROM ACTIVIDAD WHERE id_proyecto=? order by numero_fila";
-    $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=?";
+   
+	$recursos= CR_obtenerRecursosTotalProyecto($idProyecto);
+	$lista_mapeo=CR_obtenerListaMaps($recursos);
+    $sql = "SELECT * FROM ACTIVIDAD WHERE id_proyecto=? and eliminado=0 order by numero_fila";
+    $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
     $lista_actividad = array();
     try {
         $db = getConnection();
@@ -115,8 +147,10 @@ function CR_consultarInfoActividades($idProyecto) {
                 if ($p2 = $stmt2->fetch(PDO::FETCH_ASSOC))
                     $detalle_paquete = $p2["nombre"];
             }
-            $lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
-            $actividad = array("id_task" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"] + 0, "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => array(), "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => false, "endIsMilestone" => false);
+            //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
+			$idActividad=$p["id_actividad"];
+			$listaRecursosAsignados=CR_obtenerListaRecursosAsignados($idActividad,$lista_mapeo);
+            $actividad = array("id_task" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"] + 0, "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => false, "endIsMilestone" => false);
             array_push($lista_actividad, $actividad);
         }
 
@@ -144,10 +178,36 @@ function CR_consultarInfoActividades($idProyecto) {
 
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
-    $recursos = CR_obtenerRecursosTotalFalsa();
-
+    //$recursos = CR_obtenerRecursosTotalFalsa();
+	
     $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos);
     return $proyecto;
+}
+
+function CR_mezcla($input){
+
+	return $input["idrecurso"].":".$input["id"];
+}
+
+function CR_obtenerListaMaps($recursos){
+	
+	//$prueba=array_map("CR_mezcla", $recursos);
+	
+	//$resultado=new object();
+    for ($i = 0; $i < sizeof($recursos); $i++){
+		//echo json_encode($recursos[$i]["idrecurso"]);
+		$indice=$recursos[$i]["idrecurso"];
+		//echo json_encode($indice);
+		$valor="tmp_".($i+1);
+		//echo json_encode($valor);
+		//$test=array($indice=>$valor);
+        //array_push($resultado,$test);
+		$resultado[$indice]=$valor;
+	
+	}	
+	//echo json_encode($resultado);
+	//return $resultado;
+	return $resultado;
 }
 
 function CR_guardarActividadesBD($objecto) {
@@ -174,7 +234,8 @@ function CR_guardarcalendarioBaseBD($objeto) {
 function CR_consultarRecursos($idProyecto) {
 
 
-    $listaRecursos = CR_obtenerRecursosTotalFalsa();
+    //$listaRecursos = CR_obtenerRecursosTotalFalsa();
+	$listaRecursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     return $listaRecursos;
 }
 
@@ -214,23 +275,42 @@ function CR_obtenerRespuestaFracaso() {
     return $respuesta;
 }
 
-function CR_guardar_actividades_BD($actividad) {
+function CR_guardar_actividades_BD($listaActividad) {
 
-    echo $actividad->start . " " . $actividad->end;
-    /*     $sql = "INSERT INTO ACTIVIDAD () VALUES (:nombre_actividad)";
+    //echo $actividad->start . " " . $actividad->end;
+         //$sql = "INSERT INTO ACTIVIDAD (nombre) VALUES (:nombre_actividad)";
+		 $sql = "
+        	INSERT INTO ACTIVIDAD (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA)
+			VALUES
+			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda);
+			COMMIT;";
       try {
       $db = getConnection();
-      $stmt = $db->prepare($sql);
-      $stmt->bindParam("nombre_actividad", $actividad->name);
-      $stmt->execute();
+      //$stmt = $db->prepare($sql);
+      //$stmt->bindParam("nombre_actividad", $actividad->name);
+	  
+      //$stmt->execute();
       //$proj->id = $db->lastInsertId();//ESTO SE PUEDE BOTAR A LA BD
       $db = null;
-
+			  if ($listaActividad != null) {
+						foreach ($listaActividad as $actividad) {
+							$db = getConnection();
+							$stmt = $db->prepare($sql);
+							$stmt->bindParam("idUnidadMedida", $actividad->idUnidadMedida);
+							$stmt->bindParam("nombreRecurso", $actividad->nombreRecurso);
+							$stmt->bindParam("idProyecto", $actividad->idProyecto);
+							$stmt->bindParam("costoUnitario", $actividad->CostoUnitario);
+							$stmt->bindParam("idMoneda", $actividad->idMoneda);
+							$stmt->execute();
+							$db = null;
+						}
+						unset($actividad);
+				}
       } catch(PDOException $e) {
       echo json_encode(array("me"=> $e->getMessage()));
       //'{"error":{"text":'. $e->getMessage() .'}}';
       }
-     */
+     
 }
 
 //Funciones hardcode
@@ -358,16 +438,22 @@ function CR_obtenerRecursosTotalProyecto($idProyecto) {
 
     $listaRecursos = array();
 
-    $sql = "SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida   left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda  left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal where a.id_proyecto=? ";
-    try {
+    $sql = "SELECT a.*,b.simbolo as simbolo_unidad,b.descripcion as descripcion_unidad, c.descripcion as descripcion_moneda, d.descripcion as descripcion_rubropresupuestal FROM RECURSO a left join UNIDAD_MEDIDA b on b.id_unidad_medida=a.id_unidad_medida   left join CAMBIO_MONEDA c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda  left join RUBRO_PRESUPUESTAL d on a.id_rubro_presupuestal=d.id_rubro_presupuestal where a.id_proyecto =  ? ";
+    try { 
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
-        $stmt = $db->query($sql);
+    
+		//$stmt = $db->query($sql);
+		
         //$lista_jp = array();
+		$contador=1;
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("idrecurso" => $j["id_recurso"], "idunidadmedida" => $j["id_unidad_medida"], "descripcion_recurso" => $j["descripcion"], "costo_unitario" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "descripcion_unidad" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
+            
+			$rec = array("idrecurso" => $j["id_recurso"],"id" => "tmp_".$contador, "idunidadmedida" => $j["id_unidad_medida"], "name" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
             array_push($listaRecursos, $rec);
+			$contador++;
+			
         }
 
         $db = null;
@@ -401,22 +487,32 @@ function CR_obtenerRecursosTotalPaqueteTrabajo($idpaquetetrabajo) {
 }
 
 //FALTA VERIFICAR EL PARSEO DE FECHA ENTRANTES Y SALIENTES PARA TODO EL BUGS BUNNY
-function CR_obtenerListaRecursosAsignados($idactividad) {
+function CR_obtenerListaRecursosAsignados($idActividad,$listaMapeoRecursos) {
     $listaRecursos = array();
-
+	//$listaIds=array();
     $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real,g.descripcion as 'descripcion_tipocosto' FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($idactividad));
-        $stmt = $db->query($sql);
+        $stmt->execute(array($idActividad));
+        //$stmt = $db->query($sql);
         //$lista_jp = array();
-        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("idrecurso" => $j["id_recurso"], "idunidadmedida" => $j["id_unidad_medida"], "descripcion_recurso" => $j["descripcion"], "costo_unitario" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "descripcion_unidad" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "cantidadEstimada" => $j["cantidadEstimada"], "cantidadReal" => $j["cantidadReal"], "costo_unitario_real" => $j["costo_unitario_real"], "descripcion_tipocosto" => $j["descripcion_tipocosto"]);
+		$contador=1;
+        //echo "mira" . json_encode($listaMapeoRecursos);
+		while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+			//echo $j["id_recurso"]. "gg";
+			//$idRecurso=$listaMapeoRecursos["1"];
+			//echo $idRecurso;
+			 $idRecurso=$listaMapeoRecursos["".$j["id_recurso"]];
+			
+            $rec = array("idrecurso" => $j["id_recurso"],"id"=>"tmp_".$contador , "resourceId" => $idRecurso,"idunidadmedida" => $j["id_unidad_medida"], "descripcion_recurso" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"]+0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"]+0, "cantidadReal" => $j["cantidadReal"], "costo_unitario_real" => $j["costo_unitario_real"], "descripcion_tipocosto" => $j["descripcion_tipocosto"]);
             array_push($listaRecursos, $rec);
+			
+			$contador++;
         }
 
         $db = null;
+		//echo json_encode($listaRecursos);
         return $listaRecursos;
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
