@@ -14,7 +14,7 @@
 
     <!-- Custom styles for this template -->
     <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
-
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../../assets/js/html5shiv.js"></script>
@@ -24,7 +24,7 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -80,74 +80,50 @@
 
       <div class="starter-template">
 	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
-        <h1 >Registrar Lección Aprendida</h1>
+        <h1>Lista de Lecciones Aprendidas</h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
-	<div class="well">
-	<div id="myTabContent" class="tab-content">
-		<div class="tab-pane active in" id="registrar">
-		<p>
-		<form class="form-horizontal" role="form" action='' method="POST">
-		  <fieldset>
 
-			<div class="form-group">
-			  <!-- Categoria de Leccion Aprendida -->
-			  <label class="col-lg-4 control-label" for="cla">Categoria Lección Aprendida:</label>
-			  <div class="controls col-lg-6">
-				<select class="form-control" id="cla" name="cla" placeholder="" class="input-xlarge">
-						
-					<option selected value="0">-</option>
-					<option value="1">Integración</option>
-					<option value="2">Alcance</option>
-					<option value="3">Presupuestos</option>
-					<option value="4">Cronograma</option>
-					<option value="5">Riesgos</option>
-				</select>
-				<!--<p class="help-block">Please provide your E-mail</p>-->
-			  </div>
-			</div>
-			
-			<div class="form-group">
-			  <!-- Leccion Aprendida -->
-			  <label class="col-lg-4 control-label"  for="la">Descripcion:</label>
-			  <div class="controls col-lg-6">
-				  <textarea id="la" name="la" class="form-control" placeholder="Redacte su leccion aprendida..." rows="10"></textarea>
-			  </div>
-			</div>
-
-			<div class="form-group">
+	  <div class="" id="lla">
+	  
+	  	<div class="form-group">
 			  <!-- Button -->
 			  <div class="controls">
 				<table width="100%">			
 					<tr width="100%">
-						<td width="50%" align="right">
-							<button type="button" class="btn btn-primary" id="btnGrabar">
-							Guardar
+						<td width="100%" align="left">
+							<button type="button" class="btn btn-primary" id="btnRegistrar" onclick="parent.location='RegistrarLeccionAprendida.html'">Registrar
 							</button>
 						</td>
-						<td width="50%" align="left">
-							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="history.go(-1);">
-							Cancelar
-							</button>
-						</td>
-					</tr>			
+					</tr>
 				</table>
 			  </div>
-			</div>
-		  </fieldset>
-		</form>
-		</p>
-		</div>
-	</div>
-	</div>
+		  </div>
+
+		<form role="form" name="formLis  taProyectos">
+		
+			<table class="table-striped table-bordered" align="center" width="90%" id="listaProyectos">
+			
+				<tr>
+					<td width="25%" align="center"><b>Nombre del Colaborador</b></td>
+					<td width="25%" align="center"><b>Descripcion</b></td>
+          <td width="25%" align="center"><b>Modificar</b></td>
+          <td width="25%" align="center"><b>Eliminar</b></td>
+				</tr>
+				
+			</table>
+			
+		
+		</form>	  
+	  </div>	 
     </div><!-- /.container -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-  	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
-  	<script src="../../static/general/js/RegistrarLeccionAprendida.js"></script>
+  	<script src="../../static/general/js/ListaProyectos.js"></script>
   </body>
 </html>
