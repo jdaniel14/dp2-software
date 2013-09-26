@@ -63,7 +63,7 @@ function registrarProyectos(){
         contentType: "application/json; charset=utf-8",
         url: "../../api/G_registrarProyecto",
         success: function (data) {
-            $(location).attr('href','ListaProyecto.html');
+            $(location).attr('href','ListaProyectos.html');
         }
     });
 }
