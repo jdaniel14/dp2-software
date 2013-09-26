@@ -14,14 +14,14 @@
 	}
 	*/
 	
-	function CO_getInfoProyecto($json) { //servicio1
+	function CO_getInfoProyecto($json) { //servicio1 //COMPLETO
 		$proy = json_decode($json);
 		$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
 		
 		echo json_encode($infoProyecto);
 	}
 	
-	function CO_getListaRecursos($json) { //servicio2
+	function CO_getListaRecursos($json) { //servicio2 //COMPLETO
 		$proy = json_decode($json);
 		$listaRecursos = CO_consultarListaRecursos($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
@@ -30,7 +30,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getListaActividades($json) { //servicio3
+	function CO_getListaActividades($json) { //servicio3 //COMPLETO
 		$proy = json_decode($json);
 		$listaActividades = CO_consultarListaActividades($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
@@ -112,25 +112,24 @@
 	
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.
-	function CO_consultarInfoProyecto($idProyecto) {
-		//hacer consulta a la bd...
-		$sql = '
-		select
-		A.ID_PROYECTO,
+	function CO_consultarInfoProyecto($idProyecto) { //COMPLETO
+		$sql = "select A.ID_PROYECTO, 
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
-		SUM(C.CANTIDADESTIMADA*(D.VALOR_COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL)) PRESUP_SOLES
+		SUM(C.CANTIDADESTIMADA*(D.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL)) PRESUP_SOLES
 		from 
 		PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
+		JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
 		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		WHERE
-		X.FECHA=SYSDATE()
-		WHERE
-		A.ID_PROYECTO= :idProyecto
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND
+		A.ID_PROYECTO=:idProyecto
 		GROUP BY
-		A.ID_PROYECTO;';
+		A.ID_PROYECTO,
+		A.NOMBRE_PROYECTO,
+		A.PORCENTAJE_RESERVA;";
 
 		try {
 			$db = getConnection();
@@ -140,9 +139,7 @@
         	$db = null;
         	$proyecto = null; //new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					//$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
-					
-					$proyecto = new CO_Proyecto($p["id_proyecto"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
+					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
 			}
 			//echo json_encode($listaRecursos);
 
@@ -158,128 +155,40 @@
 		return $proyecto;
 	}
 	
-	function CO_consultarInfoActividad($idProyecto, $idActividad) { //FALTA LA LISTA DE RECURSOS
-		$sql = '
-		SELECT
-		H.ID_ACTIVIDAD,
-		H.NOMBRE_ACTIVIDAD,
-		H.COSTO_ACTIVIDAD_SOLES,
-		T.DESCRIPCION RECURSO,
-		Z.DESCRIPCION UNIDAD_MEDIDA,
-		D.VALOR_COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL COSTO_UNIT_SOLES
-		FROM
-		(
-		select
-		A.ID_PROYECTO,
-		B.ID_ACTIVIDAD,
-		B.NOMBRE_ACTIVIDAD,
-		Y.DESCRIPCION ASIENTO_CONTABLE,
-		SUM(C.CANTIDADESTIMADA*(D.VALOR_COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
-		from 
-		PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
-		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
-		JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
-		WHERE
-		X.FECHA=SYSDATE()
-		WHERE
-		A.ID_PROYECTO= $idProyecto AND B.ID_ACTIVIDAD= :idActividad
-		GROUP BY
-		A.ID_PROYECTO,
-		B.ID_ACTIVIDAD,
-		B.NOMBRE_ACTIVIDAD,
-		Y.DESCRIPCION
-		) H JOIN
-		ACTIVIDAD_X_RECURSO C ON H.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN RECURSO T ON C.ID_RECURSO=T.ID_RECURSO
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
-		JOIN UNIDAD_MEDIDA Z ON T.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
-		WHERE
-		X.FECHA=SYSDATE()
-		GROUP BY
-		H.ID_ACTIVIDAD,
-		H.NOMBRE_ACTIVIDAD,
-		H.COSTO_ACTIVIDAD_SOLES,
-		T.DESCRIPCION ,
-		Z.DESCRIPCION ,
-		D.VALOR_COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL;';
-
-		try {
-			$db = getConnection();
-        	$stmt = $db->prepare($sql);
-        	$stmt->bindParam("idProyecto", $idProyecto);
-        	$stmt->bindParam("idActividad", $idActividad);
-        	$stmt->execute();
-        	$db = null;
-        	$actividad = null;
-        	$listaRecursos = array();
-        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					//$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
-					if ($actividad == null) {
-						$actividad = new CO_Actividad($p["ID_ACTIVIDAD"], $p["NOMBRE_ACTIVIDAD"], $p["ASIENTO_CONTABLE"], $p["COSTO_ACTIVIDAD_SOLES"], 0, null);
-					}
-
-					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], null, null, null, null, null, null));
-			}
-
-			if ($actividad != null) {
-				$actividad->listaRecursos = $listaRecursos;
-			}
-
-		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	echo json_encode(array("me"=> $e->getMessage()));
-		}
-		
-
-		//se llamara una funcion que devuelve data falsa por mientras.	
-		//$actividad = CO_obtenerInfoActividadFalsa($idActividad);
-		
-		return $actividad;
-	}
-	
-	function CO_consultarListaRecursos($idProyecto) {
-		//hacer consulta a la bd...
-		$sql = '
-		SELECT 
+	function CO_consultarListaRecursos($idProyecto) { //COMPLETO
+		$sql = "SELECT 
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
 		A.DESCRIPCION,
+		Y.ID_CAMBIO_MONEDA,
 		Y.DESCRIPCION MONEDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
 		SUM(C.CANTIDADESTIMADA) CANTIDAD_NECESARIA,
-		SUM(D.VALOR_COSTO_UNITARIO_ESTIMADO*C.CANTIDADESTIMADA*X.CAMBIO_A_SOL)/SUM(C.CANTIDADESTIMADA) COSTO_PROM_SOLES
-		FROM
+		SUM(A.COSTO_UNITARIO_ESTIMADO*C.CANTIDADESTIMADA*X.CAMBIO_A_SOL)/SUM(C.CANTIDADESTIMADA) COSTO_PROM_SOLES FROM 
 		RECURSO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
-		JOIN CAMBIO_MONEDA Y ON D.ID_CAMBIO_MONEDA=Y.ID_CAMBIO_MONEDA
+		JOIN CAMBIO_HISTORICO X ON A.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		JOIN CAMBIO_MONEDA Y ON A.ID_CAMBIO_MONEDA=Y.ID_CAMBIO_MONEDA
 		JOIN UNIDAD_MEDIDA Z ON A.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
 		WHERE
-		A.ID_PROYECTO= :idProyecto
-		WHERE
-		X.FECHA=SYSDATE()
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND A.ID_PROYECTO= :idProyecto
 		GROUP BY
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
 		A.DESCRIPCION,
 		Y.DESCRIPCION,
-		Z.DESCRIPCION;';
+		Z.DESCRIPCION;";
 
+		$listaRecursos = array();
 		try {
 			$db = getConnection();
         	$stmt = $db->prepare($sql);
         	$stmt->bindParam("idProyecto", $idProyecto);
         	$stmt->execute();
         	$db = null;
-        	$listaRecursos = array();
+        	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					//$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
-					
-					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["MONEDA"], $p["UNIDAD_MEDIDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"]));
+					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"]));
 			}
 			//echo json_encode($listaRecursos);
 
@@ -295,29 +204,28 @@
 		return $listaRecursos;
 	}
 	
-	function CO_consultarListaActividades($idProyecto) {
-		$sql = '
-		select
+	function CO_consultarListaActividades($idProyecto) { //COMPLETO
+		$sql = "select 
 		A.ID_PROYECTO,
 		B.ID_ACTIVIDAD,
 		B.NOMBRE_ACTIVIDAD,
 		Y.DESCRIPCION ASIENTO_CONTABLE,
-		SUM(C.CANTIDADESTIMADA*(D.VALOR_COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
+		SUM(C.CANTIDADESTIMADA*(Z.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
 		from 
 		PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		JOIN RECURSO Z ON C.ID_RECURSO=Z.ID_RECURSO
+		JOIN CAMBIO_HISTORICO X ON Z.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
 		WHERE
-		X.FECHA=SYSDATE()
-		WHERE
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND
 		A.ID_PROYECTO= :idProyecto
 		GROUP BY
 		A.ID_PROYECTO,
 		B.ID_ACTIVIDAD,
 		B.NOMBRE_ACTIVIDAD,
-		Y.DESCRIPCION;';
+		Y.DESCRIPCION;";
 
 		try {
 			$db = getConnection();
@@ -327,9 +235,8 @@
         	$db = null;
         	$listaActividades = array();
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					//$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
-					
-					array_push($listaActividades, new CO_Actividad($p["ID_ACTIVIDAD"], $p["NOMBRE_ACTIVIDAD"], $p["ASIENTO_CONTABLE"], $p["COSTO_ACTIVIDAD_SOLES"], 0, null));
+        															//id actividad, nombre act, tipo cuenta, costo, lista recursos
+					array_push($listaActividades, new CO_Actividad($p["ID_ACTIVIDAD"], $p["NOMBRE_ACTIVIDAD"], $p["ASIENTO_CONTABLE"], $p["COSTO_ACTIVIDAD_SOLES"], null));
 			}
 			//echo json_encode($listaRecursos);
 
@@ -349,53 +256,32 @@
 		return $listaActividades;
 	}
 	
-	function CO_consultarRecursosXActividad($idProyecto, $idActividad) { //FALTA INICIAR CADA RECURSO, CONSULTAR!
-		$sql = '
+	function CO_consultarRecursosXActividad($idProyecto, $idActividad) { //FALTA CORREGIR
+		$sql = "
 		SELECT
-		H.ID_ACTIVIDAD,
-		H.NOMBRE_ACTIVIDAD,
-		H.COSTO_ACTIVIDAD_SOLES,
-		T.DESCRIPCION RECURSO,
+		A.ID_ACTIVIDAD,
+		A.ID_PROYECTO,
+		B.ID_RECURSO,
+		C.DESCRIPCION NOMBRE_RECURSO,
+		Z.ID_UNIDAD_MEDIDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
-		D.VALOR_COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL COSTO_UNIT_SOLES
+		C.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL COSTO_UNIT_SOLES
 		FROM
-		(
-		select
-		A.ID_PROYECTO,
-		B.ID_ACTIVIDAD,
-		B.NOMBRE_ACTIVIDAD,
-		Y.DESCRIPCION ASIENTO_CONTABLE,
-		SUM(C.CANTIDADESTIMADA*(D.VALOR_COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
-		from 
-		PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
-		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
-		JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO X ON C.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		JOIN UNIDAD_MEDIDA Z ON C.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
 		WHERE
-		X.FECHA=SYSDATE()
-		WHERE
-		A.ID_PROYECTO= :idProyecto AND B.ID_ACTIVIDAD= :idActividad
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND
+		A.ID_PROYECTO= :idProyecto AND A.ID_ACTIVIDAD= :idActividad
 		GROUP BY
+		A.ID_ACTIVIDAD,
 		A.ID_PROYECTO,
-		B.ID_ACTIVIDAD,
-		B.NOMBRE_ACTIVIDAD,
-		Y.DESCRIPCION
-		) H JOIN
-		ACTIVIDAD_X_RECURSO C ON H.ID_ACTIVIDAD=C.ID_ACTIVIDAD
-		JOIN RECURSO T ON C.ID_RECURSO=T.ID_RECURSO
-		JOIN COSTO_X_RECURSOS_X_ACTIVIDAD D ON C.ID_ACTIVIDAD=D.ID_ACTIVIDAD AND C.ID_RECURSO=D.ID_RECURSO
-		JOIN UNIDAD_MEDIDA Z ON T.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
-		WHERE
-		X.FECHA=SYSDATE()
-		GROUP BY
-		H.ID_ACTIVIDAD,
-		H.NOMBRE_ACTIVIDAD,
-		H.COSTO_ACTIVIDAD_SOLES,
-		T.DESCRIPCION ,
+		B.ID_RECURSO,
+		C.DESCRIPCION ,
 		Z.DESCRIPCION ,
-		D.VALOR_COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL;';
+		C.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL;";
 		
 		$listaRecursos = null;
 		try {
@@ -407,9 +293,8 @@
         	$db = null;
         	$listaRecursos = array();
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					//$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
-					
-					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], null, null, null, null, null, null));
+        													//id recurso, idunidad medida, unidad medida, nombre recurso, id moneda, moneda, cantidad estimada, costo unitario
+				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], null, null, null, $p["COSTO_UNIT_SOLES"]));
 			}
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -419,7 +304,62 @@
 		return $listaRecursos;
 	}
 
-	function CO_consultarListaPaquetes($idProyecto) {
+	function CO_consultarInfoActividad($idProyecto, $idActividad) { //COMPLETO
+		$sql = "
+		select
+		A.ID_PROYECTO,
+		B.ID_ACTIVIDAD,
+		B.NOMBRE_ACTIVIDAD,
+		Y.DESCRIPCION ASIENTO_CONTABLE,
+		SUM(C.CANTIDADESTIMADA*(D.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
+		from 
+		PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
+		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+		JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
+		WHERE
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND
+		A.ID_PROYECTO= :idProyecto AND B.ID_ACTIVIDAD= :idActividad
+		GROUP BY
+		A.ID_PROYECTO,
+		B.ID_ACTIVIDAD,
+		B.NOMBRE_ACTIVIDAD,
+		Y.DESCRIPCION;";
+
+		$actividad = null;
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->bindParam("idActividad", $idActividad);
+        	$stmt->execute();
+        	$db = null;
+        	$listaRecursos = array();
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+												//id actividad, nombre act, tipo cuenta, costo, lista recursos
+				$actividad = new CO_Actividad($p["ID_ACTIVIDAD"], $p["NOMBRE_ACTIVIDAD"], $p["ASIENTO_CONTABLE"], $p["COSTO_ACTIVIDAD_SOLES"], null);
+			}
+
+			if ($actividad != null) {
+				$listaRecursos = CO_consultarRecursosXActividad($idProyecto, $actividad->idActividad);
+				$actividad->listaRecursos = $listaRecursos;
+			}
+
+		} catch(PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+		
+
+		//se llamara una funcion que devuelve data falsa por mientras.	
+		//$actividad = CO_obtenerInfoActividadFalsa($idActividad);
+		
+		return $actividad;
+	}
+
+	function CO_consultarListaPaquetes($idProyecto) { //FALTA
 		//$connection = new conexion();
 		
 		//hacer consulta a la bd...
@@ -434,14 +374,10 @@
 	}
 
 	function CO_consultarListaMonedas() { //FALTA
-		//$connection = new conexion();
-		
-		//hacer consulta a la bd...
-		//$query = "";
-		//$result = mysqli_query($con, $query);
-		//$listaMonedas = mysqli_fetch_array($result,MYSQLI_ASSOC);
-		
-		//se llamara una funcion que devuelve data falsa por mientras.		
+
+
+
+				
 		$listaMonedas = CO_obtenerListaMonedasFalsa();
 		
 		return $listaMonedas;
