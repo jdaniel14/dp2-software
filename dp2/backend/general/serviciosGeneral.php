@@ -199,9 +199,9 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$stmt->bindParam("p_patrocinador", $acta->pap);
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
-			$proj->id = $db->lastInsertId();
+                        $proj->id = $db->lastInsertId();			
 			$db = null;
-			echo json_encode(array("me"=>"", "id"=>$acta->id));
+			echo json_encode(array("me"=>"", "id"=>$proj->id));
 		} catch(PDOException $e) {
 			  echo json_encode(array("me"=> $e->getMessage()));
 		}
