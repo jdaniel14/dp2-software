@@ -84,13 +84,25 @@ class CO_Paquete {
 class CO_Moneda {
 	public $idMoneda;
 	public $nombre;
-	public $tipoCambioASoles;
+	public $tipoCambioASol;
+	public $tipoCambioDesdeSol;
 
-	function __construct($idMoneda, $nombre, $tipoCambioASoles) {
+	function __construct($idMoneda, $nombre, $tipoCambioASol, $tipoCambioDesdeSol) {
 		$this->idMoneda = $idMoneda;
 		$this->nombre = $nombre;
-		$this->tipoCambioASoles = $tipoCambioASoles;
+		$this->tipoCambioASoles = $tipoCambioASol;
+		$this->tipoCambioDesdeSol = $tipoCambioDesdeSol;
 	}
+}
+
+class CO_UnidadMedida {
+	public $idUM;
+	public $descripcion;
+	
+	function __construct($idUM, $descripcion) {
+		$this->idUM = $idUM;
+		$this->descripcion = $descripcion;
+	}	
 }
 
 class CO_ContenedorCUR { //Costo Unitario de Recursos + porcentaje de reserva

@@ -39,16 +39,16 @@
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getInfoActividad($json) { //servicio4
+	function CO_getInfoActividad($json) { //servicio4 //COMPLETO
 		$proy = json_decode($json);
 		$infoActividad = CO_consultarInfoActividad($proy->idProyecto, $proy->idActividad);
 		
 		echo json_encode($infoActividad);
 	}
 	
-	function CO_saveCURecursos($json) { //servicio5
+	function CO_saveCURecursos($json) { //servicio5 //COMPLETO
 		$objeto = json_decode($json);
-		$jsonRespuesta = CO_guardarCURyPorcReserva($objeto);
+		$jsonRespuesta = CO_guardarCUR($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
@@ -62,14 +62,14 @@
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_saveTipoCuenta($json) { //servicio 7
+	function CO_saveTipoCuenta($json) { //servicio 7 //COMPLETO
 		$objeto = json_decode($json);
 		$jsonRespuesta = CO_guardarTipoCuenta($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_getListaMonedas() {
+	function CO_getListaMonedas() { //servicio 8 //COMPLETO
 		$listaMonedas = CO_consultarListaMonedas();
 		$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaMonedas;
@@ -77,6 +77,23 @@
 		echo json_encode($jsonRespuesta);
 	}
 
+	function CO_getListaUnidadesMedidas() { //servicio 9 //COMPLETO
+		$listaUM = CO_consultarListaUnidadesMedida();
+		$jsonRespuesta = new stdClass();
+		$jsonRespuesta->lista = $listaUM;
+
+		echo json_encode($jsonRespuesta);
+	}
+
+	function CO_saveReserva($json) { //servicio 10 //COMPLETO
+		$objeto = json_decode($json);
+		$jsonRespuesta = CO_guardarReserva($objeto);
+		
+		echo json_encode($jsonRespuesta);
+	}
+
+
+	/*
 	function CO_testFunction2() {
 		$sql = "SELECT * FROM CATEGORIA_RIESGO";
 		try {
@@ -90,30 +107,17 @@
             echo 'ERROR EN CO_testFunction: {"error":{"text":'. $e->getMessage() .'}}';
         }
 	}
-
+	*/
+	
 	function CO_testFunction() {
-		$sql = "SELECT id_proyecto, nombre_proyecto FROM PROYECTO ";
-		try {
-			$db = getConnection();
-			$stmt = $db->query($sql);
-			$lista_project = array();
-			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>'JP', "tp"=>'TP', "fi"=>'', "ff"=>'', "es"=>"Ok");
-					array_push($lista_project, $proj);
-			}
-
-			$db = null;
-			echo json_encode(array("prs"=>$lista_project)) ;
-		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        echo json_encode(array("me"=> $e->getMessage()));
-		}
+		echo "add me blood999";
 	}
 	
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.
 	function CO_consultarInfoProyecto($idProyecto) { //COMPLETO
-		$sql = "select A.ID_PROYECTO, 
+		$sql = "select
+		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
 		SUM(C.CANTIDADESTIMADA*(D.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL)) PRESUP_SOLES
@@ -124,8 +128,9 @@
 		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		WHERE
 		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND D.ESTADO<>'ELIMINADO'
 		AND
-		A.ID_PROYECTO=:idProyecto
+		A.ID_PROYECTO= :idProyecto
 		GROUP BY
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
@@ -160,11 +165,12 @@
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
 		A.DESCRIPCION,
-		Y.ID_CAMBIO_MONEDA,
+		A.ID_CAMBIO_MONEDA,
 		Y.DESCRIPCION MONEDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
 		SUM(C.CANTIDADESTIMADA) CANTIDAD_NECESARIA,
-		SUM(A.COSTO_UNITARIO_ESTIMADO*C.CANTIDADESTIMADA*X.CAMBIO_A_SOL)/SUM(C.CANTIDADESTIMADA) COSTO_PROM_SOLES FROM 
+		SUM(A.COSTO_UNITARIO_ESTIMADO*C.CANTIDADESTIMADA*X.CAMBIO_A_SOL)/SUM(C.CANTIDADESTIMADA) COSTO_PROM_SOLES
+		FROM
 		RECURSO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
 		JOIN CAMBIO_HISTORICO X ON A.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
@@ -172,6 +178,7 @@
 		JOIN UNIDAD_MEDIDA Z ON A.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
 		WHERE
 		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND A.ID_PROYECTO= :idProyecto
+		AND A.ESTADO<>'ELIMINADO'
 		GROUP BY
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
@@ -205,7 +212,7 @@
 	}
 	
 	function CO_consultarListaActividades($idProyecto) { //COMPLETO
-		$sql = "select 
+		$sql = "select
 		A.ID_PROYECTO,
 		B.ID_ACTIVIDAD,
 		B.NOMBRE_ACTIVIDAD,
@@ -219,6 +226,7 @@
 		JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
 		WHERE
 		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND Z.ESTADO<>'ELIMINADO'
 		AND
 		A.ID_PROYECTO= :idProyecto
 		GROUP BY
@@ -256,7 +264,7 @@
 		return $listaActividades;
 	}
 	
-	function CO_consultarRecursosXActividad($idProyecto, $idActividad) { //FALTA CORREGIR
+	function CO_consultarRecursosXActividad($idProyecto, $idActividad) { //COMPLETO
 		$sql = "
 		SELECT
 		A.ID_ACTIVIDAD,
@@ -265,7 +273,10 @@
 		C.DESCRIPCION NOMBRE_RECURSO,
 		Z.ID_UNIDAD_MEDIDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
-		C.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL COSTO_UNIT_SOLES
+		C.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL COSTO_UNIT_SOLES,
+		B.CANTIDADESTIMADA,
+		1 AS ID_CAMBIO_MONEDA,
+		'SOLES' AS MONEDA
 		FROM
 		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
 		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
@@ -275,13 +286,18 @@
 		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		AND
 		A.ID_PROYECTO= :idProyecto AND A.ID_ACTIVIDAD= :idActividad
+		AND C.ESTADO<>'ELIMINADO'
 		GROUP BY
 		A.ID_ACTIVIDAD,
 		A.ID_PROYECTO,
 		B.ID_RECURSO,
-		C.DESCRIPCION ,
+		C.DESCRIPCION,
+		Z.ID_UNIDAD_MEDIDA,
 		Z.DESCRIPCION ,
-		C.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL;";
+		C.COSTO_UNITARIO_ESTIMADO*X.CAMBIO_A_SOL ,
+		B.CANTIDADESTIMADA,
+		1 ,
+		'SOLES';";
 		
 		$listaRecursos = null;
 		try {
@@ -294,7 +310,7 @@
         	$listaRecursos = array();
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
         													//id recurso, idunidad medida, unidad medida, nombre recurso, id moneda, moneda, cantidad estimada, costo unitario
-				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], null, null, null, $p["COSTO_UNIT_SOLES"]));
+				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"]));
 			}
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -322,6 +338,7 @@
 		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		AND
 		A.ID_PROYECTO= :idProyecto AND B.ID_ACTIVIDAD= :idActividad
+		AND D.ESTADO<>'ELIMINADO'
 		GROUP BY
 		A.ID_PROYECTO,
 		B.ID_ACTIVIDAD,
@@ -358,6 +375,97 @@
 		
 		return $actividad;
 	}
+	
+	function CO_guardarCUR($obj) { //COMPLETO
+		//insertar en la bd...
+		/*
+		$obj->idProyecto;
+		$obj->listaRecursos;
+			$obj->listaRecursos[0];
+				$obj->listaRecursos[0]->idRecurso;
+				$obj->listaRecursos[0]->costoUnitario;
+				$obj->listaRecursos[0]->idMoneda;
+		$obj->porcReserva;
+		*/
+		
+		if ($obj == null) {
+			$respuesta = CO_crearRespuesta(-1, 'No se recibió información.');
+			return $respuesta;
+		}
+
+		try {
+        	//Para actualizar cada recurso
+        	$sql = "
+        	UPDATE RECURSO
+			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, COSTO_UNITARIO_ESTIMADO= :costoUnitario, SET ESTADO='ACTIVO'
+			WHERE
+			ID_RECURSO= :idRecurso;
+			COMMIT;";
+
+			if ($obj->listaRecursosModificar != null) {
+	        	foreach ($obj->listaRecursosModificar as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
+		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
+		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
+		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+			}
+
+			//Para crear recursos
+			$sql = "
+        	INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA)
+			VALUES
+			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda);
+			COMMIT;";
+
+			if ($obj->listaRecursosCrear != null) {
+	        	foreach ($obj->listaRecursosCrear as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
+		        	$stmt->bindParam("nombreRecurso", $recurso->nombreRecurso);
+		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+		        	$stmt->bindParam("costoUnitario", $obj->CostoUnitario);
+		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+			}
+
+			//Para eliminar lógicamente los recursos
+			$sql = "
+        	UPDATE RECURSO
+			SET ESTADO='ELIMINADO'
+			WHERE
+			ID_RECURSO= :idRecurso AND ID_PROYECTO= :idProyecto;
+			COMMIT;";
+
+			if ($obj->listaRecursosEliminar != null) {
+	        	foreach ($obj->listaRecursosEliminar as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+			}
+
+        	$respuesta = CO_crearRespuesta(0, 'Ok');
+
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		
+		//obtener respuesta falsa;
+		//$respuesta = CO_obtenerRespuestaNegativaDeGuardadoFalsa();
+		
+		return $respuesta;
+	}
 
 	function CO_consultarListaPaquetes($idProyecto) { //FALTA
 		//$connection = new conexion();
@@ -372,81 +480,8 @@
 		
 		return $listaPaquetes;
 	}
-
-	function CO_consultarListaMonedas() { //FALTA
-
-
-
-				
-		$listaMonedas = CO_obtenerListaMonedasFalsa();
-		
-		return $listaMonedas;
-	}	
 	
-	function CO_guardarCURyPorcReserva($obj) {
-		//insertar en la bd...
-		/*
-		$obj->idProyecto;
-		$obj->listaRecursos;
-			$obj->listaRecursos[0];
-				$obj->listaRecursos[0]->idRecurso;
-				$obj->listaRecursos[0]->costoUnitario;
-				$obj->listaRecursos[0]->idMoneda;
-		$obj->porcReserva;
-		*/
-		
-		try {
-			//Para el porcentaje de reserva
-			$sql = '
-			UPDATE PROYECTO SET
-			PORCENTAJE_RESERVA= :porcReserva
-			WHERE
-			ID_PROYECTO= :idProyecto;
-			COMMIT;';
-
-			$db = getConnection();
-        	$stmt = $db->prepare($sql);
-        	$stmt->bindParam("porcReserva", $obj->porcReserva);
-        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-        	$stmt->execute();
-        	$db = null;
-
-        	//Para el C.U. de cada recurso
-        	$sql = '
-        	update COSTO_X_RECURSOS_X_ACTIVIDAD
-			set
-			valor_costo_unitario_estimado= :cur, id_cambio_moneda= :idMoneda
-			where
-			id_recurso= :idRecurso and id_proyecto= id:proyecto;
-			commit;';
-
-        	foreach ($obj->listaRecursos as $recurso) {
-        		$db = getConnection();
-	        	$stmt = $db->prepare($sql);
-	        	$stmt->bindParam("cur", $recurso->costoUnitario);
-	        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
-	        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
-	        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-	        	$stmt->execute();
-	        	$db = null;
-			}
-
-
-        	$respuesta = CO_crearRespuesta(0, 'Ok');
-
-		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	//echo json_encode(array("me"=> $e->getMessage()));
-        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-		}
-		
-		//obtener respuesta falsa;
-		//$respuesta = CO_obtenerRespuestaNegativaDeGuardadoFalsa();
-		
-		return $respuesta;
-	}
-	
-	function CO_guardarTipoCuenta($obj) { //FALTA
+	function CO_guardarTipoCuenta($obj) { //COMPLETO
 		//insertar en la bd...
 		/*
 		$obj->idProyecto;
@@ -456,10 +491,116 @@
 			$obj->listaTipoCuenta[0];
 		*/
 		
-		
+		try {
+        	//Para actualizar el tipo de cuenta
+			$sql = "
+        	UPDATE ACTIVIDAD
+			SET
+			ID_ASIENTO_CONTABLE= :tipo
+			WHERE
+			ID_ACTIVIDAD= :idActividad;
+			COMMIT;";
+
+			if ($obj->listaActividades != null) {
+	        	foreach ($obj->listaActividades as $actividad) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("tipo", $actividad->tipo);
+		        	$stmt->bindParam("idActividad", $actividad->idActividad);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+			}
+
+        	$respuesta = CO_crearRespuesta(0, 'Ok');
+
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
 		
 		//obtener respuesta falsa;
-		$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
+		//$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
+		
+		return $respuesta;
+	}
+
+	function CO_consultarListaMonedas() { //COMPLETO
+		$sql = "SELECT
+		A.ID_CAMBIO_MONEDA,
+		A.DESCRIPCION,
+		B.CAMBIO_A_SOL,
+		B.CAMBIO_DESDE_SOL
+		FROM
+		CAMBIO_MONEDA A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
+
+		$listaMonedas = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        																//id moneda, nombre, tipo de cambio a sol, tipo de cambio desde sol
+					array_push($listaMonedas, new CO_Moneda($p["ID_CAMBIO_MONEDA"], $p["DESCRIPCION"], $p["CAMBIO_A_SOL"], $p["CAMBIO_DESDE_SOL"]));
+			}
+		} catch(PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		//$listaMonedas = CO_obtenerListaMonedasFalsa();
+		
+		return $listaMonedas;
+	}
+
+	function CO_consultarListaUnidadesMedida() { //COMPLETO
+		$sql = "SELECT
+		ID_UNIDAD_MEDIDA,
+		DESCRIPCION
+		FROM
+		UNIDAD_MEDIDA;";
+
+		$listaUM = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        																//id UM, descripción
+					array_push($listaUM, new CO_UnidadMedida($p["ID_UNIDAD_MEDIDA"], $p["DESCRIPCION"]));
+			}
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		return $listaUM;
+	}
+
+	function CO_guardarReserva($obj) { //COMPLETO
+		//Para el porcentaje de reserva
+		try {
+			$sql = '
+			UPDATE PROYECTO
+			SET PORCENTAJE_RESERVA= :porcReserva
+			WHERE
+			ID_PROYECTO= :idProyecto;';
+
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("porcReserva", $obj->porcReserva);
+        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+        	$stmt->execute();
+        	$db = null;
+
+        	$respuesta = CO_crearRespuesta(0, 'Ok');
+        } catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
 		
 		return $respuesta;
 	}
