@@ -97,10 +97,12 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		
 		
 		function saveGanttOnServer() {
-			console.log(ge);
+			//console.log(ge);
 			
-			if(confirm("Esta seguro que desea guardar asda a qweqw zda los cambios?")){
-				var prj = ge.saveProject();                                          		
+			if(confirm("Esta seguro que desea guardar los cambios?")){
+				var prj = ge.saveProject();    
+				console.log("Guardando...");
+				console.log(prj);
 				var objProy ={
 					idProyecto: prj
 				};
@@ -109,17 +111,22 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 					type: 'POST',
 					url: rootURL,
 	                data: JSON.stringify(objProy),
-					dataType: "json",   
-			        success: completadoAJAX				
+					dataType: "json",
+					beforeSend:function(){
+						alert("enviando");
+					},
+			        success: function(data){
+			        	console.log(data);
+						alert("Los datos se almacenaron con éxito");
+						
+			        }				
 				});		
 			}
 				  
-			alert("Los datos se almacenaron con éxito");
-			
 			
 			
 		  //this is a simulation: save data to the local storage or to the textarea
-		  saveInLocalStorage();
+		  //saveInLocalStorage();
 		
 		
 		  /*

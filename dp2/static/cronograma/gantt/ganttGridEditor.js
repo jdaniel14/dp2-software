@@ -423,6 +423,24 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     taskEditor.find("#addAssig").click(function () {
       var assigsTable = taskEditor.find("#assigsTable");
       var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
+      
+      //Agrego el valor determinado para cada recurso, cuando se agrega un nuevo recurso
+      var addelemento= $(assigRow).children('td')[1];
+      var addtd1 = $(assigRow).children('td')[2];
+      var addtd2 = $(assigRow).children('td')[3];
+      
+      addelemento = $(addelemento).find('select').attr('value');
+            
+      var recurso = ge.resources;
+		
+      $.each(recurso, function(index,element){
+    	  if(addelemento == element.id){
+    		  console.log(element);
+    		  $(addtd1).text(element.typeCost);
+    		  $(addtd2).text(element.costRate);
+    	  }
+      });
+      
       assigsTable.append(assigRow);
     });
 
@@ -466,7 +484,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         var typeCost = trAss.find("[name=typeCost]").text();
         var costRate = trAss.find("[name=costRate]").text();
         var value = trAss.find("[name=value]").attr("value");
-        console.log(value);
+        //console.log(value);
 
         //check if an existing assig has been deleted and re-created with the same values
         var found = false;
@@ -488,7 +506,9 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             ass.effort = effort;
             ass.typeCost = typeCost;
             ass.costRate = costRate;
-            ass.value = value;
+            if(value == "") value = 0;
+            ass.value = parseInt(ass.value) + parseInt(value);
+            
             ass.touched = true;
             found = true;
             break;
