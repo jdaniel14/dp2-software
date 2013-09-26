@@ -259,8 +259,8 @@ function CR_obtenerRolesTotalFalsa() {
 function CR_obteneListaDependenciaProyecto($idProyecto) {//simil con lo hardcodeado
     $listaDependencias = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-    
-        $sql = "SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida   left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda  left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal where a.id_proyecto=? ";
+
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -268,8 +268,34 @@ function CR_obteneListaDependenciaProyecto($idProyecto) {//simil con lo hardcode
         $stmt = $db->query($sql);
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("idrecurso" => $j["id_recurso"], "idunidadmedida" => $j["id_unidad_medida"], "descripcion_recurso" => $j["descripcion"], "costo_unitario" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "descripcion_unidad" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
-            array_push($listaRecursos, $rec);
+            $listafechas = array();
+            $cont = 0;
+
+            while ($cont < 4) {
+
+                if ($cont == 0) {
+                    $datetime1 = $j["fecha_plan_inicio"];
+                } else if ($cont == 1) {
+                    $datetime1 = $j["fecha_plan_fin"];
+                } else if ($cont == 2) {
+                    $datetime1 = $j["fecha_actual_inicio"];
+                } else if ($cont == 3) {
+                    $datetime1 = $j["fecha_actual_fin"];
+                }
+
+                $datetime1 = mysql_real_escape_string($datetime1);
+                $datetime1 = strtotime($datetime1);
+                ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+
+                array_push($listafechas, $datetime1);
+                $cont++;
+            }
+
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            $rec = array("id_actividad" => $j["id_actividad"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores" => $j["predecesores"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
+            array_push($listaDependencias, $rec);
         }
 
         $db = null;
@@ -277,12 +303,55 @@ function CR_obteneListaDependenciaProyecto($idProyecto) {//simil con lo hardcode
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
-
 }
 
 function CR_obteneListaDependenciaPaqueteTrabajo($idpaquetetrabajo) {//simil con lo harcodeado
     $listaDependencias = array();
 
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_paquete_trabajo=? ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idpaquetetrabajo));
+        $stmt = $db->query($sql);
+        //$lista_jp = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            //MANEJO DE FECHAS, si hay algun cambio para horas se debe hacer otro para este caso todos tienen el mismo formato
+            $listafechas = array();
+            $cont = 0;
+
+            while ($cont < 4) {
+
+                if ($cont == 0) {
+                    $datetime1 = $j["fecha_plan_inicio"];
+                } else if ($cont == 1) {
+                    $datetime1 = $j["fecha_plan_fin"];
+                } else if ($cont == 2) {
+                    $datetime1 = $j["fecha_actual_inicio"];
+                } else if ($cont == 3) {
+                    $datetime1 = $j["fecha_actual_fin"];
+                }
+
+                $datetime1 = mysql_real_escape_string($datetime1);
+                $datetime1 = strtotime($datetime1);
+                ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+
+                array_push($listafechas, $datetime1);
+                $cont++;
+            }
+
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            $rec = array("id_actividad" => $j["id_actividad"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores" => $j["predecesores"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
+            array_push($listaDependencias, $rec);
+        }
+
+        $db = null;
+        return $listaDependencias;
+    } catch (PDOException $e) {
+        return (array("me" => $e->getMessage()));
+    }
 }
 
 function CR_obtenerRecursosTotalProyecto($idProyecto) {
@@ -331,6 +400,7 @@ function CR_obtenerRecursosTotalPaqueteTrabajo($idpaquetetrabajo) {
     }
 }
 
+//FALTA VERIFICAR EL PARSEO DE FECHA ENTRANTES Y SALIENTES PARA TODO EL BUGS BUNNY
 function CR_obtenerListaRecursosAsignados($idactividad) {
     $listaRecursos = array();
 
