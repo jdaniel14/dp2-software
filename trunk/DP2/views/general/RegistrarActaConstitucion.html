@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DP2</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+              <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">General <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Registrar Proyecto</a></li>
+                <li><a href="#">Recursos Humanos</a></li>            
+              </ul>
+            </li>           
+            <li><a href="../alcance">Alcance</a></li>
+            <li><a href="../cronograma">Cronograma</a></li>
+            <li><a href="../costo">Costo</a></li>
+            <li><a href="../Riesgo">Riesgos</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="starter-template">
+	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1>Mi Proyecto</h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+	<div class="well">
+	<ul class="nav nav-tabs nav-justified">
+	  <li class="active"><a href="#ig" data-toggle="tab">Informaci&oacute;n General </a></li>
+	  <li><a href="#dp" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
+	  <li><a href="#op" data-toggle="tab">Objetivos del Proyecto</a></li>
+	  <li><a href="#ap" data-toggle="tab">Autoridad del Proyecto</a></li>
+	</ul>
+	<div id="myTabContent" class="tab-content">
+		<div class="tab-pane active in" id="ig">
+		<p>
+		<form class="form-horizontal" role="form" action='' method="POST">
+		  <fieldset>
+			<div class="form-group">
+			  <!-- Id del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="idProyecto">Id del Proyecto:</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control" type="text" id="idProyecto" name="idProyecto" placeholder="" value="1"class="input-xlarge">
+				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Nombre del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="np">Nombre del Proyecto:</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control" type="text" id="np" name="np" placeholder="" value="Mi Proyecto"class="input-xlarge" readonly>
+				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+			  </div>
+			</div>
+
+			<div class="form-group">
+			  <!-- Fecha de Preparacion -->
+			  <label class="col-lg-4 control-label"  for="fpp">Fecha de Preparaci&oacute;n</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control"type="date" id="fpp" name="fpp" placeholder="" value=today class="input-xlarge" max=today>
+				<!--<p class="help-block">Please confirm password</p>-->
+			  </div>
+			</div>
+			<!--
+			<div class="form-group">
+			   
+			  <label class="col-lg-4 control-label"  for="modificacionFecha">Fecha de Modificaci&oacute;n</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control" type="date" id="modificacionFecha" name="modificacionFecha" placeholder="" class="input-xlarge" readonly>
+			  </div>
+			</div>
+			-->
+			<div class="form-group">
+			  <!-- Tipo de Proyecto -->
+			  <label class="col-lg-4 control-label"  for="tp">Tipo de Proyecto</label>
+			  <div class="controls col-lg-6">
+				<select class="form-control" id="tp" name="tp" placeholder="" class="input-xlarge">
+						<option value="1">Peque&nacute;o</option>
+						<option value="2">Mediano</option>
+						<option value="3">Grande</option>
+				</select>
+				<!--<p class="help-block">Please confirm password</p>-->
+			  </div>
+			</div>
+			
+			<div class="form-group">
+			  <!-- Prioridad del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="pp">Prioridad del Proyecto</label>
+			  <div class="controls col-lg-6">
+				<select class="form-control" id="pp" name="pp" placeholder="" class="input-xlarge">
+						<option value="1">Soporte</option>
+						<option value="2">Produccion</option>
+						<option value="3">Estrategico</option>
+						<option value="4">Alto Potencial</option>
+				</select>
+				<!--<p class="help-block">Please confirm password</p>-->
+			  </div>
+			</div>
+
+
+			<div class="form-group">
+			  <!-- Button -->
+			  <div class="controls">
+				<table width="100%">			
+					<tr width="100%">
+						<td width="50%" align="right">
+							<button type="button" class="btn btn-primary" id="btnGrabarInformacion">
+							Guardar
+							</button>
+						</td>
+						<td width="50%" align="left">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="history.go(-1);">
+							Cancelar
+							</button>
+						</td>
+					</tr>			
+				</table>
+			  </div>
+			</div>
+		  </fieldset>
+		</form>
+		</p>
+		</div>
+		<div class="tab-pane pane" id="dp">
+			<p>		
+			<form class="form-horizontal" role="form" action='' method="POST">
+		  <fieldset>
+			<div class="form-group">
+			  <!-- Descripcion del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="dp">Descripcion:</label>
+			  <div class="controls col-lg-6">
+				  <textarea id="dp" name="dp" class="form-control" placeholder="Agregue la informacion relevante al proyecto ..." rows="10"></textarea>
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Button -->
+			  <div class="controls">
+				<table width="100%">			
+					<tr width="100%">
+						<td width="50%" align="right">
+							<button type="button" class="btn btn-primary" id="btnGrabarDescripcion">
+							Guardar
+							</button>
+						</td>
+						<td width="50%" align="left">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="history.go(-1);">
+							Cancelar
+							</button>
+						</td>
+					</tr>			
+				</table>
+			  </div>
+			</div>
+		  </fieldset>
+		</form>
+		</p>
+		</div>
+		<div class="tab-pane pane" id="op">
+			<p>		
+			<form class="form-horizontal" role="form" action='' method="POST">
+		  <fieldset>
+			<div class="form-group">
+			  <!-- Costo -->
+			  <label class="col-lg-4 control-label"  for="cp">Costo (soles):</label>
+			  <div class="controls col-lg-6">
+				<textarea class="form-control" type="text" id="cp" name="cp" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+			  </div>
+			</div>
+
+			<div class="form-group">
+			  <!-- Plazo -->
+			  <label class="col-lg-4 control-label" for="plp">Plazo (meses):</label>
+			  <div class="controls col-lg-6">
+				<textarea class="form-control" type="text" id="plp" name="plp" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<!--<p class="help-block">Please provide your E-mail</p>-->
+			  </div>
+			</div>
+
+			<div class="form-group">
+			  <!-- Calidad -->
+			  <label class="col-lg-4 control-label"  for="cap">Calidad</label>
+			  <div class="controls col-lg-6">
+				<textarea class="form-control"type="text" id="cap" name="cap" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<!--<p class="help-block">Please confirm password</p>-->
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Button -->
+			  <div class="controls">
+				<table width="100%">			
+					<tr width="100%">
+						<td width="50%" align="right">
+							<button type="button" class="btn btn-primary" id="btnGrabarObjetivos">
+							Guardar
+							</button>
+						</td>
+						<td width="50%" align="left">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="history.go(-1);">
+							Cancelar
+							</button>
+						</td>
+					</tr>			
+				</table>
+			  </div>
+			</div>
+		  </fieldset>
+		</form>
+		</p>
+		</div>
+		<div class="tab-pane pane" id="ap">
+			<p>		
+			<form class="form-horizontal" role="form" action='' method="POST">
+		  <fieldset>
+			<div class="form-group">
+			  <!-- Aurizacion del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="ap">Autorizado por:</label>
+			  <div class="controls col-lg-3">
+				  <input id="ap" name="ap" class="form-control" placeholder=""value="Zenia Morales" readonly />
+			  </div>
+			  <div class="controls col-lg-3">
+				  <input id="carp" name="carp" class="form-control" placeholder="Cargo (opcional)"/>
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Gerente del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="gp">Autorizado por:</label>
+			  <div class="controls col-lg-6">
+				  <input id="gp" name="gp" class="form-control" placeholder=""value="Alfonso Bedoya" readonly />
+			  </div>
+			</div>
+			
+			<div class="form-group">
+			  <!-- Comite  de Seguimiento -->
+			  <label class="col-lg-4 control-label"  for="jcp">Jefe de Comite de Seguimiento:</label>
+			  <div class="controls col-lg-6">
+				  <input id="jcp" name="jcp" class="form-control" placeholder=""value="Bonnie Carranza" />
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Patrocinador -->
+			  <label class="col-lg-4 control-label" for="email">Patrocinador:</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control" type="text" id="pap" name="pap" placeholder="" class="input-xlarge">
+				<!--<p class="help-block">Please provide your E-mail</p>-->
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Button -->
+			  <div class="controls">
+				<table width="100%">			
+					<tr width="100%">
+						<td width="33%" align="right">
+							<button type="button" class="btn btn-primary" id="btnGrabarAutoridad">
+							Guardar
+							</button>
+						</td>
+						<td width="33%" align="center">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="history.go(-1);">
+							Cancelar
+							</button>
+						</td>
+						<td width="33%" align="left">
+							<button type="button" class="btn btn-primary" id="btnVistaPrevia">
+							Vista Previa
+							</button>
+						</td>
+					</tr>			
+				</table>
+			  </div>
+			</div>
+		  </fieldset>
+		</form>
+		</p>
+		</div>
+	</div>
+	</div>
+    </div><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+	<script src="../../static/general/js/detalleActaConstitucion.js"></script>
+  </body>
+</html>
