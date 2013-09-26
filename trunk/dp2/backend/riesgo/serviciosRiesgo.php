@@ -132,8 +132,9 @@
 
     function R_getListaRiesgo($idProyecto){
 
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo WHERE 
-                RXP.id_proyecto=EDT.id_proyecto and paquete_trabajo.id_edt=edt.id_edt and RXP.id_proyecto=".$idProyecto;
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
+                RXP.id_proyecto=EDT.id_proyecto and PT.id_edt=edt.id_edt and CR.id_categoria_riesgo=RXP.id_categoria_riesgo and 
+                RXP.id_proyecto=".$idProyecto;
         
         try {
             $arregloListaRiesgo= array();
@@ -142,16 +143,16 @@
             //$stmt->bindParam("id_proyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
-                            "nombre" => $row['nombre'],
-                            "paqueteTrabajo" => $row['edt.nombre'],//X
-                            "categoria" => $row['version'],//X
+                            "nombre" => $row['nombre_riesgo'],//EDT
+                            "paqueteTrabajo" => $row['nombre'],//PT
+                            "categoria" => $row['descripcion'],//CR
                             "impacto" => $row['impacto'],
                             "probabilidad" => $row['probabilidad'],
                             "severidad" => $row['severidad'],
                             "estrategia" => $row['nombre'],//X
                             "accionesEspecificas" => $row['nombre'],//X
-                            "costoEsperado" => $row['impacto'],//X
-                            "tiempoEsperado" => $row['fecha_origen'],//X
+                            "costoEsperado" => $row['costo_potencial'],//RXP
+                            "tiempoEsperado" => $row['demora_potencial'],//RXP
                             "equipoEesponsable" => $row['impacto']//X
                             );
                 array_push($arregloListaRiesgo,$data);
