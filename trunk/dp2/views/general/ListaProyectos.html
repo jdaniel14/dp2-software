@@ -101,10 +101,8 @@
 				<table width="100%">			
 					<tr width="100%">
 						<td width="100%" align="left">
-							<button type="button" class="btn btn-default" id="btnRegistrar">
-								<a href="RegistrarProyecto.html">
-									Registrar
-								</a>
+							<button type="button" class="btn btn-default" id="btnRegistrar" onclick="$(location).attr('href','RegistrarProyecto.html');">
+							  Registrar
 							</button>
 						</td>
 					</tr>
@@ -114,8 +112,7 @@
 
 		<form role="form" name="formListaProyectos">
 		
-			<table class="table-striped table-bordered" width="90%" id="listaProyectos">
-			
+			<table class="table-striped table-bordered" width="90%" id="listaProyectos">			
 				<tr>
 					<td width="5%" align="center"><b>#</b></td>
 					<td width="30%" align="center"><b>Proyecto</b></td>
@@ -123,9 +120,8 @@
 					<td width="20%" align="center"><b>Tipo de Proyecto</b></td>
 					<td width="11%" align="center"><b>Fecha de Inicio</b></td>
 					<td width="11%" align="center"><b>Fecha de Fin</b></td>
-          			<td width="14%" align="center"><b>Ver Acta de Constitución</b></td>
-				</tr>
-				
+          <td width="14%" align="center"><b>Ver Acta de Constitución</b></td>
+				</tr>				
 			</table>
 			
 			<table>
