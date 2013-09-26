@@ -37,11 +37,7 @@
     $sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto, id_jefe_proyecto) VALUES (:nom, :fi, :ff, :tp, :jp)";
 		
 		$file = "temp.txt";
-//		echo "LOG: ------------------> ".$sql;
-		$f1 = fopen($file, "a");
-		$output = $sql . PHP_EOL;
-		fwrite($f1, $output);
-		fclose($f1);
+
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
