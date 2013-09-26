@@ -208,14 +208,14 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 	
 		$sql = "SELECT f_preparacion,
 						prioridad,
-						tipo_proyecto,
+						id_tipo_proyecto,
 						descripcion,
 						costos,
 						duracion,
 						calidad,
 						jefe_comite,
 						patrocinador
-				FROM PROYECTO WHERE id_proyecto =:id";
+				FROM PROYECTO WHERE id_proyecto =1";
 		try {
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
@@ -224,7 +224,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$p = $stmt->fetch(PDO::FETCH_ASSOC);
 			$acta = array("pap"=>$p["patrocinador"],
 							"fpp"=>$p["f_preparacion"],
-							"tp"=>$p["tipo_proyecto"],
+							"tp"=>$p["id_tipo_proyecto"],
 							"pp"=>$p["prioridad"],
 							"dp"=>$p["descripcion"],
 							"cp"=>$p["costos"],
