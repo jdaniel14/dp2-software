@@ -12,7 +12,6 @@ var addList = "../../api/R_asignarRiesgoComun"
 var addConfg = "../../api/R_registrarConfiguracionProyecto";
 var updateStatus = "../../api/R_modificarRiesgo";
 var getStatus = "../../api/R_estadoLogicoRiesgo";
-//var getConfg = "../../api/R_listarConfiguracionProyecto"
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -39,7 +38,7 @@ function main(){
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
 	listarNivelesImpacto();
-	listarEquipos();
+	//listarEquipos();
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
 	listarConfiguracion();
@@ -50,10 +49,12 @@ function main(){
 	$(".glyphicon.glyphicon-edit").click(function(){
 		obtenerRiesgo();
 	});
+
 	$("#btnBuscar").click(function(){
 		buscar = $("#buscar").val();
 		listarRiesgos(buscar);
 	});
+	
 
 	$(".glyphicon.glyphicon-remove").click( function(){
 		
@@ -94,19 +95,25 @@ function main(){
 			demoraPotencial: $('#tiemRiesgo').val(),
 			idEquipo: $('#equRes').val()
 		};
-		var jsonData = JSON.stringify(data);
-		$.ajax({
-			type: 'POST',
-			url: addItem,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				var item = data;
-				alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
-				listarRiesgos();
-			},
-			fail: codigoError
-		});
+		console.log(data);
+		if (confirmarRegistro(data)==true){
+			console.log(data);
+			var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'POST',
+				url: addItem,
+				data: jsonData,
+				dataType: "json",
+				success: function(data){
+					var item = data;
+					alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
+					listarRiesgos();
+				},
+				fail: codigoError
+			});
+		} else {
+			alert("Hubo un problema con su registro");
+		}
 	});
 	$('#btnModificar').click(function(){
 		var data = {
@@ -145,7 +152,7 @@ function main(){
     	});
 
 		var jsonData = JSON.stringify(data);
-		alert(data);
+		//alert(data);
 		$.ajax({
 			type: 'POST',
 			url: addList,
@@ -173,22 +180,33 @@ function main(){
 			alto: $('#alto').val(),
 			muyAlto: $('#muyAlto').val()
 		};
-		var jsonData = JSON.stringify(data);
-		$.ajax({
-			type: 'POST',
-			url: addConfg,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				alert(data.me);
-			},
-			fail: function(data){
-				alert(data.me);
-			}
-		});
+		if (!validarConfiguracion(data)){
+			var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'POST',
+				url: addConfg,
+				data: jsonData,
+				dataType: "json",
+				success: function(data){
+					$('#errorMuyBajo').hide();
+					alert(data.me);
+					$('#modalConfiguracion').modal('hide');
+				},
+				fail: function(data){
+					alert(data.me);
+				}
+			});	
+		}
+		
 	});
 
 	$("#listarConf").click( function(){
+		$('#errorMuyBajo').hide();
+		$('#errorBajo').hide();
+		$('#errorMedio').hide();
+		$('#errorAlto').hide();
+		$('#errorMuyAlto').hide();
+		$('#errorImpactos').hide();
 		$('#muyBajo').val('');
 		$('#bajo').val('');
 		$('#medio').val('');
@@ -456,9 +474,9 @@ function codigoError(){
 
 function agregaDataFila(data){
 	arreglo=data;
-	alert(arreglo);
+	//alert(arreglo);
 	if (arreglo!=null){
-		alert(arreglo.size);
+		//alert(arreglo.size);
 		for (i=0; i<arreglo.length;i++){
 
 			agregaFilaRiesgo(arreglo[i],i);
@@ -567,3 +585,130 @@ $('#proRiesgoM').change(
          }
 	});
 //Calculo automatico de Severidad - Fin
+
+//validar Decimales
+
+function validarDecimales(numero)
+{
+	if ((!/^([0-9])*[.]?[0-9]{2}$/.test(numero))&&(!isNaN(numero))){
+		return true;
+	} else return false;
+}
+
+function validarProbaImpacto(numero) {
+	if ((numero >= 0) && (numero <= 1)){
+		return true;
+	} else return false;
+}
+
+
+
+//Confirmar registro 97
+function confirmarRegistro(data){
+	alert(data.probabilidad);
+	alert((!/^([0-9])*[.]?[0-9]{2}$/.test($('#proRiesgo').val())));
+	if (validarDecimales($('#proRiesgo').val())){
+		data.probabilidad=Math.round((data.probabilidad* 100 ))/100;
+		return true;
+	} else return false;
+}
+
+///Validar configuracion
+
+function validarConfiguracion(data){
+	var muyBajo = $('#muyBajo').val();
+	var bajo = $('#bajo').val();
+	var medio = $('#medio').val();
+	var alto = $('#alto').val();
+	var muyAlto = $('#muyAlto').val();
+	var flag=false;
+
+	if (isNaN(muyBajo)){
+		$('#errorMuyBajo').fadeIn('slow');
+		return true;
+	} else {
+		if (validarProbaImpacto(muyBajo)){
+			if (!validarDecimales(muyBajo)){
+				//redondeo
+				data.muyBajo = Math.round((data.muyBajo* 100 ))/100;
+			}
+		} else {
+			$('#errorMuyBajo').fadeIn('slow');
+			return true;
+		}
+	}
+
+	if (isNaN(bajo)){
+		$('#errorBajo').fadeIn('slow');
+		return true;
+	} else {
+		if (validarProbaImpacto(bajo)){
+			if (!validarDecimales(bajo)){
+				//redondeo
+				data.bajo = Math.round((data.bajo* 100 ))/100;
+			}
+		} else {
+			$('#errorBajo').fadeIn('slow');
+			return true;
+		}
+	}
+
+	if (isNaN(medio)){
+		$('#errorMedio').fadeIn('slow');
+		return true;
+	} else {
+		if (validarProbaImpacto(medio)){
+			if (!validarDecimales(medio)){
+				//redondeo
+				data.medio = Math.round((data.medio* 100 ))/100;
+			}
+		} else {
+			$('#errorMedio').fadeIn('slow');
+			return true;
+		}
+	}
+
+	if (isNaN(alto)){
+		$('#errorAlto').fadeIn('slow');
+		return true;
+	} else {
+		if (validarProbaImpacto(alto)){
+			if (!validarDecimales(alto)){
+				//redondeo
+				data.alto = Math.round((data.alto* 100 ))/100;
+			}
+		} else {
+			$('#errorAlto').fadeIn('slow');
+			return true;
+		}
+	}
+
+	if (isNaN(muyAlto)){
+		$('#errorMuyAlto').fadeIn('slow');
+		return true;
+	} else {
+		if (validarProbaImpacto(muyAlto)){
+			if (!validarDecimales(muyAlto)){
+				//redondeo
+				data.muyAlto = Math.round((data.muyAlto* 100 ))/100;
+			}
+		} else {
+			$('#errorMuyAlto').fadeIn('slow');
+			return true;
+		}
+	}
+
+	if ((muyBajo >= bajo) || (bajo >= medio) || (medio >= alto) || (alto >= muyAlto)) {
+		$('#errorImpactos').fadeIn('slow');
+		return true;
+	}
+	
+	return flag;
+}
+	
+
+		// $('#errorMuyBajo').fadeOut('slow');
+		// $('#errorBajo').fadeOut('slow');
+		// $('#errorMedio').fadeOut('slow');
+		// $('#errorAlto').fadeOut('slow');
+		// $('#errorMuyAlto').fadeOut('slow');
