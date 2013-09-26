@@ -36,7 +36,13 @@
     $proj = json_decode($request->getBody());
     $sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto, id_jefe_proyecto) VALUES (:nom, :fi, :ff, :tp, :jp)";
 		
-		$file = "temp.txt";
+//		$file = "temp.txt";
+
+//		echo "LOG: ------------------> ".$sql;
+//		$f1 = fopen($file, "a");
+//		$output = $sql . PHP_EOL;
+//		fwrite($f1, $output);
+//		fclose($f1);
 
     try {
         $db = getConnection();
@@ -116,18 +122,18 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
 		$sql = "UPDATE PROYECTO SET f_preparacion=:p_f_preparacion, 
-									prioridad=:p_prioridad,											
-									tipo_proyecto=:p_tipo_proyecto
+									prioridad=:p_prioridad
 				WHERE id_proyecto=:p_id_proy ";
 		try {
+                        
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam("p_f_preparacion", $acta->fpp);
 			$stmt->bindParam("p_prioridad", $acta->pp);
-			$stmt->bindParam("p_tipo_proyecto", $acta->tp);
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
-			$proj->id = $db->lastInsertId();
+			//$proj->id = $db->lastInsertId();
+                        
 			$db = null;
 			echo json_encode(array("me"=>"", "id"=>$acta->id));
 		} catch(PDOException $e) {
@@ -141,6 +147,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		$sql = "UPDATE PROYECTO SET descripcion=:p_descripcion
 				WHERE id_proyecto=:p_id_proy ";
 		try {
+                        //echo var_dump($acta);
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam("p_descripcion", $acta->dp);
@@ -189,7 +196,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam("p_jefe_comite", $acta->jcp);
-			$stmt->bindParam("p_patrocinador", $acta->sp);
+			$stmt->bindParam("p_patrocinador", $acta->pap);
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
 			$proj->id = $db->lastInsertId();
