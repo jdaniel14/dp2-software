@@ -75,11 +75,3 @@ function grabarRecursos(){
 	alert("Se grabó");
 
 }
-
-
-$("#btnResumen").click(function(){
-	
-	$("#AsignarCostosRecursos").hide();
-	$("#ResumenCostosRecursos").show();
-	 obtenDatosActividad('1');
-});
