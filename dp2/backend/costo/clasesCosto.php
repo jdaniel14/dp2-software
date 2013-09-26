@@ -18,17 +18,19 @@ class CO_Proyecto {
 class CO_Recurso {
 	public $idRecurso;
 	public $idUnidadMedida;
-	public $descripcion;
-	public $moneda;
 	public $unidadMedida;
+	public $descripcion;
+	public $idMoneda;
+	public $moneda;
 	public $cantidadEstimada;
 	public $costoUnitario;
 	
 	//constructor
-	function __construct($idRecurso, $idUnidadMedida, $descripcion, $moneda, $unidadMedida, $cantidadEstimada, $costoUnitario) {
+	function __construct($idRecurso, $idUnidadMedida, $unidadMedida, $descripcion, $idMoneda, $moneda, $cantidadEstimada, $costoUnitario) {
        $this->idRecurso = $idRecurso;
 	   $this->idUnidadMedida = $idUnidadMedida;
 	   $this->descripcion = $descripcion;
+	   $this->idMoneda = $idMoneda;
 	   $this->moneda = $moneda;
 	   $this->unidadMedida = $unidadMedida;
 	   $this->cantidadEstimada = $cantidadEstimada;
@@ -41,15 +43,15 @@ class CO_Actividad {
 	public $nombre;
 	public $tipoCuenta;
 	public $costoSubtotal;
-	public $costoTotal;
+	//public $costoTotal;
 	public $listaRecursos = array();
 	
-	function __construct($idActividad, $nombre, $tipoCuenta, $costoSubtotal, $costoTotal, $listaRecursos) {
+	function __construct($idActividad, $nombre, $tipoCuenta, $costoSubtotal, /*$costoTotal,*/ $listaRecursos) {
        $this->idActividad = $idActividad;
 	   $this->nombre = $nombre;
 	   $this->tipoCuenta = $tipoCuenta;
 	   $this->costoSubtotal = $costoSubtotal;
-	   $this->costoTotal = $costoTotal;
+	   //$this->costoTotal = $costoTotal;
 	   $this->listaRecursos = $listaRecursos;
 	}
 }
