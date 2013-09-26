@@ -2,23 +2,27 @@ var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=1;
 var numRecursos= 0;
+var comboMoneda='';
+var comboUnidadMedida='';
 
 var arregloProyecto= new Array(
 							'Proyecto de Charlitox', '566', '1.5'
 								);
 
 var arregloRecursos= new Array(
-							new Array('1','Unidad','Ladrillo', '2','Soles','85'),
-							new Array('2','Unidad','Bote de pintura', '8','Soles','12'),
-							new Array('3','Litro','Cemento', '','Soles','10'),
-							new Array('4','Kilo','Fierro', '10','Soles','30')
+							new Array('1','Unidad','Ladrillo', '2','Soles','85','4','1'),
+							new Array('2','Unidad','Bote de pintura', '8','Soles','12','4','1'),
+							new Array('3','Litro','Cemento', '','Dolar','10','1','2'),
+							new Array('4','Kilo','Fierro', '10','Dolar','30','2','2')
 								);
 
 var arregloUnidadMedida= new Array(
-
+							new Array(
 							new Array('1', 'Litro'),
 							new Array('2', 'Kilo'),
-							new Array('3', 'Horas Hombre')
+							new Array('3', 'Horas Hombre'),
+							new Array('4', 'Unidad')
+							)
 							);
 
 var arregloRecursosHumanos= new Array(
@@ -28,6 +32,15 @@ var arregloRecursosHumanos= new Array(
 									)
 								);
 
+var arregloMoneda= new Array(
+									new Array(
+									new Array('1','Sol', '1'),
+									new Array('2','Dolar','2.8'),
+									new Array('3','Euro', '4')
+									)
+								);
+								
+								
 iniciaProyecto();		
 iniciaRecursos(0);
 
@@ -80,6 +93,37 @@ function obtenRecursos(/*idProyecto,*/tipo){
 
 }
 
+function obtenMoneda(){
+		
+	/*
+	$.ajax({
+		type: 'GET',		
+		url: rootURL + 'CO_obtenerInfoActividad/',
+		dataType: "json", // data type of response
+		success: agregaDataFilaResumen
+	});*/
+	
+	
+	creaComboMoneda(arregloMoneda);
+
+}
+
+function obtenUnidadMedida(){
+
+	/*
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFila(data,tipo);}
+	});
+	
+	*/
+	creaComboUnidadMedida(arregloUnidadMedida);
+
+}
+
 //<span class="glyphicon glyphicon-plus-sign"></span>
 
 //Fin funciones para obtener datos de AJAX
@@ -98,7 +142,7 @@ function agregaDataFila(data, tipo){
 	arreglo=data;
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaActividadRecursos(tipo,i,filaRecurso[0],filaRecurso[2],filaRecurso[1], 'Recurso Material');
+		agregaFilaconRecursos(tipo,i,filaRecurso[0],filaRecurso[2],filaRecurso[1],filaRecurso[3] ,'Recurso Material',filaRecurso[6],filaRecurso[7], filaRecurso[4]);
 		numRecursos=i;
 	}
 }
@@ -108,6 +152,11 @@ function iniciaProyecto(){
 	obtenProyecto(/*idProyecto*/);
 	//var proy = JSON.parse(proyecto);
 	//agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
+
+}
+
+function iniciaUnidadMedida(){
+
 
 }
 
@@ -122,52 +171,98 @@ function agregaDatosProyecto(nombreProyecto){
 		
 }
 
-function agregaFilaActividadRecursos(tipo,i,idRecurso, nombreRecurso,unidadMedida,tipoRecurso){
+function agregaFilaRecurso(){
+	
+	a=$("#numFilas").val();
+	a++;
+	
+	inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="">';
+	inputMoneda= creaInputMoneda(a);
+	inputUnidadMedida= creaInputUnidadMedida(a);
+	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="">';
+	check= '<input type="checkBox" name="eliminar'+a+'">';
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>Recurso Material</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>');	
+	$("#numFilas").val(a);
+}
+
+
+function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda){
 	a=i;
 	a++;
 	if 	(tipo==0)
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td>'+unidadMedida+'</td></tr>');
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td></tr>');
 	else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'">';
+		inputMoneda= creaInputMoneda(a);
+		inputUnidadMedida= creaInputUnidadMedida(a);
+		inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="'+costoUnitario+'">';
 		check= '<input type="checkBox" name="eliminar'+a+'">';
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td>'+unidadMedida+'</td><td align="center">'+check+'</td></tr>');
-	
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>');
+		obtenUnidadMedidaSeleccionada(a,unidadMedida);
+		obtenMonedaSeleccionada(a,idmoneda);
 	}
+	$("#numFilas").val(a);
 }
 
 function creaComboMoneda(data){
-	HashTipoCambio= {};
 	comboMoneda='';
 	arreglo=data[0];
 	
 	for (i=0; i<arreglo.length;i++){
 		moneda=arreglo[i];
-		agregaOpcion(moneda[0], moneda[1], moneda[2]);
+		agregaOpcionMoneda(moneda[0], moneda[1]);
 		
 	}		
 	
 }
 
+
+function creaComboUnidadMedida(data){
+
+	comboUnidadMedida='';
+	arreglo=data[0];
+	
+	for (i=0; i<arreglo.length;i++){
+		unidad=arreglo[i];
+		agregaOpcionUnidadMedida(unidad[0], unidad[1]);
+		
+	}
+
+
+}
+
+
 //Fin funciones para pasar los datos de ajax
 
 //Funcion para agregar una opcion de moneda
 
-function agregaOpcion(idMoneda, nombre, tipoCambio){
+function agregaOpcionMoneda(idMoneda, nombre){
 
 	comboMoneda+='<option value="'+idMoneda+'">'+nombre+'</option>';
-	HashTipoCambio[idMoneda]= tipoCambio;
+	
+
+}
+
+function agregaOpcionUnidadMedida(idUnidad, nombre){
+
+	comboUnidadMedida+='<option value="'+idUnidad+'">'+nombre+'</option>';
+	
 
 }
 
 
 
-//Funcion para ingresar un recurso en los resumenes de actividades
-
-
-
 function creaInputMoneda(num){
 
-	combo='<select id="comboMoneda'+num+'" onChange="actualizaCostos();" >'+ comboMoneda + '</select>';
+	combo='<select id="comboMoneda'+num+'" >'+ comboMoneda + '</select>';
+	return combo;
+	
+}
+
+
+function creaInputUnidadMedida(num){
+
+	combo='<select id="comboUnidadMedida'+num+'" >'+ comboUnidadMedida + '</select>';
 	return combo;
 	
 }
@@ -180,6 +275,12 @@ function desabilitaMoneda(a){
 	$(idSelect).attr('disabled', 'disabled');
 }
 
+function desabilitaUnidadMoneda(a){
+	
+	idSelect='#comboUnidadMedida'+a;
+	$(idSelect).attr('disabled', 'disabled');
+}
+
 //obtener la seleccionada moneda
 
 function obtenMonedaSeleccionada(a,moneda){
@@ -189,6 +290,26 @@ function obtenMonedaSeleccionada(a,moneda){
 	
 		
 		$(idSelect).val(moneda);
+		var indiceDatos = $(idSelect)[0].selectedIndex;
+		if (indiceDatos!=null && indiceDatos!='')
+			$(idSelect)[0].options[indiceDatos].setAttribute('selected','selected');
+	}else{
+		if ($(idSelect)[0].options.length>0){
+			$(idSelect)[0].options[0].setAttribute('selected','selected');
+		}
+	
+	}
+
+}
+
+
+function obtenUnidadMedidaSeleccionada(a,medida){
+
+	idSelect='#comboUnidadMedida'+a;
+	if (medida!='' && medida!=null){
+	
+		
+		$(idSelect).val(medida);
 		var indiceDatos = $(idSelect)[0].selectedIndex;
 		if (indiceDatos!=null && indiceDatos!='')
 			$(idSelect)[0].options[indiceDatos].setAttribute('selected','selected');
@@ -270,14 +391,20 @@ function cambiaEditar(){
 	$("#btnEditar").hide();
 	$("#btnGrabar").show();
 	$("#btnCancelar").show();
-	 iniciaRecursos(1);	
+	$("#tablaAgrega").show();
+	obtenUnidadMedida();
+	obtenMoneda();
+	iniciaRecursos(1);	
+	
 }
+
 
 function cambiaConsultar(){
 	
 	$("#btnEditar").show();
 	$("#btnGrabar").hide();
 	$("#btnCancelar").hide();
+	$("#tablaAgrega").hide();
 	 iniciaRecursos(0);	
 
 }
@@ -291,9 +418,9 @@ function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos").html('');
 	
 	if (esEdicion==0)
-		$("#tablaRecursos").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Recurso</b></td><td width="20%"><b>Tipo</b></td><td width="30%"><b>Unidad de Medida</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="20%"><b>Recurso</b></td><td width="20%"><b>Tipo</b></td><td width="20%"><b>Unidad de Medida</b></td><td width="15%"><b>Costo Unitario</b></td><td width="20%"><b>Moneda</b></td></tr>');
 	else
-		$("#tablaRecursos").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Recurso</b></td><td width="20%"><b>Tipo</b></td><td width="25%"><b>Unidad de Medida</b></td><td width="25%"><b>Eliminar</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="15%"><b>Tipo</b></td><td width="15%"><b>Unidad de Medida</b></td><td width="15%"><b>Costo Unitario</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Eliminar</b></td></tr>');
 }
 
 
