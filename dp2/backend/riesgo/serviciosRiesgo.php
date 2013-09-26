@@ -44,7 +44,6 @@
 
     function R_getListaPaquetesEDT($idProyecto){
         $sql = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
-        echo $sql;
         try {
             $arregloListaPaquetesEDT= array();
             $db=getConnection();
@@ -98,9 +97,8 @@
         
     }
 
-    function R_getListaEquipoRiesgo($idProyecto){
+    function R_getListaEquipoRiesgo($idProyecto){//FALTA MODIFICAR
         $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
-        
         try {
             $arregloListaEquipoRiesgo= array();
             $db=getConnection();
@@ -134,22 +132,8 @@
 
     function R_getListaRiesgo($idProyecto){
 
-        $query = "SELECT * FROM PAQUETE_TRABAJO";
-        $arregloPaqueteTrabajo= array();
-        try {
-            $db=getConnection();
-            $stmt = $db->query($query);
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("id" => $row['id_paquete_trabajo'], "nombre" => $row['nombre']);
-                array_push($arregloPaqueteTrabajo,$data);
-            }
-            echo var_dump($arregloPaqueteTrabajo);
-            $db = null;
-        } catch(PDOException $e) {
-            echo '{"erroR":{"text":'. $e->getMessage() .'}}';
-        }
-
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_proyecto=".$idProyecto;
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo WHERE 
+                RXP.id_proyecto=EDT.id_proyecto and paquete_trabajo.id_edt=edt.id_edt and RXP.id_proyecto=".$idProyecto;
         
         try {
             $arregloListaRiesgo= array();
@@ -159,7 +143,7 @@
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre'],
-                            "paqueteTrabajo" => $row['id_paquete_trabajo'],//X
+                            "paqueteTrabajo" => $row['edt.nombre'],//X
                             "categoria" => $row['version'],//X
                             "impacto" => $row['impacto'],
                             "probabilidad" => $row['probabilidad'],
