@@ -66,11 +66,13 @@ $("#btnGrabarInformacion").click(function(){
 });
 $("#btnGrabarDescripcion").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+              //  alert('ahora hector q dices');
 		grabarDescripcionActa();
 	}
 });
 $("#btnGrabarObjetivos").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+                alert('ona vez mas, ahora :(  hector q dices');
 		grabarObjetivosActa();
 	}
 });
@@ -84,14 +86,24 @@ function grabarRecursos(){
 }
 
 function grabarInformacionActa(){
-	var obj ={
-		"idProyecto": $("#idProyecto").val(),
-		"np": $("#nombreProyecto").val(),
-		"fpp": $("#preparacionFecha").val(),
-		"tp": $("#tipoProyecto").val(),
-		"pp": $("#prioridadProyecto").val()
-	}; 
+    
+        
+	/*var obj ={
+		idProyecto   : $("#idProyecto").val(),
+		np           : $("#nombreProyecto").val(),
+		fpp         : $("#preparacionFecha").val(),
+		tp          : $("#tipoProyecto").val(),
+		pp          : $("#prioridadProyecto").val()
+	}; */
 	
+        var obj ={
+		idProyecto   : $("#idProyecto").val(),
+		np           : $("#np").val(),
+		fpp         : $("#fpp").val(),
+		tp          : $("#tp").val(),
+		pp          : $("#pp").val()
+	}; 
+        //alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarInfoActa,
@@ -105,11 +117,15 @@ function grabarInformacionActa(){
 	});
 }
 function grabarDescripcionActa(){
-	var obj ={
+	/*var obj ={
 		"idProyecto": $("#idProyecto").val(),
 		"dp": $("#descripcion").val()
-	}; 
-	
+	}; */
+        var obj ={
+		idProyecto  : $("#idProyecto").val(),
+		dp          : $("textarea#dp").val()
+	};
+	//alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarDescActa,
@@ -123,13 +139,21 @@ function grabarDescripcionActa(){
 	});
 }
 function grabarObjetivosActa(){
-	var obj ={
+	/*var obj ={
 		"idProyecto": $("#idProyecto").val(),
 		"cp": $("#costoProy").val(),
 		"plp": $("#plazo").val(),
 		"cap": $("#calidad").val()
-	}; 
+	}; */
 	
+        var obj ={
+		idProyecto: $("#idProyecto").val(),
+		cp: $("#cp").val(),
+		plp: $("#plp").val(),
+		cap: $("#cap").val()
+	};
+        
+        //alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarObjActa,
@@ -143,15 +167,25 @@ function grabarObjetivosActa(){
 	});
 }
 function grabarAutoridadActa(){
-	var obj ={
+	/*var obj ={
 		"idProyecto": $("#idProyecto").val(),
 		"ap": $("#autoProyecto").val(),
 		"carp": $("#autoCargoProyecto").val(),
 		"jp": $("#gerenteProyecto").val(),
 		"jcp": $("#comiteProyecto").val(),
 		"pap": $("#patrocinador").val(),
-	}; 
+	}; */
 	
+        var obj ={
+		idProyecto: $("#idProyecto").val(),
+		ap: $("#ap").val(),
+		carp: $("#carp").val(),
+		jp: $("#jp").val(),
+		jcp: $("#jcp").val(),
+		pap: $("#pap").val(),
+	};
+
+        alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarAutorActa,
