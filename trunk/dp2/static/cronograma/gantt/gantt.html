@@ -25,9 +25,14 @@
 <!-- Fin Styles -->
 
 <!-- jQuery -->
+  <!-- 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-
+	-->
+	
+	<script src = "../../../assets/js/jquery-1.7.1.min.js"></script>
+	<script src = "../../../assets/js/jquery-ui-1.8.16.js"></script>
+	
   <script src="libs/jquery.livequery.min.js"></script>
   <script src="libs/jquery.timers.js"></script>
   <script src="libs/platform.js"></script>
@@ -244,6 +249,16 @@
 		
 		var td2 = $(this.parentNode.parentNode).children('td')[3];
 		$(td2).text(select);
+		
+		var recurso = ge.resources;
+		
+		$.each(recurso, function(index,element){
+			if(select == element.id){
+				console.log(element);
+				$(td1).text(element.typeCost);
+				$(td2).text(element.costRate);
+			}
+		});
 	    
 	    /***** Fin onchange *****/
 	    " name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
