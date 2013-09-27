@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto=1;
+var idProyecto = localStorage.idProyecto;
 iniciaProyecto();		
 iniciaPaquetes();
 
