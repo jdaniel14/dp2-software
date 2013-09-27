@@ -283,7 +283,7 @@
 
     function R_deleteRiesgo($idRiesgo){
 
-        $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_actividad=:idRiesgo";
+        $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:idRiesgo";
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
