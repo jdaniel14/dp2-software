@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+   
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+        
+    <div id ="header"></div>
+    
+    <div class="container">
+
+      <div class="starter-template">
+          <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1>Proyecto 1</h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+
+        <div class="" id="ListaRecursosHumanos">
+          
+        <form role="form" name="formListaRecursosHumanos">
+        
+          <div class="form-group">
+            <!-- Button -->
+            <div class="controls">
+              <table width="100%">      
+                <tr width="100%">
+                  <td width="100%" align="left">
+                    <button type="button" class="btn btn-default" id="btnAsignarRecursoHumano" onclick="$(location).attr('href','BuscarRecursoHumano.html');">
+                      Asignar un nuevo recurso
+                    </button>
+                  </td>
+                </tr>     
+              </table>
+            </div>
+          </div>
+
+          <table class="table-striped table-bordered" width="90%" id="listaRecursosHumanos">                      
+            <tr>
+              <td width="5%" align="center"><b>#</b></td>
+              <td width="30%" align="center"><b>Nombre del Recurso</b></td>
+              <td width="20%" align="center"><b>Perfil</b></td>
+              <td width="20%" align="center"><b>Costo HH (S/.)</b></td>
+              <td width="14%" align="center"><b>Eliminar</b></td>
+            </tr>
+
+            <tr>
+              <td width="5%" align="center">1</td>
+              <td width="30%" align="center">Jorge Perez</td>
+              <td width="20%" align="center">Analista</td>
+              <td width="20%" align="center">40</td>
+              <td width="14%" align="center"><input type="checkbox" name="recursoHumano" value="Jorge Perez"></td>
+            </tr>
+
+            <tr>
+              <td width="5%" align="center">1</td>
+              <td width="30%" align="center">Pedro Abanto</td>
+              <td width="20%" align="center">Programador</td>
+              <td width="20%" align="center">35</td>
+              <td width="14%" align="center"><input type="checkbox" name="recursoHumano" value="Jorge Perez"></td>
+            </tr>
+          </table>
+            
+          <table>
+            <tr>&nbsp</tr>
+            <tr>&nbsp</tr>
+            <tr>&nbsp</tr>
+          </table>
+
+          <div class="form-group">
+            <!-- Button -->
+            <div class="controls">
+              <table width="90%">      
+                <tr width="90%">
+                  <td width="90%" align="right">
+                    <button type="button" class="btn btn-default" id="btnEliminar" onclick="$(location).attr('href','ListaRecursosHumanos.html');">
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>     
+              </table>
+            </div>
+          </div>
+        </form>   
+      </div>       
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ==================lang================================ -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/header.js"></script>
+  </body>
+</html>
