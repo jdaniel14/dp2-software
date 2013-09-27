@@ -167,7 +167,7 @@ function agregaDataFila(data, tipo){
 	arreglo=data.lista;
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
-		agregaFilaRecurso(tipo,i,filaRecurso.idRecurso,filaRecurso.unidadMedida,filaRecurso.nombre,filaRecurso.costoUnitario,filaRecurso.moneda,filaRecurso.cantidadUsada);
+		agregaFilaRecurso(tipo,i,filaRecurso.idRecurso,filaRecurso.unidadMedida,filaRecurso.descripcion,filaRecurso.costoUnitario,filaRecurso.moneda,filaRecurso.cantidadEstimada);
 		numRecursos=i;
 	}
 }
@@ -182,7 +182,7 @@ function iniciaProyecto(){
 
 function agregarDataProyecto(data){
 	proy=data;
-	agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
+	agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva);
 }
 
 function iniciaActividades(){
@@ -219,7 +219,7 @@ function agregaDataFilaResumen(datosActividad){
 	
 	for (i=0; i<arreglo.length;i++){
 		recurso=arreglo[i];
-		agregaFilaActividadResumen(i, recurso.unidadMedida, recurso.nombre, recurso.moneda, recurso.cantidadUsada, recurso.costoUnitario);
+		agregaFilaActividadResumen(i, recurso.unidadMedida, recurso.descripcion, recurso.moneda, recurso.cantidadEstimada, recurso.costoUnitario);
 	}
 	
 	$("#tituloActividad").html(nombreActividad);
@@ -231,7 +231,9 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 	$("#nombreProyecto").html(nombreProyecto);
 	$("#inputMontoSinReserva").val(montoSinReserva);
 	$("#inputReserva").val(porcentajeReserva);
-	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
+	var reseTotal= new Number(porcentajeReserva*0.01*montoSinReserva);
+	var reseForm=reseTotal.toFixed(2);
+	$("#reservaTotal").val(reseForm);
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 }
 
@@ -286,15 +288,11 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 	a=i;
 	a++;
 	
-	//Si es para confirmar	
-	if (tipo==0)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'"  onChange="actualizaCostos();" >';
-	if (tipo==1)input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+costoUnitario+'" readOnly="readOnly" disabled>';
-	inputMoneda= creaInputMoneda(a);
+	//Si es para confirmar			
 	inputHidden='<input type="hidden" id="tipoCambio'+(a)+'" value="">';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+input
-								+'</td><td>'+inputMoneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+costoUnitario
+								+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">'+inputHidden);
-	obtenMonedaSeleccionada(a,moneda);
 	if (tipo==1) desabilitaMoneda(a);
 
 }
@@ -449,21 +447,10 @@ function limpiaTablaRecursos(){
 
 function actualizaCostos(){
 
-	num=numRecursos;
-	num++;
 	
-	var costoRecursos=new Array();
-	var tipoCambiosMonedas=new Array();
-	
-	for (i=1; i<=num;i++){
-			
-		costoRecursos.push(document.getElementById("costoUnitario"+i).value);
-		tipoCambiosMonedas.push(HashTipoCambio[document.getElementById("comboMoneda"+i).options[document.getElementById("comboMoneda"+i).selectedIndex].value]);
-	
-	}
 	porcentajeReserva=document.getElementById("inputReserva").value;
 	
-	valorSinReserva= sacaValorSinReserva(costoRecursos,tipoCambiosMonedas);
+	valorSinReserva= sacaValorSinReserva();
 	
 	$('#inputMontoSinReserva').val(valorSinReserva);
 	
@@ -486,21 +473,12 @@ function actualizaCostos(){
 
 }
 
-function sacaValorSinReserva(costoRecursos,tipoCambiosMonedas){
+function sacaValorSinReserva(){
 
-	val=0;
+	valor= $("#inputMontoSinReserva").val();
+	if (isNaN(valor)) valor=0;
 	
-	for (i=0; i<costoRecursos.length;i++){
-	
-		if (!isNaN(costoRecursos[i])){
-			
-			val+=costoRecursos[i]*tipoCambiosMonedas[i];
-			
-		}
-	
-	}
-	
-	return val;
+	return valor;
 
 }
 
