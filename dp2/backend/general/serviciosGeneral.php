@@ -249,6 +249,25 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		}
 	
 	}
+	function G_getPrioridad(){
+		$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO";
+		try {
+			$db = getConnection();
+			$stmt = $db->query($sql);
+			$lista_prioridadProject = array();
+			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+					$prioridad = array("idPrioridad"=>$p["id_prioridad"], "nom"=>$p["nombre_prioridad"]);
+					array_push($lista_prioridadProject, $prioridad);
+			}
+
+			$db = null;
+			echo json_encode($lista_prioridadProject) ;
+		} catch(PDOException $e) {
+        echo json_encode(array("me"=> $e->getMessage()));
+		}	
+
+	}
+	G_getPrioridad
             
             
 ?>
