@@ -84,6 +84,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		function completadoAJAX(data){
 			console.log("Data recibida del servidor:");
 			console.log(data);
+			
             ret = data;
             
             var offset=new Date().getTime()-ret.tasks[0].start;
@@ -94,6 +95,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		    ge.checkpoint(); //empty the undo stack
 		    console.log("Variable Global ge:");
 		    console.log(ge);
+		    
 		}
 		
 		
