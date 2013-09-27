@@ -346,7 +346,32 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   var taskEditor = $.JST.createFromTemplate({}, "TASK_EDITOR");
 
   taskEditor.find("#name").val(task.name);
-  taskEditor.find("#description").val(task.description);
+  
+  /**** Asignar wbsNodes *****/
+  var selectwbs = taskEditor.find("#wbsNodes");
+  console.log(selectwbs);
+  
+  $.each(ge.wbsNodes,function(e,el){
+	  var escritor = "";
+	  escritor += '<option value ="' + el.id + '">';
+	  escritor += el.name;
+	  escritor += '</option>';
+	  selectwbs.append(escritor);
+  });
+  
+  //console.log(task);
+  
+  selectwbs.val(task.id_Wbs);
+  
+  if(task.id_Wbs == null){
+	  selectwbs.val(1);
+  }
+    
+  //console.log(selectwbs.val());
+  /**** Fin Asignar wbsNodes *****/
+  
+  
+  taskEditor.find("#description").val(task.description);  
   taskEditor.find("#code").val(task.code);
   taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
   taskEditor.find("#status").attr("status", task.status);
@@ -492,6 +517,9 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
       self.master.beginTransaction();
       task.name = taskEditor.find("#name").val();
+      
+      task.id_Wbs = taskEditor.find("#wbsNodes").val();
+      
       task.description = taskEditor.find("#description").val();
       task.code = taskEditor.find("#code").val();
       task.progress = parseFloat(taskEditor.find("#progress").val());
