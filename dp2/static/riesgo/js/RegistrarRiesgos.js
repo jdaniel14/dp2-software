@@ -83,10 +83,10 @@ function main(){
 			// idPaqueteTrabajo: $('#paqEdt').val(),
 			// idCategoriaRiesgo: $('#objAfe').val(),
 			// impacto: $('#impRiesgo').val(),
-			//probabilidad: $('#proRiesgo').val(),
+			// probabilidad: $('#proRiesgo').val(),
 			acciones: $('#accEsp').val(),
-			costoPotencial: $('#costRiesgo').val(),
-			demoraPotencial: $('#tiemRiesgo').val(),
+			// costoPotencial: $('#costRiesgo').val(),
+			// demoraPotencial: $('#tiemRiesgo').val(),
 			// idEquipo: $('#equRes').val()
 		};
 		
@@ -104,6 +104,12 @@ function main(){
 			data.idEquipo=null;
 		}
 		if ($('#proRiesgo').val()==''){
+			data.probabilidad=null;
+		}
+		if ($('#costRiesgo').val()==''){
+			data.probabilidad=null;
+		}
+		if ($('#tiemRiesgo').val()==''){
 			data.probabilidad=null;
 		}
 		console.log(data);
@@ -127,19 +133,41 @@ function main(){
 		// }
 	});
 	$("#btnModificar").click(function(){
+		var data = {
+			idProyecto: $('#idProyectoM').val(),
+			nombre: $('#nomRiesgoM').val(),
+			// idPaqueteTrabajo: $('#paqEdt').val(),
+			// idCategoriaRiesgo: $('#objAfe').val(),
+			// impacto: $('#impRiesgo').val(),
+			// probabilidad: $('#proRiesgo').val(),
+			acciones: $('#accEspM').val(),
+			// costoPotencial: $('#costRiesgo').val(),
+			// demoraPotencial: $('#tiemRiesgo').val(),
+			// idEquipo: $('#equRes').val()
+		};
+		
 		if ($('#paqEdtM').val()==0){
-			$('#paqEdtM').val('');
+			data.idPaqueteTrabajo=null;
 		}
+		
 		if ($('#objAfeM').val()==0){
-			$('#objAfeM').val('');
+			data.idCategoriaRiesgo=null;
 		}
 		if ($('#impRiesgoM').val()==0){
-			$('#impRiesgoM').val('');
+			data.impacto = null;
 		}
 		if ($('#equResM').val()==0){
-			$('#equResM').val('');
+			data.idEquipo=null;
 		}
-
+		if ($('#proRiesgoM').val()==''){
+			data.probabilidad=null;
+		}
+		if ($('#costRiesgoM').val()==''){
+			data.probabilidad=null;
+		}
+		if ($('#tiemRiesgoM').val()==''){
+			data.probabilidad=null;
+		}
 		var data = {
 			idRiesgoXProyecto: $('#idRiesgoM').val(),
 			idProyecto: $('#idProyecto').val(),
@@ -162,7 +190,7 @@ function main(){
 			dataType: "json",
 			success: function(data){
 				var item = data;
-				alert("Se actualizó exitosamente el Riesgo " + item.idRiesgoXProyecto + ": " + item.nombreRiesgo);
+				alert("Se actualizó exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
 				listarRiesgos();
 			},
 			fail: codigoError
