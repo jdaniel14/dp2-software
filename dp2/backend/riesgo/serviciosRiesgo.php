@@ -290,6 +290,7 @@
             $stmt->bindParam("idRiesgo", $idRiesgo);
             $stmt->execute();
             $db = null;
+            echo '{Riesgo eliminado con exito}';
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
