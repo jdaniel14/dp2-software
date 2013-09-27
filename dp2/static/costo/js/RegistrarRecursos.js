@@ -446,14 +446,8 @@ function grabarRecursos(){
 		
 	}
 	
-	$.ajax({
-		type: 'POST',
-		url: rootURL + 'CO_enviarCURecursos/',		
-		data: JSON.stringify(obj),
-		dataType: "json",
-		async: true,
-		success:function(data){ alert("se grabó"); }
-	});
+	enviaDatos(obj);
+	
 	
 //	alert("se grabó " + obj);
 	
@@ -474,6 +468,19 @@ function grabarRecursos(){
 	
 }
 
+function enviaDatos(obj){
+
+	$.ajax({
+		type: 'POST',
+		url: rootURL + 'CO_enviarCURecursos/',		
+		data: JSON.stringify(obj),
+		dataType: "json",
+		async: false,
+		success:function(data){ alert("se grabó"); }
+	});
+
+
+}
 
 
 //Fin funciones para grabar
