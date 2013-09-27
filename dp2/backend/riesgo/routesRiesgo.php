@@ -37,5 +37,5 @@
 	$app->get('/R_listarRiesgoComun', 'R_getListaRiesgoComun');//Obtener la lista de riesgos comunes
 
 	//Asignar Riesgos Comunes
-	$app->post('/R_asignarRiesgoComun/:id', 'R_postAsignarRiesgoComun');//Asignar un riesgo comun
+	$app->post('/R_asignarRiesgoComun', 'R_postAsignarRiesgoComun');//Asignar un riesgo comun
 ?>
