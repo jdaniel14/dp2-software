@@ -1,3 +1,9 @@
+$(document).ready(function(){
+	//cargar Combos
+	cargarComboJefeProyecto();
+	cargarComboTipoProyecto();
+});
+
 function cargarComboJefeProyecto(){
 	$.ajax({
 		type: 'GET',
@@ -34,13 +40,6 @@ function cargarComboTipoProyecto(){
 	});
 }
 
-$(document).ready(function(){
-	//cargar Combos
-	cargarComboJefeProyecto();
-	cargarComboTipoProyecto();
-	//cargarComboEstado();
-});
-
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 		registrarProyectos();
@@ -67,4 +66,3 @@ function registrarProyectos(){
         }
     });
 }
-
