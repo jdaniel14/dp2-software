@@ -42,11 +42,50 @@
 
     }
 
+    function R_getListaRiesgo($idProyecto){
+
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
+                RXP.id_proyecto=EDT.id_proyecto and 
+                RXP.id_paquete_trabajo=PT.id_paquete_trabajo and
+                RXP.id_categoria_riesgo=CR.id_categoria_riesgo and 
+                RXP.id_proyecto=".$idProyecto;
+        
+        try {
+            $arregloListaRiesgo= array();
+            $db=getConnection();
+            $stmt = $db->query($sql);
+            //$stmt->bindParam("id_proyecto", $idProyecto);
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
+                            "nombre" => $row['nombre_riesgo'],//EDT
+                            "paqueteTrabajo" => $row['nombre'],//PT
+                            "categoria" => $row['descripcion'],//CR
+                            "impacto" => $row['impacto'],
+                            "probabilidad" => $row['probabilidad'],
+                            "severidad" => $row['severidad'],
+                            "estrategia" => $row['nombre'],//X
+                            "accionesEspecificas" => $row['nombre'],//X
+                            "costoEsperado" => $row['costo_potencial'],//RXP
+                            "tiempoEsperado" => $row['demora_potencial'],//RXP
+                            "equipoEesponsable" => $row['impacto']//X
+                            );
+                array_push($arregloListaRiesgo,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaRiesgo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
     function R_getRiesgo($idRiesgoXProyecto){
         
         $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
-                RXP.id_proyecto=EDT.id_proyecto and PT.id_edt=edt.id_edt and CR.id_categoria_riesgo=RXP.id_categoria_riesgo and 
+                RXP.id_proyecto=EDT.id_proyecto and 
+                RXP.id_paquete_trabajo=PT.id_paquete_trabajo and
+                RXP.id_categoria_riesgo=CR.id_categoria_riesgo and 
                 RXP.id_riesgo_x_proyecto=".$idRiesgoXProyecto;
+                //PT.id_edt=edt.id_edt and 
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -73,6 +112,40 @@
         }
 
     }    
+
+   function R_updateRiesgo($idRiesgoXProyecto){
+        
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        $query = "UPDATE RIESGO_X_PROYECTO nombre_riesgo=:nombre_riesgo, description=:description WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
+                            "nombre" => $row->nombre_riesgo,//EDT
+                            "paqueteTrabajo" => $row->nombre,//PT
+                            "categoria" => $row->descripcion,//CR
+                            "impacto" => $row->impacto,
+                            "probabilidad" => $row->probabilidad,
+                            "severidad" => $row->severidad,
+                            "estrategia" => $row->nombre,//X
+                            "accionesEspecificas" => $row->nombre,//X
+                            "costoEsperado" => $row->costo_potencial,//RXP
+                            "tiempoEsperado" => $row->demora_potencial,//RXP
+                            "equipoEesponsable" => $row->impacto//X
+                            );
+            $db = null;
+            echo json_encode($data);
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }    
+
 
     function R_getListaPaquetesEDT($idProyecto){
         $sql = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
@@ -173,40 +246,6 @@
         }        
     }
 
-    function R_getListaRiesgo($idProyecto){
-
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
-                RXP.id_proyecto=EDT.id_proyecto and PT.id_edt=edt.id_edt and CR.id_categoria_riesgo=RXP.id_categoria_riesgo and 
-                RXP.id_proyecto=".$idProyecto;
-        
-        try {
-            $arregloListaRiesgo= array();
-            $db=getConnection();
-            $stmt = $db->query($sql);
-            //$stmt->bindParam("id_proyecto", $idProyecto);
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
-                            "nombre" => $row['nombre_riesgo'],//EDT
-                            "paqueteTrabajo" => $row['nombre'],//PT
-                            "categoria" => $row['descripcion'],//CR
-                            "impacto" => $row['impacto'],
-                            "probabilidad" => $row['probabilidad'],
-                            "severidad" => $row['severidad'],
-                            "estrategia" => $row['nombre'],//X
-                            "accionesEspecificas" => $row['nombre'],//X
-                            "costoEsperado" => $row['costo_potencial'],//RXP
-                            "tiempoEsperado" => $row['demora_potencial'],//RXP
-                            "equipoEesponsable" => $row['impacto']//X
-                            );
-                array_push($arregloListaRiesgo,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
     function R_setEstadoLogicoRiesgo($idRiesgo){
 
         $sql = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
@@ -256,7 +295,7 @@
     //--------------------------------------CONFIGURACION--------------------------------------
 
     function R_postRegistrarConfiguracionProyecto(){
-        //echo "Entra";
+        
         $request = \Slim\Slim::getInstance()->request();
         $configuracion = json_decode($request->getBody());
         $sql = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,muy_bajo,bajo,medio,alto,muy_alto) VALUES (:id_proyecto,:muy_bajo,:bajo,:medio,:alto,:muy_alto)";
