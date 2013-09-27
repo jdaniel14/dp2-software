@@ -38,3 +38,38 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
+
+.titleEDT{
+	color : rgb(248, 220, 220);
+}
+
+.descripcionEDT{
+	color: white;
+}
+
+.diasEDT{
+
+}
+
+.inputEdtDias{
+	border: none; 
+	background-color: #DBCBDF;;
+	text-align: center;
+}
+
+.inputEdtDescripcion{
+	border: none; 
+	background-color: #E3F0A1;;
+	text-align: center;
+}
+
+
+.inputEdtTitle{
+	border: none; 
+	background-color: black;
+	text-align: center;
+	color: white;
+}
+
+
+
