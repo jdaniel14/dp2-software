@@ -397,13 +397,18 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     //console.log(assigRow);
     
     //Carga de recursos que ya estaban asignados!!!!!!!!!!!!!!!! ***
-    var addelemento= $(assigRow).children('td')[1];
+    var addelemento= $(assigRow).children('td')[0];
     var addtd1 = $(assigRow).children('td')[2];
     var addtd2 = $(assigRow).children('td')[3];
     var addtd6 = $(assigRow).children('td')[7];
+    //var addCostReal = $(assigRow).find("#costRateReal");
+    //var addValue = $(assigRow).find("#value");
+    //var addValueReal = $(assigRow).find("#valueReal");
     
     addelemento = $(addelemento).find('select').attr('value');
           
+    console.log(addelemento);
+    
     var recurso = ge.resources;
 		
     $.each(recurso, function(index,element){
@@ -472,7 +477,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
       
       //Agrego el valor determinado para cada recurso, cuando se agrega un nuevo recurso
-      var addelemento= $(assigRow).children('td')[1];
+      var addelemento= $(assigRow).children('td')[0];
       var addtd1 = $(assigRow).children('td')[2];
       var addtd2 = $(assigRow).children('td')[3];
       var addtd6 = $(assigRow).children('td')[7];
@@ -536,11 +541,14 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         var roleId = trAss.find("[name=roleId]").val();
         var effort = millisFromString(trAss.find("[name=effort]").val());
         var typeCost = trAss.find("[name=typeCost]").text();
+        //Arreglar que no cogue porque el name esta en el td
+        
         var costRate = trAss.find("[name=costRate]").text();
         var value = trAss.find("[name=value]").attr("value");
         var idrecurso = trAss.find("[name=idrecurso]").text();
-        //console.log(value);
-
+        var costRateReal = trAss.find("[name=costRateReal]").attr("value");
+        var valueReal = trAss.find("[name=valueReal]").attr("value");
+        
         //check if an existing assig has been deleted and re-created with the same values
         var found = false;
         for (var i = 0; i < task.assigs.length; i++) {
@@ -554,6 +562,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             ass.costRate = costRate;
             ass.value = value;
             ass.idrecurso = idrecurso;
+            ass.costRateReal = costRateReal;
+            ass.valueReal = valueReal;
             ass.touched = true;
             found = true;
             break;
@@ -565,6 +575,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             if(value == "") value = 0;
             ass.value = parseInt(ass.value) + parseInt(value);
             ass.idrecurso = idrecurso;
+            ass.costRateReal = costRateReal;
+            ass.valueReal = valueReal;
             ass.touched = true;
             found = true;
             break;
@@ -574,7 +586,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
         if (!found) { //insert
         	console.log("Valor nuevo: " + value);
-          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort, typeCost, costRate,value, idrecurso);
+          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort, typeCost, costRate,value, idrecurso, costRateReal, valueReal);
           console.log(ass);
           ass.touched = true;
         }
