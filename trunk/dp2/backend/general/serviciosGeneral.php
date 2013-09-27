@@ -267,7 +267,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		}	
 
 	}
-	G_getPrioridad
+	
             
             
 ?>
