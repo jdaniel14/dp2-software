@@ -1,31 +1,14 @@
 var rootURL = "../../api/G_listaProyecto";
 
-/*
-var codProyecto='1';
-
-var arregloProyecto= new Array(
-							new Array('Proyecto1','Bonnie Carranza','13/05/2013','23/06/2013'),
-							new Array('Proyecto2','Alfonso Bedoya','01/06/2013','14/10/2013'),
-							new Array('Proyecto3','Jose Astuvilca','15/06/2013','13/09/2013'),
-							new Array('Proyecto4','Bonnie Carranza','21/08/2013','21/10/2013')
-								);
-
-								
-
-var arregloActividad1= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles', '5'),
-							new Array('Unidad','Bote de pintura', '8','Soles','12')
-								);
-								
-
-var arregloActividad2= new Array(
-							new Array('Unidad','Ladrillo', '2','Soles','80'),
-							new Array('Litro','Cemento', '','Soles','10'),
-							new Array('Kilo','Fierro', '10','Soles','30')
-								);
-*/
-								
-iniciaProyectos();
+$(document).ready(function(){
+	iniciaProyectos();
+	$.each($("input.btn.btn-default"),function(e,el){
+		console.log(el);
+	});
+	$(".btn.btn-default").click(function(){ 		
+		alert('panchis');
+	});
+});
 
 function iniciaProyectos(){
 	
@@ -48,31 +31,58 @@ function codigoError(){
 
 function agregaDataFila(data){
 	//arreglo=arregloProyecto;
+	var arrBotones = new Array();
+	
 	if (data!=null){
 		arreglo=data["prs"];
 	}
+	console.log(arreglo);
+	
 	for (i=0; i<arreglo.length;i++){		
-		agregaFilaProyecto(arreglo[i],i);
+		agregaFilaProyecto(arreglo[i],i,arrBotones);
 	}
+	console.log(arrBotones);
+	
+/*	$.each(arrBotones,function(e,elemento){
+		if(elemento != undefined){
+			//console.log(arrBotones[e]);
+			var id = "#botoncitoito";
+			id += elemento;
+			//console.log(id);
+			$(id).click(function(){
+				localStorage.setItem("idProyecto",elemento);
+				$(location).attr('href','header.html');
+			});
+		}
+	});*/
+	
+	
 }
 
-function agregaFilaProyecto(arreglo,i){
+function agregaFilaProyecto(arreglo,i,arrBotones){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	$("#listaProyectos").append('<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + '</td><td><a href=RegistrarActaConstitucion.html>Ver/Registrar</a></td></tr>');
+	$("#listaProyectos").append('<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
+	'</td><td><input type="button" class="btn btn-default" value="Administrar" /></td></tr>');
+	
+	arrBotones[a] = arreglo["id"];
+	
+	//onclick=" localStorage.setItem(\'idProyecto\',\'' + arreglo["id"] +'\'); $(location).attr(\'href\',\'header.html\');"
+	
+	
 
 	localStorage["id"] = arreglo["id"];
 	localStorage["nombre"] = arreglo["nom"];
 }
 
+/*
+$("button.btn.btn-default.Irvin").click(function(){ 
+	
+	console.log($(this).closest("tr"));
 
-$("#btnGrabar").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
-	}
 });
-
+*/
 function grabarRecursos(){
 	
 	alert("Se grabó");
