@@ -123,6 +123,8 @@ GridEditor.prototype.refreshTaskRow = function(task) {
   row.find("[name=end]").val(new Date(task.end).format()).updateOldValue();
   row.find("[name=depends]").val(task.depends);
   row.find(".taskAssigs").html(task.getAssigsString());
+  
+  row.find("[name=wbsNode]").val(task.wbsNode);
 
   //profiler.stop();
 };
@@ -363,6 +365,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   
   selectwbs.val(task.id_Wbs);
   
+  
   if(task.id_Wbs == null){
 	  selectwbs.val(1);
   }
@@ -519,11 +522,22 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     //save task
     taskEditor.find("#saveButton").click(function () {
       var task = self.master.getTask(taskId); // get task again because in case of rollback old task is lost
-
+      var wbsNodes = ge.wbsNodes;
+      
+      console.log("WBS NODES");
+      console.log(wbsNodes);
+      
       self.master.beginTransaction();
       task.name = taskEditor.find("#name").val();
       
       task.id_Wbs = taskEditor.find("#wbsNodes").val();
+      
+      $.each(wbsNodes,function(e,el){
+    	  if(el.id == task.id_Wbs){
+    		  task.wbsNode = el.name; 
+    	  }
+      });      
+      
       
       task.description = taskEditor.find("#description").val();
       task.code = taskEditor.find("#code").val();
