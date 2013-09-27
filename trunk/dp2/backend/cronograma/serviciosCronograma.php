@@ -74,14 +74,15 @@ function CR_postActividades() {//servicio7
 	
     $arreglo_actividades = $actividades->task;
 	
-	//CR_Eliminacion_Logica_Actividades($idProyecto);
+	CR_Eliminacion_Logica_Actividades($idProyecto);
     
 	//for ($i = 0; $i < sizeof($arreglo_actividades); $i++)
      //   CR_guardar_actividades_BD($arreglo_actividades[$i]);
-	//CR_guardar_actividades_BD($arreglo_actividades);
-	
+	 //echo json_encode("hola");
+	/////////////echo json_encode(CR_guardar_actividades_BD($arreglo_actividades,$idProyecto));
+	echo json_encode(CR_guardar_actividades_BD($arreglo_actividades,$idProyecto));
     //return json_encode(CR_obtenerRespuestaExito());
-	echo json_encode($actividades);
+	/////////////echo json_encode($actividades);
 	//return json_encode(CR_obtenerRespuestaExito());
 	//echo json_encode($actividades);
 }
@@ -150,7 +151,7 @@ function CR_consultarInfoActividades($idProyecto) {
             //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
 			$idActividad=$p["id_actividad"];
 			$listaRecursosAsignados=CR_obtenerListaRecursosAsignados($idActividad,$lista_mapeo);
-            $actividad = array("id_task" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"] + 0, "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => false, "endIsMilestone" => false);
+            $actividad = array("id_task" => $p["id_actividad"] + 0,"id_proyecto"=>$p["id_proyecto"] , "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"] + 0, "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => false, "endIsMilestone" => false);
             array_push($lista_actividad, $actividad);
         }
 
@@ -262,7 +263,7 @@ function Desconectarse($link) {
 function CR_obtenerRespuestaExito() {
     $respuesta = new stdClass();
     $respuesta->codRespuesta = 1;
-    $respuesta->mensaje = 'Success';
+    $respuesta->me = "";
 
     return $respuesta;
 }
@@ -275,42 +276,26 @@ function CR_obtenerRespuestaFracaso() {
     return $respuesta;
 }
 
-function CR_guardar_actividades_BD($listaActividad) {
+function CR_guardar_actividades_BD($listaActividad,$idProyecto) {
 
-    //echo $actividad->start . " " . $actividad->end;
-         //$sql = "INSERT INTO ACTIVIDAD (nombre) VALUES (:nombre_actividad)";
-		 $sql = "
-        	INSERT INTO ACTIVIDAD (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA)
-			VALUES
-			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda);
-			COMMIT;";
+      $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?);commit;";
+		
       try {
-      $db = getConnection();
-      //$stmt = $db->prepare($sql);
-      //$stmt->bindParam("nombre_actividad", $actividad->name);
-	  
-      //$stmt->execute();
-      //$proj->id = $db->lastInsertId();//ESTO SE PUEDE BOTAR A LA BD
-      $db = null;
+        $db = null;
 			  if ($listaActividad != null) {
-						foreach ($listaActividad as $actividad) {
-							$db = getConnection();
-							$stmt = $db->prepare($sql);
-							$stmt->bindParam("idUnidadMedida", $actividad->idUnidadMedida);
-							$stmt->bindParam("nombreRecurso", $actividad->nombreRecurso);
-							$stmt->bindParam("idProyecto", $actividad->idProyecto);
-							$stmt->bindParam("costoUnitario", $actividad->CostoUnitario);
-							$stmt->bindParam("idMoneda", $actividad->idMoneda);
-							$stmt->execute();
-							$db = null;
+						$db = getConnection();
+						for ($i = 0; $i < sizeof($listaActividad); $i++){
+							 $actividad=$listaActividad[$i];							
+							$stmt = $db->prepare($sql2);							
+							$stmt->execute(array($actividad->name,$idProyecto,(property_exists($actividad, 'id_Wbs'))?$actividad->id_Wbs:null,null,null,null,null,null,($i+1),$actividad->level,(property_exists($actividad,"depends"))?$actividad->depends:"",property_exists($actividad,"progress")?$actividad->progress:null,property_exists($actividad,"cost")?$actividad->cost:null,$actividad->duration,$actividad->status,$actividad->code,property_exists($actividad,"description")?$actividad->description:"",$actividad->start,$actividad->end,0));
 						}
-						unset($actividad);
+						$db = null;
 				}
       } catch(PDOException $e) {
-      echo json_encode(array("me"=> $e->getMessage()));
-      //'{"error":{"text":'. $e->getMessage() .'}}';
+		$db=null;
+        return array("me"=> $e->getMessage());
       }
-     
+	return CR_obtenerRespuestaExito();
 }
 
 //Funciones hardcode
