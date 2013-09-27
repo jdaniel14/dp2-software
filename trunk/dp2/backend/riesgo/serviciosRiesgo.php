@@ -242,13 +242,18 @@
     //Julio
 
     function R_getListaRiesgoComun(){
-        $sql = "SELECT id_riesgo, nombre, ult_probabilidad, ult_impacto, ult_severidad FROM RIESGO WHERE id_categoria_riesgo = (SELECT id_categoria_riesgo FROM CATEGORIA_RIESGO WHERE tipo_riesgo = 1)"; //o cualquiera que sea el tipo de riesgo comun
+        $sql = "SELECT * FROM RIESGO_COMUN";
+        $listaRiesgoComun = array();
         try{
             $db = getConnection();
             $stmt = $db->query($sql);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $arregloListaRiesgoComun= array("idRiesgoComun" => $row['id_riesgo_comun'], "nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
+                array_push($listaRiesgoComun,$arregloListaRiesgoComun);
+            }
             $arregloListaRiesgoComun = $stmt->fetchAll();
             $db = null;
-            echo json_encode($arregloListaRiesgoComun);
+            echo json_encode($listaRiesgoComun);
         } catch(PDOException $e){
             echo 'ERROR EN R_getListaRiesgoComun: {"error":{"text":'. $e->getMessage() .'}}';
         }
