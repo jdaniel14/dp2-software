@@ -177,12 +177,16 @@ function agregaFilaRecurso(){
 	a=$("#numFilas").val();
 	a++;
 	
-	inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="">';
+	inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
 	inputMoneda= creaInputMoneda(a);
 	inputUnidadMedida= creaInputUnidadMedida(a);
-	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="">';
-	check= '<input type="checkBox" name="eliminar'+a+'">';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>Recurso Material</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>');	
+	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
+	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>Recurso Material</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
+								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>'
+								+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
+								+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
+								);	
 	$("#numFilas").val(a);
 }
 
@@ -193,17 +197,33 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 	if 	(tipo==0)
 		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td></tr>');
 	else{
-		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'">';
+		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')">';
 		inputMoneda= creaInputMoneda(a);
 		inputUnidadMedida= creaInputUnidadMedida(a);
-		inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="'+costoUnitario+'">';
-		check= '<input type="checkBox" name="eliminar'+a+'">';
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>');
+		inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
+		check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
+									+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>'
+									+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
+									+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
+									+'<input type="hidden" name="idRecurso'+a+'"  id="idRecurso'+a+'" value="'+idRecurso+'" >'
+									);
 		obtenUnidadMedidaSeleccionada(a,unidadMedida);
 		obtenMonedaSeleccionada(a,idmoneda);
 	}
 	$("#numFilas").val(a);
 }
+
+function modifica(num){
+
+	select='#modificado'+num;
+	
+	$(select).val('1');
+
+}
+
+
+
 
 function creaComboMoneda(data){
 	comboMoneda='';
@@ -255,7 +275,7 @@ function agregaOpcionUnidadMedida(idUnidad, nombre){
 
 function creaInputMoneda(num){
 
-	combo='<select id="comboMoneda'+num+'" >'+ comboMoneda + '</select>';
+	combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')" >'+ comboMoneda + '</select>';
 	return combo;
 	
 }
@@ -263,7 +283,7 @@ function creaInputMoneda(num){
 
 function creaInputUnidadMedida(num){
 
-	combo='<select id="comboUnidadMedida'+num+'" >'+ comboUnidadMedida + '</select>';
+	combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" >'+ comboUnidadMedida + '</select>';
 	return combo;
 	
 }
@@ -327,58 +347,130 @@ function obtenUnidadMedidaSeleccionada(a,medida){
 
 $("#btnGrabar").click(function(){
 
-	/*
-		VERIFICAR LA NUMEROSIDAD DE LOS COSTOS UNITARIOS
-	
-	
-	*/
-
-
-
-
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 		grabarRecursos();
 	}
 });
 
 function grabarRecursos(){
-	var idRecursos=new Array();
-	var costoRecursos=new Array();
-	var idmonedas=new Array();
-	porcentajeReserva=0;
+	var recursosGrabar=new Array();
+	var recursosModificar=new Array();
+	var recursosEliminar=new Array();
+		
+	num=$("#numFilas").val();
 	
-	num=numRecursos;
-	num++;
 	for (i=1; i<=num;i++){
+		elim="eliminar"+i;
+		crea="#creado"+i;
+		modif="#modificado"+i;
+		recu="#idRecurso"+i;
+		cu="#costoUnitario"+i;
+		nom="#recurso"+i;
+		moned="#comboMoneda"+i;
+		med="#comboUnidadMedida"+i;
+		eliminar=document.getElementById(elim).checked;
+		crear=$(crea).val();
+		modificar=$(modif).val();
 	
-		idRecursos.push(document.getElementById("idRecurso"+i).value);
-		costoRecursos.push(document.getElementById("costoUnitario"+i).value);
-		idmonedas.push(document.getElementById("comboMoneda"+i).options[document.getElementById("comboMoneda"+i).selectedIndex].value);
 	
+		if (eliminar && crear!='1'){
+		
+			var recurso = {
+				
+				idRecurso: $(recu).val()
+			}
+			
+			recursosEliminar.push(recurso);
+		
+		}else{
+		
+			costo=$(cu).val();
+			nomRecurso=$(nom).val();
+			moneda=$(moned).val();
+			medida=$(med).val();
+			
+			if (nomRecurso==''){
+					
+				alert('El recurso de la fila ' + i +' debe tener un nombre');
+				return;
+			}
+			
+			
+			if (costo!='' && !isNaN(costo) && costo>=0){
+					
+				
+			}else{
+			
+				alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
+				return;
+			}
+		
+			if (crear=='1'){
+
+				var recurso = {
+				
+					nombreRecurso:nomRecurso,
+					CostoUnitario: costo,			
+					idMoneda: moneda,
+					idUnidadMedida:medida
+				}
+				recursosGrabar.push(recurso);
+				
+			}else{
+			
+				if (modificar=='1'){
+					var recurso = {
+						idRecurso: $(recu).val(),
+						nombreRecurso:nomRecurso,
+						CostoUnitario: costo,			
+						idMoneda: moneda,
+						idUnidadMedida:medida
+					}
+					recursosModificar.push(recurso);
+				}
+			
+			
+			}
+		
+		}
+		
 	}
-	porcentajeReserva=document.getElementById("inputReserva").value;
 	
-	
+		
 	var obj={
 		idProyecto: idProyecto,
-		listaRecursos: idRecursos,
-		listaCUR: costoRecursos,
-		porcReserva: idmonedas
+		listaRecursosModificar: recursosModificar,
+		listaRecursosCrear: recursosGrabar,
+		listaRecursosEliminar: recursosEliminar
 		
 		
 	}
-	/*
+	
 	$.ajax({
 		type: 'POST',
-		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_enviarCURecursos/',		
+		data: JSON.stringify(obj),
 		dataType: "json",
 		async: true,
-		success:function(data){if (data!=null) alert("se grabó");}
+		success:function(data){ alert("se grabó"); }
 	});
-	*/
-	alert("se grabó");
+	
+//	alert("se grabó " + obj);
 	
 	//CO_enviarCURecursos
+	
+	/*
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFila(data,tipo);}
+	});
+	
+	*/
+	
 	
 }
 
