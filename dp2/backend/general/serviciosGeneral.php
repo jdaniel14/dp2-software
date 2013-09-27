@@ -122,7 +122,8 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
 		$sql = "UPDATE PROYECTO SET f_preparacion=:p_f_preparacion, 
-									prioridad=:p_prioridad
+									prioridad=:p_prioridad,
+									nombre_proyecto=:p_nombre_proyecto
 				WHERE id_proyecto=:p_id_proy ";
 		try {
                         
@@ -130,6 +131,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam("p_f_preparacion", $acta->fpp);
 			$stmt->bindParam("p_prioridad", $acta->pp);
+			$stmt->bindParam("p_nombre_proyecto", $acta->np);
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
 			//$proj->id = $db->lastInsertId();
@@ -217,7 +219,9 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 						duracion,
 						calidad,
 						jefe_comite,
-						patrocinador
+						patrocinador,
+						nombre_proyecto,
+						id_jefe_proyecto
 				FROM PROYECTO WHERE id_proyecto =:id";
 		try {
                         
@@ -234,6 +238,8 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 							"cp"=>$p["costos"],
 							"plp"=>$p["duracion"],
 							"calp"=>$p["calidad"],
+							"np"=>$p["nombre_proyecto"],
+							"jp"=>$p["id_jefe_proyecto"],
 							"jcp"=>$p["jefe_comite"]);
 			
 			$db = null;
