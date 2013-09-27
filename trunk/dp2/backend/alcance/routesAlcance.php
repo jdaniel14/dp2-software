@@ -8,7 +8,7 @@
 	$app->get('/infoProyectoFromEDT/:id_edt','getInfoProyectoFromEDT');
 	
 	//Nadya
-	$app->get('/obtenerEdt/:idProyecto/:version','guardarEdt');
-	$app->get('/mostrarEdt/:idProyecto/:version','mostrarEdt');
-	$app->get('/obtenerComboVersion/:idProyecto','getComboVersion');
+	//$app->get('/obtenerEdt/:idProyecto/:version','guardarEdt');
+	//$app->get('/mostrarEdt/:idProyecto/:version','mostrarEdt');
+	//$app->get('/obtenerComboVersion/:idProyecto','getComboVersion');
 ?>
