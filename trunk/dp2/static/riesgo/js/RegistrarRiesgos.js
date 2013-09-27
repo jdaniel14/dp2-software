@@ -153,20 +153,20 @@ function main(){
 
 		var jsonData = JSON.stringify(data);
 		alert(jsonData);
-		// $.ajax({
-		// 	type: 'POST',
-		// 	url: addList,
-		// 	data: jsonData,
-		// 	dataType: "json",
-		// 	success: function(data){
-		// 		var item = data;
-		// 		alert("Se agregaron exitosamente los " + item.length + " riesgos");
-		// 		listarRiesgos();
-		// 	},
-		// 	fail: function(data){
-		// 		alert(data.me);
-		// 	}
-		// });
+		$.ajax({
+			type: 'POST',
+			url: addList,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				alert("Se agregaron exitosamente los " + item.length + " riesgos");
+				listarRiesgos();
+			},
+			fail: function(data){
+				alert(data.me);
+			}
+		});
 	});
 
 
