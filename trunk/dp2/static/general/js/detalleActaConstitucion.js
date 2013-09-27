@@ -10,11 +10,11 @@ function getURLParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-
-var id_proyecto = localStorage["id"];
-var nombre_proyecto = localStorage["nombre"];
+var id_proyecto=getURLParameter("idProyecto");
 
 function cargaData(data){
+
+	
 
 	if (data!=null){
 		arreglo=data["acta"];
@@ -23,11 +23,20 @@ function cargaData(data){
 		
 
 		if($('#'+key).is("select"))continue;
+		
 		if(key=="fpp"){
-			alert(arreglo[key]);
-		} 
-		$('#'+key).html(arreglo[key]);
-		$('#'+key).val(arreglo[key]);
+			$('#'+key).html(arreglo[key].substring(0,10));
+			$('#'+key).val(arreglo[key].substring(0,10));
+		} 	
+		else {
+			if(key=="np")
+			{
+				document.getElementsByTagName('h1')[0].innerHTML=arreglo[key];
+			}
+			$('#'+key).html(arreglo[key]);
+			$('#'+key).val(arreglo[key]);	
+		}
+		
 
 	}
 
@@ -39,7 +48,6 @@ function cargaData(data){
 		}
 	}
 }
-
 $(document).ready(function() {
     var date = new Date();
     var day = date.getDate();
@@ -57,11 +65,12 @@ $(document).ready(function() {
 	
 	cargarComboPrioridadproyecto();
 
+	cargarComboJefeProyecto();
 
 
-		$("#idProyecto").attr("value",id_proyecto);
-		$("#np").attr("value",nombre_proyecto);
-
+		//document.getElementById("#nameProyect").innerHTML = nombre_proyecto.val() ;
+		
+	$("#idProyecto").attr("value", id_proyecto);
 	$.ajax({
 		type: 'GET',
 		url : '../../api/G_devuelveActa/'+id_proyecto,
@@ -69,6 +78,7 @@ $(document).ready(function() {
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
 	});
+
 });
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
@@ -88,7 +98,7 @@ $("#btnGrabarDescripcion").click(function(){
 });
 $("#btnGrabarObjetivos").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-                alert('ona vez mas, ahora :(  hector q dices');
+                //alert('ona vez mas, ahora :(  hector q dices');
 		grabarObjetivosActa();
 	}
 });
@@ -201,7 +211,7 @@ function grabarAutoridadActa(){
 		pap: $("#pap").val(),
 	};
 
-        alert(JSON.stringify(obj));
+
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarAutorActa,
@@ -210,7 +220,7 @@ function grabarAutoridadActa(){
 		fail: codigoError,
                 success: function(data){
                     
-                    alert(data);
+                    alert("Se grabaron los datos wuju!");
                 }
 	});
 }
@@ -248,6 +258,23 @@ function cargarComboPrioridadproyecto(){
 				opt.val(data[obj]["idPrioridadProyecto"]);
 				opt.html(data[obj]["descripcionPrioridadProyecto"]);
 				$("#pp").append(opt);
+			}
+		}
+	});
+}
+function cargarComboJefeProyecto(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_listaJefeProyectos',
+		dataType: "json",
+		async:false,
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(data[obj]["id"]);
+				opt.html(data[obj]["nom"]);
+				$("#jp").append(opt);
 			}
 		}
 	});
