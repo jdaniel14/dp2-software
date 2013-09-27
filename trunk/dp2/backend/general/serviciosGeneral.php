@@ -268,11 +268,11 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		$lista_prioridadProject = array();
 		$prioridad = array("idPrioridad"=>1, "nom"=>'ESTRATEGICO');
 		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>2, "nom"=>'APOYO');
+		$prioridad = array("idPrioridad"=>2, "nom"=>'ALTO POTENCIAL');
 		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>3, "nom"=>'SIN POLLO');
+		$prioridad = array("idPrioridad"=>3, "nom"=>'UNO MAS');
 		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>4, "nom"=>'AHI');
+		$prioridad = array("idPrioridad"=>4, "nom"=>'SOPORTE');
 		array_push($lista_prioridadProject, $prioridad);
 		echo json_encode($lista_prioridadProject) ;
 
