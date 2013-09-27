@@ -32,9 +32,10 @@
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->execute();
+            $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
             $db = null;
 
-            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
+            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo_x_proyecto,"nombre"=>$riesgo->nombre));
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
                 //'{"error":{"text":'. $e->getMessage() .'}}';
