@@ -68,23 +68,11 @@ function CR_getDependencias($json) {//servicio6
 function CR_postActividades() {//servicio7
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
-	//echo $actividades;
 	
-	$idProyecto = $actividades->idProyecto;
-	
-    $arreglo_actividades = $actividades->task;
-	
-	CR_Eliminacion_Logica_Actividades($idProyecto);
-    
-	//for ($i = 0; $i < sizeof($arreglo_actividades); $i++)
-     //   CR_guardar_actividades_BD($arreglo_actividades[$i]);
-	 //echo json_encode("hola");
-	/////////////echo json_encode(CR_guardar_actividades_BD($arreglo_actividades,$idProyecto));
+	$idProyecto = $actividades->idProyecto;	
+    $arreglo_actividades = $actividades->task;	
+	CR_Eliminacion_Logica_Actividades($idProyecto);    
 	echo json_encode(CR_guardar_actividades_BD($arreglo_actividades,$idProyecto));
-    //return json_encode(CR_obtenerRespuestaExito());
-	/////////////echo json_encode($actividades);
-	//return json_encode(CR_obtenerRespuestaExito());
-	//echo json_encode($actividades);
 }
 
 function CR_Eliminacion_Logica_Actividades($idProyecto){
