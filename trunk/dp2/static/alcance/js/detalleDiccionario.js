@@ -5,6 +5,7 @@ function getURLParameter(name) {
 }
 
 var id_paquete = getURLParameter("id_paquete");
+var idProyecto = localStorage.idProyecto;
 
 function cargaData(data){
 	for(key in data){
@@ -33,7 +34,7 @@ function cargaData(data){
 function cargarComboResponsable(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboMiembrosEquipo/'+1,
+		url : '../../api/comboMiembrosEquipo/'+id_proyecto,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		async:false,
@@ -66,28 +67,30 @@ function cargarComboEstado(){
 	});
 }
 
-/*function cargarComboCompania(){
+function cargarComboMoneda(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboCompania',
+		url : '../../api/CO_obtenerListaMonedas',
 		dataType: "json",
-		contentType: "application/json; charset=utf-8",
 		async:false,
+		contentType: "application/json; charset=utf-8",
 		success:function(data){
-			for(obj in data){
+			for (var i=0; i < data["lista"].length;i++){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id_compania_responsable"]);
-				opt.html(data[obj]["descripcion"]);
-				$("#id_compania_responsable").append(opt);
+				opt.val(data["lista"][i]["idMoneda"]);
+				opt.html(data["lista"][i]["nombre"]);
+				$("#id_cambio_moneda").append(opt);
 			}
 		}
 	});
-}*/
+}
+
+
 
 $(document).ready(function(){
 	//cargar Combos
 	cargarComboResponsable();
-	//cargarComboCompania();
+	cargarComboMoneda();
 	cargarComboEstado();
 
 	$.ajax({
@@ -99,7 +102,11 @@ $(document).ready(function(){
 	});
 });
 
-function editarPaquete(){
+$("#modificarPaquete").click(function(){
+	if(!validarPaqueteTrabajo()){
+		alert("Hay errores en el formulario");
+		return;
+	}
 	var data = $(".form-control");
 	var obj = {};
 	for(var i=0; i < data.length; i++){
@@ -116,5 +123,8 @@ function editarPaquete(){
 			alert("Se registraron las modificaciones con éxito.");
 		}
 	});
-	alert("Se registraron las modificaciones con éxito.");
+});
+
+function editarPaquete(){
+	
 }

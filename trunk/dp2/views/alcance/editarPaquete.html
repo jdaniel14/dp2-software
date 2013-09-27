@@ -80,147 +80,141 @@
         <h2 id="nombre">Paquete de trabajo</h2>
       </div>  
       <div class="container">
-        <form id="form-paquete" role="form" action="javascript:editarPaquete()" class="col-md-offset-1">
+        <form id="form-paquete" role="form" name="form-paquete" action="javascript:editarPaquete()" class="col-md-offset-1">
           <div class="row">
             <!--Id-->
             <div class="form-group col-md-2">
-              <label for="id_paquete_trabajo">Id</label>
+              <label class="control-label" for="id_paquete_trabajo">Id</label>
               <p class="form-control-static" id="id_paquete_trabajo"></p>
             </div>
             <!--Cuenta control-->
             <div class="form-group col-md-2">
-              <label for="version">Versión</label>
+              <label class="control-label" for="version">Versión</label>
               <p class="form-control-static" id="version"></p>
             </div>
             <!--Ultima actualizacion-->
             <div class="form-group col-md-3">
-              <label for="ultima_actualizacion">Ultima Actualización</label>
+              <label class="control-label" for="ultima_actualizacion">Ultima Actualización</label>
               <p class="form-control-static" id="ultima_actualizacion"></p>
             </div>
             <!--Responsable-->
             <div class="form-group col-md-5">
-              <label for="id_empleado">Responsable</label>
-              <select class="form-control" id="id_empleado">  
+              <label class="control-label" for="id_empleado">Responsable</label>
+              <select class="form-control" name="id_empleado" id="id_empleado">  
               </select>
             </div>
           </div>
           <!--Descripcion del paquete de trabajo-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="descripcion">Descripción</label>
-              <textarea rows="2" class="form-control" id="descripcion" placeholder="Descripción del paquete de trabajo"></textarea>
+              <label class="control-label" for="descripcion">Descripción</label>
+              <textarea rows="2" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción del paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Criterio de aceptacion-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="criterios_aceptacion">Criterio de aceptación</label>
-              <textarea rows="2" class="form-control" id="criterios_aceptacion" placeholder="Criterio de aceptación para el paquete de trabajo"></textarea>
+              <label class="control-label" for="criterios_aceptacion">Criterio de aceptación</label>
+              <textarea rows="2" class="form-control" name="criterios_aceptacion" id="criterios_aceptacion" placeholder="Criterio de aceptación para el paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Entregables-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="entregables">Entregables</label>
-              <textarea rows="2" class="form-control" id="entregables" placeholder="Entregables del paquete de trabajo"></textarea>
+              <label class="control-label" for="entregables">Entregables</label>
+              <textarea rows="2" class="form-control" name="entregables" id="entregables" placeholder="Entregables del paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Supuestos-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="supuestos">Supuestos</label>
-              <textarea rows="2" class="form-control" id="supuestos" placeholder="Supuestos del paquete de trabajo"></textarea>
+              <label class="control-label" for="supuestos">Supuestos</label>
+              <textarea rows="2" class="form-control" name="supuestos" id="supuestos" placeholder="Supuestos del paquete de trabajo"></textarea>
             </div>
           </div>
-          <!--Recursos-->
+          <!--Personas-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="recursos">Recursos</label>
-              <p class="form-control-static" id="recursos"></p>
+              <label class="control-label" for="numero_personas">Número de personas</label>
+              <input name="numero_personas" type="number" min="0" step="1"class="form-control" id="numero_personas" placeholder="Número de personas que participan en el paquete"/>
             </div>
           </div>
           <!--Duracion-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="dias">Duración (en días)</label>
-              <input type="number" class="form-control" id="dias" placeholder="Duración en días"/>
+              <label class="control-label" for="dias">Duración (en días)</label>
+              <input type="number" min="0" step="1" name="dias" class="form-control" id="dias" placeholder="Duración en días"/>
             </div>
           </div>
           <!--Hitos-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="hitos">Hitos</label>
-              <textarea rows="2" class="form-control" id="hitos" placeholder="Hitos del paquete de trabajo"></textarea>
+              <label class="control-label" for="hitos">Hitos</label>
+              <textarea rows="2" class="form-control" name="hitos" id="hitos" placeholder="Hitos del paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Costo-->
           <div class="row">
             <div class="form-group col-md-8">
-              <label for="costo">Costo</label>
-              <input type="number" class="form-control" id="costo" placeholder="Monto del costo"/>
-              <p class="form-control-static" id="costo"></p>
+              <label class="control-label" for="costo">Costo</label>
+              <input type="number" min="0" name="costo" step="any"class="form-control" id="costo" name="costo" placeholder="Monto del costo"/>
             </div>
             <div class="form-group col-md-4">
-              <label for="id_moneda">Moneda</label>
-              <select class="form-control" id="id_moneda">  
+              <label class="control-label" for="id_cambio_moneda">Moneda</label>
+              <select class="form-control" name="id_cambio_moneda" id="id_cambio_moneda">  
               </select>
             </div>
           </div>
           <!--Interdependencias-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="interdependencias">Interdependencias</label>
-              <textarea rows="2" class="form-control" id="interdependencias" placeholder="Interdependencias del paquete de trabajo"></textarea>
+              <label class="control-label" for="interdependencias">Interdependencias</label>
+              <textarea rows="2" class="form-control" name="interdependencias" id="interdependencias" placeholder="Interdependencias del paquete de trabajo"></textarea>
             </div>
           </div>
-          <!--Organización responsable
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label for="id_compania_responsable">Organización responsable</label>
-              <select class="form-control" id="id_compania_responsable">  
-              </select>
-            </div>
-          </div>-->
           <!--Requisitos de calidad-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="requisitos_calidad">Requisitos de calidad</label>
-              <textarea rows="2" class="form-control" id="requisitos_calidad" placeholder="Requisitos de calidad del paquete de trabajo"></textarea>
+              <label class="control-label" for="requisitos_calidad">Requisitos de calidad</label>
+              <textarea rows="2" class="form-control" name="requisitos_calidad" id="requisitos_calidad" placeholder="Requisitos de calidad del paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Referencias tecnicas-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="referencias_tecnicas">Referencias técnicas</label>
-              <textarea rows="2" class="form-control" id="referencias_tecnicas" placeholder="Referencias técnicas del paquete de trabajo"></textarea>
+              <label class="control-label" for="referencias_tecnicas">Referencias técnicas</label>
+              <textarea rows="2" class="form-control" name="referencias_tecnicas" id="referencias_tecnicas" placeholder="Referencias técnicas del paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Información del contrato-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="informacion_contrato">Información del contrato</label>
-              <textarea rows="2" class="form-control" id="informacion_contrato" placeholder="Información del contrato sobre el paquete de trabajo"></textarea>
+              <label class="control-label" for="informacion_contrato">Información del contrato</label>
+              <textarea rows="2" class="form-control" name="informacion_contrato" id="informacion_contrato" placeholder="Información del contrato sobre el paquete de trabajo"></textarea>
             </div>
           </div>
           <!--Estado-->
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="id_estado">Estado</label>
-              <select class="form-control" id="id_estado">  
+              <label class="control-label" for="id_estado">Estado</label>
+              <select class="form-control" name="id_estado" id="id_estado">  
               </select>
             </div>
           </div>
           <!--Submit-->
           <div class="row">
             <div class="col-md-1" id="submit">
-              <button type="submit" class="btn btn-default" action="editarPaquete();">Guardar</button>
+              <button id="modificarPaquete" type="submit" class="btn btn-default">Guardar</button>
             </div>
           </div>
         </form>     
       </div>  
     </div>
     <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"></script>
+    <script src="http://jquery.bassistance.de/validate/additional-methods.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
     <script src="../../static/alcance/js/detalleDiccionario.js"></script>
+    <script src="../../static/alcance/js/validation.js"></script>   
   </body>
 </html>
