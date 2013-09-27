@@ -317,17 +317,21 @@ function CR_guardar_actividades_BD($listaActividad,$idProyecto) {
 							 $actividad=$listaActividad[$i];
 							//$test=$actividad;
 							$stmt = $db->prepare($sql2);
+							if (property_exists($actividad,"id_task"))
 							CR_eliminarRecursosAsignados($actividad);
-							CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
+							//CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
 							/*if (property_exists($actividad, 'id_Wbs')){
 								echo "[".$actividad->id_Wbs."]";
 							}*/
 							$stmt->execute(array($actividad->name,$idProyecto,(property_exists($actividad, 'id_Wbs'))?$actividad->id_Wbs:null,null,null,null,null,null,($i+1),$actividad->level,(property_exists($actividad,"depends"))?$actividad->depends:"",property_exists($actividad,"progress")?$actividad->progress:null,property_exists($actividad,"cost")?$actividad->cost:null,$actividad->duration,$actividad->status,$actividad->code,property_exists($actividad,"description")?$actividad->description:"",$actividad->start,$actividad->end,0));
+							$id_task=$db->lastInsertId();
+							CR_insertarRecursoAsignados($actividad->assigs,$id_task);
 						}
 						$db = null;
 				}
       } catch(PDOException $e) {
 		$db=null;
+		
         return array("me"=>"guardar".$e->getMessage());
       }
 	return CR_obtenerRespuestaExito();
@@ -345,13 +349,13 @@ function CR_insertarRecursoAsignados($assigs,$id_task){
 							 $assig=$assigs[$i];
 							//$test=$actividad;
 							$stmt = $db->prepare($sql);
-							$stmt->execute(array($id_task,$assig->idrecurso,$assig->value,$assig->valueReal,$assig->costRateReal,$assig->idunidadmedida,1));
+							$stmt->execute(array($id_task,$assig->idrecurso,$assig->value,property_exists($assig,"valueReal")?$assig->valueReal:null,(property_exists($assig,"costRateReal"))?$assig->costRateReal:null,(property_exists($assig,"idTipoCosto"))?$assig->idTipoCosto:null,1));
 						}
 						$db = null;
 				}
       } catch(PDOException $e) {
 		$db=null;
-		echo json_encode(array("me"=>"guardar".$e->getMessage()));
+		//echo json_encode(array("me"=>"guardar".$e->getMessage()));
         return array("me"=>"guardar".$e->getMessage());
       }
 	return CR_obtenerRespuestaExito();
@@ -558,8 +562,9 @@ function CR_obtenerRecursosTotalPaqueteTrabajo($idpaquetetrabajo) {
 function CR_obtenerListaRecursosAsignados($idActividad,$listaMapeoRecursos) {
     $listaRecursos = array();
 	//$listaIds=array();
-    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real,g.descripcion as 'descripcion_tipocosto',g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
-    try {
+    //$sql2 = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real "./*,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo */."FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso "./*inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo */."where e.id_actividad=? and e.estado=1";
+    $sql="SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idActividad));
@@ -573,7 +578,7 @@ function CR_obtenerListaRecursosAsignados($idActividad,$listaMapeoRecursos) {
 			//echo $idRecurso;
 			 $idRecurso=$listaMapeoRecursos["".$j["id_recurso"]];
 			
-            $rec = array("idrecurso" => $j["id_recurso"],"id"=>"tmp_".$contador , "resourceId" => $idRecurso,"idunidadmedida" => $j["id_unidad_medida"],"idTipoCosto" => $j["id_tipo_costo"], "descripcion_recurso" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"]+0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"]+0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"], "descripcion_tipocosto" => $j["descripcion_tipocosto"]);
+            $rec = array("idrecurso" => $j["id_recurso"],"id"=>"tmp_".$contador , "resourceId" => $idRecurso,"idunidadmedida" => $j["id_unidad_medida"],/*"idTipoCosto" => $j["id_tipo_costo"],*/ "descripcion_recurso" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"]+0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"]+0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"]/*, "descripcion_tipocosto" => $j["descripcion_tipocosto"]*/);
             array_push($listaRecursos, $rec);
 			
 			$contador++;
