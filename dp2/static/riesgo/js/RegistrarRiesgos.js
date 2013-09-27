@@ -33,7 +33,8 @@ var buscar = "";
 var idArray = [];
 
 function main(){
-	
+	var aguirre = $("tbody#tablaRiesgos").children();
+	console.log(aguirre);
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
@@ -42,20 +43,18 @@ function main(){
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
 	listarConfiguracion();
-	$(".glyphicon.glyphicon-search").click(function(){
-		obtenerRiesgo();
-		deshabilitarCampos();
-	});
-	$(".glyphicon.glyphicon-edit").click(function(){
-		obtenerRiesgo();
-	});
+	
+
 
 	$("#btnBuscar").click(function(){
 		buscar = $("#buscar").val();
 		listarRiesgos(buscar);
 	});
 	
-
+	$(".glyphicon.glyphicon-edit").click( function(){
+		alert("asd");
+		obtenerRiesgo();
+	});
 	$(".glyphicon.glyphicon-remove").click( function(){
 		
 		var data = {
@@ -115,7 +114,7 @@ function main(){
 			alert("Hubo un problema con su registro");
 		}
 	});
-	$('#btnModificar').click(function(){
+	$("#btnModificar").click(function(){
 		var data = {
 			id: $('#idRiesgoM').val(),
 			idProyecto: $('#idProyecto').val(),
@@ -143,13 +142,20 @@ function main(){
 			fail: codigoError
 		});
 	});
+
+	$("#editarRiesgo").click(function(){
+		alert("as");
+	});
 	//Función para agregar los riesgos conocidos al proyecto
 	$("#btnAgregar").click( function(){
-		var data = [];
+		var arreglo = [];
     	$('#tablaRiesgosComunes input[type="checkbox"]:checked').each(function(){
 	        var $row = $(this).parents('tr'); 
-	        data.push($row.find('td:eq(5) input').val());
+	        arreglo.push($row.find('td:eq(5) input').val());
     	});
+    	var data = {
+    		lista: arreglo
+    	};
 
 		var jsonData = JSON.stringify(data);
 		alert(jsonData);
@@ -214,6 +220,8 @@ function main(){
 		$('#muyAlto').val('');
 		listarConfiguracion()
 	});
+
+
 
 	//Boton para confirmar un riesgo
 	$(".glyphicon.glyphicon-ok").click( function(){
@@ -327,32 +335,36 @@ function listarPaquetesTrabajo(){
 	});
 }
 function obtenerRiesgo(){
-	$('#btnModificar').show();
+	// $('#modRiesgo').show();
+	alert("xD");
 	var data = {
-		id: $(this).closest("tr").attr("id")
-	};
-	var jsonData = JSON.stringify(data);
-	console.log(jsonData);
-	$.ajax({
-		type: 'GET',
-		url: getItem + '/' + data.id,
-		data: jsonData,
-		dataType: "json",
-		success: function(data){
-			var item = data;
-			$('#idRiesgoM').val(item.id);
-			$('#nomRiesgoM').val(item.nombre);
-			$('#paqEdtM').val(item.paquete);
-			$('#objAfeM').val(item.objeto);
-			$('#impRiesgoM').val(item.impacto);
-			$('#proRiesgoM').val(item.probabilidad);
-			$('#accEspM').val(item.acciones);
-			$('#costRiesgoM').val(item.costo);
-			$('#tiemRiesgoM').val(item.tiempo);
-			$('#equResM').val(item.equipo);
-		},
-		fail: codigoError
-	});
+			id_riesgo_x_proyecto: $(this).closest("tr").attr("id")
+		};
+		alert(id_riesgo_x_proyecto);
+		var jsonData = JSON.stringify(data);
+		console.log(jsonData);
+		$.ajax({
+			type: 'GET',
+			url: getItem + '/' + data.id_riesgo_x_proyecto,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				$('#idRiesgoM').val(item.idRiesgoProyecto);
+				$('#nomRiesgoM').val(item.nombre);
+				$('#paqEdtM').val(item.paqueteTrabajo);
+				$('#objAfeM').val(item.categoria);
+				$('#impRiesgoM').val(item.impacto);
+				$('#proRiesgoM').val(item.probabilidad);
+				$('#svrRiesgoM').val(item.severidad);
+				$('#accEspM').val(item.accionesEspecificas);
+				$('#costRiesgoM').val(item.costoEsperado);
+				$('#tiemRiesgoM').val(item.tiempoEsperado);
+				$('#equResM').val(item.equipoEesponsable);
+				
+			},
+			fail: codigoError
+		});
 }
 
 function listarCategoriasRiesgo(){
@@ -430,18 +442,22 @@ function listarRiesgos(search){
 
 	var data = {
 		idProyecto: $('#idProyecto').val()
-		//buscar: search
+		//buscar: search ->DESCOMENTAR
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
 		//url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
 		url: getAllItems + '/' + data.idProyecto,
+		// url: getAllItems, ->DESCOMENTAR
 		dataType: "json",
 		success: function(data){
 			var lista = data;
 			agregaDataFila(data);
-
+			$(".glyphicon.glyphicon-edit").click( function(){
+				alert("asd");
+				obtenerRiesgo();
+			});
 		},
 		fail: codigoError
 	});
@@ -527,6 +543,7 @@ function agregaFilaRiesgo(arreglo,i){
 	//$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a></td></tr>');
 
 }
+
 
 function agregaFilaRiesgoComun(arreglo,i){
 	a=i;
