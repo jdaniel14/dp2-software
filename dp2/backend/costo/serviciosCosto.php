@@ -431,7 +431,7 @@
 		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
 		        	$stmt->bindParam("nombreRecurso", $recurso->nombreRecurso);
 		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-		        	$stmt->bindParam("costoUnitario", $obj->CostoUnitario);
+		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
 		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
 		        	$stmt->execute();
 		        	$db = null;
