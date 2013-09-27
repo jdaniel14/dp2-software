@@ -398,7 +398,7 @@
         	//Para actualizar cada recurso
         	$sql = "
         	UPDATE RECURSO
-			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, COSTO_UNITARIO_ESTIMADO= :costoUnitario, SET ESTADO='ACTIVO'
+			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, COSTO_UNITARIO_ESTIMADO= :costoUnitario, ESTADO='ACTIVO'
 			WHERE
 			ID_RECURSO= :idRecurso;
 			COMMIT;";
@@ -419,9 +419,9 @@
 
 			//Para crear recursos
 			$sql = "
-        	INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA)
+        	INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA,ESTADO)
 			VALUES
-			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda);
+			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda,'ACTIVO');
 			COMMIT;";
 
 			if ($obj->listaRecursosCrear != null) {
