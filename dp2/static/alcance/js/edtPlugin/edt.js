@@ -26,6 +26,13 @@
         }
 
         /*
+
+          2do sprint
+          review 1er sprint
+          funcionality validation required
+          nonintegrated
+          collapse fk.
+          
           {"title":"DP2","hijos":"5",
             "nodos":[
                 {"title":"Inicio","hijos":"0","nodos":[]},
@@ -115,6 +122,9 @@
         $("#MostrarEdt").click(function(){
             //$(".container").show("slow");
 
+            
+             /*
+
             if ( $("#MostrarEdt").html() == "Crear EDT" ){
                  console.log("sape crear");
             }
@@ -124,10 +134,11 @@
             }else {
                localStorage.setItem("mostrarEdt", 0);
             }
+            */
             var jsonCliente = {
                   idcliente : "1"
                   };
-
+                   console.log("sape1");
                   $.ajax({
                       type: "POST",
                       data: JSON.stringify(jsonCliente),
@@ -155,6 +166,8 @@
                   });
           });
 
+
+
           $("#editarEdt").click(function(){
               console.log("editar");
               //modalEditar
@@ -179,7 +192,7 @@
                       }
                   });
 
-              $("#modalEditar").modal(); 
+                $("#modalEditar").modal(); 
               
               
               //$("#cuerpoEditar").html();
