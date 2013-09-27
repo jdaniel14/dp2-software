@@ -247,7 +247,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 							"calp"=>$p["acta_calidad"],
 							"np"=>$p["nombre_proyecto"],
 							"jp"=>$p["nombres"],
-							"jcp"=>$p["acta_jefe_comite"]);
+							"jcp"=>$p["acta_jefe_comite"],);
 			
 			$db = null;
 			echo json_encode(array("acta"=>$acta)) ;
