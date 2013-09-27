@@ -1,6 +1,12 @@
 var ge;  //this is the hugly but very friendly global var for the gantt editor
+var currentDate = new Date();
+		  var currentMonth = currentDate.getMonth() + 1;
+		  var currentDay = currentDate.getDate();
+
+		  var output = (currentMonth<10 ? '0' : '') + currentMonth + '/' + (currentDay<10 ? '0' : '') + currentDay + '/' + currentDate.getFullYear();
 		$(function() {
-		
+		  
+
 		  //load templates
 		  $("#ganttemplates").loadTemplates();
 		
@@ -15,7 +21,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
 		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
 				  .append("<button  class='button'>Exportar</button>")
-				  .append("<button onclick='openWorkingTimeEditor();' data-toggle='modal' href='#myModal' class='button'>Tiempo de Trabajo</button>");
+				  .append("<button data-toggle='modal' href='#myModal' class='button'>Tiempo de Trabajo</button>");
 		          //.append("<button onclick='getFile();' class='button'>Exportar</button>");
 		  $(".ganttButtonBar h1").html("<img src='twGanttSmall.png'>");
 		  $(".ganttButtonBar div").addClass('buttons');
@@ -238,17 +244,38 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		    "GANTT_SEMESTER_SHORT":"sem."
 		  };
 		}
+		function editWorkingTimeDay(){
+			var checkbox = $("input[name='rowTable']:checked");
+			var tds = checkbox.closest("tr").find("td");
+			//var fecha = tds[2];
+			console.log(tds);
+			//alert(fecha);
+			//var nombre = tds[1].chidren().val();
+			
+
+			console.log(checkbox);
+		}
+		function addWorkingTimeDay(){
+			var fechita =  $("#FechaWT").val();
+			if (fechita != ""){
+				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td><input type='text' placeholder='Ingrese el nombre de la fecha' style='width:400px;'/></td><td>" + $("#FechaWT").val() +"</td></tr>")
+			}else{
+				alert("Debe seleccionar una fecha primero");
+			}			
+		}
+
 		function openWorkingTimeEditor(){
 		  var editor = $("<div class='form-horizontal' role='form'>");
 		  editor.append("<h2>Editar Tiempo de Trabajo</h2>");
 		  //editor.addClass("resEdit");
-		  editor.append("<div class='form-group'><label class='col-lg-2 control-label'>Fecha</label><div class='col-lg-4'><input type='date' class='form-control'></div></div>");
-		  editor.append("<div class='row'><div class='tabbable'><ul class='nav nav-tabs'><li class='active'><a href='#pane1' data-toggle='tab'>Day overrides</a></li><li><a href='#pane2' data-toggle='tab'>Week overrides</a></li></ul><button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-plus-sign'></span> Agregar</button><button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-pencil'></span> Editar</button><button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-minus-sign'></span> Eliminar</button><div class='tab-content'><div id='pane1' class='tab-pane active'><table class='table table-stripped' style='margin-left:10px;'><thead><th>  Nombre</th><th>Fecha Inicio</th><th>Fecha Fin</th></thead><tbody></tbody></table></div><div id='pane2' class='tab-pane active'></div></div></div></div>");
+		  editor.append("<div class='form-group'><label class='col-lg-2 control-label'>Fecha</label><div class='col-lg-4'><input type='date' class='form-control' id='FechaWT'></div></div>");
+		  editor.append("<div class='row'><div class='tabbable'><ul class='nav nav-tabs'><li class='active'><a href='#pane1' data-toggle='tab'>Day overrides</a></li><li><a href='#pane2' data-toggle='tab'>Week overrides</a></li></ul><button type='button' class='btn btn-default btn-lg' onclick='addWorkingTimeDay();'><span class='glyphicon glyphicon-plus-sign'></span> Agregar</button><button type='button' class='btn btn-default btn-lg' onclick='editWorkingTimeDay();'><span class='glyphicon glyphicon-pencil'></span> Editar</button><button type='button' class='btn btn-default btn-lg'><span class='glyphicon glyphicon-minus-sign'></span> Eliminar</button><div class='tab-content'><div id='pane1' class='tab-pane active'><table class='table table-stripped' style='margin-left:10px;'><thead><th></th><th>  Nombre</th><th>  Fecha</th></thead><tbody id='tableHolidayDay'></tbody></table></div><div id='pane2' class='tab-pane'><table class='table table-stripped' style='margin-left:10px;'><thead><th>  Nombre</th><th>Fecha Inicio</th><th>Fecha Fin</th></thead><tbody></tbody></table></div></div></div></div>");
 //		  for (var i in ge.resources) {
 //		    var res = ge.resources[i];
 //		    var inp = $("<input type='text'>").attr("pos", i).addClass("resLine").val(res.name);
 //		    editor.append(inp).append("<br>");
 //		  }
+
 		  var sv = $("<div>Guardar</div>").css("float", "right").addClass("button").click(function() {
 		    $(this).closest(".resEdit").find("input").each(function() {
 		      var el = $(this);
@@ -259,8 +286,11 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 		    closeBlackPopup();
 		  });
 		  editor.append(sv);
-		
-		  var ndo = createBlackPage(800, 500).append(editor);		
+		  
+		  var ndo = createBlackPage(800, 500).append(editor);
+
+
+
 		}
 		
 		//-------------------------------------------  Open a black popup for managing resources. This is only an axample of implementation (usually resources come from server) ------------------------------------------------------
