@@ -33,8 +33,7 @@ var buscar = "";
 var idArray = [];
 
 function main(){
-	var aguirre = $("tbody#tablaRiesgos").children();
-	console.log(aguirre);
+
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
@@ -49,11 +48,6 @@ function main(){
 	$("#btnBuscar").click(function(){
 		buscar = $("#buscar").val();
 		listarRiesgos(buscar);
-	});
-	
-	$(".glyphicon.glyphicon-edit").click( function(){
-		alert("asd");
-		obtenerRiesgo();
 	});
 	$(".glyphicon.glyphicon-remove").click( function(){
 		
@@ -154,7 +148,8 @@ function main(){
 	        arreglo.push($row.find('td:eq(5) input').val());
     	});
     	var data = {
-    		lista: arreglo
+    		lista: arreglo,
+    		idProyecto : $('#idProyecto').val()
     	};
 
 		var jsonData = JSON.stringify(data);
@@ -334,13 +329,11 @@ function listarPaquetesTrabajo(){
 		fail: codigoError
 	});
 }
-function obtenerRiesgo(){
-	// $('#modRiesgo').show();
-	alert("xD");
+function obtenerRiesgo(id){
+	
 	var data = {
-			id_riesgo_x_proyecto: $(this).closest("tr").attr("id")
+			id_riesgo_x_proyecto: id
 		};
-		alert(id_riesgo_x_proyecto);
 		var jsonData = JSON.stringify(data);
 		console.log(jsonData);
 		$.ajax({
@@ -455,8 +448,8 @@ function listarRiesgos(search){
 			var lista = data;
 			agregaDataFila(data);
 			$(".glyphicon.glyphicon-edit").click( function(){
-				alert("asd");
-				obtenerRiesgo();
+				var id = $(this).closest("tr").attr("id");
+				obtenerRiesgo(id);
 			});
 		},
 		fail: codigoError
