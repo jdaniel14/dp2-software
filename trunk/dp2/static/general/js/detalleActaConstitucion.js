@@ -248,15 +248,15 @@ function cargarComboTipoproyecto(){
 function cargarComboPrioridadproyecto(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/cargarComboPrioridadproyecto/',
+		url : '../../api/G_devuelvePrioridad',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		async:false,
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["idPrioridadProyecto"]);
-				opt.html(data[obj]["descripcionPrioridadProyecto"]);
+				opt.val(data[obj]["id"]);
+				opt.html(data[obj]["nom"]);
 				$("#pp").append(opt);
 			}
 		}
