@@ -48,7 +48,7 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "UPDATE RIESGO_X_PROYECTO nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
+        $query = "UPDATE RIESGO_X_PROYECTO SET nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
         id_categoria_riesgo=:id_categoria_riesgo, impacto=:impacto,probabilidad=:probabilidad,
         costo_potencial=:costo_potencial , demora_potencial=:demora_potencial
         WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
