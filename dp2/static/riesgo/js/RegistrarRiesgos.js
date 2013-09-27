@@ -152,21 +152,21 @@ function main(){
     	});
 
 		var jsonData = JSON.stringify(data);
-		//alert(data);
-		$.ajax({
-			type: 'POST',
-			url: addList,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				var item = data;
-				alert("Se agregaron exitosamente los " + item.length + " riesgos");
-				listarRiesgos();
-			},
-			fail: function(data){
-				alert(data.me);
-			}
-		});
+		alert(jsonData);
+		// $.ajax({
+		// 	type: 'POST',
+		// 	url: addList,
+		// 	data: jsonData,
+		// 	dataType: "json",
+		// 	success: function(data){
+		// 		var item = data;
+		// 		alert("Se agregaron exitosamente los " + item.length + " riesgos");
+		// 		listarRiesgos();
+		// 	},
+		// 	fail: function(data){
+		// 		alert(data.me);
+		// 	}
+		// });
 	});
 
 
@@ -491,8 +491,7 @@ function agregaDataComunFila(data){
 	arreglo=arregloRiesgoComunes;
 	if (data!=null){
 		arreglo=data;
-		alert("datos");
-	} else alert("no");
+	}
 	for (i=0; i<arreglo.length;i++){
 		
 		agregaFilaRiesgoComun(arreglo[i],i);
@@ -538,7 +537,7 @@ function agregaFilaRiesgoComun(arreglo,i){
 							  "</td><td>" + arreglo.ultProbabilidad + 
 							  "</td><td>" + arreglo.ultImpacto + 
 							  "</td><td>" + arreglo.ultSeveridad +
-							  "</td><td><input type=\"checkbox\" value=\""+arreglo.idRiesgo+"\">"+
+							  "</td><td><input type=\"checkbox\" value=\""+arreglo.idRiesgoComun+"\">"+
 							  "</td></tr>");
 	
 
