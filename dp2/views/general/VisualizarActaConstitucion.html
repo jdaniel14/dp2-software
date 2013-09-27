@@ -58,15 +58,15 @@
 
       <div class="starter-template">
 	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
-        <h1>Mi Proyecto</h1>
+        <h1 id="nameProyect"></h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 	<div class="well">
 	<ul class="nav nav-tabs nav-justified">
 	  <li class="active"><a href="#ig" data-toggle="tab">Informaci&oacute;n General </a></li>
-	  <li><a href="#dp" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
+	  <li><a href="#dp1" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
 	  <li><a href="#op" data-toggle="tab">Objetivos del Proyecto</a></li>
-	  <li><a href="#ap" data-toggle="tab">Autoridad del Proyecto</a></li>
+	  <li><a href="#ap1" data-toggle="tab">Autoridad del Proyecto</a></li>
 	</ul>
 	<div id="myTabContent" class="tab-content">
 		<div class="tab-pane active in" id="ig">
@@ -74,49 +74,45 @@
 		<form class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 			<div class="form-group">
-			  <!-- Nombre del Proyecto -->
-			  <label class="col-lg-4 control-label"  for="nombreProy">Nombre del Proyecto:</label>
+			  <!-- Id del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="idProyecto">Id del Proyecto:</label>
 			  <div class="controls col-lg-6">
-				<input class="form-control" type="text" id="nombreProy" name="nombreProy" placeholder="" value="Mi Proyecto"class="input-xlarge" readonly>
+				<input readonly class="form-control" type="text" id="idProyecto" name="idProyecto" placeholder="" class="input-xlarge">
+				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Nombre del Proyecto -->
+			  <label class="col-lg-4 control-label"  for="np">Nombre del Proyecto:</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control" type="text" id="np" name="np" placeholder="" class="input-xlarge" >
 				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
 			  </div>
 			</div>
 
 			<div class="form-group">
-			  <!-- Patrocinador -->
-			  <label class="col-lg-4 control-label" for="email">Patrocinador:</label>
-			  <div class="controls col-lg-6">
-				<input class="form-control" type="text" id="patrocinador" name="patrocinador" placeholder="" class="input-xlarge" value="Luis Flores">
-				<!--<p class="help-block">Please provide your E-mail</p>-->
-			  </div>
-			</div>
-
-			<div class="form-group">
 			  <!-- Fecha de Preparacion -->
-			  <label class="col-lg-4 control-label"  for="preparacionFecha">Fecha de Preparaci&oacute;n</label>
+			  <label class="col-lg-4 control-label"  for="fpp">Fecha de Preparaci&oacute;n</label>
 			  <div class="controls col-lg-6">
-				<input class="form-control"type="date" id="preparacionFecha" name="preparacionFecha" placeholder="" value=today class="input-xlarge" max=today>
+				<input readonly class="form-control"type="date" id="fpp" name="fpp" placeholder="" class="input-xlarge" max=today>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
 			</div>
-			
+			<!--
 			<div class="form-group">
-			  <!-- Fecha de Modificacion -->
+			   
 			  <label class="col-lg-4 control-label"  for="modificacionFecha">Fecha de Modificaci&oacute;n</label>
 			  <div class="controls col-lg-6">
 				<input class="form-control" type="date" id="modificacionFecha" name="modificacionFecha" placeholder="" class="input-xlarge" readonly>
-				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
 			</div>
-			
+			-->
 			<div class="form-group">
 			  <!-- Tipo de Proyecto -->
-			  <label class="col-lg-4 control-label"  for="tipoProyecto">Tipo de Proyecto</label>
+			  <label class="col-lg-4 control-label"  for="tp">Tipo de Proyecto</label>
 			  <div class="controls col-lg-6">
-				<select class="form-control" id="tipoProyecto" name="tipoProyecto" placeholder="" class="input-xlarge">
-						<option value="1">Peque&nacute;o</option>
-						<option selected value="2">Mediano</option>
-						<option value="3">Grande</option>
+				<select readonly class="form-control" id="tp" name="tp" placeholder="" class="input-xlarge">
+				
 				</select>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
@@ -124,13 +120,10 @@
 			
 			<div class="form-group">
 			  <!-- Prioridad del Proyecto -->
-			  <label class="col-lg-4 control-label"  for="prioridadProyecto">Prioridad del Proyecto</label>
+			  <label class="col-lg-4 control-label"  for="pp">Prioridad del Proyecto</label>
 			  <div class="controls col-lg-6">
-				<select class="form-control" id="prioridadProyecto" name="prioridadProyecto" placeholder="" class="input-xlarge">
-						<option value="1">Soporte</option>
-						<option selected value="2">Produccion</option>
-						<option value="3">Estrategico</option>
-						<option value="4">Alto Potencial</option>
+				<select readonly class="form-control" id="pp" name="pp" placeholder="" class="input-xlarge">
+	
 				</select>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
@@ -143,12 +136,12 @@
 				<table width="100%">			
 					<tr width="100%">
 						<td width="50%" align="right">
-							<button type="button" class="btn btn-primary" id="btnGrabar">
+							<button type="button" class="btn btn-primary" id="btnGrabarInformacion">
 							Guardar
 							</button>
 						</td>
 						<td width="50%" align="left">
-							<button type="button" class="btn btn-primary" id="btnCancelar">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
 							Cancelar
 							</button>
 						</td>
@@ -160,15 +153,15 @@
 		</form>
 		</p>
 		</div>
-		<div class="tab-pane pane" id="dp">
+		<div class="tab-pane pane" id="dp1">
 			<p>		
 			<form class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 			<div class="form-group">
 			  <!-- Descripcion del Proyecto -->
-			  <label class="col-lg-4 control-label"  for="nombreProy">Descripcion:</label>
+			  <label class="col-lg-4 control-label"  for="dp">Descripcion:</label>
 			  <div class="controls col-lg-6">
-				  <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Agregue la informacion relevante al proyecto ..." rows="10"></textarea>
+				  <textarea id="dp" name="dp" class="form-control" placeholder="Agregue la informacion relevante al proyecto ..." rows="10"></textarea>
 			  </div>
 			</div>
 			<div class="form-group">
@@ -177,12 +170,12 @@
 				<table width="100%">			
 					<tr width="100%">
 						<td width="50%" align="right">
-							<button type="button" class="btn btn-primary" id="btnGrabar">
+							<button type="button" class="btn btn-primary" id="btnGrabarDescripcion">
 							Guardar
 							</button>
 						</td>
 						<td width="50%" align="left">
-							<button type="button" class="btn btn-primary" id="btnCancelar">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
 							Cancelar
 							</button>
 						</td>
@@ -200,27 +193,27 @@
 		  <fieldset>
 			<div class="form-group">
 			  <!-- Costo -->
-			  <label class="col-lg-4 control-label"  for="costoProy">Costo (soles):</label>
+			  <label class="col-lg-4 control-label"  for="cp">Costo (soles):</label>
 			  <div class="controls col-lg-6">
-				<textarea class="form-control" type="text" id="costoProy" name="costoProy" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<textarea class="form-control" type="text" id="cp" name="cp" placeholder="" class="input-xlarge" rows="3"></textarea>
 				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
 			  </div>
 			</div>
 
 			<div class="form-group">
 			  <!-- Plazo -->
-			  <label class="col-lg-4 control-label" for="plazo">Plazo (meses):</label>
+			  <label class="col-lg-4 control-label" for="plp">Plazo (meses):</label>
 			  <div class="controls col-lg-6">
-				<textarea class="form-control" type="text" id="plazo" name="plazo" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<textarea class="form-control" type="text" id="plp" name="plp" placeholder="" class="input-xlarge" rows="3"></textarea>
 				<!--<p class="help-block">Please provide your E-mail</p>-->
 			  </div>
 			</div>
 
 			<div class="form-group">
 			  <!-- Calidad -->
-			  <label class="col-lg-4 control-label"  for="calidad">Calidad</label>
+			  <label class="col-lg-4 control-label"  for="calp">Calidad</label>
 			  <div class="controls col-lg-6">
-				<textarea class="form-control"type="text" id="calidad" name="calidad" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<textarea class="form-control"type="text" id="calp" name="calp" placeholder="" class="input-xlarge" rows="3"></textarea>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
 			</div>
@@ -230,12 +223,12 @@
 				<table width="100%">			
 					<tr width="100%">
 						<td width="50%" align="right">
-							<button type="button" class="btn btn-primary" id="btnGrabar">
+							<button type="button" class="btn btn-primary" id="btnGrabarObjetivos">
 							Guardar
 							</button>
 						</td>
 						<td width="50%" align="left">
-							<button type="button" class="btn btn-primary" id="btnCancelar">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
 							Cancelar
 							</button>
 						</td>
@@ -247,33 +240,44 @@
 		</form>
 		</p>
 		</div>
-		<div class="tab-pane pane" id="ap">
+		<div class="tab-pane pane" id="ap1">
 			<p>		
 			<form class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 			<div class="form-group">
 			  <!-- Aurizacion del Proyecto -->
-			  <label class="col-lg-4 control-label"  for="autoProyecto">Autorizado por:</label>
+			  <label class="col-lg-4 control-label"  for="ap">Autorizado por:</label>
 			  <div class="controls col-lg-3">
-				  <input id="autoProyecto" name="autoProyecto" class="form-control" placeholder=""value="Zenia Morales" readonly />
+				  <input id="ap" name="ap" class="form-control" placeholder="" />
 			  </div>
 			  <div class="controls col-lg-3">
-				  <input id="autoCargoProyecto" name="autoCargoProyecto" class="form-control" placeholder="Cargo (opcional)"/>
+				  <input id="carp" name="carp" class="form-control" placeholder="Cargo (opcional)"/>
 			  </div>
 			</div>
 			<div class="form-group">
-			  <!-- Gerente del Proyecto -->
-			  <label class="col-lg-4 control-label"  for="gerenteProyecto">Autorizado por:</label>
+			  <!-- Jefe de Proyecto -->
+			  <label class="col-lg-4 control-label"  for="jp">Jefe de Proyecto:</label>
 			  <div class="controls col-lg-6">
-				  <input id="gerenteProyecto" name="gerenteProyecto" class="form-control" placeholder=""value="Alfonso Bedoya" readonly />
+				<select class="form-control" id="jp" name="jp" placeholder="" class="input-xlarge" readonly>
+				
+				</select>
+				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
 			</div>
 			
 			<div class="form-group">
 			  <!-- Comite  de Seguimiento -->
-			  <label class="col-lg-4 control-label"  for="comiteProyecto">Jefe de Comite de Seguimiento:</label>
+			  <label class="col-lg-4 control-label"  for="jcp">Jefe de Comite de Seguimiento:</label>
 			  <div class="controls col-lg-6">
-				  <input id="comiteProyecto" name="comiteProyecto" class="form-control" placeholder=""value="Bonnie Carranza" />
+				  <input id="jcp" name="jcp" class="form-control" placeholder="" />
+			  </div>
+			</div>
+			<div class="form-group">
+			  <!-- Patrocinador -->
+			  <label class="col-lg-4 control-label" for="pap">Patrocinador:</label>
+			  <div class="controls col-lg-6">
+				<input class="form-control" type="text" id="pap" name="pap" placeholder="" class="input-xlarge">
+				<!--<p class="help-block">Please provide your E-mail</p>-->
 			  </div>
 			</div>
 			<div class="form-group">
@@ -281,19 +285,14 @@
 			  <div class="controls">
 				<table width="100%">			
 					<tr width="100%">
-						<td width="33%" align="right">
-							<button type="button" class="btn btn-primary" id="btnGrabar">
+						<td width="50%" align="right">
+							<button type="button" class="btn btn-primary" id="btnGrabarAutoridad">
 							Guardar
 							</button>
 						</td>
-						<td width="33%" align="center">
-							<button type="button" class="btn btn-primary" id="btnCancelar">
+						<td width="50%" align="left">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
 							Cancelar
-							</button>
-						</td>
-						<td width="33%" align="left">
-							<button type="button" class="btn btn-primary" id="btnVistaPrevia">
-							Vista Previa
 							</button>
 						</td>
 					</tr>			
@@ -317,3 +316,4 @@
 	<script src="../../static/general/js/detalleActaConstitucion.js"></script>
   </body>
 </html>
+   
