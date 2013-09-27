@@ -11,26 +11,37 @@ function getURLParameter(name) {
     );
 }
 
-var id_proyecto = getURLParameter("idProyecto");
+var id_proyecto = localStorage["id"];
+var nombre_proyecto = localStorage["nombre"];
 
 function cargaData(data){
-	for(key in data){
-		if($('#'+key).is("select"))continue;
-		$('#'+key).html(data[key]);
-		$('#'+key).val(data[key])
+
+	if (data!=null){
+		arreglo=data["acta"];
 	}
-	var arreglo = $("select");
-	for (var i = 0; i < arreglo.length; i++) {
-		$(arreglo[i]).val(data[arreglo[i].id]);
-		if($(arreglo[i]).hasClass("changeable")){
-			$(arreglo[i]).attr("disabled","disabled");
+	for(key in arreglo){
+		
+
+		if($('#'+key).is("select"))continue;
+		if(key=="fpp"){
+			alert(arreglo[key]);
+		} 
+		$('#'+key).html(arreglo[key]);
+		$('#'+key).val(arreglo[key]);
+
+	}
+
+	var selects = $("select");
+	for (var i = 0; i < selects.length; i++) {
+		$(selects[i]).val(arreglo[selects[i].id]);
+		if($(selects[i]).hasClass("changeable")){
+			$(selects[i]).attr("disabled","disabled");
 		}
 	}
 }
 
 $(document).ready(function() {
     var date = new Date();
-
     var day = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
@@ -46,9 +57,14 @@ $(document).ready(function() {
 	
 	cargarComboPrioridadproyecto();
 
+
+
+		$("#idProyecto").attr("value",id_proyecto);
+		$("#np").attr("value",nombre_proyecto);
+
 	$.ajax({
 		type: 'GET',
-		url : '../../api/G_devuelveActa/:'+id_paquete,
+		url : '../../api/G_devuelveActa/'+id_proyecto,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
@@ -150,7 +166,7 @@ function grabarObjetivosActa(){
 		idProyecto: $("#idProyecto").val(),
 		cp: $("#cp").val(),
 		plp: $("#plp").val(),
-		cap: $("#cap").val()
+		cap: $("#calp").val()
 	};
         
         //alert(JSON.stringify(obj));
@@ -205,15 +221,15 @@ function codigoError(){
 function cargarComboTipoproyecto(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/cargarComboTipoproyecto/',
+		url : '../../api/G_listaTipoProyecto',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		async:false,
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["idTipoProyecto"]);
-				opt.html(data[obj]["descripcionTipoProyecto"]);
+				opt.val(data[obj]["id"]);
+				opt.html(data[obj]["nom"]);
 				$("#tp").append(opt);
 			}
 		}

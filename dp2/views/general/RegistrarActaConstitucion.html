@@ -58,13 +58,13 @@
 
       <div class="starter-template">
 	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
-        <h1 id="np">Mi Proyecto</h1>
+        <h1>Mi Proyecto</h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 	<div class="well">
 	<ul class="nav nav-tabs nav-justified">
 	  <li class="active"><a href="#ig" data-toggle="tab">Informaci&oacute;n General </a></li>
-	  <li><a href="#dp" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
+	  <li><a href="#dp1" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
 	  <li><a href="#op" data-toggle="tab">Objetivos del Proyecto</a></li>
 	  <li><a href="#ap" data-toggle="tab">Autoridad del Proyecto</a></li>
 	</ul>
@@ -77,7 +77,7 @@
 			  <!-- Id del Proyecto -->
 			  <label class="col-lg-4 control-label"  for="idProyecto">Id del Proyecto:</label>
 			  <div class="controls col-lg-6">
-				<input class="form-control" type="text" id="idProyecto" name="idProyecto" placeholder="" value="1"class="input-xlarge">
+				<input class="form-control" type="text" id="idProyecto" name="idProyecto" placeholder="" class="input-xlarge">
 				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
 			  </div>
 			</div>
@@ -85,7 +85,7 @@
 			  <!-- Nombre del Proyecto -->
 			  <label class="col-lg-4 control-label"  for="np">Nombre del Proyecto:</label>
 			  <div class="controls col-lg-6">
-				<input class="form-control" type="text" id="np" name="np" placeholder="" value="Mi Proyecto"class="input-xlarge" readonly>
+				<input class="form-control" type="text" id="np" name="np" placeholder="" class="input-xlarge" >
 				<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
 			  </div>
 			</div>
@@ -94,7 +94,7 @@
 			  <!-- Fecha de Preparacion -->
 			  <label class="col-lg-4 control-label"  for="fpp">Fecha de Preparaci&oacute;n</label>
 			  <div class="controls col-lg-6">
-				<input class="form-control"type="date" id="fpp" name="fpp" placeholder="" value=today class="input-xlarge" max=today>
+				<input class="form-control"type="date" id="fpp" name="fpp" placeholder="" class="input-xlarge" max=today>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
 			</div>
@@ -112,9 +112,7 @@
 			  <label class="col-lg-4 control-label"  for="tp">Tipo de Proyecto</label>
 			  <div class="controls col-lg-6">
 				<select class="form-control" id="tp" name="tp" placeholder="" class="input-xlarge">
-						<option value="1">Peque&nacute;o</option>
-						<option value="2">Mediano</option>
-						<option value="3">Grande</option>
+				
 				</select>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
@@ -125,10 +123,7 @@
 			  <label class="col-lg-4 control-label"  for="pp">Prioridad del Proyecto</label>
 			  <div class="controls col-lg-6">
 				<select class="form-control" id="pp" name="pp" placeholder="" class="input-xlarge">
-						<option value="1">Soporte</option>
-						<option value="2">Produccion</option>
-						<option value="3">Estrategico</option>
-						<option value="4">Alto Potencial</option>
+	
 				</select>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
@@ -158,7 +153,7 @@
 		</form>
 		</p>
 		</div>
-		<div class="tab-pane pane" id="dp">
+		<div class="tab-pane pane" id="dp1">
 			<p>		
 			<form class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
@@ -216,9 +211,9 @@
 
 			<div class="form-group">
 			  <!-- Calidad -->
-			  <label class="col-lg-4 control-label"  for="cap">Calidad</label>
+			  <label class="col-lg-4 control-label"  for="calp">Calidad</label>
 			  <div class="controls col-lg-6">
-				<textarea class="form-control"type="text" id="cap" name="cap" placeholder="" class="input-xlarge" rows="3"></textarea>
+				<textarea class="form-control"type="text" id="calp" name="calp" placeholder="" class="input-xlarge" rows="3"></textarea>
 				<!--<p class="help-block">Please confirm password</p>-->
 			  </div>
 			</div>
