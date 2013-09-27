@@ -78,19 +78,30 @@
     }
 
     function R_getListaNivelesImpacto($idProyecto){
-        $query = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
+        /*$query*/$sql = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
+        $arregloListaNivelesImpacto = array();
         try {
             $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data = array("muyBajo" => $row->muy_bajo,
+            $stmt = $db->query($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            //$stmt = $db->prepare($query);
+            //$stmt->execute();
+            //$row = $stmt->fetchObject();
+            /*$data = array("muyBajo" => $row->muy_bajo,
                         "bajo" => $row->bajo,
                         "medio" => $row->medio,
                         "alto" => $row->alto,
-                        "muyAlto" => $row->muy_alto);
+                        "muyAlto" => $row->muy_alto);*/
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("muyBajo" => $row['muy_bajo'],
+                        "bajo" => $row['bajo'],
+                        "medio" => $row['medio'],
+                        "alto" => $row['alto'],
+                        "muyAlto" => $row['muy_alto']);
+                array_push($arregloListaNivelesImpacto,$data);
+            }
             $db = null;
-            echo json_encode($data);
+            echo json_encode($arregloListaNivelesImpacto);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
@@ -259,22 +270,31 @@
         }
     }
 
-    function R_postAsignarRiesgoComun($id_riesgo, $id_proyecto, $id_paquete_trabajo){
+    function R_postAsignarRiesgoComun($id_riesgo_comun){
         //$request = Slim::getInstance()->request();
-        $arregloAsignarRiesgoComun = json_decode($request->getBody());
-        $sql = "INSERT INTO RIESGOXPAQUETE_TRABAJO (id_riesgo, id_proyecto, id_paquete_trabajo) VALUES (:id_riesgo, :id_proyecto, :id_paquete_trabajo)";
-        try{
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_riesgo_comun,id_categoria_riesgo,impacto,probabilidad,costo_potencial,demora_potencial,) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_riesgo_comun,:id_categoria_riesgo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
+        try {
             $db = getConnection();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("id_riesgo",$id_riesgo);
-            $stmt->bindParam("id_proyecto",$id_riesgo);
-            $stmt->bindParam("id_paquete_trabajo",$id_riesgo);
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
+            $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
+            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
+            $stmt->bindParam("id_riesgo_comun", $riesgo->$id_riesgo_comun);
+            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
+            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->execute();
-            $arregloAsignarRiesgoComun = $db->lastInsertId();
             $db = null;
-            echo json_encode($arregloAsignarRiesgoComun);
-        } catch(PDOException $e){
-            echo 'ERROR EN R_postAsignarRiesgoComun: {"error":{"text":'. $e->getMessage() .'}}';
+
+            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
         }
     }
 
