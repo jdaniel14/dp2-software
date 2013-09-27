@@ -287,7 +287,7 @@
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
-            $stmt->bindParam("id", $idRiesgo);
+            $stmt->bindParam("idRiesgo", $idRiesgo);
             $stmt->execute();
             $db = null;
         } catch(PDOException $e) {
