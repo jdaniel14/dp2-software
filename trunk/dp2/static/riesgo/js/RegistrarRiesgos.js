@@ -453,16 +453,18 @@ function listarRiesgos(search){
 
 function listarRiesgosComunes(){
 		
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
 		url: getAllKnownItems,
 		dataType: "json",
-		success: agregaDataComunFila(data),
+		success: function(data){
+			agregaDataComunFila(data);
+		},
 		fail: codigoError
-	});*/
+	});
 	
 	
-	agregaDataComunFila (null);
+	// agregaDataComunFila (null);
 
 }
 
@@ -489,7 +491,8 @@ function agregaDataComunFila(data){
 	arreglo=arregloRiesgoComunes;
 	if (data!=null){
 		arreglo=data;
-	}
+		alert("datos");
+	} else alert("no");
 	for (i=0; i<arreglo.length;i++){
 		
 		agregaFilaRiesgoComun(arreglo[i],i);
@@ -529,18 +532,17 @@ function agregaFilaRiesgo(arreglo,i){
 function agregaFilaRiesgoComun(arreglo,i){
 	a=i;
 	a++;
-	/*$("#tablaRiesgosComunes").append("<tr id='" + arreglo.idRiesgo + 
-							  '"><td>" + arreglo.idRiesgo + 
+	$("#tablaRiesgosComunes").append("<tr id=\"" + arreglo.idRiesgoComun + 
+							  "\"><td>" + arreglo.idRiesgoComun + 
 							  "</td><td>" + arreglo.nombre + 
-							  "</td><td>" + arreglo.probabilidad + 
-							  "</td><td>" + arreglo.impacto + 
-							  "</td><td>" + arreglo.severidad +
-							  "</td><td><input type=\"checkbox\" name=\"'+arreglo.idRiesgo+'\">
+							  "</td><td>" + arreglo.ultProbabilidad + 
+							  "</td><td>" + arreglo.ultImpacto + 
+							  "</td><td>" + arreglo.ultSeveridad +
+							  "</td><td><input type=\"checkbox\" value=\""+arreglo.idRiesgo+"\">"+
 							  "</td></tr>");
-	*/
 	
-	
-	$("#tablaRiesgosComunes").append('<tr id='+arreglo[0]+'><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td><input type=\"checkbox\" value=\"'+arreglo[0]+'\"></td></tr>');
+
+	// $("#tablaRiesgosComunes").append('<tr id='+arreglo[0]+'><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td><input type=\"checkbox\" value=\"'+arreglo[0]+'\"></td></tr>');
 
 }
 
