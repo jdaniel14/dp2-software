@@ -10,7 +10,7 @@ function getURLParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-var id_proyecto=getURLParameter("idProyecto");
+var id_proyecto=localStorage.getItem("idProyecto");
 
 function cargaData(data){
 
