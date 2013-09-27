@@ -47,7 +47,7 @@
 	function listaDiccionario($id_edt){
 
 		$con = getConnection();
-		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, P.descripcion, P.version, P.ultima_actualizacion, E.descripcion as estado  ".
+		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), P.ultima_actualizacion, E.descripcion as estado  ".
 			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
 			"WHERE E.id_estado = P.id_estado AND P.id_edt= ?");
 		$pstmt->execute(array($id_edt));
@@ -67,44 +67,40 @@
 		//d double
 		$con= getConnection();
 		$pstmt = $con->prepare("UPDATE PAQUETE_TRABAJO SET 
+			id_miembros_equipo=?,
 			descripcion=?,
-			supuestos=?,
-			fecha_inicio=?,
-			fecha_final=?,
-			porcentaje_completo=?,  
-			ultima_actualizacion=?,
 			criterios_aceptacion=?,
 			entregables=?,
+			supuestos=?,
+			dias=?,
 			hitos=?,
-			interdependencias=?,
+			costo=?,
+			id_cambio_moneda=?,
+  			interdependencias=?,
 			requisitos_calidad=?,
 			referencias_tecnicas=?,
 			informacion_contrato=?,
 			id_estado=?,
-			id_miembros_equipo=?
-			WHERE id_paquete_trabajo=?");// . $val["id_paquete_trabajo"]);
-		mysqli_stmt_bind_param($pstmt,'ssbbdssssssssii',
+			ultima_actualizacion=?
+			WHERE id_paquete_trabajo=?");
+		$pstmt->execute(array(
+			$val["id_empleado"],
 			$val["descripcion"],
-			$val["supuestos"],
-			$val["fecha_inicio"],
-			$val["fecha_final"],
-			$val["porcentaje_completo"], 
-			date('d-m-Y h:i:s'),
 			$val["criterios_aceptacion"],
 			$val["entregables"],
+			$val["supuestos"],
+			$val["dias"],
 			$val["hitos"],
+			$val["costo"],
+			$val["id_cambio_moneda"],
 			$val["interdependencias"],
 			$val["requisitos_calidad"],
 			$val["referencias_tecnicas"],
 			$val["informacion_contrato"],
 			$val["id_estado"],
-			$val["id_empleado"]
-			);
-		$pstmt->execute();
-
-		mysqli_stmt_execute($pstmt);
-		echo mysqli_stmt_error ( $pstmt );
-		mysqli_stmt_close($pstmt);
+			date('d-m-Y h:i:s'),
+			$val["id_paquete_trabajo"]
+		));
 	}
 
 	function getComboMiembrosEquipo($id_proyecto){
