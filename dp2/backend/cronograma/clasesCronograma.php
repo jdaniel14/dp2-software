@@ -26,9 +26,9 @@ class CR_ProyectoJSON {//$actividades, 0, array(), true, true, $roles, $recursos
     public $resources = array();
     public $canWrite;
     public $canWriteOnParent;
-
+	public $wbsNodes=array();
     //constructor
-    function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent, $roles, $resources) {
+    function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent, $roles, $resources,$wbsNodes) {
         $this->tasks = $tasks;
         $this->selectedRow = $selectedRow;
         $this->deletedTaskIds = $deletedTaskIds;
@@ -36,6 +36,7 @@ class CR_ProyectoJSON {//$actividades, 0, array(), true, true, $roles, $recursos
         $this->canWriteOnParent = $canWriteOnParent;
         $this->roles = $roles;
         $this->resources = $resources;
+		$this->wbsNodes = $wbsNodes;
     }
 
 }

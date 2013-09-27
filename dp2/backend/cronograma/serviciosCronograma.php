@@ -65,7 +65,15 @@ function CR_getDependencias($json) {//servicio6
      * ESTO SOLO SI SE NECESITA LOS ID DE TODAS LAS LISTAS, PARA EL GANTT NO ES NECESARIO YA QUE LA API LO ARMA SEGÚN LO ALAMCENAMOS EN BD */
 }
 
-function CR_postActividades() {//servicio7
+
+function CR_getPaquetesEDT($json){//Servicio 7
+	$proy = json_decode($json);
+
+	$listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto);
+	echo json_encode($listaPaquetes);
+}
+
+function CR_postActividades() {//servicio8
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
 	
@@ -108,6 +116,36 @@ function CR_consultarListaDependencia($idProyecto) {
     return $listaDependencias;
 }
 
+function CR_consultarPaqueteEDT($idProyecto){
+
+
+	$sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b WHERE a.id_edt=b.id_estado and b.id_Proyecto=?";
+
+	
+	$lista_paquete = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			
+            $paquete = array("id" => $p["id_paquete_trabajo"] + 0,"name"=>$p["nombre"]);
+			
+            array_push($lista_paquete, $paquete);
+        }
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        return array("me" => $e->getMessage());
+    }
+	
+	return $lista_paquete;
+}
+
+
 function CR_consultarInfoActividades($idProyecto) {
     //realizar la conexion a la BD
     //$link=mysql_connect("200.16.7.112","dp_usuario","usuario.2013.")))
@@ -119,6 +157,7 @@ function CR_consultarInfoActividades($idProyecto) {
      */
    
 	$recursos= CR_obtenerRecursosTotalProyecto($idProyecto);
+	$paquetesEDT=CR_consultarPaqueteEDT($idProyecto);
 	$lista_mapeo=CR_obtenerListaMaps($recursos);
     $sql = "SELECT * FROM ACTIVIDAD WHERE id_proyecto=? and eliminado=0 order by numero_fila";
     $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
@@ -171,7 +210,7 @@ function CR_consultarInfoActividades($idProyecto) {
     $roles = CR_obtenerRolesTotalFalsa();
     //$recursos = CR_obtenerRecursosTotalFalsa();
 	
-    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos);
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos,$paquetesEDT);
     return $proyecto;
 }
 
