@@ -24,6 +24,9 @@ function GanttMaster() {
   this.tasks = [];
   this.deletedTaskIds=[];
   this.links = [];
+  
+  //Agregado por mi  
+  this.wbsNodes = [];
 
   this.editor; //element for editor
   this.gantt; //element for gantt
@@ -300,6 +303,10 @@ GanttMaster.prototype.loadProject = function(project) {
   this.beginTransaction();
   this.resources = project.resources;
   this.roles = project.roles;
+  
+  //Mi linea
+  this.wbsNodes = project.wbsNodes;
+  
   this.canWrite = project.canWrite;
   this.canWriteOnParent = project.canWriteOnParent;
 

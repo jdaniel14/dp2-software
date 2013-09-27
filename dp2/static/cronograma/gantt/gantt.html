@@ -98,6 +98,19 @@
 	    <button onclick="$('#workSpace').trigger('zoomPlus.gantt');" class="button textual" title="acercar"><span class="teamworkIcon">(</span></button>
 	    <span class="ganttButtonSeparator"></span>
 	    <button onclick="$('#workSpace').trigger('deleteCurrentTask.gantt');" class="button textual" title="eliminar"><span class="teamworkIcon">&cent;</span></button>
+	    <button onclick="
+	    
+	    if($('#readOnly').text() == 'D'){
+	    	alert('Editable');
+	    	$('#readOnly').html('R');
+	    }
+	    else{
+	    	alert('Solo Lectura');
+	    	$('#readOnly').html('D');
+	    }
+	    
+	    
+	    " class="button textual" title="ReadOnly"><span id = "readOnly" class="teamworkIcon">R</span></button>
 	      &nbsp; &nbsp; &nbsp; &nbsp;
 	      <button onclick="saveGanttOnServer();" class="button first big" title="save">Guardar</button>
 	    </div></div>
@@ -196,7 +209,7 @@
 		            <td><label for="name">name</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
 		          </tr>
 		          <tr>
-		          	<td><label for = "paquetesEDT">Paquetes EDT</label><br><select name = "paquetesEDT"></select></td>
+		          	<td><label for = "wbsNodes">Paquetes EDT</label><br><select name = "wbsNodes" id = "wbsNodes"></select></td>
 		          </tr>
 		          <td>
 		          	<label for="description">description</label>
@@ -236,14 +249,16 @@
 		    <h2>assignments</h2>
 		  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
 		    <tr>
-		      <th style="width:100px;">Nombre</th>
+		      <th style="width:50px;">Nombre</th>
 		      <th style="width:70px;display:none">Rol</th>
-		      <th style="width:80px;">Tipo de Costo</th>
-		      <th style="width:50px;">Costo unitario</th>
-		      <th style="width:30px;">Valor asignado</th>
+		      <th style="width:80px;">Unidad de Medida</th>
+		      <th style="width:50px;">Costo Estimado</th>
 		      <th style="width:30px">Costo Real</th>
-		      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
+		      <th style="width:30px;">Cantidad Estimada</th>
+		      		      
 		      <th style="width:70px;display:none">ID</th>
+		      <th style ="width:30px">Cantidad Real</th>
+		      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
 		    </tr>
 		  </table>
 		
@@ -291,11 +306,11 @@
 	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
 	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
 		<td name="costRate">(#=obj.assig.costRate#)</td>
-		<td ><input type="text" name="value" value="(#=obj.assig.value#)" size="5" class="formElements"></td>
-		<td name = "realCost"><input value = (#=obj.assig.realCost#)></td>
-		
+		<td name = "costRateReal"><input value = (#=obj.assig.costRateReal#)></td>
+		<td ><input type="text" name="value" value="(#=obj.assig.value#)" size="5" class="formElements"></td>		
 	    <td style ="display:none;"><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
-	    <td style ="display:none;" name = "idrecurso">n</td>
+	    <td style ="display:none;" name = "idrecurso">error</td>
+	    <td><input type="text" name = "valueReal" size="5" class="formElements"></td>
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
 	        
 	  </tr>
