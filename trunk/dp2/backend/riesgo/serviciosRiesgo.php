@@ -42,6 +42,38 @@
 
     }
 
+    function R_getRiesgo($idRiesgoXProyecto){
+        
+        $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
+                RXP.id_proyecto=EDT.id_proyecto and PT.id_edt=edt.id_edt and CR.id_categoria_riesgo=RXP.id_categoria_riesgo and 
+                RXP.id_riesgo_x_proyecto=".$idRiesgoXProyecto;
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
+                            "nombre" => $row->nombre_riesgo,//EDT
+                            "paqueteTrabajo" => $row->nombre,//PT
+                            "categoria" => $row->descripcion,//CR
+                            "impacto" => $row->impacto,
+                            "probabilidad" => $row->probabilidad,
+                            "severidad" => $row->severidad,
+                            "estrategia" => $row->nombre,//X
+                            "accionesEspecificas" => $row->nombre,//X
+                            "costoEsperado" => $row->costo_potencial,//RXP
+                            "tiempoEsperado" => $row->demora_potencial,//RXP
+                            "equipoEesponsable" => $row->impacto//X
+                            );
+            $db = null;
+            echo json_encode($data);
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }    
+
     function R_getListaPaquetesEDT($idProyecto){
         $sql = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
         try {
