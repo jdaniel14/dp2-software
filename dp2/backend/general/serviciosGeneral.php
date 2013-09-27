@@ -270,7 +270,7 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		array_push($lista_prioridadProject, $prioridad);
 		$prioridad = array("idPrioridad"=>2, "nom"=>'ALTO POTENCIAL');
 		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>3, "nom"=>'UNO MAS');
+		$prioridad = array("idPrioridad"=>3, "nom"=>'DIA A DIA');
 		array_push($lista_prioridadProject, $prioridad);
 		$prioridad = array("idPrioridad"=>4, "nom"=>'SOPORTE');
 		array_push($lista_prioridadProject, $prioridad);
