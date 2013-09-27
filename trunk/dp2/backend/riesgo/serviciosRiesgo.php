@@ -183,17 +183,22 @@
         /*$query*/$sql = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
         $arregloListaNivelesImpacto = array();
         try {
-            $db=getConnection();
-            $stmt = $db->query($sql);
-            $stmt->bindParam("idProyecto", $idProyecto);
-            //$stmt = $db->prepare($query);
-            //$stmt->execute();
-            //$row = $stmt->fetchObject();
-            /*$data = array("muyBajo" => $row->muy_bajo,
+            /*
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            
+            $data = array("muyBajo" => $row->muy_bajo,
                         "bajo" => $row->bajo,
                         "medio" => $row->medio,
                         "alto" => $row->alto,
-                        "muyAlto" => $row->muy_alto);*/
+                        "muyAlto" => $row->muy_alto);
+            $db = null;
+            echo json_encode($data);*/
+            $db=getConnection();
+            $stmt = $db->query($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("muyBajo" => $row['muy_bajo'],
                         "bajo" => $row['bajo'],
