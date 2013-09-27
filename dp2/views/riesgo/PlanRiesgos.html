@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-        <title>Plan de Riesgos</title>
-        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>Plan de Riesgos</title>
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+     <link href="../../static/riesgo/css/application.css" rel="stylesheet">
+      <link href="../../static/riesgo/css/vendor.css" rel="stylesheet">
 
-    </head>
+  </head>
 
     <body>
 
+<!--CABECERA-->
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -53,7 +60,8 @@
                         <li class="active" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Riesgos<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="../../views/riesgo/registrarRiesgo.html">Mostrar riesgos</a></li>          
+                                <li><a href="../../views/riesgo/RegistrarRiesgo.html">Mostrar riesgos</a></li> 
+                                <li><a href="../../views/riesgo/PlanRiesgos.html">Plan de riesgos</a></li>             
                             </ul>
                         </li>
                         <li><a href="#about">About</a></li>
@@ -65,68 +73,168 @@
 
 
 
-        <div class="ui-container-fluid">
-            <div class="ui-sidebar">
-                <div class="well">
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
+<!-- VISTA PLAN RIESGOS-->
 
+   
+            <div class="well"></div>
 
             <div class="col-md-3" >
-
-                <div class="well" id="sideBarNavegacion" >
+                  <div class="well" id="sideBarNavegacion" >
                     <ul class="nav nav-pills nav-stacked">
-                        <li ><a href="#">Acuerdos y Modificaciones</a></li>
-                        <li class="active" ><a href="#" >Plan de Riesgos</a></li>
-                        <li><a href="#">Configuración</a></li>
+                        <li ><a href="../../views/riesgo/AcuerdosModificaciones.html" >Acuerdos y Modificaciones</a></li>
+                        <li class="active" ><a href="../../views/riesgo/PlanRiesgos.html"  >Plan de Riesgos</a></li>
+                        <li><a href="../../views/riesgo/Configuracion.html" >Configuración</a></li>
                     </ul>
-
-
                 </div>
             </div>
 
             <div class="col-md-9" role="main">
-                <div class="container">
-                    <label  class="col-lg-2 control-label">Metodología</label>
-                    <div class="col-lg-10">
-                        <textarea class="form-control" rows="3"></textarea>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                        <label  class="col-lg-2 control-label"><b>Metodología</b></label>
+                        <div class="col-lg-10">
+                            <textarea class="form-control" rows="5"></textarea>
+                        </div>
                     </div>
                 </div>
                 
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <form  name="form1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                            <div class="col-md-5" >
+                              
+                                 <div class="panel panel-default">
+                                    <ol class='simple_with_animation vertical'>
+                                        <h4>Equipo del Proyecto </h4>
+                                        <li>Persona B</li>
+                                        <li>Persona D</li>
+                                
+                                    </ol>
+                                </div>
+                              </div>
+                             <div class="col-md-6" >
+                                 <div class="panel panel-default">
+                                   
+                                    <ol class='simple_with_animation vertical'>
+                                         <h4>Comité de Riesgos </h4>
+                                        <li >Persona A</li>
+                                        <li >Persona C</li>
+                                    </ol>
+                                 </div>
+                            </div>
+                    </div>
+                </div>
 
+            
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Definición de Impacto </h3>
+                            <form  name="form1">
                                 <table class="table-striped" width="90%" id="tablaRecursos">
                                     <thead class="titulo-tabla">
-
-                                        <tr>
-                                            <td width="30%"><b>Día</b></td>
-                                            <td width="20%"><b>Hora</b></td>
-                                            <td width="20%"><b>Acuerdos</b></td>
+                                         <tr>
+                                            <td width="25%"><b>Impacto</b></td>
+                                            <td width="20%"><b>Muy Bajo</b></td>
+                                            <td width="15%"><b>Bajo</b></td>
+                                            <td width="15%"><b>Medio</b></td>
+                                            <td width="15%"><b>Alto</b></td>
+                                            <td width="30%"><b>Muy Alto</b></td>
+                                            <td width="30%"><b>Eliminar</b></td>
                                         </tr>
                                     </thead>
                                     <tbody class="cuerpo-tabla" id="tablaAcuerdos">
+                                        <!--Contenido Tabla Impacto-->
+                                        
+
+
 
                                     </tbody>
                                 </table>
-
-                                <table><tr>&nbsp;
-                                    </tr>
-                                    <tr>&nbsp;
-                                    </tr><tr>&nbsp;
-                                    </tr></table>
-                                <div class="span6"  style="text-align:center">
+                                 <div class="span12"  style="text-align:center">
                                     <button type="button" class="btn btn-primary" id="btnGrabar">Guardar</button>
                                     <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
                                 </div>
                             </form>  
-                        </div>
-                    </div>
-                    </div>
-                </div><!-- /.container -->
+                     </div>
+                </div>
 
-                </body>
-                </html>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Categorización de Estrategias </h3>
+                            <form  name="form1">
+                                <table class="table-striped" width="90%" id="tablaRecursos">
+                                    <thead class="titulo-tabla">
+                                         <tr>
+                                            <td width="30%"><b>Puntaje</b></td>
+                                            <td width="20%"><b>Prioridad</b></td>
+                                            <td width="20%"><b>Estrategia</b></td>
+                                            <td width="20%"><b>Significado de la Estrategia</b></td>
+                                          </tr>
+                                    </thead>
+                                    <tbody class="cuerpo-tabla" id="tablaCategorizacion">
+                                        <!--Contenido Tabla Categorizacion-->
+                                    </tbody>
+                                </table>
+                                 <div class="span12"  style="text-align:center">
+                                    <button type="button" class="btn btn-primary" id="btnGrabar">Guardar</button>
+                                    <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                                </div>
+                            </form>  
+                      </div>
+                </div>
+
+                <div  class="col-md-12" style="text-align:center">
+                                <button type="button" class="btn btn-primary" id="btnAceptar">Aceptar</button>
+                                <button type="button" class="btn btn-primary" id="btnLimpiar">Limpiar</button>
+                                <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                </div>
+            </div>
+
+         </body>
+    </html>
+
+
+<script> //para el drag and drop
+  var adjustment
+    $("ol.simple_with_animation").sortable({
+      group: 'simple_with_animation',
+      pullPlaceholder: false,
+      // animation on drop
+      onDrop: function  (item, targetContainer, _super) {
+        var clonedItem = $('<li/>').css({height: 0})
+        item.before(clonedItem)
+        clonedItem.animate({'height': item.height()})
+        
+        item.animate(clonedItem.position(), function  () {
+          clonedItem.detach()
+          _super(item)
+        })
+      },
+
+      // set item relative to cursor position
+      onDragStart: function ($item, container, _super) {
+        var offset = $item.offset(),
+        pointer = container.rootGroup.pointer
+        adjustment = {
+          left: pointer.left - offset.left,
+          top: pointer.top - offset.top
+        }
+
+        _super($item, container)
+      },
+      onDrag: function ($item, position) {
+        $item.css({
+          left: position.left - adjustment.left,
+          top: position.top - adjustment.top
+        })
+      }
+    })
+
+</script>
+
+
+<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../static/riesgo/js/jquery-sortable.js"></script>
+<script src="../../static/riesgo/js/application.js"></script>
+  <script src="../../static/riesgo/js/PlanRiesgos.js"></script>
