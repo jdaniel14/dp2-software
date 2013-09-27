@@ -117,28 +117,25 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "UPDATE RIESGO_X_PROYECTO nombre_riesgo=:nombre_riesgo, description=:description WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        $query = "UPDATE RIESGO_X_PROYECTO nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
+        id_categoria_riesgo=:id_categoria_riesgo, impacto=:impacto,probabilidad=:probabilidad,
+        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial
+        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
+            $stmt->bindParam("nombre_riesgo", $riesgo->nombreRiesgo);
+            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
+            $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
+            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
+            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
             $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
-                            "nombre" => $row->nombre_riesgo,//EDT
-                            "paqueteTrabajo" => $row->nombre,//PT
-                            "categoria" => $row->descripcion,//CR
-                            "impacto" => $row->impacto,
-                            "probabilidad" => $row->probabilidad,
-                            "severidad" => $row->severidad,
-                            "estrategia" => $row->nombre,//X
-                            "accionesEspecificas" => $row->nombre,//X
-                            "costoEsperado" => $row->costo_potencial,//RXP
-                            "tiempoEsperado" => $row->demora_potencial,//RXP
-                            "equipoEesponsable" => $row->impacto//X
-                            );
             $db = null;
-            echo json_encode($data);
+            echo json_encode($idRiesgoXProyecto);
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
                 //'{"error":{"text":'. $e->getMessage() .'}}';
@@ -261,7 +258,7 @@
         }
 
     }
-
+/*
     function R_setRiesgo($id){
         $request = Slim::getInstance()->request();
         $body = $request->getBody();
@@ -274,7 +271,7 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 
-    }
+    }*/
 
 
     function R_deleteRiesgo($idRiesgo){

@@ -20,7 +20,7 @@
 	
 
 	$app->put('/R_cambiarEstadoLogicoRiesgo/:id', 'R_setEstadoLogicoRiesgo');
-	$app->put('/R_modificarRiesgo/:id','R_setRiesgo');
+	$app->put('/R_modificarRiesgo/:id','R_updateRiesgo');
 
 	$app->delete('/R_eliminarRiesgo/:id', 'R_deleteRiesgo');
 
