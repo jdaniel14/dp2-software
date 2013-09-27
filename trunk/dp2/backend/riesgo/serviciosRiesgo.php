@@ -124,7 +124,8 @@
             $stmt->execute();
             $row = $stmt->fetchObject();
             $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
-                            "nombre" => $row->nombre_riesgo,//EDT
+                            "nombre" => $row->nombre_riesgo,
+                            "idPaqueteTrabajo" => $row->nombre,//PT
                             "paqueteTrabajo" => $row->nombre,//PT
                             "categoria" => $row->descripcion,//CR
                             "impacto" => $row->impacto,
@@ -282,7 +283,7 @@
 
     function R_deleteRiesgo($idRiesgo){
 
-        $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_actividad=:id";
+        $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_actividad=:idRiesgo";
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
