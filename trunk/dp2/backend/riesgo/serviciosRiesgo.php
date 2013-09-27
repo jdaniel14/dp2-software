@@ -317,8 +317,7 @@
 
     }    
 
-
-    //Julio
+    //--------------------------------------RIESGOS COMUNES--------------------------------------
 
     function R_getListaRiesgoComun(){
         $sql = "SELECT * FROM RIESGO_COMUN";
@@ -338,31 +337,36 @@
         }
     }
 
-    function R_postAsignarRiesgoComun($id_riesgo_comun){
+    function R_postAsignarRiesgoComun(){
         //$request = Slim::getInstance()->request();
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_riesgo_comun,id_categoria_riesgo,impacto,probabilidad,costo_potencial,demora_potencial,) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_riesgo_comun,:id_categoria_riesgo,:impacto,:probabilidad,:costo_potencial,:demora_potencial)";
-        try {
+        for ($i = 1; $i <= count($riesgo); $i++){
+            $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun = :id";
             $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
-            $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
-            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("id_riesgo_comun", $riesgo->$id_riesgo_comun);
-            $stmt->bindParam("impacto", $riesgo->impacto);
-            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
-            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
-            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
-            $stmt->execute();
-            $db = null;
-
-            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
+            $stmt = $db->query($consulta);
+            $stmt->bindParam("id", $idRiesgo[$i]->idRiesgoComun); //arreglar?
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $listaRiesgoComun= array("nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
+            }
+            $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,,id_riesgo_comun,id_categoria_riesgo,impacto,probabilidad,severidad) 
+                    VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:id_categoria_riesgo,:impacto,:probabilidad,:severidad)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("nombre_riesgo", $listaRiesgoComun->nombre);
+                $stmt->bindParam("id_proyecto", $idRiesgo[$i]->idProyecto);
+                $stmt->bindParam("id_riesgo_comun", $idRiesgo[$i]->idRiesgoComun);
+                $stmt->bindParam("impacto", $listaRiesgoComun->impacto);
+                $stmt->bindParam("probabilidad", $listaRiesgoComun->probabilidad);
+                $stmt->bindParam("severidad", $listaRiesgoComun->severidad);
+                $stmt->execute();
+                $db = null;
+                echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+                    //'{"error":{"text":'. $e->getMessage() .'}}';
+            }
         }
     }
 
