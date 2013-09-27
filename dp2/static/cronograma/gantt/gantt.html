@@ -237,12 +237,13 @@
 		  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
 		    <tr>
 		      <th style="width:100px;">Nombre</th>
-		      <th style="width:70px;display:none">Tol</th>
+		      <th style="width:70px;display:none">Rol</th>
 		      <th style="width:80px;">Tipo de Costo</th>
 		      <th style="width:50px;">Costo unitario</th>
 		      <th style="width:30px;">Valor asignado</th>
 		      <th style="width:30px">Costo Real</th>
 		      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
+		      <th style="width:70px;display:none">ID</th>
 		    </tr>
 		  </table>
 		
@@ -270,18 +271,23 @@
 		var td2 = $(this.parentNode.parentNode).children('td')[3];
 		$(td2).text(select);
 		
+		var td6 = $(this.parentNode.parentNode).children('td')[7];
+		console.log(td6);
+		
 		var recurso = ge.resources;
 		
 		$.each(recurso, function(index,element){
 			if(select == element.id){
+				console.log('Recurso');
 				console.log(element);
 				$(td1).text(element.typeCost);
 				$(td2).text(element.costRate);
+				$(td6).text(element.idrecurso);
 			}
 		});
 	    
 	    /***** Fin onchange *****/
-	    " name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
+	    " name="resourceId" class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
 	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
 	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
 		<td name="costRate">(#=obj.assig.costRate#)</td>
@@ -289,7 +295,9 @@
 		<td name = "realCost"><input value = (#=obj.assig.realCost#)></td>
 		
 	    <td style ="display:none;"><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
+	    <td style ="display:none;" name = "idrecurso">n</td>
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
+	        
 	  </tr>
 	  --></div>
 	  

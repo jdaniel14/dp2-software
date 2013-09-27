@@ -87,8 +87,8 @@ Task.prototype.getAssigsString = function () {
 
 //OTRO CREATE
 
-Task.prototype.createAssignment = function (id, resourceId, roleId, effort, typeCost, costRate,value) {
-  var assig = new Assignment(id, resourceId, roleId, effort, typeCost, costRate,value);
+Task.prototype.createAssignment = function (id, resourceId, roleId, effort, typeCost, costRate,value, idrecurso) {
+  var assig = new Assignment(id, resourceId, roleId, effort, typeCost, costRate,value, idrecurso);
   this.assigs.push(assig);
   return assig;
 };
@@ -925,7 +925,7 @@ function Link(taskFrom, taskTo, lagInWorkingDays) {
 // *Modificacion
 
 //<%------------------------------------------------------------------------  ASSIGNMENT ---------------------------------------------------------------%>
-function Assignment(id, resourceId, roleId, effort, typeCost, costRate, value) {
+function Assignment(id, resourceId, roleId, effort, typeCost, costRate, value, idrecurso) {
   this.id = id;
   this.resourceId = resourceId;
   this.roleId = roleId;
@@ -933,6 +933,7 @@ function Assignment(id, resourceId, roleId, effort, typeCost, costRate, value) {
   this.typeCost = typeCost;
   this.costRate = costRate; 
   this.value = value;
+  this.idrecurso = idrecurso;
 }
 
 
