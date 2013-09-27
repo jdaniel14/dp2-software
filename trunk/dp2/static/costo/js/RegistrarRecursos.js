@@ -383,55 +383,55 @@ function grabarRecursos(){
 			recursosEliminar.push(recurso);
 		
 		}else{
-		
-			costo=$(cu).val();
-			nomRecurso=$(nom).val();
-			moneda=$(moned).val();
-			medida=$(med).val();
-			
-			if (nomRecurso==''){
-					
-				alert('El recurso de la fila ' + i +' debe tener un nombre');
-				return;
-			}
-			
-			
-			if (costo!='' && !isNaN(costo) && costo>=0){
-					
+			if (!eliminar){
+				costo=$(cu).val();
+				nomRecurso=$(nom).val();
+				moneda=$(moned).val();
+				medida=$(med).val();
 				
-			}else{
-			
-				alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
-				return;
-			}
-		
-			if (crear=='1'){
-
-				var recurso = {
-				
-					nombreRecurso:nomRecurso,
-					CostoUnitario: costo,			
-					idMoneda: moneda,
-					idUnidadMedida:medida
+				if (nomRecurso==''){
+						
+					alert('El recurso de la fila ' + i +' debe tener un nombre');
+					return;
 				}
-				recursosGrabar.push(recurso);
 				
-			}else{
+				
+				if (costo!='' && !isNaN(costo) && costo>=0){
+						
+					
+				}else{
+				
+					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
+					return;
+				}
 			
-				if (modificar=='1'){
+				if (crear=='1'){
+
 					var recurso = {
-						idRecurso: $(recu).val(),
+					
 						nombreRecurso:nomRecurso,
 						CostoUnitario: costo,			
 						idMoneda: moneda,
 						idUnidadMedida:medida
 					}
-					recursosModificar.push(recurso);
+					recursosGrabar.push(recurso);
+					
+				}else{
+				
+					if (modificar=='1'){
+						var recurso = {
+							idRecurso: $(recu).val(),
+							nombreRecurso:nomRecurso,
+							CostoUnitario: costo,			
+							idMoneda: moneda,
+							idUnidadMedida:medida
+						}
+						recursosModificar.push(recurso);
+					}
+				
+				
 				}
-			
-			
 			}
-		
 		}
 		
 	}
@@ -470,15 +470,24 @@ function grabarRecursos(){
 
 function enviaDatos(obj){
 
+
 	$.ajax({
-		type: 'POST',
-		url: rootURL + 'CO_enviarCURecursos/',		
-		data: JSON.stringify(obj),
-		dataType: "json",
-		async: false,
-		success:function(data){ alert("se grabó"); }
+		type: 'GET',
+		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
+		dataType: "json", 
+		async: true,
+		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else cambiaConsultar();}
 	});
 
+	/*
+	$.ajax({
+		type: 'POST',
+		url: rootURL + 'CO_enviarCURecursos/'+ JSON.stringify(obj),				
+		dataType: "json",
+		async: true,
+		success:function(response, status){ alert("se grabó"); }
+	});
+*/
 
 }
 
