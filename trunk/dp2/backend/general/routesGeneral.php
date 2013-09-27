@@ -17,6 +17,7 @@ $app->post('/G_registrarDescripcionActa', 'G_addDescripcionActa'); //registar de
 $app->post('/G_registrarObjetivosActa', 'G_addObjetivosActa'); //registar objetivos del proyecto
 $app->post('/G_registrarAutoridadActa', 'G_addAutoridadActa'); //registar Autoridad del proyecto
 $app->get('/G_devuelveActa/:id', 'G_getActa'); //devuelve el acta de constitucion de un proyecto
+$app->get('/G_devuelvePrioridad', 'G_getPrioridad'); //devuelve el acta de constitucion de un proyecto
 
 
 
