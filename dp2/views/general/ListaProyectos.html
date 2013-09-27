@@ -14,7 +14,7 @@
 
     <!-- Custom styles for this template -->
     <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
-    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+   
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../../assets/js/html5shiv.js"></script>
@@ -24,15 +24,17 @@
 
   <body>
 
-  <!--
+    <!--
   	<div id ="header"></div>
   	<script>
-  		$(document).ready(function(){
-  		  	$("#header").load("header.html");
+  	$(document).ready(function(){ 
+  		$.get("header.html", function(data) {
+    		$("#header").html(data);
   		});
+	}); 
   	</script>
 	-->
-
+	
 	<div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -48,34 +50,8 @@
             <li class="active" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">General<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="../../views/general/RegistrarProyecto.html">Registrar Proyecto</a></li>           
-              </ul>
-            </li>
-            <li class="active" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Alcance<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="../../views/alcance/index.html">Ver EDT</a></li>
-                <li><a href="../../views/alcance/diccionario.html">Diccionario EDT</a></li>            
-              </ul>
-            </li>
-            <li class="active" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cronograma<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="../../views/cronograma/index.html">Mostrar Gantt</a></li>            
-              </ul>
-            </li>
-            <li class="active" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Costo<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="../../views/costo/AsignaCostoRecursos.html">Registrar presupuesto</a></li>
-                <li><a href="../../views/costo/VisualizarPresupuesto.html">Visualizar Presupuesto</a></li>
-                <li><a href="../../views/costo/AsignaCuenta.html">Asignar cuenta contable</a></li>
-              </ul>
-            </li>
-            <li class="active" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Riesgos<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="../../views/riesgo/RegistrarRiesgo.html">Mostrar riesgos</a></li>          
+                <li><a href="../../views/general/RegistrarProyecto.html">Registrar Proyecto</a></li>
+                <li><a href="../../views/general/RegistrarRecursoHumano.html">Registrar Recurso Humano</a></li>
               </ul>
             </li>
             <li><a href="#about">About</a></li>
@@ -84,7 +60,7 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-
+    
     <div class="container">
 
       <div class="starter-template">
@@ -95,21 +71,6 @@
 
 	  <div class="" id="ListaProyectos">
 	  
-	  	<div class="form-group">
-			  <!-- Button -->
-			  <div class="controls">
-				<table width="100%">			
-					<tr width="100%">
-						<td width="100%" align="left">
-							<button type="button" class="btn btn-default" id="btnRegistrar" onclick="$(location).attr('href','RegistrarProyecto.html');">
-							  Registrar
-							</button>
-						</td>
-					</tr>
-				</table>
-			  </div>
-		</div>
-
 		<form role="form" name="formListaProyectos">
 		
 			<table class="table-striped table-bordered" width="90%" id="listaProyectos">			
@@ -120,7 +81,7 @@
 					<td width="20%" align="center"><b>Tipo de Proyecto</b></td>
 					<td width="11%" align="center"><b>Fecha de Inicio</b></td>
 					<td width="11%" align="center"><b>Fecha de Fin</b></td>
-          <td width="14%" align="center"><b>Ver Acta de Constitución</b></td>
+          			<td width="14%" align="center"><b></b></td>
 				</tr>				
 			</table>
 			
@@ -135,7 +96,7 @@
 
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
+    ==================lang================================ -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
