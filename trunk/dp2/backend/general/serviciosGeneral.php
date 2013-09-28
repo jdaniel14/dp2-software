@@ -123,7 +123,8 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		$acta = json_decode($request->getBody());
 		$sql = "UPDATE PROYECTO SET f_preparacion=:p_f_preparacion, 
 									prioridad=:p_prioridad,
-									nombre_proyecto=:p_nombre_proyecto
+									nombre_proyecto=:p_nombre_proyecto,
+									id_tipo_proyecto=:p_id_tipo_proyecto
 				WHERE id_proyecto=:p_id_proy ";
 		try {
                         
@@ -132,12 +133,16 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$stmt->bindParam("p_f_preparacion", $acta->fpp);
 			$stmt->bindParam("p_prioridad", $acta->pp);
 			$stmt->bindParam("p_nombre_proyecto", $acta->np);
+			//falto tipo proyecto :s
+			$stmt->bindParam("p_id_tipo_proyecto", $acta->tp);
+			
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
+			//last instert no va :S
 			//$proj->id = $db->lastInsertId();
                         
 			$db = null;
-			echo json_encode(array("me"=>"", "id"=>$acta->id));
+			echo json_encode(array("me"=>""));
 		} catch(PDOException $e) {
 			  echo json_encode(array("me"=> $e->getMessage()));
 		}
@@ -155,9 +160,10 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$stmt->bindParam("p_descripcion", $acta->dp);
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
-			$proj->id = $db->lastInsertId();
+			//last insert no va :s
+			//$proj->id = $db->lastInsertId();
 			$db = null;
-			echo json_encode(array("me"=>"", "id"=>$acta->id));
+			echo json_encode(array("me"=>""));
 		} catch(PDOException $e) {
 			  echo json_encode(array("me"=> $e->getMessage()));
 		}
@@ -179,9 +185,9 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 			$stmt->bindParam("p_calidad", $acta->cap);
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
-			$proj->id = $db->lastInsertId();
+			//$proj->id = $db->lastInsertId();
 			$db = null;
-			echo json_encode(array("me"=>"", "id"=>$acta->id));
+			echo json_encode(array("me"=>""));
 		} catch(PDOException $e) {
 			  echo json_encode(array("me"=> $e->getMessage()));
 		}
@@ -192,18 +198,23 @@ WHERE P.id_jefe_proyecto = R.id_recurso AND P.id_tipo_proyecto = T.id_tipo_proye
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
 		$sql = "UPDATE PROYECTO SET jefe_comite=:p_jefe_comite,
-									patrocinador=:p_patrocinador
+									patrocinador=:p_patrocinador,
+									id_jefe_proyecto=:p_id_jefe_proyecto
 				WHERE id_proyecto=:p_id_proy ";
 		try {
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam("p_jefe_comite", $acta->jcp);
 			$stmt->bindParam("p_patrocinador", $acta->pap);
+			//falto id_jefe_proyecto :s
+			$stmt->bindParam("p_id_jefe_proyecto", $acta->jp);
+			
 			$stmt->bindParam("p_id_proy", $acta->idProyecto);
 			$stmt->execute();
-                        $proj->id = $db->lastInsertId();			
+			//last insert no va :s
+                        //$proj->id = $db->lastInsertId();			
 			$db = null;
-			echo json_encode(array("me"=>"", "id"=>$proj->id));
+			echo json_encode(array("me"=>""));
 		} catch(PDOException $e) {
 			  echo json_encode(array("me"=> $e->getMessage()));
 		}

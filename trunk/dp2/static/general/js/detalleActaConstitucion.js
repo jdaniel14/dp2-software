@@ -19,33 +19,39 @@ function cargaData(data){
 	if (data!=null){
 		arreglo=data["acta"];
 	}
+	
 	for(key in arreglo){
-		
 
-		if($('#'+key).is("select"))continue;
 		
-		if(key=="fpp"){
-			$('#'+key).html(arreglo[key].substring(0,10));
-			$('#'+key).val(arreglo[key].substring(0,10));
-		} 	
-		else {
-			if(key=="np")
-			{
-				document.getElementsByTagName('h1')[0].innerHTML=arreglo[key];
-			}
+		if(key=="np"){
+			document.getElementsByTagName('h1')[0].innerHTML=arreglo[key];
+		}
+		if($('#'+key).is("select"))continue;
 			$('#'+key).html(arreglo[key]);
 			$('#'+key).val(arreglo[key]);	
-		}
 		
-
 	}
 
 	var selects = $("select");
+	if (data!=null){
+		arreglo=data["acta"];
+	}
 	for (var i = 0; i < selects.length; i++) {
 		$(selects[i]).val(arreglo[selects[i].id]);
 		if($(selects[i]).hasClass("changeable")){
 			$(selects[i]).attr("disabled","disabled");
 		}
+	}
+	if (data!=null){
+		arreglo=data["acta"];
+	}
+	for(key in arreglo){
+
+		
+		if(key=="fpp"){
+			$('#'+key).html(arreglo[key].substring(0,10));
+			$('#'+key).val(arreglo[key].substring(0,10));
+		} 	
 	}
 }
 $(document).ready(function() {
@@ -121,7 +127,7 @@ function grabarInformacionActa(){
 		tp          : $("#tipoProyecto").val(),
 		pp          : $("#prioridadProyecto").val()
 	}; */
-	
+	alert("hola");
         var obj ={
 		idProyecto   : $("#idProyecto").val(),
 		np           : $("#np").val(),
@@ -129,7 +135,7 @@ function grabarInformacionActa(){
 		tp          : $("#tp").val(),
 		pp          : $("#pp").val()
 	}; 
-        //alert(JSON.stringify(obj));
+        alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarInfoActa,
@@ -255,7 +261,7 @@ function cargarComboPrioridadproyecto(){
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id"]);
+				opt.val(data[obj]["idPrioridad"]);
 				opt.html(data[obj]["nom"]);
 				$("#pp").append(opt);
 			}
