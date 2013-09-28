@@ -92,13 +92,22 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_getAsientosContables() {
+	function CO_getAsientosContables() { //servicio 11 //COMPLETO
 		$listaUM = CO_consultarAsientosContables();
 		$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaUM;
 
 		echo json_encode($jsonRespuesta);
 	}
+
+	///////////SPRINT 2/////////////
+	function CO_getIndicadores() { //servicio 12 //
+		$indicadores = CO_consultarIndicadores();
+
+		echo json_encode($indicadores);
+	}
+
+
 
 	/*
 	function CO_testFunction2() {
@@ -121,7 +130,48 @@
 	}
 	
 	//---------------------------------------------------------------
-	//funciones que apoyan a los servicios.
+	//funciones que apoyan a los servicios.(Ordenados por número de sprint descendentemente)
+	function CO_consultarIndicadores() { //
+		$sql = "FALTA QUERY";
+
+		$indicadores = new stdClass();
+		$indicadores->PV = 0;
+		$indicadores->EV = 0;
+		$indicadores->AC = 0;
+		$indicadores->CV = 0;
+		$indicadores->CPI = 0;
+		$indicadores->SPI = 0;
+		$indicadores->SV = 0;
+		$indicadores->XX = 0;
+
+		/*
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$indicadores->PV = $p["PV"],;
+				$indicadores->EV = $p["EV"];
+				$indicadores->AC = $p["AC"];
+				$indicadores->CV = $p["CV"];
+				$indicadores->CPI = $p["CPI"];
+				$indicadores->SPI = $p["SPI"];
+				$indicadores->SV = $p["SV"];
+				//$indicadores->XX = $p["PV"];
+			}
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		*/
+
+		return $indicadores;
+	}
+
+
+
+	//////////SPRINT 1
 	function CO_consultarInfoProyecto($idProyecto) { //COMPLETO
 		$sql = "select
 		A.ID_PROYECTO,
@@ -743,6 +793,7 @@
 	
 	//---------------------------------------------------------------
 	//funciones de llenado falso de datos para pruebas.
+	/*
 	function CO_obtenerInfoProyectoFalsa() {
 		$proyecto = new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
 		
@@ -836,4 +887,5 @@
 		
 		return $respuesta;
 	}
+	*/
 ?>
