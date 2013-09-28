@@ -81,7 +81,7 @@
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
                 left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
-                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE '%:nombre_riesgo%'"; 
+                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE CONCAT('%', :nombre_riesgo, '%')"; 
                 //“idPaqueteRiesgo”:”EDT1”,
                 //“idCategoriaRiesgo”:”costo”
 
