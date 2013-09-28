@@ -366,22 +366,24 @@
             //$data=array("id" => $row->id_riesgo_x_proyecto, "estado" => $row->estado_logico);
 
             //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            $listaRiesgoComun= array("nombre" => $row->nombre,"ultProbabilidad" => $row->ult_probabilidad,"ultImpacto" => $row->ult_impacto,"ultSeveridad" => $row->ult_severidad);
+            //$listaRiesgoComun= 
+            array("nombre" => $row->nombre,"ultProbabilidad" => $row->ult_probabilidad,"ultImpacto" => $row->ult_impacto,"ultSeveridad" => $row->ult_severidad);
             //}
-            $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,,id_riesgo_comun,id_categoria_riesgo,impacto,probabilidad,severidad) 
-                    VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:id_categoria_riesgo,:impacto,:probabilidad,:severidad)";
+            $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,,id_riesgo_comun,impacto,probabilidad,severidad) 
+                    VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad)";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("nombre_riesgo", $listaRiesgoComun->nombre);
-                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-                $stmt->bindParam("id_riesgo_comun", $riesgo->idRiesgoComun);
-                $stmt->bindParam("impacto", $listaRiesgoComun->impacto);
-                $stmt->bindParam("probabilidad", $listaRiesgoComun->probabilidad);
-                $stmt->bindParam("severidad", $listaRiesgoComun->severidad);
+                $stmt->bindParam("id_proyecto", $riesgolista->idProyecto);
+                $stmt->bindParam("nombre_riesgo", $row->nombre);
+                $stmt->bindParam("id_riesgo_comun", $row->id_riesgo_comun);
+                $stmt->bindParam("impacto", $row->ult_impacto);
+                $stmt->bindParam("probabilidad", $row->ult_probabilidad);
+                $stmt->bindParam("severidad", $row->ult_severidad);
                 $stmt->execute();
+                $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
                 $db = null;
-                echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo,"nombre"=>$riesgo->nombre));
+                echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo_x_proyecto,"nombre"=>$riesgo->nombre));
             } catch(PDOException $e) {
                 echo json_encode(array("me"=> $e->getMessage()));
                     //'{"error":{"text":'. $e->getMessage() .'}}';
