@@ -74,7 +74,7 @@
 
     }       
 
-    function R_getListaRiesgo($idProyecto){
+    function R_getListaRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
         $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
