@@ -346,58 +346,58 @@
                   <div class="form-horizontal col-lg-12">
                     <div class="form-group">
                       <div class="col-lg-9">
-                        <label class=" control-label">Ingrese el valor del impacto Muy Bajo:</label>
+                        <label class=" control-label">Ingrese el valor del impacto Muy Bajo (0-1):</label>
                       </div>
                       <div class="col-lg-3">
-                        <input type="text" class="form-control" id="muyBajo">
+                        <input type="text" class="form-control" id="muyBajo" maxlength="4">
                       </div>
                       <div class="alert alert-danger" id="errorMuyBajo" style="display: none;">
-                        <span class="pull-right">Por favor, corrija el valor del impacto muy bajo</span>
+                        <span class="pull-right">Por favor, corrija el valor del impacto muy bajo. Debe estar entre 0 y 1</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <div class="col-lg-9"> 
-                        <label class="control-label">Ingrese el valor del impacto Bajo:</label>
+                        <label class="control-label">Ingrese el valor del impacto Bajo (0-1):</label>
                       </div>
                       <div class="col-lg-3">
-                        <input type="text" class="form-control" id="bajo">
+                        <input type="text" class="form-control" id="bajo" maxlength="4">
                       </div>
                       <div class="alert alert-danger" id="errorBajo" style="display: none;">
-                        <span class="pull-right">Por favor, corrija el valor del impacto bajo</span>
+                        <span class="pull-right">Por favor, corrija el valor del impacto bajo. Debe estar entre 0 y 1</span>
                       </div>
                     </div>
                     
                     <div class="form-group">
                       <div class="col-lg-9">
-                        <label class="control-label">Ingrese el valor del impacto Medio:</label>
+                        <label class="control-label">Ingrese el valor del impacto Medio (0-1.):</label>
                       </div>
                       <div class="col-lg-3">
-                        <input type="text" class="form-control" id="medio">
+                        <input type="text" class="form-control" id="medio" maxlength="4">
                       </div>
                       <div class="alert alert-danger" id="errorMedio" style="display: none;">
-                        <span class="pull-right">Por favor, corrija el valor del impacto medio</span>
+                        <span class="pull-right">Por favor, corrija el valor del impacto medio.Debe estar entre 0 y 1</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <div class="col-lg-9">
-                        <label class="control-label">Ingrese el valor del impacto Alto:</label>
+                        <label class="control-label">Ingrese el valor del impacto Alto (0-1):</label>
                       </div>
                       <div class="col-lg-3">
-                        <input type="text" class="form-control" id="alto">
+                        <input type="text" class="form-control" id="alto" maxlength="4">
                       </div>
                       <div class="alert alert-danger" id="errorAlto" style="display: none;">
-                        <span class="pull-right">Por favor, corrija el valor del impacto alto</span>
+                        <span class="pull-right">Por favor, corrija el valor del impacto alto.Debe estar entre 0 y 1</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <div class="col-lg-9">
-                        <label class="control-label">Ingrese el valor del impacto Muy Alto:</label>
+                        <label class="control-label">Ingrese el valor del impacto Muy Alto (0-1):</label>
                       </div>
                       <div class="col-lg-3">
-                        <input type="text" class="form-control" id="muyAlto">
+                        <input type="text" class="form-control" id="muyAlto" maxlength="4">
                       </div>
                       <div class="alert alert-danger" id="errorMuyAlto" style="display: none;">
-                        <span class="pull-right" >Por favor, corrija el valor del impacto muy alto</span>
+                        <span class="pull-right" >Por favor, corrija el valor del impacto muy alto. Debe estar entre 0 y 1</span>
                       </div>
                     </div>
                   </div>
@@ -405,7 +405,7 @@
               </div>
               <div class="modal-footer">
                 <div class="big-alert alert-danger" id="errorImpactos" style="display: none;">
-                  <span class="pull-right" >Muy bajo &lt; bajo &lt; medio &lt; alto &lt; muy alto</span>
+                 <span >Complete los campos. Considerar: Muy bajo &lt; bajo &lt; medio &lt; alto &lt; muy alto</span>
                 </div>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 <button type="button" id="btnConfiguracion" class="btn btn-primary">Guardar</button>
