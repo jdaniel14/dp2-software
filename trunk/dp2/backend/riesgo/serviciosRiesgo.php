@@ -74,25 +74,22 @@
 
     }       
 
-    function R_getListaRiesgo(){
-        $request = \Slim\Slim::getInstance()->request();
-        $riesgo = json_decode($request->getBody());
+    function R_getListaRiesgo($var){
+        $riesgo = json_decode($var);
         $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
                 left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
-                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE %'.$riesgo->nombre.'%";
-                //CONCAT('%', ':nombre_riesgo', '%')"; 
-                //%'.variable.'%
-                //“idPaqueteRiesgo”:”EDT1”,
-                //“idCategoriaRiesgo”:”costo”
+                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
+        if ($riesgo->idPaqueteTrabajo!=0) $query .=" and RXP.id_paquete_trabajo=".$riesgo->idPaqueteTrabajo." ";
+        if ($riesgo->idCategoriaRiesgo!=0) $query .=" and RXP.id_categoria_riesgo=".$riesgo->idCategoriaRiesgo." ";
 
         try {
             $arregloListaRiesgo= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-            //$stmt->bindParam("nombre_riesgo", $riesgo->nombre);
+            //$stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
