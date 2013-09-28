@@ -31,6 +31,7 @@ $(document).ready(main);
 
 var buscar = "";
 var idArray = [];
+var listaPaquetes;
 
 function main(){
 
@@ -49,30 +50,9 @@ function main(){
 		buscar = $("#buscar").val();
 		listarRiesgos(buscar);
 	});
-	$(".glyphicon.glyphicon-remove").click( function(){
-		
-		var data = {
-			id: $(this).closest("tr").attr("id")
-		};
-		idArray = [];
-		idArray = data;
-	});
+	
 
-	$("#btnEliminar").click( function(){
-		var jsonData = JSON.stringify(idArray);
-		$.ajax({
-			type: 'POST',
-			url: deleteItem + '/' + idArray.id,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				alert("Se elimino el riesgo correctamente");
-				listarRiesgos();
-			},
-			fail: codigoError
-		});
-	});
-
+	
 
 
 	$("#btnRegistrar").click( function(){
@@ -92,28 +72,43 @@ function main(){
 		
 		if ($('#paqEdt').val()==0){
 			data.idPaqueteTrabajo=null;
+		} else {
+			data.idPaqueteTrabajo= $('#paqEdt').val();
 		}
 		
 		if ($('#objAfe').val()==0){
 			data.idCategoriaRiesgo=null;
+		} else {
+			data.idCategoriaRiesgo= $('#objAfe').val();
 		}
 		if ($('#impRiesgo').val()==0){
 			data.impacto = null;
+		} else {
+			data.impacto= $('#impRiesgo').val();
 		}
 		if ($('#equRes').val()==0){
 			data.idEquipo=null;
+		} else {
+			data.idEquipo= $('#equRes').val();
 		}
 		if ($('#proRiesgo').val()==''){
 			data.probabilidad=null;
+		} else {
+			data.probabilidad= $('#proRiesgo').val();
 		}
 		if ($('#costRiesgo').val()==''){
 			data.probabilidad=null;
+		} else {
+			data.costoPotencial= $('#costRiesgo').val();
 		}
 		if ($('#tiemRiesgo').val()==''){
 			data.probabilidad=null;
+		} else {
+			data.demoraPotencial= $('#tiemRiesgo').val();
 		}
+
 		console.log(data);
-		//if (confirmarRegistro(data)==true){
+		if ((data.nombre!='')&& (data.idPaqueteTrabajo!=null) && (data.idCategoriaRiesgo!=null)){
 			// console.log(data);
 			var jsonData = JSON.stringify(data);
 			$.ajax({
@@ -128,14 +123,15 @@ function main(){
 				},
 				fail: codigoError
 			});
-		//} else {
-		// 	alert("Hubo un problema con su registro");
-		// }
+		} else {
+			alert("Hubo un problema con su registro");
+		}
 	});
 	$("#btnModificar").click(function(){
 		var data = {
-			idProyecto: $('#idProyectoM').val(),
-			nombre: $('#nomRiesgoM').val(),
+			idRiesgoXProyecto: $('#idRiesgoM').val(),
+			idProyecto: $('#idProyecto').val(),
+			nombreRiesgo: $('#nomRiesgoM').val(),
 			// idPaqueteTrabajo: $('#paqEdt').val(),
 			// idCategoriaRiesgo: $('#objAfe').val(),
 			// impacto: $('#impRiesgo').val(),
@@ -148,53 +144,71 @@ function main(){
 		
 		if ($('#paqEdtM').val()==0){
 			data.idPaqueteTrabajo=null;
+		} else {
+			data.idPaqueteTrabajo= $('#paqEdtM').val();
 		}
 		
 		if ($('#objAfeM').val()==0){
 			data.idCategoriaRiesgo=null;
+		} else {
+			data.idCategoriaRiesgo= $('#objAfeM').val();
 		}
 		if ($('#impRiesgoM').val()==0){
 			data.impacto = null;
+		} else {
+			data.impacto= $('#impRiesgoM').val();
 		}
 		if ($('#equResM').val()==0){
 			data.idEquipo=null;
+		} else {
+			data.idEquipo= $('#equResM').val();
 		}
 		if ($('#proRiesgoM').val()==''){
 			data.probabilidad=null;
+		} else {
+			data.probabilidad= $('#proRiesgoM').val();
 		}
 		if ($('#costRiesgoM').val()==''){
-			data.probabilidad=null;
+			data.costoPotencial=null;
+		} else {
+			data.costoPotencial= $('#costRiesgoM').val();
 		}
 		if ($('#tiemRiesgoM').val()==''){
-			data.probabilidad=null;
+			data.demoraPotencial=null;
+		} else {
+			data.demoraPotencial= $('#tiemRiesgoM').val();
 		}
-		var data = {
-			idRiesgoXProyecto: $('#idRiesgoM').val(),
-			idProyecto: $('#idProyecto').val(),
-			nombreRiesgo: $('#nomRiesgoM').val(),
-			idPaqueteTrabajo: $('#paqEdtM').val(),
-			idCategoriaRiesgo: $('#objAfeM').val(),
-			impacto: $('#impRiesgoM').val(),
-			probabilidad: $('#proRiesgoM').val(),
-			acciones: $('#accEspM').val(),
-			costoPotencial: $('#costRiesgoM').val(),
-			demoraPotencial: $('#tiemRiesgoM').val(),
-			idEquipo: $('#equResM').val()
-		};
+		// var data = {
+		// 	idRiesgoXProyecto: $('#idRiesgoM').val(),
+		// 	idProyecto: $('#idProyecto').val(),
+		// 	nombreRiesgo: $('#nomRiesgoM').val(),
+		// 	idPaqueteTrabajo: $('#paqEdtM').val(),
+		// 	idCategoriaRiesgo: $('#objAfeM').val(),
+		// 	impacto: $('#impRiesgoM').val(),
+		// 	probabilidad: $('#proRiesgoM').val(),
+		// 	acciones: $('#accEspM').val(),
+		// 	costoPotencial: $('#costRiesgoM').val(),
+		// 	demoraPotencial: $('#tiemRiesgoM').val(),
+		// 	idEquipo: $('#equResM').val()
+		// };
 		console.log(data);
-		var jsonData = JSON.stringify(data);
-		$.ajax({
-			type: 'PUT',
-			url: updateItem + '/' + data.idRiesgoXProyecto,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				var item = data;
-				alert("Se actualizó exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
-				listarRiesgos();
-			},
-			fail: codigoError
-		});
+		if ((data.nombreRiesgo!='') && (data.idPaqueteTrabajo!=null) && (data.idCategoriaRiesgo!=null)){
+			var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'PUT',
+				url: updateItem + '/' + data.idRiesgoXProyecto,
+				data: jsonData,
+				dataType: "json",
+				success: function(data){
+					var item = data;
+					alert("Se actualizó exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
+					listarRiesgos();
+				},
+				fail: codigoError
+			});
+		} else {
+			alert("Hubo un problema con su registro");
+		}
 	});
 
 	//Función para agregar los riesgos conocidos al proyecto
@@ -237,6 +251,7 @@ function main(){
 			alto: $('#alto').val(),
 			muyAlto: $('#muyAlto').val()
 		};
+		limpiarConfiguracion();
 		if (!validarConfiguracion(data)){
 			var jsonData = JSON.stringify(data);
 			$.ajax({
@@ -257,19 +272,14 @@ function main(){
 	});
 
 	$("#listarConf").click( function(){
-		
 		$('#muyBajo').val('');
 		$('#bajo').val('');
 		$('#medio').val('');
 		$('#alto').val('');
 		$('#muyAlto').val('');
-		$('#errorMuyBajo').hide();
-		$('#errorBajo').hide();
-		$('#errorMedio').hide();
-		$('#errorAlto').hide();
-		$('#errorMuyAlto').hide();
-		$('#errorImpactos').hide();
+		limpiarConfiguracion();
 		listarConfiguracion();
+
 	});
 
 
@@ -310,6 +320,17 @@ function main(){
 		});
 	});
 
+}
+
+function limpiarConfiguracion(){
+	
+		$('#errorMuyBajo').hide();
+		$('#errorBajo').hide();
+		$('#errorMedio').hide();
+		$('#errorAlto').hide();
+		$('#errorMuyAlto').hide();
+		$('#errorImpactos').hide();
+		
 }
 
 
@@ -375,6 +396,7 @@ function listarPaquetesTrabajo(){
 		dataType: "json",
 		success: function(data){
 			var lista = data;
+			listaPaquetes = lista;
 			$.each(lista, function (i, value){
 				$('#paqEdt').append("<option value="+ value.id +">" + value.descripcion + "</option>");
 				$('#paqEdtM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
@@ -496,7 +518,7 @@ function listarEquipos(){
 }
 
 function listarRiesgos(search){
-
+	$("#tablaRiesgos").empty();
 	var data = {
 		idProyecto: $('#idProyecto').val()
 		//buscar: search ->DESCOMENTAR
@@ -516,14 +538,40 @@ function listarRiesgos(search){
 				var id = $(this).closest("tr").attr("id");
 				obtenerRiesgo(id);
 			});
+			$(".glyphicon.glyphicon-remove").click( function(){
+				var idRiesgoProyecto= $(this).closest("tr").attr("id");
+				eliminarRiesgo(idRiesgoProyecto);
+
+			});
 		},
 		fail: codigoError
 	});
-	
-	
+
 	//agregaDataFila(null);
 
 }
+
+function eliminarRiesgo(id){
+	$("#btnEliminar").click(function(){
+		alert("xD");
+		var data = {
+			idRiesgoProyecto : id
+		}
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'DELETE',
+			url: deleteItem + '/' + data.idRiesgoProyecto,
+			data: jsonData,
+			dataType: "html",
+			success: function(){
+				alert("Se elimino el riesgo correctamente");
+				listarRiesgos();
+			},
+			fail: codigoError
+		});
+	});
+}
+
 
 function listarRiesgosComunes(){
 		
@@ -699,7 +747,7 @@ function validarConfiguracion(data){
 
 	if (isNaN(muyBajo)){
 		$('#errorMuyBajo').fadeIn('slow');
-		return true;
+		flag = true;
 	} else {
 		if (validarProbaImpacto(muyBajo)){
 			if (!validarDecimales(muyBajo)){
@@ -708,13 +756,13 @@ function validarConfiguracion(data){
 			}
 		} else {
 			$('#errorMuyBajo').fadeIn('slow');
-			return true;
+			flag = true;
 		}
 	}
 
 	if (isNaN(bajo)){
 		$('#errorBajo').fadeIn('slow');
-		return true;
+		flag = true;
 	} else {
 		if (validarProbaImpacto(bajo)){
 			if (!validarDecimales(bajo)){
@@ -723,13 +771,13 @@ function validarConfiguracion(data){
 			}
 		} else {
 			$('#errorBajo').fadeIn('slow');
-			return true;
+			flag = true;
 		}
 	}
 
 	if (isNaN(medio)){
 		$('#errorMedio').fadeIn('slow');
-		return true;
+		flag = true;
 	} else {
 		if (validarProbaImpacto(medio)){
 			if (!validarDecimales(medio)){
@@ -738,13 +786,13 @@ function validarConfiguracion(data){
 			}
 		} else {
 			$('#errorMedio').fadeIn('slow');
-			return true;
+			flag = true;
 		}
 	}
 
 	if (isNaN(alto)){
 		$('#errorAlto').fadeIn('slow');
-		return true;
+		flag = true;
 	} else {
 		if (validarProbaImpacto(alto)){
 			if (!validarDecimales(alto)){
@@ -753,13 +801,13 @@ function validarConfiguracion(data){
 			}
 		} else {
 			$('#errorAlto').fadeIn('slow');
-			return true;
+			flag = true;
 		}
 	}
 
 	if (isNaN(muyAlto)){
 		$('#errorMuyAlto').fadeIn('slow');
-		return true;
+		flag = true;
 	} else {
 		if (validarProbaImpacto(muyAlto)){
 			if (!validarDecimales(muyAlto)){
@@ -768,13 +816,13 @@ function validarConfiguracion(data){
 			}
 		} else {
 			$('#errorMuyAlto').fadeIn('slow');
-			return true;
+			flag = true;
 		}
 	}
 
 	if ((muyBajo >= bajo) || (bajo >= medio) || (medio >= alto) || (alto >= muyAlto)) {
 		$('#errorImpactos').fadeIn('slow');
-		return true;
+		flag = true;
 	}
 	
 	return flag;
