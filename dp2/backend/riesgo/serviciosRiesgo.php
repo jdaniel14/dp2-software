@@ -349,13 +349,16 @@
         //$request = Slim::getInstance()->request();
         $request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($request->getBody());
+        echo $riesgolista;
         //for ($i = 1; $i <= count($riesgo); $i++){
-        foreach ($riesgolista as $riesgo){
+        foreach ($riesgolista->lista as $riesgo){
             // echo $riesgo[0];
-            $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun = :id";
+            $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun =".$riesgo;
             $db = getConnection();
             $stmt = $db->query($consulta);
-            $stmt->bindParam("id", $riesgo->idRiesgoComun); //arreglar?
+            //$stmt->bindParam("id", $riesgo->idRiesgoComun); //arreglar?
+
+
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $listaRiesgoComun= array("nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
             }
