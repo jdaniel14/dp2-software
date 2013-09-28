@@ -76,7 +76,7 @@
 
     function R_getListaRiesgo($idProyecto){
 
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
+        $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
                 left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
@@ -85,7 +85,7 @@
         try {
             $arregloListaRiesgo= array();
             $db=getConnection();
-            $stmt = $db->query($sql);
+            $stmt = $db->query($query);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre_riesgo'],//EDT
@@ -111,12 +111,13 @@
 
     function R_getRiesgo($idRiesgoXProyecto){
         
-        $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
-                RXP.id_proyecto=EDT.id_proyecto and 
-                RXP.id_paquete_trabajo=PT.id_paquete_trabajo and
-                RXP.id_categoria_riesgo=CR.id_categoria_riesgo and 
-                RXP.id_riesgo_x_proyecto=".$idRiesgoXProyecto;
-                //PT.id_edt=edt.id_edt and 
+
+        $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
+                left join EDT on RXP.id_proyecto=EDT.id_proyecto
+                left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
+                where RXP.id_riesgo_x_proyecto=".$idRiesgoXProyecto;
+
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -146,11 +147,11 @@
     }    
 
     function R_getListaPaquetesEDT($idProyecto){
-        $sql = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
         try {
             $arregloListaPaquetesEDT= array();
             $db=getConnection();
-            $stmt = $db->query($sql);
+            $stmt = $db->query($query);
             $stmt->bindParam("idProyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['id_paquete_trabajo'], "descripcion" => $row['nombre']);
@@ -164,11 +165,11 @@
     }
 
     function R_getListaCategoriaRiesgo(){
-        $sql = "SELECT * FROM CATEGORIA_RIESGO";
+        $query = "SELECT * FROM CATEGORIA_RIESGO";
         try {
             $arregloListaCategoriaRiesgo= array();
             $db=getConnection();
-            $stmt = $db->query($sql);
+            $stmt = $db->query($query);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("id" => $row['id_categoria_riesgo'], "descripcion" => $row['descripcion']);
                 array_push($arregloListaCategoriaRiesgo,$data);
@@ -251,14 +252,14 @@
 
     function R_setEstadoLogicoRiesgo($idRiesgo){
 
-        $sql = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
+        $query = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
-            $stmt->bindParam("id", $idRiesgo);
+            $stmt->bindParam("id", $query);
             $stmt->execute();
             $db = null;
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
+            echo '{Set}';
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
