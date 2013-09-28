@@ -76,17 +76,16 @@
 
     function R_getListaRiesgo($idProyecto){
 
-        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP,EDT,paquete_trabajo as PT,CATEGORIA_RIESGO as CR WHERE 
-                RXP.id_proyecto=EDT.id_proyecto and 
-                RXP.id_paquete_trabajo=PT.id_paquete_trabajo and
-                RXP.id_categoria_riesgo=CR.id_categoria_riesgo and 
-                RXP.id_proyecto=".$idProyecto;
+        $sql = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
+                left join EDT on RXP.id_proyecto=EDT.id_proyecto
+                left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
+                where RXP.id_proyecto=".$idProyecto;
         
         try {
             $arregloListaRiesgo= array();
             $db=getConnection();
             $stmt = $db->query($sql);
-            //$stmt->bindParam("id_proyecto", $idProyecto);
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre_riesgo'],//EDT
@@ -345,30 +344,18 @@
         }
     }
 
-    function R_postAsignarRiesgoComun(){
-        //$request = Slim::getInstance()->request();
+    function R_postAsignarRiesgoComun(){//BY HENRY
+        
         $request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($request->getBody());
-        //for ($i = 1; $i <= count($riesgo); $i++){
+        
         foreach ($riesgolista->lista as $riesgo){
-            // echo $riesgo[0];
+            
             $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun =".$riesgo;
             $db = getConnection();
-            //$stmt = $db->query($consulta);
-            //$stmt->bindParam("id", $riesgo->idRiesgoComun); //arreglar?
-
             $stmt = $db->prepare($consulta);
-            //$stmt->bindParam("id_riesgo_x_proyecto", $idRiesgo);
             $stmt->execute();
             $row = $stmt->fetchObject();
-
-
-            //$data=array("id" => $row->id_riesgo_x_proyecto, "estado" => $row->estado_logico);
-
-            //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            //$listaRiesgoComun= 
-            //array("nombre" => $row->nombre,"ultProbabilidad" => $row->ult_probabilidad,"ultImpacto" => $row->ult_impacto,"ultSeveridad" => $row->ult_severidad);
-            //}
             $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad) 
                     VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad)";
             try {
