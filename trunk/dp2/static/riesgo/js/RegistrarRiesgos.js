@@ -34,9 +34,9 @@ var idPaqueteTrabajo = 0;
 var idCategoriaRiesgo = 0;
 
 var buscar = {
-	nombre:nombre;
-	idPaqueteTrabajo:idPaqueteTrabajo;
-	idCategoriaRiesgo:idCategoriaRiesgo;
+	nombre:nombre,
+	idPaqueteTrabajo:idPaqueteTrabajo,
+	idCategoriaRiesgo:idCategoriaRiesgo,
 }
 var idArray = [];
 var listaPaquetes;
@@ -509,8 +509,9 @@ function listarRiesgos(search){
 	$("#tablaRiesgos").empty();
 	var data = {
 		idProyecto: $('#idProyecto').val(),
-                nombre: $('#nombre').val(),
-              
+        nombre: $('#nombre').val(),
+        idPaqueteTrabajo = 0;
+		idCategoriaRiesgo = 0;    
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
@@ -828,49 +829,35 @@ function validarConfiguracion(data){
 
 function validarRegistro(data, caso){
 	var flag = true; //si true guarda, false no guarda
-	if ($('#nomRiesgo').val()=='') {
-			flag=false;
-		}
+	if (data.nombre=='') {
+		flag=false;
+	}
 
-	if ($('#paqEdt').val()==0){
-			data.idPaqueteTrabajo=null;
-		} else {
-			data.idPaqueteTrabajo= $('#paqEdt').val();
-		}
+	if (data.idPaqueteTrabajo==0){
+		data.idPaqueteTrabajo=null;
+	}
 		
-		if ($('#objAfe').val()==0){
-			data.idCategoriaRiesgo=null;
-			flag=false;
-		} else {
-			data.idCategoriaRiesgo= $('#objAfe').val();
-		}
-		if ($('#impRiesgo').val()==0){
-			data.impacto = null;
-			flag=false;
-		} else {
-			data.impacto= $('#impRiesgo').val();
-		}
-		if ($('#equRes').val()==0){
-			data.idEquipo=null;
-		} else {
-			data.idEquipo= $('#equRes').val();
-		}
-		if ($('#proRiesgo').val()==''){
-			data.probabilidad=null;
-			flag=false;
-		} else {
-			data.probabilidad= $('#proRiesgo').val();
-		}
-		if ($('#costRiesgo').val()==''){
-			data.probabilidad=null;
-		} else {
-			data.costoPotencial= $('#costRiesgo').val();
-		}
-		if ($('#tiemRiesgo').val()==''){
-			data.probabilidad=null;
-		} else {
-			data.demoraPotencial= $('#tiemRiesgo').val();
-		}
+	if (data.idCategoriaRiesgo==0){
+		data.idCategoriaRiesgo=null;
+		flag=false;
+	} 
+	if (data.impacto==0){
+		data.impacto = null;
+		flag=false;
+	}
+	if (data.idEquipo==0){
+		data.idEquipo=null;
+	}
+	if (data.probabilidad==''){
+		data.probabilidad=null;
+		flag=false;
+	}
+	if (data.costoPotencial==''){
+			data.costoPotencial=null;
+	}
+	if (data.demoraPotencial==''){
+		data.probabilidad=null;
+	}
 		
 }
 	
