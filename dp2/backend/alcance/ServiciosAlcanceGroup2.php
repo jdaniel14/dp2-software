@@ -1,49 +1,52 @@
 <?php
 
   include('routesAlcanceGroup2.php');
-
-   function getEdt(){
+  include_once '../backend/conexion.php';
+   
+  function getEdt(){
        //$request = \Slim\Slim::getInstance()->request(); //json parameters
        //$edt = json_decode($request->getBody()); //object convert
-       //var_dump($edt);
-       //echo json_encode($edt); //json return
-      
-      $h1n = array();
-      $h2n = array();
-      $h3n = array();
-      $h4n = array();
-      $h5n = array();
+       $con = getConnection();
+       $idproyecto = 1;
+       //conseguir el id del paquete inicial
+       $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
+       $pstmt->execute(array($idproyecto));
+       $idPIni = $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo_inicial"];
 
+       //conseguir el paquete inicial
+       $pstmt= $con->prepare("SELECT id_paquete_trabajo,  nombre,descripcion,dias  FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo= ?");
+       $pstmt->execute(array($idPIni));
+       $pIni = $pstmt->fetch(PDO::FETCH_ASSOC);
 
-      $hijo2 = new EdtArbol("Planificacion","0" , $h2n , "sape", 2 ,2);
-      $hijo3 = new EdtArbol("Ejecucion","0", $h3n, "sape", 6 , 3);
-      $hijo4 = new EdtArbol("Seguimiento","0", $h4n , "sape", 7, 4);
-      
-      
+       //Obtener hijos
+       $hijos = getHijos($pIni["id_paquete_trabajo"]);
 
-      $prueba1 = array();
-      array_push($prueba1, $hijo3, $hijo4);
-
-      $hijo1 = new EdtArbol("Inicio","2", $prueba1 , "sape", 3,1);
-      
-
-      $prueba = array();
-      array_push($prueba, $hijo1,$hijo2);
-      
-
-      $hijo5 = new EdtArbol("Cierre","2" ,$prueba , "sape", 5,5);
-
-      $nodos = array();
-      array_push($nodos, $hijo1,$hijo2,$hijo3,$hijo4,$hijo5);
-
-
-      $padre =  new EdtArbol("DP2","5", $nodos,"sape", 5, 0);
-
-    echo json_encode($padre);
+       //armar objeto
+       $arbol = new EdtArbol($pIni["id_paquete_trabajo"], $pIni["nombre"],count($hijos) ,$pIni["dias"], $pIni["descripcion"], $hijos);
+       echo json_encode($arbol);
     }
 
+    function getHijos($idPadre){
+        $con = getConnection();
 
+       //conseguir los hijos
+       $pstmt= $con->prepare("SELECT id_paquete_trabajo, nombre,descripcion,dias  FROM PAQUETE_TRABAJO WHERE id_componente_padre =?");
+       $pstmt->execute(array($idPadre));
+       $result = array();
+       
+       while($hijo = $pstmt->fetch(PDO::FETCH_ASSOC)){
+        //conseguir los hijos de cada hijo
+        $hijos = getHijos($hijo["id_paquete_trabajo"]);
+        //armar objeto hijo
+        $arbolHijo = new EdtArbol($hijo["id_paquete_trabajo"], $hijo["nombre"],count($hijos) ,$hijo["dias"], $hijo["descripcion"], $hijos);
+        //añadir objeto a la lista 
+        array_push($result, $arbolHijo);
+       }
 
+       return $result;
+    }
+
+    
 
 
 
@@ -51,8 +54,7 @@
 
     //**********************************
     //*** MOSTRAR EL EDT (REAL)*****************
-     /*
-
+     
     function BuscaIdPaquetePadre($idProyecto,$version){
       $con=getConexionLocal();
       $query="SELECT id_paquete_trabajo_inicial FROM EDT WHERE id_proyecto=" . $idProyecto." AND version='".$version."'";
@@ -196,7 +198,6 @@
       $edt = json_decode($request->getBody(),TRUE); //object convert este sirve
       //$edt=json_decode(mostrarEdt($idProyecto));
       //$edt=json_decode(getEdt2());
-    
       $idEstado=obtenerIdEstado();
     
       $idMiembros=obtenerIdMiembros($idProyecto); //puede ser null?VER BIEN ESTO,
@@ -263,8 +264,7 @@
      
     //**********************************
     //FIN MOSTRAR EL COMBO BOX DE VERSIONES A ESCOGER
-    
-    */
+
     
     
     

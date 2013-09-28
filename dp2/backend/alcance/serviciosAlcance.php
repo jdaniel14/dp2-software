@@ -5,7 +5,7 @@
 	include_once '../backend/conexion.php';
 
 	function getConexionLocal(){
-		$con=mysqli_connect("127.0.01:3306","dp_usuario","usuario.2013.","dp2");
+		$con=mysqli_connect("127.0.0.1:3307","usuario","usuario.2013.","dp2");
 		// Verificar conexión
 		if (mysqli_connect_errno()){
 		  echo "Error al conectar con MySQL: " . mysqli_connect_error();
@@ -75,7 +75,6 @@
 			dias=?,
 			hitos=?,
 			costo=?,
-			id_cambio_moneda=?,
   			interdependencias=?,
 			requisitos_calidad=?,
 			referencias_tecnicas=?,
@@ -92,13 +91,13 @@
 			$val["dias"],
 			$val["hitos"],
 			$val["costo"],
-			$val["id_cambio_moneda"],
+			//$val["id_cambio_moneda"],
 			$val["interdependencias"],
 			$val["requisitos_calidad"],
 			$val["referencias_tecnicas"],
 			$val["informacion_contrato"],
 			$val["id_estado"],
-			date('d-m-Y h:i:s'),
+			date('Y-m-d H:i:s'),
 			$val["id_paquete_trabajo"]
 		));
 	}
@@ -123,7 +122,5 @@
     	$proy = $pstmt->fetch(PDO::FETCH_ASSOC);
 		echo json_encode($proy);
     }
-    
- 
     
 ?>
