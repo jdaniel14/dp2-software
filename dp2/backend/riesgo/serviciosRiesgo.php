@@ -75,13 +75,16 @@
     }       
 
     function R_getListaRiesgo($idProyecto){
-
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
         $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
                 left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
-                where RXP.id_proyecto=".$idProyecto;
-        
+                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE '%:nombre_riesgo%'"; 
+                //“idPaqueteRiesgo”:”EDT1”,
+                //“idCategoriaRiesgo”:”costo”
+
         try {
             $arregloListaRiesgo= array();
             $db=getConnection();
