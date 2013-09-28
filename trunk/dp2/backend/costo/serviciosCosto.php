@@ -92,6 +92,13 @@
 		echo json_encode($jsonRespuesta);
 	}
 
+	function CO_getAsientosContables() {
+		$listaUM = CO_consultarAsientosContables();
+		$jsonRespuesta = new stdClass();
+		$jsonRespuesta->lista = $listaUM;
+
+		echo json_encode($jsonRespuesta);
+	}
 
 	/*
 	function CO_testFunction2() {
@@ -711,6 +718,27 @@
 		}
 		
 		return $respuesta;
+	}
+
+	function CO_consultarAsientosContables() { //COMPLETO
+		$sql = "SELECT ID_ASIENTO_CONTABLE,DESCRIPCION FROM ASIENTO_CONTABLE;";
+
+		$listaUM = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        																//id, descripción
+					array_push($listaUM, new CO_AsientoContable($p["ID_ASIENTO_CONTABLE"], $p["DESCRIPCION"]));
+			}
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		return $listaUM;
 	}
 	
 	//---------------------------------------------------------------
