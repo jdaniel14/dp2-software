@@ -349,19 +349,25 @@
         //$request = Slim::getInstance()->request();
         $request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($request->getBody());
-        echo $riesgolista;
         //for ($i = 1; $i <= count($riesgo); $i++){
         foreach ($riesgolista->lista as $riesgo){
             // echo $riesgo[0];
             $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun =".$riesgo;
-            $db = getConnection();
-            $stmt = $db->query($consulta);
+            //$db = getConnection();
+            //$stmt = $db->query($consulta);
             //$stmt->bindParam("id", $riesgo->idRiesgoComun); //arreglar?
 
+            $stmt = $db->prepare($consulta);
+            //$stmt->bindParam("id_riesgo_x_proyecto", $idRiesgo);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
 
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+
+
+            //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $listaRiesgoComun= array("nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
-            }
+            //}
             $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,,id_riesgo_comun,id_categoria_riesgo,impacto,probabilidad,severidad) 
                     VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:id_categoria_riesgo,:impacto,:probabilidad,:severidad)";
             try {
