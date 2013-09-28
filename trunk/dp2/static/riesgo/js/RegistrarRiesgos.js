@@ -38,13 +38,11 @@ function main(){
 	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
-	listarNivelesImpacto();
+	// listarNivelesImpacto();
 	//listarEquipos();
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
-	listarConfiguracion();
-	
-
+	// listarConfiguracion();
 
 	$("#btnBuscar").click(function(){
 		buscar = $("#buscar").val();
@@ -119,7 +117,7 @@ function main(){
 				success: function(data){
 					var item = data;
 					alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
-					listarRiesgos();
+					listarRiesgos('');
 				},
 				fail: codigoError
 			});
@@ -202,7 +200,7 @@ function main(){
 				success: function(data){
 					var item = data;
 					alert("Se actualizó exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
-					listarRiesgos();
+					listarRiesgos('');
 				},
 				fail: codigoError
 			});
@@ -232,7 +230,7 @@ function main(){
 			success: function(data){
 				var item = data;
 				alert("Se agregaron exitosamente los " + item.length + " riesgos");
-				listarRiesgos();
+				listarRiesgos('');
 			},
 			fail: function(data){
 				alert(data.me);
@@ -253,6 +251,7 @@ function main(){
 		};
 		limpiarConfiguracion();
 		if (!validarConfiguracion(data)){
+			console.log(data);
 			var jsonData = JSON.stringify(data);
 			$.ajax({
 				type: 'POST',
@@ -280,6 +279,23 @@ function main(){
 		limpiarConfiguracion();
 		listarConfiguracion();
 
+	});
+
+
+	$("#registrarRiesgo").click( function(){
+		limpiarImpacto();
+		listarNivelesImpacto();
+		$('#nomRiesgo').val('');
+		$('#paqEdt').val(0);
+		$('#objAfe').val(0);
+		$('#impRiesgo').val(0);
+		$('#proRiesgo').val('');
+		$('#svrRiesgo').val('');
+		$('#accEsp').val('');
+		$('#costRiesgo').val('');
+		$('#tiemRiesgo').val('');
+		$('#equRes').val(0);
+		
 	});
 
 
@@ -314,7 +330,7 @@ function main(){
 			dataType: "json",
 			success: function(data){
 				alert("Se ha confirmado el riesgo");
-				listarRiesgos();
+				listarRiesgos('');
 			},
 			fail: codigoError
 		});
@@ -520,14 +536,14 @@ function listarEquipos(){
 function listarRiesgos(search){
 	$("#tablaRiesgos").empty();
 	var data = {
-		idProyecto: $('#idProyecto').val()
-		//buscar: search ->DESCOMENTAR
+		idProyecto: $('#idProyecto').val(),
+		nombre: search 
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
-		type: 'GET',
+		type: 'POST',
 		//url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
-		url: getAllItems + '/' + data.idProyecto,
+		url: getAllItems,
 		// url: getAllItems, ->DESCOMENTAR
 		dataType: "json",
 		success: function(data){
@@ -537,6 +553,8 @@ function listarRiesgos(search){
 			$(".glyphicon.glyphicon-edit").click( function(){
 				var id = $(this).closest("tr").attr("id");
 				obtenerRiesgo(id);
+				limpiarImpacto();
+				listarNivelesImpacto();
 			});
 			$(".glyphicon.glyphicon-remove").click( function(){
 				var idRiesgoProyecto= $(this).closest("tr").attr("id");
@@ -565,14 +583,19 @@ function eliminarRiesgo(id){
 			dataType: "html",
 			success: function(){
 				alert("Se elimino el riesgo correctamente");
-				listarRiesgos();
+				listarRiesgos('');
 			},
 			fail: codigoError
 		});
 	});
 }
 
-
+function limpiarImpacto(){
+	$('#impRiesgo').empty();
+	$('#impRiesgoM').empty();
+	$('#impRiesgo').append("<option value=\"0\" disabled selected>Escoge un nivel de impacto</option>");
+	$('#impRiesgoM').append("<option value=\"0\" disabled selected>Escoge un nivel de impacto</option>");
+}
 function listarRiesgosComunes(){
 		
 	$.ajax({
@@ -714,7 +737,7 @@ $('#proRiesgoM').change(
 
 function validarDecimales(numero)
 {
-	if ((!/^([0-9])*[.]?[0-9]{2}$/.test(numero))&&(!isNaN(numero))){
+	if (/^([0-9])*[.]?[0-9]{2}$/.test(numero)){
 		return true;
 	} else return false;
 }
