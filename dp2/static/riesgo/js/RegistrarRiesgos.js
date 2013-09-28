@@ -537,11 +537,12 @@ function listarRiesgos(search){
 	$("#tablaRiesgos").empty();
 	var data = {
 		idProyecto: $('#idProyecto').val(),
-		nombre: search 
+                nombre: $('#nombre').val(),
+              nombre: search 
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
-		type: 'POST',
+		type: 'GET',
 		//url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
 		url: getAllItems,
 		// url: getAllItems, ->DESCOMENTAR
