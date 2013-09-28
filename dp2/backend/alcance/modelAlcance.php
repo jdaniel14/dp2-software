@@ -23,13 +23,15 @@ Precondicion -> EDTARBOL
 		public $nodos;
 		public $descripcion;
 		public $diasEDT;
+		public $idnodo;
 		
-	function __construct($title, $hijos, $nodos, $descripcion, $diasEDT) {
+	function __construct($title, $hijos, $nodos, $descripcion, $diasEDT, $idnodo ) {
 			$this->title = $title;
 			$this->hijos = $hijos;
 			$this->nodos = $nodos;
 			$this->descripcion = $descripcion;
 			$this->diasEDT = $diasEDT;
+			$this->idnodo = $idnodo;
 		}
 	}
 

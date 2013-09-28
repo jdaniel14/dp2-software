@@ -15,29 +15,29 @@
       $h5n = array();
 
 
-      $hijo2 = new EdtArbol("Planificacion","0" , $h2n , "sape", 2 );
-      $hijo3 = new EdtArbol("Ejecucion","0", $h3n, "sape", 6 );
-      $hijo4 = new EdtArbol("Seguimiento","0", $h4n , "sape", 7);
+      $hijo2 = new EdtArbol("Planificacion","0" , $h2n , "sape", 2 ,2);
+      $hijo3 = new EdtArbol("Ejecucion","0", $h3n, "sape", 6 , 3);
+      $hijo4 = new EdtArbol("Seguimiento","0", $h4n , "sape", 7, 4);
       
       
 
       $prueba1 = array();
       array_push($prueba1, $hijo3, $hijo4);
 
-      $hijo1 = new EdtArbol("Inicio","2", $prueba1 , "sape", 3);
+      $hijo1 = new EdtArbol("Inicio","2", $prueba1 , "sape", 3,1);
       
 
       $prueba = array();
       array_push($prueba, $hijo1,$hijo2);
       
 
-      $hijo5 = new EdtArbol("Cierre","2" ,$prueba , "sape", 4);
+      $hijo5 = new EdtArbol("Cierre","2" ,$prueba , "sape", 5,5);
 
       $nodos = array();
       array_push($nodos, $hijo1,$hijo2,$hijo3,$hijo4,$hijo5);
 
 
-      $padre =  new EdtArbol("DP2","5", $nodos,"sape", 5);
+      $padre =  new EdtArbol("DP2","5", $nodos,"sape", 5, 0);
 
     echo json_encode($padre);
     }
