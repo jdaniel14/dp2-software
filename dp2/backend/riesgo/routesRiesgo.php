@@ -10,7 +10,7 @@
 	//Registrar riesgo
 	$app->post('/R_registrarRiesgo', 'R_postRegistrarRiesgo');//Registrar un riesgo
 
-	$app->post('/R_listaRiesgo/:id', 'R_getListaRiesgo');
+	$app->post('/R_listaRiesgo', 'R_getListaRiesgo');
 	$app->get('/R_obtenerRiesgo/:id', 'R_getRiesgo');//Obtener 1 riesgo
 	$app->get('/R_listaPaquetesEDT/:id', 'R_getListaPaquetesEDT');//Obtener los paquetes de un proyecto
 	$app->get('/R_listaCategoriaRiesgo', 'R_getListaCategoriaRiesgo');//Obtener la lista de objetos afectados de un proyecto
