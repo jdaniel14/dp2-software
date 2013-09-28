@@ -134,6 +134,15 @@ class CO_ContenedorTiposCuenta {
 	public $listaTipoCuenta;
 }
 
+class CO_AsientoContable {
+	public $id;
+	public $descripcion;
+	function __construct($id, $descripcion) {
+		$this->id = $id;
+		$this->descripcion = $descripcion;
+	}
+}
+
 /*
 class Proyecto {
 	public $subtotalERS;
