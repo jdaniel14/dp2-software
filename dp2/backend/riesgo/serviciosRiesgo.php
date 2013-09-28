@@ -367,9 +367,9 @@
 
             //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             //$listaRiesgoComun= 
-            array("nombre" => $row->nombre,"ultProbabilidad" => $row->ult_probabilidad,"ultImpacto" => $row->ult_impacto,"ultSeveridad" => $row->ult_severidad);
+            //array("nombre" => $row->nombre,"ultProbabilidad" => $row->ult_probabilidad,"ultImpacto" => $row->ult_impacto,"ultSeveridad" => $row->ult_severidad);
             //}
-            $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,,id_riesgo_comun,impacto,probabilidad,severidad) 
+            $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad) 
                     VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad)";
             try {
                 $db = getConnection();
@@ -381,9 +381,9 @@
                 $stmt->bindParam("probabilidad", $row->ult_probabilidad);
                 $stmt->bindParam("severidad", $row->ult_severidad);
                 $stmt->execute();
-                $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
+                $id = $db->lastInsertId();
                 $db = null;
-                echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo_x_proyecto,"nombre"=>$riesgo->nombre));
+                echo json_encode(array("idRiesgo"=>$id,"nombre"=>$row->nombre));
             } catch(PDOException $e) {
                 echo json_encode(array("me"=> $e->getMessage()));
                     //'{"error":{"text":'. $e->getMessage() .'}}';
