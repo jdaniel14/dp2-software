@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/boton_bg_grisoscuro"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingBottom="7dp"
+    android:paddingLeft="7dp"
+    android:paddingRight="7dp"
+    android:paddingTop="7dp" >
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="5dp"
+        android:contentDescription="@string/string_empty"
+        android:padding="5dp"
+        android:src="@drawable/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/imgLinea"
+        android:layout_width="0.7dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/string_empty"
+        android:src="@drawable/linea_gris" />
+
+    <TextView
+        android:id="@+id/txtTexto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/txt_prueba_corto"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="@color/blanco" />
+
+</LinearLayout>
