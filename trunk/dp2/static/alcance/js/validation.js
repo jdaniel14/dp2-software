@@ -49,5 +49,6 @@ function validarPaqueteTrabajo(){
 	camposValidos = validateInteger("dias", 0 , Number.POSITIVE_INFINITY, "Debe ingresar un número positivo","Debe ingresar un número entero") && camposValidos;
 	camposValidos = validateFloat("costo",0 , Number.POSITIVE_INFINITY, "Debe ingresar un número positivo","Debe ingresar un número real") && camposValidos;
 	camposValidos = validateInteger("numero_personas",0,Number.POSITIVE_INFINITY,"Debe ingresar un número positivo","Debe ingresar un número entero") && camposValidos;
+	camposValidos = validateMandatory("descripcion","el campo es obligatorio");
 	return camposValidos;
 }

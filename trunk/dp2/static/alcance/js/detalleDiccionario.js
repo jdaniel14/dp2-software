@@ -5,7 +5,7 @@ function getURLParameter(name) {
 }
 
 var id_paquete = getURLParameter("id_paquete");
-var idProyecto = localStorage.idProyecto;
+var id_proyecto = 1;
 
 function cargaData(data){
 	for(key in data){

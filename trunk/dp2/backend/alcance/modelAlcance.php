@@ -18,20 +18,20 @@ Precondicion -> EDTARBOL
     ]
 */
 	class EdtArbol {
+		public $idnodo;
 		public $title;
 		public $hijos;
-		public $nodos;
+		public $dias;
 		public $descripcion;
-		public $diasEDT;
-		public $idnodo;
+		public $nodos;
 		
-	function __construct($title, $hijos, $nodos, $descripcion, $diasEDT, $idnodo ) {
+	function __construct($idnodo, $title, $hijos, $dias, $descripcion ,$nodos) {
+			$this->idnodo = $idnodo;
 			$this->title = $title;
 			$this->hijos = $hijos;
-			$this->nodos = $nodos;
+			$this->dias = $dias;			
 			$this->descripcion = $descripcion;
-			$this->diasEDT = $diasEDT;
-			$this->idnodo = $idnodo;
+			$this->nodos = $nodos;
 		}
 	}
 
