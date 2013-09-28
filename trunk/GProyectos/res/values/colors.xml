@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="gproyectos_background">#efeeee</color>
+    <color name="titulo_txt">#4a4a4a</color>
+    <color name="subtitulo_txt">#7a7979</color>
+    <color name="subtitulo_rpta_txt">#434343</color>
+
+    <color name="linea_gris">#b6b6b6</color>
+    
+    <color name="blanco">#FFFFFF</color>
+    <color name="negro">#000000</color>    
+    
+    <color name="input_azul">#669bcc</color>
+    <color name="input_gris">#b6b6b6</color>
+    
+    <color name="boton_bg_grisoscuro">#363636</color>
+    
+</resources>

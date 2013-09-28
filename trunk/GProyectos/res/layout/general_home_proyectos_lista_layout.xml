@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gproyectos_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:orientation="vertical" >
+
+            <Spinner
+                android:id="@+id/spnBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tipobusqueda_proyectos_array" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edtBuscar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.5"
+            android:background="@color/blanco"
+            android:paddingLeft="10dp"
+            android:paddingRight="15dp"
+            android:selectAllOnFocus="true"
+            android:text=""
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/subtitulo_rpta_txt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/titulo_txt"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/general_proyecto_nombre"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/blanco" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/general_proyecto_jefeproyecto"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/blanco" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/general_proyecto_estado"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/blanco" />
+    </LinearLayout>
+
+    <com.dp2.gproyectos.view.components.MyListView
+        android:id="@+id/lvProyectos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </com.dp2.gproyectos.view.components.MyListView>
+
+</LinearLayout>
