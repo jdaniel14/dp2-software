@@ -538,7 +538,7 @@ function listarRiesgos(search){
 	var data = {
 		idProyecto: $('#idProyecto').val(),
                 nombre: $('#nombre').val(),
-              nombre: search 
+              
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
