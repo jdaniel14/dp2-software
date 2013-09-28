@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto = localStorage.idProyecto;
+var idProyecto = 1;//localStorage.idProyecto;
 iniciaProyecto();		
 iniciaPaquetes();
 
@@ -67,7 +67,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.sumaCostosPaquetesHijo + ' ';
+				'Costo subtotal:'+ paquete.costoTotalPaquete + ' ';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
