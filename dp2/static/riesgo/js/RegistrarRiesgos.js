@@ -543,8 +543,9 @@ function listarRiesgos(search){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		//url: getAllItems + '/' + data.idProyecto + '&buscar='+data.buscar ,
-		url: getAllItems,
+                
+		url: getAllItems + '/' +JSON.stringify(data),
+		//url: getAllItems,
 		// url: getAllItems, ->DESCOMENTAR
 		dataType: "json",
 		success: function(data){
