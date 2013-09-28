@@ -119,8 +119,8 @@ function CR_consultarListaDependencia($idProyecto) {
 function CR_consultarPaqueteEDT($idProyecto){
 
 
-	$sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b WHERE a.id_edt=b.id_estado and b.id_Proyecto=?";
-
+	//$sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b WHERE a.id_edt=b.id_estado and b.id_Proyecto=?";
+	$sql= "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b where  a.id_estado=1 and id_paquete_trabajo   not in(select id_componente_padre from PAQUETE_TRABAJO where id_componente_padre is not null and id_estado=1) and a.id_edt=b.id_edt and b.id_estado=1 and b.id_Proyecto=?;";
 	
 	$lista_paquete = array();
     try {
@@ -130,7 +130,7 @@ function CR_consultarPaqueteEDT($idProyecto){
 
         while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			
-            $paquete = array("id" => $p["id_paquete_trabajo"] + 0,"name"=>$p["nombre"]);
+            $paquete = array("id" => $p["id_paquete_trabajo"] + 0,"name"=>$p["nombre"],"id_padre"=>$p["id_componente_padre"]);
 			
             array_push($lista_paquete, $paquete);
         }
@@ -142,6 +142,7 @@ function CR_consultarPaqueteEDT($idProyecto){
         return array("me" => $e->getMessage());
     }
 	
+
 	return $lista_paquete;
 }
 
