@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+	
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+	<!--<div id="header"> <script src="../../assets/js/header.js"></script></div>-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DP2</a>
+        </div>
+        
+      </div>
+    </div>
+
+	
+	
+    <div class="container">	
+	<div class="row">
+	<div class="col-md-3" width="100%">
+		<div class="well sidebar-nav hidden-print" id="sideBarNavegacion" role="navigation" width="100%" style="display:none;">
+
+	  </div>
+	</div>
+	
+	<div class="col-md-9" role="main">
+      <div class="starter-template">
+	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1 id="nombreProyecto"></h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+	  	  
+	  
+	  <div class="" id="Indicadores">
+		<form class="form-horizontal" >
+		<table width="50%" id="tablaIndicadores">
+				
+			<!--
+<div class="form-group has-success">
+  <label class="control-label" for="inputSuccess">Input with success</label>
+  <input type="text" class="form-control" id="inputSuccess">
+</div>
+<div class="form-group has-warning">
+  <label class="control-label" for="inputWarning">Input with warning</label>
+  <input type="text" class="form-control" id="inputWarning">
+</div>
+<div class="form-group has-error">
+  <label class="control-label" for="inputError">Input with error</label>
+  <input type="text" class="form-control" id="inputError">
+</div>
+			-->
+				
+			<div class="form-group" id="divVP">
+			  <label class="col-lg-2 control-label" for="" id="labVP"  >Valor planeado</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputVP" readOnly>
+			  </div>
+			</div>
+			
+			<div class="form-group" id="divVA">
+			  <label class="col-lg-2 control-label" for="" id="labVA">Valor Actual</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputVA" readOnly>
+			  </div>
+			</div>
+			
+			<div class="form-group" id="divVG">
+			  <label class="col-lg-2 control-label" for="" id="labVG">Valor Ganado</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputVG" readOnly>
+			  </div>
+			</div>
+			
+			<div class="form-group" id="divDC">
+			  <label class="col-lg-2 control-label" for="" id="labDC">Desviacion de Costos</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputDC" readOnly>
+			  </div>
+			</div>
+			
+			<div class="form-group" id="divCPI">
+			  <label class="col-lg-2 control-label" for="" id="labCPI">CPI</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputCPI" readOnly>
+			  </div>
+			</div>
+			
+			<div class="form-group" id="divSPI">
+			  <label class="col-lg-2 control-label" for="" id="labSPI">SPI</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputSPI" readOnly>
+			  </div>
+			</div>
+			
+			<div class="form-group" id="divSV">
+			  <label class="col-lg-2 control-label" for="" id="labSV">SV</label>
+			   <div class="col-lg-10">
+			  <input type="text" class="form-control" id="inputSV" readOnly>
+			  </div>
+			</div>
+			
+			
+		</table >		
+		</form>
+	  </div>
+	  
+	  
+	</div>
+	</div> 
+    </div><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>	
+	<script src="../../static/costo/js/VisualizarIndicadores.js"></script>
+	
+	
+  </body>
+</html>
