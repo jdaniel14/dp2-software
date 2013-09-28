@@ -89,6 +89,7 @@
             $arregloListaRiesgo= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $riesgo->idProyecto});
             $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
