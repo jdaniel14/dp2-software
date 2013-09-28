@@ -348,12 +348,14 @@
     function R_postAsignarRiesgoComun(){
         //$request = Slim::getInstance()->request();
         $request = \Slim\Slim::getInstance()->request();
-        $riesgo = json_decode($request->getBody());
-        for ($i = 1; $i <= count($riesgo); $i++){
+        $riesgolista = json_decode($request->getBody());
+        //for ($i = 1; $i <= count($riesgo); $i++){
+        foreach ($riesgolista as $riesgo){
+            // echo $riesgo[0];
             $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun = :id";
             $db = getConnection();
             $stmt = $db->query($consulta);
-            $stmt->bindParam("id", $idRiesgo[$i]->idRiesgoComun); //arreglar?
+            $stmt->bindParam("id", $riesgo->idRiesgoComun); //arreglar?
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $listaRiesgoComun= array("nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
             }
@@ -363,8 +365,8 @@
                 $db = getConnection();
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("nombre_riesgo", $listaRiesgoComun->nombre);
-                $stmt->bindParam("id_proyecto", $idRiesgo[$i]->idProyecto);
-                $stmt->bindParam("id_riesgo_comun", $idRiesgo[$i]->idRiesgoComun);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("id_riesgo_comun", $riesgo->idRiesgoComun);
                 $stmt->bindParam("impacto", $listaRiesgoComun->impacto);
                 $stmt->bindParam("probabilidad", $listaRiesgoComun->probabilidad);
                 $stmt->bindParam("severidad", $listaRiesgoComun->severidad);
