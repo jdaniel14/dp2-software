@@ -51,7 +51,8 @@
 
     //**********************************
     //*** MOSTRAR EL EDT (REAL)*****************
-     
+     /*
+
     function BuscaIdPaquetePadre($idProyecto,$version){
       $con=getConexionLocal();
       $query="SELECT id_paquete_trabajo_inicial FROM EDT WHERE id_proyecto=" . $idProyecto." AND version='".$version."'";
@@ -263,7 +264,7 @@
     //**********************************
     //FIN MOSTRAR EL COMBO BOX DE VERSIONES A ESCOGER
     
-    
+    */
     
     
     
