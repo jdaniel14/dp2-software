@@ -352,41 +352,35 @@ $("#btnGrabar").click(function(){
 });
 
 function grabarRecursos(){
-	var idRecursos=new Array();
-	var costoRecursos=new Array();
-	var idmonedas=new Array();
-	porcentajeReserva=0;
 	
-	num=numRecursos;
-	num++;
-	for (i=1; i<=num;i++){
-	
-		idRecursos.push(document.getElementById("idRecurso"+i).value);
-		costoRecursos.push(document.getElementById("costoUnitario"+i).value);
-		idmonedas.push(document.getElementById("comboMoneda"+i).options[document.getElementById("comboMoneda"+i).selectedIndex].value);
-	
-	}
-	porcentajeReserva=document.getElementById("inputReserva").value;
+	porcentajeReserva=$("#inputReserva").val();
 	
 	
 	var obj={
-		idProyecto: idProyecto,
-		listaRecursos: idRecursos,
-		listaCUR: costoRecursos,
-		porcReserva: idmonedas
+		idProyecto: idProyecto,	
+		porcReserva: porcentajeReserva
 		
 		
 	}
 	/*
 	$.ajax({
 		type: 'POST',
-		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_grabarReserva/'+JSON.stringify(obj),		
 		dataType: "json",
 		async: true,
 		success:function(data){if (data!=null) alert("se grabó");}
 	});
 	*/
-	alert("se grabó");
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_enviarPorcReserva/'+JSON.stringify(obj),		
+		dataType: "json", 
+		async: true,
+		success:function(data,B){alert("Se grabó correctamente");}
+	});
+	
+	//alert("se grabó");
 	
 	//CO_enviarCURecursos
 	
