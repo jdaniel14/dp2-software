@@ -81,7 +81,9 @@
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
                 left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
-                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE CONCAT('%', ':nombre_riesgo', '%')"; 
+                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE %'.$riesgo->nombre.'%";
+                //CONCAT('%', ':nombre_riesgo', '%')"; 
+                //%'.variable.'%
                 //“idPaqueteRiesgo”:”EDT1”,
                 //“idCategoriaRiesgo”:”costo”
 
@@ -90,7 +92,7 @@
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
+            //$stmt->bindParam("nombre_riesgo", $riesgo->nombre);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
