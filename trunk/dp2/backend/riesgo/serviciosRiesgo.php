@@ -353,7 +353,7 @@
         foreach ($riesgolista->lista as $riesgo){
             // echo $riesgo[0];
             $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun =".$riesgo;
-            //$db = getConnection();
+            $db = getConnection();
             //$stmt = $db->query($consulta);
             //$stmt->bindParam("id", $riesgo->idRiesgoComun); //arreglar?
 
@@ -363,10 +363,10 @@
             $row = $stmt->fetchObject();
 
 
-
+            //$data=array("id" => $row->id_riesgo_x_proyecto, "estado" => $row->estado_logico);
 
             //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $listaRiesgoComun= array("nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
+            $listaRiesgoComun= array("nombre" => $row->nombre,"ultProbabilidad" => $row->ult_probabilidad,"ultImpacto" => $row->ult_impacto,"ultSeveridad" => $row->ult_severidad);
             //}
             $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,,id_riesgo_comun,id_categoria_riesgo,impacto,probabilidad,severidad) 
                     VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:id_categoria_riesgo,:impacto,:probabilidad,:severidad)";
