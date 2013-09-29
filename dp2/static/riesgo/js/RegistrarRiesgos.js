@@ -83,12 +83,12 @@ function main(){
 			nombreResponsable: $('#equRes').val()
 		};
 
-		$('#errorNombre').fadeOut('slow');
-		$('#errorCategoria').fadeOut('slow');
-		$('#errorImpacto').fadeOut('slow');
-		$('#errorProba').fadeOut('slow');
-		$('#errorCosto').fadeOut('slow');
-		$('#errorTiempo').fadeOut('slow');
+		$('#errorNombre').hide();
+		$('#errorCategoria').hide();
+		$('#errorImpacto').hide();
+		$('#errorProba').hide();
+		$('#errorCosto').hide();
+		$('#errorTiempo').hide();
 		if (validarRegistro(data,1)) {
 			console.log(data);
 			var jsonData = JSON.stringify(data);
@@ -121,12 +121,12 @@ function main(){
 			demoraPotencial: $('#tiemRiesgoM').val(),
 			nombreResponsable: $('#equResM').val()
 		};
-		$('#errorNombreM').fadeOut('slow');
-		$('#errorCategoriaM').fadeOut('slow');
-		$('#errorImpactoM').fadeOut('slow');
-		$('#errorProbaM').fadeOut('slow');
-		$('#errorCostoM').fadeOut('slow');
-		$('#errorTiempoM').fadeOut('slow');
+		$('#errorNombreM').hide();
+		$('#errorCategoriaM').hide();
+		$('#errorImpactoM').hide();
+		$('#errorProbaM').hide();
+		$('#errorCostoM').hide();
+		$('#errorTiempoM').hide();
 		
 		console.log(data);
 		if (validarRegistro(data,2)) {
@@ -158,7 +158,7 @@ function main(){
     		lista: arreglo,
     		idProyecto : $('#idProyecto').val()
     	};
-    	
+
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'POST',
@@ -198,7 +198,7 @@ function main(){
 				data: jsonData,
 				dataType: "json",
 				success: function(data){
-					alert(data.me);
+					alert("Actualizado con éxito");
 					$('#modalConfiguracion').modal('hide');
 				},
 				fail: function(data){
@@ -234,12 +234,12 @@ function main(){
 		$('#costRiesgo').val('');
 		$('#tiemRiesgo').val('');
 		$('#equRes').val(0);
-		$('#errorNombre').fadeOut('slow');
-		$('#errorCategoria').fadeOut('slow');
-		$('#errorImpacto').fadeOut('slow');
-		$('#errorProba').fadeOut('slow');
-		$('#errorCosto').fadeOut('slow');
-		$('#errorTiempo').fadeOut('slow');
+		$('#errorNombre').hide();
+		$('#errorCategoria').hide();
+		$('#errorImpacto').hide();
+		$('#errorProba').hide();
+		$('#errorCosto').hide();
+		$('#errorTiempo').hide();
 		
 	});
 
@@ -503,12 +503,12 @@ function listarRiesgos(search){
 				obtenerRiesgo(id);
 				limpiarImpacto();
 				listarNivelesImpacto();
-				$('#errorNombreM').fadeOut('slow');
-				$('#errorCategoriaM').fadeOut('slow');
-				$('#errorImpactoM').fadeOut('slow');
-				$('#errorProbaM').fadeOut('slow');
-				$('#errorCostoM').fadeOut('slow');
-				$('#errorTiempoM').fadeOut('slow');
+				$('#errorNombreM').hide();
+				$('#errorCategoriaM').hide();
+				$('#errorImpactoM').hide();
+				$('#errorProbaM').hide();
+				$('#errorCostoM').hide();
+				$('#errorTiempoM').hide();
 			});
 			$(".glyphicon.glyphicon-remove").click( function(){
 				var idRiesgoProyecto= $(this).closest("tr").attr("id");
@@ -525,7 +525,6 @@ function listarRiesgos(search){
 
 function eliminarRiesgo(id){
 	$("#btnEliminar").click(function(){
-		alert("xD");
 		var data = {
 			idRiesgoProyecto : id
 		}
@@ -810,7 +809,7 @@ function validarRegistro(data, caso){
 	var flag = true; //si true guarda, false no guarda
 	
 	if (caso==1) {
-		if (data.nombreRiesgo=='') {
+		if (data.nombre=='') {
 			flag=false;
 			$('#errorNombre').fadeIn('slow');	}
 
