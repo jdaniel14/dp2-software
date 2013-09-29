@@ -7,7 +7,7 @@
         
         //jose
 	function G_getListaJP(){
-		$sql = "SELECT id_empleado, CONCAT(nombres, ' ', apellidos) as nombres FROM EMPLEADO WHERE id_perfil = 1 ";
+		$sql = "SELECT id_empleado, CONCAT(nombres, ' ', apellidos) as nombres FROM EMPLEADO WHERE id_rol = 1 ";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
