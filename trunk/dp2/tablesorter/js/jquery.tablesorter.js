@@ -31,9 +31,9 @@
 			ts.defaults = {
 
 				// *** appearance
-				theme            : 'default',  // adds tablesorter-{theme} to the table for styling
-				widthFixed       : false,      // adds colgroup to fix widths of columns
-				showProcessing   : false,      // show an indeterminate timer icon in the header when the table is sorted or filtered.
+				theme            : 'bootstrap',  // adds tablesorter-{theme} to the table for styling
+				widthFixed       : true,      // adds colgroup to fix widths of columns
+				showProcessing   : true,      // show an indeterminate timer icon in the header when the table is sorted or filtered.
 
 				headerTemplate   : '{content}',// header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
 				onRenderTemplate : null,       // function(index, template){ return template; }, (template is a string)

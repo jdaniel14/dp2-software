@@ -1,4 +1,5 @@
-var rootURL = "../../api/G_listaLeccionesAprendidas";
+var rootURL = "../../api/G_devuelveLeccionesAprendidas";
+var eliminarLeccionAprendida = "../../api/G_cambiaEstadoLeccionAprendida";
 
 $(document).ready(function(){
 	iniciaLeccionesAprendidas();
@@ -12,20 +13,57 @@ function iniciaLeccionesAprendidas(){
 		dataType: "json", // data type of response
         success: function(data){                    
             agregaDataFila(data);
-            $(".btn.btn-default").click(function(){
+            $(".btn.btn-info").click(function(){
+				var auxtd = $(this).closest("tr").find("td");
+				var idLeccionAprendida = auxtd[0].innerHTML;
+				alert(idLeccionAprendida);
+				localStorage.setItem("idLeccionAprendida",idLeccionAprendida);
+				$(location).attr('href','ModificarLeccionAprendida.html');
+			});
+			$(".btn.btn-danger").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
 				var idLeccionAprendida = auxtd[0].innerHTML;
 				localStorage.setItem("idLeccionAprendida",idLeccionAprendida);
+				var obj ={
+					id: localStorage.getItem("idLeccionAprendida")
+				};
+
+				$.ajax({
+					type: 'POST',
+					url: eliminarLeccionAprendida,
+					dataType: "json", // data type of response	
+					data: JSON.stringify(obj),
+			        success: function(data){ 
+			        	$(location).attr('href','ListaLeccionesAprendidas.html'); 
+			        	alert("Se elimino");                  
+			        }
+				});
 			});
         }
 	});
 }
+function eliminarLeccionAprendida(){
+	alert("bonnie se come los mocos");
+	var obj ={
+		id: localStorage.getItem("idLeccionAprendida")
+	};
 
+	$.ajax({
+		type: 'POST',
+		url: eliminarLeccionAprendida,
+		dataType: "json", // data type of response	
+		data: JSON.stringify(obj),
+		fail: codigoError,
+        success: function(data){  
+        	alert("Se elimino");                  
+        }
+	});
+}
 function agregaDataFila(data){
 	//arreglo=arregloProyecto;
 	
 	if (data!=null){
-		arreglo=data["prs"];
+		arreglo=data["lecciones"];
 	}
 	
 	for (i=0; i<arreglo.length;i++){		
@@ -37,8 +75,7 @@ function agregaFilaLeccionAprendida(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-	'</td><td><button type="button" class="btn btn-default">Administrar</button></td></tr>';
+	var tbody = '<tr><td style="display:none">'+ arreglo["id"] + '</td><td>' + arreglo["ne"] + '</td><td>' + arreglo["dla"] + '</td><td>' + arreglo["np"] + '</td><td>' + arreglo["cla"] +'</td><td><button type="button" class="btn btn-info">Modificar</button></td><td><button type="button" class="btn btn-danger">Eliminar</button></td></tr>';
 	$("#listaLeccionAprendida tbody").append(tbody);
 	$("#listaLeccionAprendida").trigger("update"); 
 }

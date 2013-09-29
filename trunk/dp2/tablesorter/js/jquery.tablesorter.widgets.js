@@ -621,12 +621,29 @@ ts.addWidget({
 			if (wo.filter_columnFilters !== false && $ths.filter('.filter-false').length !== $ths.length){
 				// build filter row
 				t = '<tr class="tablesorter-filter-row">';
-				for (i = 0; i < cols; i++){
-					t += '<td></td>';
+				
+				var k=0;
+				for (i=0;i<cols;i++){
+					if (document.getElementById("listaLeccionAprendida").rows[0].cells[i].innerText == "#"){
+						k = i;
+					}
+				}
+
+				for (i = 0; i < cols; i++){	
+
+					if (k==i){
+						t += '<td style="display:none"></td>';	
+					}
+					else
+					{
+						t += '<td></td>';
+					}
+							
 				}
 				c.$filters = $(t += '</tr>').appendTo( $t.find('thead').eq(0) ).find('td');
 				// build each filter input
 				for (i = 0; i < cols; i++){
+				//if (i!="0"){
 					dis = false;
 					$th = $ths.filter('[data-column="' + i + '"]:last'); // assuming last cell of a column is the main column
 					sel = (wo.filter_functions && wo.filter_functions[i] && typeof wo.filter_functions[i] !== 'function') || $th.hasClass('filter-select');
@@ -663,6 +680,7 @@ ts.addWidget({
 							t.addClass('disabled')[0].disabled = true; // disabled!
 						}
 					}
+				//}
 				}
 			}
 			$t
