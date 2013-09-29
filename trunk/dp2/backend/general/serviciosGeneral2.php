@@ -50,7 +50,7 @@ function G_postRegistrarLeccionAprendida() {
     $proj = json_decode($request->getBody());
 
     try {
-        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleado_proyecto, id_categoria_lec, descripcion, estado) VALUES (:idexp, :cla, :dla, 1)";
+        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleado_proyecto, id_categoria_lec, descripcion, estado, fecha_registro, fecha_actualizacion) VALUES (:idexp, :cla, :dla, 1, SYSDATE(), SYSDATE())";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("idexp", $proj->idexp);
@@ -111,7 +111,7 @@ function G_postBorrarLeccionAprendida() {
 function G_postActualizarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
     $leccion = json_decode($request->getBody());
-    $sql = " UPDATE LECCION_APRENDIDA SET id_empleado_proyecto=:idexp, id_categoria_lec =:cla, descripcion =:dla
+    $sql = " UPDATE LECCION_APRENDIDA SET id_empleado_proyecto=:idexp, id_categoria_lec =:cla, descripcion =:dla, fecha_actualizacion=SYSDATE()
 	    WHERE id_leccion_aprendida=:id and estado=1 ";
     try {
         $db = getConnection();
@@ -150,7 +150,7 @@ where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.
             array_push($lista, $leccion);
         }
         $db = null;
-        echo json_encode($lista);
+        echo json_encode(array("lecciones"=>$lista));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
