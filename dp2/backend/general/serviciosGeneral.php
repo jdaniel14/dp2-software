@@ -194,8 +194,8 @@
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
 		$sql = "UPDATE PROYECTO SET acta_jefe_comite=:p_jefe_comite,
-									acta_patrocinador=:p_patrocinador,
-									id_jefe_proyecto=:p_id_jefe_proyecto
+                                            acta_patrocinador=:p_patrocinador,
+                                            id_jefe_proyecto=:p_id_jefe_proyecto
 				WHERE id_proyecto=:p_id_proy ";
 		try {
 			$db = getConnection();
@@ -271,7 +271,7 @@
 	
 	}
 	function G_getPrioridad(){
-		$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO";
+		$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO order by id_prioridad desc";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
