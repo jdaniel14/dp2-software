@@ -50,7 +50,7 @@ function G_postRegistrarLeccionAprendida() {
     $proj = json_decode($request->getBody());
 
     try {
-        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleadoXproyecto, id_categoria_lec, descripcion) VALUES (:idexp, :cla, :dla)";
+        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleado_proyecto, id_categoria_lec, descripcion) VALUES (:idexp, :cla, :dla)";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("idexp", $proj->idexp);
