@@ -32,14 +32,14 @@ function G_getUsuario() {
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("p_user", $acta->user);
-        $stmt->bindParam("p_pass", $acta->pass);
+        $stmt->bindParam("p_user", $acta->p_user);
+        $stmt->bindParam("p_pass", $acta->p_pass);
         $stmt->execute();
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
         $usuario = array("nom_user" => $p["nombre_corto"],
-            "id_user" => $p["id_empleado"]);
+                        "id_user" => $p["id_empleado"]);
         $db = null;
-        echo json_encode(array("user" => $usuario));
+        echo json_encode(array("me" => $usuario));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
