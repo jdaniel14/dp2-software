@@ -75,8 +75,9 @@ $(document).ready(function() {
 
 
 		//document.getElementById("#nameProyect").innerHTML = nombre_proyecto.val() ;
-		
+
 	$("#idProyecto").attr("value", id_proyecto);
+	
 	$.ajax({
 		type: 'GET',
 		url : '../../api/G_devuelveActa/'+id_proyecto,
@@ -84,7 +85,6 @@ $(document).ready(function() {
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
 	});
-
 });
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
@@ -127,7 +127,6 @@ function grabarInformacionActa(){
 		tp          : $("#tipoProyecto").val(),
 		pp          : $("#prioridadProyecto").val()
 	}; */
-	alert("hola");
         var obj ={
 		idProyecto   : $("#idProyecto").val(),
 		np           : $("#np").val(),
