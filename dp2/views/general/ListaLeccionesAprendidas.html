@@ -10,7 +10,8 @@
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
 
     <!-- Custom styles for this template -->
     <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
@@ -23,6 +24,7 @@
 
     <!-- Tablesorter: optional -->
     <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
     
   </head>
 
@@ -41,10 +43,10 @@
       </div>
 
     <div class="" >
-      <table id="listaLeccionAprendida" class="tablesorter" width="90%" >      
+      <table align="center" id="listaLeccionAprendida" class="tablesorter - {bootstrap}" width="90%" >      
         <thead>
           <tr>
-            <th><b>#</b></th>
+            <th  id="noMostrar" style="display:none">#</th>
             <th><b>Nombre</b></th>
             <th><b>Descripcion</b></th>
             <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Proyecto</b></th>
@@ -55,7 +57,7 @@
         </thead>
         <tfoot>
           <tr>
-            <th>#</th>
+            <th style="display:none">#</th>
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Proyecto</th>
@@ -93,7 +95,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../static/general/js/ListaProyectos.js"></script>
+    <script src="../../static/general/js/listaLeccionesAprendidas.js"></script>
     <script src="../../assets/js/header.js"></script>
     <!-- Tablesorter: required for bootstrap -->
     <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
