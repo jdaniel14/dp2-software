@@ -35,7 +35,7 @@
     $proj = json_decode($request->getBody());
 
     try {
-				$sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto, id_prioridad) VALUES (:nom, :fi, :ff, :tp, 0)";
+				$sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto, id_prioridad) VALUES (:nom, :fi, :ff, :tp, 5)";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
