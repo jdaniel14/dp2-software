@@ -12,7 +12,7 @@
     $app->post('/G_cambiaEstadoLeccionAprendida', 'G_postBorrarLeccionAprendida'); //borra (de modo logico) la leccion aprendida
     $app->post('/G_actualizarLeccionAprendida', 'G_postActualizarLeccionAprendida');
     $app->get('/G_devuelveLeccionesAprendidas', 'G_getLeccionesAprendidas'); //leer todas las lecciones aprendidas
-
+    $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
 
 
 
