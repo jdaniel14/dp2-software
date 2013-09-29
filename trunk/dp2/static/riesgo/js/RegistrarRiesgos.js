@@ -51,7 +51,17 @@ function main(){
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
 	// listarConfiguracion();
-
+	$('#errorNombre').fadeIn('slow');
+	$('#errorCategoria').fadeIn('slow');
+	$('#errorImpacto').fadeIn('slow');
+	$('#errorProba').fadeIn('slow');
+	$('#errorCosto').fadeIn('slow');
+	$('#errorTiempo').fadeIn('slow');
+	
+	
+	
+	
+	
 	$("#btnBuscar").click(function(){
 		// buscar.nombre = $("#buscar").val();
 		listarRiesgos(buscar);
