@@ -218,8 +218,8 @@
         
 	function G_getActa($id){
 	
-		$sql = "select pp.nombre_prioridad,
-                                tp.nombre_tipo_proyecto,
+		$sql = "select p.id_prioridad,
+                                p.id_tipo_proyecto,
                                 p.descripcion_proyecto,
                                 p.acta_costos,
                                 p.acta_f_preparacion,
@@ -231,14 +231,10 @@
                                 e.id_empleado
 
                         from PROYECTO p,
-                        PRIORIDAD_PROYECTO pp,
-                        TIPO_PROYECTO tp,
                         EMPLEADO e,
                         EMPLEADO_PROYECTO ep,
                         ROL_EMPLEADO re
                         where p.id_proyecto=:id
-                        and pp.id_prioridad=p.id_prioridad
-                        and p.id_tipo_proyecto=tp.id_tipo_proyecto
                         and p.id_proyecto=ep.id_proyecto
                         and ep.id_empleado=e.id_empleado
                         and re.id_rol=e.id_rol
@@ -251,16 +247,16 @@
                         $stmt->execute();		
 			$p = $stmt->fetch(PDO::FETCH_ASSOC);
 			$acta = array("pap"=>$p["acta_patrocinador"],
-							"fpp"=>$p["acta_f_preparacion"],
-							"tp"=>$p["nombre_tipo_proyecto"],
-							"pp"=>$p["nombre_prioridad"],
-							"dp"=>$p["descripcion_proyecto"],
-							"cp"=>$p["acta_costos"],
-							"plp"=>$p["acta_duracion"],
-							"calp"=>$p["acta_calidad"],
-							"np"=>$p["nombre_proyecto"],
-							"jp"=>$p["id_empleado"],
-							"jcp"=>$p["acta_jefe_comite"]
+                                    "fpp"=>$p["acta_f_preparacion"],
+                                    "tp"=>$p["id_tipo_proyecto"],
+                                    "pp"=>$p["id_prioridad"],
+                                    "dp"=>$p["descripcion_proyecto"],
+                                    "cp"=>$p["acta_costos"],
+                                    "plp"=>$p["acta_duracion"],
+                                    "calp"=>$p["acta_calidad"],
+                                    "np"=>$p["nombre_proyecto"],
+                                    "jp"=>$p["id_empleado"],
+                                    "jcp"=>$p["acta_jefe_comite"]
                                                         );
 			
 			$db = null;
