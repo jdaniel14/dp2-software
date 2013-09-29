@@ -53,9 +53,9 @@ function main(){
 	// listarConfiguracion();
 
 	$("#btnBuscar").click(function(){
-		buscar.nombre = $("#buscar").val();
+		// buscar.nombre = $("#buscar").val();
 		listarRiesgos(buscar);
-		buscar.nombre='';
+		// buscar.nombre='';
 	});
 	
 
@@ -867,18 +867,34 @@ function validarRegistro(data, caso){
 			}
 		}	
 	}
+	console.log(data.costoPotencial);
 	if (data.costoPotencial==''){
 			data.costoPotencial=null;
+	} else {
+		if (data.costoPotencial>=0) {
+			alert("costo ok")
+		} else {
+			alert("costo bad");
+		}
 	}
+	console.log(data.demoraPotencial);
 	if (data.demoraPotencial==''){
 		data.demoraPotencial=null;
+	} else {
+		if (data.demoraPotencial>=0) {
+			alert("dia ok")
+		} else {
+			alert("dia bad");
+		}
 	}
-		
+	return flag;	
 }
-	
 
-		// $('#errorMuyBajo').fadeOut('slow');
+
+
+		// $('#errorMuyBajo').fadeOut('slow'); /[0]{1}[.]{1}[0-9]*/
 		// $('#errorBajo').fadeOut('slow');
 		// $('#errorMedio').fadeOut('slow');
 		// $('#errorAlto').fadeOut('slow');
 		// $('#errorMuyAlto').fadeOut('slow');}
+
