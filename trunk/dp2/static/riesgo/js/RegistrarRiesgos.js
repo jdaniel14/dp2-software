@@ -51,12 +51,7 @@ function main(){
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
 	// listarConfiguracion();
-	$('#errorNombre').fadeIn('slow');
-	$('#errorCategoria').fadeIn('slow');
-	$('#errorImpacto').fadeIn('slow');
-	$('#errorProba').fadeIn('slow');
-	$('#errorCosto').fadeIn('slow');
-	$('#errorTiempo').fadeIn('slow');
+
 	
 	
 	
@@ -87,7 +82,13 @@ function main(){
 			demoraPotencial: $('#tiemRiesgo').val(),
 			nombreResponsable: $('#equRes').val()
 		};
-		
+
+		$('#errorNombre').fadeOut('slow');
+		$('#errorCategoria').fadeOut('slow');
+		$('#errorImpacto').fadeOut('slow');
+		$('#errorProba').fadeOut('slow');
+		$('#errorCosto').fadeOut('slow');
+		$('#errorTiempo').fadeOut('slow');
 		if (validarRegistro(data,1)) {
 			console.log(data);
 			var jsonData = JSON.stringify(data);
@@ -100,11 +101,10 @@ function main(){
 					var item = data;
 					alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
 					listarRiesgos(buscar);
+					$('#myModalRegister').modal('hide');
 				},
 				fail: codigoError
 			});
-		} else {
-			alert("Hubo un problema con su registro");
 		}
 	});
 	$("#btnModificar").click(function(){
@@ -277,6 +277,12 @@ function main(){
 		$('#costRiesgo').val('');
 		$('#tiemRiesgo').val('');
 		$('#equRes').val(0);
+		$('#errorNombre').fadeOut('slow');
+		$('#errorCategoria').fadeOut('slow');
+		$('#errorImpacto').fadeOut('slow');
+		$('#errorProba').fadeOut('slow');
+		$('#errorCosto').fadeOut('slow');
+		$('#errorTiempo').fadeOut('slow');
 		
 	});
 
@@ -841,7 +847,7 @@ function validarRegistro(data, caso){
 	var flag = true; //si true guarda, false no guarda
 	if (data.nombre=='') {
 		flag=false;
-	}
+		$('#errorNombre').fadeIn('slow');	}
 
 	if (data.idPaqueteTrabajo==0){
 		data.idPaqueteTrabajo=null;
@@ -850,10 +856,12 @@ function validarRegistro(data, caso){
 	if (data.idCategoriaRiesgo==0){
 		data.idCategoriaRiesgo=null;
 		flag=false;
+		$('#errorCategoria').fadeIn('slow');
 	} 
 	if (data.impacto==0){
 		data.impacto = null;
 		flag=false;
+		$('#errorImpacto').fadeIn('slow');
 	}
 	if (data.nombreResponsable==0){
 		data.nombreResponsable=null;
@@ -861,40 +869,39 @@ function validarRegistro(data, caso){
 	if (data.probabilidad==''){
 		data.probabilidad=null;
 		flag=false;
+		$('#errorProba').fadeIn('slow');
 	} else {
 		if (isNaN(data.probabilidad)){
-		// $('#errorAlto').fadeIn('slow'); ERROR PROBA
-		flag = false;
+			$('#errorProba').fadeIn('slow');
+			flag = false;
 		} else {
-			if (validarProbaImpacto(data.probabilidad)){
-				if (!validarDecimales(data.probabilidad)){
-					//redondeo
-					data.probabilidad = Math.round((data.probabilidad* 100 ))/100;
+				if (validarProbaImpacto(data.probabilidad)){
+					if (!validarDecimales(data.probabilidad)){
+						//redondeo
+						data.probabilidad = Math.round((data.probabilidad* 100 ))/100;
+					}
+				} else {
+					$('#errorProba').fadeIn('slow');
+					flag = false;
 				}
-			} else {
-				// $('#errorAlto').fadeIn('slow'); ERROR PROBA
-				flag = false;
-			}
 		}	
 	}
 	console.log(data.costoPotencial);
 	if (data.costoPotencial==''){
 			data.costoPotencial=null;
 	} else {
-		if (data.costoPotencial>=0) {
-			alert("costo ok")
-		} else {
-			alert("costo bad");
+		if (data.costoPotencial<0) {
+			flag = false;
+			 $('#errorCosto').fadeIn('slow');
 		}
 	}
 	console.log(data.demoraPotencial);
 	if (data.demoraPotencial==''){
 		data.demoraPotencial=null;
 	} else {
-		if (data.demoraPotencial>=0) {
-			alert("dia ok")
-		} else {
-			alert("dia bad");
+		if (data.demoraPotencial<0) {
+			flag = false;
+			$('#errorTiempo').fadeIn('slow');
 		}
 	}
 	return flag;	
@@ -908,3 +915,10 @@ function validarRegistro(data, caso){
 		// $('#errorAlto').fadeOut('slow');
 		// $('#errorMuyAlto').fadeOut('slow');}
 
+
+	// $('#errorNombre').fadeIn('slow');
+	// $('#errorCategoria').fadeIn('slow');
+	// $('#errorImpacto').fadeIn('slow');
+	// $('#errorProba').fadeIn('slow');
+	// $('#errorCosto').fadeIn('slow');
+	// $('#errorTiempo').fadeIn('slow');
