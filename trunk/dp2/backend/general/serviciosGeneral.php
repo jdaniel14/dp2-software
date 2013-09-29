@@ -249,7 +249,7 @@
 			$stmt->bindParam("id", $id);
                         $stmt->execute();		
 			$p = $stmt->fetch(PDO::FETCH_ASSOC);
-			$acta = array("pap"=>$p["patrocinador"],
+			$acta = array("pap"=>$p["acta_patrocinador"],
 							"fpp"=>$p["acta_f_preparacion"],
 							"tp"=>$p["nombre_tipo_proyecto"],
 							"pp"=>$p["nombre_prioridad"],
