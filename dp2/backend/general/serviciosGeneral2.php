@@ -4,27 +4,21 @@ include('routesGeneral2.php');
 include_once '../backend/conexion.php';
 
 function G_getCategoria(){
-		$sql = "SELECT id_recurso, nombre_recurso FROM RECURSO_HUMANO ";
+		$sql = " SELECT id_categoria_lec, nombre_categoria_lec, descripcion_categoria_lec from CATEGORIA_LEC_APRENDIDA ";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
-			$lista_jp = array();
+			$lista_cats = array();
 			while($j = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$jp = array("id"=>$j["id_recurso"], "nom"=>$j["nombre_recurso"]);
-					array_push($lista_jp, $jp);
+                            $cat = array("idCategoria"=>$j["id_categoria_lec"], 
+                                "nom"=>$j["nombre_categoria_lec"]);
+                            array_push($lista_cats, $cat);
 			}
-
 			$db = null;
-			echo json_encode($lista_jp) ;
+			echo json_encode($lista_cats) ;
 		} catch(PDOException $e) {
-      echo json_encode(array("me"=> $e->getMessage()));
+                    echo json_encode(array("me"=> $e->getMessage()));
 		}	
-	/*	$arregloProyecto= array(
-      array('id'=>1, 'nom'=>'Bonnie Carranza'),
-      array('id'=>2, 'nom'=>'Alfonso Bedoya'),
-      array('id'=>3, 'nom'=>'Jose Astuvilca'),
-      array('id'=>4, 'nom'=>'Irvin Vargas'));
-		echo json_encode($arregloProyecto);*/
 	}
 
 
