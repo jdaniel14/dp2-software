@@ -85,7 +85,7 @@ function main(){
 			acciones: $('#accEsp').val(),
 			costoPotencial: $('#costRiesgo').val(),
 			demoraPotencial: $('#tiemRiesgo').val(),
-			idEquipo: $('#equRes').val()
+			nombreResponsable: $('#equRes').val()
 		};
 		
 		if (validarRegistro(data,1)) {
@@ -119,7 +119,7 @@ function main(){
 			acciones: $('#accEspM').val(),
 			// costoPotencial: $('#costRiesgo').val(),
 			// demoraPotencial: $('#tiemRiesgo').val(),
-			// idEquipo: $('#equRes').val()
+			// nombreResponsable: $('#equRes').val()
 		};
 		
 		if ($('#paqEdtM').val()==0){
@@ -139,9 +139,9 @@ function main(){
 			data.impacto= $('#impRiesgoM').val();
 		}
 		if ($('#equResM').val()==0){
-			data.idEquipo=null;
+			data.nombreResponsable=null;
 		} else {
-			data.idEquipo= $('#equResM').val();
+			data.nombreResponsable= $('#equResM').val();
 		}
 		if ($('#proRiesgoM').val()==''){
 			data.probabilidad=null;
@@ -169,7 +169,7 @@ function main(){
 		// 	acciones: $('#accEspM').val(),
 		// 	costoPotencial: $('#costRiesgoM').val(),
 		// 	demoraPotencial: $('#tiemRiesgoM').val(),
-		// 	idEquipo: $('#equResM').val()
+		// 	nombreResponsable: $('#equResM').val()
 		// };
 		console.log(data);
 		if ((data.nombreRiesgo!='') && (data.idPaqueteTrabajo!=null) && (data.idCategoriaRiesgo!=null)){
@@ -508,8 +508,8 @@ function listarEquipos(){
 		success: function(data){
 			var lista = data;
 			$.each(lista, function (i, value){
-				$('#equRes').append("<option value="+ value.idEquipo +">" + value.nombre + "</option>");
-				$('#equResM').append("<option value="+ value.idEquipo +">" + value.nombre + "</option>");
+				$('#equRes').append("<option value="+ value.nombreResponsable +">" + value.nombre + "</option>");
+				$('#equResM').append("<option value="+ value.nombreResponsable +">" + value.nombre + "</option>");
 			});			
 		},
 		fail: codigoError
@@ -855,8 +855,8 @@ function validarRegistro(data, caso){
 		data.impacto = null;
 		flag=false;
 	}
-	if (data.idEquipo==0){
-		data.idEquipo=null;
+	if (data.nombreResponsable==0){
+		data.nombreResponsable=null;
 	}
 	if (data.probabilidad==''){
 		data.probabilidad=null;
