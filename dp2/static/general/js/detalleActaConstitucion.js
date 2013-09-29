@@ -134,7 +134,7 @@ function grabarInformacionActa(){
 		tp          : $("#tp").val(),
 		pp          : $("#pp").val()
 	}; 
-        alert(JSON.stringify(obj));
+       // alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarInfoActa,
