@@ -171,11 +171,11 @@ and LA.id_leccion_aprendida =:id
         $stmt->execute();
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
         $leccion = array(
-                "id" => $j["id"],
-                "ne" => $j["empleado"],
-                "dla" => $j["descr"],
-                "np" => $j["np"],
-                "cla" => $j["cla"]
+                "id" => $p["id"],
+                "ne" => $p["empleado"],
+                "dla" => $p["descr"],
+                "np" => $p["np"],
+                "cla" => $p["cla"]
             );
         $db = null;
         echo json_encode($leccion);
