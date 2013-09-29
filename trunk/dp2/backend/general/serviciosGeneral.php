@@ -228,7 +228,7 @@
                                 p.acta_jefe_comite,
                                 p.acta_patrocinador,
                                 p.nombre_proyecto,
-                                e.nombre_corto
+                                e.id_empleado
 
                         from PROYECTO p,
                         PRIORIDAD_PROYECTO pp,
@@ -259,8 +259,9 @@
 							"plp"=>$p["acta_duracion"],
 							"calp"=>$p["acta_calidad"],
 							"np"=>$p["nombre_proyecto"],
-							"jp"=>$p["nombre_corto"],
-							"jcp"=>$p["acta_jefe_comite"]);
+							"jp"=>$p["id_empleado"],
+							"jcp"=>$p["acta_jefe_comite"]
+                                                        );
 			
 			$db = null;
 			echo json_encode(array("acta"=>$acta)) ;
