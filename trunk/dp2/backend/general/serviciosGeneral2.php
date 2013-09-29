@@ -116,9 +116,9 @@ function G_postActualizarLeccionAprendida() {
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("id", $leccion->idexp);
-        $stmt->bindParam("id", $leccion->cla);
-        $stmt->bindParam("id", $leccion->dla);
+        $stmt->bindParam("idexp", $leccion->idexp);
+        $stmt->bindParam("cla", $leccion->cla);
+        $stmt->bindParam("dla", $leccion->dla);
         $stmt->bindParam("id", $leccion->id);
         $stmt->execute();
         $db = null;
