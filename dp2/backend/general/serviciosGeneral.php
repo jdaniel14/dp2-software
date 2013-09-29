@@ -117,8 +117,8 @@
 	function G_addInformacionActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO SET f_preparacion=:p_f_preparacion, 
-									prioridad=:p_prioridad,
+		$sql = "UPDATE PROYECTO SET acta_f_preparacion=:p_f_preparacion, 
+									id_prioridad=:p_prioridad,
 									nombre_proyecto=:p_nombre_proyecto,
 									id_tipo_proyecto=:p_id_tipo_proyecto
 				WHERE id_proyecto=:p_id_proy ";
@@ -147,7 +147,7 @@
 	function G_addDescripcionActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO SET descripcion=:p_descripcion
+		$sql = "UPDATE PROYECTO SET acta_descripcion=:p_descripcion
 				WHERE id_proyecto=:p_id_proy ";
 		try {
                         //echo var_dump($acta);
@@ -169,9 +169,9 @@
 	function G_addObjetivosActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO SET costos=:p_costos,
-									duracion=:p_duracion,
-									calidad=:p_calidad
+		$sql = "UPDATE PROYECTO SET acta_costos=:p_costos,
+									acta_duracion=:p_duracion,
+									acta_calidad=:p_calidad
 				WHERE id_proyecto=:p_id_proy ";
 		try {
 			$db = getConnection();
@@ -193,8 +193,8 @@
 	function G_addAutoridadActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO SET jefe_comite=:p_jefe_comite,
-									patrocinador=:p_patrocinador,
+		$sql = "UPDATE PROYECTO SET acta_jefe_comite=:p_jefe_comite,
+									acta_patrocinador=:p_patrocinador,
 									id_jefe_proyecto=:p_id_jefe_proyecto
 				WHERE id_proyecto=:p_id_proy ";
 		try {
@@ -218,18 +218,30 @@
         
 	function G_getActa($id){
 	
-		$sql = "SELECT f_preparacion,
-						prioridad,
-						id_tipo_proyecto,
-						descripcion,
-						costos,
-						duracion,
-						calidad,
-						jefe_comite,
-						patrocinador,
-						nombre_proyecto,
-						id_jefe_proyecto
-				FROM PROYECTO WHERE id_proyecto =:id";
+		$sql = "select pp.nombre_prioridad,
+                                tp.nombre_tipo_proyecto,
+                                p.descripcion_proyecto,
+                                p.acta_costos,
+                                p.acta_duracion,
+                                p.acta_calidad,
+                                p.acta_jefe_comite,
+                                p.acta_patrocinador,
+                                p.nombre_proyecto,
+                                e.nombre_corto
+
+                        from PROYECTO p,
+                        PRIORIDAD_PROYECTO pp,
+                        TIPO_PROYECTO tp,
+                        EMPLEADO e,
+                        EMPLEADO_PROYECTO ep,
+                        ROL_EMPLEADO re
+                        where p.id_proyecto=:id
+                        and pp.id_prioridad=p.id_prioridad
+                        and p.id_tipo_proyecto=tp.id_tipo_proyecto
+                        and p.id_proyecto=ep.id_proyecto
+                        and ep.id_empleado=e.id_empleado
+                        and re.id_rol=e.id_rol
+                        and and re.id_rol=1";
 		try {
                         
 			$db = getConnection();
@@ -238,18 +250,16 @@
                         $stmt->execute();		
 			$p = $stmt->fetch(PDO::FETCH_ASSOC);
 			$acta = array("pap"=>$p["patrocinador"],
-							"fpp"=>$p["f_preparacion"],
-							"tp"=>$p["id_tipo_proyecto"],
-							"pp"=>$p["prioridad"],
-							"dp"=>$p["descripcion"],
-							"cp"=>$p["costos"],
-							"plp"=>$p["duracion"],
-							"calp"=>$p["calidad"],
+							"fpp"=>$p["acta_f_preparacion"],
+							"tp"=>$p["nombre_tipo_proyecto"],
+							"pp"=>$p["nombre_prioridad"],
+							"dp"=>$p["descripcion_proyecto"],
+							"cp"=>$p["acta_costos"],
+							"plp"=>$p["acta_duracion"],
+							"calp"=>$p["acta_calidad"],
 							"np"=>$p["nombre_proyecto"],
-							"jp"=>$p["id_jefe_proyecto"],
-							"jcp"=>$p["jefe_comite"],
-							"ap"=>"ap",
-							"carp"=>"carp");
+							"jp"=>$p["nombre_corto"],
+							"jcp"=>$p["acta_jefe_comite"]);
 			
 			$db = null;
 			echo json_encode(array("acta"=>$acta)) ;
