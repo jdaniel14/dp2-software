@@ -18,8 +18,8 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,costo_potencial,demora_potencial,estado,estado_logico) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:costo_potencial,:demora_potencial,1,1)";
+        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -29,6 +29,8 @@
             $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
             $stmt->bindParam("impacto", $riesgo->impacto);
             $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+            $severidad=$riesgo->probabilidad*$riesgo->impacto;
+            $stmt->bindParam("severidad", $severidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->execute();
@@ -49,7 +51,7 @@
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
         $query = "UPDATE RIESGO_X_PROYECTO SET nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
-        id_categoria_riesgo=:id_categoria_riesgo, impacto=:impacto,probabilidad=:probabilidad,
+        id_categoria_riesgo=:id_categoria_riesgo, impacto=:impacto,probabilidad=:probabilidad, severidad=:severidad,
         costo_potencial=:costo_potencial , demora_potencial=:demora_potencial
         WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
@@ -61,6 +63,8 @@
             $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
             $stmt->bindParam("impacto", $riesgo->impacto);
             $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+            $severidad=$riesgo->probabilidad*$riesgo->impacto;
+            $stmt->bindParam("severidad", $severidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
