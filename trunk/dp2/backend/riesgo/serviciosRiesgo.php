@@ -18,8 +18,8 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1)";
+        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico,disparador) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1,:disparador)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -33,6 +33,7 @@
             $stmt->bindParam("severidad", $severidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
+            $stmt->bindParam("disparador", $riesgo->nombreResponsable);
             $stmt->execute();
             $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
             $db = null;
@@ -52,7 +53,7 @@
         $riesgo = json_decode($request->getBody());
         $query = "UPDATE RIESGO_X_PROYECTO SET nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
         id_categoria_riesgo=:id_categoria_riesgo, impacto=:impacto,probabilidad=:probabilidad, severidad=:severidad,
-        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial
+        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , disparador=:disparador
         WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
         try {
@@ -68,6 +69,7 @@
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
+            $stmt->bindParam("disparador", $riesgo->nombreResponsable);
             $stmt->execute();
             $db = null;
             echo json_encode($idRiesgoXProyecto);
@@ -107,7 +109,7 @@
                             "accionesEspecificas" => $row['nombre'],//X
                             "costoEsperado" => $row['costo_potencial'],//RXP
                             "tiempoEsperado" => $row['demora_potencial'],//RXP
-                            "equipoEesponsable" => $row['impacto']//X
+                            "equipoEesponsable" => $row['disparador']//X
                             );
                 array_push($arregloListaRiesgo,$data);
             }
@@ -144,7 +146,7 @@
                             "accionesEspecificas" => $row->nombre,//X
                             "costoEsperado" => $row->costo_potencial,//RXP
                             "tiempoEsperado" => $row->demora_potencial,//RXP
-                            "equipoEesponsable" => $row->impacto//X
+                            "equipoEesponsable" => $row->disparador//X
                             );
             $db = null;
             echo json_encode($data);
