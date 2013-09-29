@@ -50,7 +50,7 @@ function G_postRegistrarLeccionAprendida() {
     $proj = json_decode($request->getBody());
 
     try {
-        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleado_proyecto, id_categoria_lec, descripcion) VALUES (:idexp, :cla, :dla)";
+        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleado_proyecto, id_categoria_lec, descripcion, estado) VALUES (:idexp, :cla, :dla, 1)";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("idexp", $proj->idexp);
@@ -158,7 +158,7 @@ where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.
 
 function G_getLeccionAprendidasById($id) {
     $sql = " 
-select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec as idcla, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion, EP.id_empleadoXproyecto as idexp
 from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, EMPLEADO_PROYECTO EP, CATEGORIA_LEC_APRENDIDA CLA
 where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.id_categoria_lec = LA.id_categoria_lec and EP.id_empleadoXproyecto = LA.id_empleado_proyecto order by LA.fecha_actualizacion
 and LA.id_leccion_aprendida =:id
@@ -175,8 +175,10 @@ and LA.id_leccion_aprendida =:id
                 "ne" => $p["empleado"],
                 "dla" => $p["descr"],
                 "np" => $p["np"],
-                "cla" => $p["cla"]
-            );
+                "idcla" => $p["idcla"],
+                "cla" => $p["cla"],
+                "idexp" => $p["idexp"]
+        );
         $db = null;
         echo json_encode($leccion);
     } catch (PDOException $e) {
