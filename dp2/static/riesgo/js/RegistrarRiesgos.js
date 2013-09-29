@@ -57,11 +57,7 @@ function main(){
 	
 	
 	
-	$("#btnBuscar").click(function(){
-		// buscar.nombre = $("#buscar").val();
-		listarRiesgos(buscar);
-		// buscar.nombre='';
-	});
+	
 	
 
 	
@@ -515,6 +511,11 @@ function listarRiesgos(search){
 				eliminarRiesgo(idRiesgoProyecto);
 
 			});
+			$("#btnBuscar").click(function(){
+				// buscar.nombre = $("#buscar").val();
+				listarRiesgos(buscar);
+				// buscar.nombre='';
+			});
 		},
 		fail: codigoError
 	});
@@ -615,7 +616,7 @@ function agregaFilaRiesgo(arreglo,i){
 							  "</td><td>" + arreglo.accionesEspecificas +
 							  "</td><td>" + arreglo.costoEsperado +
 							  "</td><td>" + arreglo.tiempoEsperado +
-							  "</td><td>" + arreglo.equipoEesponsable + 
+							  "</td><td>" + arreglo.nombreResponsable + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
