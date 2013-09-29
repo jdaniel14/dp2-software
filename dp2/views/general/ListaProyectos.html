@@ -20,6 +20,10 @@
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
+
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    
   </head>
 
   <body>
@@ -58,28 +62,50 @@
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 
-	  <div class="" id="ListaProyectos">
-	  
-		<form role="form" name="formListaProyectos">
-		
-			<table class="table-striped table-bordered" width="90%" id="listaProyectos">			
-				<tr>
-					<td width="5%" align="center"><b>#</b></td>
-					<td width="30%" align="center"><b>Proyecto</b></td>
-					<td width="20%" align="center"><b>Jefe de Proyecto</b></td>
-					<td width="20%" align="center"><b>Tipo de Proyecto</b></td>
-					<td width="11%" align="center"><b>Fecha de Inicio</b></td>
-					<td width="11%" align="center"><b>Fecha de Fin</b></td>
-          <td width="14%" align="center"><b></b></td>
-				</tr>				
+	  <div class="" >
+			<table id="listaProyectos" class="tablesorter" width="90%" >			
+				<thead>
+          <tr>
+  					<th><b>#</b></th>
+  					<th><b>Proyecto</b></th>
+  					<th><b>Jefe de Proyecto</b></th>
+  					<th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Tipo de Proyecto</b></th>
+  					<th><b>Fecha de Inicio</b></th>
+  					<th><b>Fecha de Fin</b></th>
+            <th><b></b></th>
+  				</tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>#</th>
+            <th>Proyecto</th>
+            <th>Jefe de Proyecto</th>
+            <th>Tipo de Proyecto</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Fin</th>
+            <th>Acciones</th>
+          </tr>
+          <tr>
+            <th colspan="7" class="pager form-horizontal">
+              <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
+              <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
+              <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+              <button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
+              <button type="button" class="btn last"><i class="icon-step-forward"></i></button>
+              <select class="pagesize input-mini" title="Select page size">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <select class="pagenum input-mini" title="Select page number"></select>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
 			</table>
-			
-			<table>
-				<tr>&nbsp</tr>
-				<tr>&nbsp</tr>
-				<tr>&nbsp</tr>
-			</table>
-		</form>	  
+
 	  </div>	 
     </div><!-- /.container -->
 
@@ -90,5 +116,17 @@
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
   	<script src="../../static/general/js/ListaProyectos.js"></script>
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
   </body>
 </html>
