@@ -14,5 +14,8 @@ $app = new \Slim\Slim();
     include ("../backend/alcance/ServiciosAlcanceGroup2.php");
     include ("../backend/general/serviciosGeneral2.php");
  //fin 2   
+
+ //Riesgo cambio
+    include ("../backend/riesgo/ServiciosRiesgoV2.php");
 $app->run();
 ?>
