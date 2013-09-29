@@ -5,9 +5,9 @@
    
   function getEdt(){
        //$request = \Slim\Slim::getInstance()->request(); //json parameters
-       //$edt = json_decode($request->getBody()); //object convert
+       //$idproyecto = json_decode($request->getBody())["idproyecto"]; //object convert
        $con = getConnection();
-       $idproyecto = 1;
+       $idproyecto = 2;
        //conseguir el id del paquete inicial
        $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
        $pstmt->execute(array($idproyecto));
@@ -46,7 +46,43 @@
        return $result;
     }
 
-    
+    function eliminarEdt(){
+      $request = \Slim\Slim::getInstance()->request();
+      $idedt = json_decode($request->getBody())->idedt;
+      $con = getConnection();
+      $con->exec("set foreign_key_checks = false");
+      //obtener id del paquete inicial
+      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_edt= ?");
+      $pstmt->execute(array($idedt));
+      $idPIni = $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo_inicial"];
+      //eliminar los hijos
+      eliminarHijos($idPIni);
+
+      //eliminar el primer nodo
+      $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo = ?");
+      $pstmt->execute(array($idPIni));
+      
+      //eliminar el EDT (no se si esto se deba borrar pero aca lo borra)
+      $pstmt= $con->prepare("DELETE FROM EDT WHERE id_edt = ?");
+      $pstmt->execute(array($idedt));
+
+      $con->exec("set foreign_key_checks = true");
+    }
+
+    function eliminarHijos($idPadre){
+      $con = getConnection();
+      //conseguir los hijos
+      $pstmt= $con->prepare("SELECT id_paquete_trabajo FROM PAQUETE_TRABAJO WHERE id_componente_padre =?");
+      $pstmt->execute(array($idPadre));
+      while($hijo = $pstmt->fetch(PDO::FETCH_ASSOC)){
+        //borrar los hijos de cada hijo
+        eliminarHijos($hijo["id_paquete_trabajo"]);
+      }
+      //borrar los hijos
+      $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_componente_padre = ?");
+      $pstmt->execute(array($idPadre));
+    }
+
 
 
 
