@@ -170,9 +170,8 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
         $stmt->bindParam("id", $id);
         $stmt->execute();
 
-        $lista = array();
-        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $item = array(
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $item = array(
                 "id" => $p["id"],
                 "ne" => $p["empleado"],
                 "dla" => $p["descr"],
@@ -181,10 +180,8 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
                 "cla" => $p["cla"],
                 "idexp" => $p["idexp"]
             );
-            array_push($lista, $item);
-        }
         $db = null;
-        echo json_encode(array("leccion"=>$lista));
+        echo json_encode(array("leccion"=>$item));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
