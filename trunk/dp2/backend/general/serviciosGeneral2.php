@@ -37,7 +37,7 @@ function G_getUsuario() {
         $stmt->execute();
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
         $usuario = array("nom_user" => $p["nombre_corto"],
-                        "id_user" => $p["id_empleado"]);
+            "id_user" => $p["id_empleado"]);
         $db = null;
         echo json_encode(array("me" => $usuario));
     } catch (PDOException $e) {
@@ -140,14 +140,14 @@ where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.
         $stmt = $db->query($sql);
         $lista = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $proy = array(
+            $leccion = array(
                 "id" => $j["id"],
                 "ne" => $j["empleado"],
                 "dla" => $j["descr"],
                 "np" => $j["np"],
                 "cla" => $j["cla"]
             );
-            array_push($lista, $proy);
+            array_push($lista, $leccion);
         }
         $db = null;
         echo json_encode($lista);
@@ -169,10 +169,10 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id);
         $stmt->execute();
-       
+
         $lista = array();
         while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $leccion = array(
+            $item = array(
                 "id" => $p["id"],
                 "ne" => $p["empleado"],
                 "dla" => $p["descr"],
@@ -181,10 +181,10 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
                 "cla" => $p["cla"],
                 "idexp" => $p["idexp"]
             );
-            array_push($lista, $leccion);
+            array_push($lista, $item);
         }
         $db = null;
-        echo json_encode($lista);
+        echo json_encode(array("leccion"=>$lista));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
