@@ -512,9 +512,9 @@ function listarRiesgos(search){
 	$("#tablaRiesgos").empty();
 	var data = {
 		idProyecto: $('#idProyecto').val(),
-        nombre: $('#nombre').val(),
-        idPaqueteTrabajo : 0,
-		idCategoriaRiesgo : $('#idCategoriaRiesgo').val(),    
+                 nombre: $('#nombre').val(),
+                idPaqueteTrabajo : $('#idPaqueteRiesgo').val(), 
+		idCategoriaRiesgo : $('#idCategoriaRiesgo').val()    
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
