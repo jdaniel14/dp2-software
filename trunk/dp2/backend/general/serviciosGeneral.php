@@ -147,7 +147,7 @@
 	function G_addDescripcionActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO SET acta_descripcion=:p_descripcion
+		$sql = "UPDATE PROYECTO SET descripcion_proyecto=:p_descripcion
 				WHERE id_proyecto=:p_id_proy ";
 		try {
                         //echo var_dump($acta);
@@ -193,10 +193,11 @@
 	function G_addAutoridadActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO SET acta_jefe_comite=:p_jefe_comite,
-                                            acta_patrocinador=:p_patrocinador,
-                                            id_jefe_proyecto=:p_id_jefe_proyecto
-				WHERE id_proyecto=:p_id_proy ";
+		$sql = "UPDATE PROYECTO  p, EMPLEADO_PROYECTO ep
+                        SET p.acta_jefe_comite=:p_jefe_comite,
+                        p.acta_patrocinador=:p_patrocinador,
+                        ep.id_empleado=:p_id_jefe_proyecto
+                        WHERE p.id_proyecto=:p_id_proy and p.id_proyecto=ep.id_proyecto";
 		try {
 			$db = getConnection();
 			$stmt = $db->prepare($sql);
@@ -267,7 +268,7 @@
 	
 	}
 	function G_getPrioridad(){
-		$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO order by id_prioridad desc";
+		$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
