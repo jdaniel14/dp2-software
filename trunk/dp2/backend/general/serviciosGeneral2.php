@@ -112,7 +112,7 @@ function G_postActualizarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
     $leccion = json_decode($request->getBody());
     $sql = " UPDATE LECCION_APRENDIDA SET id_empleado_proyecto=:idexp, id_categoria_lec =:cla, descripcion =:dla, fecha_actualizacion=SYSDATE()
-	    WHERE id_leccion_aprendida=:id and estado=1 ";
+	     WHERE id_leccion_aprendida=:id and estado=1 ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -158,7 +158,7 @@ where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.
 
 function G_getLeccionAprendidasById($id) {
     $sql = " 
-select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec as idcla, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion, EP.id_empleadoXproyecto as idexp
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec as cla, CLA.nombre_categoria_lec, LA.fecha_actualizacion, EP.id_empleadoXproyecto as idexp
 from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, EMPLEADO_PROYECTO EP, CATEGORIA_LEC_APRENDIDA CLA
 where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.id_categoria_lec = LA.id_categoria_lec and EP.id_empleadoXproyecto = LA.id_empleado_proyecto 
 and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
@@ -176,7 +176,6 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
                 "ne" => $p["empleado"],
                 "dla" => $p["descr"],
                 "np" => $p["np"],
-                "idcla" => $p["idcla"],
                 "cla" => $p["cla"],
                 "idexp" => $p["idexp"]
             );
