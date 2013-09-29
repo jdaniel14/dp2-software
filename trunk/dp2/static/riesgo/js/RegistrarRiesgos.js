@@ -388,7 +388,9 @@ function listarPaquetesTrabajo(){
 			$.each(lista, function (i, value){
 				$('#paqEdt').append("<option value="+ value.id +">" + value.descripcion + "</option>");
 				$('#paqEdtM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
-			});			
+                                $('#idCategoriaRiesgo').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+				$('#idPaqueteRiesgo').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+                        });			
 		},
 		fail: codigoError
 	});
