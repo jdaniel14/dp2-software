@@ -68,14 +68,14 @@ function G_postRegistrarLeccionAprendida() {
 function G_getProyectosXEmpleado($id) {
     $sql = " SELECT id_empleadoXproyecto, nombre_proyecto 
                  FROM EMPLEADO_PROYECTO EXP, PROYECTO P
-                 WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =3 ";
+                 WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
     try {
         $db = getConnection();
 
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id);
         $stmt->execute();
-        //  $stmt = $db->query($sql);
+        
         $l_proyxemp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $proy = array(
@@ -91,28 +91,64 @@ function G_getProyectosXEmpleado($id) {
     }
 }
 
-function G_updateEstadoLeccionAprendida() {
+function G_postBorrarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
-    $acta = json_decode($request->getBody());
-    $sql = "UPDATE LECCION_APRENDIDA SET estado=:estado
-	    WHERE id_leccion_aprendida=:p_id_proy ";
+    $leccion = json_decode($request->getBody());
+    $sql = " UPDATE LECCION_APRENDIDA SET estado=0
+	    WHERE id_leccion_aprendida=:id ";
     try {
-
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("p_f_preparacion", $acta->fpp);
-        $stmt->bindParam("p_prioridad", $acta->pp);
-        $stmt->bindParam("p_nombre_proyecto", $acta->np);
-        //falto tipo proyecto :s
-        $stmt->bindParam("p_id_tipo_proyecto", $acta->tp);
-
-        $stmt->bindParam("p_id_proy", $acta->idProyecto);
+        $stmt->bindParam("id", $leccion->id);
         $stmt->execute();
-        //last instert no va :S
-        //$proj->id = $db->lastInsertId();
-
         $db = null;
         echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_postActualizarLeccionAprendida() {
+    $request = \Slim\Slim::getInstance()->request();
+    $leccion = json_decode($request->getBody());
+    $sql = " UPDATE LECCION_APRENDIDA SET id_empleado_proyecto=:idexp, id_categoria_lec =:cla, descripcion =:dla
+	    WHERE id_leccion_aprendida=:id and estado=1 ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $leccion->idexp);
+        $stmt->bindParam("id", $leccion->cla);
+        $stmt->bindParam("id", $leccion->dla);
+        $stmt->bindParam("id", $leccion->id);
+        $stmt->execute();
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_getLeccionesAprendidas() {
+    $sql = " SELECT id_empleadoXproyecto, nombre_proyecto 
+                 FROM EMPLEADO_PROYECTO EXP, PROYECTO P
+                 WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+        
+        $l_proyxemp = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $proy = array(
+                "idProxEmp" => $j["id_empleadoXproyecto"],
+                "nomProy" => $j["nombre_proyecto"]
+            );
+            array_push($l_proyxemp, $proy);
+        }
+        $db = null;
+        echo json_encode($l_proyxemp);
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
