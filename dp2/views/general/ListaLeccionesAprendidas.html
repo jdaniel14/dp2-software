@@ -14,71 +14,98 @@
 
     <!-- Custom styles for this template -->
     <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
-    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+   
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
+
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    
   </head>
 
   <body>
-
-	  <div id="header">
+  
+    <div id="header">
 
     </div>
-
+    
     <div class="container">
 
       <div class="starter-template">
-	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+    
         <h1>Lista de Lecciones Aprendidas</h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 
-	  <div class="" id="lla">
-	  
-	  	<div class="form-group">
-			  <!-- Button -->
-			  <div class="controls">
-				<table width="100%">			
-					<tr width="100%">
-						<td width="100%" align="left">
-							<button type="button" class="btn btn-primary" id="btnRegistrar" onclick="parent.location='RegistrarLeccionAprendida.html'">Registrar
-							</button>
-						</td>
-					</tr>
-				</table>
-			  </div>
-		  </div>
+    <div class="" >
+      <table id="listaLeccionAprendida" class="tablesorter" width="90%" >      
+        <thead>
+          <tr>
+            <th><b>#</b></th>
+            <th><b>Nombre</b></th>
+            <th><b>Descripcion</b></th>
+            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Proyecto</b></th>
+            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Categoria</b></th>
+            <th><b>Modificar</b></th>
+            <th><b>Eliminar</b></th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Proyecto</th>
+            <th>Categoria</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+          </tr>
+          <tr>
+            <th colspan="7" class="pager form-horizontal">
+              <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
+              <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
+              <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+              <button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
+              <button type="button" class="btn last"><i class="icon-step-forward"></i></button>
+              <select class="pagesize input-mini" title="Select page size">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <select class="pagenum input-mini" title="Select page number"></select>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+      </table>
 
-		<form role="form" name="formLis  taProyectos">
-		
-			<table class="table-striped table-bordered" align="center" width="90%" id="listaLeccionesAprendidas">
-			
-				<tr>
-					<td width="15%" align="center"><b>Nombre del Colaborador</b></td>
-					<td width="25%" align="center"><b>Descripcion</b></td>
-          <td width="15%" align="center"><b>Proyecto</b></td>
-          <td width="15%" align="center"><b>Categoria</b></td>
-          <td width="15%" align="center"><b>Modificar</b></td>
-          <td width="15%" align="center"><b>Eliminar</b></td>
-				</tr>
-				
-			</table>
-			
-		
-		</form>	  
-	  </div>	 
+    </div>   
     </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
+    ==================lang================================ -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-  	<script src="../../static/general/js/ListaLeccionAprendida.js"></script>
+    <script src="../../static/general/js/ListaProyectos.js"></script>
     <script src="../../assets/js/header.js"></script>
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
   </body>
 </html>
