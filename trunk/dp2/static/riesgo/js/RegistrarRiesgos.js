@@ -510,16 +510,13 @@ function listarRiesgos(search){
 	var data = {
 		idProyecto: $('#idProyecto').val(),
         nombre: $('#nombre').val(),
-        idPaqueteTrabajo = 0;
-		idCategoriaRiesgo = 0;    
+        idPaqueteTrabajo : 0,
+		idCategoriaRiesgo : $('#idCategoriaRiesgo').val(),    
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
-		type: 'GET',
-                
+		type: 'GET',                
 		url: getAllItems + '/' +JSON.stringify(data),
-		//url: getAllItems,
-		// url: getAllItems, ->DESCOMENTAR
 		dataType: "json",
 		success: function(data){
 			var lista = data;
@@ -851,12 +848,27 @@ function validarRegistro(data, caso){
 	if (data.probabilidad==''){
 		data.probabilidad=null;
 		flag=false;
+	} else {
+		if (isNaN(data.probabilidad)){
+		// $('#errorAlto').fadeIn('slow'); ERROR PROBA
+		flag = false;
+		} else {
+			if (validarProbaImpacto(data.probabilidad)){
+				if (!validarDecimales(data.probabilidad)){
+					//redondeo
+					data.probabilidad = Math.round((data.probabilidad* 100 ))/100;
+				}
+			} else {
+				// $('#errorAlto').fadeIn('slow'); ERROR PROBA
+				flag = false;
+			}
+		}	
 	}
 	if (data.costoPotencial==''){
 			data.costoPotencial=null;
 	}
 	if (data.demoraPotencial==''){
-		data.probabilidad=null;
+		data.demoraPotencial=null;
 	}
 		
 }
