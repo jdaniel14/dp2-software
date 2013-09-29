@@ -9,9 +9,9 @@
     $app->get('/G_devuelveCategoria', 'G_getCategoria'); //devuelve las categorias de las lecciones aprendidas
     $app->post('/G_registrarLeccionAprendida', 'G_postRegistrarLeccionAprendida'); //registrar una leccion
     $app->get('/G_devuelveProyectosXEmpleado/:id', 'G_getProyectosXEmpleado'); //devuelve la lista de proyectos por empleado
-    
-
-
+    $app->post('/G_cambiaEstadoLeccionAprendida/:id', 'G_postBorrarLeccionAprendida'); //borra (de modo logico) la leccion aprendida
+    $app->post('/G_actualizarLeccionAprendida/:id', 'G_postActualizarLeccionAprendida');
+    $app->get('/G_devuelveLeccionesAprendidas', 'G_getLeccionesAprendidas'); //leer todas las lecciones aprendidas
 
 
 
