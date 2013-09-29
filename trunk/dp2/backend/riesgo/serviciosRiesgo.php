@@ -109,7 +109,7 @@
                             "accionesEspecificas" => $row['nombre'],//X
                             "costoEsperado" => $row['costo_potencial'],//RXP
                             "tiempoEsperado" => $row['demora_potencial'],//RXP
-                            "equipoEesponsable" => $row['disparador']//X
+                            "nombreResponsable" => $row['disparador']//X
                             );
                 array_push($arregloListaRiesgo,$data);
             }
@@ -146,7 +146,7 @@
                             "accionesEspecificas" => $row->nombre,//X
                             "costoEsperado" => $row->costo_potencial,//RXP
                             "tiempoEsperado" => $row->demora_potencial,//RXP
-                            "equipoEesponsable" => $row->disparador//X
+                            "nombreResponsable" => $row->disparador//X
                             );
             $db = null;
             echo json_encode($data);
