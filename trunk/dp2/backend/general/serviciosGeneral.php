@@ -269,7 +269,7 @@
 	
 	}
 	function G_getPrioridad(){
-		/*$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO";
+		$sql = "SELECT id_prioridad, nombre_prioridad FROM PRIORIDAD_PROYECTO";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
@@ -283,17 +283,8 @@
 			echo json_encode($lista_prioridadProject) ;
 		} catch(PDOException $e) {
         echo json_encode(array("me"=> $e->getMessage()));
-		}	*/
-		$lista_prioridadProject = array();
-		$prioridad = array("idPrioridad"=>1, "nom"=>'ESTRATEGICO');
-		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>2, "nom"=>'ALTO POTENCIAL');
-		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>3, "nom"=>'DIA A DIA');
-		array_push($lista_prioridadProject, $prioridad);
-		$prioridad = array("idPrioridad"=>4, "nom"=>'SOPORTE');
-		array_push($lista_prioridadProject, $prioridad);
-		echo json_encode($lista_prioridadProject) ;
+		}	
+		
 
 	}
 	
