@@ -75,7 +75,7 @@ function G_getProyectosXEmpleado($id) {
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id);
         $stmt->execute();
-        
+
         $l_proyxemp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $proy = array(
@@ -129,26 +129,56 @@ function G_postActualizarLeccionAprendida() {
 }
 
 function G_getLeccionesAprendidas() {
-    $sql = " SELECT id_empleadoXproyecto, nombre_proyecto 
-                 FROM EMPLEADO_PROYECTO EXP, PROYECTO P
-                 WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
+    $sql = " 
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
+from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, EMPLEADO_PROYECTO EP, CATEGORIA_LEC_APRENDIDA CLA
+where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.id_categoria_lec = LA.id_categoria_lec and EP.id_empleadoXproyecto = LA.id_empleado_proyecto order by LA.fecha_actualizacion
+ ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->query($sql);
+        $lista = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $proy = array(
+                "id" => $j["id"],
+                "ne" => $j["empleado"],
+                "dla" => $j["descr"],
+                "np" => $j["np"],
+                "cla" => $j["cla"]
+            );
+            array_push($lista, $proy);
+        }
+        $db = null;
+        echo json_encode($lista);
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_getLeccionAprendidasById($id) {
+    $sql = " 
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
+from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, EMPLEADO_PROYECTO EP, CATEGORIA_LEC_APRENDIDA CLA
+where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.id_categoria_lec = LA.id_categoria_lec and EP.id_empleadoXproyecto = LA.id_empleado_proyecto order by LA.fecha_actualizacion
+and LA.id_leccion_aprendida =:id
+ ";
     try {
         $db = getConnection();
 
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id);
         $stmt->execute();
-        
-        $l_proyxemp = array();
-        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $proy = array(
-                "idProxEmp" => $j["id_empleadoXproyecto"],
-                "nomProy" => $j["nombre_proyecto"]
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $leccion = array(
+                "id" => $j["id"],
+                "ne" => $j["empleado"],
+                "dla" => $j["descr"],
+                "np" => $j["np"],
+                "cla" => $j["cla"]
             );
-            array_push($l_proyxemp, $proy);
-        }
         $db = null;
-        echo json_encode($l_proyxemp);
+        echo json_encode($leccion);
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
