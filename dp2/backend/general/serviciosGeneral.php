@@ -1,7 +1,6 @@
 <?php
 
   include('routesGeneral.php');
-  include('clasesGeneral.php');
         
         
 	include_once '../backend/conexion.php';
