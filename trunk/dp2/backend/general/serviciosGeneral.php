@@ -222,6 +222,7 @@
                                 tp.nombre_tipo_proyecto,
                                 p.descripcion_proyecto,
                                 p.acta_costos,
+                                p.acta_f_preparacion,
                                 p.acta_duracion,
                                 p.acta_calidad,
                                 p.acta_jefe_comite,
