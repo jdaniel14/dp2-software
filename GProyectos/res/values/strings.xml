@@ -1,29 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-
     <string name="app_name">GProyectos</string>
-    <string name="string_empty"></string>
+    <string name="string_empty"/>
     <string name="txt_prueba_corto">Lorem</string>
     <string name="txt_prueba_medio">Lorem ipsum</string>
-    
-    
     <string name="general_login_mayusculas">LOGIN</string>
     <string name="general_login_username">Username</string>
     <string name="general_login_password">Password</string>
     <string name="general_home_titulo">Sistema de Gestión de Proyectos</string>
-    
     <string name="general_proyecto_codigo">Código</string>
     <string name="general_proyecto_nombre">Nombre</string>
     <string name="general_proyecto_jefeproyecto">Jefe de proyecto</string>
     <string name="general_proyecto_estado">Estado</string>
     <string name="general_proyecto_fechainicio">Fecha Inicio</string>
     <string name="general_proyecto_fechafin">Fecha Fin</string>
-    
     <string name="menu_proyectos">Proyectos</string>
-    
+    <string name="indicadores_datepicker">AAAA-MM-DD</string>
+    <string name="indicadores_seleccionar_fecha">Seleccione una fecha</string>
+    <string name="indicadores_btnVerIndicadores">Ver indicadores</string>
+    <string name="indicadores_columnaNombre">Indicador</string>
+    <string name="indicadores_columnaValor">Valor</string>
+    <string name="indicadores_columnaCriticidad">Criticidad</string>
     <string-array name="tipobusqueda_proyectos_array">
         <item>Nombre</item>
         <item>Jefe Proyecto</item>
-         <item>Estado</item>
+        <item>Estado</item>
     </string-array>
-
 </resources>

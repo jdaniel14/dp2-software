@@ -16,5 +16,19 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="listpage_in_content">
+		<item name="android:paddingBottom">@dimen/page_padding</item>
+		<!-- <item name="android:paddingLeft">5dp</item> <item name="android:paddingRight">5dp</item> -->
+		<item name="android:layout_marginLeft">@dimen/page_padding</item>
+		<item name="android:layout_marginRight">@dimen/page_padding</item>
+
+		<item name="android:cacheColorHint">#00000000</item>
+
+		<item name="android:scrollbarAlwaysDrawVerticalTrack">false</item>
+		<item name="android:scrollbars">vertical</item>
+		<item name="android:divider">@color/list_divider</item>
+		<item name="android:dividerHeight">1dp</item>
+	</style>
 
 </resources>

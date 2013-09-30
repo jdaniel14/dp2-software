@@ -9,11 +9,14 @@
     <color name="linea_gris">#b6b6b6</color>
     
     <color name="blanco">#FFFFFF</color>
-    <color name="negro">#000000</color>    
+    <color name="negro">#000000</color> 
+    <color name="azul">#39abdf</color>   
     
     <color name="input_azul">#669bcc</color>
     <color name="input_gris">#b6b6b6</color>
     
     <color name="boton_bg_grisoscuro">#363636</color>
+    
+    <color name="list_divider">#cdcdcd</color>
     
 </resources>
