@@ -39,6 +39,8 @@ public class ProyectoController extends Controller {
 
 	public ArrayList<ProyectoBean> getProyectos() {
 		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
+		//String path = "http://localhost:8080/dp2/api/" + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
+		
 		Gson gs = new Gson();
 		String strResponse;
 		GetListaProyectosResponse objResponse = null;
@@ -47,7 +49,7 @@ public class ProyectoController extends Controller {
 		//strResponse = getStringFromPOST(path, null);
 		//deberia usarse metodo GET
 		
-		HttpResponse respuesta = HttpConnector.makeGetRequest(path);
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
 		String result;
 		if (respuesta != null) {
 			try {

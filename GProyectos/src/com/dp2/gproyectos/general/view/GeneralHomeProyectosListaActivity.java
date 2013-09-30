@@ -2,12 +2,14 @@ package com.dp2.gproyectos.general.view;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.GProyectosConstants;
 import com.dp2.gproyectos.R;
+import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
@@ -117,6 +120,21 @@ public class GeneralHomeProyectosListaActivity extends
 			adapter = new ProyectoAdapter(this,
 					R.layout.general_home_proyectos_lista_item, proyectos);
 			lvProyectos.setAdapter(adapter);
+			lvProyectos.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> l, View v, int position,
+						long id) {
+					ProyectoBean proyecto = proyectos.get(position);
+					
+					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
+					i.putExtra("idProyecto", proyecto.id);
+					i.putExtra("nombreProyecto", proyecto.nombre);
+					overridePendingTransition(0, 0);
+					startActivity(i);
+					overridePendingTransition(0, 0);
+				}
+			});
 		}
 	}
 
