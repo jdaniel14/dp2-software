@@ -1,6 +1,11 @@
 package com.dp2.gproyectos.general.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.util.EntityUtils;
 
 import com.dp2.framework.controller.Controller;
 import com.dp2.gproyectos.ServerConstants;
@@ -8,6 +13,7 @@ import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.model.GetListaProyectosResponse;
 import com.dp2.gproyectos.general.model.PruebaResponse;
 import com.google.gson.Gson;
+import com.dp2.gproyectos.utils.Conexion;
 
 public class ProyectoController extends Controller {
 	public static ProyectoController instance = null;
@@ -40,7 +46,26 @@ public class ProyectoController extends Controller {
 		strResponse = "{\"prs\":[{\"id\":\"1\",\"nom\":\"P1\",\"jp\":\"JP\",\"tp\":\"TP\",\"fi\":\"\",\"ff\":\"\",\"es\":\"Ok\"},{\"id\":\"1\",\"nom\":\"P1\",\"jp\":\"JP\",\"tp\":\"TP\",\"fi\":\"\",\"ff\":\"\",\"es\":\"Ok\"}]}";
 		//strResponse = getStringFromPOST(path, null);
 		//deberia usarse metodo GET
-		objResponse = gs.fromJson(strResponse, GetListaProyectosResponse.class);
+		
+		HttpResponse respuesta = Conexion.makeGetRequest(path);
+		String result;
+		if (respuesta != null) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		objResponse = gs.fromJson(result, GetListaProyectosResponse.class);
 		if (objResponse!=null){
 			listaProyectos = objResponse.proyectos;
 		}
