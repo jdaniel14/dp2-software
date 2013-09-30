@@ -8,12 +8,12 @@ import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
 
 import com.dp2.framework.controller.Controller;
+import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.model.GetListaProyectosResponse;
 import com.dp2.gproyectos.general.model.PruebaResponse;
 import com.google.gson.Gson;
-import com.dp2.gproyectos.utils.Conexion;
 
 public class ProyectoController extends Controller {
 	public static ProyectoController instance = null;
@@ -47,7 +47,7 @@ public class ProyectoController extends Controller {
 		//strResponse = getStringFromPOST(path, null);
 		//deberia usarse metodo GET
 		
-		HttpResponse respuesta = Conexion.makeGetRequest(path);
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path);
 		String result;
 		if (respuesta != null) {
 			try {
