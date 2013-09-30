@@ -79,7 +79,8 @@ function CR_postActividades() {//servicio8
 	
 	$idProyecto = $actividades->idProyecto;	
     $arreglo_actividades = $actividades->task;	
-	$respuesta=CR_Eliminacion_Logica_Actividades($idProyecto);
+	$respuesta=CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
+	$respuesta=CR_Eliminacion_Logica_Actividades($idProyecto);	
 	if ($respuesta->me==""){    
 		echo json_encode(CR_guardar_actividades_BD($arreglo_actividades,$idProyecto));
 	}else echo json_encode($respuesta);
@@ -106,7 +107,27 @@ function CR_Eliminacion_Logica_Actividades($idProyecto){
 	return CR_obtenerRespuestaExito();
 }
 
+function CR_Eliminacion_Logica_Recursos_Asignados($idProyecto){
 
+
+
+	//$sql = "UPDATE ACTIVIDAD SET eliminado=1 WHERE id_proyecto=? and eliminado=0; COMMIT;";
+	$sql = "UPDATE ACTIVIDAD_X_RECURSO SET estado=0 WHERE id_actividad in (SELECT id_actividad FROM ACTIVIDAD WHERE id_proyecto=? and eliminado=0); COMMIT;";
+    //$lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+   
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        return array("me" => "eliminar".$e->getMessage());
+    }
+	return CR_obtenerRespuestaExito();
+}
 
 
 //Funciones implementadas que necesitan los servicios
@@ -206,7 +227,7 @@ function CR_consultarInfoActividades($idProyecto) {
     //echo date("d-m-Y", $seconds).'\n';
     //echo date("d-m-Y", $seconds2).'\n';
     //1380080255779
-
+	//date("Y-m-d", $mil/1000);
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
     //$recursos = CR_obtenerRecursosTotalFalsa();
@@ -219,6 +240,8 @@ function CR_mezcla($input){
 
 	return $input["idrecurso"].":".$input["id"];
 }
+
+
 
 function CR_obtenerListaMaps($recursos){
 	
@@ -310,6 +333,7 @@ function CR_guardar_actividades_BD($listaActividad,$idProyecto) {
 
       $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?);commit;";
 	  //$test=null
+	   date_default_timezone_set('America/Lima');
       try {
         $db = null;
 			  if ($listaActividad != null) {
@@ -318,13 +342,16 @@ function CR_guardar_actividades_BD($listaActividad,$idProyecto) {
 							 $actividad=$listaActividad[$i];
 							//$test=$actividad;
 							$stmt = $db->prepare($sql2);
-							if (property_exists($actividad,"id_task"))
-							CR_eliminarRecursosAsignados($actividad);
+							/*if (property_exists($actividad,"id_task")){
+								echo $actividad->id_task ." ";
+								CR_eliminarRecursosAsignados($actividad);
+							}*/
+							
 							//CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
 							/*if (property_exists($actividad, 'id_Wbs')){
 								echo "[".$actividad->id_Wbs."]";
 							}*/
-							$stmt->execute(array($actividad->name,$idProyecto,(property_exists($actividad, 'id_Wbs'))?$actividad->id_Wbs:null,null,null,null,null,null,($i+1),$actividad->level,(property_exists($actividad,"depends"))?$actividad->depends:"",property_exists($actividad,"progress")?$actividad->progress:null,property_exists($actividad,"cost")?$actividad->cost:null,$actividad->duration,$actividad->status,$actividad->code,property_exists($actividad,"description")?$actividad->description:"",$actividad->start,$actividad->end,0,$actividad->startIsMilestone,$actividad->endIsMilestone));
+							$stmt->execute(array($actividad->name,$idProyecto,(property_exists($actividad, 'id_Wbs'))?$actividad->id_Wbs:null,null,date("Y-m-d", $actividad->start/1000),date("Y-m-d", $actividad->end/1000),null,null,($i+1),$actividad->level,(property_exists($actividad,"depends"))?$actividad->depends:"",property_exists($actividad,"progress")?$actividad->progress:null,property_exists($actividad,"cost")?$actividad->cost:null,$actividad->duration,$actividad->status,$actividad->code,property_exists($actividad,"description")?$actividad->description:"",$actividad->start,$actividad->end,0,$actividad->startIsMilestone,$actividad->endIsMilestone));
 							$id_task=$db->lastInsertId();
 							CR_insertarRecursoAsignados($actividad->assigs,$id_task);
 						}
