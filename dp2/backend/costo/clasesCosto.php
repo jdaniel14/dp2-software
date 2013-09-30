@@ -137,9 +137,20 @@ class CO_ContenedorTiposCuenta {
 class CO_AsientoContable {
 	public $id;
 	public $descripcion;
+	
 	function __construct($id, $descripcion) {
 		$this->id = $id;
 		$this->descripcion = $descripcion;
+	}
+}
+
+class CO_Indicador {
+	public $nombre;
+	public $valor;
+	
+	function __construct($nombre, $valor) {
+		$this->nombre = $nombre;
+		$this->valor = $valor;
 	}
 }
 

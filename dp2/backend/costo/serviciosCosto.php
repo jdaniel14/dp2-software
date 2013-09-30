@@ -119,7 +119,10 @@
 
 		$indicadores = CO_consultarIndicadores($proy->idProyecto, $fecha);
 
-		echo json_encode($indicadores);
+		$jsonRespuesta = new stdClass();
+		$jsonRespuesta->lista = $indicadores;
+
+		echo json_encode($jsonRespuesta);
 	}
 
 
@@ -150,15 +153,23 @@
 		
 		//$fecha = '20151010';
 
-		$indicadores = new stdClass();
-		$indicadores->PV = CO_obtenerPV($idProyecto, $fecha);
-		$indicadores->EV = CO_obtenerEV($idProyecto, $fecha);
-		$indicadores->AC = CO_obtenerAC($idProyecto, $fecha);
-		$indicadores->CV = CO_obtenerCV($indicadores->EV, $indicadores->AC);
-		$indicadores->CPI = CO_obtenerCPI($indicadores->EV, $indicadores->AC);
-		$indicadores->SPI = CO_obtenerSPI($indicadores->EV, $indicadores->PV);
-		$indicadores->SV = CO_obtenerSV($indicadores->EV, $indicadores->PV);
-		$indicadores->XX = 0;
+		$indicadores = array();
+
+		$PV = CO_obtenerPV($idProyecto, $fecha) ."";
+		$EV = CO_obtenerEV($idProyecto, $fecha) ."";
+		$AC = CO_obtenerAC($idProyecto, $fecha) ."";
+		$CV = CO_obtenerCV($EV, $AC) ."";
+		$CPI = CO_obtenerCPI($EV, $AC) ."";
+		$SPI = CO_obtenerSPI($EV, $PV) ."";
+		$SV = CO_obtenerSV($EV, $PV) . "";
+
+		array_push($indicadores, new CO_Indicador("PV", $PV));
+		array_push($indicadores, new CO_Indicador("EV", $EV));
+		array_push($indicadores, new CO_Indicador("AC", $AC));
+		array_push($indicadores, new CO_Indicador("CV", $CV));
+		array_push($indicadores, new CO_Indicador("CPI", $CPI));
+		array_push($indicadores, new CO_Indicador("SPI", $SPI));
+		array_push($indicadores, new CO_Indicador("SV", $SV));
 
 		return $indicadores;
 	}
