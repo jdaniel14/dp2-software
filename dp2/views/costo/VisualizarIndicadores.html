@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="stylesheet" type="text/css" href="../../static/costo/datepicker/css/datepicker.css">
 	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+	<script src="../../assets/js/jquery.js"></script>
+    <script src="../../static/costo/datepicker/js/bootstrap-datepicker.js"></script>
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 	
     <title>Starter Template for Bootstrap</title>
@@ -75,7 +78,18 @@
   <input type="text" class="form-control" id="inputError">
 </div>
 			-->
-				
+			
+
+			
+			   
+			<div class="form-group" id="divFecha">
+			  <label class="col-lg-2 control-label" for="" id="labFecha"  >Fecha a visualizar</label>
+			   <div class="col-lg-10">
+					<input type="date" id="fechaVisualizar">				
+			  </div>
+			</div>
+			
+			
 			<div class="form-group" id="divVP">
 			  <label class="col-lg-2 control-label" for="" id="labVP"  >Valor planeado</label>
 			   <div class="col-lg-10">
@@ -139,8 +153,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 	
-    <script src="../../assets/js/jquery.js"></script>
-    <script src="../../bootstrap/js/bootstrap.min.js"></script>	
+    
+	<script src="../../bootstrap/js/bootstrap.min.js"></script>	
+	<!--<script src="../../static/costo/datepicker/css/datepicker.css"></script>-->
 	<script src="../../static/costo/js/VisualizarIndicadores.js"></script>
 	
 	
