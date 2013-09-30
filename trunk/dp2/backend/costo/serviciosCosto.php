@@ -101,8 +101,23 @@
 	}
 
 	///////////SPRINT 2/////////////
-	function CO_getIndicadores() { //servicio 12 //
-		$indicadores = CO_consultarIndicadores();
+	function CO_getIndicadores($json) { //servicio 12 //COMPLETO
+		$proy = json_decode($json);
+		$year = $proy->year;
+		$month = $proy->month;
+		$day = $proy->day;
+
+		if ($proy->month < 10) {
+			$month = '0' . $month;
+		}
+
+		if ($proy->day < 10) {
+			$day = '0' . $day;
+		}
+
+		$fecha = $year . $month . $day;
+
+		$indicadores = CO_consultarIndicadores($proy->idProyecto, $fecha);
 
 		echo json_encode($indicadores);
 	}
@@ -131,49 +146,207 @@
 	
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.(Ordenados por número de sprint descendentemente)
-	function CO_consultarIndicadores() { //
-		$sql = "FALTA QUERY";
+	function CO_consultarIndicadores($idProyecto, $fecha) { //
+		
+		//$fecha = '20151010';
 
 		$indicadores = new stdClass();
-		$indicadores->PV = 0;
-		$indicadores->EV = 0;
-		$indicadores->AC = 0;
-		$indicadores->CV = 0;
-		$indicadores->CPI = 0;
-		$indicadores->SPI = 0;
-		$indicadores->SV = 0;
+		$indicadores->PV = CO_obtenerPV($idProyecto, $fecha);
+		$indicadores->EV = CO_obtenerEV($idProyecto, $fecha);
+		$indicadores->AC = CO_obtenerAC($idProyecto, $fecha);
+		$indicadores->CV = CO_obtenerCV($indicadores->EV, $indicadores->AC);
+		$indicadores->CPI = CO_obtenerCPI($indicadores->EV, $indicadores->AC);
+		$indicadores->SPI = CO_obtenerSPI($indicadores->EV, $indicadores->PV);
+		$indicadores->SV = CO_obtenerSV($indicadores->EV, $indicadores->PV);
 		$indicadores->XX = 0;
-
-		/*
-		try {
-			$db = getConnection();
-        	$stmt = $db->prepare($sql);
-        	$stmt->execute();
-        	$db = null;
-        	
-        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-    			$indicadores->PV = $p["PV"],;
-				$indicadores->EV = $p["EV"];
-				$indicadores->AC = $p["AC"];
-				$indicadores->CV = $p["CV"];
-				$indicadores->CPI = $p["CPI"];
-				$indicadores->SPI = $p["SPI"];
-				$indicadores->SV = $p["SV"];
-				//$indicadores->XX = $p["PV"];
-			}
-		} catch(PDOException $e) {
-        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-		}
-		*/
 
 		return $indicadores;
 	}
 
+	//funciones para obtener indicadores
+	function CO_obtenerPV($idProyecto, $fecha) { //Valor planeado
+		$sql = "SELECT 
+		SUM(H.COSTO_PLANEADO_SOLES) AS VALOR_PLANEADO
+		FROM
+		(
+		select
+		A.ID_ACTIVIDAD,
+		SUM(B.CANTIDADESTIMADA*C.COSTO_UNITARIO_ESTIMADO*D.CAMBIO_A_SOL) COSTO_PLANEADO_SOLES
+		FROM 
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO=1 AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(A.FECHA_PLAN_FIN,'%Y%m%d')<= :fecha		
+		GROUP BY
+		A.ID_ACTIVIDAD
+		UNION
+		SELECT
+		A.ID_ACTIVIDAD,
+		SUM(IFNULL(B.CANTIDADESTIMADA,0)*IFNULL(C.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(D.CAMBIO_A_SOL,0)*(DATEDIFF(:fecha,A.FECHA_PLAN_INICIO)/DATEDIFF(A.fecha_plan_fin,A.fecha_plan_inicio))) COSTO_PLANEADO_SOLES
+		FROM
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(A.FECHA_PLAN_FIN,'%Y%m%d')> :fecha
+		AND DATE_FORMAT(A.FECHA_PLAN_INICIO,'%Y%m%d')<= :fecha
+		GROUP BY
+		A.ID_ACTIVIDAD
+		) H;";
 
+		$valor = 0;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->bindParam("fecha", $fecha);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$valor = $p["VALOR_PLANEADO"];
+			}
+		} catch(PDOException $e) {
+        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+
+		if ($valor == null)
+			$valor = 0;
+
+		return $valor;
+	}
+
+	function CO_obtenerEV($idProyecto, $fecha) { //Valor ganado
+		$sql = "SELECT 
+		SUM(H.COSTO_PLANEADO_SOLES) AS VALOR_GANADO
+		FROM
+		(
+		select
+		A.ID_ACTIVIDAD,
+		SUM(B.CANTIDADESTIMADA*C.COSTO_UNITARIO_ESTIMADO*D.CAMBIO_A_SOL) COSTO_PLANEADO_SOLES
+		FROM 
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO=1 AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(A.FECHA_PLAN_FIN,'%Y%m%d')<= :fecha
+		GROUP BY
+		A.ID_ACTIVIDAD
+		UNION
+		SELECT
+		A.ID_ACTIVIDAD,
+		SUM(IFNULL(B.CANTIDADESTIMADA,0)*IFNULL(C.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(D.CAMBIO_A_SOL,0)*IFNULL(A.PORC_AVANCE_COSTO_ESTIMADO,0)) COSTO_PLANEADO_SOLES
+		FROM
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(A.FECHA_PLAN_FIN,'%Y%m%d')> :fecha
+		AND DATE_FORMAT(A.FECHA_PLAN_INICIO,'%Y%m%d')<= :fecha
+		GROUP BY
+		A.ID_ACTIVIDAD
+		) H;";
+
+		$valor = 0;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->bindParam("fecha", $fecha);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$valor = $p["VALOR_GANADO"];
+			}
+		} catch(PDOException $e) {
+        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+
+		if ($valor == null)
+			$valor = 0;
+
+		return $valor;
+	}
+
+	function CO_obtenerAC($idProyecto, $fecha) { //Valor actual
+		$sql = "SELECT
+		SUM(H.COSTO_REAL_SOLES) VALOR_ACTUAL
+		FROM
+		(
+		SELECT
+		A.ID_ACTIVIDAD,
+		SUM(B.CANTIDADREAL*B.COSTO_UNITARIO_REAL*D.CAMBIO_A_SOL) COSTO_REAL_SOLES
+		FROM
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(A.FECHA_PLAN_FIN,'%Y%m%d')<= :fecha
+		GROUP BY
+		A.ID_ACTIVIDAD
+		) H;";
+
+		$valor = 0;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->bindParam("fecha", $fecha);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$valor = $p["VALOR_ACTUAL"];
+			}
+		} catch(PDOException $e) {
+        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+
+		if ($valor == null)
+			$valor = 0;
+
+		return $valor;
+	}
+
+	function CO_obtenerCV($ev, $ac) { //Valor actual
+		return $ev - $ac;
+	}
+
+	function CO_obtenerCPI($ev, $ac) { //Valor cpi
+		if ($ac != 0)
+			return $ev / $ac;
+		else
+			return 0;
+	}
+
+	function CO_obtenerSPI($ev, $pv) { //Valor spi
+		if ($pv != 0)
+			return $ev / $pv;
+		else
+			return 0;
+	}
+
+	function CO_obtenerSV($ev, $pv) { //Valor sv
+		return $ev - $pv;
+	}
+	//fin de funciones para obtener indicadores
 
 	//////////SPRINT 1
 	function CO_consultarInfoProyecto($idProyecto) { //COMPLETO
-		$sql = "select
+		$sql = "SELECT
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
@@ -367,7 +540,6 @@
 				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"]));
 			}
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         	echo json_encode(array("me"=> $e->getMessage()));
 		}
 	
@@ -418,13 +590,8 @@
 			}
 
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         	echo json_encode(array("me"=> $e->getMessage()));
 		}
-		
-
-		//se llamara una funcion que devuelve data falsa por mientras.	
-		//$actividad = CO_obtenerInfoActividadFalsa($idActividad);
 		
 		return $actividad;
 	}
@@ -780,102 +947,4 @@
 
 		return $listaUM;
 	}
-	
-	//---------------------------------------------------------------
-	//funciones de llenado falso de datos para pruebas.
-	/*
-	function CO_obtenerInfoProyectoFalsa() {
-		$proyecto = new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
-		
-		return $proyecto;
-	}
-	
-	function CO_obtenerInfoActividadFalsa($idActividad) {
-		
-		$actividad = new CO_Actividad(1, 'Actividad paranormal', 2, 30.0, 50.5, CO_obtenerListaRecursosFalsa());
-		$listaActividades = array();
-		$listaRecursos = CO_obtenerListaRecursosFalsa();
-		$actividad1 = new CO_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
-		$actividad2 = new CO_Actividad(2, 'Actividad2', 1, 20.0, 25.0, $listaRecursos);
-		$actividad3 = new CO_Actividad(3, 'Actividad3', 2, 30.5, 40.0, null);
-		array_push($listaActividades, $actividad1, $actividad2, $actividad3);
-		
-		return $listaActividades[$idActividad-1];
-	}
-	
-	function CO_obtenerListaRecursosFalsa() {
-		$listaRecursos = array();
-		$recurso1 = new CO_Recurso(1, 1, 'Recurso1', 10.0, 1, 50);
-		$recurso2 = new CO_Recurso(2, 1, 'Recurso2', 20.0, 1, 10);
-		$recurso3 = new CO_Recurso(3, 2, 'Recurso3', 30.5, 2, 20);
-		$recurso4 = new CO_Recurso(4, 3, 'Recurso4', 25.0, 1, 40);
-		array_push($listaRecursos, $recurso1, $recurso2, $recurso3, $recurso4);
-		
-		return $listaRecursos;
-	}
-	
-	function CO_obtenerListaActividadesFalsa() {
-		$listaActividades = array();
-		$listaRecursos = CO_obtenerListaRecursosFalsa();
-		$actividad1 = new CO_Actividad(1, 'Actividad1', 1, 10.0, 20.0, null);
-		$actividad2 = new CO_Actividad(2, 'Actividad2', 1, 20.0, 25.0, $listaRecursos);
-		$actividad3 = new CO_Actividad(3, 'Actividad3', 2, 30.5, 40.0, null);
-		array_push($listaActividades, $actividad1, $actividad2, $actividad3);
-		
-		return $listaActividades;
-	}
-	
-	function CO_obtenerListaPaquetesFalsa() {
-		$listaPaquetes = array();
-		$paquete1 = new CO_Paquete('Paquete1', null);
-		$paquete2 = new CO_Paquete('Paquete2', CO_obtenerListaPaquetesHijosFalsa());
-		$paquete3 = new CO_Paquete('Paquete3', null);
-		array_push($listaPaquetes, $paquete1, $paquete2, $paquete3);
-		
-		return $listaPaquetes;
-	}
-	
-	function CO_obtenerListaPaquetesHijosFalsa() {
-		$listaPaquetes = array();
-		$paquete1 = new CO_Paquete('PaqueteHijo1', null);
-		$paquete2 = new CO_Paquete('PaqueteHijo2', null);
-		$paquete3 = new CO_Paquete('PaqueteHijo3', null);
-		array_push($listaPaquetes, $paquete1, $paquete2, $paquete3);
-		
-		return $listaPaquetes;
-	}
-
-	function CO_obtenerListaMonedasFalsa() {
-		$listaMonedas = array();
-		$moneda1 = new CO_Moneda(1, "Euro", 4.1);
-		$moneda2 = new CO_Moneda(1, "Dólar", 2.7);
-		array_push($listaMonedas, $moneda1, $moneda2);
-		
-		return $listaMonedas;
-	}
-	
-	function CO_crearRespuesta($codRespuesta, $mensaje) {
-		$respuesta = new stdClass();
-		$respuesta->codRespuesta = $codRespuesta;
-		$respuesta->mensaje = $mensaje;
-		
-		return $respuesta;
-	}
-
-	function CO_obtenerRespuestaPositivaDeGuardadoFalsa() {
-		$respuesta = new stdClass();
-		$respuesta->codRespuesta = 0;
-		$respuesta->mensaje = 'Ok';
-		
-		return $respuesta;
-	}
-	
-	function CO_obtenerRespuestaNegativaDeGuardadoFalsa() {
-		$respuesta = new stdClass();
-		$respuesta->codRespuesta = -1;
-		$respuesta->mensaje = 'Ola ke Arce';
-		
-		return $respuesta;
-	}
-	*/
 ?>
