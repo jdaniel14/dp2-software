@@ -5,10 +5,36 @@ var idProyecto=1;
 var arregloIndicadores= new Array(
 									1,2,3,4,5,6,7
 								);
-								
-								
-obtenProyecto();		
-obtenIndicadores();
+																
+
+
+
+
+
+																
+obtenProyecto();
+
+$("#fechaVisualizar").change(function (){
+	
+	fecha=$("#fechaVisualizar").val();
+	if (fecha!=null && fecha!="")
+		obtenIndicadores(fecha.substr(8,2),fecha.substr(5,2),fecha.substr(0,4));
+	else
+	alert("Ingrese una fecha válida");
+
+});
+/*
+$("#btnVisualizar").click(function (){
+	
+	fecha=$("#fechaVisualizar").val();
+	if (fecha!=null && fecha!="")
+		obtenIndicadores(fecha.substr(8,2),fecha.substr(5,2),fecha.substr(0,4));
+	else
+	alert("Ingrese una fecha válida");
+})*/
+
+
+
 
 
 //Funciones para obtener datos de AJAX
@@ -37,24 +63,28 @@ function obtenProyecto(/*idProyecto*/){
 
 }
 /*aca temrmina*/
-function obtenIndicadores(/*idProyecto,*/){
+function obtenIndicadores(/*idProyecto,*/dia, mes , anio){
+	//alert(dia+" "+mes+" "+anio);
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		year: anio,
+		month: mes,
+		day: dia
 	}
 	
-	/*
+	
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_obtenerIndicadores/'+JSON.stringify(obj),		
 		dataType: "json",
 		async: true,
-		success:function(data){agregaDataFila(data,tipo);}
+		success:agregaDatosIndicadores
 	});
 	
-	*/
 	
 	
-	agregaDatosIndicadores(arregloIndicadores);
+	
+	//agregaDatosIndicadores(arregloIndicadores);
 	//return arregloRecursos;
 
 }
@@ -75,13 +105,13 @@ function agregaDatosIndicadores(arreglo){
 
 	indicadores=arreglo;
 	
-	agregaIndicador("VP", indicadores[0], 0, 1);
-	agregaIndicador("VA", indicadores[1], 0, 1);
-	agregaIndicador("VG", indicadores[2], 0, 1);
-	agregaIndicador("DC", indicadores[3], 0, 1);
-	agregaIndicador("CPI", indicadores[4], 6, 7);
-	agregaIndicador("SPI", indicadores[5], 2, 10);
-	agregaIndicador("SV", indicadores[6], 3, 4);
+	agregaIndicador("VP", indicadores.PV, 0, 1);
+	agregaIndicador("VA", indicadores.AC, 0, 1);
+	agregaIndicador("VG", indicadores.EV, 0, 1);
+	agregaIndicador("DC", indicadores.CV, 0, 1);
+	agregaIndicador("CPI", indicadores.CPI, 6, 7);
+	agregaIndicador("SPI", indicadores.SPI, 2, 10);
+	agregaIndicador("SV", indicadores.SV, 3, 4);
 
 }
 
