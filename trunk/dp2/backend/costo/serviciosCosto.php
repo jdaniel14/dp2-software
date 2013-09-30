@@ -958,4 +958,12 @@
 
 		return $listaUM;
 	}
+
+	function CO_crearRespuesta($codRespuesta, $mensaje) {
+		$respuesta = new stdClass();
+		$respuesta->codRespuesta = $codRespuesta;
+		$respuesta->mensaje = $mensaje;
+		
+		return $respuesta;
+	}
 ?>
