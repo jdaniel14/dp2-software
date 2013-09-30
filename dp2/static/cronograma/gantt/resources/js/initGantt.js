@@ -94,9 +94,9 @@ var currentDate = new Date();
 			
             ret = data;
             
-            var offset=new Date().getTime()-ret.tasks[0].start;
-		    for (var i=0;i<ret.tasks.length;i++)
-		      ret.tasks[i].start=ret.tasks[i].start+offset;
+//            var offset=new Date().getTime()-ret.tasks[0].start;
+//		    for (var i=0;i<ret.tasks.length;i++)
+//		      ret.tasks[i].start=ret.tasks[i].start+offset;
 		
 		    ge.loadProject(ret);
 		    ge.checkpoint(); //empty the undo stack
