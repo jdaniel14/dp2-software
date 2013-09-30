@@ -9,5 +9,9 @@ public class ServerConstants {
 	
 	//GENERAL
 	public static String GENERAL_GETLISTAPROYECTOS_URL = "G_listaProyecto";
+	
+	
+	//COSTOS
+	public static String COSTOS_CO_GETLISTAINDICADORES_URL = "CO_obtenerIndicadores";
 
 }
