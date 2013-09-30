@@ -44,9 +44,9 @@ public abstract class HttpConnector {
 		return params;
 	}
 	
-	public static HttpResponse makeGetRequest(String uri) {
+	public static HttpResponse makeGetRequest(String uri, String json) {
 	    try {
-	        HttpGet httpGet = new HttpGet(uri);
+	        HttpGet httpGet = new HttpGet(uri + json);
 	        return new DefaultHttpClient().execute(httpGet);
 	    } catch (UnsupportedEncodingException e) {
 	        e.printStackTrace();
