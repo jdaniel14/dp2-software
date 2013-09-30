@@ -30,11 +30,11 @@ public class CalendarioPruebaActivity extends FragmentActivity {
 		context = _context;
 		dialog = new Dialog(_context);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.visita_popup_barratitulo_layout);
-		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT);
-
-		edtFecha = (EditText) linContent.findViewById(R.id.edtFecha);
+//		dialog.setContentView(R.layout.visita_popup_barratitulo_layout);
+//		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
+//				LayoutParams.WRAP_CONTENT);
+//
+//		edtFecha = (EditText) linContent.findViewById(R.id.edtFecha);
 
 		popular();
 
@@ -50,7 +50,7 @@ public class CalendarioPruebaActivity extends FragmentActivity {
 	}
 
 	private void popular() {
-		edtFecha.setText(estaVisita.getFechaVisita());
+		//edtFecha.setText(estaVisita.getFechaVisita());
 	}
 
 	public static class DatePickerFragment extends DialogFragment implements
