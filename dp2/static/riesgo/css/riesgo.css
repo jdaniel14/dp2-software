@@ -40,3 +40,10 @@ textarea{
   border: 1px solid transparent;
   border-radius: 4px;
 }
+
+.alert-modal {
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
