@@ -1,4 +1,3 @@
-
 function modificarRequisito(){
 
 	var obj = {
@@ -43,19 +42,7 @@ function eliminarRequisito(){
 	});
 }
 
-function cargaLista(){
-	var data =[{'id_requisito':1,
-		'descripcion' : 'primer requisito',
-		'id_tipo_requisito': 1,
-		'observaciones':'negociar a deseable',
-		'unidad_medida': 'puntos de funcion',
-		'valor': 4},
-		{'id_requisito':2,
-		'descripcion' : 'segundo requisito',
-		'id_tipo_requisito': 1,
-		'observaciones':'debe ser exigible',
-		'unidad_medida': 'puntos de funcion',
-		'valor': 8}];
+function cargaLista(data){
 
 	for(var i=0; i < data.length;i++){
 		var fila = "<tr>";
@@ -147,6 +134,32 @@ function guardarCambios(){
 	});
 }
 
+function subirArchivo(){
+	var file = $('#archivo')[0].files[0]; //primer archivo
+	var reader = new FileReader();
+	reader.readAsText(file, 'UTF-8');
+	reader.onloadstart = function(){
+		$("#mensajeEspera").html("Subiendo archivo, espere...");
+	};
+	reader.onload = function(event){
+		var dataBinaria = event.target.result;
+		var fileName = $('#archivo')[0].files[0].name;
+		var obj ={
+			name : fileName,
+			data : dataBinaria
+		};
+		$.ajax({
+			type: 'POST',
+			url : '../../api/AL_subirArchivo',
+			dataType: "json",
+			data: JSON.stringify(obj),
+			contentType: "application/json; charset=utf-8",
+			success:function(){
+				$("#mensajeEspera").html("Archivo subido con Eeeeeexito!");
+			}
+		});
+	};
+}
 
 $(document).ready(function(){
 	cargarComboTipo();
@@ -154,14 +167,14 @@ $(document).ready(function(){
 		"id_proyecto":1
 	};
 	cargaLista();
-	/*$.ajax({
+	$.ajax({
 		type: 'GET',
 		url : '../../api/AL_getListaRequisitos',
 		dataType: "json",
 		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8",
 		success: cargaLista
-	});*/
+	});
 	$("#agregar").click(function(){
 		$('#id_requisito').html("");
 		$('#detalleRequisito').removeClass('insertar');
@@ -177,5 +190,7 @@ $(document).ready(function(){
 	});
 
 	$("#guardar").click(guardarCambios);
+
+	$("#subirArchivo").click(subirArchivo);
 
 });
