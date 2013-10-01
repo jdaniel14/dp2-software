@@ -31,15 +31,15 @@ public class IndicadoresController extends Controller {
 //		String path = "http://localhost:8080/dp2/api/" + ServerConstants.COSTOS_CO_GETLISTAINDICADORES_URL + "/";
 		
 		Gson gs = new Gson();
-		String strResponse;
+		String strResponse = "";
 		GetListaIndicadoresResponse objResponse = null;
 		
-		String json = "%7BidProyecto:" + idProyecto + ",";
-		json = json + "year:" + year +",";
-		json = json + "month:" + month +",";
-		json = json + "day:" + day + "%7D";
+		String json = "%7B%22idProyecto%22:" + idProyecto + ",";
+		json = json + "%22year%22:" + year +",";
+		json = json + "%22month%22:" + month +",";
+		json = json + "%22day%22:" + day + "%7D";
 		
-		strResponse = "{\"lista\":[{\"nombre\":\"PV\",\"valor\":\"4016\"},{\"nombre\":\"EV\",\"valor\":\"4016\"},{\"nombre\":\"AC\",\"valor\":\"3808\"},{\"nombre\":\"CV\",\"valor\":\"208\"},{\"nombre\":\"CPI\",\"valor\":\"1.0546218487395\"},{\"nombre\":\"SPI\",\"valor\":\"1\"},{\"nombre\":\"SV\",\"valor\":\"0\"}]}";
+		//strResponse = "{\"lista\":[{\"nombre\":\"PV\",\"valor\":\"4016\"},{\"nombre\":\"EV\",\"valor\":\"4016\"},{\"nombre\":\"AC\",\"valor\":\"3808\"},{\"nombre\":\"CV\",\"valor\":\"208\"},{\"nombre\":\"CPI\",\"valor\":\"1.0546218487395\"},{\"nombre\":\"SPI\",\"valor\":\"1\"},{\"nombre\":\"SV\",\"valor\":\"0\"}]}";
 		//strResponse = getStringFromPOST(path, null);
 		//deberia usarse metodo GET
 		
@@ -62,7 +62,7 @@ public class IndicadoresController extends Controller {
 			result = strResponse;
 		}
 		
-		objResponse = gs.fromJson(result, GetListaIndicadoresResponse.class); //temporalmente para pruebas, luego se debe borrar esta linea.
+		//objResponse = gs.fromJson(result, GetListaIndicadoresResponse.class); //temporalmente para pruebas, luego se debe borrar esta linea.
 		if (objResponse!=null){
 			listaIndicadores = objResponse.indicadores;
 		} else {
