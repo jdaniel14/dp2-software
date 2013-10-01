@@ -12,7 +12,22 @@ function addErrorMsg(elementId,message){
 function validateMandatory(elementId, message){
 	if ($('#'+elementId).val() == ""){
 		addErrorMsg(elementId,message);
+		return false;
 	}
+	return true;
+}
+
+function validateLength(elementId, minLength, maxLength, errorMsgMin, errorMsgMax){
+	var text = $('#'+elementId).val();
+	if(text.length < minLength){
+		addErrorMsg(elementId,errorMsgMin);
+		return false;
+	}
+	if(text.length > maxLength){
+		addErrorMsg(elementId,errorMsgMax);
+		return false;
+	}
+	return true;
 }
 
 function validateInteger(elementId , min, max, errorMsgRange, errorMsg){
@@ -49,6 +64,6 @@ function validarPaqueteTrabajo(){
 	camposValidos = validateInteger("dias", 0 , Number.POSITIVE_INFINITY, "Debe ingresar un número positivo","Debe ingresar un número entero") && camposValidos;
 	camposValidos = validateFloat("costo",0 , Number.POSITIVE_INFINITY, "Debe ingresar un número positivo","Debe ingresar un número real") && camposValidos;
 	camposValidos = validateInteger("numero_personas",0,Number.POSITIVE_INFINITY,"Debe ingresar un número positivo","Debe ingresar un número entero") && camposValidos;
-	camposValidos = validateMandatory("descripcion","el campo es obligatorio");
+	camposValidos = validateMandatory("descripcion","el campo es obligatorio") && camposValidos;
 	return camposValidos;
 }

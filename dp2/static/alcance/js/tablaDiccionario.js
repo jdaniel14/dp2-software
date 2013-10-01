@@ -7,8 +7,6 @@ function getURLParameter(name) {
 var id_edt = getURLParameter("id_edt");
 
 function cargaLista(data){
-	console.log("cargo!");
-	console.log(data);
 	for(var i=0; i < data.length ; i++){
 		var fila = "<tr>";
 		for(key in data[i]){
