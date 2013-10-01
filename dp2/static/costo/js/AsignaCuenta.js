@@ -2,14 +2,29 @@ var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto = 1;//localStorage.idProyecto;
 var nAct = 0;
+var asientosContables = [];
 
-iniciaProyecto();		
+iniciaProyecto();	
+obtenAsientosContables()	
 iniciaCuentaxActividad();
 
 
 //Funciones para obtener datos de AJAX
 
-
+function obtenAsientosContables(){
+	var obj ={
+		idProyecto : idProyecto
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerAsientosContables',		
+		dataType: "json", // data type of response
+		async: true,
+		success:crearArregloAsientosContables	
+	});
+	
+}
 function obtenActividades(){
 	var obj ={
 		idProyecto : idProyecto
@@ -66,13 +81,16 @@ function agregarDataProyecto(proyecto){
 	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 }
+function crearArregloAsientosContables(data){
+	asientosContables = data.lista;
+}
 
 function agregaDataFila(data){
 	var arreglo = data.lista;
 	nAct = arreglo.length;
 	for (i=0; i<arreglo.length;i++){
 		var filaAct=arreglo[i];
-		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,"Soles");
+		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,"Soles",filaAct.idActividad);
 	}
 }
 
@@ -95,10 +113,14 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 
 //Funcion para ingresar una fila de actividad en la tabla cuentaxacticidad en los resumenes de actividades
 
-function agregaFilaCuentaActividad(i, nombreAct, costoUnitario, moneda){
+function agregaFilaCuentaActividad(i, nombreAct, costoUnitario, moneda,idAct){
 	a=i;
 	a++;
-	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'"><select id="tipoCuenta'+(a)+'"><option>Equipo</option><option>Maquinaria</option><option>Mano de obra</option><option>Capital</option></select>';
+	var options ="";
+	for (var k = 0; k < asientosContables.length; k++){
+		options += '<option value='+asientosContables[k].id+'>'+asientosContables[k].descripcion+'</option>';
+	}
+	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select id="tipoCuenta'+(a)+'">'+options+'</select>';
 	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
 }
 
@@ -118,7 +140,7 @@ function enviaDatos(obj){
 		url: rootURL + 'CO_enviarTipoCuenta/'+JSON.stringify(obj),		
 		dataType: "json", 
 		async: true,
-		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);}
+		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else alert("Exito");}
 	});
 }
 
@@ -128,9 +150,9 @@ function grabarEstadoCuenta(){
 		var actividad ={idActividad:0,tipo:0}
 		var a = i+1;
 		var idAct = document.getElementById("idActividad"+a).value;
-		var tipoCuenta = document.getElementById("tipoCuenta"+a).options[document.getElementById("tipoCuenta"+a).selectedIndex];
+		var tipoCuenta = document.getElementById("tipoCuenta"+a).options[document.getElementById("tipoCuenta"+a).selectedIndex].value;
 		actividad.idActividad = idAct;
-		actividad.tipoCuenta = tipoCuenta;
+		actividad.tipo = tipoCuenta;
 		listaActividades.push(actividad);
 	}
 	var obj = {
