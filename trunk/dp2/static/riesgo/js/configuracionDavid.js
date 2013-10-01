@@ -1,16 +1,16 @@
 var getAllProbabilities = "../../api/R_listaHeadersProbabilidadRiesgo";
 var addProbability = "../../api/R_registrarHeaderProbabilidadRiesgo";
 var deleteAllProbabilities = "../../api/R_eliminarHeaderProbabilidadRiesgo";
-
+var getAllImpacts = "../../api/R_listaHeadersImpactoRiesgo";
 
 $(document).ready(main);
 localStorage.setItem("idProyecto",1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
-
+var listaNiveles;
 function main(){
 
 	listarProbabilidades();
-
+	listarHeaderNivelImpacto();
 /*---------------------------------AGREGAR UN NIVEL-------------------------------------------*/
 	$("#btnAgregarNivel").click( function(){
 
@@ -116,3 +116,39 @@ function codigoError(){
 	alert('Error');
 }
 /*-----------------------------------------FIN ERRORES----------------------------------------------------*/
+
+/*-------------------------------------MOSTRAR HEADER NIVEL IMPACTO------------------------------------------*/
+
+function listarHeaderNivelImpacto(){
+	$("#headerTipoImpactoXNivelImpacto").empty();
+	var data = {
+		idProyecto: idProyectoLocal, 
+	};
+	var jsonData = JSON.stringify(data);
+	$.ajax({
+		type: 'GET',                
+		url: getAllImpacts + '/' + data.idProyecto,
+		dataType: "json",
+		success: function(data){
+			listaNiveles = data;
+			console.log(data);
+			agregarDataImpacto(data);
+		},
+		fail: codigoError
+	});
+}
+
+function agregarDataImpacto(data){
+	arreglo=data;
+	if (arreglo!=null){
+		$("#headerTipoImpactoXNivelImpacto").append("<th> Impacto </th>");
+		for (i=0; i<arreglo.length;i++){
+			agregaFilaImpacto(arreglo[i],i);
+		}
+		$("#headerTipoImpactoXNivelImpacto").append("<th colspan ="2"> Acciones </th>");
+	}
+}
+
+function agregaFilaImpacto(arreglo,i){
+	$("#headerTipoImpactoXNivelImpacto").append("<th>" + arreglo.descripcion + "</th>");
+}
