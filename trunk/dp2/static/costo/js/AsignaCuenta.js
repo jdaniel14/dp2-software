@@ -90,7 +90,7 @@ function agregaDataFila(data){
 	nAct = arreglo.length;
 	for (i=0; i<arreglo.length;i++){
 		var filaAct=arreglo[i];
-		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,"Soles",filaAct.idActividad);
+		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Soles",filaAct.idActividad);
 	}
 }
 
@@ -113,12 +113,12 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 
 //Funcion para ingresar una fila de actividad en la tabla cuentaxacticidad en los resumenes de actividades
 
-function agregaFilaCuentaActividad(i, nombreAct, costoUnitario, moneda,idAct){
+function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda,idAct){
 	a=i;
 	a++;
 	var options ="";
 	for (var k = 0; k < asientosContables.length; k++){
-		options += '<option value='+asientosContables[k].id+'>'+asientosContables[k].descripcion+'</option>';
+		options += '<option value='+asientosContables[k].id+''+(idAsiento==asientosContables[k].id?' selected ':'')+'>'+asientosContables[k].descripcion+'</option>';
 	}
 	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select id="tipoCuenta'+(a)+'">'+options+'</select>';
 	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
