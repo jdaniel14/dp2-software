@@ -85,7 +85,7 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label for="archivo" class="control-label">Subir nueva versión</label>
-              <input type="file" class="form-control" id="archivo"/>
+              <input type="file" class="form-control archivo" id="archivo"/>
             </div>
           </div>
           <div class="row">
@@ -119,7 +119,7 @@
               <th>Observaciones</th>
               <th>Unidad de medida</th>
               <th>Valor</th>
-              <th colspan="3">Acciones</th>
+              <th colspan="2">Acciones</th>
             </thead>
             <tbody class="cuerpo-tabla" id="listaRequisitos">
                 
@@ -137,6 +137,7 @@
             <div class="modal-body">
               <div class="container">
                 <form action="" id="form-requisito">
+                  <input type="hidden" id="id_requisito" class="form-control" />
                   <div class="row">
                     <div class="form-group col-md-12">
                       <label for="descripcion" class="control-label">Descripción</label>
@@ -173,7 +174,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary">Guardar Cambios</button>
+              <button type="button" id="guardar" class="btn btn-primary">Guardar Cambios</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -181,6 +182,7 @@
     </div>
     <script src="../../assets/js/jquery-1.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/alcance/js/validation.js"></script>
     <script src="../../static/alcance/js/requisitos.js"></script>
   </body>
 </html>
