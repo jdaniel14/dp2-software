@@ -391,42 +391,18 @@
 		$obj->month = 10;
 		$obj->year = 2015;
 	*/
-
+		/*
 		if ($obj == null) {
 			$respuesta = CO_crearRespuesta(-1, 'No se recibió información.');
 			return $respuesta;
 		}
 
-	/*
+		
 		try {
-        	//Para actualizar cada recurso
-        	$sql = "
-        	UPDATE RECURSO
-			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, COSTO_UNITARIO_ESTIMADO= :costoUnitario, ESTADO='ACTIVO'
-			WHERE
-			ID_RECURSO= :idRecurso;
-			COMMIT;";
-
-			if ($obj->listaRecursosModificar != null) {
-	        	foreach ($obj->listaRecursosModificar as $recurso) {
-	        		$db = getConnection();
-		        	$stmt = $db->prepare($sql);
-		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
-		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
-		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
-		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
-		        	$stmt->execute();
-		        	$db = null;
-				}
-				unset($recurso);
-			}
-
+        	
 			//Para crear recursos
-			$sql = "
-        	INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA,ESTADO)
-			VALUES
-			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda,'ACTIVO');
-			COMMIT;";
+			$sql = "INSERT INTO INDICADOR_X_PROYECTO VALUES (1,:id_proyecto,STR_TO_DATE(valor_YYYYMMDD,'%Y%m%d'),:valor_pv);
+					COMMIT;";
 
 			if ($obj->listaRecursosCrear != null) {
 	        	foreach ($obj->listaRecursosCrear as $recurso) {
@@ -443,26 +419,7 @@
 				unset($recurso);
 			}
 
-			//Para eliminar lógicamente los recursos
-			$sql = "
-        	UPDATE RECURSO
-			SET ESTADO='ELIMINADO'
-			WHERE
-			ID_RECURSO= :idRecurso AND ID_PROYECTO= :idProyecto;
-			COMMIT;";
-
-			if ($obj->listaRecursosEliminar != null) {
-	        	foreach ($obj->listaRecursosEliminar as $recurso) {
-	        		$db = getConnection();
-		        	$stmt = $db->prepare($sql);
-		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
-		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-		        	$stmt->execute();
-		        	$db = null;
-				}
-				unset($recurso);
-			}
-
+			
         	$respuesta = CO_crearRespuesta(0, 'Ok');
 
 		} catch(PDOException $e) {
