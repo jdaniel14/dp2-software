@@ -23,10 +23,10 @@ var objeto3 = {
 	tipo: 2,
 	idTipo: 1
 };
-var listaNiveles = [
-	objeto1,
-	objeto2,
-	objeto3];
+// var listaNiveles = [
+// 	objeto1,
+// 	objeto2,
+// 	objeto3];
 
 var listaTipos = [
 	{idTipoImpacto:1,
