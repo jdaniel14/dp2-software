@@ -35,6 +35,11 @@
 	//TIPO IMPACTO X NIVEL IMPACTO
 	$app->post('/R_registrarTipoImpactoNivelImpacto', 'R_postRegistrarTipoImpactoNivelImpacto');//
 	$app->get('/R_listaTipoImpacto/:id', 'R_getListaTipoImpacto');
+	$app->get('/R_listaHeadersImpactoRiesgo/:id', 'R_getListaHeadersImpactoRiesgo');
 
+	//Equipo Riesgo
+	
+	$app->get('/R_listarIntegrantesProyecto/:id', 'R_getListaIntegrantesProyecto');	
+	$app->get('/R_listarComiteRiesgo/:id', 'R_getComiteRiesgo');	
 
 ?>

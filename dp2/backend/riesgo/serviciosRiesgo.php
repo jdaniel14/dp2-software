@@ -455,7 +455,7 @@
         }
 
     }
-    
+
 
     //--------------------------------------TIPO IMPACTO X NIVEL IMPACTO--------------------------------------
 
@@ -505,5 +505,108 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
     }     
-    
+  
+    function R_getListaHeadersImpactoRiesgo($idProyecto){
+        
+        $query = "SELECT * FROM nivel_impacto WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+                    
+        try {
+            $arregloListaHeaderImpactoRiesgo= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idNivelImpacto" => $row['id_nivel_impacto'], 
+                            "idProyecto" => $row['id_proyecto'],
+                            "nivel" => $row['nivel'],
+                            "descripcion" => $row['descripcion'],
+                            "tipo" => $row['tipo']
+                            );
+                array_push($arregloListaHeaderImpactoRiesgo,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaHeaderImpactoRiesgo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
+
+    //--------------------------------------EQUIPO RIESGO--------------------------------------
+
+    function R_postRegistrarEquipoRiesgo(){
+        
+        $request = \Slim\Slim::getInstance()->request();
+        $listaIntegrantes = json_decode($request->getBody());
+        
+        foreach ($listaIntegrantes->integrante as $integrante){
+            
+            
+            $query = "INSERT INTO comite_riesgo (id_proyecto,nombre_riesgo) 
+                    VALUES (:id_proyecto,:nombre_riesgo)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $integrante);
+                $stmt->bindParam("nombre_riesgo", $listaIntegrantes->idProyecto);
+                $stmt->execute();
+                $db = null;
+                echo json_encode(array("idRiesgo"=>$id,"nombre"=>$row->nombre));
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+                    //'{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        }
+    }    
+
+    function R_getListaIntegrantesProyecto($idProyecto){
+        
+        $query = "SELECT ME.id_proyecto id_proyecto, E.id_empleado id_empleado , nombres, apellidos
+                FROM miembros_equipo ME,empleado E where
+                ME.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
+                    
+        try {
+            $arregloListaIntegrantesProyecto= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idContacto" => $row['id_empleado'], 
+                            "nombreCompleto" => $row['nombres']." ".$row['apellidos']
+                            );
+                array_push($arregloListaIntegrantesProyecto,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaIntegrantesProyecto);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
+    function R_getComiteRiesgo($idProyecto){
+        
+        $query = "SELECT CR.id_proyecto, E.id_empleado , nombres, apellidos
+                FROM comite_riesgo CR,empleado E where
+                CR.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
+        try {
+            $arregloComiteRiesgo= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idContacto" => $row['id_empleado'], 
+                            "nombreCompleto" => $row['nombres']." ".$row['apellidos']
+                            );
+                array_push($arregloComiteRiesgo,$data);
+            }
+            $db = null;
+            echo json_encode($arregloComiteRiesgo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }    
+
 ?>
