@@ -49,7 +49,10 @@ var currentDate = new Date();
 		    var mill=Math.round(x/(ge.gantt.fx) + ge.gantt.startMillis)
 		    $("#ndo").html(x+" "+new Date(mill))
 		  });*/
-		
+		  $("#btnEliminarFecha").click(function(){
+		  	var checkbox = $("input[name='rowTable']:checked");
+			checkbox.closest("tr").remove();
+		  });
 		});
 		
 		

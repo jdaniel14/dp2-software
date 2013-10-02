@@ -55,7 +55,7 @@
 
 <body style="background-color: #fff;">
 
-	<div id="myModal" class="modal fade">
+	<div id="myModal" class="modal fade modal-creator" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -85,7 +85,7 @@
 	           				<span class='glyphicon glyphicon-plus-sign'></span> Agregar</button>
 	           			<button type='button' data-toggle='modal' href='#editDate' class='btn btn-default btn-lg' onclick='editWorkingTimeDay();'>
 	           				<span class='glyphicon glyphicon-pencil'></span> Editar</button>
-	           			<button type='button' class='btn btn-default btn-lg'>
+	           			<button type='button' class='btn btn-default btn-lg' id="btnEliminarFecha">
 	           				<span class='glyphicon glyphicon-minus-sign'></span> Eliminar</button>
 	           			<div class='tab-content'>
 	           				<div id='pane1' class='tab-pane active'>
@@ -110,28 +110,29 @@
 	           				</div>
 	           			</div>
 	           		</div>
-	           	</div>
-		        <div id="editDate" class="modal fade">
-		          <div class="modal-dialog">
-		            <div class="modal-content">
-		              <div class="modal-header">
-		                <button type="button" class="close" data-dismiss="modal" data-target="#myModal" aria-hidden="true">&times;</button>
-		                <h4 class="modal-title">Confirmación de Riesgo</h4>
-		              </div>
-		              <div class="modal-body titulo-tabla">
-		                <label class="col-lg-12 control-label">¿Esta seguro que desea confirmar este riesgo?</label>
-		              </div>
-		              <div class="modal-footer">
-		                <button class="btn btn-danger" data-dismiss="modal" id="btnConfirmar" data-target="#myModal">Confirmar</button>
-		                <button class="btn btn-info" data-dismiss="modal" data-target="#myModal">Cancelar</button>
-		              </div>
-		            </div><!-- /.modal-content -->
-		          </div><!-- /.modal-dialog -->
-		        </div>
+	           	</div>		        
             </div>
             <div class="modal-footer">
               <button class="btn btn-danger" data-dismiss="modal" id="btnConfirmar">Confirmar</button>
               <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+
+      <div id="editDate" class="modal fade modal-creator" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" data-target="#myModal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Confirmación de Riesgo</h4>
+            </div>
+            <div class="modal-body titulo-tabla">
+              <label class="col-lg-12 control-label">¿Esta seguro que desea confirmar este riesgo?</label>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-danger" data-dismiss="modal" id="btnConfirmar" data-target="#myModal">Confirmar</button>
+              <button class="btn btn-info" data-dismiss="modal" data-target="#myModal" aria-hidden="true">Cancelar</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
