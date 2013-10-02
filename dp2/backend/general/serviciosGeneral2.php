@@ -66,7 +66,7 @@ function G_postRegistrarLeccionAprendida() {
 }
 
 function G_getProyectosXEmpleado($id) {
-    $sql = " SELECT id_empleadoXproyecto, nombre_proyecto 
+    $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
                  FROM MIEMBROS_EQUIPO EXP, PROYECTO P
                  WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
     try {
@@ -79,7 +79,7 @@ function G_getProyectosXEmpleado($id) {
         $l_proyxemp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $proy = array(
-                "idProxEmp" => $j["id_empleadoXproyecto"],
+                "idProxEmp" => $j["ID_MIEMBROS_EQUIPO"],
                 "nomProy" => $j["nombre_proyecto"]
             );
             array_push($l_proyxemp, $proy);
