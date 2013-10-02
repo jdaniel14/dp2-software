@@ -113,6 +113,7 @@ function guardarCambios(){
 		if($(data[i]).hasClass("archivo"))continue;
 		obj[data[i]["id"]]=data[i]["value"];
 	}
+	obj["id_proyecto"]= 1;//hardcode!
 	var ruta = "";
 	var callback;
 	if($('#detalleRequisito').hasClass("insertar")){
