@@ -7,6 +7,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
 
+import android.graphics.Color;
+
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
@@ -69,5 +71,25 @@ public class IndicadoresController extends Controller {
 			listaIndicadores = null;
 		}
 		return listaIndicadores;
+	}
+	
+	public static boolean isSpecial(IndicadorBean i) {
+		if (i.nombre.equalsIgnoreCase("CPI") || i.nombre.equalsIgnoreCase("SPI"))
+			return true;
+		return false;
+	}
+	
+	public static int getColor(IndicadorBean i) {
+		if (isSpecial(i)) {
+			try {
+				if (Double.valueOf(i.valor) < 1)
+					return Color.RED;
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			return Color.GREEN;
+		} else {
+			return Color.WHITE;
+		}
 	}
 }
