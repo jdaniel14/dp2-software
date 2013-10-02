@@ -122,5 +122,38 @@
     	$proy = $pstmt->fetch(PDO::FETCH_ASSOC);
 		echo json_encode($proy);
     }
-    
+
+    //SEGUNDO SPRINT
+	function getListaRequisitos(){
+		$request = \Slim\Slim::getInstance()->request();
+		$val = json_decode($request->getParams(),TRUE);
+		echo $val;
+	}
+
+	function getTiposRequisito(){
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT * FROM TIPO_REQUISITO");
+		$pstmt->execute();
+		$listaTipos = array();
+		while($tipo = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$listaTipos[] = $tipo;
+		}
+		echo json_encode($listaTipos);
+	}
+
+	function insertaRequisito(){
+
+	}
+
+	function modificaRequisito(){
+
+	}
+
+	function getRequisito(){
+
+	}
+
+	function eliminaRequisito(){
+
+	}    
 ?>

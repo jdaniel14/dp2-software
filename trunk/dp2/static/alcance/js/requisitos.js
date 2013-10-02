@@ -166,7 +166,6 @@ $(document).ready(function(){
 	var obj = {
 		"id_proyecto":1
 	};
-	cargaLista();
 	$.ajax({
 		type: 'GET',
 		url : '../../api/AL_getListaRequisitos',
