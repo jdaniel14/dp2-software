@@ -45,7 +45,7 @@
         $stmt->execute();
         $proj->id = $db->lastInsertId();
 				
-				$sql = "INSERT INTO EMPLEADO_PROYECTO (id_proyecto, id_empleado) VALUES (:id_proy, :jp)";
+				$sql = "INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado) VALUES (:id_proy, :jp)";
 				$stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $proj->id);
         $stmt->bindParam("jp", $proj->jp);
