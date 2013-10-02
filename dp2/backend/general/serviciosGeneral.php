@@ -60,31 +60,38 @@
 
             
 	function G_getListaProyecto(){
-		//$miconexion = new conexion();
-		/*$arregloProyecto= array(
-			                        array('Proyecto1','Bonnie Carranza','13/05/2013','23/06/2013'),
-			                        array('Proyecto2','Alfonso Bedoya','01/06/2013','14/10/2013'),
-			                        array('Proyecto3','Jose Astuvilca','15/06/2013','13/09/2013'),
-			                        array('Proyecto4','Bonnie Carranza','21/08/2013','21/10/2013'));
-		echo json_encode($arregloProyecto);*/
-		//con base de datos
-		$sql = "SELECT P.id_proyecto, P.nombre_proyecto, CONCAT(E.nombres, ' ', E.apellidos) as nombres, T.nombre_tipo_proyecto, DATE(P.fecha_inicio_planificada) as fi, DATE(P.fecha_fin_planificada) as ff 
-						FROM PROYECTO P, EMPLEADO_PROYECTO M, EMPLEADO E, TIPO_PROYECTO T
-						WHERE P.id_proyecto = M.id_proyecto AND E.id_empleado = M.id_empleado AND P.id_tipo_proyecto = T.id_tipo_proyecto ORDER BY P.id_proyecto";
+	
+		$sql = "SELECT P.id_proyecto, 
+                        P.nombre_proyecto, 
+                        CONCAT(E.nombres, ' ', E.apellidos) as nombres, 
+                        T.nombre_tipo_proyecto, 
+                        DATE(P.fecha_inicio_planificada) as fi, 
+                        DATE(P.fecha_fin_planificada) as ff 
+                FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
+                WHERE P.id_proyecto = M.id_proyecto 
+                AND E.id_empleado = M.id_empleado 
+                AND E.id_rol=r.id_rol
+                and E.id_rol=1
+                AND P.id_tipo_proyecto = T.id_tipo_proyecto 
+                ORDER BY P.id_proyecto";
 		try {
 			$db = getConnection();
+                        
 			$stmt = $db->query($sql);
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>$p["nombres"], "tp"=>$p["nombre_tipo_proyecto"], "fi"=>$p["fi"], "ff"=>$p["ff"], "es"=>"Ok");
 					array_push($lista_project, $proj);
+                                        echo  '2';
 			}
 
 			$db = null;
 			echo json_encode(array("prs"=>$lista_project)) ;
+                        
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        echo json_encode(array("me"=> $e->getMessage()));
+                               echo json_encode(array("me"=> $e->getMessage()));
+                               
 		}
 	}
 //CAMBIO PRUEBA
