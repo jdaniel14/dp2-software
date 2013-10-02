@@ -14,14 +14,14 @@
 	}
 	*/
 	
-	function CO_getInfoProyecto($json) { //servicio1 //COMPLETO
+	function CO_getInfoProyecto($json) { //servicio 1 //COMPLETO
 		$proy = json_decode($json);
 		$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
 		
 		echo json_encode($infoProyecto);
 	}
 	
-	function CO_getListaRecursos($json) { //servicio2 //COMPLETO
+	function CO_getListaRecursos($json) { //servicio 2 //COMPLETO
 		$proy = json_decode($json);
 		$listaRecursos = CO_consultarListaRecursos($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
@@ -30,7 +30,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getListaActividades($json) { //servicio3 //COMPLETO
+	function CO_getListaActividades($json) { //servicio 3 //COMPLETO
 		$proy = json_decode($json);
 		$listaActividades = CO_consultarListaActividades($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
@@ -39,21 +39,21 @@
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getInfoActividad($json) { //servicio4 //COMPLETO
+	function CO_getInfoActividad($json) { //servicio 4 //COMPLETO
 		$proy = json_decode($json);
 		$infoActividad = CO_consultarInfoActividad($proy->idProyecto, $proy->idActividad);
 		
 		echo json_encode($infoActividad);
 	}
 	
-	function CO_saveCURecursos($json) { //servicio5 //COMPLETO
+	function CO_saveCURecursos($json) { //servicio 5 //COMPLETO
 		$objeto = json_decode($json);
 		$jsonRespuesta = CO_guardarCUR($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
 	
-	function CO_getListaPaquetes($json) { //servicio6 //COMPLETO
+	function CO_getListaPaquetes($json) { //servicio 6 //COMPLETO
 		$proy = json_decode($json);
 		$listaPaquetes = CO_consultarListaPaquetes($proy->idProyecto);
 		$jsonRespuesta = new stdClass();
@@ -125,7 +125,12 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-
+	function CO_saveIndicadores($json) { //servicio 13 //
+		$objeto = json_decode($json);
+		$jsonRespuesta = CO_guardarIndicadores($objeto);
+		
+		echo json_encode($jsonRespuesta);
+	}
 
 	/*
 	function CO_testFunction2() {
@@ -149,7 +154,9 @@
 	
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.(Ordenados por número de sprint descendentemente)
-	function CO_consultarIndicadores($idProyecto, $fecha) { //
+
+
+	function CO_consultarIndicadores($idProyecto, $fecha) { //COMPLETO
 		
 		//$fecha = '20151010';
 
@@ -354,6 +361,120 @@
 		return $ev - $pv;
 	}
 	//fin de funciones para obtener indicadores
+
+	function CO_guardarIndicadores($obj) { //COMPLETO
+		//insertar en la bd...
+		/*
+		$obj->idProyecto;
+		$obj->PV;
+		$obj->EV;
+		$obj->AC;
+		$obj->CV;
+		$obj->CPI;
+		$obj->SPI;
+		$obj->SV;
+		$obj->day;
+		$obj->month;
+		$obj->year;
+		*/
+	/*
+		$obj = new stdClass();
+		$obj->idProyecto = 1;
+		$obj->PV = 4016;
+		$obj->EV = 4016;
+		$obj->AC = 3808;
+		$obj->CV = 208;
+		$obj->CPI = 1.0546218487395;
+		$obj->SPI = 1;
+		$obj->SV = 0;
+		$obj->day = 10;
+		$obj->month = 10;
+		$obj->year = 2015;
+	*/
+
+		if ($obj == null) {
+			$respuesta = CO_crearRespuesta(-1, 'No se recibió información.');
+			return $respuesta;
+		}
+
+	/*
+		try {
+        	//Para actualizar cada recurso
+        	$sql = "
+        	UPDATE RECURSO
+			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, COSTO_UNITARIO_ESTIMADO= :costoUnitario, ESTADO='ACTIVO'
+			WHERE
+			ID_RECURSO= :idRecurso;
+			COMMIT;";
+
+			if ($obj->listaRecursosModificar != null) {
+	        	foreach ($obj->listaRecursosModificar as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
+		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
+		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
+		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+				unset($recurso);
+			}
+
+			//Para crear recursos
+			$sql = "
+        	INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA,ESTADO)
+			VALUES
+			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda,'ACTIVO');
+			COMMIT;";
+
+			if ($obj->listaRecursosCrear != null) {
+	        	foreach ($obj->listaRecursosCrear as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
+		        	$stmt->bindParam("nombreRecurso", $recurso->nombreRecurso);
+		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
+		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+				unset($recurso);
+			}
+
+			//Para eliminar lógicamente los recursos
+			$sql = "
+        	UPDATE RECURSO
+			SET ESTADO='ELIMINADO'
+			WHERE
+			ID_RECURSO= :idRecurso AND ID_PROYECTO= :idProyecto;
+			COMMIT;";
+
+			if ($obj->listaRecursosEliminar != null) {
+	        	foreach ($obj->listaRecursosEliminar as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+				unset($recurso);
+			}
+
+        	$respuesta = CO_crearRespuesta(0, 'Ok');
+
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+	*/
+		//obtener respuesta falsa;
+		$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
+		
+		return $respuesta;
+	}
+
 
 	//////////SPRINT 1
 	function CO_consultarInfoProyecto($idProyecto) { //COMPLETO
@@ -965,5 +1086,13 @@
 		$respuesta->mensaje = $mensaje;
 		
 		return $respuesta;
+	}
+
+	function CO_obtenerRespuestaPositivaDeGuardadoFalsa() {
+		return CO_crearRespuesta(0, "Ok.");
+	}
+
+	function CO_obtenerRespuestaNegativaDeGuardadoFalsa() {
+		return CO_crearRespuesta(-1, "Error XXX.");
 	}
 ?>
