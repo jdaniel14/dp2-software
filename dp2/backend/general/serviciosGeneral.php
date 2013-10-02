@@ -80,11 +80,17 @@
 			$stmt = $db->query($sql);
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proj = array("id"=>$p["id_proyecto"], "nom"=>$p["nombre_proyecto"], "jp"=>$p["nombres"], "tp"=>$p["nombre_tipo_proyecto"], "fi"=>$p["fi"], "ff"=>$p["ff"], "es"=>"Ok");
+					$proj = array("id"=>$p["id_proyecto"],
+                                                        "nom"=>$p["nombre_proyecto"], 
+                                                        "jp"=>$p["nombres"],
+                                                        "tp"=>$p["nombre_tipo_proyecto"],
+                                                        "fi"=>$p["fi"],
+                                                        "ff"=>$p["ff"],
+                                                         "es"=>"Ok");
 					array_push($lista_project, $proj);
-                                        echo  '2';
+                                        
 			}
-
+                        
 			$db = null;
 			echo json_encode(array("prs"=>$lista_project)) ;
                         
@@ -200,7 +206,7 @@
 	function G_addAutoridadActa(){
 		$request = \Slim\Slim::getInstance()->request();
 		$acta = json_decode($request->getBody());
-		$sql = "UPDATE PROYECTO  p, EMPLEADO_PROYECTO ep
+		$sql = "UPDATE PROYECTO  p, MIEMBROS_EQUIPO ep
                         SET p.acta_jefe_comite=:p_jefe_comite,
                         p.acta_patrocinador=:p_patrocinador,
                         ep.id_empleado=:p_id_jefe_proyecto
