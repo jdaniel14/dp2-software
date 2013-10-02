@@ -11,13 +11,13 @@
 
 //Sprint 2!
 	//Lista de requisitos
-	$app->get('/AL_getListaRequisitos','getListaRequisitos');
+	/*$app->get('/AL_getListaRequisitos','getListaRequisitos');
 	$app->get('/AL_getTiposRequisito','getTiposRequisito');
 	$app->post('/AL_insertaRequisito','insertaRequisito');
 	$app->post('/AL_modificaRequisito','modificaRequisito');
 	$app->get('/AL_getRequisito','getRequisito');
 	$app->post('/AL_eliminaRequisito','eliminaRequisito');
-
+	*/
 	//documento de gestion de alcance
 	//TODO
 ?>

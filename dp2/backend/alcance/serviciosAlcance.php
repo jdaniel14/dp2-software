@@ -127,7 +127,22 @@
 	function getListaRequisitos(){
 		$request = \Slim\Slim::getInstance()->request();
 		$val = $request->params();
-		print_r($val);
+		$id_proyecto = $val["id_proyecto"];
+		$con=getConnection();
+		
+		//obtener id_especificacion_requisitos
+		$pstmt = $con->prepare("SELECT id_especificacion_requisitos FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto =?");
+		$pstmt->execute(array($id_proyecto));
+		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
+		
+		//obtener lista de requisitos
+		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito FROM REQUISITO WHERE id_especificacion_requisitos =?");
+		$pstmt->execute(array($idER));
+		$lista = array();
+		while($req = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$lista[] = $req;
+		}
+		echo json_encode($lista);
 	}
 
 	function getTiposRequisito(){
@@ -142,18 +157,54 @@
 	}
 
 	function insertaRequisito(){
+		$request = \Slim\Slim::getInstance()->request();
+		$req = json_decode($request->getBody(),TRUE);
+		$con=getConnection();
+		
+		//obtener id_especificacion_requisitos
+		$pstmt = $con->prepare("SELECT id_especificacion_requisitos FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto =?");
+		$pstmt->execute(array($req["id_proyecto"]));
+		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
 
+
+		$pstmt = $con->prepare("INSERT INTO REQUISITO 
+								(descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito) 	
+					   			VALUES (?,?,?,?,?,?)");
+		$pstmt = $con->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["observaciones"],$req["unidad_medida"],
+									$req["valor"],$req["id_estado_requisito"]));
+		$req["id_requisito"] = $con->lastInsertId();
+		echo json_encode($req);
 	}
 
 	function modificaRequisito(){
-
+		$request = \Slim\Slim::getInstance()->request();
+		$req = json_decode($request->getBody(),TRUE);
+		$con=getConnection();
+		$pstmt = $con->prepare("UPDATE REQUISITO SET descripcion =?, id_tipo_requisito =?, observaciones =?, unidad_medida =?, valor =?,id_estado_requisito =?
+								WHERE id_requisito = ?");
+		$pstmt = $con->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["observaciones"],$req["unidad_medida"],
+									$req["valor"],$req["id_estado_requisito"], $req["id_requisito"]));
+		echo $request->getBody();
 	}
 
 	function getRequisito(){
-
+		$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idReq= $val["id_requisito"];
+		$con=getConnection();
+		//obtener requisito
+		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito FROM REQUISITO WHERE id_requisito =?");
+		$pstmt->execute(array($idReq));
+		$req = $pstmt->fetch(PDO::FETCH_ASSOC)
+		echo json_encode($req);
 	}
 
 	function eliminaRequisito(){
-
+		$request = \Slim\Slim::getInstance()->request();
+		$id = json_decode($request->getBody(),TRUE)["id_requisito"];
+		$con=getConnection();
+		$pstmt = $con->prepare("UPDATE REQUISITO SET id_estado_requisito = 3
+								WHERE id_requisito = ?");
+		$pstmt = $con->execute(array($req["id_requisito"]));
 	}    
 ?>
