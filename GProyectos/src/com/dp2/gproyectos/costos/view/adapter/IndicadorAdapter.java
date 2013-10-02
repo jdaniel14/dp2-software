@@ -1,8 +1,10 @@
 package com.dp2.gproyectos.costos.view.adapter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dp2.gproyectos.R;
+import com.dp2.gproyectos.costos.controller.IndicadoresController;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
 
 public class IndicadorAdapter extends ArrayAdapter<IndicadorBean> {
@@ -42,9 +45,11 @@ public class IndicadorAdapter extends ArrayAdapter<IndicadorBean> {
 
 		TextView txtNombre = (TextView) nuevaVista.findViewById(R.id.txtCostosNombreIndicador);
 		TextView txtValor = (TextView) nuevaVista.findViewById(R.id.txtCostosValorIndicador);
+		LinearLayout background = (LinearLayout) nuevaVista.findViewById(R.id.itemBackground);
 
 		txtNombre.setText(item.nombre);
-		txtValor.setText(item.valor);
+		txtValor.setText(new DecimalFormat("#.##").format(Double.valueOf(item.valor)));
+		background.setBackgroundColor(IndicadoresController.getColor(indicadores.get(position)));
 		
 		return nuevaVista;
 	}

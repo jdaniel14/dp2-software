@@ -17,6 +17,7 @@ import com.dp2.gproyectos.utils.MensajesUtility;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -55,10 +56,14 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 		setContentView(R.layout.costos_indicadores_layout);
 //		getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.maleta);
 		
+		findViewById(R.id.indicadoresLayout).setBackgroundColor(Color.WHITE);
+		
 		edtFecha = (EditText)findViewById(R.id.edtDatePicker);
 		btnVerIndicadores = (Button)findViewById(R.id.btnVerIndicadores);
 		txtMensaje = (TextView)findViewById(R.id.txtMensaje);
 		lvIndicadores =(ListView)findViewById(R.id.lvIndicadores);
+		
+		txtMensaje.setTextColor(Color.RED);
 		
 		edtFecha.setInputType(InputType.TYPE_NULL);
 		edtFecha.setOnClickListener(new OnClickListener() {
@@ -198,9 +203,9 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 			
 			runOnUiThread(new Runnable() {
 			     public void run() {
-			    	 int i = indicadores.size();
-			    	 String texto = (String) txtMensaje.getText();
-			    	 txtMensaje.setText("# de indicadores recibidos: " + i);
+			    	 //int i = indicadores.size();
+			    	 //txtMensaje.setText("# de indicadores recibidos: " + i);
+			    	 txtMensaje.setText("");
 			    }
 			});
 		}
