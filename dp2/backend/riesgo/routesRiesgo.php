@@ -1,13 +1,9 @@
 <?php
-	//$app->get('/', '');
-
-	//Activando Slim (?)
-
-	//$app = new Slim();
-	$app->get('/R_prueba', 'R_prueba'); // Prueba
 	//Henry
+	$app->get('/R_prueba', 'R_prueba'); // Prueba
+	
 
-	//Registrar riesgo
+	//Riesgo
 	$app->post('/R_registrarRiesgo', 'R_postRegistrarRiesgo');//Registrar un riesgo
 
 	$app->get('/R_listaRiesgo/:var', 'R_getListaRiesgo');
@@ -24,18 +20,21 @@
 
 	$app->delete('/R_eliminarRiesgo/:id', 'R_deleteRiesgo');
 
-	
-	//Registrar configuracion riesgo
-		//Registrar configuracion 
+	//Registrar configuracion 
 	$app->post('/R_registrarConfiguracionProyecto', 'R_postRegistrarConfiguracionProyecto');//Registrar configuracion
-
-
-
-	//Julio
 
 	//Listar Riesgos Comunes
 	$app->get('/R_listarRiesgoComun', 'R_getListaRiesgoComun');//Obtener la lista de riesgos comunes
-
-	//Asignar Riesgos Comunes
 	$app->post('/R_asignarRiesgoComun', 'R_postAsignarRiesgoComun');//Asignar un riesgo comun
+
+	//Header de Probabilidad
+	$app->post('/R_registrarHeaderProbabilidadRiesgo', 'R_postRegistrarHeaderProbabilidadRiesgo');//Registrar una fila del header de probabilidad
+	$app->get('/R_listaHeadersProbabilidadRiesgo/:id', 'R_getListaHeadersProbabilidadRiesgo');
+	$app->delete('/R_eliminarHeaderProbabilidadRiesgo/:id', 'R_deleteListaHeadersProbabilidadRiesgo');
+
+	//TIPO IMPACTO X NIVEL IMPACTO
+	$app->post('/R_registrarTipoImpactoNivelImpacto', 'R_postRegistrarTipoImpactoNivelImpacto');//
+	$app->get('/R_listaTipoImpacto/:id', 'R_getListaTipoImpacto');
+
+
 ?>
