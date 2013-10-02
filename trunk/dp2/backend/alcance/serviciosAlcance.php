@@ -195,7 +195,7 @@
 		//obtener requisito
 		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito FROM REQUISITO WHERE id_requisito =?");
 		$pstmt->execute(array($idReq));
-		$req = $pstmt->fetch(PDO::FETCH_ASSOC)
+		$req = $pstmt->fetch(PDO::FETCH_ASSOC);
 		echo json_encode($req);
 	}
 
