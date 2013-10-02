@@ -3,16 +3,15 @@
 	include('clasesCosto.php');
 	include_once '../backend/conexion.php';
 
-	/*
-	function getConexionLocal(){
-		$con=mysqli_connect("localhost","root","","dp2");
-		// Verificar conexión
-		if (mysqli_connect_errno()){
-		  echo "Error al conectar con MySQL: " . mysqli_connect_error();
-		}
-		return $con;
-	}
-	*/
+	//DEFINICIÓN DE CONSTANTES
+	define('CO_PV',1);
+	define('CO_EV',2);
+	define('CO_AC',3);
+	define('CO_CV',4);
+	define('CO_CPI',5);
+	define('CO_SPI',6);
+	define('CO_SV',7);
+	//FIN CONSTANTES
 	
 	function CO_getInfoProyecto($json) { //servicio 1 //COMPLETO
 		$proy = json_decode($json);
@@ -391,7 +390,7 @@
 		$obj->month = 10;
 		$obj->year = 2015;
 	*/
-		/*
+		
 		if ($obj == null) {
 			$respuesta = CO_crearRespuesta(-1, 'No se recibió información.');
 			return $respuesta;
@@ -399,37 +398,37 @@
 
 		
 		try {
-        	
-			//Para crear recursos
-			$sql = "INSERT INTO INDICADOR_X_PROYECTO VALUES (1,:id_proyecto,STR_TO_DATE(valor_YYYYMMDD,'%Y%m%d'),:valor_pv);
-					COMMIT;";
-
-			if ($obj->listaRecursosCrear != null) {
-	        	foreach ($obj->listaRecursosCrear as $recurso) {
-	        		$db = getConnection();
-		        	$stmt = $db->prepare($sql);
-		        	$stmt->bindParam("idUnidadMedida", $recurso->idUnidadMedida);
-		        	$stmt->bindParam("nombreRecurso", $recurso->nombreRecurso);
-		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
-		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
-		        	$stmt->execute();
-		        	$db = null;
-				}
-				unset($recurso);
-			}
-
+        	CO_InsertarIndicador(CO_PV, $obj->idProyecto, $obj->PV);
+        	CO_InsertarIndicador(CO_EV, $obj->idProyecto, $obj->EV);
+        	CO_InsertarIndicador(CO_AC, $obj->idProyecto, $obj->AC);
+        	CO_InsertarIndicador(CO_CV, $obj->idProyecto, $obj->CV);
+			CO_InsertarIndicador(CO_CPI, $obj->idProyecto, $obj->CPI);
+			CO_InsertarIndicador(CO_SPI, $obj->idProyecto, $obj->SPI);
+			CO_InsertarIndicador(CO_SV, $obj->idProyecto, $obj->SV);
 			
         	$respuesta = CO_crearRespuesta(0, 'Ok');
 
 		} catch(PDOException $e) {
         	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
-	*/
+	
 		//obtener respuesta falsa;
-		$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
+		//$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
 		
 		return $respuesta;
+	}
+
+	function CO_InsertarIndicador($idIndicador, $idProyecto, $valor) {
+		$sql = "INSERT INTO INDICADOR_X_PROYECTO VALUES (:idIndicador,:id_proyecto,STR_TO_DATE(valor_YYYYMMDD,'%Y%m%d'),:valor);
+				COMMIT;";
+
+		$db = getConnection();
+    	$stmt = $db->prepare($sql);
+    	$stmt->bindParam("idIndicador", $idIndicador);
+    	$stmt->bindParam("idProyecto", $idProyecto);
+    	$stmt->bindParam("valor", $valor);
+    	$stmt->execute();
+    	$db = null;
 	}
 
 
@@ -487,16 +486,18 @@
 		A.ID_CAMBIO_MONEDA,
 		Y.DESCRIPCION MONEDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
-		SUM(C.CANTIDADESTIMADA) CANTIDAD_NECESARIA,
-		SUM(A.COSTO_UNITARIO_ESTIMADO*C.CANTIDADESTIMADA)/SUM(C.CANTIDADESTIMADA) COSTO_PROM_SOLES
+		SUM(IFNULL(C.CANTIDADESTIMADA,0)) CANTIDAD_NECESARIA,
+		AVG(A.COSTO_UNITARIO_ESTIMADO) COSTO_PROM_SOLES
 		FROM
-		RECURSO A JOIN ACTIVIDAD_X_RECURSO C ON A.ID_RECURSO=C.ID_RECURSO 
-		JOIN ACTIVIDAD B ON C.ID_ACTIVIDAD=B.ID_ACTIVIDAD AND A.ID_PROYECTO=B.ID_PROYECTO
+		RECURSO A LEFT JOIN ACTIVIDAD_X_RECURSO C ON A.ID_RECURSO=C.ID_RECURSO 
+		LEFT JOIN ACTIVIDAD B ON C.ID_ACTIVIDAD=B.ID_ACTIVIDAD AND A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN CAMBIO_MONEDA Y ON A.ID_CAMBIO_MONEDA=Y.ID_CAMBIO_MONEDA
 		JOIN UNIDAD_MEDIDA Z ON A.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
 		WHERE
-		A.ID_PROYECTO= :idProyecto
-		AND A.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1
+		(A.ID_PROYECTO= :idProyecto
+		AND A.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1)
+		OR
+		((A.ID_PROYECTO=1 AND A.ESTADO<>'ELIMINADO') AND (C.ID_RECURSO IS NULL OR B.ID_ACTIVIDAD IS NULL OR B.ID_PROYECTO IS NULL))
 		GROUP BY
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
