@@ -55,7 +55,7 @@ function  leerEquipo() {
 
     $('#equipoProyecto').append('<h4>Comité de Riesgos </h4>');
     var data = {
-        idProyecto: $('#idProyecto').val()
+        idProyecto: idProyectoLocal
     };
     var jsonData = JSON.stringify(data);
 
@@ -92,7 +92,7 @@ function  leerComite() {
 
     $('#comiteRiesgos').append('<h4>Comité de Riesgos </h4>');
     var data = {
-        idProyecto: $('#idProyecto').val()
+        idProyecto: idProyectoLocal
     };
     var jsonData = JSON.stringify(data);
 
