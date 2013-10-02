@@ -70,14 +70,44 @@
 
                 </tbody>
               </table>
-              <div class="span12"  style="text-align:center">
-                <button type="button" class="btn btn-primary" id="btnGrabar">Guardar</button>
-                <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+              <div class="col-md-12"  style="text-align:center">
+                <a data-toggle="modal" href="#modalAumentarTipoImpactoXNivelImpacto" class="btn btn-primary" id="btnAumentar">Aumentar</a>
+
               </div>
             </form>  
           </div>
         </div>
       </div>
+
+      <div class="modal" id="modalAumentarTipoImpactoXNivelImpacto">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Agregar el valor del impacto</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-horizontal col-lg-12">
+                <h5><b>Por favor, seleccione un tipo de impacto</b>
+                <br/><br/><small>Una vez haya hecho su selección estime los valores límites en los que considera se encuentra cuantificado cada nivel de impacto</small><br/></h5>
+                <div class="form-group col-lg-12">
+                  <select class="form-control" id="listarTiposImpactos">
+                    <option value="0" selected>Seleccione un tipo de impacto</option>
+                  </select>
+                </div>
+                
+                <div class="form-group col-lg-12" id="CuerpoModalTiposImpactoxNivelImpacto">
+                <!-- ACA VIENE EL CUERPO DINAMICO DEL MODAL SEGÚN LOS HEADERS DE NIVEL IMPACTO -->
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-success" id="btnAgregarTipoXNivel1" style="display: none;">Agregar Tipo 1</button>
+              <button class="btn btn-success" id="btnAgregarTipoXNivel2" style="display: none;">Agregar Tipo 2</button>
+              <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
       <div class="modal" id="modalAgregarNivel">
         <div class="modal-dialog">
