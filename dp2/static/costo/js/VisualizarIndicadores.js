@@ -23,15 +23,11 @@ $("#fechaVisualizar").change(function (){
 	alert("Ingrese una fecha válida");
 
 });
-/*
-$("#btnVisualizar").click(function (){
+
+$("#btnGrabar").click(function (){
 	
-	fecha=$("#fechaVisualizar").val();
-	if (fecha!=null && fecha!="")
-		obtenIndicadores(fecha.substr(8,2),fecha.substr(5,2),fecha.substr(0,4));
-	else
-	alert("Ingrese una fecha válida");
-})*/
+	grabarIndicadores();
+});
 
 
 
@@ -103,31 +99,31 @@ function agregaDatosProyecto(nombreProyecto){
 
 function agregaDatosIndicadores(arreglo){
 
-	indicadores=arreglo;
+	indicadores=arreglo.lista;
 	
-	agregaIndicador("VP", indicadores.PV, 0, 1);
-	agregaIndicador("VA", indicadores.AC, 0, 1);
-	agregaIndicador("VG", indicadores.EV, 0, 1);
-	agregaIndicador("DC", indicadores.CV, 0, 1);
-	agregaIndicador("CPI", indicadores.CPI, 6, 7);
-	agregaIndicador("SPI", indicadores.SPI, 2, 10);
-	agregaIndicador("SV", indicadores.SV, 3, 4);
+	agregaIndicador("VP", indicadores[0].valor, 0, 0);
+	agregaIndicador("VA", indicadores[2].valor, 0, 0);
+	agregaIndicador("VG", indicadores[1].valor, 0, 0);
+	agregaIndicador("DC", indicadores[3].valor, 0, 0);
+	agregaIndicador("CPI",indicadores[4].valor, 1, 1);
+	agregaIndicador("SPI",indicadores[5].valor, 1, 1);
+	agregaIndicador("SV", indicadores[6].valor, 0, 0);
 
 }
 
 function agregaIndicador(indicador, valor, comparaNegativo, comparaPositivo){
 
 	color="";
-
-	if (valor<=comparaNegativo)
-	
-		color="R";
+	if (!(comparaNegativo==0 && comparaPositivo==0))
+		if (valor<comparaNegativo)
 		
-	else
-		if (valor>=comparaPositivo)		
-			color="V";			
+			color="R";
+			
 		else
-			color="A";			
+			if (valor>comparaPositivo)		
+				color="V";			
+			else
+				color="A";			
 	
 	div="#div" + indicador;
 	lab="#lab" + indicador;
@@ -161,4 +157,61 @@ function agregaIndicador(indicador, valor, comparaNegativo, comparaPositivo){
 	
 	}
 
+}
+
+function grabarIndicadores(){
+	
+	fecha=$("#fechaVisualizar").val();
+	if (fecha!=null && fecha!=""){
+		dia=fecha.substr(8,2); 
+		mes=fecha.substr(5,2); 
+		anio=fecha.substr(0,4);
+	}else{
+		alert("Ingrese una fecha válida");
+		return;
+	}
+	
+	var obj ={
+		idProyecto : idProyecto,
+		year: anio,
+		month: mes,
+		day: dia,
+		PV: obtenerValorIndicador('VP'),
+		EV: obtenerValorIndicador('VG'),
+		AC: obtenerValorIndicador('VA'),
+		CV: obtenerValorIndicador('DC'),
+		CPI:obtenerValorIndicador('CPI'),
+		SPI:obtenerValorIndicador('SPI'),
+		SV: obtenerValorIndicador('SV')
+					
+	}
+	
+	
+	/*
+	
+	agregaIndicador("VP", indicadores.PV, 0, 1);
+	agregaIndicador("VA", indicadores.AC, 0, 1);
+	agregaIndicador("VG", indicadores.EV, 0, 1);
+	agregaIndicador("DC", indicadores.CV, 0, 1);
+	agregaIndicador("CPI", indicadores.CPI, 6, 7);
+	agregaIndicador("SPI", indicadores.SPI, 2, 10);
+	agregaIndicador("SV", indicadores.SV, 3, 4);
+	
+	
+	*/
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_enviarIndicadores/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else alert('Se grabo exitosamente');}
+	});
+}
+
+function obtenerValorIndicador(indicador){
+
+	
+	inp="#input" + indicador;
+	return $(inp).val();
 }
