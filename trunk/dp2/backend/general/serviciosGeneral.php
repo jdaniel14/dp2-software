@@ -233,13 +233,13 @@
 
                         from PROYECTO p,
                         EMPLEADO e,
-                        EMPLEADO_PROYECTO ep,
+                        MIEMBROS_EQUIPO me,
                         ROL_EMPLEADO re
                         where p.id_proyecto=:id
-                        and p.id_proyecto=ep.id_proyecto
-                        and ep.id_empleado=e.id_empleado
+                        and p.id_proyecto=me.id_proyecto
+                        and me.id_empleado=e.id_empleado
                         and re.id_rol=e.id_rol
-                        and re.id_rol=1";
+                        and re.id_rol=1;";
 		try {
                         
 			$db = getConnection();
