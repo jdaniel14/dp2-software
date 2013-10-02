@@ -16,8 +16,8 @@
     <string name="general_proyecto_fechafin">Fecha Fin</string>
     <string name="menu_proyectos">Proyectos</string>
     <string name="indicadores_datepicker">AAAA-MM-DD</string>
-    <string name="indicadores_seleccionar_fecha">Seleccione una fecha</string>
-    <string name="indicadores_btnVerIndicadores">Ver indicadores</string>
+    <string name="indicadores_seleccionar_fecha">Ingrese una fecha</string>
+    <string name="indicadores_btnVerIndicadores">Cargar indicadores</string>
     <string name="indicadores_columnaNombre">Indicador</string>
     <string name="indicadores_columnaValor">Valor</string>
     <string name="indicadores_columnaCriticidad">Criticidad</string>
