@@ -8,7 +8,7 @@ function modificarRequisito(){
 		type: 'GET',
 		url : '../../api/AL_getRequisito',
 		dataType: "json",
-		data: JSON.stringify(obj),
+		data: obj,
 		contentType: "application/json; charset=utf-8",
 		success: function(data){
 			for(key in data){
@@ -170,7 +170,7 @@ $(document).ready(function(){
 		type: 'GET',
 		url : '../../api/AL_getListaRequisitos',
 		dataType: "json",
-		data: JSON.stringify(obj),
+		data: obj,
 		contentType: "application/json; charset=utf-8",
 		success: cargaLista
 	});
