@@ -60,7 +60,8 @@
 
             
 	function G_getListaProyecto(){
-	
+
+
 		$sql = "SELECT P.id_proyecto, 
                         P.nombre_proyecto, 
                         CONCAT(E.nombres, ' ', E.apellidos) as nombres, 
@@ -76,17 +77,24 @@
                 ORDER BY P.id_proyecto";
 		try {
 			$db = getConnection();
-                        
+                        //mysql_query("SET NAMES 'utf8'");
 			$stmt = $db->query($sql);
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proj = array("id"=>utf8_encode($p["id_proyecto"]),
+					/*$proj = array("id"=>utf8_encode($p["id_proyecto"]),
                                                         "nom"=>utf8_encode( $p["nombre_proyecto"]),
                                                         "jp"=>utf8_encode( $p["nombres"]),
                                                         "tp"=>utf8_encode( $p["nombre_tipo_proyecto"]),
                                                         "fi"=>utf8_encode( $p["fi"]),
                                                         "ff"=>utf8_encode($p["ff"]),
-                                                         "es"=>utf8_encode( "Ok"));
+                                                         "es"=>utf8_encode( "Ok"));*/
+                                         $proj = array("id"=>$p["id_proyecto"],
+                                                        "nom"=>$p["nombre_proyecto"],
+                                                        "jp"=> $p["nombres"],
+                                                        "tp"=> $p["nombre_tipo_proyecto"],
+                                                        "fi"=>$p["fi"],
+                                                        "ff"=>$p["ff"],
+                                                         "es"=> "Ok");
                                         array_push($lista_project, $proj);
 
                                         
