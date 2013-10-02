@@ -390,31 +390,120 @@
         }
     }
 
-    
-  /*
-{”idProyecto”:”1”, “nombre”:”riesgo ”, , “idPaquete”:”1”, “idObjeto”:”1”, “idImpacto”:”1” , “probabilidad”:”0.5” , “acciones”:”texto …”, “costo”:”100” , “tiempo”:”2” , “idEquipo”:”1”}
-    
+    //--------------------------------------Header de Probabilidad--------------------------------------
+    function R_postRegistrarHeaderProbabilidadRiesgo(){
+        $request = \Slim\Slim::getInstance()->request();
+        $probabilidad = json_decode($request->getBody());
+        $query = "INSERT INTO probabilidad_riesgo (id_proyecto,nivel,descripcion,minimo,maximo) 
+                VALUES (:id_proyecto,:nivel,:descripcion,:minimo,:maximo)";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $probabilidad->idProyecto);
+            $stmt->bindParam("nivel", $probabilidad->nivel);
+            $stmt->bindParam("descripcion", $probabilidad->descripcion);
+            $stmt->bindParam("minimo", $probabilidad->minimo);
+            $stmt->bindParam("maximo", $probabilidad->maximo);
+            $stmt->execute();
+            $probabilidad->id_probabilidad_riesgo = $db->lastInsertId();
+            $db = null;
 
-
-
-
-    $sql = "INSERT INTO wine (name, grapes, country, region, year, description) VALUES (:name, :grapes, :country, :region, :year, :description)";
-    try {
-        $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("name", $riesgo->name);
-        $stmt->bindParam("grapes", $riesgo->grapes);
-        $stmt->bindParam("country", $riesgo->country);
-        $stmt->bindParam("region", $riesgo->region);
-        $stmt->bindParam("year", $riesgo->year);
-        $stmt->bindParam("description", $riesgo->description);
-        $stmt->execute();
-        $wine->id = $db->lastInsertId();
-        $db = null;
-        echo json_encode($wine);
-    } catch(PDOException $e) {
-        echo '{"error":{"text":'. $e->getMessage() .'}}';
+            echo json_encode(array("idProbabilidadRiesgo"=>$probabilidad->id_probabilidad_riesgo,"descripcion"=>$probabilidad->descripcion));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
     }
-*/
+
+    function R_getListaHeadersProbabilidadRiesgo($idProyecto){
+        
+        $query = "SELECT * FROM probabilidad_riesgo WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+                    
+        try {
+            $arregloListaHeader= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("nivel" => $row['nivel'], 
+                            "descripcion" => $row['descripcion'],
+                            "minimo" => $row['minimo'],
+                            "maximo" => $row['maximo']
+                            );
+                array_push($arregloListaHeader,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaHeader);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }    
+
+    function R_deleteListaHeadersProbabilidadRiesgo($idProyecto){
+
+        $sql = "DELETE FROM probabilidad_riesgo WHERE id_proyecto=:id_proyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            $db = null;
+            echo '{Riesgo eliminado con exito}';
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+    
+
+    //--------------------------------------TIPO IMPACTO X NIVEL IMPACTO--------------------------------------
+
+    function R_postRegistrarTipoImpactoNivelImpacto(){
+        $request = \Slim\Slim::getInstance()->request();
+        $impactoNivelImpacto = json_decode($request->getBody());
+
+        $query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,:id_proyecto,limite_menor,limite_mayor,descripcion) 
+                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor,:descripcion) ";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_tipo_impacto", $impactoNivelImpacto->id_tipo_impacto);
+            $stmt->bindParam("id_nivel_impacto", $impactoNivelImpacto->id_nivel_impacto);
+            $stmt->bindParam("id_proyecto", $impactoNivelImpacto->id_proyecto);
+            $stmt->bindParam("limite_menor", $impactoNivelImpacto->limite_menor);
+            $stmt->bindParam("limite_mayor", $impactoNivelImpacto->limite_mayor);
+            $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+            $stmt->execute();
+            $db = null;
+            echo json_encode(array("Se registro con exito"));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+        }
+    }
+
+    function R_getListaTipoImpacto($idProyecto){
+        
+        $query = "SELECT * FROM tipo_impacto WHERE id_proyecto=:id_proyecto ORDER BY descripcion";
+                    
+        try {
+            $arregloListaTipoImpacto= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
+                            "idProyecto" => $row['id_proyecto'],
+                            "descripcion" => $row['descripcion']
+                            );
+                array_push($arregloListaTipoImpacto,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaTipoImpacto);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }     
     
 ?>
