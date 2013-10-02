@@ -2,6 +2,7 @@
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
+$app->contentType('text/html; charset=utf-8');
  //Lógica de servicios Sprint 1
     include ("../backend/alcance/serviciosAlcance.php");
     include ("../backend/costo/serviciosCosto.php");
