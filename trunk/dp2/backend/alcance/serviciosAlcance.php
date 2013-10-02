@@ -126,8 +126,8 @@
     //SEGUNDO SPRINT
 	function getListaRequisitos(){
 		$request = \Slim\Slim::getInstance()->request();
-		$val = json_decode($request->getParams(),TRUE);
-		echo $val;
+		$val = $request->params();
+		print_r($val);
 	}
 
 	function getTiposRequisito(){
