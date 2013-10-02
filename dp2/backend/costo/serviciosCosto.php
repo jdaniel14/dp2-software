@@ -126,7 +126,22 @@
 
 	function CO_saveIndicadores($json) { //servicio 13 //
 		$objeto = json_decode($json);
-		$jsonRespuesta = CO_guardarIndicadores($objeto);
+		
+		$year = $objeto->year;
+		$month = $objeto->month;
+		$day = $objeto->day;
+
+		if ($objeto->month < 10) {
+			$month = '0' . $month;
+		}
+
+		if ($objeto->day < 10) {
+			$day = '0' . $day;
+		}
+
+		$fecha = $year . $month . $day;
+		
+		$jsonRespuesta = CO_guardarIndicadores($objeto, $fecha);
 		
 		echo json_encode($jsonRespuesta);
 	}
@@ -361,7 +376,7 @@
 	}
 	//fin de funciones para obtener indicadores
 
-	function CO_guardarIndicadores($obj) { //COMPLETO
+	function CO_guardarIndicadores($obj, $fecha) { //COMPLETO
 		//insertar en la bd...
 		/*
 		$obj->idProyecto;
@@ -398,13 +413,13 @@
 
 		
 		try {
-        	CO_InsertarIndicador(CO_PV, $obj->idProyecto, $obj->PV);
-        	CO_InsertarIndicador(CO_EV, $obj->idProyecto, $obj->EV);
-        	CO_InsertarIndicador(CO_AC, $obj->idProyecto, $obj->AC);
-        	CO_InsertarIndicador(CO_CV, $obj->idProyecto, $obj->CV);
-			CO_InsertarIndicador(CO_CPI, $obj->idProyecto, $obj->CPI);
-			CO_InsertarIndicador(CO_SPI, $obj->idProyecto, $obj->SPI);
-			CO_InsertarIndicador(CO_SV, $obj->idProyecto, $obj->SV);
+        	CO_InsertarIndicador(CO_PV, $obj->idProyecto, $obj->PV, $fecha);
+        	CO_InsertarIndicador(CO_EV, $obj->idProyecto, $obj->EV, $fecha);
+        	CO_InsertarIndicador(CO_AC, $obj->idProyecto, $obj->AC, $fecha);
+        	CO_InsertarIndicador(CO_CV, $obj->idProyecto, $obj->CV, $fecha);
+			CO_InsertarIndicador(CO_CPI, $obj->idProyecto, $obj->CPI, $fecha);
+			CO_InsertarIndicador(CO_SPI, $obj->idProyecto, $obj->SPI, $fecha);
+			CO_InsertarIndicador(CO_SV, $obj->idProyecto, $obj->SV, $fecha);
 			
         	$respuesta = CO_crearRespuesta(0, 'Ok');
 
@@ -418,8 +433,8 @@
 		return $respuesta;
 	}
 
-	function CO_InsertarIndicador($idIndicador, $idProyecto, $valor) {
-		$sql = "INSERT INTO INDICADOR_X_PROYECTO VALUES (:idIndicador,:id_proyecto,STR_TO_DATE(valor_YYYYMMDD,'%Y%m%d'),:valor);
+	function CO_InsertarIndicador($idIndicador, $idProyecto, $valor, $fecha) {
+		$sql = "INSERT INTO INDICADOR_X_PROYECTO VALUES (:idIndicador,:idProyecto,STR_TO_DATE(:fecha,'%Y%m%d'),:valor);
 				COMMIT;";
 
 		$db = getConnection();
@@ -427,6 +442,7 @@
     	$stmt->bindParam("idIndicador", $idIndicador);
     	$stmt->bindParam("idProyecto", $idProyecto);
     	$stmt->bindParam("valor", $valor);
+		$stmt->bindParam("fecha", $fecha);
     	$stmt->execute();
     	$db = null;
 	}
