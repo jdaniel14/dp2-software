@@ -50,7 +50,7 @@ function G_postRegistrarLeccionAprendida() {
     $proj = json_decode($request->getBody());
 
     try {
-        $sql = " INSERT INTO LECCION_APRENDIDA (id_empleado_proyecto, id_categoria_lec, descripcion, estado, fecha_registro, fecha_actualizacion) VALUES (:idexp, :cla, :dla, 1, SYSDATE(), SYSDATE())";
+        $sql = " INSERT INTO LECCION_APRENDIDA (id_MIEMBROS_EQUIPO, id_categoria_lec_aprendidas, descripcion, estado, fecha_registro, fecha_actualizacion) VALUES (:idexp, :cla, :dla, 1, SYSDATE(), SYSDATE())";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("idexp", $proj->idexp);
@@ -67,7 +67,7 @@ function G_postRegistrarLeccionAprendida() {
 
 function G_getProyectosXEmpleado($id) {
     $sql = " SELECT id_empleadoXproyecto, nombre_proyecto 
-                 FROM EMPLEADO_PROYECTO EXP, PROYECTO P
+                 FROM MIEMBROS_EQUIPO EXP, PROYECTO P
                  WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
     try {
         $db = getConnection();
@@ -111,7 +111,7 @@ function G_postBorrarLeccionAprendida() {
 function G_postActualizarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
     $leccion = json_decode($request->getBody());
-    $sql = " UPDATE LECCION_APRENDIDA SET id_empleado_proyecto=:idexp, id_categoria_lec =:cla, descripcion =:dla, fecha_actualizacion=SYSDATE()
+    $sql = " UPDATE LECCION_APRENDIDA SET id_MIEMBROS_EQUIPO=:idexp, id_categoria_lec_aprendidas =:cla, descripcion =:dla, fecha_actualizacion=SYSDATE()
 	     WHERE id_leccion_aprendida=:id and estado=1 ";
     try {
         $db = getConnection();
@@ -130,9 +130,9 @@ function G_postActualizarLeccionAprendida() {
 
 function G_getLeccionesAprendidas() {
     $sql = " 
-select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
-from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, EMPLEADO_PROYECTO EP, CATEGORIA_LEC_APRENDIDA CLA
-where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.id_categoria_lec = LA.id_categoria_lec and EP.id_empleadoXproyecto = LA.id_empleado_proyecto and LA.estado=1 order by LA.fecha_actualizacion
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC, CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
+from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, MIEMBROS_EQUIPO EP, CATEGORIA_LEC_APRENDIDA CLA
+where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.ID_CATEGORIA_LEC = LA.id_categoria_lec_aprendidas and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO and LA.estado=1 order by LA.fecha_actualizacion
  ";
     try {
         $db = getConnection();
@@ -158,9 +158,9 @@ where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.
 
 function G_getLeccionAprendidasById($id) {
     $sql = " 
-select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.id_categoria_lec as cla, CLA.nombre_categoria_lec, LA.fecha_actualizacion, EP.id_empleadoXproyecto as idexp
-from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, EMPLEADO_PROYECTO EP, CATEGORIA_LEC_APRENDIDA CLA
-where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.id_categoria_lec = LA.id_categoria_lec and EP.id_empleadoXproyecto = LA.id_empleado_proyecto 
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC as cla, CLA.nombre_categoria_lec, LA.fecha_actualizacion, EP.ID_MIEMBROS_EQUIPO as idexp
+from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, MIEMBROS_EQUIPO EP, CATEGORIA_LEC_APRENDIDA CLA
+where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.ID_CATEGORIA_LEC = LA.id_categoria_lec_aprendidas and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO 
 and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
  ";
     try {
