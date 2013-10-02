@@ -111,8 +111,10 @@ function agregaDatosIndicadores(arreglo){
 
 }
 
-function agregaIndicador(indicador, valor, comparaNegativo, comparaPositivo){
-
+function agregaIndicador(indicador, val, comparaNegativo, comparaPositivo){
+	
+	var valNF= new Number(val);
+	var valor=valNF.toFixed(3);
 	color="";
 	if (!(comparaNegativo==0 && comparaPositivo==0))
 		if (valor<comparaNegativo)
