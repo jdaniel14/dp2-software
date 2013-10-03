@@ -434,7 +434,7 @@
 	}
 
 	function CO_InsertarIndicador($idIndicador, $idProyecto, $valor, $fecha) {
-		$sql = "INSERT INTO INDICADOR_X_PROYECTO VALUES (:idIndicador,:idProyecto,STR_TO_DATE(:fecha,'%Y%m%d'),:valor);
+		$sql = "INSERT INTO INDICADOR_X_PROYECTO(id_indicador,id_proyecto,fecha,valor) VALUES (:idIndicador,:idProyecto,STR_TO_DATE(:fecha,'%Y%m%d'),:valor);
 				COMMIT;";
 
 		$db = getConnection();
