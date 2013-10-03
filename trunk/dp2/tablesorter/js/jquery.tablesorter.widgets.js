@@ -623,23 +623,37 @@ ts.addWidget({
 				t = '<tr class="tablesorter-filter-row">';
 				
 				var k=0;
-				for (i=0;i<cols;i++){
-					if (document.getElementById("listaLeccionAprendida").rows[0].cells[i].innerText == "#"){
-						k = i;
+				if(document.getElementById("listaLeccionAprendida")!=null){
+
+				
+					for (i=0;i<cols;i++){
+						if (document.getElementById("listaLeccionAprendida").rows[0].cells[i].innerText == "#"){
+							k = i;
+						}
+					}
+
+					for (i = 0; i < cols; i++){	
+
+						if (k==i){
+							t += '<td style="display:none"></td>';	
+						}
+						else
+						{
+							t += '<td></td>';
+						}
+								
 					}
 				}
-
-				for (i = 0; i < cols; i++){	
-
-					if (k==i){
-						t += '<td style="display:none"></td>';	
-					}
-					else
+				else
 					{
-						t += '<td></td>';
+						for (i = 0; i < cols; i++){	
+
+						
+							t += '<td></td>';
+						}
+								
 					}
-							
-				}
+				
 				c.$filters = $(t += '</tr>').appendTo( $t.find('thead').eq(0) ).find('td');
 				// build each filter input
 				for (i = 0; i < cols; i++){
