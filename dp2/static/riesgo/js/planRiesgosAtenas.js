@@ -7,8 +7,14 @@ function main() {
 
     leerEquipo();
     leerComite();
-   // agregarEquipo();
-    agregarComite();
+  
+   $("#btnGuardarComite").click( function(){
+        agregarEquipo();
+        agregarComite();
+       
+   });
+   
+   
 
 }
 
@@ -19,18 +25,17 @@ function  agregarEquipo() {
    var data = {
             idProyecto: idProyectoLocal
         };
+ 
         
-        var valor;
+           var datos = new Array();
     $('#equipoProyecto li').each(function(index) {
         //formo data
-          valor=index;
+          datos[index] = "#idContacto" + index;
+          
     });
-       
-    var datos = new Array();
-    for (var i = 0; i < valor; i++) {
-        var valorId = "#idContacto" + i;
-        datos[i] = valorId;
-    }    
+      
+   
+  
    var data3 = {
             data1: data,
             data2: datos
@@ -72,17 +77,18 @@ var data = {
             idProyecto: idProyectoLocal
         };
         
-        var valor;
+        var datos = new Array();
+     
     $('#comiteRiesgos li').each(function(index) {
-        //formo data
-          valor=index;
+         datos[index] = "#idContacto" + index;
+      
     });
        
-    var datos = new Array();
-    for (var i = 0; i < valor; i++) {
-        var valorId = "#idContacto" + i;
-        datos[i] = valorId;
-    }    
+//    var datos = new Array();
+//    for (var i = 0; i < valor; i++) {
+//        var valorId = "#idContacto" + i;
+//        datos[i] = valorId;
+//    }    
    var data3 = {
             data1: data,
             data2: datos
