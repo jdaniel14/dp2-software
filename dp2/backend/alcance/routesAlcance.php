@@ -8,6 +8,7 @@
 	$app->post('/modificaPaquete', 'modificaPaquete');
 	$app->get('/comboMiembrosEquipo/:id_proyecto', 'getComboMiembrosEquipo');
 	$app->get('/infoProyectoFromEDT/:id_edt','getInfoProyectoFromEDT');
+	$app->get('/idEdtFromIdProyecto','getIdEdtFromIdProyecto');
 
 //Sprint 2!
 	//Lista de requisitos

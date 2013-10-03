@@ -123,6 +123,22 @@
 		echo json_encode($proy);
     }
 
+    function getIdEdtFromIdProyecto(){
+    	$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$id_proyecto = $val["id_proyecto"];
+		$con=getConnection();
+
+		$pstmt = $con->prepare("SELECT id_edt FROM EDT WHERE id_proyecto =? ORDER BY id_edt DESC");
+		$pstmt->execute(array($id_proyecto));
+
+		if($result = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			echo json_encode($result);			
+		}
+		//enviar una respuesta para redirigir a la creacion de un EDT?
+		return;
+    }
+
     //SEGUNDO SPRINT
 	function getListaRequisitos(){
 		$request = \Slim\Slim::getInstance()->request();
