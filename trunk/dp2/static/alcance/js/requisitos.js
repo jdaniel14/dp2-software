@@ -1,5 +1,7 @@
+var id_proyecto = 1;
 function modificarRequisito(){
-
+	$("#selected").removeClass("selected");
+	$(this).parent().parent().addClass("selected");
 	var obj = {
 		"id_requisito": this.getAttribute("idrequisito")
 	}
@@ -27,6 +29,8 @@ function modificarRequisito(){
 }
 
 function eliminarRequisito(){
+	$("#selected").removeClass("selected");
+	$(this).parent().parent().addClass("selected");
 	var obj = {
 		"id_requisito": this.getAttribute("idrequisito")
 	}
@@ -37,7 +41,7 @@ function eliminarRequisito(){
 		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8",
 		success: function(){
-			this.parent().parent().remove();
+			$(".selected")[0].remove();
 		}
 	});
 }
@@ -85,17 +89,19 @@ function inserta(data){
 	fila+= '<td><a class="eliminar-requisito" idRequisito="'+data["id_requisito"]+'"><span class="glyphicon glyphicon-remove"></a></td>';
 	fila += "</tr>";
 	$('#listaRequisitos').append(fila);
+	$('#detalleRequisito').modal('hide');
 }
 
 function modifica(data){
-	var fila = this.parent().parent();
-	var campos = fila.children();
-	campos[0].html(data["id_requisito"]);
-	campos[1].html(data["descripcion"]);
-	campos[2].html(data["tipo"]);
-	campos[3].html(data["observaciones"]);
-	campos[4].html(data["unidad_medida"]);
-	campos[5].html(data["valor"]);
+	var fila = $(".selected")[0];
+	var campos = $(fila).children();
+	$(campos[0]).html(data["id_requisito"]);
+	$(campos[1]).html(data["descripcion"]);
+	$(campos[2]).html(data["tipo"]);
+	$(campos[3]).html(data["observaciones"]);
+	$(campos[4]).html(data["unidad_medida"]);
+	$(campos[5]).html(data["valor"]);
+	$('#detalleRequisito').modal('hide');
 }
 
 function validarRequisito(){
@@ -113,7 +119,7 @@ function guardarCambios(){
 		if($(data[i]).hasClass("archivo"))continue;
 		obj[data[i]["id"]]=data[i]["value"];
 	}
-	obj["id_proyecto"]= 1;//hardcode!
+	obj["id_proyecto"]= id_proyecto;//hardcode!
 	var ruta = "";
 	var callback;
 	if($('#detalleRequisito').hasClass("insertar")){
@@ -122,7 +128,7 @@ function guardarCambios(){
 	}
 
 	if($('#detalleRequisito').hasClass("modificar")){
-		ruta = "./../api/AL_modificaRequisito";
+		ruta = "../../api/AL_modificaRequisito";
 		callback = modifica;
 	}
 	$.ajax({
@@ -146,8 +152,9 @@ function subirArchivo(){
 		var dataBinaria = event.target.result;
 		var fileName = $('#archivo')[0].files[0].name;
 		var obj ={
-			name : fileName,
-			data : dataBinaria
+			"name" : fileName,
+			"data" : dataBinaria,
+			"id_proyecto" : id_proyecto
 		};
 		$.ajax({
 			type: 'POST',
@@ -156,16 +163,52 @@ function subirArchivo(){
 			data: JSON.stringify(obj),
 			contentType: "application/json; charset=utf-8",
 			success:function(){
-				$("#mensajeEspera").html("Archivo subido con Eeeeeexito!");
+				$("#mensajeEspera").html("Archivo subido con exito");
 			}
 		});
 	};
 }
 
+function cargarPlanGestionRequisitos(){
+	var obj ={
+		id_proyecto : id_proyecto
+	}
+	$.ajax({
+			type: 'GET',
+			url : '../../api/AL_obtenerArchivo',
+			dataType: "json",
+			data: obj,
+			contentType: "application/json; charset=utf-8",
+			success:function(data){
+				$("#ruta").html('<a href="../'+data["ruta"]+'">'+data["nombre"]+'</a>');
+			}
+		});
+}
+
+function cargaTitulo(){
+	var obj ={
+		id_proyecto : id_proyecto
+	}
+	$.ajax({
+			type: 'GET',
+			url : '../../api/AL_obtenerProyectoById',
+			dataType: "json",
+			data: obj,
+			contentType: "application/json; charset=utf-8",
+			success:function(data){
+				$("#nombre_proyecto").html(data["nombre_proyecto"]);
+			}
+	});
+
+}
+
+
 $(document).ready(function(){
 	cargarComboTipo();
+	cargaTitulo();
+	cargarPlanGestionRequisitos();
 	var obj = {
-		"id_proyecto":1
+		"id_proyecto":id_proyecto
 	};
 	$.ajax({
 		type: 'GET',
@@ -182,11 +225,6 @@ $(document).ready(function(){
 		$('#tituloModal').html("Agregar requisito");
 		$('#detalleRequisito').addClass('insertar');
 		$('#detalleRequisito').modal('show');
-	});
-
-	$("#subirArchivo").click(function(){
-		var str = JSON.stringify($('#archivo')[0].files);
-		console.log(str);
 	});
 
 	$("#guardar").click(guardarCambios);

@@ -136,7 +136,7 @@
 		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
 		
 		//obtener lista de requisitos
-		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito FROM REQUISITO WHERE id_especificacion_requisitos =?");
+		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor FROM REQUISITO WHERE id_estado_requisito <> 2 AND id_especificacion_requisitos =?");
 		$pstmt->execute(array($idER));
 		$lista = array();
 		while($req = $pstmt->fetch(PDO::FETCH_ASSOC)){
@@ -160,18 +160,30 @@
 		$request = \Slim\Slim::getInstance()->request();
 		$req = json_decode($request->getBody(),TRUE);
 		$con=getConnection();
-		
 		//obtener id_especificacion_requisitos
 		$pstmt = $con->prepare("SELECT id_especificacion_requisitos FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto =?");
 		$pstmt->execute(array($req["id_proyecto"]));
 		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
-
-
+		if(is_null($idER)){
+			$pstmt = $con->prepare("INSERT INTO ESPECIFICACION_REQUISITOS (id_proyecto,nombre,version,id_estado) VALUES (?,'',1,1) ");
+			$pstmt->execute(array($req["id_proyecto"]));
+			$idER = $con->lastInsertId();
+		}
+		echo $idER;
 		$pstmt = $con->prepare("INSERT INTO REQUISITO 
-								(descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito) 	
-					   			VALUES (?,?,?,?,?,?)");
-		$pstmt = $con->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["observaciones"],$req["unidad_medida"],
-									$req["valor"],$req["id_estado_requisito"]));
+								(id_especificacion_requisitos,descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito) 	
+					   			VALUES (?,?,?,?,?,?,?)");
+		$pstmt->execute(
+			array(
+				$idER,
+				$req["descripcion"],
+				$req["id_tipo_requisito"],
+				$req["observaciones"],
+				$req["unidad_medida"],
+				$req["valor"],
+				1
+				)
+		);
 		$req["id_requisito"] = $con->lastInsertId();
 		echo json_encode($req);
 	}
@@ -182,8 +194,8 @@
 		$con=getConnection();
 		$pstmt = $con->prepare("UPDATE REQUISITO SET descripcion =?, id_tipo_requisito =?, observaciones =?, unidad_medida =?, valor =?,id_estado_requisito =?
 								WHERE id_requisito = ?");
-		$pstmt = $con->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["observaciones"],$req["unidad_medida"],
-									$req["valor"],$req["id_estado_requisito"], $req["id_requisito"]));
+		$pstmt->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["observaciones"],$req["unidad_medida"],
+									$req["valor"],1, $req["id_requisito"]));
 		echo $request->getBody();
 	}
 
@@ -203,8 +215,59 @@
 		$request = \Slim\Slim::getInstance()->request();
 		$id = json_decode($request->getBody(),TRUE)["id_requisito"];
 		$con=getConnection();
-		$pstmt = $con->prepare("UPDATE REQUISITO SET id_estado_requisito = 3
+		$pstmt = $con->prepare("UPDATE REQUISITO SET id_estado_requisito = 2
 								WHERE id_requisito = ?");
-		$pstmt = $con->execute(array($req["id_requisito"]));
-	}    
+		$pstmt->execute(array($id));
+		echo $id;
+	} 
+
+	function subirArchivo(){
+		$ruta = '../files/';
+		$request = \Slim\Slim::getInstance()->request();
+		$archivo = json_decode($request->getBody(),TRUE);
+
+		$file = fopen($ruta.$archivo["name"],'w');
+		fwrite($file, $archivo["data"]);
+		fclose($file);
+		$con=getConnection();
+		$pstmt = $con->prepare("INSERT INTO COMPONENTE_GESTION_REQUISITOS
+								(id_proyecto, nombre, descripcion, version, ruta) 	
+					   			VALUES (?,?,?,?,?)");
+		$pstmt->execute(array($archivo["id_proyecto"],"Plan de Gestión de requisitos","","",$ruta.$archivo["name"]));
+		echo 200;
+	}
+
+	function obtenerArchivo(){
+		$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idProy= $val["id_proyecto"];
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT *
+		 FROM COMPONENTE_GESTION_REQUISITOS
+		 WHERE id_proyecto =?
+		 ORDER BY id_componente DESC ");
+		$pstmt->execute(array($idProy));
+		if($file = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			echo json_encode($file);
+			return;
+		}
+		echo "";
+	}   
+
+	function obtenerProyectoById(){
+		$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idProy= $val["id_proyecto"];
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT nombre_proyecto 
+			FROM PROYECTO
+			WHERE id_proyecto = ? 
+		");
+		$pstmt->execute(array($idProy));
+		if($id = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			echo json_encode($id);
+			return;
+		}
+		echo "";
+	}
 ?>
