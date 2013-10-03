@@ -121,11 +121,14 @@ function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda
 	a=i;
 	a++;
 	var options ="";
+	cuenta='';
 	for (var k = 0; k < asientosContables.length; k++){
-		options += '<option value='+asientosContables[k].id+''+(idAsiento==asientosContables[k].id?' selected ':'')+'>'+asientosContables[k].descripcion+'</option>';
+		options += '<option value='+asientosContables[k].id+''+(idAsiento==asientosContables[k].descripcion?' selected ':'')+'>'+asientosContables[k].descripcion+'</option>';		
+		if (idAsiento==asientosContables[k].descripcion) cuenta= asientosContables[k].id;
 	}
 	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select id="tipoCuenta'+(a)+'">'+options+'</select>';
 	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
+	obtenCuentaSeleccionada(a,cuenta)
 }
 
 //Funciones para grabar
@@ -171,6 +174,26 @@ function limpiaTablaCuentaxActividad(){
 	$("#tablaCuentaxActividad").html('');
 	$("#tablaCuentaxActividad").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Actividad</b></td><td width="20%"><b>Tipo cuenta</b></td><td width="30%"><b>Costo subtotal</b></td></tr>');
 			
+
+}
+
+
+function obtenCuentaSeleccionada(a,cuenta){
+
+	idSelect='#tipoCuenta'+a;
+	if (cuenta!='' && cuenta!=null){
+	
+		
+		$(idSelect).val(cuenta);
+		var indiceDatos = $(idSelect)[0].selectedIndex;
+		if (indiceDatos!=null && indiceDatos!='')
+			$(idSelect)[0].options[indiceDatos].setAttribute('selected','selected');
+	}else{
+		if ($(idSelect)[0].options.length>0){
+			$(idSelect)[0].options[0].setAttribute('selected','selected');
+		}
+	
+	}
 
 }
 
