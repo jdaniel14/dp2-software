@@ -482,6 +482,39 @@
         }
     }
 
+
+    function R_getListaTipoImpactoXNivelImpacto($idProyecto){
+        
+        $query = "SELECT TIXNI.id_tipo_impacto id_tipo_impacto,
+                        TI.descripcion tiDescripcion,
+                        TIXNI.id_nivel_impacto id_nivel_impacto,
+                        NI.descripcion Nidescripcion,
+                        NI.tipo,limite_menor,limite_mayor
+                FROM tipo_impacto_x_nivel_impacto TIXNI, tipo_impacto TI, nivel_impacto NI
+                where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
+                order by id_tipo_impacto,id_nivel_impacto;";
+                    
+        try {
+            $arregloListaTipoImpacto= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
+                            "descripcionTipoImpacto" => $row['id_proyecto'],
+                            "tipoImpacto" => $row['descripcion']
+                            );
+                array_push($arregloListaTipoImpacto,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaTipoImpacto);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
+
     function R_getListaTipoImpacto($idProyecto){
         
         $query = "SELECT * FROM tipo_impacto WHERE id_proyecto=:id_proyecto ORDER BY descripcion";
@@ -535,7 +568,7 @@
 
     //--------------------------------------EQUIPO RIESGO--------------------------------------
 
-    function R_postRegistrarEquipoRiesgo(){
+    function R_postRegistrarComiteRiesgo(){
         
         $request = \Slim\Slim::getInstance()->request();
         $listaIntegrantes = json_decode($request->getBody());
@@ -543,16 +576,16 @@
         foreach ($listaIntegrantes->integrante as $integrante){
             
             
-            $query = "INSERT INTO comite_riesgo (id_proyecto,nombre_riesgo) 
-                    VALUES (:id_proyecto,:nombre_riesgo)";
+            $query = "INSERT INTO comite_riesgo (id_proyecto,id_empleado) 
+                    VALUES (:id_proyecto,:id_empleado)";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("id_proyecto", $integrante);
-                $stmt->bindParam("nombre_riesgo", $listaIntegrantes->idProyecto);
+                $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
+                $stmt->bindParam("id_empleado", $integrante);
                 $stmt->execute();
                 $db = null;
-                echo json_encode(array("idRiesgo"=>$id,"nombre"=>$row->nombre));
+                echo json_encode("Se registro con exito");
             } catch(PDOException $e) {
                 echo json_encode(array("me"=> $e->getMessage()));
                     //'{"error":{"text":'. $e->getMessage() .'}}';
