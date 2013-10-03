@@ -1,3 +1,11 @@
+var id_proyecto;
+if( localStorage.idProyecto ){
+	id_proyecto = localStorage.idProyecto;
+}
+else{
+	id_proyecto =1;
+}
+
 function getURLParameter(name) {
     return decodeURI(
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
@@ -20,6 +28,20 @@ function cargaLista(data){
 }
 
 $(document).ready(function(){
+	var obj={
+		id_proyecto : id_proyecto
+	}
+	$ajax({
+		type: 'GET',
+		url : '../../api/getIdEdtFromIdProyecto/',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		data : obj,
+		success: function(data){
+			id_edt = data["id_edt"];
+		}
+	});
+
 	$.ajax({
 		type: 'GET',
 		url : '../../api/listaDiccionario/'+ id_edt,

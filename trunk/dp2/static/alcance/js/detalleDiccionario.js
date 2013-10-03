@@ -5,7 +5,14 @@ function getURLParameter(name) {
 }
 
 var id_paquete = getURLParameter("id_paquete");
-var id_proyecto = 1;
+var id_proyecto;
+
+if( localStorage.idProyecto ){
+	id_proyecto = localStorage.idProyecto;
+}
+else{
+	id_proyecto =1;
+}
 
 function cargaData(data){
 	for(key in data){
@@ -124,7 +131,3 @@ $("#modificarPaquete").click(function(){
 		}
 	});
 });
-
-function editarPaquete(){
-	
-}
