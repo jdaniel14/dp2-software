@@ -29,7 +29,7 @@ var currentDate = new Date();
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
 		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
 				  .append("<button  class='button'>Exportar</button>")
-				  .append("<button data-toggle='modal' href='#myModal' class='button'>Tiempo de Trabajo</button>");
+				  .append("<button data-toggle='modal' href='#myModal' class='button' onclick='getCalendar();'>Tiempo de Trabajo</button>");
 		          //.append("<button onclick='getFile();' class='button'>Exportar</button>");
 		  $(".ganttButtonBar h1").html("<img src='twGanttSmall.png'>");
 		  $(".ganttButtonBar div").addClass('buttons');
@@ -114,7 +114,23 @@ var currentDate = new Date();
 		    console.log(ge);
 		    
 		}
-		
+
+		function getCalendar(){
+			var objProy = {
+				idProyecto: idProyecto				
+			}
+			alert(JSON.stringify(objProy));
+			var rootURL = "../../../api/CR_getCalendar/"+JSON.stringify(objProy);
+			$.ajax({
+				type: 'GET',
+				url: rootURL,
+				dataType: "json",
+				success: function(data){
+					var lista = data;
+					
+				}				
+			});
+		}		
 		
 		function saveGanttOnServer() {
 			//console.log(ge);
