@@ -190,4 +190,43 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
     }
 }
 
+		function G_getAsignarRecProy($id) {
+			$request = \Slim\Slim::getInstance()->request();
+		  $proj = json_decode($request->getBody());
+
+		  try {
+					$sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto) VALUES (:nom, :fi, :ff, :tp)";
+		      $db = getConnection();
+		      $stmt = $db->prepare($sql);
+		      $stmt->bindParam("nom", $proj->nom);
+		      $stmt->bindParam("fi", $proj->fi);
+		      $stmt->bindParam("ff", $proj->ff);
+		      $stmt->bindParam("tp", $proj->tp);
+		      $stmt->execute();
+		      $proj->id = $db->lastInsertId();
+				
+					$sql = "INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado) VALUES (:id_proy, :jp)";
+					$stmt = $db->prepare($sql);
+		      $stmt->bindParam("id_proy", $proj->id);
+		      $stmt->bindParam("jp", $proj->jp);
+		      $stmt->execute();
+		      $db = null;
+		      echo json_encode(array("me"=>"", "id"=>$proj->id));
+		  } catch(PDOException $e) {
+		      echo json_encode(array("me"=> $e->getMessage()));
+					//'{"error":{"text":'. $e->getMessage() .'}}';
+		  }
+
+		}
+
+		function G_getListarRecDisp($id) {
+		
+		
+		}
+
+		function G_getListaRecXProyecto($id) {
+		
+		
+		}
+
 ?>
