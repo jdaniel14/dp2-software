@@ -1,4 +1,12 @@
 var ge;  //this is the hugly but very friendly global var for the gantt editor
+var idProyecto;
+
+if (localStorage.getItem("idProyecto")){
+	idProyecto = localStorage.getItem("idProyecto");
+}
+else {
+	idProyecto = "1";
+}
 var currentDate = new Date();
 		  var currentMonth = currentDate.getMonth() + 1;
 		  var currentDay = currentDate.getDate();
@@ -77,7 +85,6 @@ var currentDate = new Date();
 			
 			var ret;
 	  		  
-			var idProyecto = 1;
 			var objProy ={
 				idProyecto : idProyecto
 			}
@@ -117,7 +124,7 @@ var currentDate = new Date();
 				console.log("Guardando...");
 				console.log(prj);
 				var objProy ={
-					idProyecto: "1",
+					idProyecto: idProyecto,
 					task:prj.tasks
 				};
 				var rootURL = "../../../api/CR_postActividades/";
