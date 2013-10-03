@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto=1;
+var idProyecto=obtenerIdProyecto();
 
 var arregloIndicadores= new Array(
 									1,2,3,4,5,6,7
@@ -87,8 +87,10 @@ function obtenIndicadores(/*idProyecto,*/dia, mes , anio){
 
 
 function agregarDataProyecto(data){
-	proy=data;
-	agregaDatosProyecto( proy.nombre);
+	if (data!=null){
+		proy=data;
+		agregaDatosProyecto( proy.nombre);
+	}
 }
 
 
@@ -98,16 +100,17 @@ function agregaDatosProyecto(nombreProyecto){
 }
 
 function agregaDatosIndicadores(arreglo){
-
-	indicadores=arreglo.lista;
-	
-	agregaIndicador("VP", indicadores[0].valor, 0, 0);
-	agregaIndicador("VA", indicadores[2].valor, 0, 0);
-	agregaIndicador("VG", indicadores[1].valor, 0, 0);
-	agregaIndicador("DC", indicadores[3].valor, 0, 0);
-	agregaIndicador("CPI",indicadores[4].valor, 1, 1);
-	agregaIndicador("SPI",indicadores[5].valor, 1, 1);
-	agregaIndicador("SV", indicadores[6].valor, 0, 0);
+	if (arreglo!=null){
+		indicadores=arreglo.lista;
+		
+		agregaIndicador("VP", indicadores[0].valor, 0, 0);
+		agregaIndicador("VA", indicadores[2].valor, 0, 0);
+		agregaIndicador("VG", indicadores[1].valor, 0, 0);
+		agregaIndicador("DC", indicadores[3].valor, 0, 0);
+		agregaIndicador("CPI",indicadores[4].valor, 1, 1);
+		agregaIndicador("SPI",indicadores[5].valor, 1, 1);
+		agregaIndicador("SV", indicadores[6].valor, 0, 0);
+	}
 
 }
 
@@ -216,4 +219,18 @@ function obtenerValorIndicador(indicador){
 	
 	inp="#input" + indicador;
 	return $(inp).val();
+}
+
+function obtenerIdProyecto(){
+
+	//localStorage.setItem('idProyecto','1');
+	id= localStorage.idProyecto;
+	
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	
+	return id;
+
 }

@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto = 1;//localStorage.idProyecto;
+var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
 var nAct = 0;
 var asientosContables = [];
 
@@ -72,25 +72,29 @@ function iniciaCuentaxActividad(){
 }
 
 function agregarDataProyecto(proyecto){
-	var nombreProyecto = proyecto.nombre;
-	var montoSinReserva = proyecto.presupuestoTotal;
-	var porcentajeReserva = proyecto.porcentajeReserva;
-	$("#nombreProyecto").html(nombreProyecto);
-	$("#inputMontoSinReserva").val(montoSinReserva);
-	$("#inputReserva").val(porcentajeReserva);
-	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
-	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	if (proyecto!=null){
+		var nombreProyecto = proyecto.nombre;
+		var montoSinReserva = proyecto.presupuestoTotal;
+		var porcentajeReserva = proyecto.porcentajeReserva;
+		$("#nombreProyecto").html(nombreProyecto);
+		$("#inputMontoSinReserva").val(montoSinReserva);
+		$("#inputReserva").val(porcentajeReserva);
+		$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
+		$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	}
 }
 function crearArregloAsientosContables(data){
 	asientosContables = data.lista;
 }
 
 function agregaDataFila(data){
-	var arreglo = data.lista;
-	nAct = arreglo.length;
-	for (i=0; i<arreglo.length;i++){
-		var filaAct=arreglo[i];
-		agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Soles",filaAct.idActividad);
+	if (data!=null){
+		var arreglo = data.lista;
+		nAct = arreglo.length;
+		for (i=0; i<arreglo.length;i++){
+			var filaAct=arreglo[i];
+			agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Soles",filaAct.idActividad);
+		}
 	}
 }
 
@@ -167,5 +171,19 @@ function limpiaTablaCuentaxActividad(){
 	$("#tablaCuentaxActividad").html('');
 	$("#tablaCuentaxActividad").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Actividad</b></td><td width="20%"><b>Tipo cuenta</b></td><td width="30%"><b>Costo subtotal</b></td></tr>');
 			
+
+}
+
+function obtenerIdProyecto(){
+
+	//localStorage.setItem('idProyecto','1');
+	id= localStorage.idProyecto;
+	
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	
+	return id;
 
 }

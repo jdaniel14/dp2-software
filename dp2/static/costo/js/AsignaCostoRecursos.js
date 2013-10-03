@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto=1;
+var idProyecto=obtenerIdProyecto();
 var numRecursos= 0;
 var comboMoneda='';
 var HashTipoCambio='';
@@ -181,8 +181,9 @@ function iniciaProyecto(){
 }
 
 function agregarDataProyecto(data){
+
 	proy=data;
-	agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva);
+	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva);
 }
 
 function iniciaActividades(){
@@ -196,35 +197,39 @@ function iniciaActividades(){
 }
 
 function imprimeListaActividades(data){
-	var arreglo = data.lista;
-	for(i=0; i<arreglo.length; i++){
-		actividad=arreglo[i];
-		armaActividad(actividad.idActividad,actividad.nombre);
-		
+	if (data!=null){
+		var arreglo = data.lista;
+		for(i=0; i<arreglo.length; i++){
+			actividad=arreglo[i];
+			armaActividad(actividad.idActividad,actividad.nombre);
+			
+		}
 	}
 }
 
 function agregaDataFilaResumen(datosActividad){
 	
-	nombreActividad= datosActividad.nombre;
-	subTotalActividad= datosActividad.costoSubtotal;	
-	moneda= "Soles"; // Arreglar
-	arreglo= datosActividad.listaRecursos;
+	if (datosActividad!=null){
 	
-	if (arreglo==null){
-		arreglo=new Array();		
-	}
-	
-	limpiaTablaResumen();
-	
-	for (i=0; i<arreglo.length;i++){
-		recurso=arreglo[i];
-		agregaFilaActividadResumen(i, recurso.unidadMedida, recurso.descripcion, recurso.moneda, recurso.cantidadEstimada, recurso.costoUnitario);
-	}
-	
-	$("#tituloActividad").html(nombreActividad);
-	$("#tablaTotalActividad").html('<tr width="100%"><td width="40%"><b>Total</b></td><td width="20%"><b>'+subTotalActividad+'</b></td><td width="40%">'+moneda+'</td></tr>');
+		nombreActividad= datosActividad.nombre;
+		subTotalActividad= datosActividad.costoSubtotal;	
+		moneda= "Soles"; // Arreglar
+		arreglo= datosActividad.listaRecursos;
 		
+		if (arreglo==null){
+			arreglo=new Array();		
+		}
+		
+		limpiaTablaResumen();
+		
+		for (i=0; i<arreglo.length;i++){
+			recurso=arreglo[i];
+			agregaFilaActividadResumen(i, recurso.unidadMedida, recurso.descripcion, recurso.moneda, recurso.cantidadEstimada, recurso.costoUnitario);
+		}
+		
+		$("#tituloActividad").html(nombreActividad);
+		$("#tablaTotalActividad").html('<tr width="100%"><td width="40%"><b>Total</b></td><td width="20%"><b>'+subTotalActividad+'</b></td><td width="40%">'+moneda+'</td></tr>');
+	}	
 }
 
 function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva){
@@ -476,3 +481,16 @@ function sacaValorSinReserva(){
 
 }
 
+function obtenerIdProyecto(){
+
+	//localStorage.setItem('idProyecto','1');
+	id= localStorage.idProyecto;
+	
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	
+	return id;
+
+}

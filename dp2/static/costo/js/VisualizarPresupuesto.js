@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto = 1;//localStorage.idProyecto;
+var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
 iniciaProyecto();		
 iniciaPaquetes();
 
@@ -78,11 +78,13 @@ function insertaHijoAcordeon(paquete,nombrePadre,numeroHijo){
 	$("#nodoPaquete").append(obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo));
 }
 function creaDesplegable(data){
-	var paquetes = data.lista;
-	var nombrePadre='nodoPaquete';
-	$("#nodoPaquete").html('');
-	for (var i=0;i<paquetes.length;i++){
-		insertaHijoAcordeon(paquetes[i],nombrePadre,i);
+	if (data!=null){
+		var paquetes = data.lista;
+		var nombrePadre='nodoPaquete';
+		$("#nodoPaquete").html('');
+		for (var i=0;i<paquetes.length;i++){
+			insertaHijoAcordeon(paquetes[i],nombrePadre,i);
+		}
 	}
 }
 
@@ -94,14 +96,16 @@ function iniciaProyecto(){
 }
 
 function agregarDataProyecto(proyecto){
-	var nombreProyecto = proyecto.nombre;
-	var montoSinReserva = proyecto.presupuestoTotal;
-	var porcentajeReserva = proyecto.porcentajeReserva;
-	$("#nombreProyecto").html(nombreProyecto);
-	$("#inputMontoSinReserva").val(montoSinReserva);
-	$("#inputReserva").val(porcentajeReserva);
-	$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
-	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	if (proyecto!=null){
+		var nombreProyecto = proyecto.nombre;
+		var montoSinReserva = proyecto.presupuestoTotal;
+		var porcentajeReserva = proyecto.porcentajeReserva;
+		$("#nombreProyecto").html(nombreProyecto);
+		$("#inputMontoSinReserva").val(montoSinReserva);
+		$("#inputReserva").val(porcentajeReserva);
+		$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
+		$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	}
 }
 
 //Fin funciones para pasar los datos de ajax
@@ -117,3 +121,16 @@ function grabarRecursos(){
 	alert("Se grabó");
 }
 //Fin funciones para grabar
+function obtenerIdProyecto(){
+
+	//localStorage.setItem('idProyecto','1');
+	id= localStorage.idProyecto;
+	
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	
+	return id;
+
+}
