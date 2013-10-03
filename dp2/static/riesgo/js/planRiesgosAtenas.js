@@ -30,7 +30,7 @@ function  agregarEquipo() {
            var datos = new Array();
     $('#equipoProyecto li').each(function(index) {
         //formo data
-          datos[index] = "#idContacto" + index;
+          datos[index] = this.id;
           
     });
       
@@ -80,9 +80,13 @@ var data = {
         var datos = new Array();
      
     $('#comiteRiesgos li').each(function(index) {
-         datos[index] = "#idContacto" + index;
+         datos[index] = this.id;
+         
       
     });
+    
+   
+
        
 //    var datos = new Array();
 //    for (var i = 0; i < valor; i++) {
@@ -163,7 +167,7 @@ var data = $.parseJSON('[{"idContacto":1,"nombreCompleto":"Juan"},{"idContacto":
  $('#comiteRiesgos').append('<h4> Comité de Riesgos </h4>');
 
     for (obj in data) {
-        var opt = $("<li id=" + data[obj]["idContacto"] + "_eq" + "></li>");
+        var opt = $("<li id=" + data[obj]["idContacto"] + "_com" + "></li>");
         //opt.attr(data[obj]["idContacto"]+"_eq");
         opt.html(data[obj]["nombreCompleto"]);
         $("#comiteRiesgos").append(opt);
