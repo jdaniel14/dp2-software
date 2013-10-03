@@ -58,11 +58,20 @@ function CR_getDependencias($json) {//servicio6
 
       FORMATO DE VARIAS DEPENDENCIAS  ------> SE ANIDAN POR COMAS SI SE UTILIZA ":", VALIDA SI ESTE ES MAYOR AL FIN DE LA ÚLTIMA DEPENDENCIA
 
-      OJO: DEBERIAMOS DE PREGUNTAR SI SE DEBE VALIDAR EL NÚMERO NEGATIVO YA QUE DEPENDENCIA SIGNIFICA QUE NO PUEDE ARRANCAR DÍAS ANTES PERO SÍ DIÁS DESPUES.¿?
+      OJO: DEBERIAMOS DE PREGUNTAR SI SE DEBE VALIDAR EL NÚMERO NEGATIVO YA QUE DEPENDENCIA SIGNIFICA QUE NO PUEDE ARRANCAR D�?AS ANTES PERO S�? DI�?S DESPUES.¿?
 
-     * EL FRONT DEBE VALIDAR ESTO YA QUE CUENTA CON LOS DATOS DE LAS UBICACIONES, JERARQUIAS Y TODO LO DEMÁS
+     * EL FRONT DEBE VALIDAR ESTO YA QUE CUENTA CON LOS DATOS DE LAS UBICACIONES, JERARQUIAS Y TODO LO DEM�?S
 
      * ESTO SOLO SI SE NECESITA LOS ID DE TODAS LAS LISTAS, PARA EL GANTT NO ES NECESARIO YA QUE LA API LO ARMA SEGÚN LO ALAMCENAMOS EN BD */
+}
+
+function CR_getIndicadoresFlujo($json) {//servicio9
+    $proy = json_decode($json);
+
+    $listaIndicadores = CR_consultarListaIndicadores($proy->idProyecto);
+
+    echo json_encode($listaIndicadores);
+
 }
 
 
@@ -181,7 +190,7 @@ function CR_consultarInfoActividades($idProyecto) {
 	$recursos= CR_obtenerRecursosTotalProyecto($idProyecto);
 	$paquetesEDT=CR_consultarPaqueteEDT($idProyecto);
 	$lista_mapeo=CR_obtenerListaMaps($recursos);
-    $sql = "SELECT * FROM ACTIVIDAD WHERE id_proyecto=? and eliminado=0 order by numero_fila";
+    $sql = "select a.*,((DATEDIFF(a.fecha_actual_inicio,a.fecha_actual_fin)/DATEDIFF(a.fecha_plan_inicio,a.fecha_plan_fin))*100)  as 'indicador_fecha',d.indicador_costo FROM `dp2`.`ACTIVIDAD` a  left join (SELECT n.id_actividad,((sum(n.cantidadReal*n.costo_unitario_real)/sum(r.COSTO_UNITARIO_ESTIMADO*n.cantidadEstimada))*100) AS 'indicador_costo' FROM `dp2`.`ACTIVIDAD_X_RECURSO` n  inner join `dp2`.`RECURSO` r on r.id_recurso=n.id_recurso where n.estado=1 group by n.id_actividad) d on d.id_actividad=a.id_actividad WHERE a.id_proyecto=? and a.eliminado=0 order by a.numero_fila ";
     $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
     $lista_actividad = array();
     try {
@@ -202,7 +211,7 @@ function CR_consultarInfoActividades($idProyecto) {
             //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
 			$idActividad=$p["id_actividad"];
 			$listaRecursosAsignados=CR_obtenerListaRecursosAsignados($idActividad,$lista_mapeo);
-            $actividad = array("id_task" => $p["id_actividad"] + 0,"id_proyecto"=>$p["id_proyecto"] , "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"]==1), "endIsMilestone" => ($p["hito_fin"]==1));
+            $actividad = array("id_task" => $p["id_actividad"] + 0,"id_proyecto"=>$p["id_proyecto"] , "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"]==1), "endIsMilestone" => ($p["hito_fin"]==1),"indicador_fecha" => $p["indicador_fecha"] + 0,"indicador_costo" => $p["indicador_costo"] + 0);
             array_push($lista_actividad, $actividad);
         }
 
@@ -292,6 +301,13 @@ function CR_consultarRecursos($idProyecto) {
 	$listaRecursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     return $listaRecursos;
 }
+
+function CR_consultarListaIndicadores($idProyecto) {
+
+    $listaIndicadores = CR_obtenerIndicadoresTotalProyecto($idProyecto);
+    return $listaIndicadores;
+}
+
 
 //funciones de conexion
 function Conectarse() { //realizar conexion con la BD 
@@ -416,7 +432,7 @@ function CR_eliminarRecursosAsignados($actividad){
 //Funciones hardcode
 function CR_obteneListaDependenciaFalsa() {
     $listaDependencias = array();
-    //igual al numero de actividades, SE DEBERÍA REALIZAR CON UN WHILE POR TODAS LAS ACTIVIDADES
+    //igual al numero de actividades, SE DEBER�?A REALIZAR CON UN WHILE POR TODAS LAS ACTIVIDADES
     $dep1 = new CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");
     $dep2 = new CR_Dependencia("2", "15-11-2013", "18-11-2013", "1");
     $dep3 = new CR_Dependencia("3", "19-11-2013", "23-11-2013", "2");
@@ -551,7 +567,7 @@ function CR_obtenerRecursosTotalProyecto($idProyecto) {
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             
 			$rec = array("idrecurso" => $j["id_recurso"],"id" => "tmp_".$contador, "idunidadmedida" => $j["id_unidad_medida"], "name" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
-            array_push($listaRecursos, $rec);
+                                                array_push($listaRecursos, $rec);
 			$contador++;
 			
         }
@@ -563,28 +579,63 @@ function CR_obtenerRecursosTotalProyecto($idProyecto) {
     }
 }
 
-function CR_obtenerRecursosTotalPaqueteTrabajo($idpaquetetrabajo) {
+function CR_obtenerIndicadoresTotalProyecto($idProyecto) {
 
-    $listaRecursos = array();
+    $listaIndicadorestotal = array();
 
-    $sql = "SELECT f.* FROM `dp2`.`RECURSO_X_PAQUETE` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad',  c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal'  FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_paquete_trabajo=? ";
-    try {
+    $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? order by a.id_indicador asc,a.fecha desc ";
+    try { 
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($idpaquetetrabajo));
-        $stmt = $db->query($sql);
+        $stmt->execute(array($idProyecto));
+    
+		//$stmt = $db->query($sql);
+		
         //$lista_jp = array();
+       $tem_id_proyecto=0;
+       $p=0;
+       $listaIndicadores= array();
+		
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("idrecurso" => $j["id_recurso"], "idunidadmedida" => $j["id_unidad_medida"], "descripcion_recurso" => $j["descripcion"], "costo_unitario" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "descripcion_unidad" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
-            array_push($listaRecursos, $rec);
+                                                
+                                               if ($p==0) { 
+                                                   $tem_id_proyecto=$j["id_indicador"];
+                                                   $p=1;
+                                               }
+                                               
+                                               $datetime1 = mysql_real_escape_string($j["fecha"]);
+                                               $datetime1 = strtotime($datetime1);
+                                               ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+            
+                                               if ($j["id_indicador"]!=$tem_id_proyecto){
+			
+                                                 array_push($listaIndicadorestotal, $listaIndicadores);
+                                                 $listaIndicadores= array();
+                                                 $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"],"id_indicador" => $j["id_indicador"],"nombre_indicador" => $j["nombre"],  "fecha" => $datetime1, "valor" => $j["valor"]);
+                                                  array_push($listaIndicadores, $rec);
+                                                   
+			
+                                                }else{
+                                                   $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"],"id_indicador" => $j["id_indicador"],"nombre_indicador" => $j["nombre"],  "fecha" => $datetime1, "valor" => $j["valor"]);
+                                                  array_push($listaIndicadores, $rec);
+                                                  
+                                                }
+                                                
+                                                $tem_id_proyecto=$j["id_indicador"];
         }
-
+        
+        array_push($listaIndicadorestotal, $listaIndicadores);
         $db = null;
-        return $listaRecursos;
+        return $listaIndicadorestotal;
+        
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
 }
+
+
+
+
 
 //FALTA VERIFICAR EL PARSEO DE FECHA ENTRANTES Y SALIENTES PARA TODO EL BUGS BUNNY
 function CR_obtenerListaRecursosAsignados($idActividad,$listaMapeoRecursos) {
@@ -690,5 +741,12 @@ function CR_obtenerInfoCalendarioBaseFalsa() {
     $calendarioBase1 = new CR_CalendarioBase(1, '08:30', '12:00', '01:00', '06:30', 8, 20, 12);
     return $calendarioBase1;
 }
+
+function CR_obtenerInfoCalendarioBase($idProyecto) {
+    //
+    $calendarioBase1 = new CR_CalendarioBase(1, '08:30', '12:00', '01:00', '06:30', 8, 20, 12);
+    return $calendarioBase1;
+}
+
 
 ?>
