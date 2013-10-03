@@ -260,9 +260,59 @@ function main(){
 		fila = {};
 
 		for (var i = 0; i < listaNiveles.length ; i++) {
+			fila.descripcion=$("#descTiposImpactoxNivelImpacto"+i).val();
+			fila.nivel=$("#idTiposImpactoxNivelImpacto"+i).val();
+			data.push(fila);
+			fila = {};
+		};
+
+
+		// $('#errorNivel').hide();
+		// $('#errorNivelMenor').hide();
+		// $('#errorProbabilidadMin').hide();
+		// $('#errorProbabilidadMinMayor').hide();
+		// $('#errorProbabilidadMax').hide();
+		// $('#errorProbabilidadMaxMenor').hide();
+		// $('#errorDescripcion').hide();
+
+		console.log(data);
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'POST',
+			url: addTypeImpactsXLevelImpacts,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				alert("Se registró exitosamente el nivel " + item.descripcion);
+				listarTiposImpactosXNivelImpactos();
+				$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
+			},
+			fail: codigoError
+		});
+	});
+
+
+/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 1--------------------------*/
+
+/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 2-------------------------*/
+	$("#btnAgregarTipoXNivel2").click( function(){
+
+		var flag = true;  //if true se registra, if false mensaje de error!
+		var data = [];
+		var fila = {};
+
+		fila.idProyecto = idProyectoLocal;
+		data.push(fila);
+		fila = {};
+		fila.idTipoImpacto = tipoImpacto;
+		data.push(fila);
+		fila = {};
+
+		for (var i = 0; i < listaNiveles.length ; i++) {
 			if (i==0){
 				fila.min=0;
-				fila.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
+				fila.descripcion=$("#maxTiposImpactoxNivelImpacto"+i).val();
 			} else if (i==listaNiveles.length-1) {
 				fila.min=$("#minTiposImpactoxNivelImpacto"+i).val();
 				fila.max=0;
@@ -302,7 +352,10 @@ function main(){
 	});
 
 
-/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 1--------------------------*/
+/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 2--------------------------*/
+
+
+
 
 }
 
