@@ -131,13 +131,14 @@
 		$month = $objeto->month;
 		$day = $objeto->day;
 
+		/*
 		if ($objeto->month < 10) {
 			$month = '0' . $month;
 		}
 
 		if ($objeto->day < 10) {
 			$day = '0' . $day;
-		}
+		}*/
 
 		$fecha = $year . $month . $day;
 		
@@ -421,7 +422,7 @@
 			CO_InsertarIndicador(CO_SPI, $obj->idProyecto, $obj->SPI, $fecha);
 			CO_InsertarIndicador(CO_SV, $obj->idProyecto, $obj->SV, $fecha);
 			
-        	$respuesta = CO_crearRespuesta(0, 'Ok');
+        	$respuesta = CO_crearRespuesta(0, 'Ok' . $fecha);
 
 		} catch(PDOException $e) {
         	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
