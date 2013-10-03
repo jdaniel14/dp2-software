@@ -7,8 +7,8 @@ function main() {
 
     leerEquipo();
     leerComite();
-    agregarEquipo();
-    // agregarComite();
+   // agregarEquipo();
+    agregarComite();
 
 }
 
@@ -40,13 +40,74 @@ function  agregarEquipo() {
         var jsonData = JSON.stringify(data3);
         console.log(jsonData);
         //alert("Elemento: " + $(elemento).text() + " en el indice " + index);
+        
+        
+		
+		$.ajax({
+			type: 'POST',
+			url:  "../../api/R_listarcomiteRiesgo",
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				
+				$('#myModalRegister').modal('hide');
+			},
+			fail: function(data){
+				alert(data.me);
+			}
+		});
+        
+        
+        
 }
 function  agregarComite() {
 
-    $('#comiteRiesgos li').each(function(index, elemento) {
-        alert("Elemento: " + $(elemento).text() + " en el indice " + index);
+//    $('#comiteRiesgos li').each(function(index, elemento) {
+//        alert("Elemento: " + $(elemento).text() + " en el indice " + index);
+//
+//    });
 
+var data = {
+            idProyecto: idProyectoLocal
+        };
+        
+        var valor;
+    $('#comiteRiesgos li').each(function(index) {
+        //formo data
+          valor=index;
     });
+       
+    var datos = new Array();
+    for (var i = 0; i < valor; i++) {
+        var valorId = "#idContacto" + i;
+        datos[i] = valorId;
+    }    
+   var data3 = {
+            data1: data,
+            data2: datos
+        };
+
+        //console.log(data3);
+        var jsonData = JSON.stringify(data3);
+        console.log(jsonData);
+        //alert("Elemento: " + $(elemento).text() + " en el indice " + index);
+        
+        
+		
+		$.ajax({
+			type: 'POST',
+			url:  "../../api/R_RegistrarComiteRiesgo",
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+                            alert("Se registró el comite exitosamente");
+			},
+			fail: function(data){
+				alert(data.me);
+			}
+		});
+   
 
 
 }
