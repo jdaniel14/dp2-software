@@ -71,73 +71,72 @@ function CR_getIndicadoresFlujo($json) {//servicio9
     $listaIndicadores = CR_consultarListaIndicadores($proy->idProyecto);
 
     echo json_encode($listaIndicadores);
-
 }
 
+function CR_getPaquetesEDT($json) {//Servicio 7
+    $proy = json_decode($json);
 
-function CR_getPaquetesEDT($json){//Servicio 7
-	$proy = json_decode($json);
-
-	$listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto);
-	echo json_encode($listaPaquetes);
+    $listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto);
+    echo json_encode($listaPaquetes);
 }
 
 function CR_postActividades() {//servicio8
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
-	
-	$idProyecto = $actividades->idProyecto;	
-    $arreglo_actividades = $actividades->task;	
-	$respuesta=CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
-	$respuesta=CR_Eliminacion_Logica_Actividades($idProyecto);	
-	if ($respuesta->me==""){    
-		echo json_encode(CR_guardar_actividades_BD($arreglo_actividades,$idProyecto));
-	}else echo json_encode($respuesta);
+
+    $idProyecto = $actividades->idProyecto;
+    $arreglo_actividades = $actividades->task;
+    $respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
+    $respuesta = CR_Eliminacion_Logica_Actividades($idProyecto);
+    if ($respuesta->me == "") {
+        echo json_encode(CR_guardar_actividades_BD($arreglo_actividades, $idProyecto));
+    }
+    else
+        echo json_encode($respuesta);
 }
 
-function CR_Eliminacion_Logica_Actividades($idProyecto){
+function CR_Eliminacion_Logica_Actividades($idProyecto) {
 
 
 
-	$sql = "UPDATE ACTIVIDAD SET eliminado=1 WHERE id_proyecto=? and eliminado=0; COMMIT;";
+    $sql = "UPDATE ACTIVIDAD SET eliminado=1 WHERE id_proyecto=? and eliminado=0; COMMIT;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
 
-   
+
         $db = null;
         ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
     } catch (PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        return array("me" => "eliminar".$e->getMessage());
+        return array("me" => "eliminar" . $e->getMessage());
     }
-	return CR_obtenerRespuestaExito();
+    return CR_obtenerRespuestaExito();
 }
 
-function CR_Eliminacion_Logica_Recursos_Asignados($idProyecto){
+function CR_Eliminacion_Logica_Recursos_Asignados($idProyecto) {
 
 
 
-	//$sql = "UPDATE ACTIVIDAD SET eliminado=1 WHERE id_proyecto=? and eliminado=0; COMMIT;";
-	$sql = "UPDATE ACTIVIDAD_X_RECURSO SET estado=0 WHERE id_actividad in (SELECT id_actividad FROM ACTIVIDAD WHERE id_proyecto=? and eliminado=0); COMMIT;";
+    //$sql = "UPDATE ACTIVIDAD SET eliminado=1 WHERE id_proyecto=? and eliminado=0; COMMIT;";
+    $sql = "UPDATE ACTIVIDAD_X_RECURSO SET estado=0 WHERE id_actividad in (SELECT id_actividad FROM ACTIVIDAD WHERE id_proyecto=? and eliminado=0); COMMIT;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
 
-   
+
         $db = null;
         ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
     } catch (PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        return array("me" => "eliminar".$e->getMessage());
+        return array("me" => "eliminar" . $e->getMessage());
     }
-	return CR_obtenerRespuestaExito();
+    return CR_obtenerRespuestaExito();
 }
-
 
 //Funciones implementadas que necesitan los servicios
 function CR_consultarListaDependencia($idProyecto) {
@@ -146,36 +145,35 @@ function CR_consultarListaDependencia($idProyecto) {
     return $listaDependencias;
 }
 
-function CR_consultarPaqueteEDT($idProyecto){
+function CR_consultarPaqueteEDT($idProyecto) {
 
 
-	//$sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b WHERE a.id_edt=b.id_estado and b.id_Proyecto=?";
-	$sql= "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b where  a.id_estado=1 and id_paquete_trabajo   not in(select id_componente_padre from PAQUETE_TRABAJO where id_componente_padre is not null and id_estado=1) and a.id_edt=b.id_edt and b.id_estado=1 and b.id_Proyecto=?;";
-	
-	$lista_paquete = array();
+    //$sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b WHERE a.id_edt=b.id_estado and b.id_Proyecto=?";
+    $sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b where  a.id_estado=1 and id_paquete_trabajo   not in(select id_componente_padre from PAQUETE_TRABAJO where id_componente_padre is not null and id_estado=1) and a.id_edt=b.id_edt and b.id_estado=1 and b.id_Proyecto=?;";
+
+    $lista_paquete = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
 
         while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			
-            $paquete = array("id" => $p["id_paquete_trabajo"] + 0,"name"=>$p["nombre"],"id_padre"=>$p["id_componente_padre"]);
-			
+
+            $paquete = array("id" => $p["id_paquete_trabajo"] + 0, "name" => $p["nombre"], "id_padre" => $p["id_componente_padre"]);
+
             array_push($lista_paquete, $paquete);
         }
 
         $db = null;
         ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
     } catch (PDOException $e) {
-			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
         return array("me" => $e->getMessage());
     }
-	
 
-	return $lista_paquete;
+
+    return $lista_paquete;
 }
-
 
 function CR_consultarInfoActividades($idProyecto) {
     //realizar la conexion a la BD
@@ -186,10 +184,10 @@ function CR_consultarInfoActividades($idProyecto) {
       echo "Error al conectar con MySQL: " . mysqli_connect_error();
       }
      */
-   
-	$recursos= CR_obtenerRecursosTotalProyecto($idProyecto);
-	$paquetesEDT=CR_consultarPaqueteEDT($idProyecto);
-	$lista_mapeo=CR_obtenerListaMaps($recursos);
+
+    $recursos = CR_obtenerRecursosTotalProyecto($idProyecto);
+    $paquetesEDT = CR_consultarPaqueteEDT($idProyecto);
+    $lista_mapeo = CR_obtenerListaMaps($recursos);
     $sql = "select a.*,((DATEDIFF(a.fecha_actual_inicio,a.fecha_actual_fin)/DATEDIFF(a.fecha_plan_inicio,a.fecha_plan_fin))*100)  as 'indicador_fecha',d.indicador_costo FROM `dp2`.`ACTIVIDAD` a  left join (SELECT n.id_actividad,((sum(n.cantidadReal*n.costo_unitario_real)/sum(r.COSTO_UNITARIO_ESTIMADO*n.cantidadEstimada))*100) AS 'indicador_costo' FROM `dp2`.`ACTIVIDAD_X_RECURSO` n  inner join `dp2`.`RECURSO` r on r.id_recurso=n.id_recurso where n.estado=1 group by n.id_actividad) d on d.id_actividad=a.id_actividad WHERE a.id_proyecto=? and a.eliminado=0 order by a.numero_fila ";
     $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
     $lista_actividad = array();
@@ -209,9 +207,9 @@ function CR_consultarInfoActividades($idProyecto) {
                     $detalle_paquete = $p2["nombre"];
             }
             //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
-			$idActividad=$p["id_actividad"];
-			$listaRecursosAsignados=CR_obtenerListaRecursosAsignados($idActividad,$lista_mapeo);
-            $actividad = array("id_task" => $p["id_actividad"] + 0,"id_proyecto"=>$p["id_proyecto"] , "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "fecha_actual_inicio" => $p["fecha_actual_inicio"], "fecha_actual_fin" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"]==1), "endIsMilestone" => ($p["hito_fin"]==1),"indicador_fecha" => $p["indicador_fecha"] + 0,"indicador_costo" => $p["indicador_costo"] + 0);
+            $idActividad = $p["id_actividad"];
+            $listaRecursosAsignados = CR_obtenerListaRecursosAsignados($idActividad, $lista_mapeo);
+            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "fecha_actual_inicio" => $p["fecha_actual_inicio"], "fecha_actual_fin" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0);
             array_push($lista_actividad, $actividad);
         }
 
@@ -236,41 +234,37 @@ function CR_consultarInfoActividades($idProyecto) {
     //echo date("d-m-Y", $seconds).'\n';
     //echo date("d-m-Y", $seconds2).'\n';
     //1380080255779
-	//date("Y-m-d", $mil/1000);
+    //date("Y-m-d", $mil/1000);
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
     //$recursos = CR_obtenerRecursosTotalFalsa();
-	
-    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos,$paquetesEDT);
+
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT);
     return $proyecto;
 }
 
-function CR_mezcla($input){
+function CR_mezcla($input) {
 
-	return $input["idrecurso"].":".$input["id"];
+    return $input["idrecurso"] . ":" . $input["id"];
 }
 
+function CR_obtenerListaMaps($recursos) {
 
-
-function CR_obtenerListaMaps($recursos){
-	
-	//$prueba=array_map("CR_mezcla", $recursos);
-	
-	//$resultado=new object();
-    for ($i = 0; $i < sizeof($recursos); $i++){
-		//echo json_encode($recursos[$i]["idrecurso"]);
-		$indice=$recursos[$i]["idrecurso"];
-		//echo json_encode($indice);
-		$valor="tmp_".($i+1);
-		//echo json_encode($valor);
-		//$test=array($indice=>$valor);
+    //$prueba=array_map("CR_mezcla", $recursos);
+    //$resultado=new object();
+    for ($i = 0; $i < sizeof($recursos); $i++) {
+        //echo json_encode($recursos[$i]["idrecurso"]);
+        $indice = $recursos[$i]["idrecurso"];
+        //echo json_encode($indice);
+        $valor = "tmp_" . ($i + 1);
+        //echo json_encode($valor);
+        //$test=array($indice=>$valor);
         //array_push($resultado,$test);
-		$resultado[$indice]=$valor;
-	
-	}	
-	//echo json_encode($resultado);
-	//return $resultado;
-	return $resultado;
+        $resultado[$indice] = $valor;
+    }
+    //echo json_encode($resultado);
+    //return $resultado;
+    return $resultado;
 }
 
 function CR_guardarActividadesBD($objecto) {
@@ -298,7 +292,7 @@ function CR_consultarRecursos($idProyecto) {
 
 
     //$listaRecursos = CR_obtenerRecursosTotalFalsa();
-	$listaRecursos = CR_obtenerRecursosTotalProyecto($idProyecto);
+    $listaRecursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     return $listaRecursos;
 }
 
@@ -307,7 +301,6 @@ function CR_consultarListaIndicadores($idProyecto) {
     $listaIndicadores = CR_obtenerIndicadoresTotalProyecto($idProyecto);
     return $listaIndicadores;
 }
-
 
 //funciones de conexion
 function Conectarse() { //realizar conexion con la BD 
@@ -345,88 +338,85 @@ function CR_obtenerRespuestaFracaso() {
     return $respuesta;
 }
 
-function CR_guardar_actividades_BD($listaActividad,$idProyecto) {
+function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
 
-      $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?);commit;";
-	  //$test=null
-	   date_default_timezone_set('America/Lima');
-      try {
+    $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?);commit;";
+    //$test=null
+    date_default_timezone_set('America/Lima');
+    try {
         $db = null;
-			  if ($listaActividad != null) {
-						$db = getConnection();
-						for ($i = 0; $i < sizeof($listaActividad); $i++){
-							 $actividad=$listaActividad[$i];
-							//$test=$actividad;
-							$stmt = $db->prepare($sql2);
-							/*if (property_exists($actividad,"id_task")){
-								echo $actividad->id_task ." ";
-								CR_eliminarRecursosAsignados($actividad);
-							}*/
-							
-							//CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
-							/*if (property_exists($actividad, 'id_Wbs')){
-								echo "[".$actividad->id_Wbs."]";
-							}*/
-							$stmt->execute(array($actividad->name,$idProyecto,(property_exists($actividad, 'id_Wbs'))?$actividad->id_Wbs:null,null,date("Y-m-d", $actividad->start/1000),date("Y-m-d", $actividad->end/1000),null,null,($i+1),$actividad->level,(property_exists($actividad,"depends"))?$actividad->depends:"",property_exists($actividad,"progress")?$actividad->progress:null,property_exists($actividad,"cost")?$actividad->cost:null,$actividad->duration,$actividad->status,$actividad->code,property_exists($actividad,"description")?$actividad->description:"",$actividad->start,$actividad->end,0,$actividad->startIsMilestone,$actividad->endIsMilestone));
-							$id_task=$db->lastInsertId();
-							CR_insertarRecursoAsignados($actividad->assigs,$id_task);
-						}
-						$db = null;
-				}
-      } catch(PDOException $e) {
-		$db=null;
-		
-        return array("me"=>"guardar".$e->getMessage());
-      }
-	return CR_obtenerRespuestaExito();
-}
-function CR_insertarRecursoAsignados($assigs,$id_task){
+        if ($listaActividad != null) {
+            $db = getConnection();
+            for ($i = 0; $i < sizeof($listaActividad); $i++) {
+                $actividad = $listaActividad[$i];
+                //$test=$actividad;
+                $stmt = $db->prepare($sql2);
+                /* if (property_exists($actividad,"id_task")){
+                  echo $actividad->id_task ." ";
+                  CR_eliminarRecursosAsignados($actividad);
+                  } */
 
-
-	$sql="INSERT INTO ACTIVIDAD_X_RECURSO (id_actividad,id_recurso,cantidadEstimada,cantidadReal,costo_unitario_real,id_tipo_costo,estado) VALUES (?,?,?,?,?,?,?);COMMIT:";
-	
-	try {
+                //CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
+                /* if (property_exists($actividad, 'id_Wbs')){
+                  echo "[".$actividad->id_Wbs."]";
+                  } */
+                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), null, null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone));
+                $id_task = $db->lastInsertId();
+                CR_insertarRecursoAsignados($actividad->assigs, $id_task);
+            }
+            $db = null;
+        }
+    } catch (PDOException $e) {
         $db = null;
-			  if ($assigs != null) {
-						$db = getConnection();
-						for ($i = 0; $i < sizeof($assigs); $i++){
-							 $assig=$assigs[$i];
-							//$test=$actividad;
-							$stmt = $db->prepare($sql);
-							$stmt->execute(array($id_task,$assig->idrecurso,$assig->value,property_exists($assig,"valueReal")?$assig->valueReal:null,(property_exists($assig,"costRateReal"))?$assig->costRateReal:null,(property_exists($assig,"idTipoCosto"))?$assig->idTipoCosto:null,1));
-						}
-						$db = null;
-				}
-      } catch(PDOException $e) {
-		$db=null;
-		//echo json_encode(array("me"=>"guardar".$e->getMessage()));
-        return array("me"=>"guardar".$e->getMessage());
-      }
-	return CR_obtenerRespuestaExito();
 
+        return array("me" => "guardar" . $e->getMessage());
+    }
+    return CR_obtenerRespuestaExito();
 }
 
-function CR_eliminarRecursosAsignados($actividad){
+function CR_insertarRecursoAsignados($assigs, $id_task) {
 
-	$sql = "UPDATE ACTIVIDAD_X_RECURSO SET estado=0 WHERE id_actividad=?; COMMIT;";
-	//$actividad->id_task;
-	//$lista_actividad = array();
+
+    $sql = "INSERT INTO ACTIVIDAD_X_RECURSO (id_actividad,id_recurso,cantidadEstimada,cantidadReal,costo_unitario_real,id_tipo_costo,estado) VALUES (?,?,?,?,?,?,?);COMMIT:";
+
+    try {
+        $db = null;
+        if ($assigs != null) {
+            $db = getConnection();
+            for ($i = 0; $i < sizeof($assigs); $i++) {
+                $assig = $assigs[$i];
+                //$test=$actividad;
+                $stmt = $db->prepare($sql);
+                $stmt->execute(array($id_task, $assig->idrecurso, $assig->value, property_exists($assig, "valueReal") ? $assig->valueReal : null, (property_exists($assig, "costRateReal")) ? $assig->costRateReal : null, (property_exists($assig, "idTipoCosto")) ? $assig->idTipoCosto : null, 1));
+            }
+            $db = null;
+        }
+    } catch (PDOException $e) {
+        $db = null;
+        //echo json_encode(array("me"=>"guardar".$e->getMessage()));
+        return array("me" => "guardar" . $e->getMessage());
+    }
+    return CR_obtenerRespuestaExito();
+}
+
+function CR_eliminarRecursosAsignados($actividad) {
+
+    $sql = "UPDATE ACTIVIDAD_X_RECURSO SET estado=0 WHERE id_actividad=?; COMMIT;";
+    //$actividad->id_task;
+    //$lista_actividad = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($actividad->id_task));
-		
-   
+
+
         $db = null;
         ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
     } catch (PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        return array("me" => "eliminar".$e->getMessage());
+        return array("me" => "eliminar" . $e->getMessage());
     }
-	return CR_obtenerRespuestaExito();
-	
-	
-
+    return CR_obtenerRespuestaExito();
 }
 
 //Funciones hardcode
@@ -555,21 +545,18 @@ function CR_obtenerRecursosTotalProyecto($idProyecto) {
     $listaRecursos = array();
 
     $sql = "SELECT a.*,b.simbolo as simbolo_unidad,b.descripcion as descripcion_unidad, c.descripcion as descripcion_moneda, d.descripcion as descripcion_rubropresupuestal FROM RECURSO a left join UNIDAD_MEDIDA b on b.id_unidad_medida=a.id_unidad_medida   left join CAMBIO_MONEDA c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda  left join RUBRO_PRESUPUESTAL d on a.id_rubro_presupuestal=d.id_rubro_presupuestal where a.id_proyecto =  ? ";
-    try { 
+    try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
-    
-		//$stmt = $db->query($sql);
-		
+
+        //$stmt = $db->query($sql);
         //$lista_jp = array();
-		$contador=1;
+        $contador = 1;
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            
-			$rec = array("idrecurso" => $j["id_recurso"],"id" => "tmp_".$contador, "idunidadmedida" => $j["id_unidad_medida"], "name" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
-                                                array_push($listaRecursos, $rec);
-			$contador++;
-			
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "idunidadmedida" => $j["id_unidad_medida"], "name" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
+            array_push($listaRecursos, $rec);
+            $contador++;
         }
 
         $db = null;
@@ -584,87 +571,77 @@ function CR_obtenerIndicadoresTotalProyecto($idProyecto) {
     $listaIndicadorestotal = array();
 
     $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? order by a.id_indicador asc,a.fecha desc ";
-    try { 
+    try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
-    
-		//$stmt = $db->query($sql);
-		
+
+        //$stmt = $db->query($sql);
         //$lista_jp = array();
-       $tem_id_proyecto=0;
-       $p=0;
-       $listaIndicadores= array();
-		
+        $tem_id_proyecto = 0;
+        $p = 0;
+        $listaIndicadores = array();
+
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-                                                
-                                               if ($p==0) { 
-                                                   $tem_id_proyecto=$j["id_indicador"];
-                                                   $p=1;
-                                               }
-                                               
-                                               $datetime1 = mysql_real_escape_string($j["fecha"]);
-                                               $datetime1 = strtotime($datetime1);
-                                               ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
-            
-                                               if ($j["id_indicador"]!=$tem_id_proyecto){
-			
-                                                 array_push($listaIndicadorestotal, $listaIndicadores);
-                                                 $listaIndicadores= array();
-                                                 $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"],"id_indicador" => $j["id_indicador"],"nombre_indicador" => $j["nombre"],  "fecha" => $datetime1, "valor" => $j["valor"]);
-                                                  array_push($listaIndicadores, $rec);
-                                                   
-			
-                                                }else{
-                                                   $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"],"id_indicador" => $j["id_indicador"],"nombre_indicador" => $j["nombre"],  "fecha" => $datetime1, "valor" => $j["valor"]);
-                                                  array_push($listaIndicadores, $rec);
-                                                  
-                                                }
-                                                
-                                                $tem_id_proyecto=$j["id_indicador"];
+            if ($p == 0) {
+                $tem_id_proyecto = $j["id_indicador"];
+                $p = 1;
+            }
+
+            $datetime1 = mysql_real_escape_string($j["fecha"]);
+            $datetime1 = strtotime($datetime1);
+            ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+
+            if ($j["id_indicador"] != $tem_id_proyecto) {
+
+                array_push($listaIndicadorestotal, $listaIndicadores);
+                $listaIndicadores = array();
+                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                array_push($listaIndicadores, $rec);
+            } else {
+                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                array_push($listaIndicadores, $rec);
+            }
+
+            $tem_id_proyecto = $j["id_indicador"];
         }
-        
+
         array_push($listaIndicadorestotal, $listaIndicadores);
         $db = null;
         return $listaIndicadorestotal;
-        
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
 }
 
-
-
-
-
 //FALTA VERIFICAR EL PARSEO DE FECHA ENTRANTES Y SALIENTES PARA TODO EL BUGS BUNNY
-function CR_obtenerListaRecursosAsignados($idActividad,$listaMapeoRecursos) {
+function CR_obtenerListaRecursosAsignados($idActividad, $listaMapeoRecursos) {
     $listaRecursos = array();
-	//$listaIds=array();
+    //$listaIds=array();
     //$sql2 = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real "./*,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo */."FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso "./*inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo */."where e.id_actividad=? and e.estado=1";
-    $sql="SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
-	try {
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idActividad));
         //$stmt = $db->query($sql);
         //$lista_jp = array();
-		$contador=1;
+        $contador = 1;
         //echo "mira" . json_encode($listaMapeoRecursos);
-		while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-			//echo $j["id_recurso"]. "gg";
-			//$idRecurso=$listaMapeoRecursos["1"];
-			//echo $idRecurso;
-			 $idRecurso=$listaMapeoRecursos["".$j["id_recurso"]];
-			
-            $rec = array("idrecurso" => $j["id_recurso"],"id"=>"tmp_".$contador , "resourceId" => $idRecurso,"idunidadmedida" => $j["id_unidad_medida"],/*"idTipoCosto" => $j["id_tipo_costo"],*/ "descripcion_recurso" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"]+0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"]+0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"]/*, "descripcion_tipocosto" => $j["descripcion_tipocosto"]*/);
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            //echo $j["id_recurso"]. "gg";
+            //$idRecurso=$listaMapeoRecursos["1"];
+            //echo $idRecurso;
+            $idRecurso = $listaMapeoRecursos["" . $j["id_recurso"]];
+
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "resourceId" => $idRecurso, "idunidadmedida" => $j["id_unidad_medida"], /* "idTipoCosto" => $j["id_tipo_costo"], */ "descripcion_recurso" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"]/* , "descripcion_tipocosto" => $j["descripcion_tipocosto"] */);
             array_push($listaRecursos, $rec);
-			
-			$contador++;
+
+            $contador++;
         }
 
         $db = null;
-		//echo json_encode($listaRecursos);
+        //echo json_encode($listaRecursos);
         return $listaRecursos;
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
@@ -747,6 +724,5 @@ function CR_obtenerInfoCalendarioBase($idProyecto) {
     $calendarioBase1 = new CR_CalendarioBase(1, '08:30', '12:00', '01:00', '06:30', 8, 20, 12);
     return $calendarioBase1;
 }
-
 
 ?>
