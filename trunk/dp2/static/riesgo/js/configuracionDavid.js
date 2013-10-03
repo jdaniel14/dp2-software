@@ -543,7 +543,7 @@ function listarTiposImpacto(){
 			agregarDataTiposImpacto(data);
 		},
 		fail: 
-			codigoError;
+			codigoError
 			// agregarDataTiposImpacto(listaTipos)
 		
 	});
