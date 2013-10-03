@@ -298,8 +298,55 @@ function CR_consultarRecursos($idProyecto) {
 
 function CR_consultarListaIndicadores($idProyecto) {
 
-    $listaIndicadores = CR_obtenerIndicadoresTotalProyecto($idProyecto);
-    return $listaIndicadores;
+        $listaIndicadorestotal = array();
+
+    $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? order by a.id_indicador asc,a.fecha desc ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+        //$stmt = $db->query($sql);
+        //$lista_jp = array();
+        $tem_id_proyecto = 0;
+        $p = 0;
+        $listaIndicadores = array();
+
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            if ($p == 0) {
+                $tem_id_proyecto = $j["id_indicador"];
+                $p = 1;
+            }
+
+            $datetime1 = mysql_real_escape_string($j["fecha"]);
+            $datetime1 = strtotime($datetime1);
+            ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+
+            if ($j["id_indicador"] != $tem_id_proyecto) {
+
+                array_push($listaIndicadorestotal, $listaIndicadores);
+                $listaIndicadores = array();
+                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                array_push($listaIndicadores, $rec);
+            } else {
+                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                array_push($listaIndicadores, $rec);
+            }
+
+            $tem_id_proyecto = $j["id_indicador"];
+        }
+
+        array_push($listaIndicadorestotal, $listaIndicadores);
+        $db = null;
+        //return $listaIndicadorestotal;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+    
+      $listafinaljsonindicador = new CR_IndicadoresJSON($listaIndicadorestotal);
+    return $listafinaljsonindicador;
+    
 }
 
 //funciones de conexion
