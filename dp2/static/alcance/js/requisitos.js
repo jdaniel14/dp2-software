@@ -1,4 +1,10 @@
-var id_proyecto = 1;
+var id_proyecto;
+if( localStorage.idProyecto ){
+	id_proyecto = localStorage.idProyecto;
+}
+else{
+	id_proyecto =1;
+}
 function modificarRequisito(){
 	$("#selected").removeClass("selected");
 	$(this).parent().parent().addClass("selected");
