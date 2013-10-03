@@ -17,6 +17,6 @@ $app->contentType('text/html; charset=utf-8');
  //fin 2   
 
  //Riesgo cambio
-    include ("../backend/riesgo/ServiciosRiesgoV2.php");
+    include ("../backend/riesgo/serviciosRiesgoV2.php");
 $app->run();
 ?>
