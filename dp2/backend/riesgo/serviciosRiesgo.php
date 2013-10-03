@@ -489,26 +489,73 @@
                         TI.descripcion tiDescripcion,
                         TIXNI.id_nivel_impacto id_nivel_impacto,
                         NI.descripcion Nidescripcion,
-                        NI.tipo,limite_menor,limite_mayor
-                FROM tipo_impacto_x_nivel_impacto TIXNI, tipo_impacto TI, nivel_impacto NI
+                        NI.tipo,limite_menor,limite_mayor,
+                        TIXNI.descripcion tixniDescripcion
+                FROM tipo_impacto_x_nivel_impacto TIXNI, tipo_impacto TI, nivel_impacto NI 
                 where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
                 order by id_tipo_impacto,id_nivel_impacto;";
                     
         try {
-            $arregloListaTipoImpacto= array();
+            $fullQuery= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $idProyecto);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
-                            "descripcionTipoImpacto" => $row['id_proyecto'],
-                            "tipoImpacto" => $row['descripcion']
+                            "descripcionTipoImpacto" => $row['tiDescripcion'],
+                            "tipoImpacto" => $row['tipo'],
+                            "min" => $row['limite_menor'],
+                            "max" => $row['limite_mayor'],
+                            "descripcion" => $row['tixniDescripcion'],
                             );
-                array_push($arregloListaTipoImpacto,$data);
+                array_push($fullQuery,$data);
             }
             $db = null;
-            echo json_encode($arregloListaTipoImpacto);
+
+            $query = "SELECT COUNT(*) TOTAL FROM nivel_impacto WHERE id_proyecto=:id_proyecto";
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $cantidadColumnas = $row->TOTAL;
+            $db = null;
+
+            $auxCantidadColumnas=0;
+
+            $devuelve=array();
+            $var=array();
+            $lista=array();
+            foreach($fullQuery as $fila){
+
+                $auxCantidadColumnas++;
+                
+                if($auxCantidadColumnas==1){
+                    $var = array("idTipoImpacto" => $fila['idTipoImpacto'], 
+                            "descripcionTipoImpacto" => $fila['descripcionTipoImpacto'],
+                            "tipoImpacto" => $fila['tipoImpacto'],
+                            "lista" => ""
+                        );
+                } 
+                 $data=array("min" => $fila['min'], 
+                            "max" => $fila['max'],
+                            "descripcion" => $fila['descripcion']
+                            );
+                 array_push($lista,$data);
+
+                if($auxCantidadColumnas==$cantidadColumnas) {
+                    $auxCantidadColumnas=0;
+                    $var['lista']=$lista;
+                    array_push($devuelve,$var);
+                    $var=array();
+                    $lista=array();
+
+                }
+
+   
+            }
+            echo json_encode($devuelve);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
