@@ -16,9 +16,11 @@
 
 
 
-//jose -- RRHH
+		//jose -- RRHH
+    $app->post('/G_asignarRecursoProyecto', 'G_getAsignarRecProy'); 
+    $app->get('/G_listarRecursoDisponible', 'G_getListarRecDisp'); 
+    $app->get('/G_listaRecursoxProyecto', 'G_getListaRecXProyecto'); 
 
-//Alfonso -- Seguridad
-$app->post('/G_verificaUsuario', 'G_getUsuario'); //devuelve 1 si el usuario y pass son correctas
-
+		//Alfonso -- Seguridad
+		$app->post('/G_verificaUsuario', 'G_getUsuario'); //devuelve 1 si el usuario y pass son correctas
 ?>
