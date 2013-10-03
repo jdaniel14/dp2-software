@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idProyecto=1;
+var idProyecto=obtenerIdProyecto();
 var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
@@ -139,12 +139,14 @@ function iniciaRecursos(tipo){
 
 
 function agregaDataFila(data, tipo){
-	arreglo=data.lista;
-	for (i=0; i<arreglo.length;i++){
-		filaRecurso=arreglo[i];
-		//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
-		agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario ,'Recurso Material',filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda);
-		numRecursos=i;
+	if (data!=null){
+		arreglo=data.lista;
+		for (i=0; i<arreglo.length;i++){
+			filaRecurso=arreglo[i];
+			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario ,'Recurso Material',filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda);
+			numRecursos=i;
+		}
 	}
 }
 
@@ -162,8 +164,10 @@ function iniciaUnidadMedida(){
 }
 
 function agregarDataProyecto(data){
-	proy=data;
-	agregaDatosProyecto( proy.nombre);
+	if (data!=null){
+		proy=data;
+		agregaDatosProyecto( proy.nombre);
+	}
 }
 
 
@@ -226,30 +230,31 @@ function modifica(num){
 
 
 function creaComboMoneda(data){
-	comboMoneda='';
-	arreglo=data.lista;
-	
-	for (i=0; i<arreglo.length;i++){
-		moneda=arreglo[i];
-		agregaOpcionMoneda(moneda.idMoneda, moneda.nombre);
+	if (data!=null){
+		comboMoneda='';
+		arreglo=data.lista;
 		
-	}		
-	
+		for (i=0; i<arreglo.length;i++){
+			moneda=arreglo[i];
+			agregaOpcionMoneda(moneda.idMoneda, moneda.nombre);
+			
+		}		
+	}
 }
 
 
 function creaComboUnidadMedida(data){
-
-	comboUnidadMedida='';
-	arreglo=data.lista;
-	
-	for (i=0; i<arreglo.length;i++){
-		unidad=arreglo[i];
-		agregaOpcionUnidadMedida(unidad.idUM, unidad.descripcion);
+	if (data!=null){
+		comboUnidadMedida='';
+		arreglo=data.lista;
 		
+		for (i=0; i<arreglo.length;i++){
+			unidad=arreglo[i];
+			agregaOpcionUnidadMedida(unidad.idUM, unidad.descripcion);
+			
+		}
+
 	}
-
-
 }
 
 
@@ -540,3 +545,17 @@ $("#btnEditar").click(function(){
 $("#btnCancelar").click(function(){
 	cambiaConsultar();
 });
+
+function obtenerIdProyecto(){
+
+	//localStorage.setItem('idProyecto','1');
+	id= localStorage.idProyecto;
+	
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	
+	return id;
+
+}
