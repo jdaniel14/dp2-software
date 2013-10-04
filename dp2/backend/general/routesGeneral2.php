@@ -18,7 +18,7 @@ $app->post('/G_asignarRecursoProyecto/:id', 'G_getAsignarRecProy');
 //jose -- RRHH
 
 $app->get('/G_listarRecursoDisponible', 'G_getListarRecDisp');
-$app->get('/G_listaRecursoxProyecto', 'G_getListaRecXProyecto');
+$app->get('/G_listaRecursoxProyecto/:id', 'G_getListaRecXProyecto');
 
 //Alfonso -- Seguridad
 $app->post('/G_verificaUsuario', 'G_getUsuario'); //devuelve 1 si el usuario y pass son correctas

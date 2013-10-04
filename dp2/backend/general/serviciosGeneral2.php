@@ -292,6 +292,35 @@ function G_getListarRecDisp() {
 
 
 function G_getListaRecXProyecto($id) {
+    $sql = " SELECT E.ID_EMPLEADO,E.NOMBRE_CORTO,RE.NOMBRE_ROL,M.COSTO_EMPLEADO
+            FROM MIEMBROS_EQUIPO  M,
+            EMPLEADO E,
+            ROL_EMPLEADO RE
+            WHERE E.ID_EMPLEADO=M.ID_EMPLEADO
+            AND E.ID_ROL=RE.ID_ROL
+            AND M.ID_PROYECTO=:id ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
+        $l_recxpro = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $rec = array(
+                "id" => $j["ID_EMPLEADO"],
+                "nom" => $j["NOMBRE_CORTO"],
+                "rol" => $j["NOMBRE_ROL"],
+                "costo" => $j["COSTO_EMPLEADO"]
+            );
+            array_push($l_recxpro, $rec);
+        }
+        $db = null;
+        echo json_encode(array("l_recurso"=>$l_recxpro));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
     
 }
 
