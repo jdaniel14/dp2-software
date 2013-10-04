@@ -397,11 +397,27 @@ function main(){
 		}
 	});
 
-
-
-
-
 /*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL IMPACTO X NIVEL IMPACTO----------------------------------*/
+
+/*-------------------------LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
+
+	$("#btnModalAgregarNivel").click(function(){
+		$("#errorNivel").hide();
+		$("#numeroNivel").val("");
+		$("#errorNivelMenor").hide();
+		$("#probabilidadMinNivel").val("");
+		$("#errorProbabilidadMin").hide();
+		$("#errorProbabilidadMinMayor").hide();
+		$("#probabilidadMaxNivel").val("");
+		$("#errorProbabilidadMax").hide();
+		$("#errorProbabilidadMaxMenor").hide();
+		$("#descripcionProbabilidad").val("");
+		$("#errorDescripcion").hide();
+	});
+
+/*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
+
+
 /*-----------------------------------ELIMINAR UN NIVEL--------------------------------------------*/
 
 
