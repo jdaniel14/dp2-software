@@ -243,7 +243,7 @@ function CR_consultarInfoActividades($idProyecto) {
             //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
             $idActividad = $p["id_actividad"];
             $listaRecursosAsignados = CR_obtenerListaRecursosAsignados($idActividad, $lista_mapeo);
-            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "fecha_actual_inicio" => $p["fecha_actual_inicio"], "fecha_actual_fin" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0,"progress_cost" => $p["PORC_AVANCE_COSTO_ESTIMADO"] + 0 );
+            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "realStart" => $p["fecha_actual_inicio"], "realEnd" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0,"progress_cost" => $p["PORC_AVANCE_COSTO_ESTIMADO"] + 0 );
             array_push($lista_actividad, $actividad);
         }
 
@@ -458,10 +458,10 @@ function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
                   } */
 
                 //CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
-                /* if (property_exists($actividad, 'id_Wbs')){
-                  echo "[".$actividad->id_Wbs."]";
+                 /*if (property_exists($actividad, 'realStart')){
+                  echo "[".strtotime($actividad->realStart)."]";
                   } */
-                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), null, null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone));
+                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), (property_exists($actividad, 'realStart')) ? $actividad->realStart : null, (property_exists($actividad, 'realEnd')) ? $actividad->realEnd : null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone));
                 $id_task = $db->lastInsertId();
                 CR_insertarRecursoAsignados($actividad->assigs, $id_task);
             }
