@@ -237,9 +237,10 @@ function CR_consultarInfoActividades($idProyecto) {
     //date("Y-m-d", $mil/1000);
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
+	$calendario=CR_consultarCalendarioBase($idProyecto);
     //$recursos = CR_obtenerRecursosTotalFalsa();
 
-    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT);
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT,$calendario);
     return $proyecto;
 }
 
@@ -278,9 +279,28 @@ function CR_consultarCalendarioBase($idProyecto) {
     //$conexion=Conectarse();
     //Desconectarse(conexion);
     //Hardcode
-    $calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
+    //$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
+	$sql="select b.id_calendario_base,b.nombre from dp2.CALENDARIO_PROYECTO a, dp2.CALENDARIO_BASE b WHERE a.id_calendario_base=b.id_calendario_base and a.ID_PROYECTO=?;";
+	$rec=null;
+	try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
 
-    return $calendarioBase;
+       
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            $rec = array("id" => $j["id_calendario_base"], "name" => "Calendario Peruano", "holidays" => $j["nombre"]);
+        }
+
+        $db = null;
+        //return $listaIndicadorestotal;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+    
+    return $rec;
+
 }
 
 function CR_guardarcalendarioBaseBD($objeto) {
