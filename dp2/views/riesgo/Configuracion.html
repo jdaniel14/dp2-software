@@ -1,232 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
-   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-    <title>Plan de Riesgos</title>
-    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+        <title>Plan de Riesgos</title>
+        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="../../assets/js/html5shiv.js"></script>
-      <script src="../../assets/js/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-            <div id="header"></div>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div id="header"></div>
 
 
 
-<!-- VISTA CONFIGURACION-->
+        <!-- VISTA CONFIGURACION-->
 
         <div class="well"></div>
-      
-     
-           <div class="col-md-3" >
-                <div class="well" id="sideBarNavegacion" >
-                    <ul class="nav nav-pills nav-stacked">
-                        <li ><a href="../../views/riesgo/AcuerdosModificaciones.html">Acuerdos y Modificaciones</a></li>
-                        <li ><a href="../../views/riesgo/PlanRiesgos.html"  >Plan de Riesgos</a></li>
-                        <li class="active"><a href="../../views/riesgo/Configuracion.html" >Configuración</a></li>
-                    </ul>
+
+
+        <div class="col-md-3" >
+            <div class="well" id="sideBarNavegacion" >
+                <ul class="nav nav-pills nav-stacked">
+                    <li ><a href="../../views/riesgo/AcuerdosModificaciones.html">Acuerdos y Modificaciones</a></li>
+                    <li ><a href="../../views/riesgo/PlanRiesgos.html"  >Plan de Riesgos</a></li>
+                    <li class="active"><a href="../../views/riesgo/Configuracion.html" >Configuración</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <input  id="suma" type="text" style="display:none" value=1>
+        <div class="col-md-9" role="main">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="text-left"> Tipos de Impacto </h3>
+                    <form  name="form1">
+                        <table class="table-striped" width="90%" id="tablaTiposRiesgos">
+                            <tr>
+                                <td width="60%"><b>Tipo de Impacto</b></td>
+                                <th colspan="3">Acciones</th>
+
+                            </tr>
+
+                            <tbody class="cuerpo-tabla" id="tablaRiesgos">
+                                <!--Contenido Tipos de Riesgos-->
+                                <tr id="my_row_101">
+                                    <td><input name="tipoRi1" id="tipoRi1" type="text" ></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <td><a onclick="deleteMe('101')" href="#">Eliminar</a></td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <span class="btn btn-info" id="btnAgregar">Agregar</span>
+                        <div  class="col-md-12" style="text-align:center">
+                            <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                        </div>
+                    </form>  
                 </div>
             </div>
 
-            <div class="col-md-9" role="main">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3 class="text-left"> Tipos de Riesgo </h3>
-                        <form  name="form1">
-                              <table class="table-striped" width="90%" id="tablaTiposRiesgos">
-                                     <tr>
-                                        <td width="60%"><b>Tipo de Riesgo</b></td>
-                                        <th colspan="3">Acciones</th>
-                                    
-                                    </tr>
-                                
-                                    <tbody class="cuerpo-tabla" id="tablaRiesgos">
-                                        <!--Contenido Tipos de Riesgos-->
-                                        <tr id="my_row_101">
-                                            <td><input name="tipoRi1" id="tipoRi1" type="text" ></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                           <td><a onclick="deleteMe('101')" href="#">Eliminar</a></td>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="text-left">Probabilidad </h3>
+                    <form class="form-horizontal" >
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Muy Bajo</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idMuyBajo1" > -
+                                <input type="text" class="input-sm" id="idMuyBajo2" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Bajo</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idBajo1" > -
+                                <input type="text" class="input-sm" id="idBajo2" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Medio</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idMedio1" > -
+                                <input type="text" class="input-sm" id="idMedio2" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Alto</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idAlto1" > -
+                                <input type="text" class="input-sm" id="idAlto2" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Muy Alto</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idMuyAlto1" > -
+                                <input type="text" class="input-sm" id="idMuyAlto2" >
+                            </div>
+                        </div>
 
-                                        </tr>
-                                    </tbody>
-                               
-                                </table>
-                                 <span class="btn btn-info">Agregar</span>
-                                <div  class="col-md-12" style="text-align:center">
-                                    <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
-                                </div>
-                        </form>  
-                    </div>
+                        <div  class="col-md-12" style="text-align:center">
+                            <button type="button" class="btn btn-primary" id="btnAceptar1">Aceptar</button>
+                            <button type="button" class="btn btn-primary" id="btnCancelar1">Cancelar</button>
+                        </div>
+                    </form>  
                 </div>
+            </div>     
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3 class="text-left">Probabilidad </h3>
-                        <form class="form-horizontal" >
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Muy Bajo</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idMuyBajo1" > -
-                                    <input type="text" class="input-sm" id="idMuyBajo2" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Bajo</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idBajo1" > -
-                                    <input type="text" class="input-sm" id="idBajo2" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Medio</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idMedio1" > -
-                                    <input type="text" class="input-sm" id="idMedio2" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Alto</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idAlto1" > -
-                                    <input type="text" class="input-sm" id="idAlto2" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Muy Alto</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idMuyAlto1" > -
-                                    <input type="text" class="input-sm" id="idMuyAlto2" >
-                                </div>
-                            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="text-left">  Impacto </h3>
+                    <form class="form-horizontal" >
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Muy Bajo</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idMuyBajo" > 
 
-                            <div  class="col-md-12" style="text-align:center">
-                                <button type="button" class="btn btn-primary" id="btnAceptar1">Aceptar</button>
-                                <button type="button" class="btn btn-primary" id="btnCancelar1">Cancelar</button>
                             </div>
-                        </form>  
-                    </div>
-                </div>     
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Bajo</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idBajo" > 
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3 class="text-left">  Impacto </h3>
-                        <form class="form-horizontal" >
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Muy Bajo</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idMuyBajo" > 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Medio</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idMedio" > 
 
-                                </div>
                             </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Bajo</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idBajo" > 
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Alto</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idAlto" > 
 
-                                </div>
                             </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Medio</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idMedio" > 
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-lg-4 control-label">Muy Alto</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="input-sm" id="idMuyAlto" > 
+                            </div>
+                        </div>
 
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Alto</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idAlto" > 
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-lg-4 control-label">Muy Alto</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="input-sm" id="idMuyAlto" > 
-                                </div>
-                            </div>
-
-                            <div  class="col-md-12" style="text-align:center">
-                                <button type="button" class="btn btn-primary" id="btnAceptar2">Aceptar</button>
-                                <button type="button" class="btn btn-primary" id="btnCancelar2">Cancelar </button>
-                            </div>
-                        </form>  
-                    </div>
+                        <div  class="col-md-12" style="text-align:center">
+                            <button type="button" class="btn btn-primary" id="btnAceptar2">Aceptar</button>
+                            <button type="button" class="btn btn-primary" id="btnCancelar2">Cancelar </button>
+                        </div>
+                    </form>  
                 </div>
+            </div>
         </div>
     </body>
 </html>
 
-<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <script src="../../static/riesgo/js/jquery-sortable.js"></script>
 <script src="../../static/riesgo/js/application.js"></script>
-  <script src="../../static/riesgo/js/PlanRiesgos.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
+<script src="../../static/riesgo/js/configuracionAtenas.js"></script>
 
 <script>
-        $(document).ready(function($)
-        {
-            // trigger event when button is clicked
-            $("span").click(function()
-            {
-                // add new row to table using addTableRow function
-                addTableRow($("table"));
-                // prevent button redirecting to new page
-                return false;
-            });
-        
-            // function to add a new row to a table by cloning the last row and 
-            // incrementing the name and id values by 1 to make them unique
-            function addTableRow(table)
-            {
-                // clone the last row in the table
-                var $tr = $(table).find("tbody tr:last").clone();
-                // get the name attribute for the input and select fields
-                $tr.find("input,select").attr("name", function()
-                {
-                    // break the field name and it's number into two parts
-                    var parts = this.id.match(/(\D+)(\d+)$/);
-                    // create a unique name for the new field by incrementing
-                    // the number for the previous field by 1
-                    return parts[1] + ++parts[2];
-                // repeat for id attributes
-                }).attr("id", function(){
-                    var parts = this.id.match(/(\D+)(\d+)$/);
-                    return parts[1] + ++parts[2];
-                });
-                // append the new row to the table
-                $(table).find("tbody tr:last").after($tr);
-            };
-        });
-        </script>   
-        
-<script>
 
-function deleteMe(row_id){
 
-if(!confirm('¿Está seguro que desea eliminar?')){
+    function deleteMe(row_id) {
 
-ev.preventDefault();
+       if (!confirm('¿Está seguro que desea eliminar?')) {
 
-return false;
+           ev.preventDefault();
 
-}else{
+           return false;
 
-$('#my_row_'+row_id).remove();
+       } else {
 
-}
+           $('#my_row_' + row_id).remove();
 
-}
+       }
+
+    }
 
 </script>
 <script src="../../assets/js/header.js"></script>
