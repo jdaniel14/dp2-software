@@ -289,7 +289,7 @@ var currentDate = new Date();
 			var fechita =  $("#FechaWT").val();
 			if (fechita != ""){
 				fechitaparse=fechita.split('-');
-				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaparse[1] + '/' + fechitaparse[2] + '/' + fechitaparse[0] +"</td></tr>")
+				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaparse[0] + '/' + fechitaparse[1] + '/' + fechitaparse[2]  +"</td></tr>")
 				//<td><input type='text' placeholder='Ingrese el nombre de la fecha' style='width:400px;'/></td>
 			}else{
 				alert("Debe seleccionar una fecha primero");
