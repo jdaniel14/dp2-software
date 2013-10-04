@@ -53,7 +53,7 @@
             $stmt = $db->query($query);
             $stmt->bindParam("idProyecto", $idProyecto);
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $data= array("fecha" => $row['fecha'], "hora" => $row['hora'],"acuerdos" => $row['acuerdos']);
+                $data= array("idAcuerdo" => $row['id_acuerdos'],"fecha" => $row['fecha'], "hora" => $row['hora'],"acuerdo" => $row['acuerdos']);
                 array_push($arregloListaTipoImpacto,$data);
             }
             $db = null;
