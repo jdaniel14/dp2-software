@@ -110,17 +110,17 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
-      <div class="modal" id="modalAgregarNivel">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Agregar un Nivel de Probabilidad</h4>
-            </div>
-            <div class="modal-body">
-              <div class="form-horizontal col-lg-12">
-                <h5><b>Por favor, ingrese los datos del nuevo nivel de probabilidad</b>
-                <br/><br/><small>Se recomienda que el nivel 1 tenga como descripción "Muy Bajo", el nivel 2 descripción "Bajo" y así sucesivamente. Recuerde tener una cantidad impar de niveles</small><br/></h5>
+    <div class="modal" id="modalAgregarNivel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Agregar un Nivel de Probabilidad</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-horizontal col-lg-12">
+              <h5><b>Por favor, ingrese los datos del nuevo nivel de probabilidad</b>
+              <br/><br/><small>Se recomienda que el nivel 1 tenga como descripción "Muy Bajo", el nivel 2 descripción "Bajo" y así sucesivamente. Recuerde tener una cantidad impar de niveles</small><br/></h5>
 
                 <div class="form-group col-lg-12">
                     <label class="col-lg-5 control-label">*Nivel</label>
@@ -140,7 +140,7 @@
                         <input type="text" class="form-control" id="probabilidadMinNivel" placeholder="Probabilidad minima en %" maxlength="3">
                     </div>
                     <div class="alert-modal alert-danger" id="errorProbabilidadMin" style="display: none;">
-                        <span class="pull-right">Por favor, inserte un número menor al máximo</span>
+                        <span class="pull-right">Por favor, inserte un número mayor a cero y menor al máximo</span>
                     </div>
                     <div class="alert-modal alert-danger" id="errorProbabilidadMinMayor" style="display: none;">
                         <span class="pull-right">El valor ingresado ya ha sido mapeado en otro nivel</span>
@@ -172,36 +172,35 @@
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button class="btn btn-success" id="btnAgregarNivel">Agregar</button>
-              <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
+          <div class="modal-footer">
+            <button class="btn btn-success" id="btnAgregarNivel">Agregar</button>
+            <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-      <div class="modal" id="modalEliminarNivel">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Eliminar Niveles de Probabilidad</h4>
+    <div class="modal" id="modalEliminarNivel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Eliminar Niveles de Probabilidad</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-horizontal col-lg-12">
+              <h5><b>¿Está seguro de querer eliminar TODOS los datos de esta tabla?</br></br>
+              Esta acción no puede ser deshecha</b></h5>
             </div>
-            <div class="modal-body">
-              <div class="form-horizontal col-lg-12">
-                <h5><b>¿Está seguro de querer eliminar TODOS los datos de esta tabla?</br></br>
-                Esta acción no puede ser deshecha</b></h5>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-danger" id="btnEliminarNivel">Eliminar</button>
-              <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" id="btnEliminarNivel">Eliminar</button>
+            <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-    </div>
 
   </body>
 </html>
