@@ -219,9 +219,41 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
 
 		}
 
-		function G_getListarRecDisp($id) {
-		
-		
+		function G_getListarRecDisp() {
+
+	    try {
+			  $sql = "SELECT M.id_empleado as id
+								FROM MIEMBROS_EQUIPO M
+								WHERE 
+									( fecha_entrada <= DATE(NOW()) AND
+									DATE(NOW()) <= fecha_salida )	
+								";
+        $db = getConnection();
+        $stmt = $db->query($sql);
+        $lista_falsa = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+						$id = $j["id"];
+						$lista_falsa[$id] = true;
+        }
+			  $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, R.NOMBRE_ROL as rol
+								FROM EMPLEADO E, ROL_EMPLEADO R
+								WHERE R.ID_ROL = E.ID_ROL
+								";
+        $stmt = $db->query($sql);
+				$lista = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+						$id = $j["id"];
+						if( ! array_key_exists($id, $lista_falsa) ){
+							$lista[$id] = array($j["id"], $j["nom"], $j["rol"]);
+						}
+        }
+
+
+        $db = null;
+        echo json_encode(array("l_recurso"=>array_values($lista)));
+			} catch(PDOException $e) {
+		      echo json_encode(array("me"=> $e->getMessage()));
+			}
 		}
 
 		function G_getListaRecXProyecto($id) {
