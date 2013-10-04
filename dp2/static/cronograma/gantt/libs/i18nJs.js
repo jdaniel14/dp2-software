@@ -1,6 +1,6 @@
 var holidays = "#01_01#05_01#06_29#07_28#07_29#08_30#10_08#11_01#12_08#12_25#";
 
-/*$(document).ready(function() {
+$(document).ready(function() {
 
   var objProy = {
     idProyecto: idProyecto
@@ -19,7 +19,7 @@ var holidays = "#01_01#05_01#06_29#07_28#07_29#08_30#10_08#11_01#12_08#12_25#";
     }
   });
   //alert(holidays);
-});*/
+});
 
   function dateToRelative(localTime){
     var diff=new Date().getTime()-localTime;
