@@ -90,16 +90,30 @@
       <div class="container">
         <h1>Alcance</h1>
         <p>En esta sección se podrá crear/modificar/eliminar el EDT</p>
-        <p><a id ="MostrarEdt" class="btn btn-primary btn-lg">Mostrar EDT &raquo;</a>
+       
+        <p><a id ="CrearEDTCero" style = "display:none" class="btn btn-primary btn-lg">Crear EDT &raquo;</a></p>
+         <p><a id ="MostrarEdt" style = "display:none" class="btn btn-primary btn-lg">Mostrar EDT &raquo;</a></p>
+
+         <div id = "progressEdt" class="progress progress-striped active" style = "display:none">
+            <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            ... Cargando ...
+            </div>
+          </div>
+
+
+
 
           <div id = "controllerButton" style = "display:none">
       
+      <!--
       <label> Versión : </label>
           <select style = "width:100px;" class="form-control">
             <option>1.1</option>
             <option>1.0</option>
           </select>
+      -->
 
+         
              <h6> Utilitarios del EDT:   </h6>   
                <a id ="editarEdt" class="btn btn-success">Editar &raquo;</a>
                <a id = "eliminarEdt" class="btn btn-danger">Eliminar</a>
@@ -170,9 +184,63 @@
 
        </div>
 
+
+
        <div id = "botonerasEditar" style = "display:none" >
+
+
+           <form class="form-inline" role="form">
+           Padre: <input type = "text" id = "padreEdt" value = ""/>
+           <!-- 
+            Padre:<label id = "padreEdt">  </label>
+            -->
+            <br />
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputEmail2">Título</label>
+                <input type="text" class="form-control" id="inputTitulo" placeholder="Ingrese Título">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputPassword2">Descripción</label>
+                <input type="text" class="form-control" id="inputDescripcion" placeholder="Descripción">
+              </div>
+              
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputPassword2">Tiempo</label>
+                <input type="text" class="form-control" id="inputTiempo" placeholder="Tiempo Estimado">
+              </div>
+              
+
+              <button id = "inputAgregar" type="button" class="btn btn-default">Modificar</button>
+            </form>
+
+            <form class="form-inline" role="form">
+            Hijo:<label id = "hijoEdt">  </label>
+            <br />
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputEmail2">Título</label>
+                <input type="text" class="form-control" id="inputTitulo1" placeholder="Ingrese Título">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputPassword2">Descripción</label>
+                <input type="text" class="form-control" id="inputDescripcion1" placeholder="Descripción">
+              </div>
+              
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputPassword2">Tiempo</label>
+                <input type="text" class="form-control" id="inputTiempo1" placeholder="Tiempo Estimado">
+              </div>
+              
+
+              <button id = "inputAgregarHijo" type="button" class="btn btn-default">Agregar Hijo</button>
+            </form>
+
+           
+
+            <!--
+             <a id = "AgregarNodo" class = "btn btn-primary"> Agregar </a>
             <a id ="guardarEDT" class="btn btn-primary btn-lg">Guardar &raquo;</a>
             <a id ="CancelarEDT" class="btn btn-info btn-lg">Cancelar &raquo;</a>
+            -->
         </div>
 
       <footer>
