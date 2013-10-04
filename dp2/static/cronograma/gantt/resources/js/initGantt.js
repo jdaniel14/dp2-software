@@ -121,8 +121,16 @@ var currentDate = new Date();
 		}
 
 		function getCalendar(){
+			console.log(ge.calendarBase);
 			var feriados = ge.calendarBase.holidays;
-			
+			var diasferiados = feriados.split('#');
+			console.log(diasferiados);
+			$("#tableHolidayDay").empty();
+			for (var i=1; i < diasferiados.length - 1; i++){
+				var fechitaslash = diasferiados[i].replace("_","/");
+				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaslash+"</td></tr>")
+			}
+
 		}		
 		
 		function saveGanttOnServer() {
@@ -280,7 +288,9 @@ var currentDate = new Date();
 		function addWorkingTimeDay(){
 			var fechita =  $("#FechaWT").val();
 			if (fechita != ""){
-				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td><input type='text' placeholder='Ingrese el nombre de la fecha' style='width:400px;'/></td><td>" + $("#FechaWT").val() +"</td></tr>")
+				fechitaparse=fechita.split('-');
+				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaparse[1] + '/' + fechitaparse[2] + '/' + fechitaparse[0] +"</td></tr>")
+				//<td><input type='text' placeholder='Ingrese el nombre de la fecha' style='width:400px;'/></td>
 			}else{
 				alert("Debe seleccionar una fecha primero");
 			}			
