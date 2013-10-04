@@ -1,6 +1,8 @@
 var listaRecursosHumanos = "../../api/G_listarRecursoDisponible";
 
-$(document).ready(function(){
+
+
+$("#btnAsignarRecursos").click(function(){
 	alert("1");
 	iniciaRecursosHumanos();
 	alert("2");
@@ -25,7 +27,7 @@ $(document).ready(function(){
 });
 
 function iniciaRecursosHumanos(){
-	
+	alert("aki");
 	$.ajax({
 		type: 'GET',
 		url: listaRecursosHumanos,
@@ -44,7 +46,9 @@ function agregaDataFila(data){
 	}
 	
 	for (i=0; i<arreglo.length;i++){		
-		agregaFilaRecursosHumanos(arreglo[i],i);
+            alert(arreglo[i]);
+            agregaFilaRecursosHumanos(arreglo[i],i);
+                
 	}
 }
 
