@@ -296,10 +296,14 @@ function G_getListarRecDisp() {
  
 			$str1 = $body->fechaIni;
 			$str2 = $body->fechaFin;
-			$fecha_Inicio_IN = new DateTime($str1);
-			$fecha_Fin_IN = new DateTime($str2);
-			$interval = $fecha_Fin_IN->diff($fecha_Inicio_IN);
-			$num_dias = $interval->d;
+			//echo json_encode(array($str1, $str2));
+
+			$fecha_Inicio_IN = date_create($str1);
+			$fecha_Fin_IN = date_create($str2);
+			//echo $fecha_Inicio_IN->format('Y-m-d')." ".$fecha_Fin_IN->format('Y-m-d')."<br>";
+			$interval = date_diff($fecha_Fin_IN,$fecha_Inicio_IN);
+			$num_dias = $interval->m*30 + $interval->d;
+//			echo $num_dias;
 
 			$sql_empleados = "SELECT * FROM EMPLEADO ORDER BY id_empleado";
 			$db = getConnection();
