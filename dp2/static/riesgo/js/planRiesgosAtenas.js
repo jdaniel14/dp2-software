@@ -14,7 +14,30 @@ function main() {
 
     });
 
+    $("#btnGuardarMetodologia").click(function() {
 
+        var data = {
+            idProyecto: idProyectoLocal,
+            metodologia: $("#metodologia").val()
+
+        };
+        var jsonData = JSON.stringify(data);
+        console.log(data);
+
+        $.ajax({
+            type: 'POST',
+            url: "../../api/R_registrarMetodologia",
+            data: jsonData,
+            dataType: "json",
+            success: function(data) {
+                alert("Se registró la metodologia exitosamente");
+            },
+            fail: function(data) {
+                alert(data.me);
+            }
+        });
+
+    });
 
 }
 
@@ -30,7 +53,7 @@ function  agregarEquipo() {
 
     });
 
- //console.log(data3);
+    //console.log(data3);
     var jsonData = JSON.stringify(data);
     console.log(jsonData);
     //alert("Elemento: " + $(elemento).text() + " en el indice " + index);
@@ -41,9 +64,9 @@ function  agregarEquipo() {
         data: jsonData,
         dataType: "json",
         success: function(data) {
-    
 
-               alert("Se registró el equipo exitosamente");
+
+            alert("Se registró el equipo exitosamente");
         },
         fail: function(data) {
             alert(data.me);
@@ -61,7 +84,7 @@ function  agregarComite() {
         listaComite: []
     };
 
-  
+
 
     $('#comiteRiesgos li').each(function(index) {
         //datos[index] = this.id;
