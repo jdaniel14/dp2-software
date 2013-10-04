@@ -377,7 +377,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   taskEditor.find("#description").val(task.description);  
   taskEditor.find("#code").val(task.code);
   taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
-  taskEditor.find("#coverage").val(task.coverage ? parseFloat(task.progress) : 0);
+  taskEditor.find("#progress_cost").val(task.progress_cost ? parseFloat(task.progress_cost) : 0);
   taskEditor.find("#status").attr("status", task.status);
 
   if (task.startIsMilestone)
@@ -543,7 +543,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       task.description = taskEditor.find("#description").val();
       task.code = taskEditor.find("#code").val();
       task.progress = parseFloat(taskEditor.find("#progress").val());
-      task.coverage = parseFloat(taskEditor.find("#coverage").val());
+      task.progress_cost = parseFloat(taskEditor.find("#progress_cost").val());
       task.duration = parseInt(taskEditor.find("#duration").val());
       task.startIsMilestone = taskEditor.find("#startIsMilestone").is(":checked");
       task.endIsMilestone = taskEditor.find("#endIsMilestone").is(":checked");
