@@ -121,10 +121,9 @@ var currentDate = new Date();
 		}
 
 		function getCalendar(){
-			console.log(ge.calendarBase);
+			$("#NombreWT").val(ge.calendarBase.name);
 			var feriados = ge.calendarBase.holidays;
 			var diasferiados = feriados.split('#');
-			console.log(diasferiados);
 			$("#tableHolidayDay").empty();
 			for (var i=1; i < diasferiados.length - 1; i++){
 				var fechitaslash = diasferiados[i].split("_").join("/");
