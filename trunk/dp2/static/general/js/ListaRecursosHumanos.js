@@ -2,13 +2,11 @@ var x;
 x = $(document);
 x.ready(inicializarEventos);
 
-function inicializarEventos() {
-    //$("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
-    //$("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
+function inicializarEventos() {    
     $("#btnBuscar").click(iniciarFlujo);
     $("#resultados").hide();
 
-    $("#fechaInicio").change(filtrarOtraFecha)
+   // $("#fechaInicio").change(filtrarOtraFecha)
 }
 
 function filtrarOtraFecha() {
@@ -27,8 +25,8 @@ function filtrarOtraFecha() {
 }
 
 function iniciarFlujo() {
-    var fechaInicio = $("#fechaInicio").attr("value");
-    var fechaFinal = $("#fechaFin").attr("value");
+    var fechaInicio = $("#fechaInicio").val();
+    var fechaFinal = $("#fechaFin").val();
 
     if ((fechaInicio != "") && (fechaFinal != "")) {
 
@@ -40,8 +38,8 @@ function iniciarFlujo() {
         console.log(jsonData);
 
         $.ajax({
-            type: "GET",
-            //data: jsonData,
+            type: "POST",
+            data: jsonData,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             url: "../../api/G_listaRecursoxProyecto",
@@ -50,7 +48,8 @@ function iniciarFlujo() {
         });
     }
     else {
-        mostrarError("Faltan Datos");
+        //mostrarError("Faltan Datos");
+    	alert("Ingrese Datos");
         $("#resultados").hide("slow");
     }
 }
