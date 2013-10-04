@@ -142,28 +142,29 @@
     //SEGUNDO SPRINT
 	function getListaRequisitos(){
 		$request = \Slim\Slim::getInstance()->request();
-		$val = $request->params();
+     $val = $request->params();//cuando es GET usar params() en ves de body, no hay necesidad de hacer json_decode
 		$id_proyecto = $val["id_proyecto"];
 		$con=getConnection();
 		
-		//obtener id_especificacion_requisitos
+		//obtener id_especificacion_requisitos del proyecto
 		$pstmt = $con->prepare("SELECT id_especificacion_requisitos FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto =?");
 		$pstmt->execute(array($id_proyecto));
 		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
 		
-		//obtener lista de requisitos
+		//obtener lista de requisitos del idER que se obtuvo antes
 		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo , R.observaciones, R.unidad_medida, R.valor 
 			FROM REQUISITO R, TIPO_REQUISITO T 
 			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND R.id_estado_requisito <> 2 AND R.id_especificacion_requisitos =?");
 		$pstmt->execute(array($idER));
 		$lista = array();
+    //sacar uno por uno y agregarlos a la lista
 		while($req = $pstmt->fetch(PDO::FETCH_ASSOC)){
 			$lista[] = $req;
 		}
 		echo json_encode($lista);
 	}
 
-	function getTiposRequisito(){
+  function getTiposRequisito(){//obtener todos los tipos de requisito
 		$con=getConnection();
 		$pstmt = $con->prepare("SELECT * FROM TIPO_REQUISITO");
 		$pstmt->execute();
@@ -176,17 +177,21 @@
 
 	function insertaRequisito(){
 		$request = \Slim\Slim::getInstance()->request();
-		$req = json_decode($request->getBody(),TRUE);
+     $req = json_decode($request->getBody(),TRUE);//obtener todo el requisito a insertar
 		$con=getConnection();
-		//obtener id_especificacion_requisitos
+      
+		//obtener id_especificacion_requisitos (a que Especificacion de Requisitos pertenece)
 		$pstmt = $con->prepare("SELECT id_especificacion_requisitos FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto =?");
 		$pstmt->execute(array($req["id_proyecto"]));
 		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
+      
+    //Si no existe una especificacion creamos una nueva
 		if(is_null($idER)){
 			$pstmt = $con->prepare("INSERT INTO ESPECIFICACION_REQUISITOS (id_proyecto,nombre,version,id_estado) VALUES (?,'',1,1) ");
 			$pstmt->execute(array($req["id_proyecto"]));
-			$idER = $con->lastInsertId();
+      $idER = $con->lastInsertId();//se obtiene el id de la especificacion que acabamos de insertar
 		}
+     //ahora que esta asegurado que exista la ER insertamos el requisito
 		$pstmt = $con->prepare("INSERT INTO REQUISITO 
 								(id_especificacion_requisitos,descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito) 	
 					   			VALUES (?,?,?,?,?,?,?)");
@@ -202,7 +207,7 @@
 				)
 		);
 		$req["id_requisito"] = $con->lastInsertId();
-		echo json_encode($req);
+     echo json_encode($req);//devolvemos el requisito insertado con el id que se genero
 	}
 
 	function modificaRequisito(){
@@ -232,6 +237,7 @@
 		$request = \Slim\Slim::getInstance()->request();
 		$id = json_decode($request->getBody(),TRUE)["id_requisito"];
 		$con=getConnection();
+     //eliminado lógico, solo se pone el estado 2
 		$pstmt = $con->prepare("UPDATE REQUISITO SET id_estado_requisito = 2
 								WHERE id_requisito = ?");
 		$pstmt->execute(array($id));
@@ -242,10 +248,12 @@
 		$ruta = '../files/';
 		$request = \Slim\Slim::getInstance()->request();
 		$archivo = json_decode($request->getBody(),TRUE);
-
+     //creamos un archivo en la carpeta "files"
 		$file = fopen($ruta.$archivo["name"],'w');
-		fwrite($file, $archivo["data"]);
+     //escribimos la data recibida
+    fwrite($file, $archivo["data"]);
 		fclose($file);
+     //una ves que se crea el archivo, registramos la ruta en la BD
 		$con=getConnection();
 		$pstmt = $con->prepare("INSERT INTO COMPONENTE_GESTION_REQUISITOS
 								(id_proyecto, nombre, descripcion, version, ruta) 	
@@ -259,6 +267,7 @@
 		$val = $request->params();
 		$idProy= $val["id_proyecto"];
 		$con=getConnection();
+     //obtener la ultima version del plan de gestion de requisitos
 		$pstmt = $con->prepare("SELECT *
 		 FROM COMPONENTE_GESTION_REQUISITOS
 		 WHERE id_proyecto =?
@@ -268,10 +277,10 @@
 			echo json_encode($file);
 			return;
 		}
-		echo "";
+     echo "";//no se encontro nada
 	}   
 
-	function obtenerProyectoById(){
+  function obtenerProyectoById(){//devolver la info del proyecto para llenar el titulo, etc
 		$request = \Slim\Slim::getInstance()->request();
 		$val = $request->params();
 		$idProy= $val["id_proyecto"];
