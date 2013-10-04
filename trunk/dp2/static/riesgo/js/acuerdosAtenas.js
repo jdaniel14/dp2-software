@@ -105,60 +105,60 @@ function listarAcuerdos() {
     // alert(cantidad);
 
     //HARDCODEADO
-   // var data = $.parseJSON('[{"idAcuerdo":1, "fechas1": "2013-10-09", "horas_1":"23:15:00","acuerdo1":"Se plantea que"},{"idAcuerdo":2,"fechas2": "2013-10-08", "horas_2":"09:00:00","acuerdo2":"Tomado desde"}]');
+    var data = $.parseJSON('[{"idAcuerdo":1, "fecha": "2013-10-09", "hora":"23:15:00","acuerdo":"Se plantea que"},{"idAcuerdo":2,"fecha": "2013-10-08", "hora":"09:00:00","acuerdo":"Tomado desde"}]');
     //var data = $.parseJSON('[{"idAcuerdo":1, "fechas1": "2013-10-09", "horas_1":"23:15:00","acuerdo1":"Se plantea que"}]');
 
 
-    //console.log(data);
-//    var i = 1;
-//    for (obj in data) {
-//
-//        //var fecha = new Date();
-//        var fecha = data[obj]["fechas" + i];
-//        var acuerdo = data[obj]["acuerdo" + i];
-//        var hora = data[obj]["horas_" + i];
-//        var idAcuerdo = data[obj]["idAcuerdo"];
+    console.log(data);
+    var i = 1;
+    for (obj in data) {
+
+        //var fecha = new Date();
+        var fecha = data[obj]["fecha"];
+        var acuerdo = data[obj]["acuerdo"];
+        var hora = data[obj]["hora"];
+        var idAcuerdo = data[obj]["idAcuerdo"];
 
 
-//        $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
-//
-//        //aplicar un if $("#my_row_101").remove();
-//        i++
+        $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
 
-//    }
+        //aplicar un if $("#my_row_101").remove();
+        i++;
+
+    }
 
     //alert($("#tablaAcuerdos tr").length); //cuento cantidad de filas
 //    if ($("#tablaAcuerdos tr").length > 1)
 //        $("#my_row_101").remove();
 
-    var data = {
-        idProyecto: idProyectoLocal
-    };
-    var jsonData = JSON.stringify(data);
-    $.ajax({
-        type: 'GET',
-        url: '../../api/R_listarAcuerdos' + '/' + data.idProyecto,
-        dataType: "json",
-        success: function(data) {
-            for (obj in data) {
-                //var fecha = new Date();
-                var fecha = data[obj]["fechas" + i];
-                var acuerdo = data[obj]["acuerdo" + i];
-                var hora = data[obj]["horas_" + i];
-                var idAcuerdo = data[obj]["idAcuerdo"];
-
-
-                $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
-
-                //aplicar un if $("#my_row_101").remove();
-                i++;
-
-            }
-            if ($("#tablaAcuerdos tr").length > 1)
-                $("#my_row_101").remove();
-
-
-        },
-    });
+//    var data = {
+//        idProyecto: idProyectoLocal
+//    };
+//    var jsonData = JSON.stringify(data);
+//    $.ajax({
+//        type: 'GET',
+//        url: '../../api/R_listarAcuerdos' + '/' + data.idProyecto,
+//        dataType: "json",
+//        success: function(data) {
+//            for (obj in data) {
+//                //var fecha = new Date();
+//                var fecha = data[obj]["fecha" + i];
+//                var acuerdo = data[obj]["acuerdo" + i];
+//                var hora = data[obj]["hora" + i];
+//                var idAcuerdo = data[obj]["idAcuerdo"];
+//
+//
+//                $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
+//
+//                //aplicar un if $("#my_row_101").remove();
+//                i++;
+//
+//            }
+//            if ($("#tablaAcuerdos tr").length > 1)
+//                $("#my_row_101").remove();
+//
+//
+//        },
+//    });
     //listarConfiguracion2(null);
 }
