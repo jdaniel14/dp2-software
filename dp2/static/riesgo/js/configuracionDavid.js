@@ -2,6 +2,8 @@ var getAllProbabilities = "../../api/R_listaHeadersProbabilidadRiesgo";
 var addProbability = "../../api/R_registrarHeaderProbabilidadRiesgo";
 var deleteAllProbabilities = "../../api/R_eliminarHeaderProbabilidadRiesgo";
 var getAllHeadersImpacts = "../../api/R_listaHeadersImpactoRiesgo";
+var deleteAllImpacts = "../../api/R_eliminarHeaderImpactoRiesgo";
+var addImpact = "../../api/R_registrarHeaderImpactoRiesgo";
 var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
 var addTypeImpactsXLevelImpacts1 = "../../api/R_registrarTipoImpactoXNivelImpacto1";
 var addTypeImpactsXLevelImpacts2 = "../../api/R_registrarTipoImpactoXNivelImpacto2";
@@ -47,58 +49,58 @@ var listaProbabilidades=[];
 // 	tipo:2},
 // 	];
 
-// var listafila1 = [
-// 	{
-// 		min:0,
-// 		max:1000,
-// 		descripcion:""
-// 	},
-// 	{
+var listafila1 = [
+	{
+		min:0,
+		max:1000,
+		descripcion:""
+	},
+	{
 		
-// 		min:1001,
-// 		max:2000,
-// 		descripcion:""
-// 	},
-// 	{
-// 		min:2001,
-// 		max:2000,
-// 		descripcion:""
-// 	}
-// ];
+		min:1001,
+		max:2000,
+		descripcion:""
+	},
+	{
+		min:2001,
+		max:2000,
+		descripcion:""
+	}
+];
 
-// var listafila2 = [
-// 	{
-// 		min:0,
-// 		max:1000,
-// 		descripcion:"Leve"
-// 	},
-// 	{
+var listafila2 = [
+	{
+		min:0,
+		max:1000,
+		descripcion:"Leve"
+	},
+	{
 		
-// 		min:1001,
-// 		max:2000,
-// 		descripcion:"Grave"
-// 	},
-// 	{
-// 		min:2001,
-// 		max:2000,
-// 		descripcion:"Muy Grave"
-// 	}
-// ];
-// var listaTipoImpacto = [
-// 	{
-// 		idTipoImpactoXNivelImpacto:1,
-// 		descripcionTipoImpacto: "Costos",
-// 		tipoImpacto: 1,
-// 		lista:listafila1
-// 	},
-// 	{
-// 		idTipoImpactoXNivelImpacto:2,
-// 		descripcionTipoImpacto: "Seguridad",
-// 		tipoImpacto: 2,
-// 		lista:listafila2
-// 	},
+		min:1001,
+		max:2000,
+		descripcion:"Grave"
+	},
+	{
+		min:2001,
+		max:2000,
+		descripcion:"Muy Grave"
+	}
+];
+var listaTipoImpacto = [
+	{
+		idTipoImpactoXNivelImpacto:1,
+		descripcionTipoImpacto: "Costos",
+		tipoImpacto: 1,
+		lista:listafila1
+	},
+	{
+		idTipoImpactoXNivelImpacto:2,
+		descripcionTipoImpacto: "Seguridad",
+		tipoImpacto: 2,
+		lista:listafila2
+	},
 	
-// ];
+];
 
 	
 // console.log(listaTipoImpacto);	
@@ -112,7 +114,8 @@ function esNumEntPos(strNum){
 		if (isNaN(car))
 			return false;
 	}
-	if (strNum*1 == 0 || strNum*1 > 100) return false;
+	// if (strNum*1 == 0 || strNum*1 > 100) return false;
+	if (strNum*1 == 0) return false;
 	return true;
 }
 function esMayor(val1,val2){
@@ -151,6 +154,35 @@ function cruzaProbabilidad(prob){
 	}
 	return false;
 }
+
+function validarAgregarNivelImpacto (){
+	var pesoNivel = "" + $("#numeroPesoImpacto").val();
+	var descripcionImpacto = "" + $("#descripcionImpacto").val();
+	var error = false;
+	if (!esNumEntPos(pesoNivel)){
+		$("#errorPesoImpacto").show();
+		error = true;
+	}
+	else
+		$("#errorPesoImpacto").hide();
+	if (existeNivel(pesoNivel)){
+		$("#errorPesoRegistrado").show();
+		error = true;
+	}
+	else
+		$("#errorPesoRegistrado").hide();
+	if (descripcionImpacto == null || descripcionImpacto.length == 0){
+		$("#errorDescripcionImpacto").show();
+		error = true;
+	}
+	else
+		$("#errorDescripcionImpacto").hide();
+	
+	return !error;
+}
+
+
+
 function validarAgregarNivel(){
 	var numeroNivel = "" + $("#numeroNivel").val();
 	var probabilidadMinNivel = "" + $("#probabilidadMinNivel").val();
@@ -260,6 +292,42 @@ function main(){
 		});
 	});
 /*---------------------------------FIN AGREGAR UN NIVEL-------------------------------------------*/
+
+/*---------------------------------AGREGAR UN NIVEL IMPACTO-------------------------------------------*/
+	
+	$("#btnAgregarNivelImpacto").click( function(){
+
+		if (!validarAgregarNivelImpacto()) return;  //if true se registra, if false mensaje de error!
+		var data = {
+			idProyecto: idProyectoLocal,
+			nivel: $('#numeroPesoImpacto').val(),
+			descripcion: $('#descripcionImpacto').val(),
+		};
+
+		$('#errorPesoImpacto').hide();
+		$('#errorPesoRegistrado').hide();
+		$('#errorDescripcionImpacto').hide();
+
+		console.log(data);
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'POST',
+			url: addImpact,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				alert("Se registró exitosamente el nivel " + item.descripcion);
+				listarHeaderNivelImpacto();
+				$('#modalAgregarNivelImpacto').modal('hide');
+			},
+			fail: codigoError
+		});
+	});
+/*---------------------------------FIN AGREGAR UN NIVEL-------------------------------------------*/
+
+/*-----------------------------------ELIMINAR UN NIVEL PROBABILIDAD--------------------------------------------*/
+
 	$("#btnEliminarNivel").click(function(){
 		var data = {
 			idProyecto : idProyectoLocal
@@ -278,6 +346,34 @@ function main(){
 		});
 		$('#modalEliminarNivel').modal('hide');
 	});
+
+/*---------------------------------FIN ELIMINAR UN NIVEL PROBABILIDAD-------------------------------------------*/
+
+
+/*-----------------------------------ELIMINAR UN NIVEL IMPACTO--------------------------------------------*/
+
+	$("#btnEliminarNivelImpacto").click(function(){
+		var data = {
+			idProyecto : idProyectoLocal
+		}
+		var jsonData = JSON.stringify(data);
+		$.ajax({
+			type: 'DELETE',
+			url: deleteAllImpacts + '/' + data.idProyecto,
+			data: jsonData,
+			dataType: "html",
+			success: function(){
+				alert("Se elimino el riesgo correctamente");
+				listarHeaderNivelImpacto();
+			},
+			fail: codigoError
+		});
+		$('#modalEliminarNivelImpacto').modal('hide');
+	});
+
+/*---------------------------------FIN ELIMINAR UN NIVEL IMPACTO-------------------------------------------*/
+
+
 /*------------------------- CREAR CUERPO MODAL TIPO IMPACTO X NIVEL IMPACTO----------------------------------*/
 	$('#listarTiposImpactos').change( function(){
 	// 
@@ -417,14 +513,6 @@ function main(){
 
 /*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
 
-
-/*-----------------------------------ELIMINAR UN NIVEL--------------------------------------------*/
-
-
-
-
-
-/*---------------------------------FIN ELIMINAR UN NIVEL-------------------------------------------*/
 
 /*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 1-------------------------*/
 	$("#btnAgregarTipoXNivel2").click( function(){
@@ -585,14 +673,14 @@ function listarTiposImpactosXNivelImpactos(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getAllTypeImpactsXLevelImpacts + '/' + data.idProyecto,
+		url: getAllTypeImpactsXLevelImpacts,  //'/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			console.log(data);
 			agregarDataTiposImpactosXNivelImpactos(data); 
 		},
-		fail: codigoError
-		// fail: agregarDataTiposImpactosXNivelImpactos(listaTipoImpacto)
+		// fail: codigoError
+		fail: agregarDataTiposImpactosXNivelImpactos(listaTipoImpacto)
 	});
 
 }
@@ -631,24 +719,35 @@ function agregarDataTiposImpactosXNivelImpactos(data){
 }
 
 function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, descripcionTipoImpacto, tipoImpacto, fila){
-	$("#tablaTipoImpactoXNivelImpacto").append("<tr id=\""+idTipoImpactoXNivelImpacto+"\"><td>"+
-		descripcionTipoImpacto+"</td>");
-		var tamano=fila.length;
-		$.each(fila, function (index, valor){
-			if (tipoImpacto==1){
-				if (index==0) {
-					$("#tablaTipoImpactoXNivelImpacto").append("<td> < "+valor.max+" </td>");
-				} else if (index==tamano-1) {
-					$("#tablaTipoImpactoXNivelImpacto").append("<td> > "+valor.min+" </td>");
-				} else {
-					$("#tablaTipoImpactoXNivelImpacto").append("<td> "+valor.min+" - "+valor.max+" </td>");
-				}
-			} else if (tipoImpacto==2) {
-				$("#tablaTipoImpactoXNivelImpacto").append("<td> "+valor.descripcion+" </td>");
+	$("#tablaTipoImpactoXNivelImpacto").append("<tr id=\""+idTipoImpactoXNivelImpacto+"\"></tr>");
+	var cadena = "";
+	var tamano=fila.length;
+	cadena+="<td>"+descripcionTipoImpacto+"</td>";
+	console.log(cadena);
+	$.each(fila, function (index, valor){
+		if (tipoImpacto==1){
+			if (index==0) {
+				// $("#tablaTipoImpactoXNivelImpacto").append("<td> < "+valor.max+" </td>");
+				// $("#"+idTipoImpactoXNivelImpacto).html("<td> < "+valor.max+" </td>");
+				cadena+="<td> < "+valor.max+" </td>";
+			} else if (index==tamano-1) {
+				// $("#tablaTipoImpactoXNivelImpacto").append("<td> > "+valor.min+" </td>");
+				// $("#"+idTipoImpactoXNivelImpacto).html("<td> > "+valor.min+" </td>");
+				cadena+="<td> > "+valor.min+" </td>";
+			} else {
+				// $("#tablaTipoImpactoXNivelImpacto").append("<td> "+valor.min+" - "+valor.max+" </td>");
+				// $("#"+idTipoImpactoXNivelImpacto).html("<td> "+valor.min+" - "+valor.max+" </td>");
+				cadena+="<td> "+valor.min+" - "+valor.max+" </td>";
 			}
-			
-		});
-		$("#tablaTipoImpactoXNivelImpacto").append("</tr>");
+		} else if (tipoImpacto==2) {
+			// $("#tablaTipoImpactoXNivelImpacto").append("<td> "+valor.descripcion+" </td>");
+			// $("#"+idTipoImpactoXNivelImpacto).html("<td> "+valor.descripcion+" </td>");
+			cadena+="<td> "+valor.descripcion+" </td>";
+		}
+		
+	});
+	$("#"+idTipoImpactoXNivelImpacto).html(cadena);
+	// $("#tablaTipoImpactoXNivelImpacto").append("</tr>");
 
 }
 
@@ -696,6 +795,7 @@ function agregaFilaProba(arreglo,i){
 }
 /*---------------------------------FIN LISTAR PROBABILIDADES-------------------------------------------*/
 
+
 /*-----------------------------------------ERRORES----------------------------------------------------*/
 function codigoError(){
 	alert('Error');
@@ -706,6 +806,7 @@ function codigoError(){
 
 function listarHeaderNivelImpacto(){
 	$("#headerTipoImpactoXNivelImpacto").empty();
+	$("#tablaImpacto").empty();
 	var data = {
 		idProyecto: idProyectoLocal, 
 	};
@@ -732,11 +833,15 @@ function agregarDataImpacto(data){
 			agregaFilaImpacto(arreglo[i],i);
 		}
 		$("#headerTipoImpactoXNivelImpacto").append("<th colspan =\"2\"> Acciones </th>");
+
+
 	}
 }
 
 function agregaFilaImpacto(arreglo,i){
 	$("#headerTipoImpactoXNivelImpacto").append("<th>" + arreglo.descripcion + "</th>");
+	$("#tablaImpacto").append("<tr><td>" + arreglo.nivel + 
+	  "</td><td>" + arreglo.descripcion + "</td></tr>");
 }
 /*---------------------------------FIN MOSTRAR HEADER NIVEL IMPACTO------------------------------------------*/
 
