@@ -11,18 +11,22 @@ function main() {
     var cantidad = $("#suma").val();
     $("span").click(function()
     {
+        cantidad = parseInt(cantidad) + 1;
+        $("#suma").val(cantidad);
         addTableRow($("table"));
         return false;
     });
 
     $("#btnGuardar").click(function()
     {
+          var cantidad = $("#suma").val(); 
+      
         var data = {
             idProyecto: idProyectoLocal,
             listaTipoImpacto: []
         };
-        var cantidad = $("#tablaRiesgos tr").length;
-
+   
+     
         //var listaFechas = new Array();
 
         for (var i = 1; i <= cantidad; i++) {
@@ -33,6 +37,7 @@ function main() {
             data.listaTipoImpacto[i - 1] = obj;
 
         }
+           
         console.log(data);
         var jsonData = JSON.stringify(data);
 
@@ -67,13 +72,13 @@ function listaTipoImpactos() {
                 var formas = data[obj]["formas" + i];
                 var idTipo = data[obj]["idTipo" + i];
                 var tipo;
-                if (formas == 1) {
+                if (formas === 1) {
                     tipo = 'Numero';
-                    $("#tablaTiposRiesgos").append("<tr><td><input name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select><option value=\"" + idTipo + "\">" + tipo + "</option></select></td> </tr>");
+                    $("#tablaTiposRiesgos").append("<tr><td><input name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select id=\"formas"+idTipo+"\"><option value=\"" + idTipo + "\">" + tipo + "</option></select></td> </tr>");
                 }
                 else {
                     tipo= 'Texto';
-                    $("#tablaTiposRiesgos").append("<tr><td><input name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select><option value=\"" + idTipo + "\">" + tipo + "</option></select></td> </tr>");
+                    $("#tablaTiposRiesgos").append("<tr><td><input name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select id=\"formas"+idTipo+"\"><option value=\"" + idTipo + "\">" + tipo + "</option></select></td> </tr>");
 
                 }
                 //aplicar un if $("#my_row_101").remove();
