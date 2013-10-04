@@ -1,6 +1,44 @@
  jQuery(document).ready(function() {
+    /*
+        crear EDT
+        editar EDT
+        eliminar EDT
+        validado
+    */
 
-        localStorage.removeItem("mostrarEdt");
+    //getVersionEdt
+    var jsonCliente = {
+                  idproyecto : "1"
+                  };
+    $.ajax({
+                      type: "get",
+                      data: JSON.stringify(jsonCliente),
+
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                      url: "../../api/dameVersionEdt",
+                      success: function (data) {
+                          console.log(data.version);
+                          if (data.version){
+                            console.log("mostrar");
+                            $("#CrearEDTCero").show();
+
+                          }else{
+                            console.log("crear");
+                            $("#CrearEDTCero").show();
+                          }
+
+
+                      }
+        });
+
+
+
+
+
+
+
+        //localStorage.removeItem("mostrarEdt");
         Object.size = function(obj) {
           var size = 0, key;
           for (key in obj) {
@@ -17,46 +55,42 @@
                 });
         }
 
-        function armaNodo(){
-
-        }
-
-        function recursiveArbol(){
-          
-        }
-
+      
         /*
-
           2do sprint
           review 1er sprint
           funcionality validation required
           nonintegrated
           collapse fk.
-          
-          {"title":"DP2","hijos":"5",
-            "nodos":[
-                {"title":"Inicio","hijos":"0","nodos":[]},
-                {"title":"Planificacion","hijos":"0","nodos":[]},
-                {"title":"Ejecucion","hijos":"0","nodos":[]},
-                {"title":"Seguimiento","hijos":"0","nodos":[]},
-                {"title":"Cierre","hijos":"0","nodos":[]}]}
-
-                {"title":"DP2","hijos":"5",
-                "nodos":[{"title":"Inicio","hijos":"0","nodos":[]},
-                          {"title":"Planificacion","hijos":"0","nodos":[]},
-                          {"title":"Ejecucion","hijos":"0","nodos":[]},
-                          {"title":"Seguimiento","hijos":"0","nodos":[]},
-                          {"title":"Cierre","hijos":"2",
-                            "nodos":[{"title":"Inicio","hijos":"0","nodos":[]},
-                                    {"title":"Planificacion","hijos":"0","nodos":[]}]}
-                                    ]}
-
         */
+
+
+
+        /* Crear EDT */
+
+          $("#CrearEDTCero").click(function(){
+              console.log("creando edt");
+                var titleParent = "Nombre Proyecto";
+                var idnodo = 1;
+                var html = '<li>' +'<input class = "inputEdtTitle"  id = "title-' + idnodo;
+                html += '" type = "text" readonly = "readonly" value = "'+ titleParent + '"> <ul id = "ul-'+ idnodo + '"></ul>';
+                $("#org").html( html );
+                $("#containerEdt").show("slow"); 
+                repaint();
+
+                $("#botonerasEditar").show();
+                eventsEdit();
+              return false;
+          });
+          
+
+
+        /* FIN CREAR EDT */
 
         function edtAlgorithm( data ){
             var titleParent = data.title;
             var hijos = parseInt(data.hijos);
-            var html = '<li>' +'<input class = "inputEdtTitle" type = "text" readonly = "readonly" value = "'+ titleParent + '"> ';
+            var html = '<li>' +'<input class = "inputEdtTitle"  id = "title-"' + data.idnodo+ '" type = "text" readonly = "readonly" value = "'+ titleParent + '"> ';
             if ( hijos == 0 ){
               //entonces no tiene hijos 
               html += '</li>';
@@ -81,7 +115,8 @@
            html += '<ul>';
             for ( i = 0; i < nodos.length; i++ ){
                //por cada hijo
-                html +=  '<li>' + '<span class = "titleEDT">' +'<input class = "inputEdtTitle" type = "text" readonly = readonly" value = "'+ nodos[i].title + '"> ' + '</span> <br>' + '<span class = "descripcionEDT">'  + '<input class = "inputEdtDescripcion" type = "text" readonly = readonly" value = "'+ nodos[i].descripcion + '"> ' + '</span> <br>' + '<span class = "diasEDT">'  + '<input class = "inputEdtDias" type = "text" readonly = readonly" value = "'+ nodos[i].diasEDT + '"> ' + '</span>';
+                console.log(nodos[i].idnodo);
+                html +=  '<li>' + '<span class = "titleEDT">' +'<input id = "title-'+ nodos[i].idnodo +'" class = "inputEdtTitle" type = "text" readonly = readonly" value = "'+ nodos[i].title + '"> ' + '</span> <br>' + '<span class = "descripcionEDT">'  + '<input class = "inputEdtDescripcion" id = "descripcion-'+ nodos[i].idnodo + '" type = "text" readonly = readonly" value = "'+ nodos[i].descripcion + '"> ' + '</span> <br>' + '<span class = "diasEDT">'  + '<input class = "inputEdtDias" id = "tiempo-'+ nodos[i].idnodo + '" type = "text" readonly = readonly" value = "'+ nodos[i].dias + '"> ' + '</span>';
                 var hijos = parseInt( nodos[i].hijos );
                 if ( hijos > 0 ){
                   //console.log("recursivo caso");
@@ -146,11 +181,6 @@
         }
 
 
-
-        function preorden( nodo ){
-
-
-        }
 
         function recursivoNodes1( nodos, html, flag ){
             var i = 0;
@@ -227,13 +257,15 @@
                localStorage.setItem("mostrarEdt", 0);
             }
             */
+            $("#progressEdt").show("slow");
             var jsonCliente = {
-                  idcliente : "1"
+                  idproyecto : "1"
                   };
                    console.log("sape1");
                   $.ajax({
                       type: "POST",
                       data: JSON.stringify(jsonCliente),
+
                       dataType: "json",
                       contentType: "application/json; charset=utf-8",
                       url: "../../api/traerEdt",
@@ -254,6 +286,7 @@
                                 prettyPrint();                
                             });
                            // prettyPrint();
+                           $("#progressEdt").hide("slow");
                            $("#containerEdt").show("slow"); 
                            $("#controllerButton").show("slow");
                       }
@@ -262,50 +295,7 @@
 
 
 
-          $("#editarEdt").click(function(){
-              console.log("editar");
 
-              $(".inputEdtTitle").removeAttr("readonly");
-              $(".inputEdtDescripcion").removeAttr("readonly");
-              $(".inputEdtDias").removeAttr("readonly");
-
-
-              $("#botonerasEditar").show();
-              eventsEdit();
-              //console.log(inputs);
-
-
-              //modalEditar
-              
-                      /*
-                      var jsonCliente = {
-                          idcliente : "1"
-                          };
-
-                      $.ajax({
-                              type: "POST",
-                              data: JSON.stringify(jsonCliente),
-                              dataType: "json",
-                              contentType: "application/json; charset=utf-8",
-                              url: "../../api/traerEdt",
-                              success: function (data) {
-                                
-                                   
-                                //prettyPrint();   
-                                 localStorage.setItem("navegacionEDT","editar");
-                                 formaEdtEdit( data );
-                                 $("#modalEditar").modal();              
-                                   
-                              }
-                          });
-
-                        $("#modalEditar").modal(); 
-                      
-                      
-                      //$("#cuerpoEditar").html();
-                    */
-              return false;
-          });
 
           $("#eliminarEdt").click(function(){
              console.log("eliminar");
@@ -323,7 +313,106 @@
                   $("#MostrarEdt").text("Crear EDT");
            });
 
+
+          $("#editarEdt").click(function(){
+              console.log("editar");
+
+              //$(".inputEdtTitle").removeAttr("readonly");
+              //$(".inputEdtDescripcion").removeAttr("readonly");
+              //$(".inputEdtDias").removeAttr("readonly");
+
+
+
+              $("#botonerasEditar").show();
+              
+
+              eventsEdit();
+              return false;
+          });
+
+
+          function repaintEdit(){
+              $(".inputEdtTitle").click(function(){
+
+                       console.log(this);
+                       var id = ((this.id).split('-'))[1];
+                       console.log(id);
+                       $("#padreEdt").val(this.id);
+                       //console.log($("#descripcion-"+id).val());
+                       $("#inputTitulo").val(this.value);
+                       $("#inputDescripcion").val($("#descripcion-"+id).val());
+                       $("#inputTiempo").val($("#tiempo-"+id).val());
+
+                       console.log($("#tiempo-"+id).val())
+
+                       //title, tiempo, descripcion
+                       //$("#padreEdt").html(this.value);
+                      return false;
+              });
+            }
+
            function eventsEdit(){
+                var idnodoCounter = 1;
+                $("#inputAgregarHijo").click(function(){
+                    console.log("agregando un hijo");
+                    var title = $("#inputTitulo1").val();
+                    var desc =  $("#inputDescripcion1").val();
+                    var tiempo = $("#inputTiempo1").val();
+                    agregaNodoEdt(title,desc,tiempo);
+                });
+
+                 /*
+                 $( "#chart" ).keypress(function( event ) {
+                  if ( event.which == 97 ) {
+                     event.preventDefault();
+                  }
+                    console.log("key A");
+                    $( "#inputAgregarHijo" ).trigger( "click" );
+                });
+                  */
+                  
+                function agregaNodoEdt(title,desc,tiempo){
+                    
+                    var id = $("#padreEdt").val();
+
+                    console.log("el valor es> " + id);
+                    if (id == ""){
+                      alert("Escoja un padre");
+                      return false;
+                    }
+
+                    idnodoCounter++;
+                    var html = "";  
+                    html +=  '<li id = "li-'+ idnodoCounter + '">' + '<span class = "titleEDT">' +'<input id = "title-'+ idnodoCounter;
+                    html +='" class = "inputEdtTitle" type = "text" readonly = readonly" value = "'+ title;
+                    html += '"> ' + '</span> <br>' + '<span class = "descripcionEDT">';
+                    html += '<input class = "inputEdtDescripcion" id = "descripcion-'+ idnodoCounter ;
+                    html += '" type = "text" readonly = readonly" value = "'+ desc + '"> ';
+                    html += '</span> <br>' + '<span class = "diasEDT">'  + '<input class = "inputEdtDias" id = "tiempo-';
+                    html += idnodoCounter + '" type = "text" readonly = readonly" value = "'+ tiempo + '"> ';
+                    html += '</span>';
+                    html += '<ul id = "ul-' + idnodoCounter + '">' + '</ul>';
+                    html += '</li>';
+
+                    console.log(html);
+
+                    
+                    //$("li " +"#"+id).append(html);
+                    //var lis = $("li");
+                    var ida = '#ul-'+id.split('-')[1];
+                    console.log('#ul-'+id.split('-')[1]);
+                    $("#chart").html("");
+                    console.log("ID: " + ida);
+                    $(ida).append(html);
+                    //eventsEdit();
+                    //console.log(lis);
+                    // 
+                    repaint();
+                    repaintEdit();
+                }
+
+
+
                 $("#guardarEDT").click(function(){
                     var edtData = $("#org");
                     console.log( edtData.html() );
@@ -335,8 +424,78 @@
                     return false;
                 });
 
+                $("#AgregarNodo").click(function(){
+                    console.log("agregar nodo");
+                });
+
+
+                $(".inputEdtTitle").click(function(){
+                       console.log(this);
+                       var id = ((this.id).split('-'))[1];
+                       console.log(id);
+                       $("#padreEdt").val(this.id);
+                       //console.log($("#descripcion-"+id).val());
+                       $("#inputTitulo").val(this.value);
+                       $("#inputDescripcion").val($("#descripcion-"+id).val());
+                       $("#inputTiempo").val($("#tiempo-"+id).val());
+
+                       console.log($("#tiempo-"+id).val())
+
+                       //title, tiempo, descripcion
+                       //$("#padreEdt").html(this.value);
+                      return false;
+                  });
+
+                  $(".inputEdtDescripcion").click(function(){
+
+                    return false;
+                  });
+
+                  $(".inputEdtDias").click(function(){
+
+                    return false;
+                  })
+                  
+
+                  //BOTON EDITAR
+                $("#inputAgregar").click(function(){
+                  //BOTON EDITAR
+                  //$(".inputEdtTitle").removeAttr("readonly");
+                  //$('.inputEdtTitle').attr('readonly', true);
+
+                    var id = $("#padreEdt").val();
+                    console.log("el valor es> " + id);
+
+                    if (id == ""){
+                      alert("Escoja un padre");
+                      return false;
+                    }
+
+
+                  var title = $("#inputTitulo").val();
+                  var desc =  $("#inputDescripcion").val();
+                  var tiempo = $("#inputTiempo").val();
+                  
+                  
+                  $("#id").val(title);
+
+                  var numid = id.split("-")[1];
+                  var idtitle = "#title-" + numid;
+                  $(".inputEdtTitle").removeAttr("readonly");
+                  console.log(title);
+
+                  $(idtitle).val(title);
+
+                  console.log($("#descripcion-"+numid).val(desc));
+                  $("#tiempo-"+numid).val(tiempo);
+                  
+                  //repaint();
+                  return false;
+                });
+
            }
 
+          
          
 
     });
