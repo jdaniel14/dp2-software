@@ -644,12 +644,24 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $listaIntegrantes = json_decode($request->getBody());
-        echo $listaIntegrantes;
+        
+        $query ="DELETE FROM COMITE_RIESGO WHERE id_proyecto=:id_proyecto";
+         
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
+            $stmt->execute();
+            $db = null;
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
         foreach ($listaIntegrantes->integrante as $integrante){
             
-            $query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
-            //$query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
-              //      VALUES (:id_proyecto,:id_empleado)";
+            //$query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
+            $query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
+                    VALUES (:id_proyecto,:id_empleado)";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
