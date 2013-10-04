@@ -49,13 +49,15 @@
 
 			<div class="form-group">
 			  <!-- Jefe de Proyecto -->
-			  <label class="col-lg-4 control-label" for="perfilRecurso">Perfil:</label>
+			  <label class="col-lg-4 control-label" for="rolRecurso">Rol:</label>
 			  <div class="controls col-lg-6">
-				<select class="form-control" id="perfilRecurso" name="perfilRecurso" placeholder="" class="input-xlarge">
+				<select class="form-control" id="rolRecurso" name="rolRecurso" placeholder="" class="input-xlarge">
+					<!--
 					<option value="1">Analista</option>
 					<option value="2">Programador</option>
 					<option value="3">Arquitecto de software</option>
 					<option value="4">Administrador de base de datos</option>
+					-->
 				</select>
 				<!--<p class="help-block">Please provide your E-mail</p>-->
 			  </div>
@@ -76,12 +78,12 @@
 				<table width="100%">			
 					<tr width="100%">
 						<td width="50%" align="right">
-							<button type="button" class="btn btn-default" id="btnGrabar" onclick="$(location).attr('href','ListaProyectos.html');">
+							<button type="button" class="btn btn-default" id="btnGrabar">
 								Grabar
 							</button>
 						</td>
 						<td width="50%" align="left">
-							<button type="button" class="btn btn-default" id="btnCancelar" onclick="$(location).attr('href','ListaProyectos.html');">
+							<button type="button" class="btn btn-default" onclick="$(location).attr('href','ListaProyectos.html');">
 								Cancelar
 							</button>
 						</td>
@@ -103,8 +105,6 @@
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
   	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
-  	<!-- 
   	<script src="../../static/general/js/RegistrarRecursoHumano.js"></script>
-  	-->
   </body>
 </html>
