@@ -127,7 +127,7 @@ var currentDate = new Date();
 			console.log(diasferiados);
 			$("#tableHolidayDay").empty();
 			for (var i=1; i < diasferiados.length - 1; i++){
-				var fechitaslash = diasferiados[i].replace("_","/");
+				var fechitaslash = diasferiados[i].split("_").join("/");
 				$("#tableHolidayDay").append("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaslash+"</td></tr>")
 			}
 
@@ -373,7 +373,16 @@ var currentDate = new Date();
 		  return this.getItem(key) && JSON.parse(this.getItem(key));
 		};
 		
-		
+		$("#btnGuardar").click(function(){
+			var filas = $("#tableHolidayDay").find("tr");
+			holidays = "#";
+			for (var i=0; i < filas.length; i++){
+				var fechaFila = filas[i].cells.item(1).innerHTML;
+				var fechaHol = fechaFila.split("/").join("_");
+				holidays += fechaHol + "#";
+			}
+
+		});
 		
 		
 		
