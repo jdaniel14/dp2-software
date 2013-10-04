@@ -1,7 +1,27 @@
-var listaRecursosHumanos = "../../api/G_listarRecurso";
+var listaRecursosHumanos = "../../api/G_listarRecursoDisponible";
 
 $(document).ready(function(){
+	alert("1");
 	iniciaRecursosHumanos();
+	alert("2");
+	$("table.tablesorter tr").each(function(){
+        $(this).click(function(){
+        	 if($(this).attr("class") == 'fila'){
+              $(this).removeClass('fila');
+              $(this).addClass('seleccionado');   
+           }else{
+              $(this).removeClass('seleccionado');
+              $(this).addClass('fila');
+           }   
+        })
+    });
+    $("#pasar").click(function(){
+        $("table.tablesorter tr").each(function(){
+            if($(this).attr("class") == 'seleccionado'){
+               $("#guardarRegistros").append($(this));
+            }  
+        })
+    }) 
 });
 
 function iniciaRecursosHumanos(){
@@ -28,11 +48,12 @@ function agregaDataFila(data){
 	}
 }
 
-function agregaFilaLeccionAprendida(arreglo,i){
+function agregaFilaRecursosHumanos(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td><td><input type="checkbox" /></td></tr>';
+	var tbody = '<tr class="fila"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td></tr>';
 	$("#listaRecursosHumanos tbody").append(tbody);
 	$("#listaRecursosHumanos").trigger("update"); 
 }
+

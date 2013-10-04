@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <style>
+    <!--
+       .fila{
+       
+       }
+       
+       .seleccionado{
+          background: rgb(255,255,153);
+       }
+       
+       
+    //-->
+    </style>
+    
+        
+  </head>
+ 
+  <body>
+    <!-- TABLA QUE PROVIENE DE LA BASE  DE DATOS -->
+    <table  width="500" class="tablaBBDD">
+     <tr class="fila">
+      <td> Registro 1</td>
+      <td> Registro 1</td>
+      <td> Registro 1</td>
+      <td> Registro 1</td>
+      <td> <input type="checkbox"/></td>
+     </tr>
+     
+     <tr class="fila">
+      <td> Registro 2</td>
+      <td> Registro 2</td>
+      <td> Registro 2</td>
+      <td> Registro 2</td>
+      <td> <input type="checkbox"/></td>
+     </tr>
+     
+     <tr class="fila">
+      <td> Registro 3</td>
+      <td> Registro 3</td>
+      <td> Registro 3</td>
+      <td> Registro 3</td>
+      <td> <input type="checkbox"/></td>
+     </tr>
+     
+     <tr class="fila">
+      <td> Registro 4</td>
+      <td> Registro 4</td>
+      <td> Registro 4</td>
+      <td> Registro 4</td>
+      <td> <input type="checkbox"/></td>
+     </tr>
+    </table>
+    <!-- TABLA A LLENAR -->
+    
+    <input type="button" id="pasar" value="Pasar Datos">
+    
+    <table id="guardarRegistros">
+     
+    </table>
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script>
+      $(function(){      
+          $("table.tablaBBDD tr").each(function(){
+            $(this).click(function(){
+              if($(this).attr("class") == 'fila'){
+                $(this).removeClass('fila');
+                $(this).addClass('seleccionado');   
+              }else{
+                $(this).removeClass('seleccionado');
+                $(this).addClass('fila');
+              }   
+            })
+          });
+         $("#pasar").click(function(){
+            $("table.tablaBBDD tr").each(function(){
+               if($(this).attr("class") == 'seleccionado'){
+                  $("#guardarRegistros").append($(this));
+               }  
+            })
+         }) 
+                       
+      })
+    </script>
+  </body>
+ 
+</html>
