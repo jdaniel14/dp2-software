@@ -1,6 +1,6 @@
 var ge;  //this is the hugly but very friendly global var for the gantt editor
 var idProyecto;
-
+var holidays;
 if (localStorage.getItem("idProyecto")){
 	idProyecto = localStorage.getItem("idProyecto");
 }
@@ -394,12 +394,23 @@ var currentDate = new Date();
 			  url: ruta,
 			  data: JSON.stringify(objWorkTime),
 			  dataType: 'json',
-			  success: function (data){	
-			  	ge.gantt.refreshGantt();
-			  }
+			  success: refrescarTodo/*{
+			    ge.redraw();
+				//ge.gantt.refreshGantt();
+				if (localStorage && localStorage.getItem("feriados")){
+					localStorage.setItem("feriados",item.holidays);
+				}
+			  }*/
 			});
 		});
+		function refrescarTodo(data){
+			/*if (localStorage && localStorage.getItem("feriados")){
+					localStorage.setItem("feriados",holidays);
+				}*/
+			ge.loadProject(ge);	
+			ge.redraw();
 		
+		}
 		
 		
 		function saveInLocalStorage() {
