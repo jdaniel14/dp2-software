@@ -83,7 +83,7 @@ function  agregarComite() {
 
 
     var data = {
-        idproyecto: idProyectoLocal,
+        idProyecto: idProyectoLocal,
         listaComite: []
     };
 
