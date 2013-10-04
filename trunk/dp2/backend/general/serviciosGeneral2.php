@@ -154,7 +154,7 @@ and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO and LA.estado=1 order by LA.fe
             array_push($lista, $leccion);
         }
         $db = null;
-        echo json_encode(array("lecciones"=>$lista));
+        echo json_encode(array("lecciones" => $lista));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
@@ -176,53 +176,74 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
 
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
         $item = array(
-                "id" => $p["id"],
-                "ne" => $p["empleado"],
-                "dla" => $p["descr"],
-                "np" => $p["np"],
-                "cla" => $p["cla"],
-                "idexp" => $p["idexp"]
-            );
+            "id" => $p["id"],
+            "ne" => $p["empleado"],
+            "dla" => $p["descr"],
+            "np" => $p["np"],
+            "cla" => $p["cla"],
+            "idexp" => $p["idexp"]
+        );
         $db = null;
-        echo json_encode(array("leccion"=>$item));
+        echo json_encode(array("leccion" => $item));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
 
-		function G_getAsignarRecProy($id) {
-			$request = \Slim\Slim::getInstance()->request();
-		  $proj = json_decode($request->getBody());
+function G_getAsignarRecProy() {
+    $request = \Slim\Slim::getInstance()->request();
+    //$request = "{ \"id_proy\": 4,\"l_rrhhxpr\":[{\"idr\": \"1\",\"costo\": \"100\"},{\"idr\": \"2\",\"costo\": \"150\"}]}";
+    //$body = json_decode($request);
+    $body = json_decode($request->getBody());
+    $id_proy = $body->id_proy;
+    $l_rrhhxpr = $body->l_rrhhxpr;
+    try {
+        for ($i = 0; $i < count($l_rrhhxpr); $i++) {
+            $idr = $l_rrhhxpr[$i]->idr;
+            $costo = $l_rrhhxpr[$i]->costo;
 
-		  try {
-					$sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto) VALUES (:nom, :fi, :ff, :tp)";
-		      $db = getConnection();
-		      $stmt = $db->prepare($sql);
-		      $stmt->bindParam("nom", $proj->nom);
-		      $stmt->bindParam("fi", $proj->fi);
-		      $stmt->bindParam("ff", $proj->ff);
-		      $stmt->bindParam("tp", $proj->tp);
-		      $stmt->execute();
-		      $proj->id = $db->lastInsertId();
-				
-					$sql = "INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado) VALUES (:id_proy, :jp)";
-					$stmt = $db->prepare($sql);
-		      $stmt->bindParam("id_proy", $proj->id);
-		      $stmt->bindParam("jp", $proj->jp);
-		      $stmt->execute();
-		      $db = null;
-		      echo json_encode(array("me"=>"", "id"=>$proj->id));
-		  } catch(PDOException $e) {
-		      echo json_encode(array("me"=> $e->getMessage()));
-					//'{"error":{"text":'. $e->getMessage() .'}}';
-		  }
+            $db = getConnection();
+            $query = "  SELECT count(*) as cantidad FROM MIEMBROS_EQUIPO where id_proyecto = :idproy and id_empleado = :idemp ";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("idproy", $id_proy);
+            $stmt->bindParam("idemp", $idr);
+            $stmt->execute();
 
-		}
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            $cantidad = $res["cantidad"];
 
-		function G_getListarRecDisp() {
+            if ($cantidad > 0) {
+                //UPDATE
+                $update = " UPDATE MIEMBROS_EQUIPO SET COSTO_EMPLEADO = :costo WHERE id_proyecto = :idproy and id_empleado = :idemp ";
+                // $db = getConnection();
+                $stmt = $db->prepare($update);
+                $stmt->bindParam("costo", $costo);
+                $stmt->bindParam("idproy", $id_proy);
+                $stmt->bindParam("idemp", $idr);
+                $stmt->execute();
+                
+            } else {
+                //INSERT
+                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO) values (:idproy, :idemp, :costo) ";
+                // $db = getConnection();
+                $stmt = $db->prepare($insert);
+                $stmt->bindParam("idproy", $id_proy);
+                $stmt->bindParam("idemp", $idr);
+                $stmt->bindParam("costo", $costo);
+                $stmt->execute();
+            }
+        }
+         $db = null;
+         echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
-	    try {
-			  $sql = "SELECT M.id_empleado as id
+function G_getListarRecDisp() {
+
+    try {
+        $sql = "SELECT M.id_empleado as id
 								FROM MIEMBROS_EQUIPO M
 								WHERE 
 									( fecha_entrada <= DATE(NOW()) AND
@@ -232,33 +253,32 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
         $stmt = $db->query($sql);
         $lista_falsa = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-						$id = $j["id"];
-						$lista_falsa[$id] = true;
+            $id = $j["id"];
+            $lista_falsa[$id] = true;
         }
-			  $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, R.NOMBRE_ROL as rol
+        $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, R.NOMBRE_ROL as rol
 								FROM EMPLEADO E, ROL_EMPLEADO R
 								WHERE R.ID_ROL = E.ID_ROL
 								";
         $stmt = $db->query($sql);
-				$lista = array();
+        $lista = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-						$id = $j["id"];
-						if( ! array_key_exists($id, $lista_falsa) ){
-							$lista[$id] = array($j["id"], $j["nom"], $j["rol"]);
-						}
+            $id = $j["id"];
+            if (!array_key_exists($id, $lista_falsa)) {
+                $lista[$id] = array($j["id"], $j["nom"], $j["rol"]);
+            }
         }
 
 
         $db = null;
-        echo json_encode(array("l_recurso"=>array_values($lista)));
-			} catch(PDOException $e) {
-		      echo json_encode(array("me"=> $e->getMessage()));
-			}
-		}
+        echo json_encode(array("l_recurso" => array_values($lista)));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
-		function G_getListaRecXProyecto($id) {
-		
-		
-		}
+function G_getListaRecXProyecto($id) {
+    
+}
 
 ?>
