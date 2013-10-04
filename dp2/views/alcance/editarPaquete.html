@@ -28,7 +28,7 @@
         <h2 id="nombre">Paquete de trabajo</h2>
       </div>  
       <div class="container">
-        <form id="form-paquete" role="form" name="form-paquete" class="col-md-offset-1" novalidate >
+        <form id="form-paquete" role="form" name="form-paquete" class="col-md-offset-1" method="POST" action="return false;" >
           <div class="row">
             <!--Id-->
             <div class="form-group col-md-2">
@@ -84,14 +84,14 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label class="control-label" for="numero_personas">Número de personas</label>
-              <input name="numero_personas" type="number" min="0" step="1"class="form-control" id="numero_personas" placeholder="Número de personas que participan en el paquete"/>
+              <input name="numero_personas" type="text" min="0" step="1"class="form-control" id="numero_personas" placeholder="Número de personas que participan en el paquete" />
             </div>
           </div>
           <!--Duracion-->
           <div class="row">
             <div class="form-group col-md-12">
               <label class="control-label" for="dias">Duración (en días)</label>
-              <input type="number" min="0" step="1" name="dias" class="form-control" id="dias" placeholder="Duración en días"/>
+              <input type="text" min="0" step="1" name="dias" class="form-control" id="dias" placeholder="Duración en días" />
             </div>
           </div>
           <!--Hitos-->
@@ -105,7 +105,7 @@
           <div class="row">
             <div class="form-group col-md-8">
               <label class="control-label" for="costo">Costo</label>
-              <input type="number" min="0" name="costo" step="any"class="form-control" id="costo" name="costo" placeholder="Monto del costo"/>
+              <input type="text" min="0" name="costo" step="any"class="form-control" id="costo" name="costo" placeholder="Monto del costo"/>
             </div>
             <div class="form-group col-md-4">
               <label class="control-label" for="id_cambio_moneda">Moneda</label>
@@ -152,7 +152,7 @@
           <!--Submit-->
           <div class="row">
             <div class="col-md-1" id="submit">
-              <button id="modificarPaquete" type="submit" class="btn btn-default">Guardar</button>
+              <button id="modificarPaquete" type="button" class="btn btn-default">Guardar</button>
             </div>
           </div>
         </form>     

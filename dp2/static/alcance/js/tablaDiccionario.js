@@ -31,14 +31,15 @@ $(document).ready(function(){
 	var obj={
 		id_proyecto : id_proyecto
 	}
-	$ajax({
+	$.ajax({
 		type: 'GET',
-		url : '../../api/getIdEdtFromIdProyecto/',
+		url : '../../api/idEdtFromIdProyecto',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		data : obj,
+		async: false,
 		success: function(data){
-			id_edt = data["id_edt"];
+			id_edt = parseInt(data["id_edt"]);
 		}
 	});
 

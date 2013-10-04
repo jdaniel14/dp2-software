@@ -105,7 +105,7 @@
 	function getComboMiembrosEquipo($id_proyecto){
 		$con=getConnection();
 
-		$pstmt = $con->prepare("SELECT M.id_empleado, C.nombre_completo FROM MIEMBROS_EQUIPO M, CONTACTO C, EMPLEADO E WHERE M.id_proyecto= ? AND E.id_contacto = C.id_contacto AND C.id_contacto = M.id_empleado");
+		$pstmt = $con->prepare("SELECT M.id_empleado, E.nombre_corto FROM MIEMBROS_EQUIPO M, EMPLEADO E WHERE M.id_proyecto= ? AND E.id_empleado = M.id_empleado");
 		$pstmt->execute(array($id_proyecto));
 		$lista = array();
 		while ($miembro = $pstmt->fetch(PDO::FETCH_ASSOC)){
@@ -152,7 +152,9 @@
 		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
 		
 		//obtener lista de requisitos
-		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor FROM REQUISITO WHERE id_estado_requisito <> 2 AND id_especificacion_requisitos =?");
+		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo , R.observaciones, R.unidad_medida, R.valor 
+			FROM REQUISITO R, TIPO_REQUISITO T 
+			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND R.id_estado_requisito <> 2 AND R.id_especificacion_requisitos =?");
 		$pstmt->execute(array($idER));
 		$lista = array();
 		while($req = $pstmt->fetch(PDO::FETCH_ASSOC)){
@@ -185,7 +187,6 @@
 			$pstmt->execute(array($req["id_proyecto"]));
 			$idER = $con->lastInsertId();
 		}
-		echo $idER;
 		$pstmt = $con->prepare("INSERT INTO REQUISITO 
 								(id_especificacion_requisitos,descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito) 	
 					   			VALUES (?,?,?,?,?,?,?)");

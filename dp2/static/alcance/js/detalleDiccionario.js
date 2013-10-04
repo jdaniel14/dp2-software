@@ -49,7 +49,7 @@ function cargarComboResponsable(){
 			for(obj in data){
 				var opt = $("<option></option>");
 				opt.val(data[obj]["id_empleado"]);
-				opt.html(data[obj]["nombre_completo"]);
+				opt.html(data[obj]["nombre_corto"]);
 				$("#id_empleado").append(opt);
 			}
 		}
@@ -111,8 +111,8 @@ $(document).ready(function(){
 
 $("#modificarPaquete").click(function(){
 	if(!validarPaqueteTrabajo()){
-		alert("Hay errores en el formulario");
-		return;
+		scrollTo();
+		return false;
 	}
 	var data = $(".form-control");
 	var obj = {};
@@ -126,8 +126,7 @@ $("#modificarPaquete").click(function(){
 		data: JSON.stringify(obj),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
-		success:function(){
-			alert("Se registraron las modificaciones con éxito.");
-		}
 	});
+	scrollTo();
+	return false;
 });
