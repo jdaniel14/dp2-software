@@ -136,6 +136,7 @@ function guardarCambios(){
 	if($('#detalleRequisito').hasClass("modificar")){
 		ruta = "../../api/AL_modificaRequisito";
 		callback = modifica;
+		obj["tipo"] = $('#id_tipo_requisito option:selected').text();
 	}
 	$.ajax({
 		type: 'POST',

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title></title>
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/alcance/css/diccionario.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="header"></div>
+
+    <div class="container">
+      <div class="h1-title">
+        <h1 id="nombre_proyecto">Proyecto 1</h1>
+      </div>
+      <div class="h2-title col-md-offset-1">
+        <h2 id="nombre">Gestión del alcance</h2>
+      </div> 
+      <div class="container">
+        <form id="form-paquete" role="form" method="POST" name="form-paquete" class="col-md-offset-1" action="return false;">
+          <div class="row">
+            <div class="col-md-1" id="submit">
+              <button id="editar" type="button" class="btn btn-default">Editar</button>
+            </div>
+          </div> 
+          <!--Descripcion-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="descripcion">Descripción</label>
+              <textarea rows="2" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción del alcance"></textarea>
+            </div>
+          </div>
+          <!--Alcance del producto-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="alcance_producto">Alcance del producto</label>
+              <textarea rows="2" class="form-control" name="alcance_producto" id="alcance_producto" placeholder="Descripción del alcance del producto"></textarea>
+            </div>
+          </div>
+          <!--Version-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="version">Versión</label>
+              <input type="text" name="version" class="form-control" id="version" placeholder="Versión del alcance"/>
+            </div>
+          </div>
+          <!--criterios-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="criterios">Criterios de aceptación</label>
+              <textarea rows="2" class="form-control" name="criterios" id="criterios_aceptacion" placeholder="Criterios de aceptación del proyecto"></textarea>
+            </div>
+          </div>
+          <!--entregables-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="entregables">Entregables</label>
+              <textarea rows="2" class="form-control" name="entregables" id="entregables" placeholder="Entregables del proyecto"></textarea>
+            </div>
+          </div>
+          <!--exclusiones-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="exclusiones">Exclusiones</label>
+              <textarea rows="2" class="form-control" name="exclusiones" id="exclusiones" placeholder="Exclusiones del proyecto"></textarea>
+            </div>
+          </div>
+          <!--restricciones-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="restricciones">Restricciones</label>
+              <textarea rows="2" class="form-control" name="restricciones" id="restricciones" placeholder="Restricciones del proyecto"></textarea>
+            </div>
+          </div>
+          <!--Supuestos-->
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="supuestos">Supuestos</label>
+              <textarea rows="2" class="form-control" name="supuestos" id="supuestos" placeholder="Supuestos del proyecto"></textarea>
+            </div>
+          </div>
+          <!--Submit-->
+          <div class="row">
+            <div class="col-md-1" id="submit">
+              <button id="modificarAlcance" type="button" class="btn btn-default">Guardar</button>
+            </div>
+          </div>
+        </form>     
+      </div>  
+    </div>
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/alcance/js/gestionAlcance.js"></script>
+    <script src="../../static/alcance/js/validation.js"></script>
+    <script src="../../assets/js/header.js"></script>   
+  </body>
+</html>
