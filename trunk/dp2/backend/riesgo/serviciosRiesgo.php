@@ -18,7 +18,7 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico,disparador) 
+        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico,disparador) 
                 VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1,:disparador)";
         try {
             $db = getConnection();
@@ -158,7 +158,7 @@
     }    
 
     function R_getListaPaquetesEDT($idProyecto){
-        $query = "SELECT * FROM paquete_trabajo,edt WHERE paquete_trabajo.id_edt=edt.id_edt and edt.id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=".$idProyecto;
         try {
             $arregloListaPaquetesEDT= array();
             $db=getConnection();
@@ -394,7 +394,7 @@
     function R_postRegistrarHeaderProbabilidadRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $probabilidad = json_decode($request->getBody());
-        $query = "INSERT INTO probabilidad_riesgo (id_proyecto,nivel,descripcion,minimo,maximo) 
+        $query = "INSERT INTO PROBABILIDAD_RIESGO (id_proyecto,nivel,descripcion,minimo,maximo) 
                 VALUES (:id_proyecto,:nivel,:descripcion,:minimo,:maximo)";
         try {
             $db = getConnection();
@@ -417,7 +417,7 @@
 
     function R_getListaHeadersProbabilidadRiesgo($idProyecto){
         
-        $query = "SELECT * FROM probabilidad_riesgo WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+        $query = "SELECT * FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
                     
         try {
             $arregloListaHeader= array();
@@ -442,7 +442,7 @@
 
     function R_deleteListaHeadersProbabilidadRiesgo($idProyecto){
 
-        $sql = "DELETE FROM probabilidad_riesgo WHERE id_proyecto=:id_proyecto";
+        $sql = "DELETE FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:id_proyecto";
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
@@ -491,7 +491,7 @@
                         NI.descripcion Nidescripcion,
                         NI.tipo,limite_menor,limite_mayor,
                         TIXNI.descripcion tixniDescripcion
-                FROM tipo_impacto_x_nivel_impacto TIXNI, tipo_impacto TI, nivel_impacto NI 
+                FROM TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI, TIPO_IMPACTO TI, NIVEL_IMPACTO NI 
                 where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
                 order by id_tipo_impacto,id_nivel_impacto;";
                     
@@ -513,7 +513,7 @@
             }
             $db = null;
 
-            $query = "SELECT COUNT(*) TOTAL FROM nivel_impacto WHERE id_proyecto=:id_proyecto";
+            $query = "SELECT COUNT(*) TOTAL FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto";
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $idProyecto);
@@ -564,7 +564,7 @@
 
     function R_getListaTipoImpacto($idProyecto){
         
-        $query = "SELECT * FROM tipo_impacto WHERE id_proyecto=:id_proyecto ORDER BY descripcion";
+        $query = "SELECT * FROM TIPO_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY descripcion";
                     
         try {
             $arregloListaTipoImpacto= array();
@@ -588,7 +588,7 @@
   
     function R_getListaHeadersImpactoRiesgo($idProyecto){
         
-        $query = "SELECT * FROM nivel_impacto WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+        $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
                     
         try {
             $arregloListaHeaderImpactoRiesgo= array();
@@ -612,6 +612,31 @@
         }        
     }
 
+    function R_getTipoImpactoxNivelImpacto($idProyecto){
+        
+        $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+                    
+        try {
+            $arregloListaHeaderImpactoRiesgo= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idNivelImpacto" => $row['id_nivel_impacto'], 
+                            "idProyecto" => $row['id_proyecto'],
+                            "nivel" => $row['nivel'],
+                            "descripcion" => $row['descripcion'],
+                            "tipo" => $row['tipo']
+                            );
+                array_push($arregloListaHeaderImpactoRiesgo,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaHeaderImpactoRiesgo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
 
     //--------------------------------------EQUIPO RIESGO--------------------------------------
 
@@ -619,12 +644,12 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $listaIntegrantes = json_decode($request->getBody());
-        
+        echo $listaIntegrantes;
         foreach ($listaIntegrantes->integrante as $integrante){
             
-            
-            $query = "INSERT INTO comite_riesgo (id_proyecto,id_empleado) 
-                    VALUES (:id_proyecto,:id_empleado)";
+            $query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
+            //$query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
+              //      VALUES (:id_proyecto,:id_empleado)";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
@@ -643,7 +668,7 @@
     function R_getListaIntegrantesProyecto($idProyecto){
         
         $query = "SELECT ME.id_proyecto id_proyecto, E.id_empleado id_empleado , nombres, apellidos
-                FROM miembros_equipo ME,empleado E where
+                FROM MIEMBROS_EQUIPO ME,EMPLEADO E where
                 ME.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
                     
         try {
@@ -668,7 +693,7 @@
     function R_getComiteRiesgo($idProyecto){
         
         $query = "SELECT CR.id_proyecto, E.id_empleado , nombres, apellidos
-                FROM comite_riesgo CR,empleado E where
+                FROM COMITE_RIESGO CR,EMPLEADO E where
                 CR.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
         try {
             $arregloComiteRiesgo= array();
