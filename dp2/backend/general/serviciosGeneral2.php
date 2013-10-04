@@ -280,7 +280,7 @@ function G_getListarRecDisp() {
             while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $id = $j["id"];
                 if( ! array_key_exists($id, $lista_falsa) ){
-                    $lista[$id] = array($j["id"], $j["nom"], $j["rol"]);
+                    $lista[$id] = array("id"=>$j["id"],"nom"=> $j["nom"],"rol"=> $j["rol"]);
                 }
             }
             $db = null;
