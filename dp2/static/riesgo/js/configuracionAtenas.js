@@ -38,7 +38,7 @@ function main() {
 
         $.ajax({
             type: 'POST',
-            url: "../../api/R_registrarTiposImpacto",
+            url: "../../api/R_registrarTiposImpactoRiesgo",
             data: jsonData,
             dataType: "json",
             success: function(data) {
