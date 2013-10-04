@@ -151,7 +151,7 @@ function listarAcuerdos() {
                 $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
 
                 //aplicar un if $("#my_row_101").remove();
-                i++;
+                
 
             }
             if ($("#tablaAcuerdos tr").length > 1)
