@@ -192,9 +192,9 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
 
 function G_getAsignarRecProy() {
     $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
     //$request = "{ \"id_proy\": 4,\"l_rrhhxpr\":[{\"idr\": \"1\",\"costo\": \"100\"},{\"idr\": \"2\",\"costo\": \"150\"}]}";
     //$body = json_decode($request);
-    $body = json_decode($request->getBody());
     $id_proy = $body->id_proy;
     $l_rrhhxpr = $body->l_rrhhxpr;
     try {
