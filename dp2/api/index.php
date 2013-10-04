@@ -14,6 +14,7 @@ $app->contentType('text/html; charset=utf-8');
  //Lógica de servicios Sprint 2
     include ("../backend/alcance/ServiciosAlcanceGroup2.php");
     include ("../backend/general/serviciosGeneral2.php");
+    include ("../backend/alcance/serviciosAlcanceJp.php");
  //fin 2   
 
  //Riesgo cambio
