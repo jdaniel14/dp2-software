@@ -80,10 +80,10 @@
             android:textColor="@color/blanco" />
     </LinearLayout>
 
-    <com.dp2.gproyectos.view.components.MyListView
+    <ListView
         android:id="@+id/lvProyectos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </com.dp2.gproyectos.view.components.MyListView>
+    </ListView>
 
 </LinearLayout>
