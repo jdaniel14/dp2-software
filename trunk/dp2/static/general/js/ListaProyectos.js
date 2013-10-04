@@ -12,7 +12,7 @@ function iniciaProyectos(){
 		dataType: "json", // data type of response
         success: function(data){                    
             agregaDataFila(data);
-            $(".btn.btn-default").click(function(){
+            $(".btn.btn-primary").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
 				var idProyecto = auxtd[0].innerHTML;		
 				localStorage.setItem("idProyecto",idProyecto);
@@ -39,7 +39,7 @@ function agregaFilaProyecto(arreglo,i){
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
 	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-	'</td><td><button type="button" class="btn btn-default">Administrar</button></td></tr>';
+	'</td><td><button type="button" class="btn btn-primary">Administrar</button></td></tr>';
 	$("#listaProyectos tbody").append(tbody);
 	$("#listaProyectos").trigger("update"); 
 }
