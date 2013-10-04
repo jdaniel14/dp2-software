@@ -21,87 +21,137 @@
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    
   </head>
 
   <body>
+	
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DP2</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">General<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../../views/general/RegistrarProyecto.html">Registrar Proyecto</a></li>
+                <li><a href="../../views/general/RegistrarRecursoHumano.html">Registrar Recurso Humano</a></li>
+                <li><a href="../../views/general/ListaRecursosHumanos.html">Ver Lista de Recursos Humanos</a></li>
+                <li><a href="../../views/general/RegistrarLeccionAprendida.html">Registrar Leccion Aprendida</a></li>
+              </ul>
+            </li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
     
-    <div id="header"></div>
-
     <div class="container">
 
       <div class="starter-template">
-          <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
-        <h1>Proyecto 1</h1>
+	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1>Lista de Recursos Humanos</h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 
-        <div class="" id="ListaRecursosHumanos">
-          
-        <form role="form" name="formListaRecursosHumanos">
-        
-          <div class="form-group">
-            <!-- Button -->
-            <div class="controls">
-              <table width="100%">      
-                <tr width="100%">
-                  <td width="100%" align="left">
-                    <button type="button" class="btn btn-default" onclick="window.open('BuscarRecursoHumano.html',null,'height=700,width=600,status=yes,toolbar=no,menubar=no,location=no');">
-                      Asignar un nuevo recurso
-                    </button>
-                  </td>
-                </tr>     
-              </table>
-            </div>
-          </div>
+      <div class="form-group">
+        <!-- Fecha de Inicio -->
+        <label class="col-lg-4 control-label"  for="fechaInicio">Fecha de Inicio</label>
+        <div class="controls col-lg-6">
+        <input class="form-control"type="date" id="fechaInicio" name="fechaInicio" placeholder="" class="input-xlarge">
+        <!--<p class="help-block">Please confirm password</p>-->
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <!-- Fecha de Fin -->
+        <label class="col-lg-4 control-label"  for="fechaFin">Fecha de Fin</label>
+        <div class="controls col-lg-6">
+        <input class="form-control" type="date" id="fechaFin" name="fechaFin" placeholder="" class="input-xlarge">
+        <!--<p class="help-block">Please confirm password</p>-->
+        </div>
+      </div>
 
-          <table class="table-striped table-bordered" width="90%" id="listaRecursosHumanos">                      
-            <tr>
-              <td width="5%" align="center"><b>#</b></td>
-              <td width="30%" align="center"><b>Nombre del Recurso</b></td>
-              <td width="20%" align="center"><b>Perfil</b></td>
-              <td width="20%" align="center"><b>Costo HH (S/.)</b></td>
-              <td width="14%" align="center"><b>Eliminar</b></td>
-            </tr>
+      <div class="form-group">
+        <!-- Button -->
+        <div class="controls">
+        <table width="100%">      
+          <tr width="100%">
+            <td width="50%" align="left">
+              <button type="button" class="btn btn-primary" id="btnBuscar">
+                Buscar
+              </button>
+            </td>
+          </tr>     
+        </table>
+        </div>
+      </div>
 
-            <tr>
-              <td width="5%" align="center">1</td>
-              <td width="30%" align="left">Jorge Perez</td>
-              <td width="20%" align="center">Analista</td>
-              <td width="20%" align="center">40</td>
-              <td width="14%" align="center"><input type="checkbox" name="recursoHumano" value="Jorge Perez"></td>
-            </tr>
+      <div id="resultados">Aca supuestamente sale esa mierda</div>
 
-            <tr>
-              <td width="5%" align="center">1</td>
-              <td width="30%" align="left">Pedro Abanto</td>
-              <td width="20%" align="center">Programador</td>
-              <td width="20%" align="center">35</td>
-              <td width="14%" align="center"><input type="checkbox" name="recursoHumano" value="Pedro Abanto"></td>
-            </tr>
-          </table>
-            
-          <table>
-            <tr>&nbsp</tr>
-            <tr>&nbsp</tr>
-            <tr>&nbsp</tr>
-          </table>
+      <div class="widget">
+        <h3>Leyenda</h3>
+        <div class="formRow"><span>Ocupado : </span><span style="background-color:red" size="x-large">.....................</span></div>            
+        <div class="formRow"><span>Disponible : </span><span style="background-color:blue" size="x-large">.....................</span></div>     
+      </div>
 
-          <div class="form-group">
-            <!-- Button -->
-            <div class="controls">
-              <table width="90%">      
-                <tr width="90%">
-                  <td width="90%" align="right">
-                    <button type="button" class="btn btn-default" id="btnEliminar" onclick="$(location).attr('href','ListaRecursosHumanos.html');">
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>     
-              </table>
-            </div>
-          </div>
-        </form>   
-      </div>       
+
+    <!--
+	  <div class="" >
+			<table id="listaProyectos" class="tablesorter" width="90%" >			
+				<thead>
+          <tr>
+  					<th><b>#</b></th>
+  					<th><b>Nombre del Recurso</b></th>
+  					<th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Rol</b></th>
+  					<th><b>Fecha de Inicio</b></th>
+  					<th><b>Fecha de Fin</b></th>
+            <th><b></b></th>
+  				</tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>#</th>
+            <th>Proyecto</th>
+            <th>Jefe de Proyecto</th>
+            <th>Tipo de Proyecto</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Fin</th>
+            <th>Acciones</th>
+          </tr>
+          <tr>
+            <th colspan="7" class="pager form-horizontal">
+              <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
+              <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
+              <span class="pagedisplay"></span>
+              <button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
+              <button type="button" class="btn last"><i class="icon-step-forward"></i></button>
+              <select class="pagesize input-mini" title="Select page size">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <select class="pagenum input-mini" title="Select page number"></select>
+            </th>
+          </tr>
+        </tfoot>        
+        <tbody>
+        </tbody>
+			</table>
+
+	  </div>
+    -->
     </div><!-- /.container -->
 
 
@@ -110,6 +160,18 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/header.js"></script>
+  	<script src="../../static/general/js/ListaProyectos.js"></script>
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
   </body>
 </html>
