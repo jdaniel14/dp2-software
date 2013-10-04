@@ -698,6 +698,7 @@
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
+           
             $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
             $stmt->execute();
             $db = null;
@@ -705,8 +706,9 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 
-        foreach ($listaIntegrantes->listaComite as $idintegrante){
-            
+
+        foreach ($listaIntegrantes->listaComite as $integrante){
+
             //$query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
             $query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
                     VALUES (:id_proyecto,:id_empleado)";
