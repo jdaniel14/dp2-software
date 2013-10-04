@@ -5,7 +5,8 @@ function getURLParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-var id_colaborador=2;
+var id_colaborador=localStorage.getItem("idUsuario");
+var nombre_usuario=localStorage.getItem("nombreUsuario");
 
 $(document).ready(function() {
 
