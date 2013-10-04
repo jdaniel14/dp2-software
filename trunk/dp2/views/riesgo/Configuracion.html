@@ -45,16 +45,19 @@
                     <form  name="form1">
                         <table class="table-striped" width="90%" id="tablaTiposRiesgos">
                             <tr>
-                                <td width="60%"><b>Tipo de Impacto</b></td>
-                                <th colspan="3">Acciones</th>
-
+                                <td width="40%"><b>Tipo de Impacto</b></td>
+                                <td width="40%"><b>Tipo</b></td>
+                                 <td width="20%"><b>Eliminar</b></td>
+                                 
                             </tr>
 
                             <tbody class="cuerpo-tabla" id="tablaRiesgos">
                                 <!--Contenido Tipos de Riesgos-->
                                 <tr id="my_row_101">
-                                    <td><input name="tipoRi1" id="tipoRi1" type="text" ></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                    <td><a onclick="deleteMe('101')" href="#">Eliminar</a></td>
+                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="input-sm" ></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <td><select class="form-control" id="formas1"><option value="Número">Número</option>
+                                                <option value="Texto">Texto</option></select></td>
+                                    <td><a class="btn btn-danger" onclick="deleteMe('101')" href="#">Eliminar</a></td>
 
                                 </tr>
                             </tbody>
