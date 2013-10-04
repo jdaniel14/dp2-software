@@ -32,9 +32,9 @@ function CR_getCalendarioBase($json) {//servicio3
 function CR_guardarCalendarioBase() { //servicio4
     $request = \Slim\Slim::getInstance()->request();
     $calendarioBase = json_decode($request->getBody());
-	
+	//echo $calendarioBase->id;
 	//$objeto = json_decode($json);
-    $jsonRespuesta = CR_Guardar_Calendario_Base($calendarioBase->id,$calendarioBase->holidays);
+    $jsonRespuesta = CR_Guardar_Calendario_Base($calendarioBase/*$calendarioBase->id,$calendarioBase->holidays*/);
 	
     echo json_encode($jsonRespuesta);
 }
@@ -103,14 +103,14 @@ function CR_postActividades() {//servicio8
 
 
 
-function CR_Guardar_Calendario_Base($idProyecto,$feriados){
-
-	$sql = "UPDATE CALENDARIO_BASE SET FERIADOS=? WHERE id_calendario_base=? ; COMMIT;";
+function CR_Guardar_Calendario_Base($calendarioBase){
+	
+	$sql = "UPDATE CALENDARIO_BASE SET FERIADOS=? , nombre=? WHERE id_calendario_base=? ; COMMIT;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($feriados,$id));
+        $stmt->execute(array($calendarioBase->holidays,$calendarioBase->name,$calendarioBase->id));
 
 
         $db = null;
