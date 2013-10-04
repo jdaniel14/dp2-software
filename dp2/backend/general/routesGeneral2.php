@@ -18,7 +18,7 @@ $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
 //jose -- RRHH
 $app->get('/G_listarRecursoDisponible', 'G_getListarRecDisp');//devuelve la lista de recursos disponibles para asignar a un proyeco
 $app->post('/G_asignarRecursoProyecto/:id', 'G_getAsignarRecProy');//inserta los recursos a un proyecto
-$app->get('/G_listaRecursoxProyecto/:id', 'G_getListaRecXProyecto');//devuelve la lista de los recursos de un proyecto
+$app->post('/G_listaRecursoxProyecto', 'G_postListaRecXProyecto');//devuelve la lista de los recursos de un proyecto
 
 //Alfonso -- Seguridad
 $app->post('/G_verificaUsuario', 'G_getUsuario'); //devuelve 1 si el usuario y pass son correctas
