@@ -189,7 +189,7 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
-
+/********************************************recuros humanos*/
 function G_getAsignarRecProy() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
@@ -242,40 +242,54 @@ function G_getAsignarRecProy() {
 
 function G_getListarRecDisp() {
 
-    try {
-        $sql = "SELECT M.id_empleado as id
-								FROM MIEMBROS_EQUIPO M
-								WHERE 
-									( fecha_entrada <= DATE(NOW()) AND
-									DATE(NOW()) <= fecha_salida )	
-								";
-        $db = getConnection();
-        $stmt = $db->query($sql);
-        $lista_falsa = array();
-        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $id = $j["id"];
-            $lista_falsa[$id] = true;
-        }
-        $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, R.NOMBRE_ROL as rol
-								FROM EMPLEADO E, ROL_EMPLEADO R
-								WHERE R.ID_ROL = E.ID_ROL
-								";
-        $stmt = $db->query($sql);
-        $lista = array();
-        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $id = $j["id"];
-            if (!array_key_exists($id, $lista_falsa)) {
-                $lista[$id] = array($j["id"], $j["nom"], $j["rol"]);
+
+        try {
+            /*$sql = "SELECT M.id_empleado as id
+                      FROM MIEMBROS_EQUIPO M
+                      WHERE ( fecha_entrada <= DATE(NOW()) 
+                      AND DATE(NOW()) <= fecha_salida )";*/
+
+            $sql="  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+                    FROM MIEMBROS_EQUIPO M,
+                    ACTIVIDAD A,
+                    ACTIVIDAD_X_RECURSO AR,
+                    RECURSO R,
+                    EMPLEADO E
+                    WHERE M.ID_MIEMBROS_EQUIPO=R.ID_MIEMBROS_EQUIPO
+                    AND AR.ID_RECURSO=R.ID_RECURSO
+                    AND AR.ID_ACTIVIDAD=A.ID_ACTIVIDAD
+                    AND R.ID_PROYECTO=M.ID_PROYECTO
+                    AND R.ID_PROYECTO=A.ID_PROYECTO
+                    AND E.ID_EMPLEADO=M.ID_EMPLEADO
+                    AND NOW() BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN";
+
+            $db = getConnection();
+            $stmt = $db->query($sql);
+            $lista_falsa = array();
+            while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $id = $j["id"];
+                $lista_falsa[$id] = true;
             }
-        }
 
+            $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, R.NOMBRE_ROL as rol
+                    FROM EMPLEADO E, ROL_EMPLEADO R
+                    WHERE R.ID_ROL = E.ID_ROL";
+            $stmt = $db->query($sql);
+            $lista = array();
 
-        $db = null;
-        echo json_encode(array("l_recurso" => array_values($lista)));
+            while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $id = $j["id"];
+                if( ! array_key_exists($id, $lista_falsa) ){
+                    $lista[$id] = array($j["id"], $j["nom"], $j["rol"]);
+                }
+            }
+            $db = null;
+            echo json_encode(array("l_recurso" => array_values($lista)));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
+
 
 function G_getListaRecXProyecto($id) {
     
