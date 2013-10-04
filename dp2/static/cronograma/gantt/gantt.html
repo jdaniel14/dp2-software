@@ -138,6 +138,55 @@
         </div><!-- /.modal-dialog -->
       </div>
 	
+	
+	
+	
+	<!-- ######********** Modal Indicadores *************###### -->
+	
+	<div id="modalIndicadores" class="modal fade modal-creator" aria-hidden="true">
+       	<div class="modal-dialog">
+          	<div class="modal-content">
+            	<div class="modal-header">
+		             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		             <h3 class="modal-title" align = "center">Indicadores: <span id = "taskIndicando">Error</span></h3>
+            	</div>
+            <div class="modal-body" align = "center">
+            	
+            	<!-- Barritas de progreso-->
+            	
+            	<span id = "textCost">Indicador de Costo</span>
+            	<br>
+            	
+            	<div class="progress progress-striped active" id = "progIndCost">
+  					<div id = "indCosto" class="progress-bar" style="width: 0%;">
+    					
+  					</div>
+				</div>
+				
+				<span id = "textFech">Indicador de Fecha</span>
+				<br>
+				
+				<div class="progress progress-striped active" id = "progIndFecha">
+  					<div id = "indFecha" class="progress-bar progress-bar-success" style="width: 0%;">
+  					    					
+  					</div>
+				</div>
+				<!-- Fin de barritas de progreso -->
+            </div>
+            <div class="modal-footer">	              
+	              <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+	
+	<!-- *** Fin modal Indicadores *** -->
+	
+	
+	
+	
+	
+	
 	<div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px">
 	</div>
 
@@ -180,19 +229,7 @@
 	    <button onclick="$('#workSpace').trigger('zoomPlus.gantt');" class="button textual" title="acercar"><span class="teamworkIcon">(</span></button>
 	    <span class="ganttButtonSeparator"></span>
 	    <button onclick="$('#workSpace').trigger('deleteCurrentTask.gantt');" class="button textual" title="eliminar"><span class="teamworkIcon">&cent;</span></button>
-	    <button onclick="
-	    
-	    if($('#readOnly').text() == 'D'){
-	    	alert('Editable');
-	    	$('#readOnly').html('R');
-	    }
-	    else{
-	    	alert('Solo Lectura');
-	    	$('#readOnly').html('D');
-	    }
-	    
-	    
-	    " class="button textual" title="ReadOnly"><span id = "readOnly" class="teamworkIcon">R</span></button>
+	    <button class="button textual" title="ReadOnly"><span id = "readOnly" class="teamworkIcon">R</span></button>
 	      &nbsp; &nbsp; &nbsp; &nbsp;
 	      <button onclick="saveGanttOnServer();" class="button first big" title="save">Guardar</button>
 	    </div></div>
@@ -214,6 +251,7 @@
 	      <th class="gdfColHeader gdfResizable" style="width:200px;">Recursos</th>
 		  <th class="gdfColHeader gdfResizable" style="width:50px;">Costo S/.</th>
 		  <th class="gdfColHeader gdfResizable" style="width:70px;">Paquete de trabajo</th>
+		  <th class="gdfColHeader gdfResizable" style="width:50px;">Indicadores</th>
 	    </tr>
 	    </thead>
 	  </table>
@@ -235,6 +273,37 @@
 	    <td class="gdfCell taskAssigs">(#=obj.getAssigsString()#)</td>
 		<td class="gdfCell"  ><input  type="text" name="cost"  value="(#=obj.cost#)" readonly></td>
 		<td class="gdfCell"  ><input  type="text" name="wbsNode"  value="(#=obj.wbsNode#)" readonly></td>
+		<td class="gdfCell" align = "center"><button data-toggle = "modal" href = "#modalIndicadores" name = "(#=obj.id_task#)" class = "btn btn-info btn-xs" onclick = "
+		
+		var tarea = $(this).attr('name');
+		
+		$.each(ge.tasks,function(e,el){
+			if(el.id_task == tarea){
+			
+				var escala = 4;
+			
+				console.log('Mostrando el indicador de la siguiente tarea:');
+				console.log(el);
+								
+				$('#taskIndicando').text(el.name);
+				
+				var indicaCosto = el.indicador_costo;
+				var indicaFecha = el.indicador_fecha;
+				console.log(indicaCosto + '-' + indicaFecha);
+				
+				$('#textCost').text('Indicador de Costo: ' + indicaCosto);
+				$('#textFech').text('Indicador de Fecha: ' + indicaFecha);
+								
+				$('#indCosto').css('width',indicaCosto / escala+ '%');
+							
+				$('#indFecha').css('width',indicaFecha / escala + '%');
+				
+				
+			
+			}
+		});
+		
+		">Ver</button></td>
 	  </tr>
 	  --></div>
 	
