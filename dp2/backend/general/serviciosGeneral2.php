@@ -290,11 +290,14 @@ function G_getListarRecDisp() {
     }
 }
 
-	function G_getListaRecXProyecto() {
-			$str1 = "2013-09-28";
-			$str2 = "2013-10-14";
-			$fecha_Inicio_IN = new DateTime("2013-09-28");
-			$fecha_Fin_IN = new DateTime("2013-10-14");
+	function G_postListaRecXProyecto() {
+	    $request = \Slim\Slim::getInstance()->request();
+	    $body = json_decode($request->getBody());
+ 
+			$str1 = $body->fechaIni;
+			$str2 = $body->fechaFin;
+			$fecha_Inicio_IN = new DateTime($str1);
+			$fecha_Fin_IN = new DateTime($str2);
 			$interval = $fecha_Fin_IN->diff($fecha_Inicio_IN);
 			$num_dias = $interval->d;
 
