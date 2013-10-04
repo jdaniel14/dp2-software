@@ -24,7 +24,15 @@
     <!-- Tablesorter: optional -->
     <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
     <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
-
+    <style>
+    <!--
+       .fila{
+       }
+       .seleccionado{
+          background: rgb(255,255,153);
+       }
+    //-->
+    </style>
   </head>
 
   <body>
@@ -39,7 +47,7 @@
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 
-        <div class="" id="ListaRecursosHumanos">
+        <div class="" id="ListaRecursos">
           
         <form role="form" name="formListaRecursosHumanos">
         
@@ -51,7 +59,7 @@
             </div>
           </div>
 
-          <table class="table-striped table-bordered" width="90%" id="listaRecursosHumanos">                      
+          <table class="table-striped table-bordered" width="90%" id="ListaRecursosHumanosXProyecto">                      
             <tr>
               <td width="5%" align="center"><b>#</b></td>
               <td width="30%" align="center"><b>Nombre del Recurso</b></td>
@@ -117,7 +125,6 @@
                       <th><b>#</b></th>
                       <th><b>Nombre del Colaborador</b></th>
                       <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Rol del Colaborador</b></th>
-                      <th><b></b></th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -125,7 +132,6 @@
                       <th>#</th>
                       <th>Nombre del Colaborador</th>
                       <th>Rol del Colaborador</th>
-                      <th>Seleccione</th>
                     </tr>
                     <tr>
                       <th colspan="7" class="pager form-horizontal">
@@ -145,14 +151,6 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                    
-                      <tr><td>1</td><td>Student01</td><td>Languages</td><td></td></tr>
-                      <tr><td>2</td><td>Student02</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>3</td><td>Student03</td><td>Languages</td><td></td></tr>
-                      <tr><td>4</td><td>Student04</td><td>Languages</td><td></td></tr>
-                      <tr><td>5</td><td>Student05</td><td>Languages</td><td></td></tr>
-                      <tr><td>6</td><td>Student06</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>7</td><td>Student01</td><td>Languages</td><td></td></tr>
                       <!--
                       <tr><td>8</td><td>Student02</td><td>Mathematics</td><td></td></tr>
                       <tr><td>9</td><td>Student03</td><td>Languages</td><td></td></tr>
