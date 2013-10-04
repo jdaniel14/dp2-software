@@ -25,6 +25,19 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $listaTipoImpacto = json_decode($request->getBody());
+
+        $query ="DELETE FROM TIPO_IMPACTO WHERE id_proyecto=:id_proyecto";
+         
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $listaTipoImpacto->idProyecto);
+            $stmt->execute();
+            $db = null;
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
         foreach($listaTipoImpacto->listaTipoImpacto as $tipoImpacto){
             $query = "INSERT INTO TIPO_IMPACTO (id_proyecto, descripcion, tipo) VALUES (:id_proyecto,:descripcion,:tipo)";
             try {
@@ -41,6 +54,23 @@
                 echo json_encode(array("me"=> $e->getMessage()));
             }
         }
+    }
+
+
+    function R_deleteTipoImpactoRiesgo($idImpacto){
+
+        $sql = "DELETE FROM TIPO_IMPACTO WHERE id_tipo_impacto=:idImpacto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idImpacto", $idImpacto);
+            $stmt->execute();
+            $db = null;
+            echo '{Riesgo eliminado con exito}';
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
     }
 
     //--------------------------------------ACUERDOS Y MODIFICACIONES--------------------------------------
@@ -67,6 +97,19 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $listaAcuerdos = json_decode($request->getBody());
+
+        $query ="DELETE FROM ACUERDOS WHERE id_proyecto=:id_proyecto";
+         
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $listaAcuerdos->idProyecto);
+            $stmt->execute();
+            $db = null;
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
         foreach($listaAcuerdos->listaFechas as $acuerdos){
             $query = "INSERT INTO ACUERDOS (id_proyecto,fecha,hora,acuerdos,estado) VALUES (:id_proyecto,:fecha,:hora,:acuerdos,1)";
             try {
