@@ -30,7 +30,7 @@ function main() {
 
 
         var data = {
-            idproyecto: idProyectoLocal,
+            idProyecto: idProyectoLocal,
             listaFechas: []
         }
         var cantidad2 = $("#tablaAcuerdos tr").length;
