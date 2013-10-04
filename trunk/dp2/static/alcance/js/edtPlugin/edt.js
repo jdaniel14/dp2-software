@@ -353,6 +353,28 @@
 
            function eventsEdit(){
                 var idnodoCounter = 1;
+
+
+                $("#inputEliminarHijo").click(function(){
+                  console.log("eliminando hijo");
+                   var id = $("#padreEdt").val();
+                   if (id == ""){
+                      alert("Escoja un padre");
+                      return false;
+                    }
+                    console.log($("#padreEdt").parent());
+                    console.log("elim");
+                    $("#chart").html("");
+                    console.log(id);
+                    var idsap = "#"+id;
+                    console.log(idsap);
+                    $(idsap).parent().parent().remove();
+                    repaint();
+                    repaintEdit();
+                  return false;
+                });
+
+
                 $("#inputAgregarHijo").click(function(){
                     console.log("agregando un hijo");
                     var title = $("#inputTitulo1").val();
@@ -370,7 +392,7 @@
                     $( "#inputAgregarHijo" ).trigger( "click" );
                 });
                   */
-                  
+
                 function agregaNodoEdt(title,desc,tiempo){
                     
                     var id = $("#padreEdt").val();
