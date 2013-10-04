@@ -1,5 +1,25 @@
+var holidays = "#01_01#05_01#06_29#07_28#07_29#08_30#10_08#11_01#12_08#12_25#";
 
+$(document).ready(function() {
 
+  var objProy = {
+    idProyecto: idProyecto
+  };
+  var ruta = "../../../api/CR_getCalendarioBase/"+JSON.stringify(objProy);
+  $.ajax({
+    type: 'GET',
+    url: ruta,
+    dataType: 'json',
+    success: function (data){
+      var item = data;
+      holidays = item.holidays;
+      console.log(item);
+      console.log(holidays);
+
+    }
+  });
+  //alert(holidays);
+});
 
   function dateToRelative(localTime){
     var diff=new Date().getTime()-localTime;
@@ -111,8 +131,6 @@
       val = "0" + val;
       return val.substr(val.length - 2);
     };
-
-    var holidays = "#01_01#04_25#08_15#11_01#12_25#12_26#06_02#12_08#05_01#2010_04_05#2010_10_19#2010_05_15#2011_04_04#";
 
     var ymd = "#" + date.getFullYear() + "_" + pad(date.getMonth() + 1) + "_" + pad(date.getDate()) + "#";
     var md = "#" + pad(date.getMonth() + 1) + "_" + pad(date.getDate()) + "#";
