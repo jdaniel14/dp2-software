@@ -6,11 +6,12 @@
   //MOSTRAR EDT ===============================================================================================================
   
 function getEdt(){
-       $request = \Slim\Slim::getInstance()->request(); //json parameters
-       $edt = json_decode($request->getBody()); //object convert
-       $idproyecto=$edt->{"idproyecto"};
+       //$request = \Slim\Slim::getInstance()->request(); //json parameters
+       //$edt = json_decode($request->getBody()); //object convert
+       //$idproyecto=$edt->{"idproyecto"};
+       
        $con = getConnection();
-       //$idproyecto = 1;
+       $idproyecto = 1;
        //conseguir el id del paquete inicial
        $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
        $pstmt->execute(array($idproyecto));
