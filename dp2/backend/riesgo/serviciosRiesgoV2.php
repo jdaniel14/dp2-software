@@ -11,7 +11,7 @@
             $stmt = $db->query($query);
             $stmt->bindParam("idProyecto", $idProyecto);
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $data= array("idTipoImpacto" => $row['id_tipo_impacto'], "descripcion" => $row['descripcion'],"tipo" => $row['tipo']);
+                $data= array("idTipo" => $row['id_tipo_impacto'], "tipoRi" => $row['descripcion'],"formas" => $row['tipo']);
                 array_push($arregloListaTipoImpacto,$data);
             }
             $db = null;
@@ -31,8 +31,8 @@
                 $db = getConnection();
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("id_proyecto", $listaTipoImpacto->idProyecto);
-                $stmt->bindParam("descripcion", $tipoImpacto->formas);
-                $stmt->bindParam("tipo", $tipoImpacto->tipoRi);
+                $stmt->bindParam("tipo", $tipoImpacto->formas);
+                $stmt->bindParam("descripcion", $tipoImpacto->tipoRi);
                 $stmt->execute();
                 $id = $db->lastInsertId();
                 $db = null;
