@@ -70,55 +70,6 @@
                     </form>  
                 </div>
             </div>
-
-            <!-- <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="text-left">Probabilidad </h3>
-                    <form class="form-horizontal" >
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Muy Bajo</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idMuyBajo1" > -
-                                <input type="text" class="input-sm" id="idMuyBajo2" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Bajo</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idBajo1" > -
-                                <input type="text" class="input-sm" id="idBajo2" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Medio</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idMedio1" > -
-                                <input type="text" class="input-sm" id="idMedio2" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Alto</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idAlto1" > -
-                                <input type="text" class="input-sm" id="idAlto2" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Muy Alto</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idMuyAlto1" > -
-                                <input type="text" class="input-sm" id="idMuyAlto2" >
-                            </div>
-                        </div>
-
-                        <div  class="col-md-12" style="text-align:center">
-                            <button type="button" class="btn btn-primary" id="btnAceptar1">Aceptar</button>
-                            <button type="button" class="btn btn-primary" id="btnCancelar1">Cancelar</button>
-                        </div>
-                    </form>  
-                </div>
-            </div>  -->    
-
             <div class="panel panel-default">
               <div class="panel-body col-lg-12">
                 <h3 class="text-left">Probabilidad </h3>
@@ -142,52 +93,92 @@
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="text-left">  Impacto </h3>
-                    <form class="form-horizontal" >
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Muy Bajo</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idMuyBajo" > 
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Bajo</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idBajo" > 
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Medio</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idMedio" > 
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Alto</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idAlto" > 
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="col-lg-4 control-label">Muy Alto</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="input-sm" id="idMuyAlto" > 
-                            </div>
-                        </div>
-
-                        <div  class="col-md-12" style="text-align:center">
-                            <button type="button" class="btn btn-primary" id="btnAceptar2">Aceptar</button>
-                            <button type="button" class="btn btn-primary" id="btnCancelar2">Cancelar </button>
-                        </div>
-                    </form>  
-                </div>
+              <div class="panel-body col-lg-12">
+                <h3 class="text-left">Impacto </h3>
+                <form class="form-horizontal" >
+                  <table class="table table-striped">
+                    <thead class="titulo-tabla">
+                    <th>Nivel</th>
+                    <th>Descripcion</th>
+                    </thead>
+                    <tbody class="cuerpo-tabla" id="tablaImpacto">
+                    </tbody>
+                  </table>
+                  <div  class="col-md-12" style="text-align:center">
+                    <a data-toggle="modal" href="#modalAgregarNivelImpacto" class="btn btn-primary" id="btnModalAgregarNivelImpacto">Agregar nivel</a>
+                    <a data-toggle="modal" href="#modalEliminarNivelImpacto" class="btn btn-danger" id="btnModalEliminarTablaNivelImpacto">Eliminar Tabla</a>
+                  </div>
+                </form>  
+              </div>
             </div>
         </div>
+
+        <div class="modal" id="modalAgregarNivelImpacto">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Agregar un Nivel de Impacto</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-horizontal col-lg-12">
+                  <h5><b>Por favor, ingrese el valor para medir un nuevo nivel de impacto</b>
+                  <br/><br/><small>Se recomienda que el peso 1 tenga como descripción "Muy Bajo", la descripción "Bajo" un peso 3, el nivel medio un peso 5, un peso 7 para alto y 10 para muy alto </small><br/></h5>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-5 control-label">*Peso</label>
+                        <div class="col-lg-7">
+                            <input type="number" class="form-control" id="numeroPesoImpacto" placeholder="Peso del Nivel de Impacto" min="1">
+                        </div>
+                        <div class="alert-modal alert-danger" id="errorPesoImpacto" style="display: none;">
+                            <span class="pull-right">Por favor, inserte un número adecuado</span>
+                        </div>
+                        <div class="alert-modal alert-danger" id="errorPesoRegistrado" style="display: none;">
+                            <span class="pull-right">El peso ingresado ya ha sido registrado</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-5 control-label">*Descripción</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" id="descripcionImpacto" placeholder="Muy Bajo/Bajo/Medio/Alto/Muy Alto" maxlength="100">
+                        </div>
+                        <div class="alert-modal alert-danger" id="errorDescripcionImpacto" style="display: none;">
+                            <span class="pull-right">Por favor, ingrese una descripción</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="control-label pull-right">Los campos con * son obligatorios</label>
+                    </div>
+                  </div>
+                </div>
+              <div class="modal-footer">
+                <button class="btn btn-success" id="btnAgregarNivelImpacto">Agregar</button>
+                <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal" id="modalEliminarNivelImpacto">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Eliminar Niveles de Impacto</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-horizontal col-lg-12">
+                  <h5><b>¿Está seguro de querer eliminar TODOS los datos de esta tabla?</br></br>
+                  Esta acción no puede ser deshecha</b></h5>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" id="btnEliminarNivelImpacto">Eliminar</button>
+                <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div> <!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
         <div class="modal" id="modalAgregarNivel">
           <div class="modal-dialog">
