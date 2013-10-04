@@ -441,7 +441,7 @@ function CR_obtenerRespuestaFracaso() {
 
 function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
 
-    $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?);commit;";
+    $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin,PORC_AVANCE_COSTO_ESTIMADO) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?);commit;";
     //$test=null
     date_default_timezone_set('America/Lima');
     try {
@@ -461,7 +461,7 @@ function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
                  /*if (property_exists($actividad, 'realStart')){
                   echo "[".strtotime($actividad->realStart)."]";
                   } */
-                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), (property_exists($actividad, 'realStart')) ? $actividad->realStart : null, (property_exists($actividad, 'realEnd')) ? $actividad->realEnd : null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone));
+                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), (property_exists($actividad, 'realStart')) ? $actividad->realStart : null, (property_exists($actividad, 'realEnd')) ? $actividad->realEnd : null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone,property_exists($actividad, "progress_cost") ? $actividad->progress_cost+0 : 0 ));
                 $id_task = $db->lastInsertId();
                 CR_insertarRecursoAsignados($actividad->assigs, $id_task);
             }
