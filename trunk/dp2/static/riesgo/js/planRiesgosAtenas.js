@@ -47,12 +47,15 @@ function  agregarEquipo() {
         listaEquipo: []
     };
 
+var datos=[];
     $('#equipoProyecto li').each(function(index) {
         //formo data
-        data.listaEquipo[index] = this.id;
+        //data.listaEquipo[index] = this.id;
+        datos.push(this.id);
 
     });
 
+console.log(datos);
     //console.log(data3);
     var jsonData = JSON.stringify(data);
     console.log(jsonData);
