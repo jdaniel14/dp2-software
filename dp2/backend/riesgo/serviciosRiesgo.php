@@ -458,7 +458,7 @@
 
 
     //--------------------------------------TIPO IMPACTO X NIVEL IMPACTO--------------------------------------
-
+    
     function R_postRegistrarTipoImpactoNivelImpacto1(){
         $request = \Slim\Slim::getInstance()->request();
         $lista = json_decode($request->getBody());
