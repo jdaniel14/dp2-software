@@ -29,10 +29,13 @@ function CR_getCalendarioBase($json) {//servicio3
     echo json_encode($infoCalendarioBase);
 }
 
-function CR_guardarCalendarioBase($json) { //servicio4
-    $objeto = json_decode($json);
-    $jsonRespuesta = CR_guardarcalendarioBaseBD($objeto);
-
+function CR_guardarCalendarioBase() { //servicio4
+    $request = \Slim\Slim::getInstance()->request();
+    $calendarioBase = json_decode($request->getBody());
+	
+	//$objeto = json_decode($json);
+    $jsonRespuesta = CR_Guardar_Calendario_Base($calendarioBase->id,$calendarioBase->holidays);
+	
     echo json_encode($jsonRespuesta);
 }
 
@@ -80,13 +83,14 @@ function CR_getPaquetesEDT($json) {//Servicio 7
     echo json_encode($listaPaquetes);
 }
 
+
 function CR_postActividades() {//servicio8
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
 
     $idProyecto = $actividades->idProyecto;
     $arreglo_actividades = $actividades->task;
-    $respuesta = CR_Guardar_Calendario_Base($idProyecto);
+    //$respuesta = CR_Guardar_Calendario_Base($idProyecto,$actividades->calendarBase->id);
 	$respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
     $respuesta = CR_Eliminacion_Logica_Actividades($idProyecto);
 	
@@ -99,14 +103,14 @@ function CR_postActividades() {//servicio8
 
 
 
-function CR_Guardar_Calendario_Base($idProyecto){
+function CR_Guardar_Calendario_Base($idProyecto,$feriados){
 
-	$sql = "INSERT INTO dp2.CALENDARIO_PROYECTO (ID_PROTECTO,id_calendario_base)VALUES(1,1);commit;";
+	$sql = "UPDATE CALENDARIO_BASE SET FERIADOS=? WHERE id_calendario_base=? ; COMMIT;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($idProyecto));
+        $stmt->execute(array($feriados,$id));
 
 
         $db = null;
@@ -239,7 +243,7 @@ function CR_consultarInfoActividades($idProyecto) {
             //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
             $idActividad = $p["id_actividad"];
             $listaRecursosAsignados = CR_obtenerListaRecursosAsignados($idActividad, $lista_mapeo);
-            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "fecha_actual_inicio" => $p["fecha_actual_inicio"], "fecha_actual_fin" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0);
+            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "fecha_actual_inicio" => $p["fecha_actual_inicio"], "fecha_actual_fin" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0,"progress_cost" => $p["PORC_AVANCE_COSTO_ESTIMADO"] + 0 );
             array_push($lista_actividad, $actividad);
         }
 
