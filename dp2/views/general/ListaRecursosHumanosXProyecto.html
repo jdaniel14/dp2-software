@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Starter Template for Bootstrap</title>
+
+     <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+   
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+
+  </head>
+
+  <body>
+    
+    <div id="header"></div>
+
+    <div class="container">
+
+      <div class="starter-template">
+          <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1>Proyecto 1</h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+
+        <div class="" id="ListaRecursosHumanos">
+          
+        <form role="form" name="formListaRecursosHumanos">
+        
+          <div class="form-group">
+            <!-- Button -->
+            <div class="controls">
+            <!-- Modal para la asignacion -->
+                <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Asignar Recursos</a>
+            </div>
+          </div>
+
+          <table class="table-striped table-bordered" width="90%" id="listaRecursosHumanos">                      
+            <tr>
+              <td width="5%" align="center"><b>#</b></td>
+              <td width="30%" align="center"><b>Nombre del Recurso</b></td>
+              <td width="20%" align="center"><b>Perfil</b></td>
+              <td width="20%" align="center"><b>Costo HH (S/.)</b></td>
+              <td width="14%" align="center"><b>Eliminar</b></td>
+            </tr>
+
+            <tr>
+              <td width="5%" align="center">1</td>
+              <td width="30%" align="left">Jorge Perez</td>
+              <td width="20%" align="center">Analista</td>
+              <td width="20%" align="center">40</td>
+              <td width="14%" align="center"><input type="checkbox" name="recursoHumano" value="Jorge Perez"></td>
+            </tr>
+
+            <tr>
+              <td width="5%" align="center">1</td>
+              <td width="30%" align="left">Pedro Abanto</td>
+              <td width="20%" align="center">Programador</td>
+              <td width="20%" align="center">35</td>
+              <td width="14%" align="center"><input type="checkbox" name="recursoHumano" value="Pedro Abanto"></td>
+            </tr>
+          </table>
+            
+          <table>
+            <tr>&nbsp</tr>
+            <tr>&nbsp</tr>
+            <tr>&nbsp</tr>
+          </table>
+
+          <div class="form-group">
+            <!-- Button -->
+            <div class="controls">
+              <table width="90%">      
+                <tr width="90%">
+                  <td width="90%" align="right">
+                    <button type="button" class="btn btn-primary" id="btnEliminar" onclick="$(location).attr('href','ListaRecursosHumanos.html');">
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>     
+              </table>
+            </div>
+          </div>
+        </form>   
+      </div>  
+
+
+  <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Recursos disponibles</h4>
+            </div>
+            <div class="modal-body">
+              <div class="" >
+                <table id="listaRecursosHumanos" class="tablesorter" width="90%" >      
+                  <thead>
+                    <tr>
+                      <th><b>#</b></th>
+                      <th><b>Nombre del Colaborador</b></th>
+                      <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Rol del Colaborador</b></th>
+                      <th><b></b></th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre del Colaborador</th>
+                      <th>Rol del Colaborador</th>
+                      <th>Seleccione</th>
+                    </tr>
+                    <tr>
+                      <th colspan="7" class="pager form-horizontal">
+                        <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
+                        <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
+                        <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                        <button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
+                        <button type="button" class="btn last"><i class="icon-step-forward"></i></button>
+                        <select class="pagesize input-mini" title="Select page size">
+                          <option selected="selected" value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
+                        </select>
+                        <select class="pagenum input-mini" title="Seleccione la página"></select>
+                      </th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    
+                      <tr><td>1</td><td>Student01</td><td>Languages</td><td></td></tr>
+                      <tr><td>2</td><td>Student02</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>3</td><td>Student03</td><td>Languages</td><td></td></tr>
+                      <tr><td>4</td><td>Student04</td><td>Languages</td><td></td></tr>
+                      <tr><td>5</td><td>Student05</td><td>Languages</td><td></td></tr>
+                      <tr><td>6</td><td>Student06</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>7</td><td>Student01</td><td>Languages</td><td></td></tr>
+                      <!--
+                      <tr><td>8</td><td>Student02</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>9</td><td>Student03</td><td>Languages</td><td></td></tr>
+                      <tr><td>10</td><td>Student04</td><td>Languages</td><td></td></tr>
+                      
+                      <tr><td>11</td><td>Student05</td><td>Languages</td><td></td></tr>
+                      <tr><td>12</td><td>Student06</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>13</td><td>Student01</td><td>Languages</td><td></td></tr>
+                      <tr><td>14</td><td>Student02</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>15</td><td>Student03</td><td>Languages</td><td></td></tr>
+                      <tr><td>16</td><td>Student04</td><td>Languages</td><td></td></tr>
+                      <tr><td>17</td><td>Student05</td><td>Languages</td><td></td></tr>
+                      <tr><td>18</td><td>Student06</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>19</td><td>Student01</td><td>Languages</td><td></td></tr>
+                      <tr><td>20</td><td>Student02</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>21</td><td>Student03</td><td>Languages</td><td></td></tr>
+                      <tr><td>22</td><td>Student04</td><td>Languages</td><td></td></tr>
+                      <tr><td>23</td><td>Student05</td><td>Languages</td><td></td></tr>
+                      <tr><td>24</td><td>Student06</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>25</td><td>Student01</td><td>Languages</td><td></td></tr>
+                      <tr><td>26</td><td>Student02</td><td>Mathematics</td><td></td></tr>
+                      <tr><td>27</td><td>Student03</td><td>Languages</td><td></td></tr>
+                      <tr><td>28</td><td>Student04</td><td>Languages</td><td></td></tr>
+                      <tr><td>29</td><td>Student05</td><td>Languages</td><td></td></tr>
+                      <tr><td>30</td><td>Student06</td><td>Mathematics</td><td></td></tr>
+                      -->
+                  </tbody>
+                </table>
+
+              </div>  <!--fin de la tabla-->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary">Asignar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->     
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ==================lang================================ -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/general/js/ListaRecursosHumanosXProyecto.js"></script>
+    <script src="../../assets/js/header.js"></script>
+
+
+        <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
+  </body>
+</html>
