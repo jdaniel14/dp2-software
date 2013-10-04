@@ -50,7 +50,12 @@ var currentDate = new Date();
 		    setResource();
 		  }
 		
-		
+		  if (!ge.calendarBase || ge.calendarBase.length == 0){
+		  	setCalendarBase();
+		  }
+		  else {
+		  	alert("No me mandas nada de calendario");
+		  }
 		  /*/debug time scale
 		  $(".splitBox2").mousemove(function(e){
 		    var x=e.clientX-$(this).offset().left;
@@ -119,7 +124,7 @@ var currentDate = new Date();
 			var objProy = {
 				idProyecto: idProyecto				
 			}
-			alert(JSON.stringify(objProy));
+			//alert(JSON.stringify(objProy));
 			var rootURL = "../../../api/CR_getCalendar/"+JSON.stringify(objProy);
 			$.ajax({
 				type: 'GET',
@@ -235,7 +240,10 @@ var currentDate = new Date();
 		    }
 		  ];
 		}
-		
+		function setCalendarBase(){
+			
+		}	
+
 		function setResource() {
 		  var res = [];
 		  for (var i = 1; i <= 10; i++) {
