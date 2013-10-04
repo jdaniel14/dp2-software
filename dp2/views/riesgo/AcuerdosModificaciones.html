@@ -15,8 +15,7 @@
 
 <body>
 
-<!--CABECERA-->
- <div id="header"></div>
+
        
 
 
@@ -32,7 +31,7 @@
                         </ul>
                      </div>
             </div>
-
+<input  id="suma" type="text" style="display:none" value=1>
             <div class="col-md-9" role="main">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -44,18 +43,19 @@
                                         <td width="30%"><b>Día</b></td>
                                         <td width="20%"><b>Hora</b></td>
                                         <td width="80%"><b>Acuerdos</b></td>
-                                        <td width="20%"><b>Eliminar</b></td>
+                                       
                                     </tr>
                                   
                                  
                                 </thead>
                                 <tbody class="cuerpo-tabla" id="tablaAcuerdos">
+                                
                                 <!--Contenido Tabla Acuerdos-->
                                     <tr id="my_row_101">
-                                        <td><input name="fechas1" id="fechas1" type="date"></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                         <td><input type="time" name="horas1" id="horas_1" ></td>
-                                         <td><input type="text"  name="acuerdo1" id="acuerdo1" class="input-xlarge"></td>
-                                           <td><a onclick="deleteMe('101')" href="#">Eliminar</a></td>
+                                        <td><input name="fechas1" id="fechas0" type="date"></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                         <td><input type="time" name="horas1" id="horas_0" ></td>
+                                         <td><input type="text"  name="acuerdo1" id="acuerdo0" class="input-xlarge"></td>
+                                           
                                   </tr>
                                 </tbody>
                             </table>
@@ -65,7 +65,7 @@
 
 
                             <div class="span6"  style="text-align:center">
-                                <button type="button" class="btn btn-primary" id="btnGrabar">Guardar</button>
+                                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
                                 <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
                             </div>
                         </form>  
@@ -77,65 +77,11 @@
 
 
 <script src="../../assets/js/jquery-1.7.1.min.js"></script>
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
-<script src="../../static/riesgo/js/jquery-sortable.js"></script>
-<script src="../../static/riesgo/js/application.js"></script>
- <script src="../../static/riesgo/js/PlanRiesgos.js"></script>
+
+
+ <script src="../../static/riesgo/js/acuerdosAtenas.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
-<script>
-        $(document).ready(function($)
-        {
-            // trigger event when button is clicked
-            $("span").click(function()
-            {
-                // add new row to table using addTableRow function
-                addTableRow($("table"));
-                // prevent button redirecting to new page
-                return false;
-            });
-        
-            // function to add a new row to a table by cloning the last row and 
-            // incrementing the name and id values by 1 to make them unique
-            function addTableRow(table)
-            {
-                // clone the last row in the table
-                var $tr = $(table).find("tbody tr:last").clone();
-                // get the name attribute for the input and select fields
-                $tr.find("input,select").attr("name", function()
-                {
-                    // break the field name and it's number into two parts
-                    var parts = this.id.match(/(\D+)(\d+)$/);
-                    // create a unique name for the new field by incrementing
-                    // the number for the previous field by 1
-                    return parts[1] + ++parts[2];
-                // repeat for id attributes
-                }).attr("id", function(){
-                    var parts = this.id.match(/(\D+)(\d+)$/);
-                    return parts[1] + ++parts[2];
-                });
-                // append the new row to the table
-                $(table).find("tbody tr:last").after($tr);
-            };
-        });
-        </script>   
-        <script>
+ 
+     
 
-function deleteMe(row_id){
-
-if(!confirm('¿Está seguro que desea eliminar?')){
-
-ev.preventDefault();
-
-return false;
-
-}else{
-
-$('#my_row_'+row_id).remove();
-
-}
-
-}
-
-</script>
-<script src="../../assets/js/header.js"></script>
