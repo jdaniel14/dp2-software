@@ -383,8 +383,10 @@ var currentDate = new Date();
 				holidays += fechaHol + "#";
 			}
 			ge.calendarBase.holidays = holidays;
+			ge.calendarBase.name = $("#NombreWT").val();
 			var objWorkTime = {
-			  idProyecto: idProyecto,
+			  id: ge.calendarBase.id,
+			  name: ge.calendarBase.name,
 			  holidays:  holidays,
 			};
 			var ruta = "../../../api/CR_guardarCalendarioBase/";
