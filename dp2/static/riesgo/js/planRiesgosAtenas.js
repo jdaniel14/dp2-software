@@ -1,10 +1,15 @@
 $(document).ready(main);
 localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
-
+function validAtenas(){
+	var metodologia = $("#metodologia").val();
+	if (metodologia == null || metodologia.length == 0){
+		return false;
+	}
+	return true;
+}
 
 function main() {
-
     leerEquipo();
     leerComite();
 
@@ -15,7 +20,7 @@ function main() {
     });
 
     $("#btnGuardarMetodologia").click(function() {
-
+		if (!validAtenas()) return;
         var data = {
             idProyecto: idProyectoLocal,
             metodologia: $("#metodologia").val()

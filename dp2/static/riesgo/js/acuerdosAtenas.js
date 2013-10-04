@@ -1,13 +1,23 @@
-
+var cantidad=0;
 $(document).ready(main);
 localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 
+function validAtenas2(){
+	for (var i = 0; i < cantidad; i++){
+		var acuerdoI = $("#acuerdo"+i).val();
+		if (acuerdoI == null || acuerdoI.length == 0){
+			//ALERTAR
+			return false;
+		}
+	}
+	return true;
+}
 
 function main() {
 
     listarAcuerdos();
-    var cantidad = $("#suma").val();
+    cantidad = $("#suma").val();
     $("span").click(function()
     {
 
@@ -25,8 +35,9 @@ function main() {
     $("#btnGuardar").click(function()
     {
 
-
-        var cantidad = $("#suma").val(); //cantidad de inputs en total
+		if (!validAtenas2())
+			return;
+        cantidad = $("#suma").val(); //cantidad de inputs en total
 
 
         var data = {
