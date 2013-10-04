@@ -86,14 +86,44 @@ function CR_postActividades() {//servicio8
 
     $idProyecto = $actividades->idProyecto;
     $arreglo_actividades = $actividades->task;
-    $respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
+    $respuesta = CR_Guardar_Calendario_Base($idProyecto);
+	$respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
     $respuesta = CR_Eliminacion_Logica_Actividades($idProyecto);
+	
     if ($respuesta->me == "") {
         echo json_encode(CR_guardar_actividades_BD($arreglo_actividades, $idProyecto));
     }
     else
         echo json_encode($respuesta);
 }
+
+
+
+function CR_Guardar_Calendario_Base($idProyecto){
+
+	$sql = "INSERT INTO dp2.CALENDARIO_PROYECTO (ID_PROTECTO,id_calendario_base)VALUES(1,1);commit;";
+    //$lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        return array("me" => "eliminar" . $e->getMessage());
+    }
+    return CR_obtenerRespuestaExito();
+
+
+
+
+}
+
+
+
 
 function CR_Eliminacion_Logica_Actividades($idProyecto) {
 
@@ -280,7 +310,7 @@ function CR_consultarCalendarioBase($idProyecto) {
     //Desconectarse(conexion);
     //Hardcode
     //$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
-	$sql="select b.id_calendario_base,b.nombre from dp2.CALENDARIO_PROYECTO a, dp2.CALENDARIO_BASE b WHERE a.id_calendario_base=b.id_calendario_base and a.ID_PROYECTO=?;";
+	$sql="select b.id_calendario_base,b.nombre ,b.FERIADOS from dp2.CALENDARIO_PROYECTO a, dp2.CALENDARIO_BASE b WHERE a.id_calendario_base=b.id_calendario_base and a.ID_PROYECTO=?;";
 	$rec=null;
 	try {
         $db = getConnection();
@@ -289,7 +319,7 @@ function CR_consultarCalendarioBase($idProyecto) {
 
        
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("id" => $j["id_calendario_base"], "name" => "Calendario Peruano", "holidays" => $j["nombre"]);
+            $rec = array("id" => $j["id_calendario_base"], "name" =>  $j["nombre"], "holidays" => $j["FERIADOS"]);
         }
 
         $db = null;
