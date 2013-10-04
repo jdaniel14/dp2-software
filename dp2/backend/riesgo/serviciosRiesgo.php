@@ -490,9 +490,9 @@
 			try {
 				$db = getConnection();
 				$stmt = $db->prepare($query);
-				$stmt->bindParam("id_tipo_impacto", lista->idTipoImpacto);
+				$stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
 				$stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
-				$stmt->bindParam("id_proyecto", lista->idProyecto);
+				$stmt->bindParam("id_proyecto", $lista->idProyecto);
 				$stmt->bindParam("limite_menor", $lista->valor[$i]->limite_menor);
 				$stmt->bindParam("limite_mayor", $lista->valor[$i]>limite_mayor);
 				//$stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
