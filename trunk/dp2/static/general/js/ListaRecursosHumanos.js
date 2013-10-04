@@ -3,8 +3,8 @@ x = $(document);
 x.ready(inicializarEventos);
 
 function inicializarEventos() {
-    $("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
-    $("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
+    //$("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
+    //$("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
     $("#btnBuscar").click(iniciarFlujo);
     $("#resultados").hide();
 
@@ -40,11 +40,11 @@ function iniciarFlujo() {
         console.log(jsonData);
 
         $.ajax({
-            type: "POST",
-            data: jsonData,
+            type: "GET",
+            //data: jsonData,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            url: "../../api/G_listaRecursos",
+            url: "../../api/G_listaRecursoxProyecto",
             beforeSend: esperaDatos(),
             success: llegadaDatos
         });
@@ -64,15 +64,19 @@ function llegadaDatos(data) {
 
     console.log(data);
     $("#resultados").hide("slow");
+    
     //if (data.me == "") {    
         var result = "";
         var cantDias = 0;
         var j = 0;
-
-        $.each(data[0].listaFechas, function (i, item) {
-            cantDias++;
+        /*console.log("aqui");
+        console.log(data[1]["detalle_dias"]);
+        console.log("sale");*/
+        $.each(data[1].detalle_dias, function (i, item) {
+            cantDias++;            
         });
-
+        console.log(cantDias);
+        
         result += '<table cellpadding = "0" cellspacing = "0" width = "100%">';
         result += '<thead><tr align = "center">';
         result += '<td align = "center">Nombre</td>';
@@ -83,22 +87,28 @@ function llegadaDatos(data) {
 
         result += '</tr></thead>';        
         result += '<tbody>';
+        
+        prim = true;
         $.each(data, function (i, item) {
-            result += '<tr>';
-            result += '<td align = "center">' + item.nomRecurso + '</td>';
+        	console.log("entra");
+        	if(prim == true) prim = false;
+        	else {
+        		result += '<tr>';
+        		result += '<td align = "center">' + item.nom + '</td>';
 
-            var fechas = item.listaFechas;
+        		var fechas = item.detalle_dias;
 
-            $.each(fechas, function (i, led) {
-                if (led.estado == "Ocupado") {
-                    result += '<td align = "center" style="background-color:red" >';
-                }
-                else if (led.estado == "Libre") {
-                    result += '<td align = "center" style="background-color:blue" >';
-                }
-                result += '</td>';
-            });
-            result += '</tr>';
+        		$.each(fechas, function (i, led) {
+        			if (led != 0) {
+        				result += '<td align = "center" style="background-color:red" >';
+        			}
+        			else {
+        				result += '<td align = "center" style="background-color:blue" >';
+        			}
+        			result += '</td>';
+        		});
+        		result += '</tr>';
+        	}
         });
 
         result += '</tbody>';
