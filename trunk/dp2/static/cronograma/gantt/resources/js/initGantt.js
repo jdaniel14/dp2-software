@@ -374,6 +374,7 @@ var currentDate = new Date();
 		};
 		
 		$("#btnGuardar").click(function(){
+			//ge.gantt.refreshGantt();
 			var filas = $("#tableHolidayDay").find("tr");
 			holidays = "#";
 			for (var i=0; i < filas.length; i++){
@@ -381,7 +382,21 @@ var currentDate = new Date();
 				var fechaHol = fechaFila.split("/").join("_");
 				holidays += fechaHol + "#";
 			}
-
+			ge.calendarBase.holidays = holidays;
+			var objWorkTime = {
+			  idProyecto: idProyecto,
+			  holidays:  holidays,
+			};
+			var ruta = "../../../api/CR_guardarCalendarioBase/";
+			$.ajax({
+			  type: 'POST',
+			  url: ruta,
+			  data: JSON.stringify(objWorkTime),
+			  dataType: 'json',
+			  success: function (data){	
+			  	ge.gantt.refreshGantt();
+			  }
+			});
 		});
 		
 		
