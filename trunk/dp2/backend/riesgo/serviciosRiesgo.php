@@ -462,8 +462,7 @@
     function R_postRegistrarTipoImpactoNivelImpacto1(){
         $request = \Slim\Slim::getInstance()->request();
         $lista = json_decode($request->getBody());
-
-
+		
         $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
         $listaIdNivelImpacto= array();           
         $cantidad =0;
@@ -504,7 +503,6 @@
 			}
 		}
 		echo json_encode(array("Se registro con exito"));
-
 
     }
 
