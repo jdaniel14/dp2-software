@@ -137,7 +137,7 @@ function listarAcuerdos() {
     var jsonData = JSON.stringify(data);
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listaRiesgo' + '/' + data.idProyecto,
+        url: '../../api/R_listarAcuerdos' + '/' + data.idProyecto,
         dataType: "json",
         success: function(data) {
             for (obj in data) {
