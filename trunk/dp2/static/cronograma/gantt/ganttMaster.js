@@ -27,7 +27,7 @@ function GanttMaster() {
   
   //Agregado por mi  
   this.wbsNodes = [];
-
+  this.calendarBase;
   this.editor; //element for editor
   this.gantt; //element for gantt
 
@@ -306,7 +306,7 @@ GanttMaster.prototype.loadProject = function(project) {
   
   //Mi linea
   this.wbsNodes = project.wbsNodes;
-  
+  this.calendarBase = project.calendarBase;
   this.canWrite = project.canWrite;
   this.canWriteOnParent = project.canWriteOnParent;
 

@@ -49,13 +49,13 @@ var currentDate = new Date();
 		  if (!ge.resources || ge.resources.length == 0) {
 		    setResource();
 		  }
-		
+		/*
 		  if (!ge.calendarBase || ge.calendarBase.length == 0){
 		  	setCalendarBase();
 		  }
 		  else {
 		  	alert("No me mandas nada de calendario");
-		  }
+		  }*/
 		  /*/debug time scale
 		  $(".splitBox2").mousemove(function(e){
 		    var x=e.clientX-$(this).offset().left;
@@ -121,20 +121,8 @@ var currentDate = new Date();
 		}
 
 		function getCalendar(){
-			var objProy = {
-				idProyecto: idProyecto				
-			}
-			//alert(JSON.stringify(objProy));
-			var rootURL = "../../../api/CR_getCalendar/"+JSON.stringify(objProy);
-			$.ajax({
-				type: 'GET',
-				url: rootURL,
-				dataType: "json",
-				success: function(data){
-					var lista = data;
-					
-				}				
-			});
+			var feriados = ge.calendarBase.holidays;
+			
 		}		
 		
 		function saveGanttOnServer() {
