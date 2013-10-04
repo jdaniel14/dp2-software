@@ -657,7 +657,7 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 
-        foreach ($listaIntegrantes->integrante as $integrante){
+        foreach ($listaIntegrantes->listaComite as $idintegrante){
             
             //$query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
             $query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
@@ -666,7 +666,7 @@
                 $db = getConnection();
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
-                $stmt->bindParam("id_empleado", $integrante);
+                $stmt->bindParam("id_empleado", $idintegrante);
                 $stmt->execute();
                 $db = null;
                 echo json_encode("Se registro con exito");
@@ -680,8 +680,10 @@
     function R_getListaIntegrantesProyecto($idProyecto){
         
         $query = "SELECT ME.id_proyecto id_proyecto, E.id_empleado id_empleado , nombres, apellidos
-                FROM MIEMBROS_EQUIPO ME,EMPLEADO E where
-                ME.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
+                FROM MIEMBROS_EQUIPO ME,EMPLEADO E,COMITE_RIESGO CR where
+                ME.id_empleado=E.id_empleado and ME.id_proyecto=:id_proyecto 
+                AND ME.id_empleado not in (SELECT CR.id_empleado FROM COMITE_RIESGO CR, MIEMBROS_EQUIPO ME
+                                            WHERE CR.id_proyecto=ME.id_proyecto GROUP BY id_empleado )";
                     
         try {
             $arregloListaIntegrantesProyecto= array();
