@@ -141,7 +141,7 @@ function  leerEquipo() {
         contentType: "application/json; charset=utf-8",
         success: function(data) {
             for (obj in data) {
-                var opt = $("<li id=" + data[obj]["idContacto"] + "_eq" + "></li>");
+                var opt = $("<li id=" + data[obj]["idContacto"] + "></li>");
                 opt.html(data[obj]["nombreCompleto"]);
                 $("#equipoProyecto").append(opt);
             }
@@ -178,7 +178,7 @@ function  leerComite() {
         contentType: "application/json; charset=utf-8",
         success: function(data) {
             for (obj in data) {
-                var opt = $("<li id=" + data[obj]["idContacto"] + "_eq" + "></li>");
+                var opt = $("<li id=" + data[obj]["idContacto"]  + "></li>");
                 opt.html(data[obj]["nombreCompleto"]);
                 $("#comiteRiesgos").append(opt);
             }
