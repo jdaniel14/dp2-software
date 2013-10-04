@@ -66,21 +66,22 @@
     function R_postRegistrarAcuerdos(){
         
         $request = \Slim\Slim::getInstance()->request();
-        $acuerdos = json_decode($request->getBody());
-        $query = "INSERT INTO ACUERDOS (id_proyecto,fecha,hora,acuerdos,estado) VALUES (:id_proyecto,:fecha,:hora,:acuerdos,1)";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $acuerdos->idProyecto);
-            $stmt->bindParam("fecha", $acuerdos->fecha);
-            $stmt->bindParam("hora", $acuerdos->hora);
-            $stmt->bindParam("acuerdos", $acuerdos->acuerdos);
-            $stmt->execute();
-            $db = null;
-            echo json_encode("{Se registro con exito}");
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
+        $listaAcuerdos = json_decode($request->getBody());
+        foreach($listaAcuerdos->listaFechas as $acuerdos){
+            $query = "INSERT INTO ACUERDOS (id_proyecto,fecha,hora,acuerdos,estado) VALUES (:id_proyecto,:fecha,:hora,:acuerdos,1)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $listaAcuerdos->idProyecto);
+                $stmt->bindParam("fecha", $acuerdos->fecha);
+                $stmt->bindParam("hora", $acuerdos->hora);
+                $stmt->bindParam("acuerdos", $acuerdos->acuerdo);
+                $stmt->execute();
+                $db = null;
+                echo json_encode("{Se registro con exito}");
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
         }
     }
 
