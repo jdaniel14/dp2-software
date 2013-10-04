@@ -10,6 +10,7 @@ $(document).ready(main);
 localStorage.setItem("idProyecto",1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var tipoImpacto=0;
+var listaProbabilidades=[];
 var objeto1 = {
 	descripcion: "Muy Bajo",
 	tipo: 2,
@@ -100,7 +101,115 @@ var listaTipoImpacto = [
 
 	
 console.log(listaTipoImpacto);	
+function esNumEntPos(strNum){
+	if (strNum == null || strNum.length == 0) return false;
+	for (var i = 0; i < strNum.length; i++){
+		var car = strNum[i] ;
+		if (isNaN(car))
+			return false;
+	}
+	if (strNum*1 == 0 || strNum*1 > 100) return false;
+	return true;
+}
+function esMayor(val1,val2){
+	if (!esNumEntPos(val1)||!esNumEntPos(val2))
+		return false;
+	return val1*1 > val2*1;
+}
+function existeNivel(numeroNivel){
+	if (listaNiveles==null) return false;
+	for (var i = 0; i < listaNiveles.length;i++){
+		if (listaNiveles[i].nivel*1 == numeroNivel*1)
+			return true;
+	}
+	return false;
+}
+function contieneProbabilidad(probIni,probFin){
+	var valIni = probIni*1;
+	var valFin = probFin*1;
+	if (listaProbabilidades==null) return false;
+	for (var i = 0; i < listaProbabilidades.length;i++){
+		var min = listaProbabilidades[i].minimo*1;
+		var max = listaProbabilidades[i].maximo*1;
+		if (valIni < min && valFin > max)
+			return true;
+	}
+	return false;
+}
+function cruzaProbabilidad(prob){
+	var val = prob*1;
+	if (listaProbabilidades==null) return false;
+	for (var i = 0; i < listaProbabilidades.length;i++){
+		var min = listaProbabilidades[i].minimo*1;
+		var max = listaProbabilidades[i].maximo*1;
+		if (val >= min && val <= max)
+			return true;
+	}
+	return false;
+}
+function validarAgregarNivel(){
+	var numeroNivel = "" + $("#numeroNivel").val();
+	var probabilidadMinNivel = "" + $("#probabilidadMinNivel").val();
+	var probabilidadMaxNivel = "" + $("#probabilidadMaxNivel").val();
+	var descripcionProbabilidad = "" + $("#descripcionProbabilidad").val();
+	var error = false;
+	if (!esNumEntPos(numeroNivel)){
+		$("#errorNivel").show();
+		error = true;
+	}
+	else
+		$("#errorNivel").hide();
+		
+	if (existeNivel(numeroNivel)){
+		$("#errorNivelMenor").show();
+		error = true;
+	}
+	else
+		$("#errorNivelMenor").hide();
+		
+	if (!esNumEntPos(probabilidadMinNivel) || esMayor(probabilidadMinNivel,probabilidadMaxNivel)){
+		$("#errorProbabilidadMin").show();
+		error = true;
+	}
+	else
+		$("#errorProbabilidadMin").hide();
 
+	
+	if (!esNumEntPos(probabilidadMaxNivel) || esMayor(probabilidadMinNivel,probabilidadMaxNivel)){
+		$("#errorProbabilidadMax").show();
+		error = true;
+	}
+	else
+		$("#errorProbabilidadMax").hide();
+	
+	if (contieneProbabilidad(probabilidadMinNivel,probabilidadMinNivel)){
+		$("#errorProbabilidadMinMayor").show();
+		$("#errorProbabilidadMaxMenor").show();
+		error = true;
+	}else{
+		$("#errorProbabilidadMinMayor").hide();
+		$("#errorProbabilidadMaxMenor").hide();
+	}
+	
+	if (cruzaProbabilidad(probabilidadMinNivel)){
+		$("#errorProbabilidadMinMayor").show();
+		error = true;
+	}
+		
+	if (cruzaProbabilidad(probabilidadMaxNivel)){
+		$("#errorProbabilidadMaxMenor").show();
+		error = true;
+	}
+	
+	if (descripcionProbabilidad == null || descripcionProbabilidad.length == 0){
+		$("#errorDescripcion").show();
+		error = true;
+	}
+	else
+		$("#errorDescripcion").hide();
+	
+	return !error;
+}
 function main(){
 	
 	listarProbabilidades();
@@ -109,9 +218,10 @@ function main(){
 	listarTiposImpactosXNivelImpactos();
 	// cuerpoModalTipoXNivelImpacto();
 /*---------------------------------AGREGAR UN NIVEL-------------------------------------------*/
+	
 	$("#btnAgregarNivel").click( function(){
 
-		var flag = true;  //if true se registra, if false mensaje de error!
+		if (!validarAgregarNivel()) return;  //if true se registra, if false mensaje de error!
 		var data = {
 			idProyecto: idProyectoLocal,
 			nivel: $('#numeroNivel').val(),
@@ -455,7 +565,7 @@ function listarProbabilidades(){
 		url: getAllProbabilities + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
-			var lista = data;
+			listaProbabilidades = data;
 			console.log(data);
 			agregarDataProba(data);
 		},
