@@ -483,7 +483,7 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }   
 
-		for ($i=0 ; $i<$cantidad;i++){
+		for ($i=0 ; $i<$cantidad;$i++){
 			
 			$query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,:id_proyecto,limite_menor,limite_mayor,descripcion)
                 VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor,:descripcion) ";
