@@ -1,38 +1,62 @@
 var listaRecursosHumanos = "../../api/G_listarRecursoDisponible";
+var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
 
-
-
-$("#btnAsignarRecursos").click(function(){	
-	iniciaRecursosHumanos();
-	$("table.tablesorter tr").each(function(){
-        $(this).click(function(){
-        	 if($(this).attr("class") == 'fila'){
-              $(this).removeClass('fila');
-              $(this).addClass('seleccionado');   
-           }else{
-              $(this).removeClass('seleccionado');
-              $(this).addClass('fila');
-           }   
-        })
-    });
+$(document).ready(function(){
+	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
-        $("table.tablesorter tr").each(function(){
-            if($(this).attr("class") == 'seleccionado'){
-               $("#guardarRegistros").append($(this));
-            }  
+        $(".seleccionado").each(function(){
+            	$(this).append("<td><input type='text' placeholder='Inserta costos…''></td><td><button type='button' class='btn btn-danger'>Eliminar</button></td>")
+               $("#ListaRecursosHumanosXProyecto").append($(this));
+              
         })
     }) 
+    $("#btnGuardar").click(function(){
+    	grabarRecursos();
+    })
 });
 
+function grabarRecursos(){
+
+	$.ajax({
+		type: 'POST',
+		url: asignarRecursosProyecto,
+		dataType: "json", // data type of response
+		async: true,
+        success: function(data){                    
+            alert("Ya se inserto");
+        }
+	});
+
+}
+function clickRecurso(){
+	if( $(this).hasClass("seleccionado")){
+        	 	$(this).removeClass('seleccionado');
+                 
+	           }else{
+	              $(this).addClass('seleccionado');
+	           }
+}
+$("#btnAsignarRecursos").click(function(){	
+	limpiaRecursosHumanos();
+	iniciaRecursosHumanos();
+
+});
+
+
+function limpiaRecursosHumanos(){
+	$("#listaRecursosHumanos tbody").html("");
+}
 function iniciaRecursosHumanos(){
 	$.ajax({
 		type: 'GET',
 		url: listaRecursosHumanos,
 		dataType: "json", // data type of response
+		async: true,
         success: function(data){                    
-            agregaDataFila(data);
+            agregaDataFila(data);   
         }
 	});
+
 }
 
 function agregaDataFila(data){
@@ -52,8 +76,10 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr class="fila"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td></tr>';
+	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td></tr>';
+	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
 	$("#listaRecursosHumanos").trigger("update"); 
+	$(".fila"+a).click(clickRecurso);
 }
 
