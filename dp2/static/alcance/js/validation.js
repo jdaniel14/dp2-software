@@ -95,3 +95,18 @@ function validarPaqueteTrabajo(){
 	showAlert("form-paquete",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
 	return camposValidos;
 }
+
+
+
+function validarAlcance(){
+	clearErrors(); //limpiar los errores anteriores
+	var camposValidos = true;//comenzar a validar campos 
+	//la variable camposValidos siempre debe ir al final para evitar lazy evaluation
+	camposValidos = validateMandatory("descripcion","El campo es obligatorio") && camposValidos;
+	camposValidos = validateMandatory("alcance_producto","El campo es obligatorio") && camposValidos;
+	camposValidos = validateFloat("version",0 , Number.POSITIVE_INFINITY, "Debe ingresar un número positivo","Debe ingresar un número real") && camposValidos;
+	showAlert("form-alcance",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
+	return camposValidos;
+}
+
+

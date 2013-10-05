@@ -31,10 +31,6 @@ function cargaTitulo(){
 
 }
 
-function validarAlcance(){
-	showAlert("form-paquete",true,"Se guardaron los cambios","Hay errores en el formulario");
-}
-
 var noAlcance;
 $(document).ready(function(){
 	cargaTitulo();
@@ -61,7 +57,7 @@ $(document).ready(function(){
 	});
 
 	$("#modificarAlcance").click(function(){
-		validarAlcance();
+		if (!validarAlcance()) return; 
 		var data = $(".form-control");
 		var obj = {};
 		for(var i=0; i < data.length; i++){
