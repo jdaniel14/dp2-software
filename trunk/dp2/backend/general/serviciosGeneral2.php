@@ -298,13 +298,14 @@ function G_getListarRecDisp() {
 			$str2 = $body->fechaFin;
 			//echo json_encode(array($str1, $str2));
 
-			$fecha_Inicio_IN = date_create($str1);
-			$fecha_Fin_IN = date_create($str2);
+			$fecha_Inicio_IN = strtotime($str1);
+			$fecha_Fin_IN = strtotime($str2);
 			//echo $fecha_Inicio_IN->format('Y-m-d')." ".$fecha_Fin_IN->format('Y-m-d')."<br>";
-			$interval = date_diff($fecha_Fin_IN,$fecha_Inicio_IN);
-			$num_dias = $interval->m*30 + $interval->d;
-//			echo $num_dias;
 
+			$interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
+			$num_dias = $interval/(60*60*24);
+			//echo $num_dias;
+//			echo $fecha_Inicio_IN." ".$fecha_Fin_IN. " ". $num_dias;
 			$sql_empleados = "SELECT * FROM EMPLEADO ORDER BY id_empleado";
 			$db = getConnection();
 		  $stmt = $db->query($sql_empleados);
@@ -355,16 +356,18 @@ function G_getListarRecDisp() {
 					$stmt->execute();
 
 		      while ($proy_emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
-	          $fecha_Inicio = new DateTime($proy_emp["FECHA_PLAN_INICIO"]);
-	          $fecha_Final = new DateTime($proy_emp["FECHA_PLAN_FIN"]);
+	          $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
+	          $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
 						//echo $proy_emp["ID_ACTIVIDAD"]." ".$fecha_Inicio." ".$fecha_Final."<br>";
-						$interval = $fecha_Inicio_IN->diff($fecha_Inicio);
-						$a = $interval->d;
+						$interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN)/(60*60*24);
+//						echo "interval1 ".$interval."<br>";
+						$a = $interval;
 
 //	          $dife = $fecha_Inicio_IN - $fecha_Inicio;
 //	          $a = Math.Abs(dife.Days);
-						$interval = $fecha_Final->diff($fecha_Inicio);
-						$b = $interval->d + $a;
+						$interval = (strtotime($fecha_Final)-strtotime($fecha_Inicio))/(60*60*24);
+//						echo "interval2 ".$interval."<br>";
+						$b = $interval + $a;
 
 //	          $dife =  $fecha_Final - $fecha_Inicio;
 //	          $b = $dife.Days + a;
