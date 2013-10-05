@@ -84,7 +84,7 @@
         $riesgo = json_decode($var);
         $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
-                left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
                 where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
         if ($riesgo->idPaqueteTrabajo!=0) $query .=" and RXP.id_paquete_trabajo=".$riesgo->idPaqueteTrabajo." ";
