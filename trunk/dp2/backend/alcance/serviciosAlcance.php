@@ -206,8 +206,12 @@
 				1
 				)
 		);
-		$req["id_requisito"] = $con->lastInsertId();
-     echo json_encode($req);//devolvemos el requisito insertado con el id que se genero
+		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo , R.observaciones, R.unidad_medida, R.valor 
+			FROM REQUISITO R, TIPO_REQUISITO T 
+			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND R.id_requisito =?");
+		$pstmt->execute(array($con->lastInsertId()));
+		$req = $pstmt->fetch(PDO::FETCH_ASSOC);
+		echo json_encode($req);
 	}
 
 	function modificaRequisito(){

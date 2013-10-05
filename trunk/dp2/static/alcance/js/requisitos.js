@@ -96,6 +96,8 @@ function inserta(data){
 	fila += "</tr>";
 	$('#listaRequisitos').append(fila);
 	$('#detalleRequisito').modal('hide');
+	$(".modificar-requisito").click(modificarRequisito);
+	$(".eliminar-requisito").click(eliminarRequisito);
 }
 
 function modifica(data){
@@ -111,12 +113,16 @@ function modifica(data){
 }
 
 function validarRequisito(){
-	return true;
+	clearErrors(); //limpiar los errores anteriores
+	var camposValidos = true;//comenzar a validar campos 
+	//la variable camposValidos siempre debe ir al final para evitar lazy evaluation
+	camposValidos = validateMandatory("descripcion","el campo es obligatorio") && camposValidos;
+	showAlert("form-requisito",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
+	return camposValidos;
 }
 
 function guardarCambios(){
 	if(!validarRequisito()){
-		alert("Hay errores en el formulario");
 		return;
 	}
 	var data = $(".form-control");
@@ -148,7 +154,15 @@ function guardarCambios(){
 	});
 }
 
+function validarArchivo(){
+	clearErrors();
+	camposValidos = validateExtention("archivo","docx|doc|pdf|odt|odf|txt","El sistema no permite la subida de este tipo de archivos");
+	showAlert("form-gestion-requisitos",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
+	return camposValidos;
+}
+
 function subirArchivo(){
+	if(!validarArchivo())return false;
 	var file = $('#archivo')[0].files[0]; //primer archivo
 	var reader = new FileReader();
 	reader.readAsText(file, 'UTF-8');
