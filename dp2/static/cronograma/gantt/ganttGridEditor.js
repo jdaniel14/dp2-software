@@ -121,6 +121,10 @@ GridEditor.prototype.refreshTaskRow = function(task) {
   row.find("[name=duration]").val(task.duration);
   row.find("[name=start]").val(new Date(task.start).format()).updateOldValue(); // called on dates only because for other field is called on focus event
   row.find("[name=end]").val(new Date(task.end).format()).updateOldValue();
+  
+  row.find("[name=realStart]").val(new Date(task.start).format()).updateOldValue(); // called on dates only because for other field is called on focus event
+  row.find("[name=realEnd]").val(new Date(task.end).format()).updateOldValue();
+  
   row.find("[name=depends]").val(task.depends);
   row.find(".taskAssigs").html(task.getAssigsString());
   
@@ -351,7 +355,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   
   /**** Asignar wbsNodes *****/
   var selectwbs = taskEditor.find("#wbsNodes");
-  console.log(selectwbs);
+  //console.log(selectwbs);
   
   $.each(ge.wbsNodes,function(e,el){
 	  var escritor = "";
@@ -388,6 +392,12 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   taskEditor.find("#duration").val(task.duration);
   taskEditor.find("#start").val(new Date(task.start).format());
   taskEditor.find("#end").val(new Date(task.end).format());
+    
+  var rS = Date.parse(task.realStart);
+  var rE = Date.parse(task.realEnd);
+    
+  taskEditor.find("#realStart").val(new Date(rS).format());
+  taskEditor.find("#realEnd").val(new Date(rE).format());
 
   //taskEditor.find("[name=depends]").val(task.depends);
 
@@ -411,13 +421,13 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     
     addelemento = $(addelemento).find('select').attr('value');
           
-    console.log(addelemento);
+    //console.log(addelemento);
     
     var recurso = ge.resources;
 		
     $.each(recurso, function(index,element){
   	  if(addelemento == element.id){
-  		  console.log(element);
+  		  //console.log(element);
   		  $(addtd1).text(element.typeCost);
   		  $(addtd2).text(element.costRate);
   		  $(addtd6).text(element.idrecurso);
@@ -434,6 +444,19 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     taskEditor.find("input:checkbox,select").attr("disabled", true);
   } else {
 
+	  taskEditor.find("#realStart").click(function () {
+	      $(this).dateField({
+	        inputField:$(this)
+	      });
+	    });
+	  
+	  taskEditor.find("#realEnd").click(function () {
+	      $(this).dateField({
+	        inputField:$(this)
+	      });
+	    });
+	  
+	  
     //bind dateField on dates
     taskEditor.find("#start").click(function () {
       $(this).dateField({
@@ -492,7 +515,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 		
       $.each(recurso, function(index,element){
     	  if(addelemento == element.id){
-    		  console.log(element);
+    		  //console.log(element);
     		  $(addtd1).text(element.typeCost);
     		  $(addtd2).text(element.costRate);
     		  $(addtd6).text(element.idrecurso);
@@ -525,8 +548,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       var task = self.master.getTask(taskId); // get task again because in case of rollback old task is lost
       var wbsNodes = ge.wbsNodes;
       
-      console.log("WBS NODES");
-      console.log(wbsNodes);
+      //console.log("WBS NODES");
+      //console.log(wbsNodes);
       
       self.master.beginTransaction();
       task.name = taskEditor.find("#name").val();
@@ -547,10 +570,17 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       task.duration = parseInt(taskEditor.find("#duration").val());
       task.startIsMilestone = taskEditor.find("#startIsMilestone").is(":checked");
       task.endIsMilestone = taskEditor.find("#endIsMilestone").is(":checked");
-
+      task.realStart = taskEditor.find("#realStart").val();
+      task.realEnd = taskEditor.find("#realEnd").val(); 
+      
+      
+      
+      console.log(task.realStart);
+      console.log(task.realEnd);
+      
       //set assignments
       taskEditor.find("tr[assigId]").each(function () {
-    	console.log($(this));
+    	//console.log($(this));
         var trAss = $(this);
         var assId = trAss.attr("assigId");
         var resId = trAss.find("[name=resourceId]").val();
@@ -601,9 +631,9 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         }
 
         if (!found) { //insert
-        	console.log("Valor nuevo: " + value);
+        	//console.log("Valor nuevo: " + value);
           var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort, typeCost, costRate,value, idrecurso, costRateReal, valueReal);
-          console.log(ass);
+          //console.log(ass);
           ass.touched = true;
         }
 
@@ -618,7 +648,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
       //change dates
       task.setPeriod(Date.parseString(taskEditor.find("#start").val()).getTime(), Date.parseString(taskEditor.find("#end").val()).getTime() + (3600000 * 24));
-
+      //task.setPeriod(Date.parseString(taskEditor.find("#realStart").val()).getTime(), Date.parseString(taskEditor.find("#realEnd").val()).getTime() + (3600000 * 24));
+      
       //change status
       task.changeStatus(taskEditor.find("#status").attr("status"));
 
