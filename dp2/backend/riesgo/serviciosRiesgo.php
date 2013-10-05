@@ -715,7 +715,7 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $listaIntegrantes = json_decode($request->getBody());
-        
+       
         $query ="DELETE FROM COMITE_RIESGO WHERE id_proyecto=:id_proyecto";
          
         try {
@@ -731,7 +731,7 @@
 
 
         foreach ($listaIntegrantes->listaComite as $integrante){
-
+            
             //$query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
             $query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
                     VALUES (:id_proyecto,:id_empleado)";
@@ -739,7 +739,7 @@
                 $db = getConnection();
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
-                $stmt->bindParam("id_empleado", $idintegrante);
+                $stmt->bindParam("id_empleado", $integrante);
                 $stmt->execute();
                 $db = null;
                 echo json_encode("Se registro con exito");
@@ -753,10 +753,11 @@
     function R_getListaIntegrantesProyecto($idProyecto){
         
         $query = "SELECT ME.id_proyecto id_proyecto, E.id_empleado id_empleado , nombres, apellidos
-                FROM MIEMBROS_EQUIPO ME,EMPLEADO E,COMITE_RIESGO CR where
-                ME.id_empleado=E.id_empleado and ME.id_proyecto=:id_proyecto 
-                AND ME.id_empleado not in (SELECT CR.id_empleado FROM COMITE_RIESGO CR, MIEMBROS_EQUIPO ME
-                                            WHERE CR.id_proyecto=ME.id_proyecto and ME.id_proyecto=:id_proyecto and CR.id_empleado=ME.id_empleado GROUP BY id_empleado )
+                FROM MIEMBROS_EQUIPO ME,EMPLEADO E where
+                ME.id_empleado=E.id_empleado and ME.id_proyecto=:id_proyecto
+                AND ME.id_empleado not in (SELECT A.id_empleado FROM COMITE_RIESGO A JOIN MIEMBROS_EQUIPO B
+                                            ON A.id_proyecto=B.id_proyecto and B.id_proyecto=:id_proyecto and A.id_empleado=B.id_empleado 
+									GROUP BY A.id_empleado)
         		";
                     
         try {
