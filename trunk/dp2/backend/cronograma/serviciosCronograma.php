@@ -318,7 +318,7 @@ function CR_consultarCalendarioBase($idProyecto) {
     //Desconectarse(conexion);
     //Hardcode
     //$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
-	$sql="select b.id_calendario_base,b.nombre ,b.FERIADOS from dp2.CALENDARIO_PROYECTO a, dp2.CALENDARIO_BASE b WHERE a.id_calendario_base=b.id_calendario_base and a.ID_PROYECTO=?;";
+	$sql="select b.id_calendario_base,b.nombre ,b.FERIADOS from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
 	$rec=null;
 	try {
         $db = getConnection();
