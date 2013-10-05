@@ -286,7 +286,7 @@
 		$.each(ge.tasks,function(e,el){
 			if(el.id_task == tarea){
 			
-				var escala = 4;
+			
 			
 				console.log('Mostrando el indicador de la siguiente tarea:');
 				console.log(el);
@@ -298,11 +298,18 @@
 				console.log(indicaCosto + '-' + indicaFecha);
 				
 				$('#textCost').text('Indicador de Costo: ' + indicaCosto);
-				$('#textFech').text('Indicador de Fecha: ' + indicaFecha);
+				
+					
+				var chris = (recomputeDuration(el.realStart,el.realEnd) + 1) / el.duration * 100;
+				
+				console.log(recomputeDuration(el.realStart,el.realEnd) + 1);
+				console.log(el.duration);
+				
+				$('#textFech').text('Indicador de Fecha: ' + chris);
 								
-				$('#indCosto').css('width',indicaCosto / escala+ '%');
+				$('#indCosto').css('width',indicaCosto+ '%');
 							
-				$('#indFecha').css('width',indicaFecha / escala + '%');
+				$('#indFecha').css('width',chris + '%');
 				
 				
 			
