@@ -508,6 +508,7 @@ function cambiaEditar(){
 	$("#tablaAgrega").show();
 	obtenUnidadMedida();
 	obtenMoneda();
+	$("#numFilas").val(0);
 	iniciaRecursos(1);	
 	
 }
@@ -518,7 +519,7 @@ function cambiaConsultar(){
 	$("#btnEditar").show();
 	$("#btnGrabar").hide();
 	$("#btnCancelar").hide();
-	$("#tablaAgrega").hide();
+	$("#tablaAgrega").hide();	
 	 iniciaRecursos(0);	
 
 }
