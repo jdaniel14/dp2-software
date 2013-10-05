@@ -756,7 +756,7 @@
                 FROM MIEMBROS_EQUIPO ME,EMPLEADO E,COMITE_RIESGO CR where
                 ME.id_empleado=E.id_empleado and ME.id_proyecto=:id_proyecto 
                 AND ME.id_empleado not in (SELECT CR.id_empleado FROM COMITE_RIESGO CR, MIEMBROS_EQUIPO ME
-                                            WHERE CR.id_proyecto=ME.id_proyecto GROUP BY id_empleado )
+                                            WHERE CR.id_proyecto=ME.id_proyecto and ME.id_proyecto=:id_proyecto and CR.id_empleado=ME.id_empleado GROUP BY id_empleado )
         		";
                     
         try {
