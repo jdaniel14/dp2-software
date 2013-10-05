@@ -212,11 +212,12 @@ function getEdt(){
     }
     
     function eliminarHijos2($id,$idEdt){
+      $hijos = null;
       $con = getConnection();
-      $pstmt= $con->prepare("SELECT * PAQUETE_TRABAJO WHERE id_componente_padre= ? AND id_edt= ?");
+      $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_componente_padre= ? AND id_edt= ?");
       $pstmt->execute(array($id,$idEdt));
       $hijos = $pstmt->fetch(PDO::FETCH_ASSOC);
-       
+      if(count($hijos)==0)echo "Entro";
       foreach ($hijos as $row){
         eliminarHijos2($row["id_paquete_trabajo"],$idEdt);
         eliminarPaquete($row["id_paquete_trabajo"]);
@@ -227,7 +228,7 @@ function getEdt(){
     function eliminarPaquete($lista,$idEdt){
       foreach ($lista as $row){
         $con = getConnection();
-        //eliminarHijos2($row->{"id"},$idEdt);
+        eliminarHijos2($row->{"id"},$idEdt);
         eliminarPaqueteTrabajo($row->{"id"});
       }
     }

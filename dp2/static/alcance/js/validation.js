@@ -68,6 +68,17 @@ function validateEmail(elementId, errorMsg){//beta!
     return true;
 }
 
+function validateExtention(elementId, validExtentions ,errorMsg){
+	var validList = validExtentions.split("|");
+	var tokens = ($('#'+elementId)[0].files[0].name).split(".");
+	var ext = tokens[tokens.length - 1];
+	if(validList.indexOf(ext) == -1){
+		addErrorMsg(elementId,errorMsg);
+		return false;
+	}
+	return true;
+}
+
 function showAlert(formId ,valid, successMsg, errorMsg){
 	$(".alert").remove();
 	var divClass;
