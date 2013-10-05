@@ -144,7 +144,7 @@ function agregaDataFila(data, tipo){
 		for (i=0; i<arreglo.length;i++){
 			filaRecurso=arreglo[i];
 			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
-			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario ,'Recurso Material',filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda);
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda);
 			numRecursos=i;
 		}
 	}
@@ -186,7 +186,7 @@ function agregaFilaRecurso(){
 	inputUnidadMedida= creaInputUnidadMedida(a);
 	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>Recurso Material</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>'
 								+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
 								+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
@@ -195,18 +195,18 @@ function agregaFilaRecurso(){
 }
 
 
-function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda){
+function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda){
 	a=i;
 	a++;
 	if 	(tipo==0)
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td></tr>');
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td></tr>');
 	else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')">';
 		inputMoneda= creaInputMoneda(a);
 		inputUnidadMedida= creaInputUnidadMedida(a);
 		inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
 		check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td>'+tipoRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 									+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>'
 									+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
 									+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
@@ -533,9 +533,9 @@ function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos").html('');
 	
 	if (esEdicion==0)
-		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="20%"><b>Recurso</b></td><td width="20%"><b>Tipo</b></td><td width="20%"><b>Unidad de Medida</b></td><td width="15%"><b>Costo Unitario</b></td><td width="20%"><b>Moneda</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="20%"><b>Recurso</b></td><td width="20%"><b>Unidad de Medida</b></td><td width="15%"><b>Costo Unitario</b></td><td width="20%"><b>Moneda</b></td></tr>');
 	else
-		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="15%"><b>Tipo</b></td><td width="15%"><b>Unidad de Medida</b></td><td width="15%"><b>Costo Unitario</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Eliminar</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="15%"><b>Unidad de Medida</b></td><td width="15%"><b>Costo Unitario</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Eliminar</b></td></tr>');
 }
 
 
