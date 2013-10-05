@@ -93,7 +93,7 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 		//fecha actual
 		currentDate =Calendar.getInstance();
 		selectedDay=currentDate.get(Calendar.DAY_OF_MONTH);
-		selectedMonth=currentDate.get(Calendar.MONTH);
+		selectedMonth=currentDate.get(Calendar.MONTH) + 1;
 		selectedYear=currentDate.get(Calendar.YEAR);
 		
 		updateDateDisplay();
@@ -125,10 +125,10 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 		// TODO Auto-generated method stub
 		String y, m, d;
 		y = Integer.toString(selectedYear);
-		m = Integer.toString(selectedMonth+1);
+		m = Integer.toString(selectedMonth);
 		d = Integer.toString(selectedDay);
 		
-		if (selectedMonth + 1  < 10)
+		if (selectedMonth < 10)
 			m = "0" + m;
 		if (selectedDay < 10)
 			d = "0" + d;
@@ -142,14 +142,14 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
-					selectedYear, selectedMonth, selectedDay);
+					selectedYear, selectedMonth-1, selectedDay);
 		
 			return dialog;
 		}
 		
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			selectedYear = year;
-			selectedMonth = month;
+			selectedMonth = ++month;
 			selectedDay = day;
 			CostosIndicadoresActivity.updateDateDisplay();
 		}
