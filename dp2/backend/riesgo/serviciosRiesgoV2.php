@@ -128,4 +128,41 @@
         }
     }
 
+    //--------------------------------------HEADER IMPACTO--------------------------------------
+
+    function R_postRegistrarHeaderImpacto(){
+        $request = \Slim\Slim::getInstance()->request();
+        $impacto = json_decode($request->getBody());
+        $query = "INSERT INTO NIVEL_IMPACTO (id_proyecto,nivel,descripcion) VALUES (:id_proyecto,:nivel,:descripcion)";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
+            $stmt->bindParam("nivel", $impacto->nivel);
+            $stmt->bindParam("descripcion", $impacto->descripcion);
+            $stmt->execute();
+            $db = null;
+            echo json_encode('{Se registro correctamente}');
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
+
+    function R_deleteHeaderImpacto($idProyecto){
+
+        $sql = "DELETE FROM NIVEL_IMPACTO WHERE id_Proyecto=:idProyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
+            $db = null;
+            echo '{Header impacto eliminado con exito}';
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
 ?>
