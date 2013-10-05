@@ -68,7 +68,7 @@ function main(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
 		var data = {
-			idProyecto: idProyectoLocal.val(),
+			idProyecto: idProyectoLocal,
 			nombre: $('#nomRiesgo').val(),
 			idPaqueteTrabajo: $('#paqEdt').val(),
 			idCategoriaRiesgo: $('#objAfe').val(),
@@ -107,7 +107,7 @@ function main(){
 	$("#btnModificar").click(function(){
 		var data = {
 			idRiesgoXProyecto: $('#idRiesgoM').val(),
-			idProyecto: idProyectoLocal.val(),
+			idProyecto: idProyectoLocal,
 			nombreRiesgo: $('#nomRiesgoM').val(),
 			idPaqueteTrabajo: $('#paqEdtM').val(),
 			idCategoriaRiesgo: $('#objAfeM').val(),
@@ -153,7 +153,7 @@ function main(){
     	});
     	var data = {
     		lista: arreglo,
-    		idProyecto : idProyectoLocal.val()
+    		idProyecto : idProyectoLocal
     	};
 
 		var jsonData = JSON.stringify(data);
@@ -178,7 +178,7 @@ function main(){
 	//Boton guardar datos en la ventana de configuración
 	$("#btnConfiguracion").click( function(){
 		var data = {
-			idProyecto: idProyectoLocal.val(),
+			idProyecto: idProyectoLocal,
 			muyBajo: $('#muyBajo').val(),
 			bajo: $('#bajo').val(),
 			medio: $('#medio').val(),
@@ -308,7 +308,7 @@ function deshabilitarCampos(){
 function listarConfiguracion(){
 
 		var data = {
-			idProyecto: idProyectoLocal.val()
+			idProyecto: idProyectoLocal
 		};
 		var jsonData = JSON.stringify(data);
 		$.ajax({
@@ -430,7 +430,7 @@ function listarCategoriasRiesgo(){
 }
 function listarNivelesImpacto(){
 	var data = {
-		idProyecto: idProyectoLocal.val()
+		idProyecto: idProyectoLocal
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
@@ -458,7 +458,7 @@ function listarNivelesImpacto(){
 }
 function listarEquipos(){
 	var data = {
-		idProyecto: idProyectoLocal.val()
+		idProyecto: idProyectoLocal
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
