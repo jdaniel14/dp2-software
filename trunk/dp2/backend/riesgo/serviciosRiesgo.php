@@ -562,7 +562,8 @@
                         NI.descripcion Nidescripcion,
                         NI.tipo,limite_menor,limite_mayor,
                         TIXNI.descripcion tixniDescripcion,
-        				NI.nivel nivel
+        				NI.nivel nivel,
+                        TI.tipo tipoVerdadero
                 FROM TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI, TIPO_IMPACTO TI, NIVEL_IMPACTO NI 
                 where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
                 order by id_tipo_impacto,nivel;";
@@ -576,7 +577,7 @@
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
                             "descripcionTipoImpacto" => $row['tiDescripcion'],
-                            "tipoImpacto" => $row['tipo'],
+                            "tipoImpacto" => $row['tipoVerdadero'],
                             "min" => $row['limite_menor'],
                             "max" => $row['limite_mayor'],
                             "descripcion" => $row['tixniDescripcion'],
