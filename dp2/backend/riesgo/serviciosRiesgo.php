@@ -541,7 +541,8 @@
                 $stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
                 $stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
                 $stmt->bindParam("id_proyecto", $lista->idProyecto);
-                $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+                // $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+                $stmt->bindParam("descripcion", $lista->valor[$i]->descripcion);
                 $stmt->execute();
                 $db = null;
                 
