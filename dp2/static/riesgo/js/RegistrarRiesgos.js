@@ -345,7 +345,7 @@ function listarConfiguracion2(data){
 
 function listarPaquetesTrabajo(){
 	var data = {
-		idProyecto: idProyectoLocal.attr('value')
+		idProyecto: idProyectoLocal
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
@@ -408,7 +408,7 @@ function obtenerRiesgo(id){
 
 function listarCategoriasRiesgo(){
 	var data = {
-		id: idProyectoLocal.val()
+		id: idProyectoLocal
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
@@ -481,7 +481,7 @@ function listarEquipos(){
 function listarRiesgos(search){
 	$("#tablaRiesgos").empty();
 	var data = {
-		idProyecto: idProyectoLocal.val(),
+		idProyecto: idProyectoLocal,
                  nombre: $('#nombre').val(),
                 idPaqueteTrabajo : $('#idPaqueteRiesgo').val(), 
 		idCategoriaRiesgo : $('#idCategoriaRiesgo').val()    
