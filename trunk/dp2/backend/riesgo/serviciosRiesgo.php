@@ -560,10 +560,11 @@
                         TIXNI.id_nivel_impacto id_nivel_impacto,
                         NI.descripcion Nidescripcion,
                         NI.tipo,limite_menor,limite_mayor,
-                        TIXNI.descripcion tixniDescripcion
+                        TIXNI.descripcion tixniDescripcion,
+        				NI.nivel nivel,
                 FROM TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI, TIPO_IMPACTO TI, NIVEL_IMPACTO NI 
                 where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
-                order by id_tipo_impacto,id_nivel_impacto;";
+                order by id_tipo_impacto,nivel;";
                     
         try {
             $fullQuery= array();
