@@ -49,58 +49,58 @@ var listaProbabilidades=[];
 // 	tipo:2},
 // 	];
 
-var listafila1 = [
-	{
-		min:0,
-		max:1000,
-		descripcion:""
-	},
-	{
+// var listafila1 = [
+// 	{
+// 		min:0,
+// 		max:1000,
+// 		descripcion:""
+// 	},
+// 	{
 		
-		min:1001,
-		max:2000,
-		descripcion:""
-	},
-	{
-		min:2001,
-		max:2000,
-		descripcion:""
-	}
-];
+// 		min:1001,
+// 		max:2000,
+// 		descripcion:""
+// 	},
+// 	{
+// 		min:2001,
+// 		max:2000,
+// 		descripcion:""
+// 	}
+// ];
 
-var listafila2 = [
-	{
-		min:0,
-		max:1000,
-		descripcion:"Leve"
-	},
-	{
+// var listafila2 = [
+// 	{
+// 		min:0,
+// 		max:1000,
+// 		descripcion:"Leve"
+// 	},
+// 	{
 		
-		min:1001,
-		max:2000,
-		descripcion:"Grave"
-	},
-	{
-		min:2001,
-		max:2000,
-		descripcion:"Muy Grave"
-	}
-];
-var listaTipoImpacto = [
-	{
-		idTipoImpactoXNivelImpacto:1,
-		descripcionTipoImpacto: "Costos",
-		tipoImpacto: 1,
-		lista:listafila1
-	},
-	{
-		idTipoImpactoXNivelImpacto:2,
-		descripcionTipoImpacto: "Seguridad",
-		tipoImpacto: 2,
-		lista:listafila2
-	},
+// 		min:1001,
+// 		max:2000,
+// 		descripcion:"Grave"
+// 	},
+// 	{
+// 		min:2001,
+// 		max:2000,
+// 		descripcion:"Muy Grave"
+// 	}
+// ];
+// var listaTipoImpacto = [
+// 	{
+// 		idTipoImpactoXNivelImpacto:1,
+// 		descripcionTipoImpacto: "Costos",
+// 		tipoImpacto: 1,
+// 		lista:listafila1
+// 	},
+// 	{
+// 		idTipoImpactoXNivelImpacto:2,
+// 		descripcionTipoImpacto: "Seguridad",
+// 		tipoImpacto: 2,
+// 		lista:listafila2
+// 	},
 	
-];
+// ];
 
 	
 // console.log(listaTipoImpacto);	
@@ -385,8 +385,8 @@ function main(){
 		$('#CuerpoModalTiposImpactoxNivelImpacto').empty();
 		if ($('#listarTiposImpactos').val()!=0) {
 			$.each(listaTipos, function ( index){
-				if (this.idTipoImpacto==$('#listarTiposImpactos').val()){
-					tipoImpacto=this.tipo;
+				if (this.idTipo==$('#listarTiposImpactos').val()){
+					tipoImpacto=this.formas;
 					return false;
 				}
 			});
@@ -518,29 +518,32 @@ function main(){
 	$("#btnAgregarTipoXNivel2").click( function(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
-		var data = [];
-		var fila = {};
+		// var data = [];
+		var fila = [];
+		var valor = {};
 
-		fila.idProyecto = idProyectoLocal;
-		data.push(fila);
-		fila = {};
-		fila.idTipoImpacto = tipoImpacto;
-		data.push(fila);
-		fila = {};
+		var data = {
+			idProyecto: idProyectoLocal,
+			idTipoImpacto: tipoImpacto
+			
+		};
+
+		// fila = {};
 
 		for (var i = 0; i < listaNiveles.length ; i++) {
-			fila.descripcion=$("#descTiposImpactoxNivelImpacto"+i).val();
-			fila.nivel=$("#nivelImpacto"+i).val();
-			console.log(fila.descripcion);
-			if (fila.descripcion==""){
+			valor.descripcion=$("#descTiposImpactoxNivelImpacto"+i).val();
+			console.log(valor.descripcion);
+			valor.nivel=$("#nivelImpacto"+i).val();
+			if (valor.descripcion==""){
 				$("#errordescImpacto"+i).fadeIn('slow');
 				flag=false;
 			}
 
 
-			data.push(fila);
-			fila = {};
+			fila.push(valor);
+			valor = {};
 		};
+		data.valor=fila;
 
 
 		// $('#errorNivel').hide();
@@ -578,51 +581,61 @@ function main(){
 	$("#btnAgregarTipoXNivel1").click( function(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
-		var data = [];
-		var fila = {};
 
-		fila.idProyecto = idProyectoLocal;
-		data.push(fila);
-		fila = {};
-		fila.idTipoImpacto = tipoImpacto;
-		data.push(fila);
-		fila = {};
+		var data = {
+			idProyecto: idProyectoLocal,
+			idTipoImpacto: tipoImpacto
+			
+		};
+
+		// var data = [];
+		var fila = [];
+		var valor = {};
+		// var idProyecto;
+		// var idTipoImpacto;
+		// idProyecto = idProyectoLocal;
+		// data.push(idProyecto);
+		// fila = {};
+		// idTipoImpacto = tipoImpacto;
+		// data.push(idTipoImpacto);
+		// fila = {};
 
 		for (var i = 0; i < listaNiveles.length ; i++) {
 			if (i==0){
-				fila.min=0;
-				fila.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
-				if (!esNumEntPos(fila.max)){
+				valor.min=0;
+				valor.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
+				if (!esNumEntPos(valor.max)){
 					$("#errorNumeroEntero"+i).fadeIn('slow');
 					flag=false;
 				}
 			} else if (i==listaNiveles.length-1) {
-				fila.min=$("#minTiposImpactoxNivelImpacto"+i).val();
-				fila.max=0;
-				if (!esNumEntPos(fila.min)){
+				valor.min=$("#minTiposImpactoxNivelImpacto"+i).val();
+				valor.max=0;
+				if (!esNumEntPos(valor.min)){
 					$("#errorNumeroEntero"+i).fadeIn('slow');
 					flag=false;
-				} else if (fila.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
+				} else if (valor.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
 					$("#errorMinImpacto"+i).fadeIn('slow');
 					flag=false;
 				}
 			} else {
-				fila.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
-				fila.min=$("#minTiposImpactoxNivelImpacto"+i).val();
-				if ((!esNumEntPos(fila.min)) || (!esNumEntPos(fila.max))){
+				valor.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
+				valor.min=$("#minTiposImpactoxNivelImpacto"+i).val();
+				if ((!esNumEntPos(valor.min)) || (!esNumEntPos(valor.max))){
 					$("#errorNumeroEntero"+i).fadeIn('slow');
 					flag=false;
 				} else if (fila.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
 					$("#errorMinImpacto"+i).fadeIn('slow');
 					flag=false;
-				} else if (fila.min>=fila.max){
+				} else if (valor.min>=valor.max){
 					$("#errorMaxImpacto"+i).fadeIn('slow');
 					flag=false;
 				}
 			}
-			fila.nivel=$("#nivelImpacto"+i).val();
-			data.push(fila);
-			fila = {};
+			valor.nivel=$("#nivelImpacto"+i).val();
+			fila.push(valor);
+			valor = {};
+			data.valor=fila;
 		};
 
 
@@ -673,14 +686,14 @@ function listarTiposImpactosXNivelImpactos(){
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getAllTypeImpactsXLevelImpacts,  //'/' + data.idProyecto,
+		url: getAllTypeImpactsXLevelImpacts + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			console.log(data);
 			agregarDataTiposImpactosXNivelImpactos(data); 
 		},
-		// fail: codigoError
-		fail: agregarDataTiposImpactosXNivelImpactos(listaTipoImpacto)
+		fail: codigoError
+		// fail: agregarDataTiposImpactosXNivelImpactos(listaTipoImpacto)
 	});
 
 }
@@ -694,7 +707,7 @@ function agregarDataTiposImpactosXNivelImpactos(data){
 	var tipoImpacto;
 	$.each(listaTotal, function (index, valor){
 		console.log(valor);
-		idTipoImpactoXNivelImpacto=valor.idTipoImpactoXNivelImpacto;
+		idTipoImpactoXNivelImpacto=valor.idTipoImpacto;
 		descripcionTipoImpacto=valor.descripcionTipoImpacto;
 		tipoImpacto=valor.tipoImpacto;
 		console.log(idTipoImpactoXNivelImpacto);
@@ -873,7 +886,7 @@ function agregarDataTiposImpacto(data){
 	arreglo=data;
 	if (arreglo!=null){
 		$.each(arreglo, function (i, value){
-			$('#listarTiposImpactos').append("<option value="+ value.idTipoImpacto +">" + value.descripcion + "</option>");
+			$('#listarTiposImpactos').append("<option value="+ value.idTipo +">" + value.tipoRi + "</option>");
         });	
 	}
 }
