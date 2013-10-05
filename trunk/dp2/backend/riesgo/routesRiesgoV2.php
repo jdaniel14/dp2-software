@@ -7,4 +7,8 @@
 	//ACUERDOS Y MODIFICACIONES
 	$app->get('/R_listarAcuerdos/:id','R_getListaAcuerdos');
 	$app->post('/R_registrarAcuerdos','R_postRegistrarAcuerdos');
+
+	//HEADER IMPACTO
+	$app->post('/R_registrarHeaderImpactoRiesgo','R_postRegistrarHeaderImpacto');
+	$app->delete('/R_eliminarHeaderImpactoRiesgo/:id','R_deleteHeaderImpacto');
 ?>
