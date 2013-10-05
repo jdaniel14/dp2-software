@@ -466,6 +466,7 @@
         $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
         $listaIdNivelImpacto= array();           
         $cantidad =0;
+        
         try {
             $arregloListaHeaderImpactoRiesgo= array();
             $db = getConnection();
@@ -473,9 +474,9 @@
             $stmt->bindParam("id_proyecto", $lista->idProyecto);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idNivelImpacto" => $row['id_nivel_impacto']);
-                array_push($listaIdNivelImpacto,$data);
+                array_push($listaIdNivelImpacto,$row['id_nivel_impacto']);
                 $cantidad++;
+                
             }
             $db = null;
         } catch(PDOException $e) {
@@ -484,17 +485,17 @@
 
 		for ($i=0 ; $i<$cantidad;$i++){
 			
-			$query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,:id_proyecto,limite_menor,limite_mayor,descripcion)
-                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor,:descripcion) ";
+			$query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,id_proyecto,limite_menor,limite_mayor)
+                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor) ";
 			try {
 				$db = getConnection();
 				$stmt = $db->prepare($query);
 				$stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
 				$stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
 				$stmt->bindParam("id_proyecto", $lista->idProyecto);
-				$stmt->bindParam("limite_menor", $lista->valor[$i]->limite_menor);
-				$stmt->bindParam("limite_mayor", $lista->valor[$i]->limite_mayor);
-				//$stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+				$stmt->bindParam("limite_menor", $lista->valor[$i]->min);
+				$stmt->bindParam("limite_mayor", $lista->valor[$i]->max);
+				// $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
 				$stmt->execute();
 				$db = null;
 				
@@ -508,25 +509,48 @@
 
     function R_postRegistrarTipoImpactoNivelImpacto2(){
         $request = \Slim\Slim::getInstance()->request();
-        $impactoNivelImpacto = json_decode($request->getBody());
-
-        $query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,:id_proyecto,limite_menor,limite_mayor,descripcion) 
-                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor,:descripcion) ";
+        $lista = json_decode($request->getBody());
+        
+        $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+        $listaIdNivelImpacto= array();           
+        $cantidad =0;
+        
         try {
+            $arregloListaHeaderImpactoRiesgo= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("id_tipo_impacto", $impactoNivelImpacto->id_tipo_impacto);
-            $stmt->bindParam("id_nivel_impacto", $impactoNivelImpacto->id_nivel_impacto);
-            $stmt->bindParam("id_proyecto", $impactoNivelImpacto->id_proyecto);
-            $stmt->bindParam("limite_menor", $impactoNivelImpacto->limite_menor);
-            $stmt->bindParam("limite_mayor", $impactoNivelImpacto->limite_mayor);
-            $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+            $stmt->bindParam("id_proyecto", $lista->idProyecto);
             $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                array_push($listaIdNivelImpacto,$row['id_nivel_impacto']);
+                $cantidad++;
+                
+            }
             $db = null;
-            echo json_encode(array("Se registro con exito"));
         } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }   
+
+        for ($i=0 ; $i<$cantidad;$i++){
+            
+            $query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,id_proyecto,descripcion)
+                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:descripcion) ";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
+                $stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
+                $stmt->bindParam("id_proyecto", $lista->idProyecto);
+                $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+                $stmt->execute();
+                $db = null;
+                
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
         }
+        echo json_encode(array("Se registro con exito"));
+
     }
 
     function R_getListaTipoImpactoXNivelImpacto($idProyecto){

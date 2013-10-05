@@ -32,9 +32,9 @@
 	$app->get('/R_listaHeadersProbabilidadRiesgo/:id', 'R_getListaHeadersProbabilidadRiesgo');
 	$app->delete('/R_eliminarHeaderProbabilidadRiesgo/:id', 'R_deleteListaHeadersProbabilidadRiesgo');
 
-	//TIPO IMPACTO X NIVEL IMPACTO
-	$app->post('/R_registrarTipoImpactoNivelImpacto1', 'R_postRegistrarTipoImpactoNivelImpacto1');//
-	$app->post('/R_registrarTipoImpactoNivelImpacto2', 'R_postRegistrarTipoImpactoNivelImpacto2');//
+	//TIPO IMPACTO X NIVEL IMPACTOR_registrarTipoImpactoXNivelImpacto1
+	$app->post('/R_registrarTipoImpactoXNivelImpacto1', 'R_postRegistrarTipoImpactoNivelImpacto1');//
+	$app->post('/R_registrarTipoImpactoXNivelImpacto2', 'R_postRegistrarTipoImpactoNivelImpacto2');//
 	$app->get('/R_listarTipoImpactoXNivelImpacto/:id', 'R_getListaTipoImpactoXNivelImpacto');
 	$app->get('/R_listaTipoImpacto/:id', 'R_getListaTipoImpacto');
 	$app->get('/R_listaHeadersImpactoRiesgo/:id', 'R_getListaHeadersImpactoRiesgo');
