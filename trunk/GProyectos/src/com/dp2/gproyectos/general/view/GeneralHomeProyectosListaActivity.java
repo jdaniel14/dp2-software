@@ -3,6 +3,7 @@ package com.dp2.gproyectos.general.view;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
+//import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.dp2.framework.view.LoadTaskDialog;
@@ -26,10 +27,12 @@ import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.VerticalBarraTituloActivity;
+import com.markupartist.android.widget.PullToRefreshListView;
+import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 public class GeneralHomeProyectosListaActivity extends
 		VerticalBarraTituloActivity implements Loadingable {
-	ListView lvProyectos;
+	PullToRefreshListView lvProyectos;
 	ArrayList<ProyectoBean> proyectos;
 	ProyectoAdapter adapter;
 	Spinner spnBuscar;
@@ -46,7 +49,7 @@ public class GeneralHomeProyectosListaActivity extends
 
 		setAtributos(R.drawable.maleta, getString(R.string.menu_proyectos),
 				GProyectosConstants.FECHA_HOY);
-		lvProyectos = (ListView) findViewById(R.id.lvProyectos);
+		lvProyectos = (PullToRefreshListView) findViewById(R.id.lvProyectos);
 
 		spnBuscar = (Spinner) findViewById(R.id.spnBuscar);
 		edtBuscar = (EditText) findViewById(R.id.edtBuscar);
@@ -135,7 +138,61 @@ public class GeneralHomeProyectosListaActivity extends
 					overridePendingTransition(0, 0);
 				}
 			});
+			
+			lvProyectos.setOnRefreshListener(new OnRefreshListener() {
+			    @Override
+			    public void onRefresh() {
+			        // Do work to refresh the list here.
+			    	new GetDataTask().execute();
+			    }
+			});
 		}
 	}
+	
+	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
+                //Thread.sleep(2000);
+            	proyectos = ProyectoController.getInstance().getProyectos();
+            } catch (Exception e) {
+                ;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            //mListItems.addFirst("Added after refresh...");
+
+            if (proyectos!=null){
+    			adapter = new ProyectoAdapter(GeneralHomeProyectosListaActivity.this,
+    					R.layout.general_home_proyectos_lista_item, proyectos);
+    			lvProyectos.setAdapter(adapter);
+    			lvProyectos.setOnItemClickListener(new OnItemClickListener() {
+
+    				@Override
+    				public void onItemClick(AdapterView<?> l, View v, int position,
+    						long id) {
+    					ProyectoBean proyecto = proyectos.get(position);
+    					
+    					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
+    					i.putExtra("idProyecto", proyecto.id);
+    					i.putExtra("nombreProyecto", proyecto.nombre);
+    					overridePendingTransition(0, 0);
+    					startActivity(i);
+    					overridePendingTransition(0, 0);
+    				}
+    			});
+    		}
+            
+            // Call onRefreshComplete when the list has been refreshed.
+            lvProyectos.onRefreshComplete();
+
+            super.onPostExecute(result);
+        }
+    }
 
 }
