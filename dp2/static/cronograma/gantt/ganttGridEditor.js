@@ -390,14 +390,28 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     taskEditor.find("#endIsMilestone").attr("checked", true);
 
   taskEditor.find("#duration").val(task.duration);
+    
   taskEditor.find("#start").val(new Date(task.start).format());
   taskEditor.find("#end").val(new Date(task.end).format());
     
-  var rS = Date.parse(task.realStart);
-  var rE = Date.parse(task.realEnd);
+  var arreglo = task.realStart.split('-');
+  
+  var anhoS = arreglo[0];
+  var mesS = arreglo[1] ;
+  var diaS = arreglo[2];
+  
+  var rS = new Date(anhoS,mesS - 1,diaS);
+  
+  var arreglo2 = task.realEnd.split('-');
+  
+  var anhoE = arreglo2[0];
+  var mesE = arreglo2[1] ;
+  var diaE = arreglo2[2];
+  
+  var rE = new Date(anhoE,mesE - 1, diaE);
     
-  taskEditor.find("#realStart").val(new Date(rS).format());
-  taskEditor.find("#realEnd").val(new Date(rE).format());
+  taskEditor.find("#realStart").val(rS.format());
+  taskEditor.find("#realEnd").val(rE.format());
 
   //taskEditor.find("[name=depends]").val(task.depends);
 
@@ -570,10 +584,27 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       task.duration = parseInt(taskEditor.find("#duration").val());
       task.startIsMilestone = taskEditor.find("#startIsMilestone").is(":checked");
       task.endIsMilestone = taskEditor.find("#endIsMilestone").is(":checked");
-      task.realStart = taskEditor.find("#realStart").val();
-      task.realEnd = taskEditor.find("#realEnd").val(); 
       
+      var a11 = taskEditor.find("#realStart").val();
+      var a22 = taskEditor.find("#realEnd").val();
       
+      var auxA1 = a11.split('/');
+      
+      var an1 = auxA1[2];
+      var me1 = auxA1[1];
+      var di1 = auxA1[0];
+      
+      var auxA2 = a22.split('/');
+      
+      var an2 = auxA2[2];
+      var me2 = auxA2[1];
+      var di2 = auxA2[0];
+      
+      task.realStart = an1 + "-" + me1 + "-" + di1;
+      task.realEnd = an2 + "-" + me2 + "-" + di2;
+      
+      //task.realStart = taskEditor.find("#realStart").val();
+      //task.realEnd = taskEditor.find("#realEnd").val(); 
       
       console.log(task.realStart);
       console.log(task.realEnd);
