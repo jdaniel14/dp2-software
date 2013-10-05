@@ -128,14 +128,16 @@ public class GeneralHomeProyectosListaActivity extends
 				@Override
 				public void onItemClick(AdapterView<?> l, View v, int position,
 						long id) {
-					ProyectoBean proyecto = proyectos.get(position);
-					
-					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
-					i.putExtra("idProyecto", proyecto.id);
-					i.putExtra("nombreProyecto", proyecto.nombre);
-					overridePendingTransition(0, 0);
-					startActivity(i);
-					overridePendingTransition(0, 0);
+					if (position > 0) {
+						ProyectoBean proyecto = proyectos.get(position-1);
+						
+						Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
+						i.putExtra("idProyecto", proyecto.id);
+						i.putExtra("nombreProyecto", proyecto.nombre);
+						overridePendingTransition(0, 0);
+						startActivity(i);
+						overridePendingTransition(0, 0);
+					}
 				}
 			});
 			
@@ -176,14 +178,16 @@ public class GeneralHomeProyectosListaActivity extends
     				@Override
     				public void onItemClick(AdapterView<?> l, View v, int position,
     						long id) {
-    					ProyectoBean proyecto = proyectos.get(position);
-    					
-    					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
-    					i.putExtra("idProyecto", proyecto.id);
-    					i.putExtra("nombreProyecto", proyecto.nombre);
-    					overridePendingTransition(0, 0);
-    					startActivity(i);
-    					overridePendingTransition(0, 0);
+    					if (position > 0) {
+	    					ProyectoBean proyecto = proyectos.get(position-1);
+	    					
+	    					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
+	    					i.putExtra("idProyecto", proyecto.id);
+	    					i.putExtra("nombreProyecto", proyecto.nombre);
+	    					overridePendingTransition(0, 0);
+	    					startActivity(i);
+	    					overridePendingTransition(0, 0);
+    					}
     				}
     			});
     		}
