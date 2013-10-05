@@ -351,9 +351,70 @@
               });
             }
 
+/*
+
+            function agregarPadreJson( idproyecto, title, hijos, dias, descripcion, nodos ){
+                var jsonCliente = {
+                                  idproyecto : idproyecto,
+                                  title : title,
+                                  hijos: hijos,
+                                  dias: dias,
+                                  descripcion: descripcion,
+                                  nodos : nodos
+                                  };
+                return jasonCliente;
+            }
+
+            function agregarHijoJson( title, hijos, dias, , nodos ){
+
+                  var jsonCliente = {
+                                  title : title,
+                                  hijos : hijos,
+                                  dias: dias,
+                                  descripcion: descripcion,
+                                  nodos : nodos
+                                  };
+                return jsonCliente;
+            }
+*/
            function eventsEdit(){
+
+
+
+
                 var idnodoCounter = 1;
 
+                function dameArbolEdtCF( counter ){
+                  //padre
+                  var title = '#title-' + counter;
+                  var desc  = '#descripcion-' + counter;
+                  var tiempo = '#tiempo-'+counter;
+                  var ul = '#ul-'+counter;
+                  console.log($(ul));
+
+                  
+
+
+
+                }
+
+                $("#guardarCambios").click(function(){
+                    console.log("guardar");
+                    //var arbol = $("#org").html();
+                    //console.log(arbol);
+                    dameArbolEdtCF( 1 );
+                    //agregarPadreJson( "1", $("#title-1"), )
+
+
+                      /*
+                        {"idproyecto":1,"title":"DP2","hijos": 3,"dias":10,"descripcion":"El proyeto",
+                        "nodos":[{"title":"Analisis","hijos":0,"dias":5,"descripcion":"El analisis",
+                        "nodos":[]},{"title":"Desarrollo","hijos":0,"dias":2,"descripcion":"El desarrollo","nodos":[]},
+                        {"title":"Transicion","hijos":0,"dias": 3,"descripcion":"La transicion","nodos":[]}]}
+                      */
+                    
+
+                });
 
                 $("#inputEliminarHijo").click(function(){
                   console.log("eliminando hijo");
