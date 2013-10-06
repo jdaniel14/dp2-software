@@ -6,12 +6,12 @@
   //MOSTRAR EDT ===============================================================================================================
   
 function getEdt(){
-       //$request = \Slim\Slim::getInstance()->request(); //json parameters
-       //$edt = json_decode($request->getBody()); //object convert
-       //$idproyecto=$edt->{"idproyecto"};
+       $request = \Slim\Slim::getInstance()->request(); //json parameters
+       $edt = json_decode($request->getBody()); //object convert
+       $idproyecto=$edt->{"idproyecto"};
        
        $con = getConnection();
-       $idproyecto = 1;
+       //$idproyecto = 1;
        //conseguir el id del paquete inicial
        $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
        $pstmt->execute(array($idproyecto));
@@ -217,7 +217,7 @@ function getEdt(){
       $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_componente_padre= ? AND id_edt= ?");
       $pstmt->execute(array($id,$idEdt));
       $hijos = $pstmt->fetch(PDO::FETCH_ASSOC);
-      if(count($hijos)==0)echo "Entro";
+      if(empty($hijos))return;
       foreach ($hijos as $row){
         eliminarHijos2($row["id_paquete_trabajo"],$idEdt);
         eliminarPaquete($row["id_paquete_trabajo"]);
@@ -244,7 +244,7 @@ function getEdt(){
       $data = json_decode($request->getBody()); //object convert
       $idproyecto=$data->{"idproyecto"};
       //$idproyecto=1;
-      $version=1.2;
+      $version=1.1;
        
       $listaModificados = $data->{"idnodosModificados"};
       $listaNuevos = $data->{"idnodosNuevos"};
