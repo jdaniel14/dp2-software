@@ -368,7 +368,7 @@
             $stmt = $db->prepare($consulta);
             $stmt->execute();
             $row = $stmt->fetchObject();
-            $query = "INSERT INTO riesgo_x_proyecto (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad) 
+            $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad) 
                     VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad)";
             try {
                 $db = getConnection();
