@@ -290,7 +290,8 @@ function CR_mezcla($input) {
 function CR_obtenerListaMaps($recursos) {
 
     //$prueba=array_map("CR_mezcla", $recursos);
-    //$resultado=new object();
+    $resultado=null;
+	//echo "i";
     for ($i = 0; $i < sizeof($recursos); $i++) {
         //echo json_encode($recursos[$i]["idrecurso"]);
         $indice = $recursos[$i]["idrecurso"];
@@ -300,6 +301,7 @@ function CR_obtenerListaMaps($recursos) {
         //$test=array($indice=>$valor);
         //array_push($resultado,$test);
         $resultado[$indice] = $valor;
+		echo "i".$i;
     }
     //echo json_encode($resultado);
     //return $resultado;
