@@ -10,7 +10,7 @@ var addTypeImpactsXLevelImpacts2 = "../../api/R_registrarTipoImpactoXNivelImpact
 var getAllTypeImpactsXLevelImpacts = "../../api/R_listarTipoImpactoXNivelImpacto"
 
 $(document).ready(main);
-localStorage.setItem("idProyecto",1);
+// localStorage.setItem("idProyecto",1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var tipoImpacto=0;
 var listaProbabilidades=[];
