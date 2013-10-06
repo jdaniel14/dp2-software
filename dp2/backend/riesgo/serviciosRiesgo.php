@@ -125,7 +125,7 @@
 
         $query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
-                left join paquete_trabajo as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
                 where RXP.id_riesgo_x_proyecto=".$idRiesgoXProyecto;
 
