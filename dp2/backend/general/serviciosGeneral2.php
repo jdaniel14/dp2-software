@@ -192,7 +192,7 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
 
 function G_getValidarSuccess($id) {
     $sql = " 
-        SELECT COUNT(*) as cuenta FROM ACTIVIDAD WHERE ID_PROYECTO =:id AND (ESTADO <> 'STATUS_DONE' and ESTADO <> 'STATUS_SUSPENDED')
+        SELECT COUNT(*) as cuenta FROM ACTIVIDAD as A, PROYECTO as P WHERE A.ID_PROYECTO =:id AND (A.ESTADO <> 'STATUS_DONE' and A.ESTADO <> 'STATUS_SUSPENDED') and A.ID_PROYECTO = P.ID_PROYECTO and P.ESTADO <> 'CERRADO' and P.ESTADO <> 'ELIMINADO' 
  ";
     try {
         $db = getConnection();
