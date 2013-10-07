@@ -1,5 +1,4 @@
 <?php
-	//Henry
 	$app->get('/R_prueba', 'R_prueba'); // Prueba
 	
 
