@@ -219,6 +219,8 @@ function CR_consultarInfoActividades($idProyecto) {
       }
      */
 	//echo date('Y-m-d', time());
+	//SELECT UNIX_TIMESTAMP('2013-11-12');
+	//SELECT FROM_UNIXTIME(1384146000000/1000);
     $recursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     $paquetesEDT = CR_consultarPaqueteEDT($idProyecto);
     $lista_mapeo = CR_obtenerListaMaps($recursos);
@@ -301,7 +303,7 @@ function CR_obtenerListaMaps($recursos) {
         //$test=array($indice=>$valor);
         //array_push($resultado,$test);
         $resultado[$indice] = $valor;
-		echo "i".$i;
+		//echo "i".$i;
     }
     //echo json_encode($resultado);
     //return $resultado;
@@ -661,7 +663,7 @@ function CR_obtenerRecursosTotalProyecto($idProyecto) {
         //$lista_jp = array();
         $contador = 1;
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "idunidadmedida" => $j["id_unidad_medida"], "name" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"], "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "idunidadmedida" => $j["id_unidad_medida"], "name" => $j["descripcion"], "costRate" => $j["costo_unitario_estimado"], "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"]);
             array_push($listaRecursos, $rec);
             $contador++;
         }
@@ -741,7 +743,7 @@ function CR_obtenerListaRecursosAsignados($idActividad, $listaMapeoRecursos) {
             //echo $idRecurso;
             $idRecurso = $listaMapeoRecursos["" . $j["id_recurso"]];
 
-            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "resourceId" => $idRecurso, "idunidadmedida" => $j["id_unidad_medida"], /* "idTipoCosto" => $j["id_tipo_costo"], */ "descripcion_recurso" => $j["descripcion"], "costRate" => $j["COSTO_UNITARIO_ESTIMADO"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"]/* , "descripcion_tipocosto" => $j["descripcion_tipocosto"] */);
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "resourceId" => $idRecurso, "idunidadmedida" => $j["id_unidad_medida"], /* "idTipoCosto" => $j["id_tipo_costo"], */ "descripcion_recurso" => $j["descripcion"], "costRate" => $j["costo_unitario_estimado"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"]/* , "descripcion_tipocosto" => $j["descripcion_tipocosto"] */);
             array_push($listaRecursos, $rec);
 
             $contador++;
