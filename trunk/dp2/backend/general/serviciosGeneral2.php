@@ -189,6 +189,45 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
+
+function G_getValidarSuccess($id) {
+    $sql = " 
+        SELECT COUNT(*) as cuenta FROM ACTIVIDAD WHERE ID_PROYECTO =:id AND (ESTADO <> 'STATUS_DONE' and ESTADO <> 'STATUS_SUSPENDED')
+ ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cantidad = $p["cuenta"];
+        $db = null;
+        
+        echo json_encode(array("exito" => $cantidad)); //cantidad de actividades sin terminar o fallidas
+        
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_postCerrarProyecto() {
+    $request = \Slim\Slim::getInstance()->request();
+    $resultado = json_decode($request->getBody());
+    $sql = " UPDATE PROYECTO SET ESTADO_PROYECTO=:estado where id_proyecto=:id and ESTADO_PROYECTO <> CERRADO";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("estado", $resultado->estado);
+        $stmt->bindParam("id", $resultado->id);
+        $stmt->execute();
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 /********************************************recuros humanos*/
 function G_getAsignarRecProy() {
     $request = \Slim\Slim::getInstance()->request();
