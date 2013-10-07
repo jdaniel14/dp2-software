@@ -129,6 +129,8 @@ function getEdt(){
       $request = \Slim\Slim::getInstance()->request();
       $edt = json_decode($request->getBody()); //object convert
       $idproyecto=$edt->{"idproyecto"};
+      
+      //$idproyecto = 1;
       $version=1.1;
        
       $con = getConnection();

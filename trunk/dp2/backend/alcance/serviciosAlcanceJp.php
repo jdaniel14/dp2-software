@@ -19,4 +19,16 @@ include_once '../backend/conexion.php';
        echo json_encode($paquete);
   }
 
+  function guardarArbol(){
+
+  }
+
+  function editarArbol(){
+
+  }
+
+  function eliminarArbol(){
+    
+  }
+
 ?>
