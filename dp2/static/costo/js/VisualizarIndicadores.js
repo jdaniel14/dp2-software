@@ -63,9 +63,9 @@ function obtenIndicadores(/*idProyecto,*/dia, mes , anio){
 	//alert(dia+" "+mes+" "+anio);
 	var obj ={
 		idProyecto : idProyecto,
-		year: anio,
-		month: mes,
-		day: dia
+		year: new Number(anio),
+		month: new Number(mes),
+		day: new Number(dia)
 	}
 	
 	
@@ -178,9 +178,9 @@ function grabarIndicadores(){
 	
 	var obj ={
 		idProyecto : idProyecto,
-		year: anio,
-		month: mes,
-		day: dia,
+		year: new Number(anio),
+		month: new Number(mes),
+		day: new Number(dia),
 		PV: obtenerValorIndicador('VP'),
 		EV: obtenerValorIndicador('VG'),
 		AC: obtenerValorIndicador('VA'),
