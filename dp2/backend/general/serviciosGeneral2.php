@@ -329,7 +329,7 @@ function G_getListarRecDisp() {
     }
 }
 
-	function G_postListaRecXProyecto() {
+	function G_postListaTodosRecurso() {
 	    $request = \Slim\Slim::getInstance()->request();
 	    $body = json_decode($request->getBody());
  
@@ -356,7 +356,7 @@ function G_getListarRecDisp() {
 				$id = $empleado["id_emp"];
 		    $empleado["nom"] = $emp["NOMBRE_CORTO"];
 		    $empleado["rol"] = $emp["ID_ROL"];
-		    $empleado["detalle_dias"] = new SplFixedArray($num_dias);
+		    $empleado["detalle_dias"] = new SplFixedArray($num_dias+1);
 	      for ($i = 0; $i < $num_dias; $i++) {
 		        $empleado["detalle_dias"][$i] = 0;
 		    }
@@ -421,4 +421,41 @@ function G_getListarRecDisp() {
 			}//while
 			echo json_encode($lista_empleados);
 	}	
+
+
+	function G_getListaRecursosEnProyecto($id) {
+		  $sql = " SELECT E.ID_EMPLEADO,E.NOMBRE_CORTO,RE.NOMBRE_ROL,M.COSTO_EMPLEADO, P.nombre_proyecto
+		          FROM MIEMBROS_EQUIPO  M,
+		          EMPLEADO E,
+		          ROL_EMPLEADO RE, 
+							PROYECTO P
+		          WHERE P.id_proyecto = :id
+							AND E.ID_EMPLEADO=M.ID_EMPLEADO
+		          AND E.ID_ROL=RE.ID_ROL
+		          AND M.ID_PROYECTO=P.id_proyecto";
+		  try {
+		      $db = getConnection();
+
+		      $stmt = $db->prepare($sql);
+		      $stmt->bindParam("id", $id);
+		      $stmt->execute();
+
+		      $l_recxpro = array();
+		      while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+							$nom_proy = $j["nombre_proyecto"];
+		          $rec = array(
+		              "id" => $j["ID_EMPLEADO"],
+		              "nom" => $j["NOMBRE_CORTO"],
+		              "rol" => $j["NOMBRE_ROL"],
+		              "costo" => $j["COSTO_EMPLEADO"]
+		          );
+		          array_push($l_recxpro, $rec);
+		      }
+		      $db = null;
+		      echo json_encode(array("nom_proy"=>$nom_proy,"l_recurso"=>$l_recxpro));
+		  } catch (PDOException $e) {
+		      echo json_encode(array("me" => $e->getMessage()));
+		  }
+		  
+	}
 ?>
