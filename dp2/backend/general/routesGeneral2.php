@@ -13,6 +13,9 @@ $app->post('/G_actualizarLeccionAprendida', 'G_postActualizarLeccionAprendida');
 $app->get('/G_devuelveLeccionesAprendidas', 'G_getLeccionesAprendidas'); //leer todas las lecciones aprendidas
 $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
 
+//Bonnie -- cierre de proyecto
+$app->post('/G_cerrarProyecto', 'G_postCerrarProyecto');
+$app->get('/G_devuelveValidarCierreProyecto/:id', 'G_getValidarSuccess');
 
 
 //jose -- RRHH
