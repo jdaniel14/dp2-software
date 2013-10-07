@@ -237,7 +237,7 @@
             */
             $("#progressEdt").show("slow");
             var jsonCliente = {
-                  idproyecto : "1"
+                  idproyecto : localStorage.getItem("idProyecto")
                   };
                    console.log("sape1");
                   $.ajax({
