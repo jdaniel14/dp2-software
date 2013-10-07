@@ -6,12 +6,12 @@ var deleteItem = "../../api/R_eliminarRiesgo";
 var getAllPackets = "../../api/R_listaPaquetesEDT";
 var getAllCategories = "../../api/R_listaCategoriaRiesgo";
 var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
-var getAllTeams = "../../api/R_listaEquipoRiesgo";
 var getAllKnownItems = "../../api/R_listarRiesgoComun";
 var addList = "../../api/R_asignarRiesgoComun"
 var addConfg = "../../api/R_registrarConfiguracionProyecto";
 var updateStatus = "../../api/R_modificarRiesgo";
 var getStatus = "../../api/R_estadoLogicoRiesgo";
+var getResponsable = "../../api/R_listarComiteRiesgo";
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -48,21 +48,10 @@ function main(){
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
 	// listarNivelesImpacto();
-	//listarEquipos();
+	listarResponsable();
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
 	// listarConfiguracion();
-
-	
-	
-	
-	
-	
-	
-	
-
-	
-
 
 	$("#btnRegistrar").click( function(){
 
@@ -77,7 +66,7 @@ function main(){
 			acciones: $('#accEsp').val(),
 			costoPotencial: $('#costRiesgo').val(),
 			demoraPotencial: $('#tiemRiesgo').val(),
-			nombreResponsable: $('#equRes').val()
+			idContacto: $('#equRes').val()
 		};
 
 		$('#errorNombre').hide();
@@ -86,6 +75,7 @@ function main(){
 		$('#errorProba').hide();
 		$('#errorCosto').hide();
 		$('#errorTiempo').hide();
+		$('#errorResponsable').hide();
 		if (validarRegistro(data,1)) {
 			console.log(data);
 			var jsonData = JSON.stringify(data);
@@ -116,7 +106,7 @@ function main(){
 			acciones: $('#accEspM').val(),
 			costoPotencial: $('#costRiesgoM').val(),
 			demoraPotencial: $('#tiemRiesgoM').val(),
-			nombreResponsable: $('#equResM').val()
+			idContacto: $('#equResM').val()
 		};
 		$('#errorNombreM').hide();
 		$('#errorCategoriaM').hide();
@@ -124,7 +114,8 @@ function main(){
 		$('#errorProbaM').hide();
 		$('#errorCostoM').hide();
 		$('#errorTiempoM').hide();
-		
+		$('#errorResponsableM').hide();
+
 		console.log(data);
 		if (validarRegistro(data,2)) {
 			var jsonData = JSON.stringify(data);
@@ -456,20 +447,20 @@ function listarNivelesImpacto(){
 		fail: codigoError
 	});
 }
-function listarEquipos(){
+function listarResponsable(){
 	var data = {
 		idProyecto: idProyectoLocal
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',
-		url: getAllTeams + '/' + data.idProyecto,
+		url: getResponsable + '/' + data.idProyecto,
 		dataType: "json",
 		success: function(data){
 			var lista = data;
 			$.each(lista, function (i, value){
-				$('#equRes').append("<option value="+ value.nombreResponsable +">" + value.nombre + "</option>");
-				$('#equResM').append("<option value="+ value.nombreResponsable +">" + value.nombre + "</option>");
+				$('#equRes').append("<option value="+ value.idContacto +">" + value.nombreCompleto + "</option>");
+				$('#equResM').append("<option value="+ value.idContacto +">" + value.nombreCompleto + "</option>");
 			});			
 		},
 		fail: codigoError
@@ -829,8 +820,10 @@ function validarRegistro(data, caso){
 			flag=false;
 			$('#errorImpacto').fadeIn('slow');
 		}
-		if (data.nombreResponsable==0){
-			data.nombreResponsable=null;
+		if (data.idContacto==0){
+			data.idContacto=null;
+			flag=false;
+			$('#errorResponsable').fadeIn('slow');
 		}
 		if (data.probabilidad==''){
 			data.probabilidad=null;
@@ -890,8 +883,10 @@ function validarRegistro(data, caso){
 			flag=false;
 			$('#errorImpactoM').fadeIn('slow');
 		}
-		if (data.nombreResponsable==0){
-			data.nombreResponsable=null;
+		if (data.idContacto==0){
+			data.idContacto=null;
+			flag=false;
+			$('#errorResponsableM').fadeIn('slow');
 		}
 		if (data.probabilidad==''){
 			data.probabilidad=null;
