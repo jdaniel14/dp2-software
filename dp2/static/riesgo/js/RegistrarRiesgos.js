@@ -12,6 +12,7 @@ var addConfg = "../../api/R_registrarConfiguracionProyecto";
 var updateStatus = "../../api/R_modificarRiesgo";
 var getStatus = "../../api/R_estadoLogicoRiesgo";
 var getResponsable = "../../api/R_listarComiteRiesgo";
+var getProbability = "../../api/R_obtenerProbabilidadRiesgo"
 
 var arregloRiesgo = new Array(
 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
@@ -53,6 +54,7 @@ function main(){
 	listarRiesgosComunes();
 	// listarConfiguracion();
 
+
 	$("#btnRegistrar").click( function(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
@@ -66,7 +68,8 @@ function main(){
 			acciones: $('#accEsp').val(),
 			costoPotencial: $('#costRiesgo').val(),
 			demoraPotencial: $('#tiemRiesgo').val(),
-			idContacto: $('#equRes').val()
+			idContacto: $('#equRes').val(),
+			idProbabilidadRiesgo: $('#idnivelProbabilidadRiesgo').val()
 		};
 
 		$('#errorNombre').hide();
@@ -76,6 +79,7 @@ function main(){
 		$('#errorCosto').hide();
 		$('#errorTiempo').hide();
 		$('#errorResponsable').hide();
+		console.log(data);
 		if (validarRegistro(data,1)) {
 			console.log(data);
 			var jsonData = JSON.stringify(data);
@@ -106,7 +110,8 @@ function main(){
 			acciones: $('#accEspM').val(),
 			costoPotencial: $('#costRiesgoM').val(),
 			demoraPotencial: $('#tiemRiesgoM').val(),
-			idContacto: $('#equResM').val()
+			idContacto: $('#equResM').val(),
+			idProbabilidadRiesgo: $('#idnivelProbabilidadRiesgoM').val()
 		};
 		$('#errorNombreM').hide();
 		$('#errorCategoriaM').hide();
@@ -679,6 +684,85 @@ $('#proRiesgoM').change(
 	});
 //Calculo automatico de Severidad - Fin
 
+
+//Calculo automatico del nivel de probabilidad
+
+// if (data.probabilidad==''){
+// 			data.probabilidad=null;
+// 			flag=false;
+// 			$('#errorProba').fadeIn('slow');
+// 		} else {
+// 			if (isNaN(data.probabilidad)){
+// 				$('#errorProba').fadeIn('slow');
+// 				flag = false;
+// 			} else {
+// 					if (validarProbaImpacto(data.probabilidad)){
+// 						if (!validarNumero(data.probabilidad)){
+// 							$('#errorProba').fadeIn('slow');
+// 							flag = false;
+// 						}
+// 					} else {
+// 						$('#errorProba').fadeIn('slow');
+// 						flag = false;
+// 					}
+// 			}	
+// 		}
+
+
+$('#proRiesgo').change(
+	function(){
+    	if (($('#proRiesgo').val()!='') && (validarProbaImpacto($('#proRiesgo').val())) && (validarNumero($('#proRiesgo').val()))){
+	     	var data = {
+	     		idProyecto:idProyectoLocal,
+	     		valor:$('#proRiesgo').val()
+	     	}
+	     	var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'GET',
+				url: getProbability +'/'+ jsonData,
+				success: function(data){
+					var obj = JSON.parse(data);
+					$('#descnivelProbabilidadRiesgo').val(obj.descripcion);
+					$('#idnivelProbabilidadRiesgo').val(obj.idProbabilidadRiesgo);
+				},
+				fail: codigoError
+			});
+
+     	} else {
+     		$('#descnivelProbabilidadRiesgoM').val('');
+     		$('#idnivelProbabilidadRiesgo').val('');
+     	}
+    });
+
+$('#proRiesgoM').change(
+    function(){
+    	if (($('#proRiesgoM').val()!='') && (validarProbaImpacto($('#proRiesgoM').val())) && (validarNumero($('#proRiesgoM').val()))){
+	     	var data = {
+	     		idProyecto:idProyectoLocal,
+	     		valor:$('#proRiesgoM').val()
+	     	}
+	     	var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'GET',
+				url: getProbability +'/'+ jsonData,
+				success: function(data){
+					var obj = JSON.parse(data);
+					$('#descnivelProbabilidadRiesgoM').val(obj.descripcion);
+					$('#idnivelProbabilidadRiesgoM').val(obj.idProbabilidadRiesgo);
+				},
+				fail: codigoError
+			});
+
+     	} else {
+     		$('#descnivelProbabilidadRiesgoM').val('');
+     		$('#idnivelProbabilidadRiesgoM').val('');
+     	}
+    });
+
+//Calculo automatico del nivel de probabilidad - Fin
+
+
+
 //validar Decimales
 
 function validarDecimales(numero)
@@ -688,8 +772,18 @@ function validarDecimales(numero)
 	} else return false;
 }
 
+function validarNumero(numero)
+{
+	if ((/^([1-9]\d*)$/.test(numero))){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
 function validarProbaImpacto(numero) {
-	if ((numero >= 0) && (numero <= 1)){
+	if ((numero >= 0) && (numero <= 100)){
 		return true;
 	} else return false;
 }
@@ -707,92 +801,92 @@ function confirmarRegistro(data){
 ///Validar configuracion
 
 function validarConfiguracion(data){
-	var muyBajo = $('#muyBajo').val();
-	var bajo = $('#bajo').val();
-	var medio = $('#medio').val();
-	var alto = $('#alto').val();
-	var muyAlto = $('#muyAlto').val();
+	// var muyBajo = $('#muyBajo').val();
+	// var bajo = $('#bajo').val();
+	// var medio = $('#medio').val();
+	// var alto = $('#alto').val();
+	// var muyAlto = $('#muyAlto').val();
 	var flag=false;
 
-	if (isNaN(muyBajo)){
-		$('#errorMuyBajo').fadeIn('slow');
-		flag = true;
-	} else {
-		if (validarProbaImpacto(muyBajo)){
-			if (!validarDecimales(muyBajo)){
-				//redondeo
-				data.muyBajo = Math.round((data.muyBajo* 100 ))/100;
-			}
-		} else {
-			$('#errorMuyBajo').fadeIn('slow');
-			flag = true;
-		}
-	}
+	// if (isNaN(muyBajo)){
+	// 	$('#errorMuyBajo').fadeIn('slow');
+	// 	flag = true;
+	// } else {
+	// 	if (validarProbaImpacto(muyBajo)){
+	// 		if (!validarDecimales(muyBajo)){
+	// 			//redondeo
+	// 			data.muyBajo = Math.round((data.muyBajo* 100 ))/100;
+	// 		}
+	// 	} else {
+	// 		$('#errorMuyBajo').fadeIn('slow');
+	// 		flag = true;
+	// 	}
+	// }
 
-	if (isNaN(bajo)){
-		$('#errorBajo').fadeIn('slow');
-		flag = true;
-	} else {
-		if (validarProbaImpacto(bajo)){
-			if (!validarDecimales(bajo)){
-				//redondeo
-				data.bajo = Math.round((data.bajo* 100 ))/100;
-			}
-		} else {
-			$('#errorBajo').fadeIn('slow');
-			flag = true;
-		}
-	}
+	// if (isNaN(bajo)){
+	// 	$('#errorBajo').fadeIn('slow');
+	// 	flag = true;
+	// } else {
+	// 	if (validarProbaImpacto(bajo)){
+	// 		if (!validarDecimales(bajo)){
+	// 			//redondeo
+	// 			data.bajo = Math.round((data.bajo* 100 ))/100;
+	// 		}
+	// 	} else {
+	// 		$('#errorBajo').fadeIn('slow');
+	// 		flag = true;
+	// 	}
+	// }
 
-	if (isNaN(medio)){
-		$('#errorMedio').fadeIn('slow');
-		flag = true;
-	} else {
-		if (validarProbaImpacto(medio)){
-			if (!validarDecimales(medio)){
-				//redondeo
-				data.medio = Math.round((data.medio* 100 ))/100;
-			}
-		} else {
-			$('#errorMedio').fadeIn('slow');
-			flag = true;
-		}
-	}
+	// if (isNaN(medio)){
+	// 	$('#errorMedio').fadeIn('slow');
+	// 	flag = true;
+	// } else {
+	// 	if (validarProbaImpacto(medio)){
+	// 		if (!validarDecimales(medio)){
+	// 			//redondeo
+	// 			data.medio = Math.round((data.medio* 100 ))/100;
+	// 		}
+	// 	} else {
+	// 		$('#errorMedio').fadeIn('slow');
+	// 		flag = true;
+	// 	}
+	// }
 
-	if (isNaN(alto)){
-		$('#errorAlto').fadeIn('slow');
-		flag = true;
-	} else {
-		if (validarProbaImpacto(alto)){
-			if (!validarDecimales(alto)){
-				//redondeo
-				data.alto = Math.round((data.alto* 100 ))/100;
-			}
-		} else {
-			$('#errorAlto').fadeIn('slow');
-			flag = true;
-		}
-	}
+	// if (isNaN(alto)){
+	// 	$('#errorAlto').fadeIn('slow');
+	// 	flag = true;
+	// } else {
+	// 	if (validarProbaImpacto(alto)){
+	// 		if (!validarDecimales(alto)){
+	// 			//redondeo
+	// 			data.alto = Math.round((data.alto* 100 ))/100;
+	// 		}
+	// 	} else {
+	// 		$('#errorAlto').fadeIn('slow');
+	// 		flag = true;
+	// 	}
+	// }
 
-	if (isNaN(muyAlto)){
-		$('#errorMuyAlto').fadeIn('slow');
-		flag = true;
-	} else {
-		if (validarProbaImpacto(muyAlto)){
-			if (!validarDecimales(muyAlto)){
-				//redondeo
-				data.muyAlto = Math.round((data.muyAlto* 100 ))/100;
-			}
-		} else {
-			$('#errorMuyAlto').fadeIn('slow');
-			flag = true;
-		}
-	}
+	// if (isNaN(muyAlto)){
+	// 	$('#errorMuyAlto').fadeIn('slow');
+	// 	flag = true;
+	// } else {
+	// 	if (validarProbaImpacto(muyAlto)){
+	// 		if (!validarDecimales(muyAlto)){
+	// 			//redondeo
+	// 			data.muyAlto = Math.round((data.muyAlto* 100 ))/100;
+	// 		}
+	// 	} else {
+	// 		$('#errorMuyAlto').fadeIn('slow');
+	// 		flag = true;
+	// 	}
+	// }
 
-	if ((muyBajo >= bajo) || (bajo >= medio) || (medio >= alto) || (alto >= muyAlto)) {
-		$('#errorImpactos').fadeIn('slow');
-		flag = true;
-	}
+	// if ((muyBajo >= bajo) || (bajo >= medio) || (medio >= alto) || (alto >= muyAlto)) {
+	// 	$('#errorImpactos').fadeIn('slow');
+	// 	flag = true;
+	// }
 	
 	return flag;
 }
@@ -835,9 +929,9 @@ function validarRegistro(data, caso){
 				flag = false;
 			} else {
 					if (validarProbaImpacto(data.probabilidad)){
-						if (!validarDecimales(data.probabilidad)){
-							//redondeo
-							data.probabilidad = Math.round((data.probabilidad* 100 ))/100;
+						if (!validarNumero(data.probabilidad)){
+							$('#errorProba').fadeIn('slow');
+							flag = false;
 						}
 					} else {
 						$('#errorProba').fadeIn('slow');
@@ -898,9 +992,9 @@ function validarRegistro(data, caso){
 				flag = false;
 			} else {
 					if (validarProbaImpacto(data.probabilidad)){
-						if (!validarDecimales(data.probabilidad)){
-							//redondeo
-							data.probabilidad = Math.round((data.probabilidad* 100 ))/100;
+						if (!validarNumero(data.probabilidad)){
+							$('#errorProba').fadeIn('slow');
+							flag = false;
 						}
 					} else {
 						$('#errorProbaM').fadeIn('slow');
