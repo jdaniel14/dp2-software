@@ -105,7 +105,7 @@ function CR_postActividades() {//servicio8
 
 function CR_Guardar_Calendario_Base($calendarioBase){
 	
-	$sql = "UPDATE CALENDARIO_BASE SET FERIADOS=? , nombre=? WHERE id_calendario_base=? ; COMMIT;";
+	$sql = "UPDATE CALENDARIO_BASE SET feriados=? , nombre=? WHERE id_calendario_base=? ; COMMIT;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
@@ -221,6 +221,7 @@ function CR_consultarInfoActividades($idProyecto) {
 	//echo date('Y-m-d', time());
 	//SELECT UNIX_TIMESTAMP('2013-11-12');
 	//SELECT FROM_UNIXTIME(1384146000000/1000);
+	date_default_timezone_set('America/Lima');
     $recursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     $paquetesEDT = CR_consultarPaqueteEDT($idProyecto);
     $lista_mapeo = CR_obtenerListaMaps($recursos);
@@ -249,7 +250,7 @@ function CR_consultarInfoActividades($idProyecto) {
 			if($p["fecha_actual_inicio"]=="")$p["fecha_actual_inicio"]=date('Y-m-d', time());
 			if($p["fecha_actual_fin"]=="")$p["fecha_actual_fin"]=date('Y-m-d', time());
 			//echo "mira ";
-            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "realStart" =>  $p["fecha_actual_inicio"], "realEnd" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0,"progress_cost" => $p["PORC_AVANCE_COSTO_ESTIMADO"] + 0 );
+            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "realStart" =>  $p["fecha_actual_inicio"], "realEnd" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0,"progress_cost" => $p["porc_avance_costo_estimado"] + 0 );
             array_push($lista_actividad, $actividad);
         }
 
@@ -261,7 +262,7 @@ function CR_consultarInfoActividades($idProyecto) {
     }
     //echo "Hardcode";
 
-    date_default_timezone_set('America/Lima');
+    //date_default_timezone_set('America/Lima');
 
     $milliseconds = round(microtime(true) * 1000);
     $offset = $milliseconds - 1346623200000;
@@ -322,7 +323,7 @@ function CR_consultarCalendarioBase($idProyecto) {
     //Desconectarse(conexion);
     //Hardcode
     //$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
-	$sql="select b.id_calendario_base,b.nombre ,b.FERIADOS from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
+	$sql="select b.id_calendario_base,b.nombre ,b.feriados from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
 	$rec=null;
 	try {
         $db = getConnection();
@@ -331,7 +332,7 @@ function CR_consultarCalendarioBase($idProyecto) {
 
        
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("id" => $j["id_calendario_base"], "name" =>  $j["nombre"], "holidays" => $j["FERIADOS"]);
+            $rec = array("id" => $j["id_calendario_base"], "name" =>  $j["nombre"], "holidays" => $j["feriados"]);
         }
 
         $db = null;
@@ -449,7 +450,7 @@ function CR_obtenerRespuestaFracaso() {
 
 function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
 
-    $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin,PORC_AVANCE_COSTO_ESTIMADO) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?);commit;";
+    $sql2 = "INSERT INTO ACTIVIDAD (nombre_actividad,id_proyecto,id_paquete_trabajo,id_asiento_contable,fecha_plan_inicio,fecha_plan_fin, fecha_actual_inicio,fecha_actual_fin,numero_fila,profundidad,predecesores,avance,costo,dias,estado,codigo,descripcion,inicio_hash,fin_hash,eliminado,hito_inicio,hito_fin,porc_avance_costo_estimado) VALUES (? ,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?);commit;";
     //$test=null
     date_default_timezone_set('America/Lima');
     try {
