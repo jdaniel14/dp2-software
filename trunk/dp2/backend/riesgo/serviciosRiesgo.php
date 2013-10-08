@@ -278,10 +278,12 @@
 
     }
 
-    function R_getNivelImpactoTipoImpacto1($var){
-        
-        $impacto = json_decode($var);
-        echo $impacto["idProyecto"];
+    //function R_getNivelImpactoTipoImpacto1($var){
+    function R_getNivelImpactoTipoImpacto1(){	
+    	$request = \Slim\Slim::getInstance()->request(); //json parameters
+    	$impacto = json_decode($request->getBody()); //object convert
+        //$impacto = json_decode($var);
+        echo $impacto->{"idProyecto"};
         
         /*
         $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
