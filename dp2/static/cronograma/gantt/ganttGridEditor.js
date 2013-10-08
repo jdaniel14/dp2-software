@@ -79,6 +79,38 @@ GridEditor.prototype.addTask = function(task, row) {
 
   var taskRow = $.JST.createFromTemplate(task, "TASKROW");
   //save row element on task
+  
+  //Termina la creacion de cada fila que ingresa a la tabla al lado del Gantt
+  
+  // Bloqueo de la primera fila
+  
+  if(taskRow.attr("taskid") == -1){
+	  
+	  console.log(taskRow);
+	  console.log("Task ID: " + taskRow[0].attributes.taskid.value);
+	  
+	  $.each(taskRow.children('th'),function(e,el){
+		  $(el).removeClass("gdfCell edit");		  
+	  });
+	  
+	  $.each(taskRow.children('td'),function(e,el){
+		  
+		  $.each($(el).children('div'),function(e1,el1){
+			  if($(el1).attr("class") == "taskStatus cvcColorSquare"){
+				  $(this).hide();
+			  }	 
+		  });
+		  
+		  $.each($(el).children('input'),function(e1,el1){
+			 el1.readOnly = true; 
+		  });
+		   
+	  });
+	  
+  }
+  
+  //Fin de bloqueo de la primera fila
+  
   task.rowElement = taskRow;
 
   this.bindRowEvents(task, taskRow);
@@ -394,25 +426,42 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   taskEditor.find("#start").val(new Date(task.start).format());
   taskEditor.find("#end").val(new Date(task.end).format());
     
-  var arreglo = task.realStart.split('-');
-  
-  var anhoS = arreglo[0];
-  var mesS = arreglo[1] ;
-  var diaS = arreglo[2];
-  
-  var rS = new Date(anhoS,mesS - 1,diaS);
-  
-  var arreglo2 = task.realEnd.split('-');
-  
-  var anhoE = arreglo2[0];
-  var mesE = arreglo2[1] ;
-  var diaE = arreglo2[2];
-  
-  var rE = new Date(anhoE,mesE - 1, diaE);
-    
-  taskEditor.find("#realStart").val(rS.format());
-  taskEditor.find("#realEnd").val(rE.format());
+  if((task.realStart == undefined)){
+	  //Caso del lapisito de un task nuevo
+	  
+	  var today = new Date();
+	  var dd = today.getDate();
+	  var mm = today.getMonth()+1; //January is 0!
 
+	  var yyyy = today.getFullYear();
+	  if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = dd+'/'+mm+'/'+yyyy;
+	  
+	  taskEditor.find("#realStart").val(today);
+	  taskEditor.find("#realEnd").val(today);
+  }
+  else{
+	  
+	  var arreglo = task.realStart.split('-');
+	  
+	  var anhoS = arreglo[0];
+	  var mesS = arreglo[1] ;
+	  var diaS = arreglo[2];
+	  
+	  var rS = new Date(anhoS,mesS - 1,diaS);
+	  
+	  var arreglo2 = task.realEnd.split('-');
+	  
+	  var anhoE = arreglo2[0];
+	  var mesE = arreglo2[1] ;
+	  var diaE = arreglo2[2];
+	  
+	  var rE = new Date(anhoE,mesE - 1, diaE);
+	  
+	  taskEditor.find("#realStart").val(rS.format());
+	  taskEditor.find("#realEnd").val(rE.format());
+
+  }
+  
   //taskEditor.find("[name=depends]").val(task.depends);
 
   //make assignments table
