@@ -25,7 +25,10 @@ var currentDate = new Date();
 		  ge.init(workSpace);
 		
 		  //inject some buttons (for this demo only)
-		  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>Limpiar</button>")
+		  
+		  //Borrado : .append("<button onclick='clearGantt();' class='button'>Limpiar</button>")
+		  
+		  $(".ganttButtonBar div")
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
 		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
 				  .append("<button  class='button'>Exportar</button>")
