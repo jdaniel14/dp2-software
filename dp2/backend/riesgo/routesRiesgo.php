@@ -14,8 +14,8 @@
 	$app->get('/R_estadoLogicoRiesgo/:id', 'R_getEstadoLogicoRiesgo');
 
 	//Actualizando Sprint 1
-	$app->get('/R_obtenerNivelImpactoTipoImpacto1/:var', 'R_getNivelImpactoTipoImpacto1');
-
+	//$app->get('/R_obtenerNivelImpactoTipoImpacto1/:var', 'R_getNivelImpactoTipoImpacto1');
+	$app->post('/R_obtenerNivelImpactoTipoImpacto1', 'R_getNivelImpactoTipoImpacto1');
 
 
 
