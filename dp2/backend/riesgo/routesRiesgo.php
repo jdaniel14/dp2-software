@@ -12,7 +12,12 @@
 	$app->get('/R_listaNivelesImpacto/:id', 'R_getListaNivelesImpacto');//Obtener la lista de niveles de impacto
 	$app->get('/R_listaEquipoRiesgo/:id', 'R_getListaEquipoRiesgo');//Obtener la lista de equipos de riesgo
 	$app->get('/R_estadoLogicoRiesgo/:id', 'R_getEstadoLogicoRiesgo');
-	
+
+	//Actualizando Sprint 1
+	$app->get('/R_obtenerNivelImpactoTipoImpacto1/:var', 'R_getNivelImpactoTipoImpacto1');
+
+
+
 
 	$app->put('/R_cambiarEstadoLogicoRiesgo/:id', 'R_setEstadoLogicoRiesgo');
 	$app->put('/R_modificarRiesgo/:id','R_updateRiesgo');

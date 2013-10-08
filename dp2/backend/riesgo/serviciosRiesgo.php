@@ -18,8 +18,8 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico,disparador) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1,:disparador)";
+        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_categoria_riesgo,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico,disparador,id_empleado) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_categoria_riesgo,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1,:disparador,:id_empleado)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -34,6 +34,7 @@
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->bindParam("disparador", $riesgo->nombreResponsable);
+            $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
             $stmt->execute();
             $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
             $db = null;
@@ -276,6 +277,56 @@
         }
 
     }
+
+    function R_getNivelImpactoTipoImpacto1($var){
+        
+        $impacto = json_decode($var);
+        echo $impacto["idProyecto"];
+        
+        /*
+        $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
+        FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
+        WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
+        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto;";// and limite_menor<=:valor1 and limite_mayor>=:valor2;";
+        try {
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
+            $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
+            //$stmt->bindParam("valor1", $impacto->valor);
+            //$stmt->bindParam("valor2", $impacto->valor);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "descripcion" => $row->descripcion);
+            $db = null;
+            echo json_encode($data);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        */
+    }
+
+    function R_getNivelImpactoTipoImpacto2($var){
+        $impacto = json_decode($var);
+        $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
+        FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
+        WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
+        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor and :valor<=limite_mayor;";
+        try {
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
+            $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
+            $stmt->bindParam("valor", $impacto->valor);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "descripcion" => $row->descripcion);
+            $db = null;
+            echo json_encode($data);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
 /*
     function R_setRiesgo($id){
         $request = Slim::getInstance()->request();
@@ -647,8 +698,8 @@
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
-                            "idProyecto" => $row['id_proyecto'],
-                            "descripcion" => $row['descripcion']
+                            "descripcion" => $row['descripcion'],
+                            "tipo" => $row['tipo'],
                             );
                 array_push($arregloListaTipoImpacto,$data);
             }
