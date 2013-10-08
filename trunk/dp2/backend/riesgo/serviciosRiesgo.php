@@ -14,12 +14,12 @@
         echo "Probando :D";
 	}
 	
-    function R_pruebaR(){
-        $request = \Slim\Slim::getInstance()->request();
-        $val = $request->params();
-        $id1= $val["id1"];
-        $id2= $val["id2"];
-        //echo $id1+" "+$id2;
+    function R_pruebaR($json){
+        $request = json_decode($json);
+        $id1= $request->parametro1;
+        $id2= $request->parametro2;
+        echo $id1;
+        echo $id2;
         echo "Probando :D";
     }
 
@@ -288,10 +288,8 @@
     }
 
     //function R_getNivelImpactoTipoImpacto1($var){
-    function R_getNivelImpactoTipoImpacto1(){	
-    	$request = \Slim\Slim::getInstance()->request(); 
-    	$impacto = json_decode($request->getBody()); 
-        
+    function R_getNivelImpactoTipoImpacto1($json){	
+        $impacto = json_decode($json);    
         $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
         FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
         WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
@@ -299,9 +297,9 @@
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $impacto->{"idProyecto"});
-            $stmt->bindParam("id_tipo_impacto", $impacto->{"idTipoImpacto"});
-            $stmt->bindParam("valor", $impacto->{"valor"});
+            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
+            $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
+            $stmt->bindParam("valor", $impacto->valor);
             $stmt->execute();
             $row = $stmt->fetchObject();
             $data=array("idNivelImpacto" => $row->id_nivel_impacto, "descripcion" => $row->descripcion);
@@ -312,9 +310,8 @@
         }        
     }
 
-    function R_getNivelImpactoTipoImpacto2(){
-        $request = \Slim\Slim::getInstance()->request(); 
-        $impacto = json_decode($request->getBody()); 
+    function R_getNivelImpactoTipoImpacto2($json){
+        $impacto = json_decode($json);
         
         $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
         FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
@@ -324,9 +321,9 @@
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $impacto->{"idProyecto"});
-            $stmt->bindParam("id_tipo_impacto", $impacto->{"idTipoImpacto"});
-            $stmt->bindParam("descripcion", $impacto->{"descripcion"});
+            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
+            $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
+            $stmt->bindParam("descripcion", $impacto->descripcion);
             $stmt->execute();
             $row = $stmt->fetchObject();
             $data=array("idNivelImpacto" => $row->id_nivel_impacto, "descripcion" => $row->descripcion);
@@ -337,9 +334,8 @@
         }
     }
 
-    function R_getProbabilidadRiesgo(){
-        $request = \Slim\Slim::getInstance()->request(); 
-        $impacto = json_decode($request->getBody()); 
+    function R_getProbabilidadRiesgo($json){
+        $impacto = json_decode($json);
         
         $query = "SELECT id_probabilidad_riesgo, descripcion FROM PROBABILIDAD_RIESGO
                 WHERE id_proyecto=:id_proyecto and minimo<=:valor and :valor<=maximo;";
@@ -347,8 +343,8 @@
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $impacto->{"idProyecto"});
-            $stmt->bindParam("valor", $impacto->{"valor"});
+            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
+            $stmt->bindParam("valor", $impacto->valor);
             $stmt->execute();
             $row = $stmt->fetchObject();
             $data=array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo, "descripcion" => $row->descripcion);
