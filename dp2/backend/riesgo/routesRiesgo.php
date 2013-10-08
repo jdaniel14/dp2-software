@@ -1,6 +1,6 @@
 <?php
 	$app->get('/R_prueba', 'R_prueba'); // Prueba
-	
+	$app->get('/R_pruebaR', 'R_pruebaR');
 
 	//Riesgo
 	$app->post('/R_registrarRiesgo', 'R_postRegistrarRiesgo');//Registrar un riesgo
@@ -16,6 +16,8 @@
 	//Actualizando Sprint 1
 	//$app->get('/R_obtenerNivelImpactoTipoImpacto1/:var', 'R_getNivelImpactoTipoImpacto1');
 	$app->post('/R_obtenerNivelImpactoTipoImpacto1', 'R_getNivelImpactoTipoImpacto1');
+	$app->post('/R_obtenerNivelImpactoTipoImpacto2', 'R_getNivelImpactoTipoImpacto2');
+	$app->post('/R_obtenerProbabilidadRiesgo', 'R_getProbabilidadRiesgo');
 
 
 
