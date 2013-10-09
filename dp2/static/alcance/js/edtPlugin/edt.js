@@ -296,7 +296,7 @@
                                   };
                     $.ajax({
                       type: "POST",
-                      data: JSON.stringify(jsonResult),
+                      data: JSON.stringify(jsonCliente),
                       dataType: "json",
                       contentType: "application/json; charset=utf-8",
                       url: "../../api/eliminarEdt",
