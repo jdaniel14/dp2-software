@@ -154,30 +154,31 @@ class CO_Indicador {
 	}
 }
 
-/*
-class Proyecto {
-	public $subtotalERS;
-	public $subtotalDocArq;
-	public $subtotalModeloDatos;
-	public $subtotalAnalisisDiseno;
-	public $subtotalImplementacion;
-	public $subtotalPruebas
+class CO_Cuenta {
+	public $nombre;
+	public $costoCuenta;
+	public $costoTotalCuenta;
+	public $listaCuentasHijo;
 	
-	public function calcularSubtotalAnalisisDiseno() {
-		$subtotalAnalisisDiseno = $subtotalERS + $subtotalDocArq + $subtotalModeloDatos;
+	function __construct($nombre, $costoCuenta, $listaCuentasHijo) {
+		$this->nombre = $nombre;
+		$this->costoCuenta = $costoCuenta;
+		$this->costoTotalCuenta= 0;
+		$this->listaCuentasHijo= $listaCuentasHijo;
+	}
+   
+	function sumarCostosCuenta() {
+		$this->costoTotalPaquete = $this->costoPaquete;
+		
+		//en caso tenga hijos, se le suma el costo de los hijos.
+		if (($this->listaCuentasHijo!= null) && (sizeof($this->listaCuentasHijo) > 0)) {
+			foreach ($this->listaCuentasHijo as $cuenta) {
+				$cuenta->sumarCostosCuenta();
+				$this->costoTotalCuenta+= $cuenta->costoTotalCuenta;
+			}
+			unset($cuenta);
+		}
 	}
 }
-
-function getPresupuesto(){
-	$proyecto = new Proyecto();//array(array("Pintura","1","Litros"), array("Cemento","","Litros"));
-	$proyecto->subtotalERS = 100;
-	$proyecto->subtotalDocArq = 100;
-	$proyecto->subtotalModeloDatos = 100;
-	$proyecto->subtotalImplementacion = 100;
-	$proyecto->subtotalPruebas = 100;
-	$proyecto->calcularSubtotalAnalisisDiseno();
-	echo json_encode($proyecto);	
-}
-*/
 
 ?>
