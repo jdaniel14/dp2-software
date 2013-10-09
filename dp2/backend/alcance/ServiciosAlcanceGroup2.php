@@ -16,6 +16,7 @@ function getEdt(){
        $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
        $pstmt->execute(array($idproyecto));
        $paquete=$pstmt->fetch(PDO::FETCH_ASSOC);
+       $idEDT = $paquete["id_edt"];
        $idPIni = $paquete["id_paquete_trabajo_inicial"];
        $version=$paquete["version"];
   
@@ -29,6 +30,7 @@ function getEdt(){
 
        //armar objeto
        $arbol = new EdtArbol($pIni["id_paquete_trabajo"], $pIni["nombre"],count($hijos) ,$pIni["dias"], $pIni["descripcion"], $hijos);
+       $arbol->idedt = intval($idEDT);
        echo json_encode($arbol);
     }
 
