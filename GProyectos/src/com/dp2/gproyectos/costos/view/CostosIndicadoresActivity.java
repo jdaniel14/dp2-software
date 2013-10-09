@@ -24,20 +24,23 @@ import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CostosIndicadoresActivity extends FragmentActivity implements Loadingable {
 	private String idProyecto;
 	private String nombreProyecto;
 	
-	private ArrayList<IndicadorBean> indicadores;
+	private static ArrayList<IndicadorBean> indicadores;
 	private IndicadorAdapter adapter;
 	private ListView lvIndicadores;
 	
@@ -48,6 +51,27 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 	private static int selectedYear;
 	private Button btnVerIndicadores;
 	private Calendar currentDate;
+	
+	@Override
+	  protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    // save the current data, for instance when changing screen orientation
+	    outState.putSerializable("selectedDay", selectedDay);
+	    outState.putSerializable("selectedMonth", selectedMonth);
+	    outState.putSerializable("selectedYear", selectedYear);
+	    outState.putSerializable("indicadores", indicadores);
+	  }
+
+	  @Override
+	  protected void onRestoreInstanceState(Bundle savedState) {
+	    super.onRestoreInstanceState(savedState);
+	    // restore the current data, for instance when changing the screen
+	    // orientation
+	    selectedDay = (Integer) savedState.getSerializable("selectedDay");
+	    selectedMonth = (Integer) savedState.getSerializable("selectedMonth");
+	    selectedYear = (Integer) savedState.getSerializable("selectedYear");
+	    indicadores = (ArrayList<IndicadorBean>) savedState.getSerializable("indicadores");
+	  }
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +136,32 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 			
 		}
 		
+	}
+	
+	@Override
+	  protected void onResume() {
+	    super.onResume();
+    	if (indicadores != null) {
+			
+			adapter = new IndicadorAdapter(this, R.layout.costos_indicadores_lista_item, indicadores);
+			lvIndicadores.setAdapter(adapter);
+			lvIndicadores.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> l, View v, int position,
+						long id) {
+					//IndicadorBean indicador = indicadores.get(position);
+				}
+			});
+			
+			runOnUiThread(new Runnable() {
+			     public void run() {
+			    	 //int i = indicadores.size();
+			    	 //txtMensaje.setText("# de indicadores recibidos: " + i);
+			    	 txtMensaje.setText("");
+			    }
+			});
+		}
 	}
 	
 	private boolean isIdProyectoValido() {
