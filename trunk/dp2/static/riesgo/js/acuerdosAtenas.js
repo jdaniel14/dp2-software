@@ -1,6 +1,6 @@
 var cantidad=0;
 $(document).ready(main);
-// localStorage.setItem("idProyecto", 1);
+ localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 
 function validAtenas2(){
@@ -17,16 +17,26 @@ function validAtenas2(){
 function main() {
 
     listarAcuerdos();
-    cantidad = $("#suma").val();
-    $("span").click(function()
+    var cantidad = $("#suma").val();
+  $("#agregar").click(function()
     {
-
-        cantidad = parseInt(cantidad) + 1;
-        $("#suma").val(cantidad);
-
-        // add new row to table using addTableRow function
-        addTableRow($("table"));
-        // prevent button redirecting to new page
+        var valor=$("#tablaAcuerdos tr").length;
+        var  ultimo=parseInt(valor)-1;
+        //el mayor-1 lo desabilito y luego lo habilito el disabled
+   
+        $('#fechas'+ultimo).prop('disabled', false);
+        $('#horas_'+ultimo).prop('disabled', false);
+        $('#acuerdo'+ultimo).prop('disabled', false);
+        
+        addTableRow();
+        maxId = parseInt(maxId) + 1;
+       
+        $('#fechas' + maxId).val("");
+        $('#horas_' + maxId).val("");
+        $('#acuerdo' + maxId).val("");
+        $('#fechas' + maxId).prop('disabled', false);
+        $('#horas_' + maxId).prop('disabled', false);
+        $('#acuerdo' + maxId).prop('disabled', false);
         return false;
     });
 
@@ -37,27 +47,24 @@ function main() {
 
 		if (!validAtenas2())
 			return;
-        cantidad = $("#suma").val(); //cantidad de inputs en total
-
+        
 
         var data = {
             idProyecto: idProyectoLocal,
             listaFechas: []
-        }
-        var cantidad2 = $("#tablaAcuerdos tr").length;
-
-        //var listaFechas = new Array();
-
-        for (var i = 1; i <= cantidad2; i++) {
-            var obj = {
-                fecha: $("#fechas" + i).val(), // valor de inputs
-                hora: $("#horas_" + i).val(),
-                acuerdo: $("#acuerdo" + i).val()
-
-            };
+        };
+      //  var cantidad2 = $("#tablaAcuerdos tr").length;
+        var i=0;
+       $(".diaAcuerdos").each(function(){
+          
+           var obj = {
+              fecha: $($("input.diaAcuerdos")[i]).val(),
+              hora: $($("input.horasAcuerdos")[i]).val(),
+              acuerdo: $($("input.acuerdosA")[i]).val()
+           };
+           i++;
             data.listaFechas[i - 1] = obj;
-
-        }
+       });
 
 
         console.log(data);
@@ -88,10 +95,10 @@ function main() {
 //////FUNCION AGREGAR FILA A LA TABLA /////////////////
 // function to add a new row to a table by cloning the last row and 
 // incrementing the name and id values by 1 to make them unique
-function addTableRow(table)
+function addTableRow()
 {
     // clone the last row in the table
-    var $tr = $(table).find("tbody tr:last").clone();
+    var $tr = $("#tablaAcuerdosMod").find("tbody tr:last").clone();
     // get the name attribute for the input and select fields
     $tr.find("input,select").attr("name", function()
     {
@@ -103,44 +110,15 @@ function addTableRow(table)
         // repeat for id attributes
     }).attr("id", function() {
         var parts = this.id.match(/(\D+)(\d+)$/);
+          maxId = parts[2];
         return parts[1] + ++parts[2];
     });
     // append the new row to the table
-    $(table).find("tbody tr:last").after($tr);
+    $("#tablaAcuerdosMod").find("tbody tr:last").after($tr);
 }
 
 
 function listarAcuerdos() {
-
-   // var cantidad = $("#suma").val();
-    // alert(cantidad);
-
-    //HARDCODEADO
-//    var data = $.parseJSON('[{"idAcuerdo":1, "fecha": "2013-10-09", "hora":"23:15:00","acuerdo":"Se plantea que"},{"idAcuerdo":2,"fecha": "2013-10-08", "hora":"09:00:00","acuerdo":"Tomado desde"}]');
-//    //var data = $.parseJSON('[{"idAcuerdo":1, "fechas1": "2013-10-09", "horas_1":"23:15:00","acuerdo1":"Se plantea que"}]');
-//
-//
-//    console.log(data);
-//    var i = 1;
-//    for (obj in data) {
-//
-//        //var fecha = new Date();
-//        var fecha = data[obj]["fecha"];
-//        var acuerdo = data[obj]["acuerdo"];
-//        var hora = data[obj]["hora"];
-//        var idAcuerdo = data[obj]["idAcuerdo"];
-//
-//
-//        $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
-//
-//        //aplicar un if $("#my_row_101").remove();
-//        i++;
-//
-//    }
-
-    //alert($("#tablaAcuerdos tr").length); //cuento cantidad de filas
-//    if ($("#tablaAcuerdos tr").length > 1)
-//        $("#my_row_101").remove();
 
     var data = {
         idProyecto: idProyectoLocal
@@ -159,14 +137,13 @@ function listarAcuerdos() {
                 var idAcuerdo = data[obj]["idAcuerdo"];
 
 
-                $("#tablaAcuerdos").append("<tr><td><input name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td> <td><input type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
+                $("#tablaAcuerdosMod").append("<tr><td><input class=\"diaAcuerdos\" disabled name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td><input disabled  class=\"horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  class=\"acuerdosA\" disabled name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
 
                 //aplicar un if $("#my_row_101").remove();
                 
 
             }
-            if ($("#tablaAcuerdos tr").length > 1)
-                $("#my_row_101").remove();
+
 
 
         },
