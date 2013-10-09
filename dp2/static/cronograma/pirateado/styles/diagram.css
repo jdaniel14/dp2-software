@@ -1,0 +1,153 @@
+	.node 
+		{
+		position: absolute;
+		background: url(images/transparent.gif) repeat;
+		}
+	.node .ui-resizable-se{background:url(../images/se.png) no-repeat;cursor: se-resize; width: 12px; height: 12px; right: 6px; bottom: 6px; }
+	.node .ui-resizable-sw{background:url(../images/sw.png) no-repeat;cursor: sw-resize; width: 12px; height: 12px; left: 5px; bottom: 5px;}
+	.node .ui-resizable-nw{background:url(../images/nw.png) no-repeat;cursor: nw-resize; width: 12px; height: 12px; left: 5px; top: 5px;}
+	.node .ui-resizable-ne{background:url(../images/ne.png) no-repeat;cursor: ne-resize; width: 12px; height: 12px; right: 5px; top: 5px;}
+
+	.selected { border: 2px dotted red;}
+
+
+
+
+	.simple_color_palette 
+		{
+			position: absolute;
+			z-index: 10001;
+			border: 1px solid #AAAAAA;
+			background-color: #EEEEEE;
+			width: 144px;
+			padding: 2px;
+		}
+	.color_palette_item
+		{
+			border: 1px solid #EEEEEE;
+			width: 12px;
+			height: 12px;
+			float: left;
+			padding: 1px;
+			cursor: pointer;
+		}
+	
+	.simple_node_palette 
+		{
+			position: absolute;
+			z-index: 10001;
+			border: 1px solid #AAAAAA;
+			background-color: #EEEEEE;
+			width: 144px;
+			padding: 2px;
+		}
+	.node_palette_item
+		{
+			border: 1px solid #EEEEEE;
+			width: 40px;
+			height: 40px;
+			float: left;
+			padding: 2px;
+			cursor: pointer;
+		}
+
+	.simple_font_size_palette 
+		{
+			position: absolute;
+			z-index: 10001;
+			border: 1px solid #AAAAAA;
+			background-color: #EEEEEE;
+			width: 124px;
+			padding: 2px;
+		}
+	.font_size_palette_item
+		{
+			border: 1px solid #EEEEEE;
+			width: 120px;
+			height: 30px;
+			float: left;
+			padding: 1px;
+			cursor: pointer;
+		}
+	.simple_font_family_palette 
+		{
+			position: absolute;
+			z-index: 10001;
+			border: 1px solid #AAAAAA;
+			background-color: #EEEEEE;
+			width: 124px;
+			padding: 2px;
+		}
+	.font_family_palette_item
+		{
+			border: 1px solid #EEEEEE;
+			width: 120px;
+			height: 30px;
+			float: left;
+			padding: 1px;
+			cursor: pointer;
+			font-size: 13pt;	
+		}
+	.simple_border_width_palette 
+		{
+			position: absolute;
+			z-index: 10001;
+			border: 1px solid #AAAAAA;
+			background-color: #EEEEEE;
+			width: 124px;
+			padding: 2px;
+		}
+	.border_width_palette_item
+		{
+			border: 1px solid #EEEEEE;
+			width: 120px;
+			height: 30px;
+			float: left;
+			padding: 1px;
+			cursor: pointer;
+			font-size: 13pt;
+			padding-top:10px;	
+		}
+
+	.ui-button .ui-icon.add_node
+		{
+    			background-image: url('../images/add_node.gif');
+		}
+	.ui-button .ui-icon.delete_node
+		{
+    			background-image: url('../images/delete_node.gif');
+		}
+
+	.ui-button .ui-icon.save_diagram
+		{
+    			background-image: url('../images/save_diagram.gif');
+		}
+	.ui-button .ui-icon.background_color
+		{
+    			background-image: url('../images/background_color.gif');
+		}
+
+	.ui-button .ui-icon.border_color
+		{
+    			background-image: url('../images/border_color.gif');
+		}
+
+	.ui-button .ui-icon.font_color
+		{
+    			background-image: url('../images/font_color.gif');
+		}
+
+	.ui-button .ui-icon.font_size
+		{
+    			background-image: url('../images/font_size.gif');
+		}
+
+	.ui-button .ui-icon.font_family
+		{
+    			background-image: url('../images/font_family.gif');
+		}
+
+	.ui-button .ui-icon.border_width
+		{
+    			background-image: url('../images/border_width.gif');
+		}
