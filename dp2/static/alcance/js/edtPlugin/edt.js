@@ -250,6 +250,7 @@
                       success: function (data) {
                           /* Custom jQuery for the example */
                             //armarEdt( data, 0 );
+                            localStorage.setItem( "idedt", data.idedt );
                             edtAlgorithm( data );
                             localStorage.setItem("navegacionEDT","actual");
                             console.log("sape1");
@@ -289,6 +290,20 @@
                   $("#controllerButton").hide("slow");
                   $("#containerEdt").hide("slow");
                   $("#MostrarEdt").text("Crear EDT");
+                  //eliminarEdr
+                   var jsonCliente = {
+                                  idedt : localStorage.getItem("idedt"),
+                                  };
+                    $.ajax({
+                      type: "POST",
+                      data: JSON.stringify(jsonResult),
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                      url: "../../api/eliminarEdt",
+                      success: function (data) {
+                          console.log(data, "eliminado");
+                      }
+        });
            });
 
 
