@@ -11,11 +11,6 @@
         <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="../../assets/js/html5shiv.js"></script>
-          <script src="../../assets/js/respond.min.js"></script>
-        <![endif]-->
     </head>
     <body>
         <div id="header"></div>
@@ -45,17 +40,17 @@
                     <form  name="form1">
                         <table class="table-striped" width="90%" id="tablaTiposRiesgos">
                             <tr>
-                                <td width="40%"><b>Tipo de Impacto</b></td>
-                                <td width="40%"><b>Tipo</b></td>
+                                <td width="20%"><b>Tipo de Impacto</b></td>
+                                <td width="20%"><b>Tipo Formato</b></td>
                                  <td width="20%"><b>Eliminar</b></td>
                                  
                             </tr>
 
                             <tbody class="cuerpo-tabla" id="tablaRiesgos">
                                 <!--Contenido Tipos de Riesgos-->
-                                <tr id="my_row_101">
-                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="input-sm" ></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                    <td><select class="form-control" id="formas1"><option value="1">Número</option>
+                                <tr>
+                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="tipoRiesgo" ></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <td><select class="numero" id="formas1"><option value="1">Número</option>
                                                 <option value="2">Texto</option></select></td>
                                     <td><a class="btn btn-danger" onclick="deleteMe('101')" href="#">Eliminar</a></td>
 
@@ -63,7 +58,7 @@
                             </tbody>
 
                         </table>
-                        <span class="btn btn-info" id="btnAgregar">Agregar</span>
+                        <button class="btn-info" id="agregar">Agregar</button>
                         <div  class="col-md-12" style="text-align:center">
                             <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
                         </div>
