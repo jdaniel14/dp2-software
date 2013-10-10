@@ -125,7 +125,7 @@ Diagram = function(params)
 	this.connectionWidth = (params["connectionWidth"])? params["connectionWidth"] : 3;
 	this.connectionColor = (params["connectionColor"])? params["connectionColor"] : '#888888';
 	this.height = (params["height"])? params["height"] : 500;
-	this.imagesPath = (params["imagesPath"])? params["imagesPath"] : 'images/';
+	this.imagesPath = (params["imagesPath"])? params["imagesPath"] : '../../../static/cronograma/pirateado/images/';
 	this.noToolbar=(params["noToolbar"] == true)? params["noToolbar"] : false;
 	this.toolbar_add_button=(params["toolbar_add_button"] == false)? params["toolbar_add_button"] : true;
 	this.toolbar_save_button=(params["toolbar_save_button"] == false)? params["toolbar_save_button"] : true;
