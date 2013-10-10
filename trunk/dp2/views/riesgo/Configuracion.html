@@ -49,10 +49,10 @@
                             <tbody class="cuerpo-tabla" id="tablaRiesgos">
                                 <!--Contenido Tipos de Riesgos-->
                                 <tr>
-                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="tipoRiesgo" ></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="tipoRiesgo input-sm" ></td> <!--id 7 palabras  funciona y 1 num al final-->
                                     <td><select class="numero" id="formas1"><option value="1">Número</option>
                                                 <option value="2">Texto</option></select></td>
-                                    <td><a class="btn btn-danger" onclick="deleteMe('101')" href="#">Eliminar</a></td>
+                                    <td><a data-toggle="modal" href="#confirmDelete" > <span class="glyphicon glyphicon-remove iconito" id="1"></span></a></td>
 
                                 </tr>
                             </tbody>
@@ -299,3 +299,19 @@
 </script>
 <script src="../../assets/js/header.js"></script>
 
+ <div class="modal" id="confirmDelete">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Confirmación de eliminación </h3>
+                        </div>
+                        <div class="modal-body titulo-tabla">
+                            <label class="col-lg-12 control-label">Esta seguro que desea eliminar este riesgo</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" data-dismiss="modal" id="btnEliminar">Eliminar</button>
+                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div> 
+ </div>
