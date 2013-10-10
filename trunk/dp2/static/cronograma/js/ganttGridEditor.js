@@ -420,6 +420,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
     //bind add assignment
     taskEditor.find("#addAssig").click(function () {
+      var task = self.master.getTask(taskId);
+      console.log(task);
       var assigsTable = taskEditor.find("#assigsTable");
       var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
       assigsTable.append(assigRow);
