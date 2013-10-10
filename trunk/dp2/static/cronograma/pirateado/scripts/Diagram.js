@@ -32,7 +32,7 @@ Node = function(params)
 	node.ePortAcceptConnection=(params["ePortAcceptConnection"]== false)? params["ePortAcceptConnection"] : true;
 	node.sPortAcceptConnection=(params["sPortAcceptConnection"]== false)? params["sPortAcceptConnection"] : true;
 	node.wPortAcceptConnection=(params["wPortAcceptConnection"]== false)? params["wPortAcceptConnection"] : true;
-	node.image=(params["image"])? params["image"] : "images/defaultimage.png";
+	node.image=(params["image"])? params["image"] : "../../../static/cronograma/pirateado/images/defaultimage.png";
 	node.imageWidth=(params["imageWidth"])? params["imageWidth"] : "100";
 	node.imageHeight=(params["imageHeight"])? params["imageHeight"] : "100";
 	node.draggable=(params["draggable"]== false)? params["draggable"] : true;

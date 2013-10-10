@@ -5,7 +5,7 @@
                 self.bind('dblclick', function() {
 		var initWidth = $(this).width();
 		var initHeight = $(this).height();
-                    self.html('<textarea style="background: url(\'images/transparent.gif\')">'+ $.trim(self.value.replace(/<br\s?\/?>/g,"\n")) +'</textarea>')
+                    self.html('<textarea style="background: url(\'../../../static/cronograma/pirateado/images/transparent.gif\')">'+ $.trim(self.value.replace(/<br\s?\/?>/g,"\n")) +'</textarea>')
 			    .find('textarea')
                             .bind('blur', function(event) {
 				self.value = $.trim($(this).val().replace(/\r\n|\r|\n/g,"<br />"));
