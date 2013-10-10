@@ -11,6 +11,11 @@
 	define('CO_CPI',5);
 	define('CO_SPI',6);
 	define('CO_SV',7);
+	define('CO_BAC',8);
+	define('CO_EAC',9);
+	define('CO_ETC',10);
+	define('CO_VAC',11);
+	define('CO_TCPI',12);
 	//FIN CONSTANTES
    
   ////########### SPRINTS ###########////
@@ -194,6 +199,11 @@
 		$CPI = CO_obtenerCPI($EV, $AC) ."";
 		$SPI = CO_obtenerSPI($EV, $PV) ."";
 		$SV = CO_obtenerSV($EV, $PV) . "";
+		$BAC = CO_obtenerBAC($idProyecto) . "";
+		$EAC = CO_obtenerEAC($BAC, $CPI) . "";
+		$ETC = CO_obtenerETC($EAC, $AC) . "";
+		$VAC = CO_obtenerVAC($BAC, $EAC) . "";
+		$TCPI = CO_obtenerTCPI($BAC, $EV, $EAC, $AC) . "";
 
 		array_push($indicadores, new CO_Indicador("PV", $PV));
 		array_push($indicadores, new CO_Indicador("EV", $EV));
@@ -202,6 +212,11 @@
 		array_push($indicadores, new CO_Indicador("CPI", $CPI));
 		array_push($indicadores, new CO_Indicador("SPI", $SPI));
 		array_push($indicadores, new CO_Indicador("SV", $SV));
+		array_push($indicadores, new CO_Indicador("BAC", $BAC));
+		array_push($indicadores, new CO_Indicador("EAC", $EAC));
+		array_push($indicadores, new CO_Indicador("ETC", $ETC));
+		array_push($indicadores, new CO_Indicador("VAC", $VAC));
+		array_push($indicadores, new CO_Indicador("TCPI", $TCPI));
 
 		return $indicadores;
 	}
@@ -405,6 +420,63 @@
 	function CO_obtenerSV($ev, $pv) { //Valor sv
 		return $ev - $pv;
 	}
+
+	function CO_obtenerBAC($idProyecto) { //Valor bac. Este valor no depende de la fecha
+		$sql = "SELECT
+		SUM(IFNULL(B.CANTIDADESTIMADA,0)*IFNULL(C.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0)) BAC_SOLES
+		FROM
+		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
+		JOIN RECURSO C ON B.ID_RECURSO=C.ID_RECURSO
+		JOIN CAMBIO_HISTORICO X ON C.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
+
+		$valor = 0;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$valor = $p["BAC_SOLES"];
+			}
+		} catch(PDOException $e) {
+        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+
+		if ($valor == null)
+			$valor = 0;
+
+		return $valor;
+	}
+
+	function CO_obtenerEAC($bac, $cpi) { //Valor eac
+		if ($cpi != 0)
+			return $bac / $cpi;
+		else
+			return 0;
+	}
+
+	function CO_obtenerETC($eac, $ac) { //Valor etc
+		return $eac - $ac;
+	}
+
+	function CO_obtenerVAC($bac, $eac) { //Valor vac
+		return $bac - $eac;
+	}
+
+	function CO_obtenerTCPI($bac, $ev, $eac, $ac) { //Valor tcpi
+		$div = $eac - $ac;
+		if ($div != 0)
+			return ($bac - $ev) / $div;
+		else
+			return 0;
+	}
 	//fin de funciones para obtener indicadores
 
 	function CO_guardarIndicadores($obj, $fecha) { //COMPLETO
@@ -451,7 +523,12 @@
 			CO_InsertarIndicador(CO_CPI, $obj->idProyecto, $obj->CPI, $fecha);
 			CO_InsertarIndicador(CO_SPI, $obj->idProyecto, $obj->SPI, $fecha);
 			CO_InsertarIndicador(CO_SV, $obj->idProyecto, $obj->SV, $fecha);
-			
+			CO_InsertarIndicador(CO_BAC, $obj->idProyecto, $obj->BAC, $fecha);
+			CO_InsertarIndicador(CO_EAC, $obj->idProyecto, $obj->EAC, $fecha);
+			CO_InsertarIndicador(CO_ETC, $obj->idProyecto, $obj->ETC, $fecha);
+			CO_InsertarIndicador(CO_VAC, $obj->idProyecto, $obj->VAC, $fecha);
+			CO_InsertarIndicador(CO_TCPI, $obj->idProyecto, $obj->TCPI, $fecha);
+
         	$respuesta = CO_crearRespuesta(0, 'Ok' . $fecha);
 
 		} catch(PDOException $e) {
@@ -1101,7 +1178,7 @@
 		return $listaUM;
 	}
   
-  function CO_consultarCuentasDesglozable($idProyecto) { //
+  function CO_consultarCuentasDesglozable($idProyecto) { //INCOMPLETO - FALTAN QUERIES
 		//obtener lista de cuentas
 		$sql = "";
 
