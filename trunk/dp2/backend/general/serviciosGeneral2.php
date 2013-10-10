@@ -288,7 +288,7 @@ function G_getListarRecDisp() {
                       WHERE ( fecha_entrada <= DATE(NOW()) 
                       AND DATE(NOW()) <= fecha_salida )";*/
 
-            $sql="  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+            /*$sql="  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
                     ACTIVIDAD A,
                     ACTIVIDAD_X_RECURSO AR,
@@ -321,7 +321,29 @@ function G_getListarRecDisp() {
                 if( ! array_key_exists($id, $lista_falsa) ){
                     $lista[$id] = array("id"=>$j["id"],"nom"=> $j["nom"],"rol"=> $j["rol"]);
                 }
+            }*/
+            
+            $sql="SELECT A.ID_EMPLEADO AS id,A.NOMBRE_CORTO as nom,A.NOMBRE_ROL as rol, 100-A.POR AS porc_libre FROM (
+                    SELECT E.ID_EMPLEADO, E.NOMBRE_CORTO,M.ID_PROYECTO,R.NOMBRE_ROL,SUM(M.PORCENTAJE) AS POR
+                    FROM MIEMBROS_EQUIPO M,
+                    EMPLEADO E,
+                    ROL_EMPLEADO R
+                    WHERE  E.ID_EMPLEADO=M.ID_EMPLEADO
+                    AND R.ID_ROL = E.ID_ROL
+                    GROUP BY E.ID_EMPLEADO)A WHERE A.POR<100 ";
+            $db = getConnection();
+            $stmt = $db->query($sql);
+            $lista = array();
+            while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $recurso = array(
+                    "id" => $j["id"],
+                    "nom" => $j["nom"],
+                    "rol" => $j["rol"],
+                    "porc" => $j["porc_libre"]
+                );
+                array_push($lista, $recurso);
             }
+            
             $db = null;
             echo json_encode(array("l_recurso" => array_values($lista)));
     } catch (PDOException $e) {
