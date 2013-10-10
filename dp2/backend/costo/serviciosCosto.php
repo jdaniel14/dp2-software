@@ -12,7 +12,10 @@
 	define('CO_SPI',6);
 	define('CO_SV',7);
 	//FIN CONSTANTES
+   
+  ////########### SPRINTS ###########////
 	
+  ///////////SPRINT 1/////////////
 	function CO_getInfoProyecto($json) { //servicio 1 //COMPLETO
 		$proy = json_decode($json);
 		$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
@@ -98,7 +101,7 @@
 
 		echo json_encode($jsonRespuesta);
 	}
-
+  
 	///////////SPRINT 2/////////////
 	function CO_getIndicadores($json) { //servicio 12 //COMPLETO
 		$proy = json_decode($json);
@@ -146,25 +149,32 @@
 		
 		echo json_encode($jsonRespuesta);
 	}
-
-	/*
-	function CO_testFunction2() {
-		$sql = "SELECT * FROM CATEGORIA_RIESGO";
-		try {
-			$db = getConnection();
-			$stmt = $db->query($sql);
-			$arregloListaRiesgoComun = $stmt->fetchAll();
-            $db = null;
-            echo json_encode($arregloListaRiesgoComun);
-			echo 'conectó';
-		} catch(PDOException $e){
-            echo 'ERROR EN CO_testFunction: {"error":{"text":'. $e->getMessage() .'}}';
-        }
-	}
-	*/
 	
+  
+  ///////////SPRINT 3/////////////
+  function CO_getListaCuentasDesglozable($json) { //servicio 14
+		$proy = json_decode($json);
+
+		$listaCuentas= CO_consultarCuentasDesglozable($proy->idProyecto);
+
+    $jsonRespuesta = new stdClass();
+		$jsonRespuesta->lista = $listaCuentas;
+
+		echo json_encode($jsonRespuesta);
+	}
+  
+  
+  ///////////FOR TESTING ONLY/////////////
 	function CO_testFunction() {
-		echo "add me blood999";
+		echo "add me blood999\n";
+		echo "add me ANHUE blood999\n";
+		echo "add me ANG blood999\n";
+		echo "add me SKT blood999\n";
+		echo "add me FNC blood999\n";
+		echo "add me RYL blood999\n";
+		echo "add me OMG blood999\n";
+		echo "add me TSM blood999\n";
+		echo "add me C9 blood999\n";
 	}
 	
 	//---------------------------------------------------------------
@@ -1088,7 +1098,49 @@
 
 		return $listaUM;
 	}
+  
+  function CO_consultarCuentasDesglozable($idProyecto) { //
+		//obtener lista de cuentas
+		$sql = "";
 
+		$cuentasRaiz = null;
+		$listaCuentas = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+												//nombre cuenta, lista de cuentas hijo
+				$cuentasRaiz= new CO_Cuenta($p["NOMBRE_CUENTA"], $p["COSTO_CUENTA_SOLES"], null);
+             //array_push...
+			}
+
+        //FALTA IMPLEMETAR LLAMADA PARA CADA HIJO...
+        /*
+      if ($paqueteRaiz != null) {
+				CO_obtenerPaquetesHijo($paqueteRaiz);
+				$jsonRespuesta = new stdClass();
+				$jsonRespuesta->raiz = $paqueteRaiz;
+				//echo 'aaaa';
+				$paqueteRaiz->sumarCostosPaquete();
+				array_push($listaPaquetes, $paqueteRaiz);
+      }
+      */
+
+		} catch(PDOException $e) {
+			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+			$listaCuentas = null;
+		}
+		//se llamara una funcion que devuelve data falsa por mientras.		
+		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
+		
+    //return $listaCuentas ;
+    return $null;
+	}
+  
+  //RESPUESTAS
 	function CO_crearRespuesta($codRespuesta, $mensaje) {
 		$respuesta = new stdClass();
 		$respuesta->codRespuesta = $codRespuesta;
