@@ -165,4 +165,69 @@
 
     }
 
+    //--------------------------------------PUNTAJE MINIMO Y MAXIMO--------------------------------------
+
+    function R_getPuntajes($idProyecto){
+
+        //Minimo
+        $query = "SELECT MIN(nivel) AS minimonivel FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto;
+        try{
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $minimonivel = $row['minimonivel'];
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+        $query = "SELECT MIN(nivel) AS minimoprob FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto;
+        try{
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $minimoprob =  $row['minimoprob'];
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+        $minimorango = $minimonivel * $minimoprob;
+
+        //Maximo
+        $query = "SELECT MAX(nivel) AS maximonivel FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto;
+        try{
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $maximonivel = $row['maximonivel'];
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+        $query = "SELECT MAX(nivel) AS maximoprob FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto;
+        try{
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $maximoprob = $row['maximoprob'];
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+        $maximorango = $maximonivel * $maximoprob;
+
+        echo json_encode(array("puntajeMin" => $minimorango, "puntajeMax" => $maximorango));
+    }
+
 ?>
