@@ -5,7 +5,11 @@ $(document).ready(function(){
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
         $(".seleccionado").each(function(){
-            	$(this).append("<td><input type='text' placeholder='Inserta costos…''></td><td><button type='button' class='btn btn-danger'>Eliminar</button></td>")
+            	$(this).append("<td><input type='text' placeholder='Inserta costos…''></td><td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>")//;
+            	$(this).removeClass("seleccionado");
+            	$(this).addClass("noMostrar");
+            	
+            	//console.log("click");
                $("#ListaRecursosHumanosXProyecto").append($(this));
               
         })
@@ -14,6 +18,11 @@ $(document).ready(function(){
     	grabarRecursos();
     })
 });
+
+function asd(www){
+	www.removeClass("noMostrar");
+	www.remove();
+}
 
 function grabarRecursos(){
 
@@ -62,13 +71,29 @@ function iniciaRecursosHumanos(){
 function agregaDataFila(data){
 	//arreglo=arregloProyecto;
 	
+	//console.log(data);
+	
+	var arrAux = $(".noMostrar");
+	//console.log(arrAux);
+	
 	if (data!=null){
 		arreglo=data["l_recurso"];
 	}
 	
 	for (i=0; i<arreglo.length;i++){
-            agregaFilaRecursosHumanos(arreglo[i],i);
-                
+		var bool = false;
+		$.each(arrAux,function(e,el){
+			console.log("Valor: " + $($(el).children("td")[0]).text());
+			//console.log($(el).children("td")[0]);
+			//console.log(arreglo[i]["id"]);
+			if($($(el).children("td")[0]).text() == arreglo[i]["id"]){
+				bool = true;
+				console.log(arreglo[i]["id"]);	
+				console.log(bool);
+			}
+			//agregaFilaRecursosHumanos(arreglo[i],i);
+		});
+		if(!bool)agregaFilaRecursosHumanos(arreglo[i],i);
 	}
 }
 
