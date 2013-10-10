@@ -165,6 +165,52 @@
 
     }
 
+    //--------------------------------------ESTRATEGIAS--------------------------------------
+
+
+    function R_getEstrategias($idProyecto){ //Recordar cambiar para doble tipo
+        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE id_proyecto=".$idProyecto;
+        try{
+            $arregloListaEstrategias= array();
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $data= array("puntajeMin" => $row['puntaje_limite_bajo'], "puntajeMax" => $row['puntaje_limite_alto'],
+                    "prioridad" => $row['prioridad'], "estrategia" => $row['estrategia'], "significado" => $row['significado']);
+                array_push($arregloListaEstrategias,$data);
+            }
+            $db = null;
+            echo json_encode($arregloListaEstrategias);
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
+
+    function R_postRegistrarEstrategias(){ //Recordar cambiar para doble tipo
+        $request = \Slim\Slim::getInstance()->request();
+        $listaEstrategia = json_decode($request->getBody());
+        foreach ($listaEstrategia->lista as $estrategia){
+            $query = "INSERT INTO CATEGORIZACION_ESTRATEGIAS (id_proyecto,tipo,puntaje_limite_bajo,puntaje_limite_alto, prioridad, estrategia, significado) 
+                        VALUES (:id_proyecto,1,:puntaje_limite_bajo, :puntaje_limite_alto, :prioridad, :estrategia, :significado)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $listaEstrategia->idProyecto);
+                $stmt->bindParam("puntaje_limite_bajo", $estrategia->puntajeMin);
+                $stmt->bindParam("puntaje_limite_alto", $estrategia->puntajeMax);
+                $stmt->bindParam("prioridad", $estrategia->prioridad);
+                $stmt->bindParam("estrategia", $estrategia->estrategia);
+                $stmt->bindParam("significado", $estrategia->significado);
+                $stmt->execute();
+                $db = null;
+                echo json_encode('{Se registro correctamente}');
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        }
+    }
+
     //--------------------------------------PUNTAJE MINIMO Y MAXIMO--------------------------------------
 
     function R_getPuntajes($idProyecto){
