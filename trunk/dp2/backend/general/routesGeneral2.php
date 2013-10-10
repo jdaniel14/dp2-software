@@ -24,7 +24,7 @@ $app->post('/G_asignarRecursoProyecto/:id', 'G_getAsignarRecProy');//inserta los
 $app->post('/G_listaTodosRecurso', 'G_postListaTodosRecurso');//mostrar todos los recursos que estan disponibles
 
 $app->get('/G_listaRecursoxProyecto/:id', 'G_getListaRecursosEnProyecto');//mostrar los empleados vfffque estan en el proyecto
-//PRUEBA :3
+//PRUEBA :3 xD
 
 //Alfonso -- Seguridad
 $app->post('/G_verificaUsuario', 'G_getUsuario'); //devuelve 1 si el usuario y pass son correctas
