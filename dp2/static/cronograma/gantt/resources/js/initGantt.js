@@ -257,23 +257,22 @@ var currentDate = new Date();
 		
 		function loadI18n() {
 		  GanttMaster.messages = {//MENSAJES PARA SER CAMBIADOS AL ESPAÑOL
-		    "CHANGE_OUT_OF_SCOPE":"NO_RIGHTS_FOR_UPDATE_PARENTS_OUT_OF_EDITOR_SCOPE",
-		    "START_IS_MILESTONE":"START_IS_MILESTONE",
-		    "END_IS_MILESTONE":"END_IS_MILESTONE",
-		    "TASK_HAS_CONSTRAINTS":"TASK_HAS_CONSTRAINTS",
-		    "GANTT_ERROR_DEPENDS_ON_OPEN_TASK":"GANTT_ERROR_DEPENDS_ON_OPEN_TASK",
-		    "GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK":"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK",
-		    "TASK_HAS_EXTERNAL_DEPS":"TASK_HAS_EXTERNAL_DEPS",
-		    "GANTT_ERROR_LOADING_DATA_TASK_REMOVED":"GANTT_ERROR_LOADING_DATA_TASK_REMOVED",
-		    "ERROR_SETTING_DATES":"ERROR_SETTING_DATES",
-		    "CIRCULAR_REFERENCE":"CIRCULAR_REFERENCE",
-		    "CANNOT_DEPENDS_ON_ANCESTORS":"CANNOT_DEPENDS_ON_ANCESTORS",
-		    "CANNOT_DEPENDS_ON_DESCENDANTS":"CANNOT_DEPENDS_ON_DESCENDANTS",
-		    "INVALID_DATE_FORMAT":"INVALID_DATE_FORMAT",
-		    "TASK_MOVE_INCONSISTENT_LEVEL":"TASK_MOVE_INCONSISTENT_LEVEL",
-		
-		    "GANTT_QUARTER_SHORT":"trim.",
-		    "GANTT_SEMESTER_SHORT":"sem."
+		    "CHANGE_OUT_OF_SCOPE":"Ningún derecho para actualizar a los padres fuera del alcance editor",
+		    "START_IS_MILESTONE":"Inicio es hito",
+		    "END_IS_MILESTONE":"Fin es hito",
+		    "TASK_HAS_CONSTRAINTS":"Actividad tiene restricciones",
+		    "GANTT_ERROR_DEPENDS_ON_OPEN_TASK":"Error en el Gantt: dependencia de un actividad abierta",
+		    "GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK":"Error en el Gantt: descendiente de una actividad cerrada",
+		    "TASK_HAS_EXTERNAL_DEPS":"Actividad tiene dependencias externas",
+		    "GANTT_ERROR_LOADING_DATA_TASK_REMOVED":"Error en el Gantt: Cargando datos de una actividad removida",
+		    "ERROR_SETTING_DATES":"Error configurando fechas",
+		    "CIRCULAR_REFERENCE":"Referencia circular: Una actvidad no puede depender de si misma",
+		    "CANNOT_DEPENDS_ON_ANCESTORS":"No se puede depender de sus antecesores",
+		    "CANNOT_DEPENDS_ON_DESCENDANTS":"No se puede depender de sus descendientes",
+		    "INVALID_DATE_FORMAT":"Formato de fecha invalido",
+		    "TASK_MOVE_INCONSISTENT_LEVEL":"Movimiento de nivel inconsistente de una actividad",
+		    "GANTT_QUARTER_SHORT":"Gantt trimestral",
+		    "GANTT_SEMESTER_SHORT":"Gantt semestral"
 		  };
 		}
 		function editWorkingTimeDay(){
@@ -289,9 +288,17 @@ var currentDate = new Date();
 		}
 		function addWorkingTimeDay(){
 			var fechita =  $("#FechaWT").val();
-			if (fechita != ""){
-				fechitaparse=fechita.split('-');
-				$("#tableHolidayDay").prepend("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaparse[0] + '/' + fechitaparse[1] + '/' + fechitaparse[2]  +"</td></tr>")
+			if (fechita != ""){				
+				var fechitaparse=fechita.split('-').join('/');
+				var auxiliar = fechita.split('-').join('_').split('_');
+				var fechitaEncontrado = auxiliar[1] + "_" + auxiliar[2];
+				console.log(fechitaEncontrado);
+				if (holidays.indexOf(fechitaEncontrado) >= 0){
+					alert("La fecha ya está incluida en el calendario");
+				}
+				else {
+					$("#tableHolidayDay").prepend("<tr><td><input type='radio' name='rowTable'/></td><td>" + fechitaparse +"</td></tr>");	
+				}			
 				//<td><input type='text' placeholder='Ingrese el nombre de la fecha' style='width:400px;'/></td>
 			}else{
 				alert("Debe seleccionar una fecha primero");

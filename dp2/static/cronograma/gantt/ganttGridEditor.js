@@ -563,30 +563,35 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
     //bind add assignment
     taskEditor.find("#addAssig").click(function () {
-      var assigsTable = taskEditor.find("#assigsTable");
-      var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
+      console.log(task);
+      if (task.status == "STATUS_DONE"){
+        alert("No se puede agregar recursos a una actividad completada");
+      }
+      else {
+        var assigsTable = taskEditor.find("#assigsTable");
+        var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
+        //Agrego el valor determinado para cada recurso, cuando se agrega un nuevo recurso
+        var addelemento= $(assigRow).children('td')[0];
+        var addtd1 = $(assigRow).children('td')[2];
+        var addtd2 = $(assigRow).children('td')[3];
+        var addtd6 = $(assigRow).children('td')[7];
+        
+        addelemento = $(addelemento).find('select').attr('value');
+              
+        var recurso = ge.resources;
       
-      //Agrego el valor determinado para cada recurso, cuando se agrega un nuevo recurso
-      var addelemento= $(assigRow).children('td')[0];
-      var addtd1 = $(assigRow).children('td')[2];
-      var addtd2 = $(assigRow).children('td')[3];
-      var addtd6 = $(assigRow).children('td')[7];
-      
-      addelemento = $(addelemento).find('select').attr('value');
-            
-      var recurso = ge.resources;
-		
-      $.each(recurso, function(index,element){
-    	  if(addelemento == element.id){
-    		  //console.log(element);
-    		  $(addtd1).text(element.typeCost);
-    		  $(addtd2).text(element.costRate);
-    		  $(addtd6).text(element.idrecurso);
-    	  }
-      });
-      //Fin inicializacion del primer recurso
-      
-      assigsTable.append(assigRow);
+        $.each(recurso, function(index,element){
+          if(addelemento == element.id){
+            //console.log(element);
+            $(addtd1).text(element.typeCost);
+            $(addtd2).text(element.costRate);
+            $(addtd6).text(element.idrecurso);
+          }
+        });
+        //Fin inicializacion del primer recurso
+        
+        assigsTable.append(assigRow);
+      }      
     });
 
     taskEditor.find("#status").click(function () {
