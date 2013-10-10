@@ -4,14 +4,27 @@ $(document).ready(main);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 
 function validAtenas2(){
-	for (var i = 0; i < cantidad; i++){
-		var acuerdoI = $("#acuerdo"+i).val();
-		if (acuerdoI == null || acuerdoI.length == 0){
+    var i=0;
+    var valor;
+     $(".diaAcuerdos").each(function(){
+		var acuerdoI = $($("input.acuerdosA")[i]).val();
+                var fecha= $($("input.diaAcuerdos")[i]).val();
+                var hora= $($("input.horasAcuerdos")[i]).val();
+              
+		if (acuerdoI === null || acuerdoI.length === 0 || fecha===null || fecha.length===0  || hora ===null || hora.length===0){
 			//ALERTAR
+                        valor="vacio";
+                        alert("Debe registrar todos los campos");
 			return false;
+                        
 		}
-	}
-	return true;
+          
+                i++;
+             
+	});
+        if(valor==="vacio") return false;
+        else
+        return true;
 }
 
 function main() {
@@ -44,11 +57,11 @@ function main() {
 
     $("#btnGuardar").click(function()
     {
-
-		if (!validAtenas2())
+       
+        if (!validAtenas2())
 			return;
         
-
+        
         var data = {
             idProyecto: idProyectoLocal,
             listaFechas: []
