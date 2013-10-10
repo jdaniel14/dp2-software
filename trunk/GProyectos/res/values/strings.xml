@@ -26,9 +26,9 @@
         <item>Jefe Proyecto</item>
         <item>Estado</item>
     </string-array>
-	
     <string name="pull_to_refresh_pull_label">Pull to refresh...</string>
     <string name="pull_to_refresh_release_label">Release to refresh...</string>
     <string name="pull_to_refresh_refreshing_label">Loading...</string>
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
+    <string name="indicadores_chartTitle">TITULO</string>
 </resources>
