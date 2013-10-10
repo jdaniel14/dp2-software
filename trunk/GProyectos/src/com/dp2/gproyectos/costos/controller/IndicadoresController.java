@@ -12,6 +12,7 @@ import android.graphics.Color;
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
+import com.dp2.gproyectos.costos.entities.Result;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
 import com.dp2.gproyectos.costos.model.GetListaIndicadoresResponse;
 import com.google.gson.Gson;
@@ -91,5 +92,19 @@ public class IndicadoresController extends Controller {
 		} else {
 			return Color.WHITE;
 		}
+	}
+	
+	public ArrayList<Double> getValoresIndicador() {
+		return llenarDataFalsaIndicadores();
+	}
+	
+	private ArrayList<Double> llenarDataFalsaIndicadores() {
+		ArrayList<Double> lista = new ArrayList<Double>();
+		lista.add(Double.valueOf(100));
+		lista.add(Double.valueOf(150));
+		lista.add(Double.valueOf(125));
+		lista.add(Double.valueOf(250));
+		lista.add(Double.valueOf(200));
+		return lista;
 	}
 }

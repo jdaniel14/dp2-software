@@ -2,6 +2,16 @@ package com.dp2.gproyectos.costos.view;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
+import org.achartengine.ChartFactory;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.chart.TimeChart;
+import org.achartengine.model.TimeSeries;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
 
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
@@ -22,6 +32,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -37,6 +48,8 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CostosIndicadoresActivity extends FragmentActivity implements Loadingable {
+	
+	
 	private String idProyecto;
 	private String nombreProyecto;
 	
@@ -53,17 +66,17 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 	private Calendar currentDate;
 	
 	@Override
-	  protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 	    // save the current data, for instance when changing screen orientation
 	    outState.putSerializable("selectedDay", selectedDay);
 	    outState.putSerializable("selectedMonth", selectedMonth);
 	    outState.putSerializable("selectedYear", selectedYear);
 	    outState.putSerializable("indicadores", indicadores);
-	  }
-
-	  @Override
-	  protected void onRestoreInstanceState(Bundle savedState) {
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedState) {
 	    super.onRestoreInstanceState(savedState);
 	    // restore the current data, for instance when changing the screen
 	    // orientation
@@ -71,7 +84,7 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 	    selectedMonth = (Integer) savedState.getSerializable("selectedMonth");
 	    selectedYear = (Integer) savedState.getSerializable("selectedYear");
 	    indicadores = (ArrayList<IndicadorBean>) savedState.getSerializable("indicadores");
-	  }
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -150,7 +163,13 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 				@Override
 				public void onItemClick(AdapterView<?> l, View v, int position,
 						long id) {
-					//IndicadorBean indicador = indicadores.get(position);
+					IndicadorBean indicador = indicadores.get(position);
+					
+					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
+					i.putExtra("nombreIndicador", indicador.nombre);
+					overridePendingTransition(0, 0);
+					startActivity(i);
+					overridePendingTransition(0, 0);
 				}
 			});
 			
@@ -210,6 +229,31 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 		newFragment.show(this.getSupportFragmentManager(), "datePicker");
 	}
 
+	private XYMultipleSeriesRenderer getDemoRenderer() {
+	    XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+	    renderer.setAxisTitleTextSize(16);
+	    renderer.setChartTitleTextSize(20);
+	    renderer.setLabelsTextSize(15);
+	    renderer.setLegendTextSize(15);
+	    renderer.setPointSize(5f);
+	    renderer.setMargins(new int[] {20, 30, 15, 0});
+	    XYSeriesRenderer r = new XYSeriesRenderer();
+	    r.setColor(Color.BLUE);
+	    r.setPointStyle(PointStyle.SQUARE);
+	    r.setFillBelowLine(true);
+	    r.setFillBelowLineColor(Color.WHITE);
+	    r.setFillPoints(true);
+	    renderer.addSeriesRenderer(r);
+	    r = new XYSeriesRenderer();
+	    r.setPointStyle(PointStyle.CIRCLE);
+	    r.setColor(Color.GREEN);
+	    r.setFillPoints(true);
+	    renderer.addSeriesRenderer(r);
+	    renderer.setAxesColor(Color.DKGRAY);
+	    renderer.setLabelsColor(Color.LTGRAY);
+	    return renderer;
+	}
+	
 	@Override
 	public void beforeLoadingData() {
 		// TODO Auto-generated method stub
@@ -247,7 +291,13 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 				@Override
 				public void onItemClick(AdapterView<?> l, View v, int position,
 						long id) {
-					//IndicadorBean indicador = indicadores.get(position);
+					IndicadorBean indicador = indicadores.get(position);
+				
+					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
+					i.putExtra("nombreIndicador", indicador.nombre);
+					overridePendingTransition(0, 0);
+					startActivity(i);
+					overridePendingTransition(0, 0);
 				}
 			});
 			
@@ -259,5 +309,15 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 			    }
 			});
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			indicadores = null;
+			
+			return super.onKeyDown(keyCode, event);
+		}
+		return false;
 	}
 }
