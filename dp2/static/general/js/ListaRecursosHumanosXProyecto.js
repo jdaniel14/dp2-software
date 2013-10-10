@@ -15,7 +15,37 @@ $(document).ready(function(){
         })
     }) 
     $("#btnGuardar").click(function(){
-    	grabarRecursos();
+    	var arrayTR = $($("#ListaRecursosHumanosXProyecto").children("tbody")).children("tr");
+    	//console.log("antes");
+    	//console.log(arrayTR);
+    	//console.log("despues");
+    	
+    	var id_proyecto = localStorage.getItem("idProyecto");
+    	var bool = true;
+    	var lista_recursos = [];
+    	$.each(arrayTR,function(e,el){
+			//console.log("Valor1: " + $($(el).children("td")[0]).text());
+			//console.log("Valor2: " + $($( $(el).children("td")[3])).children("input").val());
+			var idRec = $($(el).children("td")[0]).text();
+			var montoAsignado = $($( $(el).children("td")[3])).children("input").val();
+			var rec = {
+					idr : idRec, 
+					costo : montoAsignado
+			}
+			lista_recursos.push(rec);
+			if(montoAsignado.length == 0 ) bool = false;
+		});
+    	
+    	if(bool){
+    		var envio = {
+    				id_proy : id_proyecto,
+    				l_rrhhxpr : lista_recursos
+    			};
+    		//console.log(JSON.stringify(envio));
+    		//console.log("listo para envio");
+    		grabarRecursos(envio);
+    	}
+    	else alert("Llene los campos, por favor");
     })
 });
 
@@ -24,14 +54,22 @@ function asd(www){
 	www.remove();
 }
 
-function grabarRecursos(){
+function enviarDataSJ(){
+	var arrayTR = $("#ListaRecursosHumanosXProyecto").children("tr");
+	console.log(arrayTR);
+	
+}
+
+function grabarRecursos(envio){
 
 	$.ajax({
 		type: 'POST',
 		url: asignarRecursosProyecto,
 		dataType: "json", // data type of response
+		data: JSON.stringify(envio),
 		async: true,
-        success: function(data){                    
+        success: function(data){
+        	//alert(data.me);
             alert("Ya se inserto");
         }
 	});
@@ -74,7 +112,7 @@ function agregaDataFila(data){
 	//console.log(data);
 	
 	var arrAux = $(".noMostrar");
-	//console.log(arrAux);
+	console.log(arrAux);
 	
 	if (data!=null){
 		arreglo=data["l_recurso"];
@@ -105,6 +143,7 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
 	$("#listaRecursosHumanos").trigger("update"); 
-	$(".fila"+a).click(clickRecurso);
+	$(".fila"+(i+1)).click(clickRecurso);
+	console.log(".fila"+a);
 }
 
