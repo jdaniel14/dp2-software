@@ -19,5 +19,8 @@ $app->contentType('text/html; charset=utf-8');
 
  //Riesgo cambio
     include ("../backend/riesgo/serviciosRiesgoV2.php");
+
+    //sprint 3
+    include ("../backend/general/serviciosGeneral3.php");
 $app->run();
 ?>
