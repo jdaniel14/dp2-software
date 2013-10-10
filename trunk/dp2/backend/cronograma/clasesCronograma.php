@@ -54,6 +54,43 @@ class CR_IndicadoresJSON{
     }
 }
 
+class CR_DependenciasJSON{
+    
+        public $listaRed = array();
+        public $cantBloques;
+
+    //constructor
+    function __construct($listaRed,$cantBloques) {
+        $this->listaRed = $listaRed;
+        $this->cantBloques=$cantBloques;
+
+    }
+}
+
+ class Activity
+{
+  public $id;
+  public $duration;
+  public $est;
+  public $lst;
+  public $eet;
+  public $let;
+  public $successors = array();
+  public $predecessors = array();
+ 
+   function __construct($id,$duration,$est,$lst,$eet,$let,$successors,$predecessors) {
+        $this->id = $id;
+        $this->duration=$duration;
+        $this->est = $est;
+        $this->lst=$lst;
+        $this->eet = $eet;
+        $this->let=$let;
+        $this->successors = $successors;
+        $this->predecessors=$predecessors;
+
+    }
+}
+
 
 class CR_Rol {
 
