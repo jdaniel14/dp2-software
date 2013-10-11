@@ -376,6 +376,27 @@
         }
     }
 
+    function R_getDescripcionNivelImpactoTipoImpacto($json){
+				$var = json_decode($json);
+        $query = "SELECT * FROM TIPO_IMPACTO_X_NIVEL_IMPACTO
+									WHERE id_proyecto=:id_proyecto AND id_tipo_impacto=:id_tipo_impacto";
+        try {
+            $arreglo= array();
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("id_proyecto", $var->idProyecto);
+						$stmt->bindParam("id_tipo_impacto", $var->idTipoImpacto);
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'], 								"descripcion" => $row['descripcion']);
+                array_push($arreglo,$data);
+            }
+            $db = null;
+            echo json_encode($arreglo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
 /*
     function R_setRiesgo($id){
         $request = Slim::getInstance()->request();
