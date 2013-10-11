@@ -2,10 +2,16 @@ var listaRecursosHumanos = "../../api/G_listarRecursoDisponible";
 var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
 
 $(document).ready(function(){
+	listarRRHHxProyecto();
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
         $(".seleccionado").each(function(){
             	$(this).append("<td><input type='text' placeholder='Inserta costos…''></td><td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>")//;
+            	$(this).append("<td><select name='porcentaje'>" +
+            					"<option value='10'>10%</option><option value='20'>20%</option><option value='30'>30%</option><option value='40'>40%</option>" +
+            					"<option value='50'>50%</option><option value='60'>60%</option><option value='70'>70%</option><option value='80'>80%</option>" +	
+            					"<option value='90'>90%</option><option value='100'>100%</option>" +
+            		"</select></td>");
             	$(this).removeClass("seleccionado");
             	$(this).addClass("noMostrar");
             	
@@ -41,7 +47,7 @@ $(document).ready(function(){
     				id_proy : id_proyecto,
     				l_rrhhxpr : lista_recursos
     			};
-    		//console.log(JSON.stringify(envio));
+    		console.log(JSON.stringify(envio));
     		//console.log("listo para envio");
     		grabarRecursos(envio);
     	}
@@ -139,7 +145,7 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td></tr>';
+	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td><td>' + arreglo["porc"] + '</td></tr>';
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
 	$("#listaRecursosHumanos").trigger("update"); 
@@ -147,3 +153,44 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	console.log(".fila"+a);
 }
 
+
+/*Lista de RRHH por Proyecto*/
+
+var id=localStorage.getItem("idProyecto");
+
+function listarRRHHxProyecto(){	
+	$.ajax({
+		type: 'GET',
+		dataType: "json", // data type of response
+		contentType: "application/json; charset=utf-8",
+		url: "../../api/G_listaRecursoxProyecto/" + id,
+        success: function(data){
+        	document.getElementsByTagName('h1')[0].innerHTML=data["nom_proy"];
+            agregaDataFila2(data);
+        }
+	});
+}
+
+function agregaDataFila2(data){
+	//arreglo=arregloProyecto;
+	
+	if (data!=null){
+		arreglo=data["l_recurso"];
+	}
+	
+	for (i=0; i<arreglo.length;i++){		
+		agregaFilaRecursosHumanos2(arreglo[i],i);
+	}
+}
+
+function agregaFilaRecursosHumanos2(arreglo,i){
+	a=i;
+	a++;
+	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
+	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + 
+		'</td><td><input type="text" name="costo" placeholder="Inserta costos..." value="' + arreglo["costo"] + '">' +
+		'</td><td>' + arreglo["porc"] + '</td><td>' +
+		'</td><td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent());>Eliminar</button></td></tr>';
+	$("#ListaRecursosHumanosXProyecto tbody").append(tbody);
+	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
+}
