@@ -247,13 +247,13 @@ function CR_consultarInfoActividades($idProyecto) {
     //echo "Hardcode";
     //date_default_timezone_set('America/Lima');
 
-    $milliseconds = round(microtime(true) * 1000);
-    $offset = $milliseconds - 1346623200000;
-    $mil = 1348005600000 + $offset;
-    $mil2 = 1348178399999 + $offset;
+    //$milliseconds = round(microtime(true) * 1000);
+   // $offset = $milliseconds - 1346623200000;
+    //$mil = 1348005600000 + $offset;
+    //$mil2 = 1348178399999 + $offset;
     //
-    $seconds = $mil / 1000;
-    $seconds2 = $mil2 / 1000;
+    //$seconds = $mil / 1000;
+   // $seconds2 = $mil2 / 1000;
     //echo $offset.'\n';
     //echo date("d-m-Y", $seconds).'\n';
     //echo date("d-m-Y", $seconds2).'\n';
@@ -262,10 +262,38 @@ function CR_consultarInfoActividades($idProyecto) {
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
     $calendario = CR_consultarCalendarioBase($idProyecto);
+	$tipoCostos= CR_consultarTipoCostos();
     //$recursos = CR_obtenerRecursosTotalFalsa();
 
-    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT, $calendario);
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT, $calendario,$tipoCostos);
     return $proyecto;
+}
+
+function CR_consultarTipoCostos(){
+	
+	$sql = "SELECT * FROM TIPO_COSTO";
+    $tipoCostos = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+	
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+			
+            $tipoCosto = array("id" => $j["id_tipo_costo"], "name" => $j["descripcion"]);
+			array_push($tipoCostos,$tipoCosto);
+        }
+
+        $db = null;
+        //return $listaIndicadorestotal;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+	//echo json_encode($tipoCostos);
+    return $tipoCostos;
+
 }
 
 function CR_mezcla($input) {
@@ -1107,8 +1135,8 @@ function CR_obtenerIndicadoresTotalProyecto($idProyecto) {
 function CR_obtenerListaRecursosAsignados($idActividad, $listaMapeoRecursos) {
     $listaRecursos = array();
     //$listaIds=array();
-    //$sql2 = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real "./*,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo */."FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso "./*inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo */."where e.id_actividad=? and e.estado=1";
-    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
+    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1123,7 +1151,7 @@ function CR_obtenerListaRecursosAsignados($idActividad, $listaMapeoRecursos) {
             //echo $idRecurso;
             $idRecurso = $listaMapeoRecursos["" . $j["id_recurso"]];
 
-            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "resourceId" => $idRecurso, "idunidadmedida" => $j["id_unidad_medida"], /* "idTipoCosto" => $j["id_tipo_costo"], */ "descripcion_recurso" => $j["descripcion"], "costRate" => $j["costo_unitario_estimado"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"]/* , "descripcion_tipocosto" => $j["descripcion_tipocosto"] */);
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, "resourceId" => $idRecurso, "idunidadmedida" => $j["id_unidad_medida"],  "idTipoCosto" => $j["id_tipo_costo"],  "descripcion_recurso" => $j["descripcion"], "costRate" => $j["costo_unitario_estimado"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"] , "descripcion_tipocosto" => $j["descripcion_tipocosto"] );
             array_push($listaRecursos, $rec);
 
             $contador++;
