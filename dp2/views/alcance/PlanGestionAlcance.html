@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title></title>
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/alcance/css/diccionario.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="header"></div>
+
+    <div class="container">
+      <div class="h1-title">
+        <h1 id="nombre_proyecto">Proyecto 1</h1>
+      </div>
+      <div class="h2-title">
+        <h2 id="nombre">Plan de gestión del alcance</h2>
+      </div> 
+      <div class="container">
+        <form id="form-plan" role="form" method="POST" name="form-plan"  action="return false;"> 
+          <!--Enunciado de alcance-->
+          <div class="row">
+            <div class="form-group col-md-2">
+              <label class="control-label" for="prepararAlcance">Preparar alcance</label>
+              <button id="verAlcance" type="button" class="btn btn-default btn-block">Editar alcance</button>
+            </div>
+            <div class="form-group col-md-10">
+              <label class="control-label" for="mensajeEnunciado"></label>
+              <p class="form-control-static" id="mensajeEnunciado"></p>
+            </div>
+          </div>
+          <!--EDT-->
+          <div class="row">
+            <div class="form-group col-md-2">
+              <label class="control-label" for="verEDT">EDT</label>
+              <button id="verEDT" type="button" class="btn btn-default btn-block">Ver EDT</button>
+            </div>
+            <div class="form-group col-md-4">
+              <label class="control-label" for="estadoEDT">Estado del EDT</label>
+              <select class="form-control" name="id_estado_edt" id="id_estado_edt">
+                <option>Aprobado</option> 
+              </select>
+            </div>
+          </div>
+          <!--Validación del alcance-->
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label class="control-label" for="estadoAlcance">Estado del alcance</label>
+              <select class="form-control" name="id_estado_alcance" id="id_estado_alcance">  
+                <option>Aprobado</option>
+              </select>
+            </div>
+          </div>
+          <!--Guardar Cambios-->
+          <div class="row">
+            <div class="form-group col-md-2">
+              <button type="button" class="btn btn-primary btn-block" id="guardarCambios">Guardar Cambios</button>
+            </div>
+          </div
+        </form>     
+      </div>
+      <div class="h2-title">
+        <h2>Cambios al alcance</h2>
+      </div>
+      <div class="container">
+        <!--div class="pull-right col-md-offset-10">
+          <button type="button" id="agregar" class="btn btn-default btn-md">
+            Agregar requisito <span class="glyphicon glyphicon-plus-sign"></span>
+          </button>
+        </div-->
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="header-cambios">
+              <th>Id</th>
+              <th>Descripción</th>
+              <th>Fecha y hora</th>
+              <th>Estado</th>
+            </thead>
+            <tbody class="cuerpo-tabla" id="cambiosAlcance">
+                <tr>
+                  <td>1</td>
+                  <td>Se modificó el alcance</td>
+                  <td>11:48 am 10/10/2013</td>
+                  <td>Aprobado</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Se modificó el EDT</td>
+                  <td>11:50 am 10/10/2013</td>
+                  <td>Rechazado</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>      
+      </div>
+    </div>
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/alcance/js/planGestionAlcance.js"></script>
+    <script src="../../static/alcance/js/validation.js"></script>
+    <script src="../../assets/js/header.js"></script>   
+  </body>
+</html>
