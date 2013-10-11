@@ -56,10 +56,14 @@ function main() {
     leerPuntajes();
     leerCategorias();
  
-
+    $("#btnCancelar").click(function() {
+        parent.location.reload();
+    });
+ 
     $("#btnGenerar").click(function() {
           if (!validEstrategia())
             return;
+        alert("Se borrará si existe datos anteriores");
         var estrategias = $("#cantidadEstrategias").val();
         
          puntajeMin = $("#puntajeMin").val();
