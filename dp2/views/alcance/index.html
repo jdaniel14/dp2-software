@@ -106,6 +106,21 @@
         <strong>Warning!</strong> No se ha creado una EDT para este proyecto, si desea puede hacerlo.
       </div>
 
+      <div class="alert alert-success" style = "display:none" id ="glosarioEDT">
+        <strong>Crear EDT en simples pasos!</strong> <br />
+        <strong> Paso 1: </strong> Seleccionar un Padre al cual se le agregarán los desgloses de trabajo  <br />
+        <div class = "glosario">
+        <strong> Glosario: </strong>Al dar click a un padre,  en los campos de texto, se pondrá por defecto los datos del Padre <br />
+        </div>
+        <strong> Paso 2: </strong> Modificar el item al que dió click  o en su defecto asignarle un hijo <br />
+        <div class = "glosario">
+        <strong> Glosario: </strong>Al mofidicar, automaticamente se reflejarán los datos en el gráfico, si se agrega, se creara un nuevo item con los datos ingresos y se agregará al gráfico<br />
+        </div>
+        <strong> Paso 3: </strong> Cuando haya terminado su EDT, guarde los cambios con el botón @Guardar Cambios <br />
+        <div class = "glosario">
+        <strong> Glosario: </strong> Al guardar los cambios, el proceso de creación de EDT ha finalizado<br />
+        </div>
+      </div>
 
 
 
@@ -199,7 +214,8 @@
 
 
            <form class="form-inline" role="form">
-           Padre: <input type = "text" id = "padreEdt" value = ""/>
+           <input type = "hidden" id = "padreEdt" value = ""/>
+           Padre: <input type = "text" id = "padreEdt1" value = ""/>
            <!-- 
             Padre:<label id = "padreEdt">  </label>
             -->
