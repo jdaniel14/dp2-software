@@ -1,5 +1,6 @@
 package com.dp2.gproyectos.costos.entities;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,20 +26,40 @@ public class FuelChart {
 	}
 
 	public GraphicalView getView(Context context, List<Result> results) {
-		String title = "Valores del indicador " + nombreIndicador + " hasta la fecha " + results.get(results.size() - 1).getDate().getTime();
+		
+		String title;
+		double min, max;
+		long fechaMin, fechaMax;
+
+		if (results.size() > 0) {
+			title = "Valores del indicador " + nombreIndicador + " hasta la fecha " + results.get(results.size() - 1).getDate().getTime();
+			max = Collections.max(results).getValue();
+			min = Collections.min(results).getValue();
+			fechaMin = results.get(0).getDate().getTime();
+			fechaMax = results.get(results.size() - 1).getDate().getTime();
+		} else {
+			Calendar calendar = Calendar.getInstance(); 
+			title = "";
+			max = 10;
+			min = 0;
+			fechaMin = calendar.getTimeInMillis();
+			calendar.add(Calendar.MONTH, 1);
+			fechaMax = calendar.getTimeInMillis();
+		}
+		
+		
 
 		int[] colors = new int[] { Color.GREEN };
 		PointStyle[] styles = new PointStyle[] { PointStyle.POINT};
 		XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
 
-		Result max = Collections.max(results);
-		Result min = Collections.min(results);
+		
 
 		setChartSettings(renderer,
 				title, //titulo del chart
 				"Fecha", "Valor", //nombre del eje X, nombre del eje Y
-				results.get(0).getDate().getTime(), results.get(results.size() - 1).getDate().getTime(), //x minimo, x maximo
-				min.getValue(), max.getValue(), //y minimo, y maximo
+				fechaMin, fechaMax, //x minimo, x maximo
+				min, max, //y minimo, y maximo
 				Color.GRAY, Color.LTGRAY, Color.RED); //color de los ejes, color de los textos en los ejes, color del fondo del chart
 		
 		renderer.setXLabels(5);
