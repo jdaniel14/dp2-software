@@ -152,7 +152,7 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 	}
 	
 	@Override
-	  protected void onResume() {
+	protected void onResume() {
 	    super.onResume();
     	if (indicadores != null) {
 			
