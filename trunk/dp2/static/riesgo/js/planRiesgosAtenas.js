@@ -80,7 +80,7 @@ function main() {
             var puntajeMaximo=Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma)-1);
                   
             //creo inputs dinamicos
-                $('#tablaCategorizacion').append("<tr><td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\""+puntajeMinimo+"\"  ></td>\n\
+                $('#tablaCategorizacion').append("<tr><td><input  class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\""+puntajeMinimo+"\"  ></td>\n\
                                                    <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\""+ puntajeMaximo +"\" ></td>\n\
                                                    <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
                                                    <td><select class=\"estrategia\" id=\"estrategia" + i + "\">\n\
@@ -95,6 +95,7 @@ function main() {
                                                    valor=valor+factorSuma;
                                                    
         }
+         //$($(".puntajeMin")[0]).prop('disabled',false);
 
    
         
@@ -184,6 +185,7 @@ function main() {
 
 
 function leerCategorias(){
+    
 //
 //    var data =$.parseJSON('[{"idEstrategia":1,"puntajeMin":1, "puntajeMax":25, "prioridad":"Muy Baja", "estrategia":"evitar", "significado": "No hacer nada"}, {"idEstrategia":2,"puntajeMin":26, "puntajeMax":50, "prioridad":"Baja", "estrategia":"mitigar", "significado": "Dejar por escrito"}]');
 //    console.log(data);
@@ -229,7 +231,7 @@ function leerCategorias(){
                 var significado = data[obj]["significado"];
                 
                $('#tablaCategorizacion').append("<tr>\n\
-                                                     <td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
+                                                     <td><input  class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
                                                      <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" +  idEstrategia+ "\" value=\""+ puntajeMax+"\"></td>\n\
                                                      <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\""+ prioridad+"\"></td>\n\
                                                      <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
@@ -238,7 +240,9 @@ function leerCategorias(){
 
 
     }
-            
+    
+                  $($(".puntajeMin")[0]).prop('disabled',true);
+                 $("#tablaRecursos").find("tr:last td:eq(1) input").prop('disabled',true)
          }
      });
 
