@@ -132,7 +132,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_saveIndicadores($json) { //servicio 13 //
+	function CO_saveIndicadores($json) { //servicio 13 //COMPLETO
 		$objeto = json_decode($json);
 		
 		$year = $objeto->year;
@@ -157,12 +157,12 @@
 	
   
   ///////////SPRINT 3/////////////
-  function CO_getListaCuentasDesglozable($json) { //servicio 14
+  function CO_getListaCuentasDesglozable($json) { //servicio 14 //COMPLETO
 		$proy = json_decode($json);
 
 		$listaCuentas= CO_consultarCuentasDesglozable($proy->idProyecto);
 
-    $jsonRespuesta = new stdClass();
+    	$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaCuentas;
 
 		echo json_encode($jsonRespuesta);
@@ -1180,7 +1180,24 @@
   
   function CO_consultarCuentasDesglozable($idProyecto) { //INCOMPLETO - FALTAN QUERIES
 		//obtener lista de cuentas
-		$sql = "";
+		$sql = "SELECT 
+		A.ID_PROYECTO,
+		B.ID_ASIENTO_CONTABLE,
+		B.DESCRIPCION,
+		SUM(C.CANTIDADESTIMADA*D.COSTO_UNITARIO_ESTIMADO*E.CAMBIO_A_SOL) COSTO_SOLES_CUENTA
+		FROM 
+		ACTIVIDAD A join ASIENTO_CONTABLE B ON A.ID_ASIENTO_CONTABLE=B.ID_ASIENTO_CONTABLE
+		JOIN ACTIVIDAD_X_RECURSO C ON A.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+		JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+		JOIN CAMBIO_HISTORICO E ON D.ID_CAMBIO_MONEDA=E.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1
+		AND C.ESTADO<>0 AND D.ESTADO<>'ELIMINADO'
+		AND DATE_FORMAT(E.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		GROUP BY
+		A.ID_PROYECTO,
+		B.ID_ASIENTO_CONTABLE,
+		B.DESCRIPCION;";
 
 		$cuentasRaiz = null;
 		$listaCuentas = array();
@@ -1191,32 +1208,65 @@
         	$stmt->execute();
         	$db = null;
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-												//nombre cuenta, lista de cuentas hijo
-				$cuentasRaiz= new CO_Cuenta($p["NOMBRE_CUENTA"], $p["COSTO_CUENTA_SOLES"], null);
-             //array_push...
+														//id, nombre cuenta, lista de actividades
+				array_push($listaCuentas, new CO_Cuenta($p["ID_ASIENTO_CONTABLE"], $p["DESCRIPCION"], $p["COSTO_SOLES_CUENTA"], null));
 			}
 
-        //FALTA IMPLEMETAR LLAMADA PARA CADA HIJO...
-        /*
-      if ($paqueteRaiz != null) {
-				CO_obtenerPaquetesHijo($paqueteRaiz);
-				$jsonRespuesta = new stdClass();
-				$jsonRespuesta->raiz = $paqueteRaiz;
-				//echo 'aaaa';
-				$paqueteRaiz->sumarCostosPaquete();
-				array_push($listaPaquetes, $paqueteRaiz);
-      }
-      */
-
+			//
+	    	if ($listaCuentas != null) {
+	    		foreach ($listaCuentas as $cuenta) {
+					$listaActividades = CO_consultarActividadXCuenta($idProyecto, $cuenta->id);
+					$cuenta->listaActividades = $listaActividades;
+					if ($listaActividades == null || sizeof($listaActividades) == 0) {
+						$cuenta->mensaje = "Aun falta asignar cuentas contables a las actividades.";
+					}
+				}
+	    	}
+      
 		} catch(PDOException $e) {
 			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
 			$listaCuentas = null;
 		}
-		//se llamara una funcion que devuelve data falsa por mientras.		
-		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
 		
-    //return $listaCuentas ;
-    return $null;
+    return $listaCuentas;
+	}
+
+	function CO_consultarActividadXCuenta($idProyecto, $idCuenta) { //COMPLETO
+		$sql = "SELECT 
+		A.ID_ACTIVIDAD,
+		A.NOMBRE_ACTIVIDAD,
+		SUM(IFNULL(C.CANTIDADESTIMADA,0)*IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(E.CAMBIO_A_SOL,0)) COSTO_SOLES_ACTIVIDAD
+		FROM 
+		ACTIVIDAD A 
+		LEFT JOIN ACTIVIDAD_X_RECURSO C ON A.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+		LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+		LEFT JOIN CAMBIO_HISTORICO E ON D.ID_CAMBIO_MONEDA=E.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND A.ID_ASIENTO_CONTABLE= :idCuenta
+		AND C.ESTADO<>0 AND D.ESTADO<>'ELIMINADO'
+		AND (E.FECHA IS NULL OR DATE_FORMAT(E.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d'))
+		GROUP BY
+		A.ID_ACTIVIDAD,
+		A.NOMBRE_ACTIVIDAD;";
+		
+		$listaActividades = null;
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->bindParam("idCuenta", $idCuenta);
+        	$stmt->execute();
+        	$db = null;
+        	$listaRecursos = array();
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    														//id actividad, nombre act, tipo cuenta, costo, lista recursos
+				array_push($listaActividades, new CO_Actividad($p["ID_ACTIVIDAD"], $p["NOMBRE_ACTIVIDAD"], $idCuenta, $p["COSTO_SOLES_ACTIVIDAD"], null));
+			}
+		} catch(PDOException $e) {
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+	
+		return $listaActividades;
 	}
   
   //RESPUESTAS

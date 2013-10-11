@@ -155,29 +155,18 @@ class CO_Indicador {
 }
 
 class CO_Cuenta {
+	public $id;
 	public $nombre;
-	public $costoCuenta;
 	public $costoTotalCuenta;
-	public $listaCuentasHijo;
+	public $listaActividades;
+	public $mensaje;
 	
-	function __construct($nombre, $costoCuenta, $listaCuentasHijo) {
+	function __construct($id, $nombre, $costoTotalCuenta, $listaActividades) {
+		$this->id = $id;
 		$this->nombre = $nombre;
-		$this->costoCuenta = $costoCuenta;
-		$this->costoTotalCuenta= 0;
-		$this->listaCuentasHijo= $listaCuentasHijo;
-	}
-   
-	function sumarCostosCuenta() {
-		$this->costoTotalPaquete = $this->costoPaquete;
-		
-		//en caso tenga hijos, se le suma el costo de los hijos.
-		if (($this->listaCuentasHijo!= null) && (sizeof($this->listaCuentasHijo) > 0)) {
-			foreach ($this->listaCuentasHijo as $cuenta) {
-				$cuenta->sumarCostosCuenta();
-				$this->costoTotalCuenta+= $cuenta->costoTotalCuenta;
-			}
-			unset($cuenta);
-		}
+		$this->costoTotalCuenta = $costoTotalCuenta;
+		$this->listaActividades= $listaActividades;
+		$this->mensaje = "";
 	}
 }
 
