@@ -32,10 +32,10 @@ function CR_getCalendarioBase($json) {//servicio3
 function CR_guardarCalendarioBase() { //servicio4
     $request = \Slim\Slim::getInstance()->request();
     $calendarioBase = json_decode($request->getBody());
-	//echo $calendarioBase->id;
-	//$objeto = json_decode($json);
-    $jsonRespuesta = CR_Guardar_Calendario_Base($calendarioBase/*$calendarioBase->id,$calendarioBase->holidays*/);
-	
+    //echo $calendarioBase->id;
+    //$objeto = json_decode($json);
+    $jsonRespuesta = CR_Guardar_Calendario_Base($calendarioBase/* $calendarioBase->id,$calendarioBase->holidays */);
+
     echo json_encode($jsonRespuesta);
 }
 
@@ -48,12 +48,16 @@ function CR_getRecursos($json) { //servicio5
 
 function CR_getDependencias($json) {//servicio6
     $proy = json_decode($json);
-
-    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto);
+    $arreglo_fecha=hallar_fechainicio_fechafin_red($proy->idProyecto);
+    $arreglo_feriados=hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
+    $arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto, $arreglo_feriados) ;
+    $arreglo_actividades_sucesores= Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
+    $arreglo_actividades_previo=WalkListAhead($arreglo_actividades_sucesores);
+    $arreglo_actividades_final= WalkListAback($arreglo_actividades_previo);
+    $arreglo_critico=hallar_arreglo_ids_cmp($arreglo_actividades_final);
+    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto,$arreglo_critico);
 
     echo json_encode($listaDependencias);
-
-    
 }
 
 function CR_getIndicadoresFlujo($json) {//servicio9
@@ -71,7 +75,6 @@ function CR_getPaquetesEDT($json) {//Servicio 7
     echo json_encode($listaPaquetes);
 }
 
-
 function CR_postActividades() {//servicio8
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
@@ -79,9 +82,9 @@ function CR_postActividades() {//servicio8
     $idProyecto = $actividades->idProyecto;
     $arreglo_actividades = $actividades->task;
     //$respuesta = CR_Guardar_Calendario_Base($idProyecto,$actividades->calendarBase->id);
-	$respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
+    $respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
     $respuesta = CR_Eliminacion_Logica_Actividades($idProyecto);
-	
+
     if ($respuesta->me == "") {
         echo json_encode(CR_guardar_actividades_BD($arreglo_actividades, $idProyecto));
     }
@@ -89,16 +92,14 @@ function CR_postActividades() {//servicio8
         echo json_encode($respuesta);
 }
 
+function CR_Guardar_Calendario_Base($calendarioBase) {
 
-
-function CR_Guardar_Calendario_Base($calendarioBase){
-	
-	$sql = "UPDATE CALENDARIO_BASE SET feriados=? , nombre=? WHERE id_calendario_base=? ; COMMIT;";
+    $sql = "UPDATE CALENDARIO_BASE SET feriados=? , nombre=? WHERE id_calendario_base=? ; COMMIT;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($calendarioBase->holidays,$calendarioBase->name,$calendarioBase->id));
+        $stmt->execute(array($calendarioBase->holidays, $calendarioBase->name, $calendarioBase->id));
 
 
         $db = null;
@@ -108,14 +109,7 @@ function CR_Guardar_Calendario_Base($calendarioBase){
         return array("me" => "eliminar" . $e->getMessage());
     }
     return CR_obtenerRespuestaExito();
-
-
-
-
 }
-
-
-
 
 function CR_Eliminacion_Logica_Actividades($idProyecto) {
 
@@ -206,10 +200,10 @@ function CR_consultarInfoActividades($idProyecto) {
       echo "Error al conectar con MySQL: " . mysqli_connect_error();
       }
      */
-	//echo date('Y-m-d', time());
-	//SELECT UNIX_TIMESTAMP('2013-11-12');
-	//SELECT FROM_UNIXTIME(1384146000000/1000);
-	date_default_timezone_set('America/Lima');
+    //echo date('Y-m-d', time());
+    //SELECT UNIX_TIMESTAMP('2013-11-12');
+    //SELECT FROM_UNIXTIME(1384146000000/1000);
+    date_default_timezone_set('America/Lima');
     $recursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     $paquetesEDT = CR_consultarPaqueteEDT($idProyecto);
     $lista_mapeo = CR_obtenerListaMaps($recursos);
@@ -232,13 +226,15 @@ function CR_consultarInfoActividades($idProyecto) {
                     $detalle_paquete = $p2["nombre"];
             }
             //$lista_recursos_asignados = CR_obtenerListaRecursosAsignadosFalsa();
-			
+
             $idActividad = $p["id_actividad"];
             $listaRecursosAsignados = CR_obtenerListaRecursosAsignados($idActividad, $lista_mapeo);
-			if($p["fecha_actual_inicio"]=="")$p["fecha_actual_inicio"]=date('Y-m-d', time());
-			if($p["fecha_actual_fin"]=="")$p["fecha_actual_fin"]=date('Y-m-d', time());
-			//echo "mira ";
-            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "realStart" =>  $p["fecha_actual_inicio"], "realEnd" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0,"progress_cost" => $p["porc_avance_costo_estimado"] + 0 );
+            if ($p["fecha_actual_inicio"] == "")
+                $p["fecha_actual_inicio"] = date('Y-m-d', time());
+            if ($p["fecha_actual_fin"] == "")
+                $p["fecha_actual_fin"] = date('Y-m-d', time());
+            //echo "mira ";
+            $actividad = array("id_task" => $p["id_actividad"] + 0, "id_proyecto" => $p["id_proyecto"], "name" => $p["nombre_actividad"], "id_Wbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "start_date" => $p["fecha_plan_inicio"], "realStart" => $p["fecha_actual_inicio"], "realEnd" => $p["fecha_actual_fin"], "end_date" => $p["fecha_plan_fin"], "id" => -$p["numero_fila"] + 0, "level" => $p["profundidad"] + 0, "depends" => $p["predecesores"], "progress" => $p["avance"], "cost" => $p["costo"] + 0, "status" => $p["estado"], "code" => $p["codigo"], "duration" => $p["dias"] + 0, "description" => $p["descripcion"], "assigs" => $listaRecursosAsignados, "start" => $p["inicio_hash"] + 0, "end" => $p["fin_hash"] + 0, "startIsMilestone" => ($p["hito_inicio"] == 1), "endIsMilestone" => ($p["hito_fin"] == 1), "indicador_fecha" => $p["indicador_fecha"] + 0, "indicador_costo" => $p["indicador_costo"] + 0, "progress_cost" => $p["porc_avance_costo_estimado"] + 0);
             array_push($lista_actividad, $actividad);
         }
 
@@ -249,7 +245,6 @@ function CR_consultarInfoActividades($idProyecto) {
         echo json_encode(array("me" => $e->getMessage()));
     }
     //echo "Hardcode";
-
     //date_default_timezone_set('America/Lima');
 
     $milliseconds = round(microtime(true) * 1000);
@@ -266,10 +261,10 @@ function CR_consultarInfoActividades($idProyecto) {
     //date("Y-m-d", $mil/1000);
     $actividades = CR_obtenerInfoActividadesFalsa();
     $roles = CR_obtenerRolesTotalFalsa();
-	$calendario=CR_consultarCalendarioBase($idProyecto);
+    $calendario = CR_consultarCalendarioBase($idProyecto);
     //$recursos = CR_obtenerRecursosTotalFalsa();
 
-    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT,$calendario);
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT, $calendario);
     return $proyecto;
 }
 
@@ -281,8 +276,8 @@ function CR_mezcla($input) {
 function CR_obtenerListaMaps($recursos) {
 
     //$prueba=array_map("CR_mezcla", $recursos);
-    $resultado=null;
-	//echo "i";
+    $resultado = null;
+    //echo "i";
     for ($i = 0; $i < sizeof($recursos); $i++) {
         //echo json_encode($recursos[$i]["idrecurso"]);
         $indice = $recursos[$i]["idrecurso"];
@@ -292,7 +287,7 @@ function CR_obtenerListaMaps($recursos) {
         //$test=array($indice=>$valor);
         //array_push($resultado,$test);
         $resultado[$indice] = $valor;
-		//echo "i".$i;
+        //echo "i".$i;
     }
     //echo json_encode($resultado);
     //return $resultado;
@@ -311,16 +306,16 @@ function CR_consultarCalendarioBase($idProyecto) {
     //Desconectarse(conexion);
     //Hardcode
     //$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
-	$sql="select b.id_calendario_base,b.nombre ,b.feriados from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
-	$rec=null;
-	try {
+    $sql = "select b.id_calendario_base,b.nombre ,b.feriados from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
+    $rec = null;
+    try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
 
-       
+
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = array("id" => $j["id_calendario_base"], "name" =>  $j["nombre"], "holidays" => $j["feriados"]);
+            $rec = array("id" => $j["id_calendario_base"], "name" => $j["nombre"], "holidays" => $j["feriados"]);
         }
 
         $db = null;
@@ -329,9 +324,8 @@ function CR_consultarCalendarioBase($idProyecto) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         echo json_encode(array("me" => $e->getMessage()));
     }
-    
-    return $rec;
 
+    return $rec;
 }
 
 function CR_guardarcalendarioBaseBD($objeto) {
@@ -345,11 +339,12 @@ function CR_consultarRecursos($idProyecto) {
     //$listaRecursos = CR_obtenerRecursosTotalFalsa();
     $listaRecursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     return $listaRecursos;
+    
 }
 
 function CR_consultarListaIndicadores($idProyecto) {
 
-        $listaIndicadorestotal = array();
+    $listaIndicadorestotal = array();
 
     $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? order by a.id_indicador asc,a.fecha desc ";
     try {
@@ -394,10 +389,9 @@ function CR_consultarListaIndicadores($idProyecto) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         echo json_encode(array("me" => $e->getMessage()));
     }
-    
-      $listafinaljsonindicador = new CR_IndicadoresJSON($listaIndicadorestotal);
+
+    $listafinaljsonindicador = new CR_IndicadoresJSON($listaIndicadorestotal);
     return $listafinaljsonindicador;
-    
 }
 
 //funciones de conexion
@@ -455,10 +449,10 @@ function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
                   } */
 
                 //CR_insertarRecursoAsignados($actividad->assigs,$actividad->id_task);
-                 /*if (property_exists($actividad, 'realStart')){
+                /* if (property_exists($actividad, 'realStart')){
                   echo "[".strtotime($actividad->realStart)."]";
                   } */
-                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), (property_exists($actividad, 'realStart')) ? $actividad->realStart : null, (property_exists($actividad, 'realEnd')) ? $actividad->realEnd : null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone,property_exists($actividad, "progress_cost") ? $actividad->progress_cost+0 : 0 ));
+                $stmt->execute(array($actividad->name, $idProyecto, (property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null, null, date("Y-m-d", $actividad->start / 1000), date("Y-m-d", $actividad->end / 1000), (property_exists($actividad, 'realStart')) ? $actividad->realStart : null, (property_exists($actividad, 'realEnd')) ? $actividad->realEnd : null, ($i + 1), $actividad->level, (property_exists($actividad, "depends")) ? $actividad->depends : "", property_exists($actividad, "progress") ? $actividad->progress : null, property_exists($actividad, "cost") ? $actividad->cost : null, $actividad->duration, $actividad->status, $actividad->code, property_exists($actividad, "description") ? $actividad->description : "", $actividad->start, $actividad->end, 0, $actividad->startIsMilestone, $actividad->endIsMilestone, property_exists($actividad, "progress_cost") ? $actividad->progress_cost + 0 : 0));
                 $id_task = $db->lastInsertId();
                 CR_insertarRecursoAsignados($actividad->assigs, $id_task);
             }
@@ -540,205 +534,394 @@ function CR_obtenerRolesTotalFalsa() {
     return $listaRoles;
 }
 
-function Llenar_actividades_ruta_critica($idProyecto){//simil con lo hardcodeado ATP
-    $listaActividades_criticas = array();
+function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
+    $sql = "select b.id_calendario_base,b.nombre ,b.feriados from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
+    $rec = array();
+    $arreglo_feriados = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            $rec = $j["feriados"]; //faltaria sumar los sabados y domingos :( si es k no se encuentran
+        }
+
+        $db = null;
+        //return $listaIndicadorestotal;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+
+    $p = $rec;
+    $array[] = array();
+    $array = explode("#", $p);
+    $k = sizeof($array) - 2;
+    while ($k >= 1) {
+
+        $fecha = $array[$k];
+        $array2[] = array();
+        $array2 = explode("_", $fecha);
+        $k2 = sizeof($array);
+
+        if ($k2 == 2) {
+
+            $arreglo_inicio[] = array();
+            $arreglo_inicio = explode("-", $fecha_inicio);
+
+            $total_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[0];
+
+            $arreglo_fin[] = array();
+            $arreglo_fin = explode("-", $fecha_fin);
+
+            $total_fin = $arreglo_fin[0] * 10000 + $arreglo_fin[1] * 100 + $arreglo_fin[0];
+
+
+            for ($j = $arreglo_inicio[0]; $j <= $arreglo_fin[0]; $j++) {
+                
+             $comprobar_fecha = new DateTime($j."-".$fecha);
+            
+            if (($comprobar_fecha->format('N') == 7)||($comprobar_fecha->format('N') == 6)){
+            
+                
+            }else{
+                
+                $fecha = $j * 10000 + $array2[1] * 100 + $array2[0];
+
+                if (($fecha > $total_inicio) && ($fecha < $total_fin))
+                    array_push($arreglo_feriados, $fecha);
+            
+            }
+            
+            
+            }
+            
+        }else if ($k2 == 3) {
+
+            $comprobar_fecha = new DateTime($fecha);
+            
+            if (($comprobar_fecha->format('N') == 7)||($comprobar_fecha->format('N') == 6)){
+            
+                
+            }else{
+            $fecha = $array2[0] * 10000 + $array2[1] * 100 + $array2[0];
+            array_push($arreglo_feriados, $fecha);
+            }
+        }
+    }
+
+
+    return $arreglo_feriados;
+}
+
+function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodeado ATP
+    
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-   
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc ";//escritico=1 si si y 0 si no
+
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
         $stmt = $db->query($sql);
-        $tem_bloque="";
-        $numbloque=-1;
+        $tem_bloque = "";
+        $numbloque = -1;
+        $p = 0;
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $listafechas = array();
-            $cont = 0;
+            
 
-            while ($cont < 4) {
+                $listafechas = array();
+                $cont = 0;
 
-                if ($cont == 0) {
-                    $datetime1 = $j["fecha_plan_inicio"];
-                } else if ($cont == 1) {
-                    $datetime1 = $j["fecha_plan_fin"];
-                } else if ($cont == 2) {
-                    $datetime1 = $j["fecha_actual_inicio"];
-                } else if ($cont == 3) {
-                    $datetime1 = $j["fecha_actual_fin"];
+                while ($cont < 4) {
+
+                    if ($cont == 0) {
+                        $datetime1 = $j["fecha_plan_inicio"];
+                    } else if ($cont == 1) {
+                        $datetime1 = $j["fecha_plan_fin"];
+                    } else if ($cont == 2) {
+                        $datetime1 = $j["fecha_actual_inicio"];
+                    } else if ($cont == 3) {
+                        $datetime1 = $j["fecha_actual_fin"];
+                    }
+
+                    $datetime1 = mysql_real_escape_string($datetime1);
+                    $datetime1 = strtotime($datetime1);
+                    ($datetime1 <> '') ? $datetime1 = date('Y-m-d', $datetime1) : $datetime1 = null;
+
+                    array_push($listafechas, $datetime1);
+                    $cont++;
                 }
 
-                $datetime1 = mysql_real_escape_string($datetime1);
-                $datetime1 = strtotime($datetime1);
-                ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+                break;
 
-                array_push($listafechas, $datetime1);
-                $cont++;
-            }
-            
-   
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    $array_prueba=array();
-            $rec = new Activity($j["id_actividad"],$j["dias"], $listafechas[0], 0,$listafechas[1],0,$array_prueba,$array_prueba); 
-            array_push($listaActividades_criticas, $rec);
         }
 
         $db = null;
-        
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
-  return $listaActividades_criticas;
+    return $listafechas;
 }
 
-function Ruta_critica_sucesores_predecesores($listaActividades_criticas,$id_proyecto){
+
+
+function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simil con lo hardcodeado ATP
+    $listaActividades_criticas = array();
+    //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
+
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc "; //escritico=1 si si y 0 si no
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+        $stmt = $db->query($sql);
+        $tem_bloque = "";
+        $numbloque = -1;
+        $p = 0;
+        //$lista_jp = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            if ($p == 0) {
+
+                $listafechas = array();
+                $cont = 0;
+
+                while ($cont < 4) {
+
+                    if ($cont == 0) {
+                        $datetime1 = $j["fecha_plan_inicio"];
+                    } else if ($cont == 1) {
+                        $datetime1 = $j["fecha_plan_fin"];
+                    } else if ($cont == 2) {
+                        $datetime1 = $j["fecha_actual_inicio"];
+                    } else if ($cont == 3) {
+                        $datetime1 = $j["fecha_actual_fin"];
+                    }
+
+                    $datetime1 = mysql_real_escape_string($datetime1);
+                    $datetime1 = strtotime($datetime1);
+                    ($datetime1 <> '') ? $datetime1 = date('Y-m-d', $datetime1) : $datetime1 = null;
+
+                    array_push($listafechas, $datetime1);
+                    $cont++;
+                }
+
+                $fecha_total_inicio = $listafechas[0];
+                $fecha_total_fin = $listafechas[1];
+
+                $p = 1;
+            } else {
+
+
+                $listafechas = array();
+                $cont = 0;
+
+                while ($cont < 4) {
+
+                    if ($cont == 0) {
+                        $datetime1 = $j["fecha_plan_inicio"];
+                    } else if ($cont == 1) {
+                        $datetime1 = $j["fecha_plan_fin"];
+                    } else if ($cont == 2) {
+                        $datetime1 = $j["fecha_actual_inicio"];
+                    } else if ($cont == 3) {
+                        $datetime1 = $j["fecha_actual_fin"];
+                    }
+
+                    $datetime1 = mysql_real_escape_string($datetime1);
+                    $datetime1 = strtotime($datetime1);
+                    ($datetime1 <> '') ? $datetime1 = date('Y-m-d', $datetime1) : $datetime1 = null;
+
+                    array_push($listafechas, $datetime1);
+                    $cont++;
+                }
+                //berloc, aca se buseara por las fechas de inicio
+                $arreglo_inicio[] = array();
+                $arreglo_inicio = explode("-", $listafechas[0]);
+                $fecha_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[0];
+                $tem_inicio = $fecha_inicio;
+                $n_feriados = sizeof($arreglo_feriados);
+                for ($j = 0; $j < $n_feriados; $j++) {
+
+                    if ($tem_inicio > $n_feriados[$j])
+                        $fecha_inicio--;
+                }
+                //restar domingos y sabados
+                
+                $start = new DateTime($fecha_total_inicio);
+                $end = new DateTime($listafechas[0]);
+                $interval = DateInterval::createFromDateString('1 day');
+                $period = new DatePeriod($start, $interval, $end);
+                foreach ($period as $dt) {
+                    if (($dt->format('N') == 7) || ($dt->format('N') == 6)) {
+                        $fecha_inicio--;
+                    }
+                }
+                
+                //restar domingos y sabados
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                $array_prueba = array(); //validando que los dias son la duracion
+                $rec = new Activity($j["id_actividad"], $j["dias"], $fecha_inicio, 0, $fecha_inicio + $j["dias"], 0, $array_prueba, $array_prueba);
+                array_push($listaActividades_criticas, $rec);
+            }
+        }
+
+        $db = null;
+    } catch (PDOException $e) {
+        return (array("me" => $e->getMessage()));
+    }
+    return $listaActividades_criticas;
+}
+
+function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_proyecto) {
+
+    for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
+
+        $sucesores = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
+        $predecesores = lista_predecesores($listaActividades_criticas[$i]->id, $listaActividades_criticas);
+
+        $listaActividades_criticas[$i]->successors = $sucesores;
+        $listaActividades_criticas[$i]->predecessors = $predecesores;
+    }
     
-    for ($i=0;$i<sizeof($listaActividades_criticas);$i++){
-        
-        $sucesores=lista_sucesores($listaActividades_criticas[$i]->id,$listaActividades_criticas,$id_proyecto);
-        $predecesores=lista_predecesores($listaActividades_criticas[$i]->id,$listaActividades_criticas);
-        
-        $listaActividades_criticas[$i]->successors=$sucesores;
-        $listaActividades_criticas[$i]->predecessors=$predecesores;
-        
-    }
-     
+    return $listaActividades_criticas;
 }
 
-/*private static Activity[] WalkListAhead(Activity[] list)
-{
-  list[0].Eet = list[0].Est + list[0].Duration;
- 
-  for(int i = 1; i < na; i++)
-  {
-    foreach(Activity activity in list[i].Predecessors)
-    {
-      if(list[i].Est < activity.Eet)
-        list[i].Est = activity.Eet;
+function WalkListAhead($listaActividades_criticas) {
+    $listaActividades_criticas[0]->eet = $listaActividades_criticas[0]->est + $listaActividades_criticas[0]->duration;
+
+    $na = sizeof($listaActividades_criticas);
+    for ($i = 1; $i < $na; $i++) {
+        foreach (($listaActividades_criticas[$i]->predecessors) as $activity) {
+            if (($listaActividades_criticas[$i]->est) < ($activity->eet))
+                $listaActividades_criticas[$i]->est = $activity->eet;
+        }
+
+        $listaActividades_criticas[$i]->eet = $listaActividades_criticas[$i]->est + $listaActividades_criticas[$i]->duration;
     }
- 
-    list[i].Eet = list[i].Est + list[i].Duration;
-  }
- 
-  return list;
+
+    return $listaActividades_criticas;
 }
 
-private static Activity[] WalkListAback(Activity[] list)
-{
-  list[na - 1].Let = list[na - 1].Eet;
-  list[na - 1].Lst = list[na - 1].Let - list[na - 1].Duration;
+function WalkListAback($listaActividades_criticas) {
+    $na = sizeof($listaActividades_criticas);
+    $listaActividades_criticas[$na - 1]->let = $listaActividades_criticas[$na - 1]->eet;
+    $listaActividades_criticas[$na - 1]->lst = $listaActividades_criticas[$na - 1]->let - $listaActividades_criticas[$na - 1]->duration;
 
-  for(int i = na - 2; i >= 0; i--)
-  {
-    foreach(Activity activity in list[i].Successors)
-    {
-      if(list[i].Let == 0)
-        list[i].Let = activity.Lst;
-      else
-        if(list[i].Let > activity.Lst)
-          list[i].Let = activity.Lst;
+    for ($i = $na - 2; $i >= 0; $i--) {
+        foreach (($listaActividades_criticas[$i]->successors) as $activity) {
+            if ($listaActividades_criticas[$i]->let == 0)
+                $listaActividades_criticas[$i]->let = $activity->lst;
+            else
+            if (($listaActividades_criticas[$i]->let) > ($activity->lst))
+                $listaActividades_criticas[$i]->let = $activity->lst;
+        }
+
+        $listaActividades_criticas[$i]->lst = $listaActividades_criticas[$i]->let - $listaActividades_criticas[$i]->duration;
     }
 
-    list[i].Lst = list[i].Let - list[i].Duration;
-  }
+    return $listaActividades_criticas;
+}
 
-  return list;
-}*/
+function lista_predecesores($id, $listaActividades_criticas) {
 
-
-
-function lista_predecesores($id,$listaActividades_criticas){
-    
     $listapredecesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-   
-    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.id_actividad=?";//escritico=1 si si y 0 si no
+
+    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.id_actividad=?"; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($id));
         $stmt = $db->query($sql);
-        
+
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            
-            $p=$j["predecesores"];//falta la parte de validar los dos puntos
-            
-             $array[]=array();
-             $array=explode("-",$p);
-             $k=sizeof($array)-2;
-            while ($k>=0){
-            //echo $array[$k];
-           // echo $idobservacion;
-                    for ($i=0;$i<sizeof($listaActividades_criticas);$i++){
-        
-                            if ($listaActividades_criticas[$i]->id==$array[$k]){ 
-                                array_push($listapredecesores, $listaActividades_criticas[$i]);
-                                break;
-                            }
+            $p = $j["predecesores"]; //falta la parte de validar los dos puntos 
+
+            $array[] = array();
+            $array = explode(",", $p);
+            $k = sizeof($array) - 1;
+            while ($k >= 0) {
+
+                for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
+
+                    if ($listaActividades_criticas[$i]->id == $array[$k]) {
+                        array_push($listapredecesores, $listaActividades_criticas[$i]);
+                        break;
                     }
-         
-            $k--;
-        }
-             
+                }
+
+                $k--;
+            }
         }
 
         $db = null;
-        
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
     return $listapredecesores;
 }
 
-function lista_sucesores($id,$listaActividades_criticas,$id_projecto){
-    
+function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
+
     $listasucesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-   
-    $sql = "select a.id_actividad from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%?%' ";//escritico=1 si si y 0 si no
+
+    $sql = "select a.id_actividad from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%?%' "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($id_projecto,$id));//no estoy seguro de esto tengo que chekar nadal
+        $stmt->execute(array($id_projecto, $id)); //no estoy seguro de esto tengo que chekar nadal
         $stmt = $db->query($sql);
-        
+
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            
-         
-                    for ($i=0;$i<sizeof($listaActividades_criticas);$i++){
-        
-                            if ($listaActividades_criticas[$i]->id==$j["id_actividad"]){ 
-                                array_push($listasucesores, $listaActividades_criticas[$i]);
-                                break;
-                            }
-                    }
-         
-        
-             
+            for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
+
+                if ($listaActividades_criticas[$i]->id == $j["id_actividad"]) {
+                    array_push($listasucesores, $listaActividades_criticas[$i]);
+                    break;
+                }
+            }
         }
 
         $db = null;
-        
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
     return $listasucesores;
 }
-    
 
-function CR_obteneListaDependenciaProyecto($idProyecto) {//simil con lo hardcodeado ATP
+function hallar_arreglo_ids_cmp($listaActividades_criticas){
+    
+  $arreglo_critico=array();
+ 
+  foreach($listaActividades_criticas  as $activity)
+  {
+    
+      if(($activity->eet - $activity->let == 0) && ($activity->est - $activity->lst == 0)) push($arreglo_critico,$activity->id);
+        
+  }
+ 
+  return $arreglo_critico;
+  //Console.Write("\n\n         Total duration: {0}\n\n", list[list.Length - 1].Eet);
+    
+}
+
+function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simil con lo hardcodeado ATP
     $listaDependencias = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-   
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc ";//escritico=1 si si y 0 si no
+
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
         $stmt = $db->query($sql);
-        $tem_bloque="";
-        $numbloque=-1;
+        $tem_bloque = "";
+        $numbloque = -1;
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             $listafechas = array();
@@ -763,29 +946,37 @@ function CR_obteneListaDependenciaProyecto($idProyecto) {//simil con lo hardcode
                 array_push($listafechas, $datetime1);
                 $cont++;
             }
-            
+
             $datetime1 = mysql_real_escape_string($j["fecha_plan_inicio"]);
             $datetime1 = strtotime($datetime1);
             ($bloque <> '') ? $bloque = date('m', $datetime1) : $bloque = null;
 
-            if ($tem_bloque!=$bloque) $numbloque++;
+            if ($tem_bloque != $bloque)
+                $numbloque++;
+
+            $tem_bloque = $bloque;
             
-            $tem_bloque=$bloque;
-            
-            $escritico=0; //aca tiene que ir el algoritmo o la forma en halalr si la actividad es crítica o no
-            
+            $arreglo_size=sizeof($arreglo_critico);
+            $escritico=0;
+            for ($j=0;$j<$arreglo_size;$j++){
+                
+                if ($j["id_actividad"]==$arreglo_size[$j]){
+                    
+                    $escritico=1;
+                    break;
+                }
+            }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            $rec = array("id_actividad" => $j["id_actividad"],"nombre_actividad" => $j["nombre_actividad"],"bloque" => $numbloque,"EsCritico" => $escritico,"numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores" => $j["predecesores"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
+            $rec = array("id_actividad" => $j["id_actividad"], "nombre_actividad" => $j["nombre_actividad"],"marcado"=>0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores" => $j["predecesores"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
             array_push($listaDependencias, $rec);
         }
 
         $db = null;
-        
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
-    $listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias,($listaDependencias[sizeof($listaDependencias)-1]->bloque)+1);
+    $listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, ($listaDependencias[sizeof($listaDependencias) - 1]->bloque) + 1);
     return $listafinaljsondependencias;
 }
 
