@@ -28,6 +28,34 @@ function validEstrategia() {
     return true;
 }
 
+function validCampos() {
+    var i = 0;
+    var valor;
+    $(".prioridad").each(function() {
+        var prioridad = $($("input.prioridad")[i]).val(); // valor de inputs
+          var significado = $($("input.significado")[i]).val(); 
+          var puntajeMax = $($("input.puntajeMax")[i]).val(); 
+          var puntajeMin = $($("input.puntajeMin")[i]).val(); 
+        if (prioridad === null || prioridad.length === 0 ||significado === null || significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || puntajeMin === null || puntajeMin.length === 0  ) {
+            //ALERTAR
+            valor = "vacio";
+            alert("Debe registrar todos los campos");
+            return false;
+
+        }
+
+        i++;
+
+    });
+    if (valor === "vacio")
+        return false;
+    else
+        return true;
+}
+
+
+
+
 var puntaje;
 var puntajeMin;
 var puntajeMax;
@@ -99,6 +127,8 @@ function main() {
                                                    valor=valor+factorSuma;
                                                    
         }
+          $($(".puntajeMin")[0]).prop('disabled',true);
+          $("#tablaRecursos").find("tr:last td:eq(1) input").prop('disabled',true);
          //$($(".puntajeMin")[0]).prop('disabled',false);
 
    
@@ -111,6 +141,10 @@ function main() {
 
 
   $("#btnGrabarCategorizacion").click(function() {
+      
+      if (!validCampos())
+            return;
+      
         var data = {
             idProyecto: idProyectoLocal,
             listaEstrategias: []
@@ -144,8 +178,9 @@ function main() {
             fail: function(data) {
                 alert(data.me);
             }
+            
         });
-
+         alert("Se registró la categorización exitosamente");
 
 
 
@@ -246,7 +281,7 @@ function leerCategorias(){
     }
     
                   $($(".puntajeMin")[0]).prop('disabled',true);
-                 $("#tablaRecursos").find("tr:last td:eq(1) input").prop('disabled',true)
+                 $("#tablaRecursos").find("tr:last td:eq(1) input").prop('disabled',true);
          }
      });
 
