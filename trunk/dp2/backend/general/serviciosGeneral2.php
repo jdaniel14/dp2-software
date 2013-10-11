@@ -446,13 +446,13 @@ function G_getListarRecDisp() {
 
 
 	function G_getListaRecursosEnProyecto($id) {
-		  $sql = " SELECT E.ID_EMPLEADO,E.NOMBRE_CORTO,RE.NOMBRE_ROL,M.COSTO_EMPLEADO, P.nombre_proyecto
+		  $sql = " SELECT E.ID_EMPLEADO,E.NOMBRE_CORTO,RE.NOMBRE_ROL,M.COSTO_EMPLEADO, P.nombre_proyecto,M.PORCENTAJE
 		          FROM MIEMBROS_EQUIPO  M,
 		          EMPLEADO E,
 		          ROL_EMPLEADO RE, 
-							PROYECTO P
+                          PROYECTO P
 		          WHERE P.id_proyecto = :id
-							AND E.ID_EMPLEADO=M.ID_EMPLEADO
+                          AND E.ID_EMPLEADO=M.ID_EMPLEADO
 		          AND E.ID_ROL=RE.ID_ROL
 		          AND M.ID_PROYECTO=P.id_proyecto";
 		  try {
@@ -469,7 +469,8 @@ function G_getListarRecDisp() {
 		              "id" => $j["ID_EMPLEADO"],
 		              "nom" => $j["NOMBRE_CORTO"],
 		              "rol" => $j["NOMBRE_ROL"],
-		              "costo" => $j["COSTO_EMPLEADO"]
+		              "costo" => $j["COSTO_EMPLEADO"],
+                              "porc"=>$j["PORCENTAJE"]
 		          );
 		          array_push($l_recxpro, $rec);
 		      }
