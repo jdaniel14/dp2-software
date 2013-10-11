@@ -1232,6 +1232,5 @@ function validarRegistro(data, caso){
 		}
 		return flag;
 	}
-
 		
 }
