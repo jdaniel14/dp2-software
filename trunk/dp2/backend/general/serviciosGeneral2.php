@@ -229,7 +229,7 @@ function G_postCerrarProyecto() {
     }
 }
 /********************************************recuros humanos*/
-function G_getAsignarRecProy() {
+function G_postAsignarRecProy() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
     //$request = "{ \"id_proy\": 4,\"l_rrhhxpr\":[{\"idr\": \"1\",\"costo\": \"100\"},{\"idr\": \"2\",\"costo\": \"150\"}]}";
@@ -273,7 +273,7 @@ function G_getAsignarRecProy() {
             }
         }
          $db = null;
-         echo json_encode(array("me" => ""));
+         echo json_encode(array("me" => "Beleza"));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
