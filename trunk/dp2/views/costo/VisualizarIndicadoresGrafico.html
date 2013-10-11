@@ -1,13 +1,67 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
   <head>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="../../static/costo/js/VisualizarIndicadoresGrafico.js">
-	</script>
-	<script type="text/javascript">
-		drawChart();
-	</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
   </head>
+
   <body>
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+
+    <div id="header"></div>
+
+    <div class="container">	
+	<div class="row">
+	<div class="col-md-3" width="100%">
+	</div>
+	
+	<div class="col-md-9" role="main">
+      <div class="starter-template">
+	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1 id="nombreProyecto"></h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+	  	  
+	  
+	  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+			
+	  </div>
+	  
+	</div>
+	</div> 
+    </div><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script>
+	var puedeConfirmar='1';
+	
+	</script>
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+	<script src="../../assets/js/header.js"></script>
+	<script src="../../static/costo/js/AsignaCuenta.js"></script>
+	<script src="https://www.google.com/jsapi"></script>
+    <script src="../../static/costo/js/VisualizarIndicadoresGrafico.js">
+	</script>
+	
   </body>
 </html>
