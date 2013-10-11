@@ -32,7 +32,8 @@ var currentDate = new Date();
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
 		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
 				  .append("<button  class='button'>Exportar</button>")
-				  .append("<button data-toggle='modal' href='#myModal' class='button' onclick='getCalendar();'>Tiempo de Trabajo</button>");
+				  .append("<button data-toggle='modal' href='#myModal' class='button' onclick='getCalendar();'>Tiempo de Trabajo</button>")
+				  .append("<button data-toggle='modal' href='#myModalIndicador' class='button'>Indicadores</button>");
 		          //.append("<button onclick='getFile();' class='button'>Exportar</button>");
 		  $(".ganttButtonBar h1").html("<img src='twGanttSmall.png'>");
 		  $(".ganttButtonBar div").addClass('buttons');
