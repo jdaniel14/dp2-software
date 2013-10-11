@@ -33,7 +33,7 @@
          <activity android:name="org.achartengine.GraphicalActivity" />
          <activity android:name="com.dp2.gproyectos.costos.view.CostosIndicadoresActivity" />
          <activity android:name="com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity" 
-             	   android:label=""
+             	   android:label="_label_"
              	   android:theme="@style/DarkTheme">
         </activity>
         <!-- INICIO ACTIVIDADES MODULO COSTOS -->
