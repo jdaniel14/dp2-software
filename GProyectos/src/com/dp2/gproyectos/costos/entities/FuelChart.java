@@ -1,5 +1,7 @@
 package com.dp2.gproyectos.costos.entities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -30,9 +32,11 @@ public class FuelChart {
 		String title;
 		double min, max;
 		long fechaMin, fechaMax;
+		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		
 
 		if (results.size() > 0) {
-			title = "Valores del indicador " + nombreIndicador + " hasta la fecha " + results.get(results.size() - 1).getDate().getTime();
+			title = "Valores del indicador " + nombreIndicador + " hasta la fecha " + dateFormat.format(results.get(results.size() - 1).getDate().getTime());
 			max = Collections.max(results).getValue();
 			min = Collections.min(results).getValue();
 			fechaMin = results.get(0).getDate().getTime();
