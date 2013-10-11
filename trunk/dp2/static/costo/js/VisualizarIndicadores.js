@@ -194,8 +194,12 @@ function grabarIndicadores(){
 		CV: obtenerValorIndicador('DC'),
 		CPI:obtenerValorIndicador('CPI'),
 		SPI:obtenerValorIndicador('SPI'),
-		SV: obtenerValorIndicador('SV')
-					
+		SV: obtenerValorIndicador('SV'),
+		BAC: obtenerValorIndicador('BAC'),
+		EAC: obtenerValorIndicador('EAC'),
+		ETC: obtenerValorIndicador('ETC'),
+		VAC: obtenerValorIndicador('VAC'),
+		TCPI: obtenerValorIndicador('TCPI')		
 	}
 	
 	
