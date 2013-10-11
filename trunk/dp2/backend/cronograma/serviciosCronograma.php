@@ -49,19 +49,19 @@ function CR_getRecursos($json) { //servicio5
 function CR_getDependencias($json) {//servicio6
     $proy = json_decode($json);
     $arreglo_fecha=hallar_fechainicio_fechafin_red($proy->idProyecto);
-	echo 1;
+	//echo 1;
     $arreglo_feriados=hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
-    echo 2;
+    //echo 2;
 	$arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto, $arreglo_feriados) ;
-    echo 3;
+    //echo 3;
 	$arreglo_actividades_sucesores= Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
-    echo 4;
+    //echo 4;
 	$arreglo_actividades_previo=WalkListAhead($arreglo_actividades_sucesores);
-    echo 5;
+    //echo 5 . json_encode($arreglo_actividades_previo);
 	$arreglo_actividades_final= WalkListAback($arreglo_actividades_previo);
-    echo 6;
+    //echo 6;
 	$arreglo_critico=hallar_arreglo_ids_cmp($arreglo_actividades_final);
-    echo 7;
+    //echo 7;
 	$listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto,$arreglo_critico);
 	
     echo json_encode($listaDependencias);
@@ -595,7 +595,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
     $array = explode("#", $p);
     $k = sizeof($array) - 2;
     while ($k >= 1) {
-		echo $k;
+		//echo $k;
         $fecha = $array[$k];
         $array2[] = array();
         $array2 = explode("_", $fecha);
@@ -615,7 +615,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
 
 
             for ($j = $arreglo_inicio[0]; $j <= $arreglo_fin[0]; $j++) {
-                
+             //echo $fecha;   
              $comprobar_fecha = new DateTime($j."-".$array2[0]."-".$array2[1]);
             
             if (($comprobar_fecha->format('N') == 7)||($comprobar_fecha->format('N') == 6)){
@@ -703,7 +703,7 @@ function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodead
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
-	echo "termino".json_encode($listafechas);
+	//echo "termino".json_encode($listafechas);
     return $listafechas;
 }
 
@@ -848,13 +848,16 @@ function WalkListAhead($listaActividades_criticas) {
 
 function WalkListAback($listaActividades_criticas) {
     $na = sizeof($listaActividades_criticas);
+	//echo 	json_encode($listaActividades_criticas);
     $listaActividades_criticas[$na - 1]->let = $listaActividades_criticas[$na - 1]->eet;
     $listaActividades_criticas[$na - 1]->lst = $listaActividades_criticas[$na - 1]->let - $listaActividades_criticas[$na - 1]->duration;
 
     for ($i = $na - 2; $i >= 0; $i--) {
         foreach (($listaActividades_criticas[$i]->successors) as $activity) {
-            if ($listaActividades_criticas[$i]->let == 0)
+            if ($listaActividades_criticas[$i]->let == 0){
                 $listaActividades_criticas[$i]->let = $activity->lst;
+				echo 	json_encode($listaActividades_criticas[$i]);
+			}	
             else
             if (($listaActividades_criticas[$i]->let) > ($activity->lst))
                 $listaActividades_criticas[$i]->let = $activity->lst;
@@ -910,13 +913,14 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
     $listasucesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.id_actividad from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%?%' "; //escritico=1 si si y 0 si no
+    $sql = "select a.id_actividad from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($id_projecto, $id)); //no estoy seguro de esto tengo que chekar nadal
+        
+		$stmt->execute(array($id_projecto)); //no estoy seguro de esto tengo que chekar nadal
         //$stmt = $db->query($sql);
-
+			
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
 
@@ -941,7 +945,7 @@ function hallar_arreglo_ids_cmp($listaActividades_criticas){
   foreach($listaActividades_criticas  as $activity)
   {
     
-      if(($activity->eet - $activity->let == 0) && ($activity->est - $activity->lst == 0)) push($arreglo_critico,$activity->id);
+      if(($activity->eet - $activity->let == 0) && ($activity->est - $activity->lst == 0)) array_push($arreglo_critico,$activity->id);
         
   }
  
@@ -989,7 +993,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
 
             $datetime1 = mysql_real_escape_string($j["fecha_plan_inicio"]);
             $datetime1 = strtotime($datetime1);
-            ($bloque <> '') ? $bloque = date('m', $datetime1) : $bloque = null;
+            ($datetime1 <> '') ? $bloque = date('m', $datetime1) : $bloque = null;
 
             if ($tem_bloque != $bloque)
                 $numbloque++;
@@ -1000,7 +1004,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
             $escritico=0;
             for ($j=0;$j<$arreglo_size;$j++){
                 
-                if ($j["id_actividad"]==$arreglo_size[$j]){
+                if ($j["id_actividad"]==$arreglo_critico[$j]){
                     
                     $escritico=1;
                     break;
@@ -1016,7 +1020,8 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
-    $listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, ($listaDependencias[sizeof($listaDependencias) - 1]->bloque) + 1);
+	//echo "mira". json_encode($listaDependencias[sizeof($listaDependencias) - 1]["bloque"]);
+    $listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, ($listaDependencias[sizeof($listaDependencias) - 1]["bloque"]) + 1);
     return $listafinaljsondependencias;
 }
 
