@@ -27,7 +27,6 @@ function GridEditor(master) {
   this.element = gridEditor;
 }
 
-
 GridEditor.prototype.fillEmptyLines = function() {
   var factory = new TaskFactory();
 
@@ -409,6 +408,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   //console.log(selectwbs.val());
   /**** Fin Asignar wbsNodes *****/
   
+
+  
   
   taskEditor.find("#description").val(task.description);  
   taskEditor.find("#code").val(task.code);
@@ -486,18 +487,51 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           
     //console.log(addelemento);
     
+    
+    
+    /**** Asignar Tipo Costo ******/
+    
+    //console.log("Task Editor");
+    //console.log(assigRow);
+    
+    var selectTCosto = assigRow.find("#tipoCosto");
+    console.log("Selecttttt");
+    console.log(selectTCosto);
+    
+    $.each(ge.tipoCostos,function(e,el){
+  	  escritor = "";
+  	  escritor += '<option value ="' + el.id + '">';
+  	  escritor += el.name;
+  	  escritor += '</option>';
+  	  selectTCosto.append(escritor);
+    });
+    
+    //console.log(task);
+    
+    //selectTCosto.val(task.);
+    
+    console.log("Valorrrrr: " + assig.idTipoCosto);
+	  selectTCosto.val(assig.idTipoCosto);
+	  if(assig.idTipoCosto == null){
+		  selectTCosto.val(1);
+	  }
+    //if(task.id_Wbs == null){
+  	//  selectwbs.val(1);
+   // }
+    
+    
+    /***** Fin asignar Tipo Costo ****/
+    
     var recurso = ge.resources;
-		
+	
     $.each(recurso, function(index,element){
   	  if(addelemento == element.id){
-  		  //console.log(element);
+  		  console.log(element);
   		  $(addtd1).text(element.typeCost);
   		  $(addtd2).text(element.costRate);
   		  $(addtd6).text(element.idrecurso);
   	  }
     });
-    
-    
     
     assigsTable.append(assigRow);
   }
@@ -564,9 +598,13 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     //bind add assignment
     taskEditor.find("#addAssig").click(function () {
       console.log(task);
+      
+      
       if (task.status == "STATUS_DONE"){
         alert("No se puede agregar recursos a una actividad completada");
       }
+      
+      
       else {
         var assigsTable = taskEditor.find("#assigsTable");
         var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
@@ -589,6 +627,37 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           }
         });
         //Fin inicializacion del primer recurso
+        
+        /**** Asignar Tipo Costo ******/
+        
+        //console.log("Task Editor");
+        //console.log(assigRow);
+        
+        var selectTCosto = assigRow.find("#tipoCosto");
+        console.log("Selecttttt");
+        console.log(selectTCosto);
+        
+        $.each(ge.tipoCostos,function(e,el){
+      	  escritor = "";
+      	  escritor += '<option value ="' + el.id + '">';
+      	  escritor += el.name;
+      	  escritor += '</option>';
+      	  selectTCosto.append(escritor);
+        });
+        
+        //console.log(task);
+        
+        //selectTCosto.val(task.);
+        
+          console.log("Valorrrrr: " + assig.idTipoCosto);
+    	  selectTCosto.val(assig.idTipoCosto);
+    	  if(assig.idTipoCosto == null){
+    		  selectTCosto.val(1);
+    	  }  
+        
+        
+        /***** Fin asignar Tipo Costo ****/
+        
         
         assigsTable.append(assigRow);
       }      
@@ -679,6 +748,9 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         var idrecurso = trAss.find("[name=idrecurso]").text();
         var costRateReal = trAss.find("[name=costRateReal]").attr("value");
         var valueReal = trAss.find("[name=valueReal]").attr("value");
+        var idTipoCosto = trAss.find("[name=tipoCosto]").val();
+        
+        console.log("IDTIPOCOSTO: " + idTipoCosto);
         
         //check if an existing assig has been deleted and re-created with the same values
         var found = false;
@@ -695,6 +767,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             ass.idrecurso = idrecurso;
             ass.costRateReal = costRateReal;
             ass.valueReal = valueReal;
+            ass.idTipoCosto = idTipoCosto;
             ass.touched = true;
             found = true;
             break;
@@ -708,6 +781,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             ass.idrecurso = idrecurso;
             ass.costRateReal = costRateReal;
             ass.valueReal = valueReal;
+            ass.idTipoCosto = idTipoCosto;
             ass.touched = true;
             found = true;
             break;
@@ -717,7 +791,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
         if (!found) { //insert
         	//console.log("Valor nuevo: " + value);
-          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort, typeCost, costRate,value, idrecurso, costRateReal, valueReal);
+          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort, typeCost, costRate,value, idrecurso, costRateReal, valueReal, idTipoCosto);
           //console.log(ass);
           ass.touched = true;
         }

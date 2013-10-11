@@ -51,7 +51,7 @@ function cargarDatos(){
 		idProyecto : idProyecto
 	}
 	
-	var rootURL = "../../../api/CR_getActividades/"+JSON.stringify(objProy);
+	var rootURL = "../../../api/CR_getDependencias/"+JSON.stringify(objProy);
 	$.ajax({
 		type: 'GET',
 		url: rootURL,
