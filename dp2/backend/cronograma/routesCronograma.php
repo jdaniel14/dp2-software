@@ -8,7 +8,7 @@
 	$app->get('/CR_getIndicadoresFlujo/:parametro','CR_getIndicadoresFlujo');
                 $app->get('/CR_getPaquetesEDT/:parametro','CR_getPaquetesEDT');//servicio 7
 	$app->post('/CR_postActividades/', 'CR_postActividades'); //servicio8: guardar las actividades del proyecto
-	
+	$app->post('/CR_test/:parametro', 'hallar_fechainicio_fechafin_red');
 	
 	
 ?>
