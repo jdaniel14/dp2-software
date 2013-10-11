@@ -1,6 +1,6 @@
 var cantidad=0;
 $(document).ready(main);
- localStorage.setItem("idProyecto", 1);
+ //localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 
 function validAtenas2(){
