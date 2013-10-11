@@ -318,6 +318,8 @@
                       url: "../../api/eliminarEdt",
                       success: function (data) {
                           console.log(data, "eliminado");
+                          $("#CrearEDTCero").show("slow");
+                          $("#edtCrearLogError").show("slow");
                       }
         });
            });
