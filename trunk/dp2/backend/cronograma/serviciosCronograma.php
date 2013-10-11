@@ -616,14 +616,14 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
 
             for ($j = $arreglo_inicio[0]; $j <= $arreglo_fin[0]; $j++) {
                 
-             $comprobar_fecha = new DateTime($j."-".$fecha);
+             $comprobar_fecha = new DateTime($j."-".$array2[0]."-".$array2[1]);
             
             if (($comprobar_fecha->format('N') == 7)||($comprobar_fecha->format('N') == 6)){
             
                 
             }else{
                 
-                $fecha = $j * 10000 + $array2[1] * 100 + $array2[0];
+                $fecha = $j * 10000 + $array2[0] * 100 + $array2[1];
 
                 if (($fecha > $total_inicio) && ($fecha < $total_fin))
                     array_push($arreglo_feriados, $fecha);
@@ -635,13 +635,13 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
             
         }else if ($k2 == 3) {
 
-            $comprobar_fecha = new DateTime($fecha);
+            $comprobar_fecha = new DateTime($array2[0]."-".$array2[1]."-".$array2[2]);
             
             if (($comprobar_fecha->format('N') == 7)||($comprobar_fecha->format('N') == 6)){
             
                 
             }else{
-            $fecha = $array2[0] * 10000 + $array2[1] * 100 + $array2[0];
+            $fecha = $array2[0] * 10000 + $array2[1] * 100 + $array2[2];
             array_push($arreglo_feriados, $fecha);
             }
         }
@@ -781,7 +781,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 //berloc, aca se buseara por las fechas de inicio
                 $arreglo_inicio[] = array();
                 $arreglo_inicio = explode("-", $listafechas[0]);
-                $fecha_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[0];
+                $fecha_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[2];
                 $tem_inicio = $fecha_inicio;
                 $n_feriados = sizeof($arreglo_feriados);
                 for ($j = 0; $j < $n_feriados; $j++) {
