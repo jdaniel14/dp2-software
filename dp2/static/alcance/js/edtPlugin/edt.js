@@ -7,6 +7,9 @@
     */
 
     //getVersionEdt
+
+    /*
+
     var jsonCliente = {
                   idproyecto : "1"
                   };
@@ -21,16 +24,17 @@
                           console.log(data.version);
                           if (data.version){
                             console.log("mostrar");
-                            $("#CrearEDTCero").show();
+                            //$("#CrearEDTCero").show();
 
                           }else{
                             console.log("crear");
-                            $("#CrearEDTCero").show();
+                            //$("#CrearEDTCero").show();
                           }
 
 
                       }
         });
+*/
 
         //localStorage.removeItem("mostrarEdt");
         Object.size = function(obj) {
@@ -235,6 +239,8 @@
                localStorage.setItem("mostrarEdt", 0);
             }
             */
+            console.log("Mostrando EDT loading....");
+
             $("#progressEdt").show("slow");
             var jsonCliente = {
                   idproyecto : localStorage.getItem("idProyecto")
@@ -250,24 +256,34 @@
                       success: function (data) {
                           /* Custom jQuery for the example */
                             //armarEdt( data, 0 );
-                            localStorage.setItem( "idedt", data.idedt );
-                            edtAlgorithm( data );
-                            localStorage.setItem("navegacionEDT","actual");
-                            console.log("sape1");
-                            $('#list-html').text($('#org').html());
-                            
-                            $("#org").bind("DOMSubtreeModified", function() {
-                                console.log("sape");
-                                $('#list-html').text('');
-                                
+
+                            if ( !data.idnodo ){
+                              console.log("nulo", data.idnodo );
+                              $("#progressEdt").hide("slow");
+                              $("#edtCrearLogError").show("slow");
+                              $("#CrearEDTCero").show("slow");
+                            }else{
+                              console.log("not null", data.idnodo );
+                              localStorage.setItem( "idedt", data.idedt );
+                                edtAlgorithm( data );
+                                localStorage.setItem("navegacionEDT","actual");
+                                console.log("sape1");
                                 $('#list-html').text($('#org').html());
                                 
-                                prettyPrint();                
-                            });
-                           // prettyPrint();
-                           $("#progressEdt").hide("slow");
-                           $("#containerEdt").show("slow"); 
-                           $("#controllerButton").show("slow");
+                                $("#org").bind("DOMSubtreeModified", function() {
+                                    console.log("sape");
+                                    $('#list-html').text('');
+                                    
+                                    $('#list-html').text($('#org').html());
+                                    
+                                    prettyPrint();                
+                                });
+                               // prettyPrint();
+                               $("#progressEdt").hide("slow");
+                               $("#containerEdt").show("slow"); 
+                               $("#controllerButton").show("slow");
+                            }
+                            
                       }
                   });
           });
@@ -344,38 +360,9 @@
               });
             }
 
-/*
-
-            function agregarPadreJson( idproyecto, title, hijos, dias, descripcion, nodos ){
-                var jsonCliente = {
-                                  idproyecto : idproyecto,
-                                  title : title,
-                                  hijos: hijos,
-                                  dias: dias,
-                                  descripcion: descripcion,
-                                  nodos : nodos
-                                  };
-                return jasonCliente;
-            }
-
-            function agregarHijoJson( title, hijos, dias, , nodos ){
-
-                  var jsonCliente = {
-                                  title : title,
-                                  hijos : hijos,
-                                  dias: dias,
-                                  descripcion: descripcion,
-                                  nodos : nodos
-                                  };
-                return jsonCliente;
-            }
-*/
-
-
-           
-          
-         
-
+      //trigger a Mostrar EDT    
+     $("#MostrarEdt").trigger('click');       
+  
     });
 
   
