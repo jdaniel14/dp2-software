@@ -8,7 +8,8 @@ function validAtenas() {
     }
     return true;
 }
- var puntaje;
+
+var puntaje;
 var puntajeMin;
 var puntajeMax;
 
@@ -103,13 +104,13 @@ function main() {
             i++;
             data.listaEstrategias[i - 1] = obj;
         });
-
+ var jsonData = JSON.stringify(data);
         console.log(data);
 
         $.ajax({
             type: 'POST',
             url: "../../api/R_registrarEstrategias",
-            data: jsonData,
+             data: jsonData,
             dataType: "json",
             success: function(data) {
                 alert("Se registró la categorización exitosamente");
@@ -162,63 +163,63 @@ function main() {
 
 
 function leerCategorias(){
+//
+//    var data =$.parseJSON('[{"idEstrategia":1,"puntajeMin":1, "puntajeMax":25, "prioridad":"Muy Baja", "estrategia":"evitar", "significado": "No hacer nada"}, {"idEstrategia":2,"puntajeMin":26, "puntajeMax":50, "prioridad":"Baja", "estrategia":"mitigar", "significado": "Dejar por escrito"}]');
+//    console.log(data);
+//
+//   for (obj in data) {
+//       var idEstrategia = data[obj]["idEstrategia"];    
+//       var puntajeMin = data[obj]["puntajeMin"];
+//       var puntajeMax = data[obj]["puntajeMax"];
+//       var prioridad = data[obj]["prioridad"];
+//       var estrategia = data[obj]["estrategia"];
+//       var significado = data[obj]["significado"];
+//        
+//      $('#tablaCategorizacion').append("<tr>\n\
+//                                            <td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
+//                                            <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" +  idEstrategia+ "\" value=\""+ puntajeMax+"\"></td>\n\
+//                                            <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\""+ prioridad+"\"></td>\n\
+//                                            <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
+//                                                     <option  value=\""+ estrategia +"\">" +estrategia+ "</option>\n\
+//                                            <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + idEstrategia + "\" value=\""+ significado+"\"></td></tr>");
+//
+//
+//   }
 
-    var data =$.parseJSON('[{"idEstrategia":1,"puntajeMin":1, "puntajeMax":25, "prioridad":"Muy Baja", "estrategia":"evitar", "significado": "No hacer nada"}, {"idEstrategia":2,"puntajeMin":26, "puntajeMax":50, "prioridad":"Baja", "estrategia":"mitigar", "significado": "Dejar por escrito"}]');
-    console.log(data);
-
-   for (obj in data) {
-       var idEstrategia = data[obj]["idEstrategia"];    
-       var puntajeMin = data[obj]["puntajeMin"];
-       var puntajeMax = data[obj]["puntajeMax"];
-       var prioridad = data[obj]["prioridad"];
-       var estrategia = data[obj]["estrategia"];
-       var significado = data[obj]["significado"];
-        
-      $('#tablaCategorizacion').append("<tr>\n\
-                                            <td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
-                                            <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" +  idEstrategia+ "\" value=\""+ puntajeMax+"\"></td>\n\
-                                            <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\""+ prioridad+"\"></td>\n\
-                                            <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
-                                                     <option  value=\""+ estrategia +"\">" +estrategia+ "</option>\n\
-                                            <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + idEstrategia + "\" value=\""+ significado+"\"></td></tr>");
 
 
-   }
+    var data = {
+         idProyecto: idProyectoLocal
+     };
+     var jsonData = JSON.stringify(data);
 
-
-
-   // var data = {
-   //      idProyecto: idProyectoLocal
-   //  };
-   //  var jsonData = JSON.stringify(data);
-
-   //  $.ajax({
-   //      type: 'GET',
-   //      url: '../../api/R_listarEstrategias' + '/' + data.idProyecto,
-   //      dataType: "json",
-   //      contentType: "application/json; charset=utf-8",
-   //      success: function(data) {
-   //          for (obj in data) {
-   //             var idEstrategia = data[obj]["idEstrategia"];    
-   //             var puntajeMin = data[obj]["puntajeMin"];
-   //             var puntajeMax = data[obj]["puntajeMax"];
-   //             var prioridad = data[obj]["prioridad"];
-   //             var estrategia = data[obj]["estrategia"];
-   //             var significado = data[obj]["significado"];
+     $.ajax({
+         type: 'GET',
+         url: '../../api/R_listarEstrategias' + '/' + data.idProyecto,
+         dataType: "json",
+         contentType: "application/json; charset=utf-8",
+         success: function(data) {
+             for (obj in data) {
+                var idEstrategia = data[obj]["idEstrategia"];    
+                var puntajeMin = data[obj]["puntajeMin"];
+                var puntajeMax = data[obj]["puntajeMax"];
+                var prioridad = data[obj]["prioridad"];
+                var estrategia = data[obj]["estrategia"];
+                var significado = data[obj]["significado"];
                 
-   //            $('#tablaCategorizacion').append("<tr>\n\
-   //                                                  <td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
-   //                                                  <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" +  idEstrategia+ "\" value=\""+ puntajeMax+"\"></td>\n\
-   //                                                  <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\""+ prioridad+"\"></td>\n\
-   //                                                  <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
-   //                                                           <option  value=\""+ estrategia +"\">" +estrategia+ "</option>\n\
-   //                                                  <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + idEstrategia + "\" value=\""+ significado+"\"></td></tr>");
+               $('#tablaCategorizacion').append("<tr>\n\
+                                                     <td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
+                                                     <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" +  idEstrategia+ "\" value=\""+ puntajeMax+"\"></td>\n\
+                                                     <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\""+ prioridad+"\"></td>\n\
+                                                     <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
+                                                              <option  value=\""+ estrategia +"\">" +estrategia+ "</option>\n\
+                                                     <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + idEstrategia + "\" value=\""+ significado+"\"></td></tr>");
 
 
-   // }
+    }
             
-   //      }
-   //  });
+         }
+     });
 
 
 
@@ -231,25 +232,25 @@ function leerCategorias(){
  
 
 function  leerPuntajes() {
-    var data = $.parseJSON('{"puntajeMin":1,"puntajeMax":50}');
-    $("#puntajeMin").val(data["puntajeMin"]);
-    $("#puntajeMax").val(data["puntajeMax"]);
+//    var data = $.parseJSON('{"puntajeMin":1,"puntajeMax":50}');
+//    $("#puntajeMin").val(data["puntajeMin"]);
+//    $("#puntajeMax").val(data["puntajeMax"]);
 
-    // var data = {
-    //     idProyecto: idProyectoLocal
-    // };
-    // // var jsonData = JSON.stringify(data);
+     var data = {
+         idProyecto: idProyectoLocal
+     };
+     // var jsonData = JSON.stringify(data);
 
-    // $.ajax({
-    //     type: 'GET',
-    //     url: '../../api/R_obtenerPuntajes' + '/' + data.idProyecto,
-    //     dataType: "json",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function(data) {
-    //         $("#puntajeMin").val(data["puntajeMin"]);
-    //         $("#puntajeMax").val(data["puntajeMax"]);
-    //     }
-    // });
+     $.ajax({
+         type: 'GET',
+         url: '../../api/R_obtenerPuntajes' + '/' + data.idProyecto,
+         dataType: "json",
+         contentType: "application/json; charset=utf-8",
+         success: function(data) {
+             $("#puntajeMin").val(data["puntajeMin"]);
+             $("#puntajeMax").val(data["puntajeMax"]);
+         }
+     });
 
 
 
