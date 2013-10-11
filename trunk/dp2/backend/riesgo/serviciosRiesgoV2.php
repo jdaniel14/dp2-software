@@ -190,7 +190,7 @@
     function R_postRegistrarEstrategias(){ //Recordar cambiar para doble tipo
         $request = \Slim\Slim::getInstance()->request();
         $listaEstrategia = json_decode($request->getBody());
-        foreach ($listaEstrategia->lista as $estrategia){
+        foreach ($listaEstrategia->listaEstrategias as $estrategia){
             $query = "INSERT INTO CATEGORIZACION_ESTRATEGIAS (id_proyecto,tipo,puntaje_limite_bajo,puntaje_limite_alto, prioridad, estrategia, significado) 
                         VALUES (:id_proyecto,1,:puntaje_limite_bajo, :puntaje_limite_alto, :prioridad, :estrategia, :significado)";
             try {
