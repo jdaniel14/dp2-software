@@ -28,7 +28,6 @@
             <div class="h1-title">
                 <h1>Mi Proyecto</h1>
 
-                <input id="idProyecto" value="1">
                 <div class="col-lg-12">
                     <form class="well" action="#" method="get">
                         <fieldset>
@@ -149,25 +148,42 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-lg-4 control-label">*Categoria Riesgo</label>
+                                                    <label class="col-lg-4 control-label">*Tipo de Impacto</label>
                                                     <div class="col-lg-8">
-                                                        <select class="form-control" id="objAfe">
-                                                            <option value="0" disabled selected>Escoge un objetivo afectado</option>
+                                                        <select class="form-control" id="tipoImpacto">
+                                                            <option value="0" disabled selected>Escoge un tipo de impacto</option>
                                                         </select>
                                                     </div>
-                                                    <div class="alert alert-danger" id="errorCategoria" style="display: none;">
-                                                        <span class="pull-right">Por favor, seleccione alguna categoria</span>
+                                                    <div class="alert alert-danger" id="errorTipoImpacto" style="display: none;">
+                                                        <span class="pull-right">Por favor, seleccione algun tipo de impacto</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="RiesgoCaso1">
+                                                    <label class="col-lg-4 control-label">*Impacto Estimado</label>
+                                                    <div class="col-lg-8">
+                                                        <input type="text" class="form-control" id="impRiesgo1" placeholder="Ingrese un estimado del impacto del riesgo" maxlength="20">
+                                                    </div>
+                                                    <div class="alert alert-danger" id="errorImpacto1" style="display: none;">
+                                                        <span class="pull-right">Por favor, ingrese algún valor estimado para asignar un impacto al riesgo</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="RiesgoCaso2">
+                                                    <label class="col-lg-4 control-label">*Impacto Estimado</label>
+                                                    <div class="col-lg-8">
+                                                        <select class="form-control" id="impRiesgo2">
+                                                            <option value="0" disabled selected>Escoge un valor estimado para el impacto</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="alert alert-danger" id="errorImpacto2" style="display: none;">
+                                                        <span class="pull-right">Por favor, seleccione alor estimado para asignar un impacto al riesgo</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">*Nivel de impacto</label>
                                                     <div class="col-lg-8">
                                                         <select class="form-control" id="impRiesgo">
-                                                            <option value="0" disabled selected>Escoge un nivel de impacto</option>
+                                                            <option value="0" disabled selected>Primero, ingresa un impacto estimado</option>
                                                         </select>
-                                                    </div>
-                                                    <div class="alert alert-danger" id="errorImpacto" style="display: none;">
-                                                        <span class="pull-right">Por favor, escoga algun nivel de impacto</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -176,7 +192,7 @@
                                                         <input type="number" class="form-control" min="0" max="100" id="proRiesgo" maxlength="3">
                                                     </div>
                                                     <div class="alert alert-danger" id="errorProba" style="display: none;">
-                                                        <span class="pull-right">Por favor, ingrese un valor entre 0 y 100</span>
+                                                        <span class="pull-right">Por favor, ingrese un valor entero entre 0 y 100</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -304,14 +320,34 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-4 control-label">*Categoria Riesgo</label>
+                                    <label class="col-lg-4 control-label">*Tipo de Impacto</label>
                                     <div class="col-lg-8">
-                                        <select class="form-control" id="objAfeM">
-                                            <option value="0" disabled selected>Escoge un objetivo afectado</option>
+                                        <select class="form-control" id="tipoImpactoM">
+                                            <option value="0" disabled selected>Escoge un tipo de impacto</option>
                                         </select>
                                     </div>
-                                    <div class="alert alert-danger" id="errorCategoriaM" style="display: none;">
+                                    <div class="alert alert-danger" id="errorTipoImpactoM" style="display: none;">
                                         <span class="pull-right">Por favor, seleccione alguna categoria</span>
+                                    </div>
+                                </div>
+                                <div class="form-group"  id="RiesgoCaso1M">
+                                    <label class="col-lg-4 control-label">*Impacto Estimado</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="impRiesgo1M" placeholder="Ingrese un estimado del impacto del riesgo" maxlength="20">
+                                    </div>
+                                    <div class="alert alert-danger" id="errorImpacto1M" style="display: none;">
+                                        <span class="pull-right">Por favor, ingrese algún valor estimado para asignar un impacto al riesgo</span>
+                                    </div>
+                                </div>
+                                <div class="form-group"  id="RiesgoCaso2M">
+                                    <label class="col-lg-4 control-label">*Impacto Estimado</label>
+                                    <div class="col-lg-8">
+                                        <select class="form-control" id="impRiesgo2M">
+                                            <option value="0" disabled selected>Escoge un valor estimado para el impacto</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert alert-danger" id="errorImpacto2M" style="display: none;">
+                                        <span class="pull-right">Por favor, seleccione alor estimado para asignar un impacto al riesgo</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -320,9 +356,6 @@
                                         <select class="form-control" id="impRiesgoM">
                                             <option value="0" disabled selected>Escoge un nivel de impacto</option>
                                         </select>
-                                    </div>
-                                    <div class="alert alert-danger" id="errorImpactoM" style="display: none;">
-                                        <span class="pull-right">Por favor, escoga algun nivel de impacto</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
