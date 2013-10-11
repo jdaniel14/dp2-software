@@ -372,10 +372,10 @@ function CR_consultarListaIndicadores($idProyecto) {
 
                 array_push($listaIndicadorestotal, $listaIndicadores);
                 $listaIndicadores = array();
-                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                $rec = array("idindicadorxproyecto" => $j["id_indicador_x_proyecto"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
                 array_push($listaIndicadores, $rec);
             } else {
-                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                $rec = array("idindicadorxproyecto" => $j["id_indicador_x_proyecto"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
                 array_push($listaIndicadores, $rec);
             }
 

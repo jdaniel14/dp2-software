@@ -49,7 +49,7 @@ class CR_IndicadoresJSON{
 
     //constructor
     function __construct($indicadores) {
-        $this->$indicadores = $indicadores;
+        $this->indicadores = $indicadores;
 
     }
 }
