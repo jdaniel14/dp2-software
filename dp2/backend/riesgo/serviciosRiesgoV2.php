@@ -176,7 +176,7 @@
             $stmt = $db->query($query);
             $stmt->bindParam("idProyecto", $idProyecto);
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $data= array("puntajeMin" => $row['puntaje_limite_bajo'], "puntajeMax" => $row['puntaje_limite_alto'],
+                $data= array("idEstrategia" => $row['id_categorizacion_estrategias'],"puntajeMin" => $row['puntaje_limite_bajo'], "puntajeMax" => $row['puntaje_limite_alto'],
                     "prioridad" => $row['prioridad'], "estrategia" => $row['estrategia'], "significado" => $row['significado']);
                 array_push($arregloListaEstrategias,$data);
             }
@@ -209,6 +209,22 @@
                 echo json_encode(array("me"=> $e->getMessage()));
             }
         }
+    }
+
+    function R_postModificarEstrategias($idProyecto){
+
+        $sql = "DELETE FROM CATEGORIZACION_ESTRATEGIAS WHERE id_Proyecto=:idProyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
+            $db = null;
+            echo '{Categorizacion de estrategias eliminados con exito}';
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
     }
 
     //--------------------------------------PUNTAJE MINIMO Y MAXIMO--------------------------------------

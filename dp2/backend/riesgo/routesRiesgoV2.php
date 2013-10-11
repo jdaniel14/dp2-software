@@ -15,7 +15,7 @@
 	//ESTRATEGIAS
 	$app->get('/R_listarEstrategias/:id','R_getEstrategias');
 	$app->post('/R_registrarEstrategias','R_postRegistrarEstrategias');
-	//$app->post('/R_modificarEstrategias','R_postModificarEstrategias');
+	$app->delete('/R_modificarEstrategias/:id','R_postModificarEstrategias');
 
 	//PUNTAJE MINIMO Y MAXIMO
 	$app->get('/R_obtenerPuntajes/:id','R_getPuntajes');
