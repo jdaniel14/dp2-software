@@ -27,6 +27,7 @@ function showIndicador(){
 				$("#chart_div").html("<p>No existe data histórica para los indicadores de tiempo</p>");				
 			}
 			else {
+
 				//$("#chart_div").clear();
 				for (var i=0; i < spi.length; i++){
 					arreglo[i+1] = [spi[i].fecha,parseFloat(spi[i].valor),parseFloat(sv[i].valor)];
