@@ -6,6 +6,14 @@ function repaint(){
                     chartElement : '#chart',
                     dragAndDrop  : true
                 });
+
+                $( "#chart" ).keypress(function( event ) {
+                  if ( event.which == 97 ) {
+                     event.preventDefault();
+                  }
+                    console.log("key A");
+                    $( "#inputAgregarHijo" ).trigger( "click" );
+                });
         }
 
 //crearEdtPlugin();
@@ -19,6 +27,10 @@ function repaint(){
 }
 
 */
+
+
+
+
  var idnodoCounter;
 
  function agregarPadreJson( idproyecto, title, hijos, dias, descripcion, nodos ){
@@ -36,6 +48,8 @@ function repaint(){
 
 $("#CrearEDTCero").click(function(){
                console.log("creando edt");
+                $("#edtCrearLogError").hide("slow");
+                $("#glosarioEDT").show("slow");
                 idnodoCounter = 1;
                 var titleParent = "Nombre Proyecto";
                 var idnodo = 1;
@@ -168,10 +182,15 @@ $("#inputModificar").click(function(){
                       var desc = "#descripcion-"+idmodificado;
                       var time = "#tiempo-"+idmodificado;
 
-                      console.log(title);
-                      $(title).html($("#inputTitulo1").val());
-                      $(desc).html($("#inputDescripcion1").val());
-                      $(time).html($("#inputTiempo1").val());
+                      validaItems( $("#inputTitulo1").val() , $("#inputDescripcion1").val(), $("#inputTiempo1").val() );
+
+                      if ( validaItems ){
+                          $(title).html($("#inputTitulo1").val());
+                          $(desc).html($("#inputDescripcion1").val());
+                          $(time).html($("#inputTiempo1").val());
+                      }
+
+                     
                       //$(title).removeAttr("readonly");
                       //$(title).val($("#inputTitulo1").val());
                       console.log($(title));
@@ -185,7 +204,34 @@ $("#inputModificar").click(function(){
   repaintEdit();
 });
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
+
+function validaItems( title, desc, time ){
+  console.log("items valida: ", title, desc, time);
+      var flag = true;
+      if ( title == "" ){
+          console.log("title vacio");
+          flag = false;
+      }
+      if ( desc == "" ){
+          console.log("desc vacio");
+          flag = false;
+      }
+      if ( time == "" ){
+         console.log("time vacio");
+         flag = false;
+      }else{
+         if ( isNumber( time ) ){
+            console.log("numero valido ");
+         }else{
+            console.log("numero invalido");
+         }
+      }
+      return true;
+}
  
  /*
 {"idnodo":"1","title":"DP2","hijos":3,"dias":"10","descripcion":"El proyeto",
@@ -265,6 +311,7 @@ $("#guardarCambios").click(function(){
                       url: "../../api/obtenerEdt",
                       success: function (data) {
                           console.log(data);
+                          alert("#Edt creada");
                       }
         });
     
@@ -322,6 +369,7 @@ $(".inputEdtTitle").click(function(){
 
                        $("#padreEdt").val( this.id );
                        //console.log($("#descripcion-"+id).val());
+                       $("#padreEdt1").val($("#"+this.id).html());
                        $("#inputTitulo1").val($("#"+this.id).html());
                        //$("#inputDescripcion1").val($("#descripcion-"+id).val());
                        //$("#inputTiempo1").val($("#tiempo-"+id).val());
@@ -335,6 +383,10 @@ $(".inputEdtTitle").click(function(){
 }
 
 }
+
+
+
+
 
 /*
 
