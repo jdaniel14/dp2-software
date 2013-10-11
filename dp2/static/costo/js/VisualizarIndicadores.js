@@ -110,6 +110,13 @@ function agregaDatosIndicadores(arreglo){
 		agregaIndicador("CPI",indicadores[4].valor, 1, 1);
 		agregaIndicador("SPI",indicadores[5].valor, 1, 1);
 		agregaIndicador("SV", indicadores[6].valor, 0, 0);
+		
+		agregaIndicador("BAC", indicadores[7].valor, 0, 0);
+		agregaIndicador("EAC", indicadores[8].valor, 0, 0);
+		agregaIndicador("ETC", indicadores[9].valor, 0, 0);
+		agregaIndicador("VAC", indicadores[10].valor, 0, 0);
+		agregaIndicador("TCPI", indicadores[11].valor, 0, 0);
+		
 	}
 
 }
