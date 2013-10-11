@@ -21,7 +21,10 @@ import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.GProyectosConstants;
 import com.dp2.gproyectos.R;
+import com.dp2.gproyectos.costos.entities.IndicadorBean;
 import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
+import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
+import com.dp2.gproyectos.costos.view.adapter.IndicadorAdapter;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
@@ -40,7 +43,23 @@ public class GeneralHomeProyectosListaActivity extends
 	ArrayAdapter<String> busquedaAdapter;
 	String[] items = new String[] { "Nombre", "Jefe de proyecto", "Estado" };
 	public static int tipoBusqueda;
+	public static boolean primeraCarga = true;
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	    // save the current data, for instance when changing screen orientation
+	    outState.putSerializable("proyectos", proyectos);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedState) {
+	    super.onRestoreInstanceState(savedState);
+	    // restore the current data, for instance when changing the screen
+	    // orientation
+	    proyectos = (ArrayList<ProyectoBean>) savedState.getSerializable("proyectos");
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -78,7 +97,8 @@ public class GeneralHomeProyectosListaActivity extends
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				adapter.getFilter().filter(s.toString());
+				if (adapter != null)
+					adapter.getFilter().filter(s.toString());
 			}
 
 			@Override
@@ -93,12 +113,15 @@ public class GeneralHomeProyectosListaActivity extends
 			}
 		});
 		
-		try {
-			new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();
-		}
-		catch(Exception e){
-			
-		}
+		//if (primeraCarga) {
+			try {
+				new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();
+				primeraCarga = false;
+			}
+			catch(Exception e){
+				
+			}
+		//}
 		
 	}
 
@@ -148,8 +171,41 @@ public class GeneralHomeProyectosListaActivity extends
 			    	new GetDataTask().execute();
 			    }
 			});
+			
+			adapter.getFilter().filter(edtBuscar.getText().toString());
 		}
 	}
+	
+	/*
+	protected void onResume() {
+	    super.onResume();
+    	if (proyectos != null) {
+			
+			adapter = new ProyectoAdapter(GeneralHomeProyectosListaActivity.this,
+					R.layout.general_home_proyectos_lista_item, proyectos);
+			lvProyectos.setAdapter(adapter);
+			lvProyectos.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> l, View v, int position,
+						long id) {
+					if (position > 0) {
+    					ProyectoBean proyecto = proyectos.get(position-1);
+    					
+    					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
+    					i.putExtra("idProyecto", proyecto.id);
+    					i.putExtra("nombreProyecto", proyecto.nombre);
+    					overridePendingTransition(0, 0);
+    					startActivity(i);
+    					overridePendingTransition(0, 0);
+					}
+				}
+			});
+			
+			adapter.getFilter().filter(edtBuscar.getText().toString());
+		}
+	}
+	*/
 	
 	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
 
@@ -191,6 +247,8 @@ public class GeneralHomeProyectosListaActivity extends
     				}
     			});
     		}
+            
+            adapter.getFilter().filter(edtBuscar.getText().toString());
             
             // Call onRefreshComplete when the list has been refreshed.
             lvProyectos.onRefreshComplete();
