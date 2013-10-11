@@ -12,27 +12,31 @@ var addConfg = "../../api/R_registrarConfiguracionProyecto";
 var updateStatus = "../../api/R_modificarRiesgo";
 var getStatus = "../../api/R_estadoLogicoRiesgo";
 var getResponsable = "../../api/R_listarComiteRiesgo";
-var getProbability = "../../api/R_obtenerProbabilidadRiesgo"
+var getProbability = "../../api/R_obtenerProbabilidadRiesgo";
+var getImpactLevel1 = "../../api/R_obtenerNivelImpactoTipoImpacto1";
+var getImpactLevel2 = "../../api/R_obtenerNivelImpactoTipoImpacto2";
+var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
 
-var arregloRiesgo = new Array(
-								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
-								new Array('Riesgo 2','Actividad 2','Tiempo','0.3','0.2','explotar','Accion Especifica 2','200','1','Equipo 3'),
-								new Array('Riesgo 3','Actividad 3','Alcance','0.4','0.4','transferir','Accion Especifica 3','400','4','Equipo 5'),
-								new Array('Riesgo 4','Actividad 4','Calidad','0.8','0.6','mejorar','Accion Especifica 4','500','3','Equipo 4'),
-								new Array('Riesgo 5','Actividad 5','Calidad','0.3','0.6','compartir','Accion Especifica 5','500','2','Equipo 3')
-							 );
-var arregloRiesgoComunes = new Array(
-								new Array('RSK10', 'Riesgo Común 10','0.3','0.9','0.27'),
-								new Array('RSK11', 'Riesgo Común 11','0.4','0.6','0.24'),
-								new Array('RSK12', 'Riesgo Común 12','0.1','0.8','0.08'),
-								new Array('RSK13', 'Riesgo Común 13','0.5','0.7','0.35')
-							);
-var arregloConfiguraciones = new Array(1,0,0,0,0,0);
+// var arregloRiesgo = new Array(
+// 								new Array('Riesgo 1','Actividad 1','Costo','0.2','0.1','evitar','Accion Especifica 1','100','2','Equipo 1'),
+// 								new Array('Riesgo 2','Actividad 2','Tiempo','0.3','0.2','explotar','Accion Especifica 2','200','1','Equipo 3'),
+// 								new Array('Riesgo 3','Actividad 3','Alcance','0.4','0.4','transferir','Accion Especifica 3','400','4','Equipo 5'),
+// 								new Array('Riesgo 4','Actividad 4','Calidad','0.8','0.6','mejorar','Accion Especifica 4','500','3','Equipo 4'),
+// 								new Array('Riesgo 5','Actividad 5','Calidad','0.3','0.6','compartir','Accion Especifica 5','500','2','Equipo 3')
+// 							 );
+// var arregloRiesgoComunes = new Array(
+// 								new Array('RSK10', 'Riesgo Común 10','0.3','0.9','0.27'),
+// 								new Array('RSK11', 'Riesgo Común 11','0.4','0.6','0.24'),
+// 								new Array('RSK12', 'Riesgo Común 12','0.1','0.8','0.08'),
+// 								new Array('RSK13', 'Riesgo Común 13','0.5','0.7','0.35')
+// 							);
+// var arregloConfiguraciones = new Array(1,0,0,0,0,0);
 $(document).ready(main);
 
 var nombre = "";
 var idPaqueteTrabajo = 0;
 var idCategoriaRiesgo = 0;
+var tipoImpacto;
 
 var buscar = {
 	nombre:nombre,
@@ -42,43 +46,46 @@ var buscar = {
 var idArray = [];
 var listaPaquetes;
 var idProyectoLocal = localStorage.getItem("idProyecto");
+var listaTipos = [];
 
 function main(){
 
-	$("#idProyecto").hide();
 	listarPaquetesTrabajo();
 	listarCategoriasRiesgo();
 	// listarNivelesImpacto();
 	listarResponsable();
 	listarRiesgos(buscar);
 	listarRiesgosComunes();
+	listarTiposImpacto();
 	// listarConfiguracion();
 
 
 	$("#btnRegistrar").click( function(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
+
 		var data = {
 			idProyecto: idProyectoLocal,
 			nombre: $('#nomRiesgo').val(),
 			idPaqueteTrabajo: $('#paqEdt').val(),
-			idCategoriaRiesgo: $('#objAfe').val(),
-			impacto: $('#impRiesgo').val(),
+			idTipoImpacto: $('#tipoImpacto').val(),
+			nivelImpacto: $('#impRiesgo').val(),
 			probabilidad: $('#proRiesgo').val(),
+			nivelProbabilidad: $('#idnivelProbabilidadRiesgo').val(),
 			acciones: $('#accEsp').val(),
 			costoPotencial: $('#costRiesgo').val(),
 			demoraPotencial: $('#tiemRiesgo').val(),
-			idContacto: $('#equRes').val(),
-			idProbabilidadRiesgo: $('#idnivelProbabilidadRiesgo').val()
+			idContacto: $('#equRes').val()
 		};
 
-		$('#errorNombre').hide();
-		$('#errorCategoria').hide();
-		$('#errorImpacto').hide();
-		$('#errorProba').hide();
-		$('#errorCosto').hide();
-		$('#errorTiempo').hide();
-		$('#errorResponsable').hide();
+		if (tipoImpacto==1){
+			data.impacto = $('#impRiesgo1').val();
+		} else if (tipoImpacto==2){
+			data.impacto = $('#impRiesgo2').val();
+		}
+
+		limpiarRegistrar();
+
 		console.log(data);
 		if (validarRegistro(data,1)) {
 			console.log(data);
@@ -104,7 +111,7 @@ function main(){
 			idProyecto: idProyectoLocal,
 			nombreRiesgo: $('#nomRiesgoM').val(),
 			idPaqueteTrabajo: $('#paqEdtM').val(),
-			idCategoriaRiesgo: $('#objAfeM').val(),
+			idCategoriaRiesgo: $('#tipoImpactoM').val(),
 			impacto: $('#impRiesgoM').val(),
 			probabilidad: $('#proRiesgoM').val(),
 			acciones: $('#accEspM').val(),
@@ -113,13 +120,8 @@ function main(){
 			idContacto: $('#equResM').val(),
 			idProbabilidadRiesgo: $('#idnivelProbabilidadRiesgoM').val()
 		};
-		$('#errorNombreM').hide();
-		$('#errorCategoriaM').hide();
-		$('#errorImpactoM').hide();
-		$('#errorProbaM').hide();
-		$('#errorCostoM').hide();
-		$('#errorTiempoM').hide();
-		$('#errorResponsableM').hide();
+		
+		limpiarModificar();
 
 		console.log(data);
 		if (validarRegistro(data,2)) {
@@ -219,7 +221,7 @@ function main(){
 		listarNivelesImpacto();
 		$('#nomRiesgo').val('');
 		$('#paqEdt').val(0);
-		$('#objAfe').val(0);
+		$('#tipoImpacto').val(0);
 		$('#impRiesgo').val(0);
 		$('#proRiesgo').val('');
 		$('#svrRiesgo').val('');
@@ -227,13 +229,10 @@ function main(){
 		$('#costRiesgo').val('');
 		$('#tiemRiesgo').val('');
 		$('#equRes').val(0);
-		$('#errorNombre').hide();
-		$('#errorCategoria').hide();
-		$('#errorImpacto').hide();
-		$('#errorProba').hide();
-		$('#errorCosto').hide();
-		$('#errorTiempo').hide();
-		
+		$('#idnivelProbabilidadRiesgo').val('');
+		$('#impRiesgo1').val('');
+		$('#impRiesgo2').val(0);
+		limpiarRegistrar();		
 	});
 
 
@@ -278,27 +277,39 @@ function main(){
 
 function limpiarConfiguracion(){
 	
-		$('#errorMuyBajo').hide();
-		$('#errorBajo').hide();
-		$('#errorMedio').hide();
-		$('#errorAlto').hide();
-		$('#errorMuyAlto').hide();
-		$('#errorImpactos').hide();
+	$('#errorMuyBajo').hide();
+	$('#errorBajo').hide();
+	$('#errorMedio').hide();
+	$('#errorAlto').hide();
+	$('#errorMuyAlto').hide();
+	$('#errorImpactos').hide();
 		
 }
 
+function limpiarRegistrar(){
+	$('#errorNombre').hide();
+	$('#errorTipoImpacto').hide();
+	$('#errorImpacto1').hide();
+	$('#errorImpacto2').hide();
+	$('#errorProba').hide();
+	$('#errorCosto').hide();
+	$('#errorTiempo').hide();
+	$('#errorResponsable').hide();
+	$('#RiesgoCaso1').hide();
+	$('#RiesgoCaso2').hide();  
+}
 
-function deshabilitarCampos(){
-	$('#btnModificar').hide();
-	$('#nomRiesgoM').prop( "disabled", true );
-	$('#paqEdtM').prop( "disabled", true );
-	$('#objAfeM').prop( "disabled", true );
-	$('#impRiesgoM').prop( "disabled", true );
-	$('#proRiesgoM').prop( "disabled", true );
-	$('#accEspM').prop( "disabled", true );
-	$('#costRiesgoM').prop( "disabled", true );
-	$('#tiemRiesgoM').prop( "disabled", true );
-	$('#equResM').prop( "disabled", true );
+function limpiarModificar(){
+	$('#errorNombreM').hide();
+	$('#errorTipoImpactoM').hide();
+	$('#errorImpacto1M').hide();
+	$('#errorImpacto2M').hide();
+	$('#errorProbaM').hide();
+	$('#errorCostoM').hide();
+	$('#errorTiempoM').hide();
+	$('#errorResponsableM').hide();
+	$('#RiesgoCaso1M').hide();
+	$('#RiesgoCaso2M').hide();
 }
 
 function listarConfiguracion(){
@@ -337,6 +348,27 @@ function listarConfiguracion2(data){
 		$('#alto').val(arregloConfiguraciones[4]);
 		$('#muyAlto').val(arregloConfiguraciones[5]);
 	};
+}
+
+function listarTiposImpacto() {
+	var data = {
+		idProyecto: idProyectoLocal, 
+	};
+	var jsonData = JSON.stringify(data);
+	$.ajax({
+		type: 'GET',                
+		url: getAllTypesImpacts + '/' + data.idProyecto,
+		dataType: "json",
+		success: function(data){
+			listaTipos = data;
+			console.log(data);
+			agregarDataTiposImpacto(data);
+		},
+		fail: 
+			codigoError
+			// agregarDataTiposImpacto(listaTipos)
+		
+	});
 }
 
 function listarPaquetesTrabajo(){
@@ -379,8 +411,8 @@ function obtenerRiesgo(id){
 					$('#paqEdtM').val(0);
 				} else $('#paqEdtM').val(item.paqueteTrabajo);
 				if (item.categoria==null){
-					$('#objAfeM').val(0);
-				} else $('#objAfeM').val(item.categoria);
+					$('#tipoImpactoM').val(0);
+				} else $('#tipoImpactoM').val(item.categoria);
 				if (item.impacto==null){
 					$('#impRiesgoM').val(0);
 				} else $('#impRiesgoM').val(item.impacto);
@@ -415,15 +447,15 @@ function listarCategoriasRiesgo(){
 			var lista = data;
 			
 			$.each(lista, function (i, value){
-				$('#objAfe').append("<option value="+ value.id +">" + value.descripcion + "</option>");
-				$('#objAfeM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+				$('#tipoImpacto').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+				$('#tipoImpactoM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
                                 $('#idCategoriaRiesgo').append("<option value="+ value.id +">" + value.descripcion + "</option>");
                         });	
 				
 		},
 		fail: codigoError
 	});
-}
+} 
 function listarNivelesImpacto(){
 	var data = {
 		idProyecto: idProyectoLocal
@@ -496,12 +528,7 @@ function listarRiesgos(search){
 				obtenerRiesgo(id);
 				limpiarImpacto();
 				listarNivelesImpacto();
-				$('#errorNombreM').hide();
-				$('#errorCategoriaM').hide();
-				$('#errorImpactoM').hide();
-				$('#errorProbaM').hide();
-				$('#errorCostoM').hide();
-				$('#errorTiempoM').hide();
+				limpiarModificar();
 			});
 			$(".glyphicon.glyphicon-remove").click( function(){
 				var idRiesgoProyecto= $(this).closest("tr").attr("id");
@@ -509,15 +536,11 @@ function listarRiesgos(search){
 
 			});
 			$("#btnBuscar").click(function(){
-				// buscar.nombre = $("#buscar").val();
 				listarRiesgos(buscar);
-				// buscar.nombre='';
 			});
 		},
 		fail: codigoError
 	});
-
-	//agregaDataFila(null);
 
 }
 
@@ -558,9 +581,6 @@ function listarRiesgosComunes(){
 		},
 		fail: codigoError
 	});
-	
-	
-	// agregaDataComunFila (null);
 
 }
 
@@ -572,22 +592,18 @@ function codigoError(){
 
 function agregaDataFila(data){
 	arreglo=data;
-	//alert(arreglo);
 	if (arreglo!=null){
-		//alert(arreglo.size);
 		for (i=0; i<arreglo.length;i++){
 
 			agregaFilaRiesgo(arreglo[i],i);
-			//agregaFilaRiesgo(arreglo[i]);
 		}
 	}
 }
 
 function agregaDataComunFila(data){
-	arreglo=arregloRiesgoComunes;
 	if (data!=null){
 		arreglo=data;
-	}
+	} else arreglo=[];
 	for (i=0; i<arreglo.length;i++){
 		
 		agregaFilaRiesgoComun(arreglo[i],i);
@@ -595,12 +611,8 @@ function agregaDataComunFila(data){
 }
 
 function agregaFilaRiesgo(arreglo,i){
-//function agregaFilaRiesgo(item){
 	a=i;
 	a++;
-	//input= '<input type="text" class="form-control" id="costoUnitario'+(a)+'" placeholder="Costo" size="6" value="'+arreglo[2]+'">';
-	
-	// severidad = Math.floor(parseFloat(arreglo.Impacto)*parseFloat(arreglo.Probabilidad)*100) / 100;
 	$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
 							  "\"><td>" + arreglo.idRiesgoProyecto + 
 							  "</td><td>" + arreglo.nombre + 
@@ -619,9 +631,6 @@ function agregaFilaRiesgo(arreglo,i){
 							  "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
 							  "</td></tr>");
 	
-	
-	//$("#tablaRiesgos").append('<tr id='+i+'><td>RIE'+a+'</td><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td> <a href=\"#\" ><span class=\"imagen-calculadora\"></span></a></td><td>'+ severidad +'</td><td>'+arreglo[5]+'</td><td>'+arreglo[6]+'</td><td>'+arreglo[7]+'</td><td>'+arreglo[8]+'</td><td>'+arreglo[9]+'</td><td> <a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td><td> <a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a></td></tr>');
-
 }
 
 
@@ -636,10 +645,6 @@ function agregaFilaRiesgoComun(arreglo,i){
 							  "</td><td>" + arreglo.ultSeveridad +
 							  "</td><td><input type=\"checkbox\" value=\""+arreglo.idRiesgoComun+"\">"+
 							  "</td></tr>");
-	
-
-	// $("#tablaRiesgosComunes").append('<tr id='+arreglo[0]+'><td>'+arreglo[0]+'</td><td>'+arreglo[1]+'</td><td>'+arreglo[2]+'</td><td>'+arreglo[3]+'</td><td>'+arreglo[4]+'</td><td><input type=\"checkbox\" value=\"'+arreglo[0]+'\"></td></tr>');
-
 }
 
 
@@ -686,28 +691,6 @@ $('#proRiesgoM').change(
 
 
 //Calculo automatico del nivel de probabilidad
-
-// if (data.probabilidad==''){
-// 			data.probabilidad=null;
-// 			flag=false;
-// 			$('#errorProba').fadeIn('slow');
-// 		} else {
-// 			if (isNaN(data.probabilidad)){
-// 				$('#errorProba').fadeIn('slow');
-// 				flag = false;
-// 			} else {
-// 					if (validarProbaImpacto(data.probabilidad)){
-// 						if (!validarNumero(data.probabilidad)){
-// 							$('#errorProba').fadeIn('slow');
-// 							flag = false;
-// 						}
-// 					} else {
-// 						$('#errorProba').fadeIn('slow');
-// 						flag = false;
-// 					}
-// 			}	
-// 		}
-
 
 $('#proRiesgo').change(
 	function(){
@@ -762,6 +745,114 @@ $('#proRiesgoM').change(
 //Calculo automatico del nivel de probabilidad - Fin
 
 
+
+//Calculo automatico del nivel de Impacto
+
+$('#proRiesgo').change(
+	function(){
+    	if (($('#proRiesgo').val()!='') && (validarProbaImpacto($('#proRiesgo').val())) && (validarNumero($('#proRiesgo').val()))){
+	     	var data = {
+	     		idProyecto:idProyectoLocal,
+	     		valor:$('#proRiesgo').val()
+	     	}
+	     	var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'GET',
+				url: getProbability +'/'+ jsonData,
+				success: function(data){
+					var obj = JSON.parse(data);
+					$('#descnivelProbabilidadRiesgo').val(obj.descripcion);
+					$('#idnivelProbabilidadRiesgo').val(obj.idProbabilidadRiesgo);
+				},
+				fail: codigoError
+			});
+
+     	} else {
+     		$('#descnivelProbabilidadRiesgoM').val('');
+     		$('#idnivelProbabilidadRiesgo').val('');
+     	}
+    });
+
+$('#proRiesgoM').change(
+    function(){
+    	if (($('#proRiesgoM').val()!='') && (validarProbaImpacto($('#proRiesgoM').val())) && (validarNumero($('#proRiesgoM').val()))){
+	     	var data = {
+	     		idProyecto:idProyectoLocal,
+	     		valor:$('#proRiesgoM').val()
+	     	}
+	     	var jsonData = JSON.stringify(data);
+			$.ajax({
+				type: 'GET',
+				url: getProbability +'/'+ jsonData,
+				success: function(data){
+					var obj = JSON.parse(data);
+					$('#descnivelProbabilidadRiesgoM').val(obj.descripcion);
+					$('#idnivelProbabilidadRiesgoM').val(obj.idProbabilidadRiesgo);
+				},
+				fail: codigoError
+			});
+
+     	} else {
+     		$('#descnivelProbabilidadRiesgoM').val('');
+     		$('#idnivelProbabilidadRiesgoM').val('');
+     	}
+    });
+
+//Calculo automatico del nivel de Impacto - Fin
+
+
+//Mostrar input de Impactos
+$('#tipoImpacto').change(
+    function(){
+    	
+    	alert($('#tipoImpacto').val());
+    	if ($('#tipoImpacto').val()!=0){
+			
+			$.each(listaTipos, function ( index){
+				alert(this.idTipoImpacto);
+				if (this.idTipo==$('#tipoImpacto').val()){
+					tipoImpacto=this.formas;
+					return false;
+				}
+			});
+
+			if (tipoImpacto==1){
+				$('#RiesgoCaso1').fadeIn('slow');
+				$('#RiesgoCaso2').hide();
+				$('#impRiesgo2').val(0);
+			} else if (tipoImpacto==2){
+				$('#RiesgoCaso2').fadeIn('slow');
+				$('#RiesgoCaso1').hide();
+				$('#impRiesgo1').val('');
+			}
+    	}
+    });
+
+$('#tipoImpactoM').change(
+    function(){
+    	var tipoImpacto;
+    	if ($('#tipoImpactoM').val()!=0){
+			
+			$.each(listaTipos, function ( index){
+				if (this.idTipo==$('#tipoImpactoM').val()){
+					tipoImpacto=this.formas;
+					return false;
+				}
+			});
+
+			if (tipoImpacto==1){
+				$('#RiesgoCaso1M').fadeIn('slow');
+				$('#RiesgoCaso2M').hide();
+			} else if (tipoImpacto==2){
+				$('#RiesgoCaso2M').fadeIn('slow');
+				$('#RiesgoCaso1M').hide();
+			}
+    	}
+    });
+
+
+
+//FIN nostrar inputs de impactos
 
 //validar Decimales
 
@@ -891,6 +982,38 @@ function validarConfiguracion(data){
 	return flag;
 }
 
+function listarTiposImpacto(){
+	var data = {
+		idProyecto: idProyectoLocal, 
+	};
+	var jsonData = JSON.stringify(data);
+	$.ajax({
+		type: 'GET',                
+		url: getAllTypesImpacts + '/' + data.idProyecto,
+		dataType: "json",
+		success: function(data){
+			listaTipos = data;
+			console.log(data);
+			agregarDataTiposImpacto(data);
+		},
+		fail: 
+			codigoError
+		
+	});
+}
+
+function agregarDataTiposImpacto(data){
+	arreglo=data;
+	if (arreglo!=null){
+		$.each(arreglo, function (i, value){
+			$('#tipoImpacto').append("<option value="+ value.idTipo +">" + value.tipoRi + "</option>");
+        });
+        $.each(arreglo, function (i, value){
+			$('#tipoImpactoM').append("<option value="+ value.idTipo +">" + value.tipoRi + "</option>");
+        });	
+	}
+}
+
 
 function validarRegistro(data, caso){
 	var flag = true; //si true guarda, false no guarda
@@ -907,13 +1030,13 @@ function validarRegistro(data, caso){
 		if (data.idCategoriaRiesgo==0){
 			data.idCategoriaRiesgo=null;
 			flag=false;
-			$('#errorCategoria').fadeIn('slow');
+			$('#errorTipoImpacto').fadeIn('slow');
 		} 
 		if (data.impacto==0){
 			data.impacto = null;
 			flag=false;
 			$('#errorImpacto').fadeIn('slow');
-		}
+		} 
 		if (data.idContacto==0){
 			data.idContacto=null;
 			flag=false;
@@ -970,13 +1093,13 @@ function validarRegistro(data, caso){
 		if (data.idCategoriaRiesgo==0){
 			data.idCategoriaRiesgo=null;
 			flag=false;
-			$('#errorCategoriaM').fadeIn('slow');
+			$('#errorTipoImpactoM').fadeIn('slow');
 		} 
-		if (data.impacto==0){
-			data.impacto = null;
-			flag=false;
-			$('#errorImpactoM').fadeIn('slow');
-		}
+		// if (data.impacto==0){
+		// 	data.impacto = null;
+		// 	flag=false;
+		// 	$('#errorImpactoM').fadeIn('slow');
+		// } CORREGIR
 		if (data.idContacto==0){
 			data.idContacto=null;
 			flag=false;
@@ -1025,19 +1148,3 @@ function validarRegistro(data, caso){
 
 		
 }
-
-
-
-		// $('#errorMuyBajo').fadeOut('slow'); /[0]{1}[.]{1}[0-9]*/
-		// $('#errorBajo').fadeOut('slow');
-		// $('#errorMedio').fadeOut('slow');
-		// $('#errorAlto').fadeOut('slow');
-		// $('#errorMuyAlto').fadeOut('slow');}
-
-
-	// $('#errorNombre').fadeIn('slow');
-	// $('#errorCategoria').fadeIn('slow');
-	// $('#errorImpacto').fadeIn('slow');
-	// $('#errorProba').fadeIn('slow');
-	// $('#errorCosto').fadeIn('slow');
-	// $('#errorTiempo').fadeIn('slow');
