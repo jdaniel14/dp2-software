@@ -606,12 +606,12 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
             $arreglo_inicio[] = array();
             $arreglo_inicio = explode("-", $fecha_inicio);
 
-            $total_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[0];
+            $total_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[2];
 
             $arreglo_fin[] = array();
             $arreglo_fin = explode("-", $fecha_fin);
 
-            $total_fin = $arreglo_fin[0] * 10000 + $arreglo_fin[1] * 100 + $arreglo_fin[0];
+            $total_fin = $arreglo_fin[0] * 10000 + $arreglo_fin[1] * 100 + $arreglo_fin[2];
 
 
             for ($j = $arreglo_inicio[0]; $j <= $arreglo_fin[0]; $j++) {
@@ -713,7 +713,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
     $listaActividades_criticas = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin asc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -784,9 +784,10 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 $fecha_inicio = $arreglo_inicio[0] * 10000 + $arreglo_inicio[1] * 100 + $arreglo_inicio[2];
                 $tem_inicio = $fecha_inicio;
                 $n_feriados = sizeof($arreglo_feriados);
-                for ($j = 0; $j < $n_feriados; $j++) {
+                
+                for ($jj = 0; $jj < $n_feriados; $jj++) {
 
-                    if ($tem_inicio > $n_feriados[$j])
+                    if ($tem_inicio > $n_feriados[$jj])
                         $fecha_inicio--;
                 }
                 //restar domingos y sabados
@@ -958,16 +959,21 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
     $listaDependencias = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin asc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
         //$stmt = $db->query($sql);
         $tem_bloque = "";
-        $numbloque = -1;
+    $numbloque = -1;
+    $p=0;
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            if ($p==0){
+                $p=1;
+            }
+            else{
             $listafechas = array();
             $cont = 0;
 
@@ -1002,9 +1008,9 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
             
             $arreglo_size=sizeof($arreglo_critico);
             $escritico=0;
-            for ($j=0;$j<$arreglo_size;$j++){
+            for ($jj=0;$jj<$arreglo_size;$jj++){
                 
-                if ($j["id_actividad"]==$arreglo_critico[$j]){
+                if ($j["id_actividad"]==$arreglo_critico[$jj]){
                     
                     $escritico=1;
                     break;
@@ -1014,6 +1020,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
 
             $rec = array("id_actividad" => $j["id_actividad"], "nombre_actividad" => $j["nombre_actividad"],"marcado"=>0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores" => $j["predecesores"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
             array_push($listaDependencias, $rec);
+            }
         }
 
         $db = null;
