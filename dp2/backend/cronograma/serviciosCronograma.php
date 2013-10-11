@@ -579,8 +579,8 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
         $stmt->execute(array($idProyecto));
 
 
-        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
-            $rec = $j["feriados"]; //faltaria sumar los sabados y domingos :( si es k no se encuentran
+        while ($jj = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            $rec = $jj["feriados"]; //faltaria sumar los sabados y domingos :( si es k no se encuentran
         }
 
         $db = null;
