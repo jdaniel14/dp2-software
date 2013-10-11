@@ -381,7 +381,7 @@ function CR_consultarListaIndicadores($idProyecto) {
 
     $listaIndicadorestotal = array();
 
-    $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? and (c.id_indicador=6 or c.id_indicador=7)order by a.id_indicador asc,a.fecha desc ";
+    $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? and a.fecha<=sysdate() and (c.id_indicador=6 or c.id_indicador=7)order by a.id_indicador asc,a.fecha asc ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -401,7 +401,7 @@ function CR_consultarListaIndicadores($idProyecto) {
 
             $datetime1 = mysql_real_escape_string($j["fecha"]);
             $datetime1 = strtotime($datetime1);
-            ($datetime1 <> '') ? $datetime1 = date('d-m-Y', $datetime1) : $datetime1 = null;
+            ($datetime1 <> '') ? $datetime1 = date('Y-m-d', $datetime1) : $datetime1 = null;
 
             if ($j["id_indicador"] != $tem_id_proyecto) {
 
