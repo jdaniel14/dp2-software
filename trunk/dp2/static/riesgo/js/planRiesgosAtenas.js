@@ -9,6 +9,25 @@ function validAtenas() {
     return true;
 }
 
+function validEstrategia() {
+    var cantidadEstrategias = $("#cantidadEstrategias").val();
+    var puntajeMax = $("#puntajeMax").val();
+    if (puntajeMax <cantidadEstrategias ) {
+        alert("la cantidad de estrategias no debe ser mayor al puntaje maximo");
+        return false;
+    }
+    if (cantidadEstrategias == null || cantidadEstrategias.length == 0) {
+        alert("la cantidad de Estrategias no puede ser vacio");
+        return false;
+    }
+     if (cantidadEstrategias >7 || cantidadEstrategias<2 ) {
+        alert("la cantidad de Estrategias debe ser entre 2 y 7");
+        return false;
+    }
+ 
+    return true;
+}
+
 var puntaje;
 var puntajeMin;
 var puntajeMax;
@@ -39,6 +58,8 @@ function main() {
  
 
     $("#btnGenerar").click(function() {
+          if (!validEstrategia())
+            return;
         var estrategias = $("#cantidadEstrategias").val();
         
          puntajeMin = $("#puntajeMin").val();
