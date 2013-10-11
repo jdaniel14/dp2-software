@@ -6,12 +6,13 @@ $(document).ready(function(){
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
         $(".seleccionado").each(function(){
-            	$(this).append("<td><input type='text' placeholder='Inserta costos…''></td><td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>")//;
+            	$(this).append("<td><input type='text' placeholder='Inserta costos...'>");
             	$(this).append("<td><select name='porcentaje'>" +
             					"<option value='10'>10%</option><option value='20'>20%</option><option value='30'>30%</option><option value='40'>40%</option>" +
             					"<option value='50'>50%</option><option value='60'>60%</option><option value='70'>70%</option><option value='80'>80%</option>" +	
             					"<option value='90'>90%</option><option value='100'>100%</option>" +
             		"</select></td>");
+            	$(this).append("</td><td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>");
             	$(this).removeClass("seleccionado");
             	$(this).addClass("noMostrar");
             	
@@ -188,8 +189,7 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
 	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + 
-		'</td><td><input type="text" name="costo" placeholder="Inserta costos..." value="' + arreglo["costo"] + '">' +
-		'</td><td>' + arreglo["porc"] + '</td><td>' +
+		'</td><td>' + arreglo["porc"] + '</td><td>' + arreglo["costo"] +
 		'</td><td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent());>Eliminar</button></td></tr>';
 	$("#ListaRecursosHumanosXProyecto tbody").append(tbody);
 	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
