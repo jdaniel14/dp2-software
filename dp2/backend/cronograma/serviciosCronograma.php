@@ -599,7 +599,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
         $fecha = $array[$k];
         $array2[] = array();
         $array2 = explode("_", $fecha);
-        $k2 = sizeof($array);
+        $k2 = sizeof($array2);
 
         if ($k2 == 2) {
 
@@ -645,6 +645,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
             array_push($arreglo_feriados, $fecha);
             }
         }
+        $k--;
     }
 
 
