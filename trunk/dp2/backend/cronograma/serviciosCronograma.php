@@ -49,14 +49,21 @@ function CR_getRecursos($json) { //servicio5
 function CR_getDependencias($json) {//servicio6
     $proy = json_decode($json);
     $arreglo_fecha=hallar_fechainicio_fechafin_red($proy->idProyecto);
+	echo 1;
     $arreglo_feriados=hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
-    $arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto, $arreglo_feriados) ;
-    $arreglo_actividades_sucesores= Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
-    $arreglo_actividades_previo=WalkListAhead($arreglo_actividades_sucesores);
-    $arreglo_actividades_final= WalkListAback($arreglo_actividades_previo);
-    $arreglo_critico=hallar_arreglo_ids_cmp($arreglo_actividades_final);
-    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto,$arreglo_critico);
-
+    echo 2;
+	$arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto, $arreglo_feriados) ;
+    echo 3;
+	$arreglo_actividades_sucesores= Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
+    echo 4;
+	$arreglo_actividades_previo=WalkListAhead($arreglo_actividades_sucesores);
+    echo 5;
+	$arreglo_actividades_final= WalkListAback($arreglo_actividades_previo);
+    echo 6;
+	$arreglo_critico=hallar_arreglo_ids_cmp($arreglo_actividades_final);
+    echo 7;
+	$listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto,$arreglo_critico);
+	
     echo json_encode($listaDependencias);
 }
 
@@ -588,7 +595,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
     $array = explode("#", $p);
     $k = sizeof($array) - 2;
     while ($k >= 1) {
-
+		echo $k;
         $fecha = $array[$k];
         $array2[] = array();
         $array2 = explode("_", $fecha);
@@ -649,11 +656,12 @@ function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodead
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
     $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc "; //escritico=1 si si y 0 si no
-    try {
+    //echo "pipipi";
+	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
-        $stmt = $db->query($sql);
+        //$stmt = $db->query($sql);
         $tem_bloque = "";
         $numbloque = -1;
         $p = 0;
@@ -663,9 +671,10 @@ function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodead
 
                 $listafechas = array();
                 $cont = 0;
-
+				$datetime1='';
+				//echo "entra aca";
                 while ($cont < 4) {
-
+					//echo $cont;
                     if ($cont == 0) {
                         $datetime1 = $j["fecha_plan_inicio"];
                     } else if ($cont == 1) {
@@ -678,8 +687,9 @@ function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodead
 
                     $datetime1 = mysql_real_escape_string($datetime1);
                     $datetime1 = strtotime($datetime1);
-                    ($datetime1 <> '') ? $datetime1 = date('Y-m-d', $datetime1) : $datetime1 = null;
-
+                    //echo "{".$datetime1."}";
+					if ($datetime1 <> '')  $datetime1 = date('Y-m-d', $datetime1); else $datetime1 = null;
+					//echo $datetime1;
                     array_push($listafechas, $datetime1);
                     $cont++;
                 }
@@ -692,6 +702,7 @@ function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodead
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
     }
+	echo "termino".json_encode($listafechas);
     return $listafechas;
 }
 
@@ -706,7 +717,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
-        $stmt = $db->query($sql);
+        //$stmt = $db->query($sql);
         $tem_bloque = "";
         $numbloque = -1;
         $p = 0;
@@ -864,7 +875,7 @@ function lista_predecesores($id, $listaActividades_criticas) {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($id));
-        $stmt = $db->query($sql);
+        //$stmt = $db->query($sql);
 
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             $p = $j["predecesores"]; //falta la parte de validar los dos puntos 
@@ -903,7 +914,7 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($id_projecto, $id)); //no estoy seguro de esto tengo que chekar nadal
-        $stmt = $db->query($sql);
+        //$stmt = $db->query($sql);
 
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
@@ -947,7 +958,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idProyecto));
-        $stmt = $db->query($sql);
+        //$stmt = $db->query($sql);
         $tem_bloque = "";
         $numbloque = -1;
         //$lista_jp = array();
@@ -1016,7 +1027,7 @@ function CR_obteneListaDependenciaPaqueteTrabajo($idpaquetetrabajo) {//simil con
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($idpaquetetrabajo));
-        $stmt = $db->query($sql);
+        //$stmt = $db->query($sql);
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             //MANEJO DE FECHAS, si hay algun cambio para horas se debe hacer otro para este caso todos tienen el mismo formato
