@@ -20,7 +20,7 @@ $app->get('/G_devuelveValidarCierreProyecto/:id', 'G_getValidarSuccess');
 
 //jose -- RRHH
 $app->get('/G_listarRecursoDisponible', 'G_getListarRecDisp');//devuelve la lista de recursos disponibles para asignar a un proyeco
-$app->post('/G_asignarRecursoProyecto/:id', 'G_getAsignarRecProy');//inserta los recursos a un proyecto
+$app->post('/G_asignarRecursoProyecto', 'G_getAsignarRecProy');//inserta los recursos a un proyecto
 $app->post('/G_listaTodosRecurso', 'G_postListaTodosRecurso');//mostrar todos los recursos que estan disponibles
 
 $app->get('/G_listaRecursoxProyecto/:id', 'G_getListaRecursosEnProyecto');//mostrar los empleados vfffque estan en el proyecto
