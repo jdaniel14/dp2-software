@@ -24,6 +24,7 @@ public class CostosIndicadoresChartActivity extends Activity implements Loadinga
 		super.onCreate(savedInstanceState);
 		
 		nombreIndicador = getIntent().getExtras().getString("nombreIndicador");
+		setTitle(nombreIndicador);
 		
 		chart = new FuelChart(nombreIndicador);
 		setContentView(chart.getView(this, new ArrayList<Result>()));
