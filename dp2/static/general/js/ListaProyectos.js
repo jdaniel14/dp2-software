@@ -1,7 +1,7 @@
 var rootURL = "../../api/G_listaProyecto";
 var listaObjetivos = "../../api/G_listarObjetivosPorProyecto/";
 var cerrarProyecto = "../../api/G_cerrarProyecto";
-var id_proyecto = localStorage.getItem("idProyecto");
+
 $(document).ready(function(){
 	iniciaProyectos();
 });
@@ -20,6 +20,7 @@ function iniciaProyectos(){
 				localStorage.setItem("idProyecto",idProyecto);
 				$(location).attr('href','MenuProyecto.html');
 			});
+			
         }
 	});
 }
@@ -30,10 +31,18 @@ function agregaDataFila(data){
 	if (data!=null){
 		arreglo=data["prs"];
 	}
-	
+	 
 	for (i=0; i<arreglo.length;i++){		
 		agregaFilaProyecto(arreglo[i],i);
 	}
+		$(".btn.btn-danger").click(function(){
+		var auxtd = $(this).closest("tr").find("td");
+		var idProyecto = auxtd[0].innerHTML;		
+		alert(idProyecto + " ola k ase");
+		localStorage.setItem("idProyecto",idProyecto);
+		});
+    $("#listaProyectos").trigger("update"); 
+   
 }
 
 function agregaFilaProyecto(arreglo,i){
@@ -41,18 +50,22 @@ function agregaFilaProyecto(arreglo,i){
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
 	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-	'</td><td><button type="button" class="btn btn-primary">Administrar</button></td><td><button data-toggle="modal" href="#myModal" id="btnCerrarProyecto" class="btn btn-danger">Cerrar Proyecto</button></td></tr>';
+	'</td><td><button type="button" class="btn btn-primary">Administrar</button></td><td><button data-toggle="modal" id="'+arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
 	$("#listaProyectos tbody").append(tbody);
-	$("#listaProyectos").trigger("update"); 
+
+
 }
-$("#btnCerrarProyecto").click(function(){	
+function cerrarP(){	
+
 	limpiaObjetivos();
 	iniciaObjetivos();
-});
+}
 function limpiaObjetivos(){
 	$("#listaObjetivos tbody").html("");
 }
 function iniciaObjetivos(){
+	var id_proyecto = localStorage.getItem("idProyecto");
+	alert(id_proyecto);
 	$.ajax({
 		type: 'GET',
 		url: listaObjetivos+ id_proyecto,
@@ -67,7 +80,6 @@ function agregaDataFilaObjetivos(data){
 	if (data!=null){
 		arreglo=data["l_objetivos"];
 	}
-	
 	for (i=0; i<arreglo.length;i++){		
 		agregaFilaObjetivos(arreglo[i],i);
 	}
@@ -78,11 +90,13 @@ function agregaFilaObjetivos(arreglo,i){
 	
 	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["desc"] + '</td>' + 
 		'<td><input type="checkbox"></td></tr>';
-	$("#listaObjetivos tbody").append(tbody);
+	$("#listaObjetivos").append(tbody);
 	$("#listaObjetivos").trigger("update"); 
 }
 $("#cerrarProyecto").click(function(){
-var envio = {id_proy : id_proyecto};
+var id_proyecto = localStorage.getItem("idProyecto");
+alert(id_proyecto);
+var envio = {id : id_proyecto};
 
         $.ajax({
 		type: 'POST',
