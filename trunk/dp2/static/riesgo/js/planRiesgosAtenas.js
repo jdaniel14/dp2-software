@@ -65,21 +65,18 @@ $(document).on('change', '.puntajeMax', function() {
             puntaje=$(this).val();
              var rowIndex = $('#tablaCategorizacion tr').index();
              console.log(rowIndex);
-        actualizarValores();
+     
       
 });
 
 
-function actualizarValores(){
 
-   //actualizar calculos de la tabla actual que se meustra en pantalla segun el valor puntaje
-
-
-}
 
 
 function main() {
     leerEquipo();
+    leerNivelImpacto();
+    leerNivelProbabilidad();
     leerComite();
     leerPuntajes();
     leerCategorias();
@@ -396,6 +393,55 @@ function  agregarComite() {
 
 
 
+}
+function leerNivelProbabilidad(){
+    
+ 
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+    
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+                 var fila = $("<tr></tr>");
+                 $(fila).append("<tr width=\"15%\"><b>Impacto</b></tr>");
+            for (obj in data) {
+                  var opt=$("<tr width=\"15%\">"+data[obj]["nivel"] + "</tr>");
+                   $(fila).append(opt);
+            }
+             $("#tablaRiesgos").append(fila);
+        }
+    });
+}
+
+function leerNivelImpacto(){
+    
+ 
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+    
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+                 var fila = $("<tr></tr>");
+                 $(fila).append("<td width=\"15%\"><b>Impacto</b></td>");
+            for (obj in data) {
+                  var opt=$("<td width=\"15%\">"+data[obj]["nivel"] + "</td>");
+                   $(fila).append(opt);
+            }
+             $("#tablaRiesgos").append(fila);
+        }
+    });
 }
 
 
