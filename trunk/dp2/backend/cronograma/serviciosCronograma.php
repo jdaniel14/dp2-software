@@ -791,7 +791,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 //restar domingos y sabados
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $array_prueba = array(); //validando que los dias son la duracion
-                $rec = new Activity($j["id_actividad"], (int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
+                $rec = new Activity($j["numero_fila"], (int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
                 array_push($listaActividades_criticas, $rec);
             }
         }
@@ -992,7 +992,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
                 $escritico = 0;
                 for ($jj = 0; $jj < $arreglo_size; $jj++) {
 
-                    if ($j["id_actividad"] == $arreglo_critico[$jj]) {
+                    if ($j["numero_fila"] == $arreglo_critico[$jj]) {
 
                         $escritico = 1;
                         break;
