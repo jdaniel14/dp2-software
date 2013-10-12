@@ -432,28 +432,30 @@ function obtenerRiesgo(id){
 			dataType: "json",
 			success: function(data){
 				var item = data;
+				$('#idRiesgoM').val(id);
+				$('#nomRiesgoM').val(item.nombre);
 				if (item.paqueteTrabajo==null){
 					$('#paqEdtM').val(0);
 				} else $('#paqEdtM').val(item.paqueteTrabajo);
-				if (tipoImpacto==1){
+				$('#tipoImpactoM').val(item.tipoImpacto);
+				if (item.tipoImpacto==1){
 					$('#impRiesgo1M').val(item.impacto);
-				} else if (tipoImpacto==2){
+				} else if (item.tipoImpacto==2){
 					$('#impRiesgo2M').val(item.impacto);
 				}
 
 				if (item.equipoEesponsable==null){
 					$('#equResM').val(0);
-				} else $('#equResM').val(item.equipoEesponsable);
-
-				$('#idRiesgoM').val(item.idRiesgoProyecto);
-				$('#nomRiesgoM').val(item.nombre);
-				$('#tipoImpactoM').val(item.idTipoImpacto);
+				} else $('#equResM').val(item.idResponsable);
+				$('#impRiesgoM').val(item.idNivelImpacto);
 				$('#proRiesgoM').val(item.probabilidad);
+				$('#idnivelProbabilidadRiesgoM').val(item.idProbabilidad);
+				$('#descnivelProbabilidadRiesgoM').val(item.descProbabilidad);
 				$('#svrRiesgoM').val(item.severidad);
 				$('#accEspM').val(item.accionesEspecificas);
 				$('#costRiesgoM').val(item.costoPotencial);
 				$('#tiemRiesgoM').val(item.demoraPotencial);
-				
+				$('#equResM').val(item.idResponsable);
 			},
 			fail: codigoError
 		});
