@@ -713,7 +713,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
     $listaActividades_criticas = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin asc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -959,7 +959,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto,$arreglo_critico) {//simi
     $listaDependencias = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin asc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
