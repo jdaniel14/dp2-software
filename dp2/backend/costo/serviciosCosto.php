@@ -1249,7 +1249,7 @@
 		A.ID_ACTIVIDAD,
 		A.NOMBRE_ACTIVIDAD;";
 		
-		$listaActividades = null;
+		$listaActividades = array();
 		try {
 			$db = getConnection();
         	$stmt = $db->prepare($sql);
