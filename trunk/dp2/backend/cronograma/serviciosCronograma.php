@@ -843,10 +843,13 @@ function WalkListAback($listaActividades_criticas) {
         foreach (($listaActividades_criticas[$i]->successors) as $activity) {
             if ($listaActividades_criticas[$i]->let == 0) {
                 $listaActividades_criticas[$i]->let = $activity->lst;
-                echo json_encode($listaActividades_criticas[$i]);
+                //echo json_encode($listaActividades_criticas[$i]);
             } else
-            if (($listaActividades_criticas[$i]->let) > ($activity->lst))
+            {
+                if (($listaActividades_criticas[$i]->let) > ($activity->lst))
                 $listaActividades_criticas[$i]->let = $activity->lst;
+                
+            }
         }
 
         $listaActividades_criticas[$i]->lst = $listaActividades_criticas[$i]->let - $listaActividades_criticas[$i]->duration;
