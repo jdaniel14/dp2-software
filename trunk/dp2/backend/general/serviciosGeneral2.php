@@ -215,7 +215,7 @@ function G_getValidarSuccess($id) {
 function G_postCerrarProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $resultado = json_decode($request->getBody());
-    $sql = " UPDATE PROYECTO SET estado=:estado where id_proyecto=:id and ESTADO_PROYECTO <> CERRADO";
+    $sql = " UPDATE PROYECTO SET estado=:estado where id_proyecto=:id and estado <> 'CERRADO'";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
