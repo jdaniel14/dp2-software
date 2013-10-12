@@ -791,7 +791,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 //restar domingos y sabados
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $array_prueba = array(); //validando que los dias son la duracion
-                $rec = new Activity($j["id_actividad"], $j["dias"], parseInt($fecha_inicio), 0, parseInt($fecha_inicio) + parseInt($j["dias"]), 0, $array_prueba, $array_prueba);
+                $rec = new Activity($j["id_actividad"], $j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
                 array_push($listaActividades_criticas, $rec);
             }
         }
