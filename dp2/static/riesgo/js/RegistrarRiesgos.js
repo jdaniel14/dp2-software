@@ -74,10 +74,11 @@ function main(){
 			probabilidad: $('#proRiesgo').val(),
 			impacto: '',
 			idProbabilidad: $('#idnivelProbabilidadRiesgo').val(),
-			// acciones: $('#accEsp').val(),
+			acciones: $('#accEsp').val(),
 			costoPotencial: $('#costRiesgo').val(),
 			demoraPotencial: $('#tiemRiesgo').val(),
 			idEmpleado: $('#equRes').val(),
+			severidad: $('#svrRiesgo').val(),
 			nombreResponsable: ''
 		};
 
@@ -450,8 +451,8 @@ function obtenerRiesgo(id){
 				$('#proRiesgoM').val(item.probabilidad);
 				$('#svrRiesgoM').val(item.severidad);
 				$('#accEspM').val(item.accionesEspecificas);
-				$('#costRiesgoM').val(item.costoEsperado);
-				$('#tiemRiesgoM').val(item.tiempoEsperado);
+				$('#costRiesgoM').val(item.costoPotencial);
+				$('#tiemRiesgoM').val(item.demoraPotencial);
 				
 			},
 			fail: codigoError
@@ -707,27 +708,27 @@ function grabarRiesgos(){
 $('#impRiesgo').change(
     function(){
          if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
-         	$('#svrRiesgo').val(Math.round(( $('#proRiesgo').val()*$('#impRiesgo').val() * 100 )) / 100);
+         	$('#svrRiesgo').val($('#idnivelProbabilidadRiesgo').val()*$('#impRiesgo').val());
          }
     });
 
 $('#proRiesgo').change(
 	function(){
 		if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
-         	$('#svrRiesgo').val(Math.round(( $('#proRiesgo').val()*$('#impRiesgo').val() * 100 )) / 100);
+         	$('#svrRiesgo').val($('#idnivelProbabilidadRiesgo').val()*$('#impRiesgo').val());
          }
 	});
 $('#impRiesgoM').change(
     function(){
          if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
-         	$('#svrRiesgoM').val(Math.round(( $('#proRiesgoM').val()*$('#impRiesgoM').val() * 100 )) / 100);
+         	$('#svrRiesgoM').val($('#idnivelProbabilidadRiesgoM').val()*$('#impRiesgoM').val());
          }
     });
 
 $('#proRiesgoM').change(
 	function(){
 		if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
-         	$('#svrRiesgoM').val(Math.round(( $('#proRiesgoM').val()*$('#impRiesgoM').val() * 100 )) / 100);
+         	$('#svrRiesgoM').val($('#idnivelProbabilidadRiesgoM').val()*$('#impRiesgoM').val());
          }
 	});
 //Calculo automatico de Severidad - Fin
@@ -1191,7 +1192,7 @@ function validarRegistro(data, caso){
 		if (data.demoraPotencial=='')  {
 			data.demoraPotencial=null;
 		} else {
-			if ((data.demoraPotencial<0) || (!validarNumero(data.costoPotencial))) {
+			if ((data.demoraPotencial<0) || (!validarNumero(data.demoraPotencial))) {
 				flag = false;
 				$('#errorTiempo').fadeIn('slow');
 			}
