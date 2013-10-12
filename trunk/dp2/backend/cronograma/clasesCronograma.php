@@ -72,6 +72,7 @@ class CR_DependenciasJSON{
  class Activity
 {
   public $id;
+  public $id_real;
   public $duration;
   public $est;
   public $lst;
@@ -80,8 +81,9 @@ class CR_DependenciasJSON{
   public $successors = array();
   public $predecessors = array();
  
-   function __construct($id,$duration,$est,$lst,$eet,$let,$successors,$predecessors) {
+   function __construct($id,$id_real,$duration,$est,$lst,$eet,$let,$successors,$predecessors) {
         $this->id = $id;
+        $this->id_real=$id_real;
         $this->duration=$duration;
         $this->est = $est;
         $this->lst=$lst;

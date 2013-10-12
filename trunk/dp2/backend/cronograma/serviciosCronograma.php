@@ -791,7 +791,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 //restar domingos y sabados
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $array_prueba = array(); //validando que los dias son la duracion
-                $rec = new Activity($j["numero_fila"], (int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
+                $rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
                 array_push($listaActividades_criticas, $rec);
             }
         }
@@ -807,8 +807,8 @@ function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_pro
 
     for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
 
-        $sucesores = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
-        $predecesores = lista_predecesores($listaActividades_criticas[$i]->id, $listaActividades_criticas);
+        $sucesores = lista_sucesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas, $id_proyecto);
+        $predecesores = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
 
         $listaActividades_criticas[$i]->successors = $sucesores;
         $listaActividades_criticas[$i]->predecessors = $predecesores;
@@ -860,7 +860,7 @@ function lista_predecesores($id, $listaActividades_criticas) {
     $listapredecesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.numero_fila=?"; //escritico=1 si si y 0 si no
+    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.id_actividad=?"; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -899,7 +899,7 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
     $listasucesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.id_actividad from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
+    $sql = "select a.numero_fila from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -910,7 +910,7 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
 
-                if ($listaActividades_criticas[$i]->id == $j["id_actividad"]) {
+                if ($listaActividades_criticas[$i]->id == $j["numero_fila"]) {
                     array_push($listasucesores, $listaActividades_criticas[$i]);
                     break;
                 }
