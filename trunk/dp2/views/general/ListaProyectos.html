@@ -80,7 +80,7 @@
       </div>
 
 	  <div class="" >
-			<table align="center" id="listaProyectos" class="tablesorter - {bootstrap}" width="90%" >			
+			<table align="center" id="listaProyectos" >			
 				<thead>
           <tr>
   					<th><b>#</b></th>
@@ -106,11 +106,11 @@
           </tr>
           <tr>
             <th colspan="8" class="pager form-horizontal">
-              <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
-              <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
+              <button type="button" class="btn first"><i class="glyphicon glyphicon-fast-backward"></i></button>
+              <button type="button" class="btn prev"><i class="glyphicon glyphicon-backward"></i></button>
               <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-              <button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
-              <button type="button" class="btn last"><i class="icon-step-forward"></i></button>
+              <button type="button" class="btn next"><i class="glyphicon glyphicon-forward"></i></button>
+              <button type="button" class="btn last"><i class="glyphicon glyphicon-fast-forward"></i></button>
               <select class="pagesize input-mini" title="Select page size">
                 <option selected="selected" value="10">10</option>
                 <option value="20">20</option>
@@ -135,17 +135,15 @@
               <h4 class="modal-title">Objetivos del Proyecto</h4>
             </div>
             <div class="modal-body">
-              <div class="" >
-                <table id="listaObjetivos" class="tablesorter" width="90%" >      
+              <div class="table-responsive" >
+                <table class="table" id="listaObjetivos">
                   <thead>
                     <tr>
-                      <th><b>#</b></th>
-                      <th><b>Descripcion del Objetivo</b></th>
-                      <th><b>Se cumplió?</b></th>
+                    <th><b>#</b></th>
+                    <th><b>Descripcion del Objetivo</b></th>
+                    <th><b>Se cumplió?</b></th>
                     </tr>
                   </thead>
-                  <tbody>
-                  </tbody>
                 </table>
               </div>  <!--fin de la tabla-->
             </div>
