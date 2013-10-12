@@ -48,6 +48,8 @@ function CR_getRecursos($json) { //servicio5
 
 function CR_getDependencias($json) {//servicio6
     $proy = json_decode($json);
+    //$arreglo_fecha=array();
+
     $arreglo_fecha = hallar_fechainicio_fechafin_red($proy->idProyecto);
     //echo 1;
     $arreglo_feriados = hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
@@ -56,16 +58,16 @@ function CR_getDependencias($json) {//servicio6
     
     $arreglo_actividades_sucesores = Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
     //echo 4;
-    $arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
+    //$arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
     //echo 5 . json_encode($arreglo_actividades_previo);
-    $arreglo_actividades_final = WalkListAback($arreglo_actividades_previo);
+    //$arreglo_actividades_final = WalkListAback($arreglo_actividades_previo);
     //echo 6;
-    $arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
+    //$arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
     //echo 7;
-    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
+    //$listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
 
-    echo json_encode($listaDependencias);
-    //echo "x".json_encode($arreglo_actividades_sucesores);
+    //echo json_encode($listaDependencias);
+    echo json_encode($arreglo_actividades_sucesores);
 }
 
 function CR_getIndicadoresFlujo($json) {//servicio9
@@ -794,6 +796,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 $array_prueba = array(); //validando que los dias son la duracion
                 $rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
                 array_push($listaActividades_criticas, $rec);
+                //echo json_encode($rec);
             }
         }
 
@@ -805,14 +808,19 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
 }
 
 function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_proyecto) {
-
+    //$res=array();
+    //$res=$listaActividades_criticas;
+    //echo json_encode($listaActividades_criticas[1]);
     for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
-
+        //json_encode($listaActividades_criticas[$i]);
         $sucesores = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
-        $predecesores = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
+        ($listaActividades_criticas[$i])["successors"] = $sucesores;
+        //json_encode($listaActividades_criticas[$i]);
 
-        $listaActividades_criticas[$i]->successors = $sucesores;
-        $listaActividades_criticas[$i]->predecessors = $predecesores;
+        $predecesores = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
+        ($listaActividades_criticas[$i])["predecessors"] = $predecesores;
+
+        echo $i .json_encode($listaActividades_criticas[$i]);
     }
 
     return $listaActividades_criticas;
