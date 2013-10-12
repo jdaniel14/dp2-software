@@ -807,7 +807,7 @@ function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_pro
 
     for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
 
-        $sucesores = lista_sucesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas, $id_proyecto);
+        $sucesores = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
         $predecesores = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
 
         $listaActividades_criticas[$i]->successors = $sucesores;
