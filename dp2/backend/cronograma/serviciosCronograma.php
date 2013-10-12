@@ -56,15 +56,16 @@ function CR_getDependencias($json) {//servicio6
     //echo 3;
     $arreglo_actividades_sucesores = Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
     //echo 4;
-    $arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
+    //$arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
     //echo 5 . json_encode($arreglo_actividades_previo);
-    $arreglo_actividades_final = WalkListAback($arreglo_actividades_previo);
+    //$arreglo_actividades_final = WalkListAback($arreglo_actividades_previo);
     //echo 6;
-    $arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
+    //$arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
     //echo 7;
-    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
+    //$listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
 
-    echo json_encode($listaDependencias);
+    //echo json_encode($listaDependencias);
+    echo json_encode($arreglo_actividades_sucesores);
 }
 
 function CR_getIndicadoresFlujo($json) {//servicio9
