@@ -210,24 +210,34 @@ function isNumber(n) {
 
 
 function validaItems( title, desc, time ){
+  $("#inputValidacionError").hide("slow");
   console.log("items valida: ", title, desc, time);
       var flag = true;
       if ( title == "" ){
           console.log("title vacio");
-          flag = false;
+          $("#inputValidacionError").html("Ingrese Titulo");
+          $("#inputValidacionError").show("slow");
       }
       if ( desc == "" ){
           console.log("desc vacio");
+          $("#inputValidacionError").html("Ingrese descripcion");
+          $("#inputValidacionError").show("slow");
           flag = false;
       }
       if ( time == "" ){
          console.log("time vacio");
+         $("#inputValidacionError").html("Ingrese Tiempo en dias (numero)");
+          $("#inputValidacionError").show("slow");
          flag = false;
       }else{
          if ( isNumber( time ) ){
             console.log("numero valido ");
+           // $("#inputValidacionError").html("Ingrese Titulo");
+          //$("#inputValidacionError").show();
          }else{
             console.log("numero invalido");
+            $("#inputValidacionError").html("Número Inválido");
+            $("#inputValidacionError").show("slow");
          }
       }
       return true;

@@ -321,7 +321,10 @@
                           $("#CrearEDTCero").show("slow");
                           $("#edtCrearLogError").show("slow");
                       }
-        });
+                       
+                    });
+                    $("#CrearEDTCero").show("slow");
+                       $("#edtCrearLogError").show("slow");
            });
 
 
