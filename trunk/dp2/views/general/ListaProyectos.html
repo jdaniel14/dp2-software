@@ -23,6 +23,7 @@
 
     <!-- Tablesorter: optional -->
     <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
     
   </head>
 
@@ -40,7 +41,7 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active" class="dropdown">
+            <li  class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">General<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="../../views/general/RegistrarProyecto.html">Registrar Proyecto</a></li>
@@ -49,9 +50,23 @@
                 <li><a href="../../views/general/RegistrarLeccionAprendida.html">Registrar Leccion Aprendida</a></li>
               </ul>
             </li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li  class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuraciones<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#myModal" role="button" data-toggle="modal">Categoria Lecciones Aprendidas</a></li>
+              </ul>
+            </li>
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+                <li id="logeado" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>Bienvenido Admin, Admin <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Preferencias</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -65,7 +80,7 @@
       </div>
 
 	  <div class="" >
-			<table id="listaProyectos" class="tablesorter" width="90%" >			
+			<table align="center" id="listaProyectos" class="tablesorter - {bootstrap}" width="90%" >			
 				<thead>
           <tr>
   					<th><b>#</b></th>
@@ -74,7 +89,8 @@
   					<th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Tipo de Proyecto</b></th>
   					<th><b>Fecha de Inicio</b></th>
   					<th><b>Fecha de Fin</b></th>
-            <th><b></b></th>
+            <th><b>Administrar</b></th>
+            <th><b>Cerrar</b></th>
   				</tr>
         </thead>
         <tfoot>
@@ -85,10 +101,11 @@
             <th>Tipo de Proyecto</th>
             <th>Fecha de Inicio</th>
             <th>Fecha de Fin</th>
-            <th>Acciones</th>
+            <th>Administrar</th>
+            <th>Cerrar</th>
           </tr>
           <tr>
-            <th colspan="7" class="pager form-horizontal">
+            <th colspan="8" class="pager form-horizontal">
               <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
               <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
               <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
@@ -109,6 +126,36 @@
 			</table>
 
 	  </div>	 
+    <!-- Modal cerrado-->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Objetivos del Proyecto</h4>
+            </div>
+            <div class="modal-body">
+              <div class="" >
+                <table id="listaObjetivos" class="tablesorter" width="90%" >      
+                  <thead>
+                    <tr>
+                      <th><b>#</b></th>
+                      <th><b>Descripcion del Objetivo</b></th>
+                      <th><b>Se cumplió?</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>  <!--fin de la tabla-->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button id="cerrarProyecto" type="button" class="btn btn-danger">Cerrar Proyecto</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->   
     </div><!-- /.container -->
 
 

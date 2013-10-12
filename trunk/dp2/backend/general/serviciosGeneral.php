@@ -81,6 +81,7 @@
 			$stmt = $db->query($sql);
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+				
 					/*$proj = array("id"=>utf8_encode($p["id_proyecto"]),
                                                         "nom"=>utf8_encode( $p["nombre_proyecto"]),
                                                         "jp"=>utf8_encode( $p["nombres"]),
