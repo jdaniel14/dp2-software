@@ -27,25 +27,31 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,impacto,probabilidad,severidad,costo_potencial,demora_potencial,estado,estado_logico,disparador,id_empleado,id_probabilidad,id_nivel_impacto) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:impacto,:probabilidad,:severidad,:costo_potencial,:demora_potencial,1,1,:disparador,:id_empleado,:id_probabilidad,:id_nivel_impacto)";
+        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
-            $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+           
             $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
             $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
             $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
             $stmt->bindParam("probabilidad", $riesgo->probabilidad);
-            $stmt->bindParam("id_probabilidad", $riesgo->idProbabilidad);
-            //$severidad=$riesgo->probabilidad*$riesgo->impacto;
-            //$stmt->bindParam("severidad", $severidad);
+            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("severidad", $riesgo->impacto);
+            $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
-            $stmt->bindParam("disparador", $riesgo->nombreResponsable);
             $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
+
+            //$stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
+            
+            
+            //$severidad=$riesgo->probabilidad*$riesgo->impacto;
+            //$stmt->bindParam("severidad", $severidad);
+            
             
             $stmt->execute();
             $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
