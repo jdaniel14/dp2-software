@@ -81,7 +81,7 @@ function main(){
 			nombreResponsable: ''
 		};
 
-		if (tipoImpacto
+		if (tipoImpacto){
 			data.impacto = $('#impRiesgo1').val();
 		} else if (tipoImpacto==2){
 			data.impacto = $('#impRiesgo2').val();
@@ -97,7 +97,6 @@ function main(){
 
 		console.log(data);
 		if (validarRegistro(data,1)) {
-			console.log(data);
 			var jsonData = JSON.stringify(data);
 			$.ajax({
 				type: 'POST',
@@ -115,21 +114,37 @@ function main(){
 		}
 	});
 	$("#btnModificar").click(function(){
+
+		var flag = true;
 		var data = {
 			idRiesgoXProyecto: $('#idRiesgoM').val(),
 			idProyecto: idProyectoLocal,
 			nombreRiesgo: $('#nomRiesgoM').val(),
 			idPaqueteTrabajo: $('#paqEdtM').val(),
-			idCategoriaRiesgo: $('#tipoImpactoM').val(),
-			impacto: $('#impRiesgoM').val(),
+			idTipoImpacto: $('#tipoImpactoM').val(),
+			idNivelImpacto: $('#impRiesgoM').val(),
 			probabilidad: $('#proRiesgoM').val(),
-			acciones: $('#accEspM').val(),
+			impacto: '',
+			idProbabilidad: $('#idnivelProbabilidadRiesgoM').val(),
+			// acciones: $('#accEspM').val(),
 			costoPotencial: $('#costRiesgoM').val(),
 			demoraPotencial: $('#tiemRiesgoM').val(),
-			idContacto: $('#equResM').val(),
-			idProbabilidadRiesgo: $('#idnivelProbabilidadRiesgoM').val()
+			idEmpleado: $('#equResM').val(),
+			nombreResponsable: ''
 		};
 		
+		if (tipoImpacto){
+			data.impacto = $('#impRiesgo1M').val();
+		} else if (tipoImpacto==2){
+			data.impacto = $('#impRiesgo2M').val();
+		}
+		$.each(listaEquipo, function (i, value){
+			if (this.idContacto==data.idEmpleado){
+				data.nombreResponsable = this.nombreCompleto;
+				return false;
+			}
+	    });
+
 		limpiarModificar();
 
 		console.log(data);
@@ -142,7 +157,7 @@ function main(){
 				dataType: "json",
 				success: function(data){
 					var item = data;
-					alert("Se actualizó exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
+					alert("Se actualizó exitosamente el Riesgo ");
 					listarRiesgos(buscar);
 					$('#myModal').modal('hide');
 				},
@@ -419,19 +434,19 @@ function obtenerRiesgo(id){
 				if (item.paqueteTrabajo==null){
 					$('#paqEdtM').val(0);
 				} else $('#paqEdtM').val(item.paqueteTrabajo);
-				if (item.categoria==null){
-					$('#tipoImpactoM').val(0);
-				} else $('#tipoImpactoM').val(item.categoria);
-				if (item.impacto==null){
-					$('#impRiesgoM').val(0);
-				} else $('#impRiesgoM').val(item.impacto);
+				if (tipoImpacto==1){
+					$('#impRiesgo1M').val(item.impacto);
+				} else if (tipoImpacto==2){
+					$('#impRiesgo2M').val(item.impacto);
+				}
+
 				if (item.equipoEesponsable==null){
 					$('#equResM').val(0);
 				} else $('#equResM').val(item.equipoEesponsable);
 
 				$('#idRiesgoM').val(item.idRiesgoProyecto);
 				$('#nomRiesgoM').val(item.nombre);
-				
+				$('#tipoImpactoM').val(item.idTipoImpacto);
 				$('#proRiesgoM').val(item.probabilidad);
 				$('#svrRiesgoM').val(item.severidad);
 				$('#accEspM').val(item.accionesEspecificas);
@@ -622,18 +637,37 @@ function agregaDataComunFila(data){
 function agregaFilaRiesgo(arreglo,i){
 	a=i;
 	a++;
+	if (arreglo.categoria==null){
+		arreglo.categoria=' ';
+	}
+	if (arreglo.severidad==null){
+		arreglo.severidad=' ';
+	}
+	if (arreglo.estrategia==null){
+		arreglo.estrategia=' ';
+	}
+	if (arreglo.accionesEspecificas==null){
+		arreglo.accionesEspecificas=' ';
+	}
+	if (arreglo.costoPotencial==null){
+		arreglo.costoPotencial=' ';
+	}
+	if (arreglo.demoraPotencial==null){
+		arreglo.demoraPotencial=' ';
+	}
+
 	$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
 							  "\"><td>" + arreglo.idRiesgoProyecto + 
 							  "</td><td>" + arreglo.nombre + 
 							  "</td><td>" + arreglo.paqueteTrabajo + 
 							  "</td><td>" + arreglo.categoria + 
-							  "</td><td>" + arreglo.impacto + 
-							  "</td><td>" + arreglo.probabilidad +
+							  "</td><td>" + arreglo.nivelImpactoDescripcion + 
+							  "</td><td>" + arreglo.probabilidadDescripcion +
 							  "</td><td>" + arreglo.severidad +
 							  "</td><td>" + arreglo.estrategia +
 							  "</td><td>" + arreglo.accionesEspecificas +
-							  "</td><td>" + arreglo.costoEsperado +
-							  "</td><td>" + arreglo.tiempoEsperado +
+							  "</td><td>" + arreglo.costoPotencial +
+							  "</td><td>" + arreglo.demoraPotencial +
 							  "</td><td>" + arreglo.nombreResponsable + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
