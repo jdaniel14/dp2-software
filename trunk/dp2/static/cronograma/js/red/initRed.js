@@ -1,5 +1,7 @@
 //Variables globales
 var listaRed;
+var dataAJAX;
+
 var xIni = 1;
 var yIni = 30;
 
@@ -59,7 +61,8 @@ function cargarDatos(){
         success: function(data){
         	console.log("Data Recibida: ");
         	console.log(data);
-        	listaRed = data;
+        	dataAJAX = data;
+        	listaRed = data.listaRed;
         	iniciarFiesta()
         }
 	});
@@ -153,14 +156,16 @@ function iniciarFiesta(){
 	console.log(listaRed);
 		
 	//Recorro todos los bloques y dibujo todas las actividades
-	for(var b = 0; b < listaRed.cantBloques; b++){ //hasta listaRed.cantBloques
-		console.log("Bloque actual: " + i);
+	for(var b = 0; b < dataAJAX.cantBloques; b++){ //hasta listaRed.cantBloques
+		console.log("Bloque actual: " + b);
 				
 		//Obtener las actividades del bloque
 		actXBloque = new Array();
-		
+
 		var n = 0;
 		$.each(listaRed,function(e,el){
+			console.log(el.bloque);
+			console.log(b);
 			if(el.bloque == b){
 				actXBloque[n] = el;
 				n++;
@@ -168,6 +173,9 @@ function iniciarFiesta(){
 		});
 		//Fin obtener actividades del bloque
 		
+		console.log("ACtividades por bloque");
+		console.log(actXBloque);
+
 		//Inicializar X e Y
 		x = xIni + (b * factorX);
 		y = yIni;
@@ -226,6 +234,8 @@ function iniciarFiesta(){
 		}
 	});
 	
+
+	/*
 	diagram.addNode(new Node({
 		'nodeId': '1',
 		'nodeType':'NODE',
@@ -679,7 +689,7 @@ function iniciarFiesta(){
 	diagram.addConnection(new Connection('1','n','9','s','#AA0000', '3'));
 	diagram.addConnection(new Connection('1','n','10','s','#AA0000', '3'));
 	diagram.addConnection(new Connection('1','n','11','s','#AA0000', '3'));
-	
+	*/
 }
 
 $(document).ready(function() {
