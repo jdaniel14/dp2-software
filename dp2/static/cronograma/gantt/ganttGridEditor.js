@@ -101,7 +101,7 @@ GridEditor.prototype.addTask = function(task, row) {
 		  });
 		  
 		  $.each($(el).children('input'),function(e1,el1){
-			 el1.readOnly = true; 
+			 if (el1.name!="end")el1.readOnly = true; 
 		  });
 		   
 	  });
