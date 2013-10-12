@@ -860,7 +860,7 @@ function lista_predecesores($id, $listaActividades_criticas) {
     $listapredecesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.id_actividad=?"; //escritico=1 si si y 0 si no
+    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.numero_fila=?"; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
