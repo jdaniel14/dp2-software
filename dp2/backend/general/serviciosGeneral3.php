@@ -4,6 +4,45 @@ include('routesGeneral3.php');
 include_once '../backend/conexion.php';
 
 
+//Cierre de proyecto
+function G_getValidarSuccess($id) {
+    $sql = " 
+        SELECT COUNT(*) as cuenta FROM ACTIVIDAD as A, PROYECTO as P WHERE A.ID_PROYECTO =:id AND (A.ESTADO <> 'STATUS_DONE' and A.eliminado=0) and A.ID_PROYECTO = P.ID_PROYECTO and P.ESTADO <> 'CERRADO' and P.ESTADO <> 'ELIMINADO' 
+ ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cantidad = $p["cuenta"];
+        $db = null;
+        
+        echo json_encode(array("exito" => $cantidad)); //cantidad de actividades sin terminar o fallidas
+        
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_postCerrarProyecto() {
+    $request = \Slim\Slim::getInstance()->request();
+    $resultado = json_decode($request->getBody());
+    $sql = " UPDATE PROYECTO SET estado='CERRADO' where id_proyecto=:id ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        //$stmt->bindParam("estado", $resultado->estado);
+        $stmt->bindParam("id", $resultado->id);
+        $stmt->execute();
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
 function G_getObjetivosPorProyecto($id) {
     $sql = " SELECT id_objetivo, descripcion, comentarios, flag_cumplido FROM OBJETIVO where id_proyecto=:id";
@@ -31,31 +70,61 @@ function G_getObjetivosPorProyecto($id) {
 function G_postObjetivosPorProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
-    //$request = "{ \"id_proy\": 4,\"l_rrhhxpr\":[{\"idr\": \"1\",\"costo\": \"100\"},{\"idr\": \"2\",\"costo\": \"150\"}]}";
-    //$body = json_decode($request);
+//    $request = "{ \"id\": 1,\"l_objetivos\":[{\"desc\": \"ola k ase\"},{\"desc\": \"ola k ase 2\"}]}";
+//   $body = json_decode($request);
+
     $id = $body->id;
+
     $l_objetivos = $body->l_objetivos;
     try {
+        $db = getConnection();
         for ($i = 0; $i < count($l_objetivos); $i++) {
-            $id = $l_objetivos[$i]->id;
             $desc = $l_objetivos[$i]->desc;
             
             //INSERT
-            $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id); ";
-            $db = getConnection();
+            $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id) ";
             $stmt = $db->prepare($insert);
             $stmt->bindParam("desc", $desc);
             $stmt->bindParam("id", $id);
             $stmt->execute();
             
         }
-         $db = null;
+          $db = null;
          echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
 
+
+function G_postCumpObjetivosPorProyecto() {
+    $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
+//   $request = "{ \"l_objetivos\":[{\"estado_cumplido\": 0, \"id_obj\": 1},{\"estado_cumplido\": 1, \"id_obj\": 2}]}";
+//   $body = json_decode($request);
+
+    $l_objetivos = $body->l_objetivos;
+    try {
+        $db = getConnection();
+        for ($i = 0; $i < count($l_objetivos); $i++) {
+            $id_obj = $l_objetivos[$i]->id_obj;
+            $estado_cumplido = $l_objetivos[$i]->estado_cumplido;
+
+            
+            //UPDATE
+            $update = " UPDATE OBJETIVO SET flag_cumplido=:estado_cumplido where id_objetivo=:id_obj ";
+            $stmt = $db->prepare($update);
+            $stmt->bindParam("estado_cumplido", $estado_cumplido);
+            $stmt->bindParam("id_obj", $id_obj);
+            $stmt->execute();
+            
+        }
+          $db = null;
+         echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
 
 
