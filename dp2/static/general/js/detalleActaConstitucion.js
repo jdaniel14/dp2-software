@@ -102,6 +102,12 @@ $("#btnGrabarDescripcion").click(function(){
 		grabarDescripcionActa();
 	}
 });
+$("#btnGrabarPerformance").click(function(){
+	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+                //alert('ona vez mas, ahora :(  hector q dices');
+		grabarPerformanceActa();
+	}
+});
 $("#btnGrabarObjetivos").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
                 //alert('ona vez mas, ahora :(  hector q dices');
@@ -112,6 +118,10 @@ $("#btnGrabarAutoridad").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 		grabarAutoridadActa();
 	}
+});
+$("#btnAgregarObjetivo").click(function(){
+var objetivo = "<tr><td><textarea class='form-control' placeholder='Ingrese la descripcion del Objetivo 2'></textarea></td></tr>";
+	$("#Objetivos tbody").append(objetivo);
 });
 function grabarRecursos(){
 	alert("Se grabó");
@@ -169,7 +179,7 @@ function grabarDescripcionActa(){
                 }
 	});
 }
-function grabarObjetivosActa(){
+function grabarPerformanceActa(){
 	/*var obj ={
 		"idProyecto": $("#idProyecto").val(),
 		"cp": $("#costoProy").val(),
