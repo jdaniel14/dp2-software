@@ -215,11 +215,11 @@ function G_getValidarSuccess($id) {
 function G_postCerrarProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $resultado = json_decode($request->getBody());
-    $sql = " UPDATE PROYECTO SET estado=:estado where id_proyecto=:id and estado <> 'CERRADO'";
+    $sql = " UPDATE PROYECTO SET estado='CERRADO' where id_proyecto=:id and estado <> 'CERRADO'";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("estado", $resultado->estado);
+        //$stmt->bindParam("estado", $resultado->estado);
         $stmt->bindParam("id", $resultado->id);
         $stmt->execute();
         $db = null;
