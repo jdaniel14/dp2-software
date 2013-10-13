@@ -7,7 +7,7 @@ $app->get('/G_listarObjetivosPorProyecto/:id', 'G_getObjetivosPorProyecto');
 $app->post('/G_registrarObjetivosPorProyecto', 'G_postObjetivosPorProyecto');
 $app->post('/G_actualizarCumpObjetivosPorProyecto', 'G_postCumpObjetivosPorProyecto');
 
-$app->post('/G_verificaUsuarioPruebaBoni/:id', 'G_prueba'); //devuelve 1 si el usuario y pass son correctas
+$app->post('/G_verificaUsuarioPruebaBoni', 'G_prueba'); //devuelve 1 si el usuario y pass son correctas
 //
 //servicios de gestion de cambios
 ?>
