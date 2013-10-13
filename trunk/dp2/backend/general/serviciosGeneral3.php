@@ -140,12 +140,6 @@ function G_postCumpObjetivosPorProyecto() {
 }
 
 
-function G_prueba() {
-    $request = \Slim\Slim::getInstance()->request();
-    $acta = $request->getBody();
-   
-    echo $acta;
-}
 
 
 ?>

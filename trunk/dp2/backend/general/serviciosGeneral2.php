@@ -446,4 +446,10 @@ function G_getListarRecDisp() {
 	}
         
         
+function G_prueba() {
+    $request = \Slim\Slim::getInstance()->request();
+    $acta = $request->getBody();
+   
+    echo $acta;
+}
 ?>
