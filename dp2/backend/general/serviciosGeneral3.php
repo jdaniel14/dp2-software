@@ -84,7 +84,7 @@ function G_postObjetivosPorProyecto() {
              $ido = $l_objetivos[$i]->ido;
              
              $db = getConnection();
-             if ($ido == 0){
+             if ($ido == ""){
                  //INSERTAR
                  $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id) ";
                  $stmt = $db->prepare($insert);
