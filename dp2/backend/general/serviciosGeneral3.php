@@ -74,8 +74,38 @@ function G_postObjetivosPorProyecto() {
 //   $body = json_decode($request);
 
     $id = $body->id;
-
     $l_objetivos = $body->l_objetivos;
+    
+     try {
+         $db = getConnection();
+         
+        for ($i = 0; $i < count($l_objetivos); $i++) {
+             $desc = $l_objetivos[$i]->desc;
+             $ido = $l_objetivos[$i]->ido;
+
+             if ($ido == 0){
+                 //INSERTAR
+                 $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id) ";
+                 $stmt = $db->prepare($insert);
+                 $stmt->bindParam("desc", $desc);
+                 $stmt->bindParam("id", $id);
+                 $stmt->execute();
+             }
+             else {
+                 //UPDATE
+                 $update = " UPDATE OBJETIVO SET descripcion = :desc WHERE id_objetivo = :ido ";
+                 $stmt = $db->prepare($update);
+                 $stmt->bindParam("desc", $desc);
+                 $stmt->bindParam("ido", $ido);
+                 $stmt->execute();
+             }
+         }
+         $db = null;
+         echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+    
     try {
         $db = getConnection();
         for ($i = 0; $i < count($l_objetivos); $i++) {
