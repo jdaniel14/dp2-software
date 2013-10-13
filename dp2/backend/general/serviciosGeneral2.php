@@ -450,6 +450,6 @@ function G_prueba() {
     $request = \Slim\Slim::getInstance()->request();
     $acta = json_decode($request->getBody());
    
-    echo $acta->p_user;
+    echo json_encode($acta);
 }
 ?>
