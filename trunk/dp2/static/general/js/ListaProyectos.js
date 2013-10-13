@@ -65,7 +65,6 @@ function limpiaObjetivos(){
 }
 function iniciaObjetivos(){
 	var id_proyecto = localStorage.getItem("idProyecto");
-	alert(id_proyecto);
 	$.ajax({
 		type: 'GET',
 		url: listaObjetivos+ id_proyecto,
@@ -95,7 +94,6 @@ function agregaFilaObjetivos(arreglo,i){
 }
 $("#cerrarProyecto").click(function(){
 var id_proyecto = localStorage.getItem("idProyecto");
-alert(id_proyecto);
 var envio = {id : id_proyecto};
 
         $.ajax({
