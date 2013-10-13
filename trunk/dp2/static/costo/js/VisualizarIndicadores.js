@@ -13,15 +13,20 @@ var arregloIndicadores= new Array(
 
 																
 obtenProyecto();
+$(function(){
+  $("#fechaVisualizar").datepicker({ dateFormat: 'dd-mm-yy' });
+});
 
 $("#fechaVisualizar").change(function (){
 	
 	fecha=$("#fechaVisualizar").val();
+	//alert(fecha.substr(0,2)+" "+fecha.substr(3,2)+" "+fecha.substr(6,4));
+	
 	if (fecha!=null && fecha!="")
-		obtenIndicadores(fecha.substr(8,2),fecha.substr(5,2),fecha.substr(0,4));
+		obtenIndicadores(fecha.substr(0,2),fecha.substr(3,2),fecha.substr(6,4));
 	else
 	alert("Ingrese una fecha válida");
-
+	
 });
 
 $("#btnGrabar").click(function (){
@@ -175,9 +180,10 @@ function grabarIndicadores(){
 	
 	fecha=$("#fechaVisualizar").val();
 	if (fecha!=null && fecha!=""){
-		dia=fecha.substr(8,2); 
-		mes=fecha.substr(5,2); 
-		anio=fecha.substr(0,4);
+		dia=fecha.substr(0,2); 
+		mes=fecha.substr(3,2); 
+		anio=fecha.substr(6,4);
+		
 	}else{
 		alert("Ingrese una fecha válida");
 		return;
