@@ -25,4 +25,6 @@ $app->get('/G_listaRecursoxProyecto/:id', 'G_getListaRecursosEnProyecto');//most
 
 //Alfonso -- Seguridad
 $app->post('/G_verificaUsuario', 'G_getUsuario'); //devuelve 1 si el usuario y pass son correctas
+
+$app->post('/G_verificaUsuarioPruebaBoni', 'G_prueba'); //devuelve 1 si el usuario y pass son correctas
 ?>
