@@ -193,7 +193,7 @@
 		}
      //ahora que esta asegurado que exista la ER insertamos el requisito
 		$pstmt = $con->prepare("INSERT INTO REQUISITO 
-								(id_especificacion_requisitos,descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito) 	
+								(id_especificacion_requisitos,descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito,id_prioridad_requisito) 	
 					   			VALUES (?,?,?,?,?,?,?)");
 		$pstmt->execute(
 			array(
@@ -203,6 +203,7 @@
 				$req["observaciones"],
 				$req["unidad_medida"],
 				$req["valor"],
+				1,
 				1
 				)
 		);
