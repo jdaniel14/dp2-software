@@ -2,11 +2,16 @@ package com.dp2.gproyectos.general.view;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -14,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Toast;
 //import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -44,6 +50,7 @@ public class GeneralHomeProyectosListaActivity extends
 	String[] items = new String[] { "Nombre", "Jefe de proyecto", "Estado" };
 	public static int tipoBusqueda;
 	public static boolean primeraCarga = true;
+	
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -256,5 +263,87 @@ public class GeneralHomeProyectosListaActivity extends
             super.onPostExecute(result);
         }
     }
+	/*
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		menu.add(0, MENU_ENVIAR, 0,
+				getString(R.string.boton_enviar_mayusculas)).setIcon(
+				R.drawable.enviar);
+		menu.add(1, CONSMECOTIZAR, 1,
+				getString(R.string.boton_cotizar_mayusculas)).setIcon(
+				R.drawable.calcular);
+		menu.add(1, CONSMEELIMINA, 2,
+				getString(R.string.boton_eliminar_mayuscula)).setIcon(
+				R.drawable.eliminar);
+		menu.add(1, CONSMEULTIMACOT, 3,
+				getString(R.string.boton_ultcotizacion_mayusculas)).setIcon(
+				R.drawable.ultimacotizacion);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case CONSMENUENVIAR:
+			Log.v("XXX", "--------->Enviar");
+			break;
+		case CONSMECOTIZAR:
+			Log.v("XXX", "--------->Cotizar");
+			try {
+				new LoadTaskDialog(PedidosNormPedidoTabsActivity.this,
+						"Cargando...").execute();
+			} catch (Exception e) {
+				Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+			break;
+		case CONSMEELIMINA:
+			Log.v("XXX", "--------->Elimina");
+			new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle("Regresar")
+					.setMessage(
+							"¿Está seguro de que desea eliminar este pedido?")
+
+					.setNegativeButton("No",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+
+								}
+							})
+					.setPositiveButton("Sí",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									PedidosNormWorkingSet.pedidoEspecial = null;
+									PedidosNormWorkingSet.producto = null;
+									PedidosNormWorkingSet.linea = null;
+									eliminarPedido();
+									finish();
+								}
+
+							}).show();
+			break;
+		case CONSMEULTIMACOT:
+			Log.v("XXX", "--------->Ultima cotizacion");
+			ArrayList<String> mensajes = new ArrayList<String>();
+			mensajes.add("MENSAJE 1");
+			mensajes.add("MENSAJE 2");
+			mensajes.add("MENSAJE 3");
+
+			PopupMensaje popup = new PopupMensaje();
+			popup.dialog(this, "PEDIDO COTIZADO " + estePedido.getCod(),
+					mensajes, PopupMensaje.PROC_PEDIDOSNORMALES);
+
+			break;
+		}
+		return false;
+	}*/
+	
 
 }

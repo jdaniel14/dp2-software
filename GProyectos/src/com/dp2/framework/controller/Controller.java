@@ -33,6 +33,16 @@ public abstract class Controller {
 		}
 		return response;
 	}
-	
+	public static String getStringFromGET(String url, JSONObject parameters) {
+		String response = null;
+		try {
+			response = HttpConnector.stringFromGet(url, parameters);
+		} catch (Exception e) {
+			Log.e("Controller", e.getMessage());
+		} catch (Throwable e) {
+			Log.e("Controller", e.getMessage());
+		}
+		return response;
+	}
 	
 }
