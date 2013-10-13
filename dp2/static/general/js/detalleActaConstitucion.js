@@ -4,6 +4,7 @@ var rootURLregistrarInfoActa = "../../api/G_registrarInformacionActa";
 var rootURLregistrarDescActa = "../../api/G_registrarDescripcionActa";
 var rootURLregistrarObjActa = "../../api/G_registrarObjetivosActa";
 var rootURLregistrarAutorActa = "../../api/G_registrarAutoridadActa";
+var rootURLregistrarObjetivosActa="../../api/G_registrarObjetivosPorProyecto";
 
 function getURLParameter(name) {
     return decodeURI(
@@ -85,6 +86,13 @@ $(document).ready(function() {
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
 	});
+	$.ajax({
+		type: 'GET',
+		url: '../../api/G_listarObjetivosPorProyecto/'+ id_proyecto,
+		dataType: "json", // data type of response
+		contentType: "application/json; charset=utf-8",
+        success: cargaObjetivos
+	});
 });
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
@@ -120,24 +128,33 @@ $("#btnGrabarAutoridad").click(function(){
 	}
 });
 $("#btnAgregarObjetivo").click(function(){
-var objetivo = "<tr><td><textarea class='form-control' placeholder='Ingrese la descripcion del Objetivo 2'></textarea></td></tr>";
+var objetivo = "<tr><td><textarea class='form-control obj' placeholder='Ingrese la descripcion del Objetivo'></textarea></td></tr>";
 	$("#Objetivos tbody").append(objetivo);
 });
+function cargaObjetivos(data){
+	if (data!=null){
+		arreglo=data["l_objetivos"];
+	}
+	
+	for (i=0; i<arreglo.length;i++){
+		agregaFilaObjetivos(arreglo[i],i);
+	}
+}
+function agregaFilaObjetivos(arreglo,i){
+	a=i;
+	a++;
+	
+	var tbody = '<tr><td><textarea id="'+arreglo["id"]+'" class="form-control obj" >'+arreglo["desc"]+'</textarea></td></tr>';
+	$("#Objetivos").append(tbody);
+	$("#Objetivos").trigger("update"); 
+}
 function grabarRecursos(){
 	alert("Se grabó");
 }
 
 function grabarInformacionActa(){
     
-        
-	/*var obj ={
-		idProyecto   : $("#idProyecto").val(),
-		np           : $("#nombreProyecto").val(),
-		fpp         : $("#preparacionFecha").val(),
-		tp          : $("#tipoProyecto").val(),
-		pp          : $("#prioridadProyecto").val()
-	}; */
-        var obj ={
+    var obj ={
 		idProyecto   : $("#idProyecto").val(),
 		np           : $("#np").val(),
 		fpp         : $("#fpp").val(),
@@ -158,11 +175,7 @@ function grabarInformacionActa(){
 	});
 }
 function grabarDescripcionActa(){
-	/*var obj ={
-		"idProyecto": $("#idProyecto").val(),
-		"dp": $("#descripcion").val()
-	}; */
-        var obj ={
+    var obj ={
 		idProyecto  : $("#idProyecto").val(),
 		dp          : $("textarea#dp").val()
 	};
@@ -179,15 +192,8 @@ function grabarDescripcionActa(){
                 }
 	});
 }
-function grabarPerformanceActa(){
-	/*var obj ={
-		"idProyecto": $("#idProyecto").val(),
-		"cp": $("#costoProy").val(),
-		"plp": $("#plazo").val(),
-		"cap": $("#calidad").val()
-	}; */
-	
-        var obj ={
+function grabarPerformanceActa(){	
+    var obj ={
 		idProyecto: $("#idProyecto").val(),
 		cp: $("#cp").val(),
 		plp: $("#plp").val(),
@@ -207,17 +213,37 @@ function grabarPerformanceActa(){
                 }
 	});
 }
+function grabarObjetivosActa(){	
+    var objetivos = $(".obj");
+    var obj = {};
+    var l_objetivos=[];
+    
+    obj["id"]=id_proyecto;
+    for(var i=0; i < objetivos.length; i++){
+    	var aux={
+	    	desc:"",
+	    	ido:""
+	    };
+		aux.desc = objetivos[i]["value"];
+		aux.ido = objetivos[i]["id"];
+		l_objetivos.push(aux);
+	}
+	obj["l_objetivos"]=l_objetivos;
+	        alert(JSON.stringify(obj));
+	$.ajax({
+		type: 'POST',
+		url: rootURLregistrarObjetivosActa,
+		dataType: "json", // data type of response	
+		data: JSON.stringify(obj),
+		fail: codigoError,
+                success: function(data){
+                    
+            		alert("Se grabaron los datos wuju!");
+                }
+	});
+}
 function grabarAutoridadActa(){
-	/*var obj ={
-		"idProyecto": $("#idProyecto").val(),
-		"ap": $("#autoProyecto").val(),
-		"carp": $("#autoCargoProyecto").val(),
-		"jp": $("#gerenteProyecto").val(),
-		"jcp": $("#comiteProyecto").val(),
-		"pap": $("#patrocinador").val(),
-	}; */
-	
-        var obj ={
+    var obj ={
 		idProyecto: $("#idProyecto").val(),
 		ap: $("#ap").val(),
 		carp: $("#carp").val(),
