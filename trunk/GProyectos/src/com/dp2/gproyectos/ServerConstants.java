@@ -9,6 +9,7 @@ public class ServerConstants {
 	
 	//GENERAL
 	public static String GENERAL_GETLISTAPROYECTOS_URL = "G_listaProyecto";
+	public static String GENERAL_VALIDARLOGIN_URL = "G_verificaUsuario";
 	
 	
 	//COSTOS

@@ -8,13 +8,12 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
-import com.dp2.gproyectos.general.controller.PruebaController;
-import com.dp2.gproyectos.general.model.PruebaResponse;
+import com.dp2.gproyectos.general.controller.UsuarioController;
+import com.dp2.gproyectos.general.entities.UsuarioBean;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.utils.ValidacionesUtility;
 
@@ -22,7 +21,8 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	EditText edtUser;
 	EditText edtPassword;
 	LinearLayout btnInicio;
-
+	UsuarioBean usuario;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -90,16 +90,25 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	
 	@Override
 	public void loadingData() {
-		
+		try {
+			usuario = UsuarioController.getInstance().validarUsuario(edtUser.getText().toString(), edtPassword.getText().toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void afterLoadingData() {
-		Intent intent = new Intent(GeneralLoginActivity.this, GeneralHomeProyectosListaActivity.class);
-		overridePendingTransition(0, 0);
-		startActivity(intent);
-		overridePendingTransition(0, 0);
-		finish();
+		if (usuario==null){
+			
+		}
+		else if (Long.parseLong(usuario.id) >0){
+			Intent intent = new Intent(GeneralLoginActivity.this, GeneralHomeProyectosListaActivity.class);
+			overridePendingTransition(0, 0);
+			startActivity(intent);
+			overridePendingTransition(0, 0);
+			finish();
+		}
 	}
 
 	
