@@ -449,7 +449,34 @@ function G_getListarRecDisp() {
 function G_prueba() {
     $request = \Slim\Slim::getInstance()->request();
     $acta = json_decode($request->getBody());
-   
-    echo json_encode($acta);
+     $sql = " 
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, 
+LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC, 
+CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
+from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, MIEMBROS_EQUIPO EP, CATEGORIA_LEC_APRENDIDA CLA
+where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto 
+and CLA.ID_CATEGORIA_LEC = LA.id_categoria_lec_aprendidas 
+and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO and LA.estado=1 order by LA.fecha_actualizacion
+ ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->query($sql);
+        $lista = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $leccion = array(
+                "id" => $j["id"],
+                "ne" => $j["empleado"],
+                "dla" => $j["descr"],
+                "np" => $j["np"],
+                "cla" => $j["cla"]
+            );
+            array_push($lista, $leccion);
+        }
+        $db = null;
+        echo json_encode(array("lecciones" => $lista));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
 }
 ?>
