@@ -448,8 +448,8 @@ function G_getListarRecDisp() {
         
 function G_prueba() {
     $request = \Slim\Slim::getInstance()->request();
-    $acta = $request->getBody();
+    $acta = json_decode($request->getBody());
    
-    echo json_decode($acta);
+    echo $acta->p_user;
 }
 ?>
