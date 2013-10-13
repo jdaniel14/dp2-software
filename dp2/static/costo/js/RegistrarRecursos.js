@@ -185,9 +185,10 @@ function agregaFilaRecurso(){
 	inputMoneda= creaInputMoneda(a);
 	inputUnidadMedida= creaInputUnidadMedida(a);
 	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
+	inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')">';
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
-								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td></tr>'
+								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td><td>'+inputCostoFijo+'</td></tr>'
 								+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
 								+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
 								);	
@@ -374,6 +375,7 @@ function grabarRecursos(){
 		nom="#recurso"+i;
 		moned="#comboMoneda"+i;
 		med="#comboUnidadMedida"+i;
+		cof="#costoFijo"+i;
 		eliminar=document.getElementById(elim).checked;
 		crear=$(crea).val();
 		modificar=$(modif).val();
@@ -394,7 +396,7 @@ function grabarRecursos(){
 				nomRecurso=$(nom).val();
 				moneda=$(moned).val();
 				medida=$(med).val();
-				
+				costoF=$(cof).val();
 				if (nomRecurso==''){
 						
 					alert('El recurso de la fila ' + i +' debe tener un nombre');
@@ -410,6 +412,15 @@ function grabarRecursos(){
 					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
 					return;
 				}
+				
+				if (costoF!='' && !isNaN(costoF) && costoF>=0){
+						
+					
+				}else{
+				
+					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
+					return;
+				}
 			
 				if (crear=='1'){
 
@@ -418,7 +429,8 @@ function grabarRecursos(){
 						nombreRecurso:nomRecurso,
 						CostoUnitario: costo,			
 						idMoneda: moneda,
-						idUnidadMedida:medida
+						idUnidadMedida:medida,
+						CostoFijo: costoF
 					}
 					recursosGrabar.push(recurso);
 					
@@ -430,7 +442,8 @@ function grabarRecursos(){
 							nombreRecurso:nomRecurso,
 							CostoUnitario: costo,			
 							idMoneda: moneda,
-							idUnidadMedida:medida
+							idUnidadMedida:medida,
+							CostoFijo: costoF
 						}
 						recursosModificar.push(recurso);
 					}
@@ -534,9 +547,9 @@ function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos").html('');
 	
 	if (esEdicion==0)
-		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="20%"><b>Recurso</b></td><td width="20%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Costo fijo mensual</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="20%"><b>Recurso</b></td><td width="20%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diario</b></td></tr>');
 	else
-		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="15%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario</b></td><td width="12%"><b>Moneda</b></td><td width="10%"><b>Costo fijo mensual</b></td><td width="10%"><b>Eliminar</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="15%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="12%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diariol</b></td><td width="10%"><b>Eliminar</b></td></tr>');
 }
 
 
