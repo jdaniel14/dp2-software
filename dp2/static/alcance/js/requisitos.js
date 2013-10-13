@@ -95,6 +95,7 @@ function inserta(data){
 	fila+= '<td><a class="eliminar-requisito" idRequisito="'+data["id_requisito"]+'"><span class="glyphicon glyphicon-remove"></a></td>';
 	fila += "</tr>";
 	$('#listaRequisitos').append(fila);
+	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
 	$(".modificar-requisito").click(modificarRequisito);
 	$(".eliminar-requisito").click(eliminarRequisito);
@@ -109,6 +110,7 @@ function modifica(data){
 	$(campos[3]).html(data["observaciones"]);
 	$(campos[4]).html(data["unidad_medida"]);
 	$(campos[5]).html(data["valor"]);
+	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
 }
 
@@ -156,7 +158,7 @@ function guardarCambios(){
 
 function validarArchivo(){
 	clearErrors();
-	camposValidos = validateExtention("archivo","docx|doc|pdf|odt|odf|txt","El sistema no permite la subida de este tipo de archivos");
+	camposValidos = validateExtention("archivo","docx|doc|pdf|odt|odf|txt","El sistema solo permite la subida de los siguientes tipos de archivos:\ndocx, doc, pdf, odt, odf, txt");
 	showAlert("form-gestion-requisitos",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
 	return camposValidos;
 }
