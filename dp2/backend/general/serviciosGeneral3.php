@@ -77,12 +77,13 @@ function G_postObjetivosPorProyecto() {
     $l_objetivos = $body->l_objetivos;
     
      try {
-         $db = getConnection();
+         
          
         for ($i = 0; $i < count($l_objetivos); $i++) {
              $desc = $l_objetivos[$i]->desc;
              $ido = $l_objetivos[$i]->ido;
-
+             
+             $db = getConnection();
              if ($ido == 0){
                  //INSERTAR
                  $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id) ";
