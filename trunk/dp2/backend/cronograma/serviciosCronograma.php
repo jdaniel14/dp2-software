@@ -814,12 +814,11 @@ function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_pro
     for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
         //json_encode($listaActividades_criticas[$i]);
         //$sucesores=array();
-        $sucesores = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
-        $listaActividades_criticas[$i]->successors = $sucesores;
+        $listaActividades_criticas[$i]->successors = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
         //json_encode($listaActividades_criticas[$i]);
         //$predecesores=array();
-        $predecesores = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
-        $listaActividades_criticas[$i]->predecessors = $predecesores;
+        $listaActividades_criticas[$i]->predecessors = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
+  
 
         echo json_encode($listaActividades_criticas[$i]);
     }
