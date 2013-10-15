@@ -58,16 +58,16 @@ function CR_getDependencias($json) {//servicio6
     
     $arreglo_actividades_sucesores = Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
     //echo 4;
-    //$arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
+    $arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
     //echo 5 . json_encode($arreglo_actividades_previo);
-    //$arreglo_actividades_final = WalkListAback($arreglo_actividades_previo);
+    $arreglo_actividades_final = WalkListAback($arreglo_actividades_previo);
     //echo 6;
-    //$arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
+    $arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
     //echo 7;
     //$listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
 
-    //echo json_encode($listaDependencias);
-    echo json_encode($arreglo_actividades_sucesores);
+    echo json_encode($arreglo_critico);
+    //echo json_encode($arreglo_actividades_sucesores);
 }
 
 function CR_getIndicadoresFlujo($json) {//servicio9
@@ -794,7 +794,9 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 //restar domingos y sabados
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $array_prueba = array(); //validando que los dias son la duracion
-                $rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
+                //$rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
+                $rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], 0, 0, 0, 0, $array_prueba, $array_prueba);
+                
                 array_push($listaActividades_criticas, $rec);
                 //echo json_encode($rec);
             }
@@ -808,21 +810,15 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
 }
 
 function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_proyecto) {
-    //$res=array();
-    //$res=$listaActividades_criticas;
-    //echo json_encode($listaActividades_criticas[1]);
+   
     for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
-        //json_encode($listaActividades_criticas[$i]);
-        //$sucesores=array();
-        $listaActividades_criticas[$i]->successors = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
-        //json_encode($listaActividades_criticas[$i]);
-        //$predecesores=array();
+       
         $listaActividades_criticas[$i]->predecessors = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
+        $listaActividades_criticas[$i]->successors = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
   
-
-        echo json_encode($listaActividades_criticas[$i]);
     }
-
+    
+    //echo json_encode($listaActividades_criticas);
     return $listaActividades_criticas;
 }
 
@@ -831,9 +827,9 @@ function WalkListAhead($listaActividades_criticas) {
 
     $na = sizeof($listaActividades_criticas);
     for ($i = 1; $i < $na; $i++) {
-        foreach (($listaActividades_criticas[$i]->predecessors) as $activity) {
-            if (($listaActividades_criticas[$i]->est) < ($activity->eet))
-                $listaActividades_criticas[$i]->est = $activity->eet;
+        foreach (($listaActividades_criticas[$i]->predecessors) as $indice) {
+            if (($listaActividades_criticas[$i]->est) < ($listaActividades_criticas[$indice]->eet))
+                $listaActividades_criticas[$i]->est = $listaActividades_criticas[$indice]->eet;
         }
 
         $listaActividades_criticas[$i]->eet = $listaActividades_criticas[$i]->est + $listaActividades_criticas[$i]->duration;
@@ -849,14 +845,16 @@ function WalkListAback($listaActividades_criticas) {
     $listaActividades_criticas[$na - 1]->lst = $listaActividades_criticas[$na - 1]->let - $listaActividades_criticas[$na - 1]->duration;
 
     for ($i = $na - 2; $i >= 0; $i--) {
-        foreach (($listaActividades_criticas[$i]->successors) as $activity) {
+        foreach (($listaActividades_criticas[$i]->successors) as $indice) {
             if ($listaActividades_criticas[$i]->let == 0) {
-                $listaActividades_criticas[$i]->let = $activity->lst;
+                $listaActividades_criticas[$i]->let = $listaActividades_criticas[$indice]->lst;
                 //echo json_encode($listaActividades_criticas[$i]);
             } else
             {
-                if (($listaActividades_criticas[$i]->let) > ($activity->lst))
-                $listaActividades_criticas[$i]->let = $activity->lst;
+                if (($listaActividades_criticas[$i]->let) > ($listaActividades_criticas[$indice]->lst)){
+                $listaActividades_criticas[$i]->let = $listaActividades_criticas[$indice]->lst;
+                
+                }
                 
             }
         }
@@ -890,7 +888,7 @@ function lista_predecesores($id, $listaActividades_criticas) {
                 for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
 
                     if ($listaActividades_criticas[$i]->id == $array[$k]) {
-                        array_push($listapredecesores, $listaActividades_criticas[$i]);
+                        array_push($listapredecesores, $i);
                         break;
                     }
                 }
@@ -923,7 +921,7 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
             for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
 
                 if ($listaActividades_criticas[$i]->id == $j["numero_fila"]) {
-                    array_push($listasucesores, $listaActividades_criticas[$i]);
+                    array_push($listasucesores,$i);
                     break;
                 }
             }
