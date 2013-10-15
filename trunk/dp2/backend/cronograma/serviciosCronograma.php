@@ -64,9 +64,9 @@ function CR_getDependencias($json) {//servicio6
     //echo 6;
     $arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
     //echo 7;
-    //$listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
+    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
 
-    echo json_encode($arreglo_critico);
+    echo json_encode($listaDependencias);
     //echo json_encode($arreglo_actividades_sucesores);
 }
 
