@@ -50,11 +50,11 @@ function CR_getDependencias($json) {//servicio6
     $proy = json_decode($json);
     //$arreglo_fecha=array();
 
-    $arreglo_fecha = hallar_fechainicio_fechafin_red($proy->idProyecto);
+    //$arreglo_fecha = hallar_fechainicio_fechafin_red($proy->idProyecto);
     //echo 1;
-    $arreglo_feriados = hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
+    //$arreglo_feriados = hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
     //echo 2;
-    $arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto, $arreglo_feriados);
+    $arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto);
     
     $arreglo_actividades_sucesores = Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
     //echo 4;
@@ -698,7 +698,7 @@ function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodead
     return $listafechas;
 }
 
-function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simil con lo hardcodeado ATP
+function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodeado ATP
     $listaActividades_criticas = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
@@ -715,7 +715,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             if ($p == 0) {
 
-                $listafechas = array();
+                /*$listafechas = array();
                 $cont = 0;
 
                 while ($cont < 4) {
@@ -739,13 +739,13 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                 }
 
                 $fecha_total_inicio = $listafechas[0];
-                $fecha_total_fin = $listafechas[1];
+                $fecha_total_fin = $listafechas[1];*/
 
                 $p = 1;
             } else {
 
 
-                $listafechas = array();
+                /*$listafechas = array();
                 $cont = 0;
 
                 while ($cont < 4) {
@@ -791,7 +791,7 @@ function Llenar_actividades_ruta_critica($idProyecto, $arreglo_feriados) {//simi
                     }
                 }
 
-                //restar domingos y sabados
+                //restar domingos y sabados*/
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $array_prueba = array(); //validando que los dias son la duracion
                 //$rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
