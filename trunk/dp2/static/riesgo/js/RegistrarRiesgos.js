@@ -852,15 +852,13 @@ $('#tipoImpacto').change(
     function(){
     	var idTipoImpactoLocal;
     	if ($('#tipoImpacto').val()!=0){
-			
 			$.each(listaTipos, function ( index){
 				if (this.idTipo==$('#tipoImpacto').val()){
 					tipoImpacto=this.formas;
-					idTipoImpactoLocal = this.idTipoImpacto;
+					idTipoImpactoLocal = this.idTipo;
 					return false;
 				}
 			});
-
 			if (tipoImpacto==1){
 				$('#RiesgoCaso1').fadeIn('slow');
 				$('#RiesgoCaso2').hide();
@@ -909,6 +907,7 @@ function listarTipoXNivelImpacto(idTipoImpactoLocal,tipo){
 			idTipoImpacto: idTipoImpactoLocal,
 			idProyecto: idProyectoLocal
 		};
+		console.log(data);
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'GET',                
