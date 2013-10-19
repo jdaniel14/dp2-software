@@ -3,7 +3,6 @@
 include('routesGeneral3.php');
 include_once '../backend/conexion.php';
 
-
 //Cierre de proyecto
 function G_getValidarSuccess($id) {
     $sql = " 
@@ -19,9 +18,8 @@ function G_getValidarSuccess($id) {
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
         $cantidad = $p["cuenta"];
         $db = null;
-        
+
         echo json_encode(array("exito" => $cantidad)); //cantidad de actividades sin terminar o fallidas
-        
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
@@ -34,11 +32,19 @@ function G_postCerrarProyecto() {
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        //$stmt->bindParam("estado", $resultado->estado);
         $stmt->bindParam("id", $resultado->id);
         $stmt->execute();
+
+        $sql = " 
+        select COUNT(*) as cuenta from EDT as E, ESTADO_EDT as EE where E.id_proyecto =:id and E.id_estado!=EE.id_estado and EE.descripcion='Pendiente' ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $resultado->id);
+        $stmt->execute();
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cantidad = $p["cuenta"];
         $db = null;
-        echo json_encode(array("me" => ""));
+
+        echo json_encode(array("me" => $cantidad)); //cantidad de edts aun pendientes
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
@@ -75,40 +81,37 @@ function G_postObjetivosPorProyecto() {
 
     $id = $body->id;
     $l_objetivos = $body->l_objetivos;
-    
-     try {
-         
-         
+
+    try {
+
+
         for ($i = 0; $i < count($l_objetivos); $i++) {
-             $desc = $l_objetivos[$i]->desc;
-             $ido = $l_objetivos[$i]->ido;
-             
-             $db = getConnection();
-             if ($ido == ""){
-                 //INSERTAR
-                 $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id) ";
-                 $stmt = $db->prepare($insert);
-                 $stmt->bindParam("desc", $desc);
-                 $stmt->bindParam("id", $id);
-                 $stmt->execute();
-             }
-             else {
-                 //UPDATE
-                 $update = " UPDATE OBJETIVO SET descripcion = :desc WHERE id_objetivo = :ido ";
-                 $stmt = $db->prepare($update);
-                 $stmt->bindParam("desc", $desc);
-                 $stmt->bindParam("ido", $ido);
-                 $stmt->execute();
-             }
-         }
-         $db = null;
-         echo json_encode(array("me" => ""));
+            $desc = $l_objetivos[$i]->desc;
+            $ido = $l_objetivos[$i]->ido;
+
+            $db = getConnection();
+            if ($ido == "") {
+                //INSERTAR
+                $insert = " insert into OBJETIVO (descripcion, comentarios, flag_cumplido, id_proyecto) values (:desc, '', 0, :id) ";
+                $stmt = $db->prepare($insert);
+                $stmt->bindParam("desc", $desc);
+                $stmt->bindParam("id", $id);
+                $stmt->execute();
+            } else {
+                //UPDATE
+                $update = " UPDATE OBJETIVO SET descripcion = :desc WHERE id_objetivo = :ido ";
+                $stmt = $db->prepare($update);
+                $stmt->bindParam("desc", $desc);
+                $stmt->bindParam("ido", $ido);
+                $stmt->execute();
+            }
+        }
+        $db = null;
+        echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
-    
 }
-
 
 function G_postCumpObjetivosPorProyecto() {
     $request = \Slim\Slim::getInstance()->request();
@@ -123,17 +126,16 @@ function G_postCumpObjetivosPorProyecto() {
             $id_obj = $l_objetivos[$i]->id_obj;
             $estado_cumplido = $l_objetivos[$i]->estado_cumplido;
 
-            
+
             //UPDATE
             $update = " UPDATE OBJETIVO SET flag_cumplido=:estado_cumplido where id_objetivo=:id_obj ";
             $stmt = $db->prepare($update);
             $stmt->bindParam("estado_cumplido", $estado_cumplido);
             $stmt->bindParam("id_obj", $id_obj);
             $stmt->execute();
-            
         }
-          $db = null;
-         echo json_encode(array("me" => ""));
+        $db = null;
+        echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
@@ -150,10 +152,10 @@ function G_getCostoPorProyecto($id) {
         $l_costos_edt = array();
         $costo_total_real = 0;
         $costo_total_est = 0;
-        
+
 //        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-         for ($i = 0; $i < 6; $i++) {
-            
+        for ($i = 0; $i < 6; $i++) {
+
 //            $obj = array(
 //                "id" => $j["id_objetivo"],
 //                "desc" => $j["descripcion"]
@@ -163,8 +165,8 @@ function G_getCostoPorProyecto($id) {
             $costo = array(
                 "nom_edt" => "EDT de Algo ",
                 "estado" => "terminado",
-                "c_est" => (string)$c_est,
-                "c_real" => (string)$c_real
+                "c_est" => (string) $c_est,
+                "c_real" => (string) $c_real
             );
             $costo_total_real += $c_real;
             $costo_total_est += $c_est;
@@ -172,17 +174,16 @@ function G_getCostoPorProyecto($id) {
 //        }
 //        $db = null;
         }
-        
+
         $costos = array(
-                "c_total_est" => (string)$costo_total_est,
-                "c_total_real" => (string)$costo_total_real,
-                "l_costos_edt" => $l_costos_edt
-            );
+            "c_total_est" => (string) $costo_total_est,
+            "c_total_real" => (string) $costo_total_real,
+            "l_costos_edt" => $l_costos_edt
+        );
         echo json_encode(array("costos" => $costos));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
-
 
 ?>
