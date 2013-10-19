@@ -1,67 +1,66 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
-     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-    <title>Plan de Riesgos</title>
-    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+        <title>Matriz de Riesgos</title>
+        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+        <link href="../../static/riesgo/css/application.css" rel="stylesheet">
+
+        <!--<link href="../../static/riesgo/css/vendor.css" rel="stylesheet">-->
+
+    </head>
 
 
-
-<body>
-
+    <body>
 
         <div id="header"></div>
 
 
-<!-- VISTA ACUERDOSMODIFICACIONES-->
-            <div class="well"></div>
-             
-            <div class="col-md-3" >
-                <div class="well" id="sideBarNavegacion" >
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active"><a href="../../views/riesgo/AcuerdosModificaciones.html" >Acuerdos y Modificaciones</a></li>
-                            <li ><a href="../../views/riesgo/PlanRiesgos.html" >Plan de Riesgos</a></li>
-                            <li><a href="../../views/riesgo/Configuracion.html" >Configuración</a></li>
-                        </ul>
-                     </div>
-            </div>
-<input  id="suma" type="text" style="display:none" value=1>
-            <div class="col-md-9" role="main">
+        <!-- VISTA ACUERDOSMODIFICACIONES-->
+        <div class="well"></div>
+
+        <div class="container">
+            <input  id="suma" type="text" style="display:none" value=1>
+            <div class="col-md-12" role="main">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h3 class="text-center">  Acuerdos y Modificaciones </h3>
                         <form  name="form1">
-                           <table class="table-striped" width="90%" id="tablaAcuerdosMod">
-                               
-                                    <tr>
-                                        <td  class="col-md-5"><b>Día</b></td>
-                                        <td  class="col-lg-offset-4"><b>Hora</b></td>
-                                        <td class="col-lg-4"><b>Acuerdos</b></td>
-                                       
-                                    </tr>
-                                  
-                                 
-                                
+                            <table class="table-striped" width="90%" id="tablaAcuerdosMod">
+
+                                <tr>
+                                    <td  class="col-md-5"><b>Día</b></td>
+                                    <td  class="col-lg-offset-4"><b>Hora</b></td>
+                                    <td class="col-lg-4"><b>Acuerdos</b></td>
+
+                                </tr>
+
+
+
                                 <tbody class="cuerpo-tabla" id="tablaAcuerdos">
-                                
-                                <!--Contenido Tabla Acuerdos-->
+
+                                    <!--Contenido Tabla Acuerdos-->
                                     <tr>
                                         <td><input class="diaAcuerdos input-sm"  name="fechas1" id="fechas0" type="date"></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                         <td><input class="horasAcuerdos input-sm" type="time" name="horas1" id="horas_0" ></td>
-                                         <td><input class="acuerdosA input-sm" type="text"  name="acuerdo1" id="acuerdo0" ></td>
-                                           
-                                  </tr>
+                                        <td><input class="horasAcuerdos input-sm" type="time" name="horas1" id="horas_0" ></td>
+                                        <td><input class="acuerdosA input-sm" type="text"  name="acuerdo1" id="acuerdo0" ></td>
+
+                                    </tr>
                                 </tbody>
                             </table>
-                       
-   
-               <button class="btn-info" id="agregar">Agregar</button>
+
+
+                            <button class="btn-info" id="agregar">Agregar</button>
 
 
                             <div class="span6"  style="text-align:center">
@@ -72,16 +71,25 @@
                     </div>   
                 </div>
             </div>
-     </body>
-</html>
+        </div>
+    </body> </html>
 
 
-<script src="../../assets/js/jquery-1.7.1.min.js"></script>
 
-     <script src="../../assets/js/header.js"></script>
- <script src="../../static/riesgo/js/acuerdosAtenas.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
- 
-     
 
+
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+
+<script src="../../static/riesgo/js/application.js"></script> 
+<script src="../../static/riesgo/js/planRiesgosAtenas.js"></script>
+<script src="../../assets/js/header.js"></script>
+
+
+<script src="../../static/riesgo/js/acuerdosAtenas.js"></script>
+
+
+<script>
+
+
+</script>
