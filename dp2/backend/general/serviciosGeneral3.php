@@ -146,20 +146,37 @@ function G_getCostoPorProyecto($id) {
 //        $stmt = $db->prepare($sql);
 //        $stmt->bindParam("id", $id);
 //        $stmt->execute();
-//
-//        $l_objetivos = array();
+
+        $l_costos_edt = array();
+        $costo_total_real = 0;
+        $costo_total_est = 0;
+        
 //        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+         for ($i = 0; $i < 6; $i++) {
+            
 //            $obj = array(
 //                "id" => $j["id_objetivo"],
 //                "desc" => $j["descripcion"]
 //            );
-//            array_push($l_objetivos, $obj);
+            $c_est = 263;
+            $c_real = 223;
+            $costo = array(
+                "nom_edt" => "EDT de Algo ",
+                "estado" => "terminado",
+                "c_est" => (string)$c_est,
+                "c_real" => (string)$c_real
+            );
+            $costo_total_real += $c_real;
+            $costo_total_est += $c_est;
+            array_push($l_costos_edt, $costo);
 //        }
 //        $db = null;
+        }
         
         $costos = array(
-                "c_est" => "25",
-                "c_real" => "20"
+                "c_total_est" => (string)$costo_total_est,
+                "c_total_real" => (string)$costo_total_real,
+                "l_costos_edt" => $l_costos_edt
             );
         echo json_encode(array("costos" => $costos));
     } catch (PDOException $e) {
