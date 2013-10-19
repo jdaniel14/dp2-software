@@ -14,7 +14,9 @@
 	$app->get('/CO_obtenerIndicadores/:parametro', 'CO_getIndicadores'); //servicio12
 	$app->get('/CO_enviarIndicadores/:parametro', 'CO_saveIndicadores'); //servicio13
    
-	$app->get('/CO_obtenerListaCuentasDesglozable/:parametro', 'CO_getListaCuentasDesglozable'); //servicio14 
+	$app->get('/CO_obtenerListaCuentasDesglozable/:parametro', 'CO_getListaCuentasDesglozable'); //servicio14
+	$app->get('/CO_obtenerCostoFijoProyecto/:parametro', 'CO_getCostoFijoProyecto'); //servicio15
+	
 
 	$app->get('/CO_test/', 'CO_testFunction');
 ?>

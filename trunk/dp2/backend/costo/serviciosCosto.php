@@ -156,14 +156,24 @@
 	}
 	
   
-  ///////////SPRINT 3/////////////
-  function CO_getListaCuentasDesglozable($json) { //servicio 14 //COMPLETO
+	///////////SPRINT 3/////////////
+	function CO_getListaCuentasDesglozable($json) { //servicio 14 //COMPLETO
 		$proy = json_decode($json);
 
 		$listaCuentas= CO_consultarCuentasDesglozable($proy->idProyecto);
 
     	$jsonRespuesta = new stdClass();
 		$jsonRespuesta->lista = $listaCuentas;
+
+		echo json_encode($jsonRespuesta);
+	}
+
+	function CO_getCostoFijoProyecto($json) { //servicio 15//
+		$proy = json_decode($json);
+
+		$jsonRespuesta = new stdClass();
+    	$jsonRespuesta->costoFijoTotal = CO_consultarCostoFijoTotal($proy->idProyecto);
+		$jsonRespuesta->lista = CO_consultarListaRecursos($proy->idProyecto);
 
 		echo json_encode($jsonRespuesta);
 	}
@@ -647,7 +657,7 @@
         	$db = null;
         	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"]));
+					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"], $p["COSTO_FIJO"], $p["IND_RRHH"]));
 			}
 			//echo json_encode($listaRecursos);
 
@@ -825,7 +835,7 @@
 		return $actividad;
 	}
 	
-	function CO_guardarCUR($obj) { //COMPLETO
+	function CO_guardarCUR($obj) { //CORREGIR QUERIES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//insertar en la bd...
 		/*
 		$obj->idProyecto;
@@ -859,6 +869,9 @@
 		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
 		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
 		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+
+//					$stmt->bindParam("costoFijo", $recurso->costoFijo);
+
 		        	$stmt->execute();
 		        	$db = null;
 				}
@@ -881,6 +894,9 @@
 		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
 		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
 		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
+
+//					$stmt->bindParam("costoFijo", $recurso->costoFijo);
+
 		        	$stmt->execute();
 		        	$db = null;
 				}
@@ -1267,6 +1283,28 @@
 		}
 	
 		return $listaActividades;
+	}
+
+	function CO_consultarCostoFijoTotal($idProyecto) { //COMPLETO
+		$sql = "MISSING_SQL";
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	$costoFijoTotal = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+				$costoFijoTotal = $p["COSTO_FIJO_TOTAL"];
+				break;
+			}
+		} catch(PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+		
+		return $costoFijoTotal;
 	}
   
   //RESPUESTAS
