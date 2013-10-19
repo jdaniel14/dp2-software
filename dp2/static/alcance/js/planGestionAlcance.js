@@ -24,16 +24,25 @@ function cargaTitulo(){
 }
 
 function guardarCambios(){
-	var data = $(".form-control");
-	var obj = {};
-	for(var i=0; i < data.length; i++){
-		obj[data[i]["id"]]=data[i]["value"];
+	var objAlcance = {
+		idproyecto : id_proyecto,
+		idestado : $("#id_estado_alcance").val();
 	}
-	obj["idproyecto"] = id_proyecto;
 	$.ajax({
 		type:'POST',
-		url: '../../api/modificaEstadosAlcance',
-		data: JSON.stringify(obj),
+		url: '../../api/AL_modificaEstadoEDT',
+		data: JSON.stringify(objAlcance),
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+	});
+	var objEDT = {
+		idproyecto : id_proyecto,
+		idestado : $("#id_estado_EDT").val();
+	}
+	$.ajax({
+		type:'POST',
+		url: '../../api/AL_modificaEstadoAlcance',
+		data: JSON.stringify(objEDT),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 	});
@@ -42,14 +51,14 @@ function guardarCambios(){
 function cargarComboEstadoEDT(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboEstado',
+		url : '../../api/AL_getListaEstadoEDT',
 		dataType: "json",
 		async:false,
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id_estado_edt"]);
+				opt.val(data[obj]["id_estado"]);
 				opt.html(data[obj]["descripcion"]);
 				$("#id_estado").append(opt);
 			}
@@ -60,7 +69,7 @@ function cargarComboEstadoEDT(){
 function cargarComboEstadoAlcance(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboEstadoAlcance',
+		url : '../../api/AL_getListaEstadoAlcance',
 		dataType: "json",
 		async:false,
 		contentType: "application/json; charset=utf-8",
@@ -78,16 +87,23 @@ function cargarComboEstadoAlcance(){
 function cargarEstados(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/getPlanGestionAlcance',
+		url : '../../api/AL_getEstadoAlcance',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
-			var arreglo = $("select");
-			for (var i = 0; i < arreglo.length; i++) {
-				$(arreglo[i]).val(data[arreglo[i].id]);
-			}
+			$("#id_estado_alcance").val(data["id_estado_alcance"]);
 		}
 	});
+	$.ajax({
+		type: 'GET',
+		url : '../../api/AL_getEstadoEDT',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			$("#id_estado_edt").val(data["id_estado"]);
+		}
+	});
+
 }
 
 function cargarTabla(){
