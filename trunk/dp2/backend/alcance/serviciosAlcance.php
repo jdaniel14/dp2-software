@@ -301,4 +301,95 @@
 		}
 		echo "";
 	}
+
+	function getListaEstadoAlcance(){//obtener los estados del alcance
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT * FROM ESTADO_ALCANCE");
+		$pstmt->execute();
+		$listaEstados = array();
+		while($estado = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$listaEstados[] = $estado;
+		}
+		echo json_encode($listaEstados);
+
+	}
+
+
+	 function getEstadoAlcance(){//obtener el estado del alcance dado un id_proyecto 
+	 	$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idproyecto = $val["idproyecto"]
+
+    	$con=getConnection();
+		$pstmt = $con->prepare("SELECT id_estado_alcance FROM ALCANCE WHERE id_proyecto = ?");
+
+    	$pstmt->execute(array($idproyecto));
+ 		if($id = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			echo json_encode($id);
+			return;
+		}
+    }
+
+
+	function modificarEstadoAlcance(){//se modifica el estado del alcance dado un id_proyecto y un id_estado_alcance
+		$request = \Slim\Slim::getInstance()->request();
+		$estado = json_decode($request->getBody(),TRUE);
+		$con=getConnection();
+		$pstmt = $con->prepare("UPDATE ALCANCE SET id_estado_alcance = ? WHERE id_proyecto = ?");
+		$pstmt->execute(array($estado["idestado"],$req["idproyecto"]));
+	}
+
+
+	function getListaEstadoEDT(){//obtener los estados del EDT
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT * FROM ESTADO_EDT");
+		$pstmt->execute();
+		$listaEstados = array();
+		while($estado = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$listaEstados[] = $estado;
+		}
+		echo json_encode($listaEstados);
+
+	}
+
+
+	 function getEstadoEDT(){//obtener el estado del EDT dado un id_proyecto 
+	 	$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idproyecto = $val["idproyecto"]
+
+    	$con=getConnection();
+		$pstmt = $con->prepare("SELECT id_estado FROM EDT WHERE id_proyecto = ?");
+
+    	$pstmt->execute(array($idproyecto));
+ 		if($id = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			echo json_encode($id);
+			return;
+		}
+    }
+
+
+	function modificarEstadoEDT(){//se modifica el estado del EDT dado un id_proyecto y un id_estado
+		$request = \Slim\Slim::getInstance()->request();
+		$estado = json_decode($request->getBody(),TRUE);
+		$con=getConnection();
+		$pstmt = $con->prepare("UPDATE EDT SET id_estado = ? WHERE id_proyecto = ?");
+		$pstmt->execute(array($estado["idestado"],$req["idproyecto"]));
+	}
+
+
+// FALTAAAAAAA D:<
+
+	function getListaCambios(){//obtener los cambios del E 
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT * FROM ESTADO_EDT");
+		$pstmt->execute();
+		$listaEstados = array();
+		while($estado = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$listaEstados[] = $estado;
+		}
+		echo json_encode($listaEstados);
+
+	}
+
 ?>
