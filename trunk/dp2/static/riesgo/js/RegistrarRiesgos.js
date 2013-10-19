@@ -537,8 +537,8 @@ function listarRiesgos(search){
 	$("#tablaRiesgos").empty();
 	var data = {
 		idProyecto: idProyectoLocal,
-                 nombre: $('#nombre').val(),
-                idPaqueteTrabajo : $('#idPaqueteRiesgo').val(), 
+        nombre: $('#nombre').val(),
+        idPaqueteTrabajo : $('#idPaqueteRiesgo').val(), 
 		idCategoriaRiesgo : $('#idCategoriaRiesgo').val()    
 	};
 	var jsonData = JSON.stringify(data);
@@ -641,22 +641,19 @@ function agregaFilaRiesgo(arreglo,i){
 	a=i;
 	a++;
 	if (arreglo.categoria==null){
-		arreglo.categoria=' ';
+		arreglo.categoria='-';
 	}
 	if (arreglo.severidad==null){
-		arreglo.severidad=' ';
-	}
-	if (arreglo.estrategia==null){
-		arreglo.estrategia=' ';
+		arreglo.severidad='-';
 	}
 	if (arreglo.accionesEspecificas==null){
-		arreglo.accionesEspecificas=' ';
+		arreglo.accionesEspecificas='-';
 	}
 	if (arreglo.costoPotencial==null){
-		arreglo.costoPotencial=' ';
+		arreglo.costoPotencial='-';
 	}
 	if (arreglo.demoraPotencial==null){
-		arreglo.demoraPotencial=' ';
+		arreglo.demoraPotencial='-';
 	}
 
 	$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
@@ -667,7 +664,6 @@ function agregaFilaRiesgo(arreglo,i){
 							  "</td><td>" + arreglo.nivelImpactoDescripcion + 
 							  "</td><td>" + arreglo.probabilidadDescripcion +
 							  "</td><td>" + arreglo.severidad +
-							  "</td><td>" + arreglo.estrategia +
 							  "</td><td>" + arreglo.accionesEspecificas +
 							  "</td><td>" + arreglo.costoPotencial +
 							  "</td><td>" + arreglo.demoraPotencial +
