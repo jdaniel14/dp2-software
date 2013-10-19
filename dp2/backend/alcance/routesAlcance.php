@@ -19,9 +19,19 @@
 	$app->get('/AL_getRequisito','getRequisito');
 	$app->post('/AL_eliminaRequisito','eliminaRequisito');
 	
-	//documento de gestion de alcance
-	
+	//Documento de gestion de alcance
 	$app->post('/AL_subirArchivo','subirArchivo');
 	$app->get('/AL_obtenerArchivo','obtenerArchivo');
 	$app->get('/AL_obtenerProyectoById','obtenerProyectoById');
+
+//Sprint 3!
+	$app->get('/AL_getListaEstadoAlcance','getListaEstadoAlcance');
+	$app->get('/AL_getEstadoAlcance','getEstadoAlcance');
+	$app->post('/AL_modificarEstadoAlcance','modificarEstadoAlcance');
+	$app->get('/AL_getListaEstadoEDT','getListaEstadoEDT');
+	$app->get('/AL_getEstadoEDT','getEstadoEDT');
+	$app->post('/AL_modificarEstadoEDT','modificarEstadoEDT');
+
+	$app->post('/AL_getListaCambios','getListaCambios');
+
 ?>
