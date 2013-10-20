@@ -24,7 +24,9 @@
     <!-- Tablesorter: optional -->
     <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
     <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
-    
+    <style>
+
+    </style>
   </head>
 
   <body>
@@ -127,7 +129,7 @@
 
 	  </div>	 
     <!-- Modal cerrado-->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal fade" id="myModal" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -135,17 +137,70 @@
               <h4 class="modal-title">Objetivos del Proyecto</h4>
             </div>
             <div class="modal-body">
-              <div class="table-responsive" >
-                <table class="table" id="listaObjetivos">
-                  <thead>
-                    <tr>
-                    <th><b>#</b></th>
-                    <th><b>Descripcion del Objetivo</b></th>
-                    <th><b>Se cumplió?</b></th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>  <!--fin de la tabla-->
+
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="#le" data-toggle="tab">Lista de Entregables </a></li>
+                <li><a href="#lc" data-toggle="tab">Reales VS Planificados</a></li>
+                <li><a href="#lo" data-toggle="tab">Lista de Objetivos</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane active in" id="le">
+                  <p>
+                    <div class="table-responsive" >
+                    <table class="table" id="listaEntregables">
+                      <thead>
+                        <tr>
+                        <th><b>#</b></th>
+                        <th><b>Descripcion del Entregable</b></th>
+                        <th><b>Estado</b></th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>  <!--fin de la tabla--> 
+                  </p>
+                </div>
+                <div class="tab-pane pane" id="lc">
+                  <p>   
+                    <div class="table-responsive" >
+                    <table class="table" id="listaCostos">
+                      <thead>
+                        <tr>
+                        <th><b>#</b></th>
+                        <th><b>Descripcion del Entregable</b></th>
+                        <th><b>Costo Estimado</b></th>
+                        <th><b>Costo Real</b></th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>Total Costos</th>
+                          <th></th>
+                          <th id="tce"></th>
+                          <th id="tcr"></th>
+                        </tr>
+                        
+                      </tfoot>
+                    </table>
+                  </div>  <!--fin de la tabla--> 
+                  </p>
+                </div>
+                <div class="tab-pane pane" id="lo">
+                  <p>  
+                  <div class="table-responsive" >
+                    <table class="table" id="listaObjetivos">
+                      <thead>
+                        <tr>
+                        <th><b>#</b></th>
+                        <th><b>Descripcion del Objetivo</b></th>
+                        <th><b>Se cumplió?</b></th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>  <!--fin de la tabla--> 
+                  </p>
+                </div>
+              </div>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
