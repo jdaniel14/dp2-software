@@ -50,4 +50,8 @@
 	$app->get('/R_listarIntegrantesProyecto/:id', 'R_getListaIntegrantesProyecto');	
 	$app->get('/R_listarComiteRiesgo/:id', 'R_getComiteRiesgo');	
 
+	//Variado
+	$app->get('/R_obtenerProbabilidadRiesgoMaxima/:id', 'R_getProbabilidadRiesgoMaxima');
+	
+
 ?>
