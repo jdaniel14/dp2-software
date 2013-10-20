@@ -40,7 +40,7 @@
             $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
             $stmt->bindParam("probabilidad", $riesgo->probabilidad);
             $stmt->bindParam("impacto", $riesgo->impacto);
-            $stmt->bindParam("severidad", $riesgo->impacto);
+            $stmt->bindParam("severidad", $riesgo->severidad);
             $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
