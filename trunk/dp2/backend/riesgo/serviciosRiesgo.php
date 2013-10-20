@@ -318,7 +318,7 @@
     //function R_getNivelImpactoTipoImpacto1($var){
     function R_getNivelImpactoTipoImpacto1($json){	
         $impacto = json_decode($json);    
-        $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
+        $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
         FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
         WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
         TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor and :valor<=limite_mayor;";
@@ -330,7 +330,7 @@
             $stmt->bindParam("valor", $impacto->valor);
             $stmt->execute();
             $row = $stmt->fetchObject();
-            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "descripcion" => $row->descripcion);
+            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
             $db = null;
             echo json_encode($data);
         } catch(PDOException $e) {
@@ -393,11 +393,8 @@
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $var->idProyecto);
 			$stmt->bindParam("id_tipo_impacto", $var->idTipoImpacto);
-            //echo $var->idProyecto." ".$var->idTipoImpacto;
-            //echo $query;
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                //echo "Hola";
                 $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'],"descripcion" => $row['descripcion']);
                 array_push($arreglo,$data);
             }
