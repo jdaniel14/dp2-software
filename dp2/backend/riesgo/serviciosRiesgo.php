@@ -27,8 +27,8 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado)";
+        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado,acciones_especificas) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado,:acciones_especificas)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -45,6 +45,7 @@
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
+            $stmt->bindParam("acciones_especificas", $riesgo->acciones);
 
             //$stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
             
