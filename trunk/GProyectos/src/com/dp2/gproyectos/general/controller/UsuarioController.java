@@ -41,6 +41,8 @@ public class UsuarioController extends Controller {
 		limpiarVariables();
 		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_VALIDARLOGIN_URL;
 		//String path = ServerConstants.SERVER_URL + "G_verificaUsuarioPruebaBoni";
+		//String path = ServerConstants.SERVER_URL + "CO_yolo/";
+		
 		Gson gs = new Gson();
 		String strResponse;
 		ValidarLoginResponse objResponse = null;
@@ -53,7 +55,7 @@ public class UsuarioController extends Controller {
 			e.printStackTrace();
 		}
 		
-		HttpResponse respuesta = HttpConnector.makeRequest(path, gs.toJson(parametros));
+		HttpResponse respuesta = HttpConnector.makeRequest(path, parametros.toString());
 		
 		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
 			try {
