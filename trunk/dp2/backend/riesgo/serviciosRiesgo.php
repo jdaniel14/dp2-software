@@ -340,21 +340,20 @@
 
     function R_getNivelImpactoTipoImpacto2($json){
         $impacto = json_decode($json);
-        
-        $query = "SELECT NI.id_nivel_impacto, NI.descripcion 
+        $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
         FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
         WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
-        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and TIXNI.descripcion LIKE :descripcion ";
-
+        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and TIXNI.id_nivel_impacto=:id_nivel_impacto ";
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $impacto->idProyecto);
             $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
-            $stmt->bindParam("descripcion", $impacto->descripcion);
+            $stmt->bindParam("id_nivel_impacto", $impacto->idNivelImpacto);
             $stmt->execute();
+            //echo $query;
             $row = $stmt->fetchObject();
-            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "descripcion" => $row->descripcion);
+            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
             $db = null;
             echo json_encode($data);
         } catch(PDOException $e) {
