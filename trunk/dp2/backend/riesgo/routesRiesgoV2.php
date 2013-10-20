@@ -12,6 +12,9 @@
 	$app->post('/R_registrarHeaderImpactoRiesgo','R_postRegistrarHeaderImpacto');
 	$app->delete('/R_eliminarHeaderImpactoRiesgo/:id','R_deleteHeaderImpacto');
 
+	//CREACION MATRIZ
+	$app->get('/R_crearMatriz/:id','R_getGenerarMatriz');
+
 	//ESTRATEGIAS
 	$app->get('/R_listarEstrategias/:id','R_getEstrategias');
 	$app->post('/R_registrarEstrategias','R_postRegistrarEstrategias');
