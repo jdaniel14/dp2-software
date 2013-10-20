@@ -351,7 +351,6 @@
             $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
             $stmt->bindParam("id_nivel_impacto", $impacto->idNivelImpacto);
             $stmt->execute();
-            //echo $query;
             $row = $stmt->fetchObject();
             $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
             $db = null;
@@ -364,7 +363,7 @@
     function R_getProbabilidadRiesgo($json){
         $impacto = json_decode($json);
         
-        $query = "SELECT id_probabilidad_riesgo, descripcion FROM PROBABILIDAD_RIESGO
+        $query = "SELECT id_probabilidad_riesgo, descripcion, nivel FROM PROBABILIDAD_RIESGO
                 WHERE id_proyecto=:id_proyecto and minimo<=:valor and :valor<=maximo;";
 
         try {
@@ -374,7 +373,7 @@
             $stmt->bindParam("valor", $impacto->valor);
             $stmt->execute();
             $row = $stmt->fetchObject();
-            $data=array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo, "descripcion" => $row->descripcion);
+            $data=array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
             $db = null;
             echo json_encode($data);
         } catch(PDOException $e) {
