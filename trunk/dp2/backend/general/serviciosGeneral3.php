@@ -225,6 +225,7 @@ function G_getCostoPorProyecto($id) {
 			A.ID_PROYECTO,
 			Y.ID_PAQUETE_TRABAJO,
 			Y.NOMBRE NOMBRE_PAQUETE,
+                        Y.descripcion DESCRIPCION,
 			EST.descripcion as ESTADO,
 			SUM(CASE
 			WHEN B.ID_PAQUETE_TRABAJO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL THEN 0
@@ -260,7 +261,7 @@ function G_getCostoPorProyecto($id) {
                     $c_est = $p["COSTO_PAQUETE_SOLES"];
                     
                     $paqueteHijo = array(
-                        "nombre" => $p["NOMBRE_PAQUETE"],
+                        "nombre" => $p["DESCRIPCION"],
                         "estado" => $p["ESTADO"],
                         "c_est" => (string)$c_est,
                         "c_real" => (string)$c_real
