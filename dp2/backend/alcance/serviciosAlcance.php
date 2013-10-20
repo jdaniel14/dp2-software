@@ -319,7 +319,7 @@
 	 function getEstadoAlcance(){//obtener el estado del alcance dado un id_proyecto 
 	 	$request = \Slim\Slim::getInstance()->request();
 		$val = $request->params();
-		$idproyecto = $val["idproyecto"]
+		$idproyecto = $val["idproyecto"];
 
     	$con=getConnection();
 		$pstmt = $con->prepare("SELECT id_estado_alcance FROM ALCANCE WHERE id_proyecto = ?");
@@ -357,7 +357,7 @@
 	 function getEstadoEDT(){//obtener el estado del EDT dado un id_proyecto 
 	 	$request = \Slim\Slim::getInstance()->request();
 		$val = $request->params();
-		$idproyecto = $val["idproyecto"]
+		$idproyecto = $val["idproyecto"];
 
     	$con=getConnection();
 		$pstmt = $con->prepare("SELECT id_estado FROM EDT WHERE id_proyecto = ?");
