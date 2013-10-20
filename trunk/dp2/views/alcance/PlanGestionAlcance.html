@@ -35,7 +35,7 @@
           <div class="row">
             <div class="form-group col-md-2">
               <label class="control-label" for="prepararAlcance">Preparar alcance</label>
-              <button id="verAlcance" type="button" class="btn btn-default btn-block">Editar alcance</button>
+              <a href="gestionAlcance.html" class="btn btn-default btn-block">Editar alcance</a>
             </div>
             <div class="form-group col-md-10">
               <label class="control-label" for="mensajeEnunciado"></label>
@@ -46,12 +46,11 @@
           <div class="row">
             <div class="form-group col-md-2">
               <label class="control-label" for="verEDT">EDT</label>
-              <button id="verEDT" type="button" class="btn btn-default btn-block">Ver EDT</button>
+              <a href="index.html" class="btn btn-default btn-block">Ver EDT</a>
             </div>
             <div class="form-group col-md-4">
               <label class="control-label" for="estadoEDT">Estado del EDT</label>
               <select class="form-control" name="id_estado_edt" id="id_estado_edt">
-                <option>Aprobado</option> 
               </select>
             </div>
           </div>
@@ -60,7 +59,6 @@
             <div class="form-group col-md-4">
               <label class="control-label" for="estadoAlcance">Estado del alcance</label>
               <select class="form-control" name="id_estado_alcance" id="id_estado_alcance">  
-                <option>Aprobado</option>
               </select>
             </div>
           </div>
@@ -87,21 +85,10 @@
               <th>Id</th>
               <th>Descripción</th>
               <th>Fecha y hora</th>
+              <th>Responsable</th>
               <th>Estado</th>
             </thead>
             <tbody class="cuerpo-tabla" id="cambiosAlcance">
-                <tr>
-                  <td>1</td>
-                  <td>Se modificó el alcance</td>
-                  <td>11:48 am 10/10/2013</td>
-                  <td>Aprobado</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Se modificó el EDT</td>
-                  <td>11:50 am 10/10/2013</td>
-                  <td>Rechazado</td>
-                </tr>
             </tbody>
           </table>
         </div>      
