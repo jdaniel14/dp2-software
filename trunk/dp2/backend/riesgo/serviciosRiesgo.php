@@ -395,9 +395,10 @@
 			$stmt->bindParam("id_tipo_impacto", $var->idTipoImpacto);
             //echo $var->idProyecto." ".$var->idTipoImpacto;
             //echo $query;
+            $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 //echo "Hola";
-                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'], 								"descripcion" => $row['descripcion']);
+                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'],"descripcion" => $row['descripcion']);
                 array_push($arreglo,$data);
             }
             $db = null;
