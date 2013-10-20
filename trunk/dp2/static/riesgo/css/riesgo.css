@@ -48,7 +48,7 @@ textarea{
   border: 1px solid transparent;
   border-radius: 4px;
 }
-
+/*PARA QUE FUNCIONE EL COMITE DE RIESGO*/
 ul, ol {
   padding: 0;
   margin: 0 0 9px 25px; }
@@ -81,7 +81,12 @@ ol {
 ol.nested_with_switch li, ol.simple_with_animation li, ol.default li { 
   cursor: pointer; }
 
-  .input-mini {
+
+  /*FIN PARA QUE FUNCIONE EL COMITE DE RIESGO*/
+
+  /*PARA EL INPUT MAS CHICO! U.U ME ESTA MODIFICANDO TODOS LOS INPUTS*/
+
+  /*.input-mini {
   width: 60px; }
 
   textarea,
@@ -110,4 +115,6 @@ input[type="text"],
   margin-bottom: 9px;
   font-size: 13px;
   line-height: 18px;
-  color: #555555; }
+  color: #555555; }*/
+
+  /*FIN PARA EL INPUT MAS CHICO!*/
