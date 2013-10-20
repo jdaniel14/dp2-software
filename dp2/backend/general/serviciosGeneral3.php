@@ -62,7 +62,8 @@ function G_getObjetivosPorProyecto($id) {
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $obj = array(
                 "id" => $j["id_objetivo"],
-                "desc" => $j["descripcion"]
+                "desc" => $j["descripcion"],
+                "flag_cumplido" => $j["flag_cumplido"]
             );
             array_push($l_objetivos, $obj);
         }
