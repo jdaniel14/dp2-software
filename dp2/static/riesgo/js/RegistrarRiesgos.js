@@ -820,10 +820,11 @@ $('#impRiesgo2').change(
     	if ($('#impRiesgo2').val()!=0) {
 	     	var data = {
 	     		idProyecto:idProyectoLocal,
-	     		descripcion:$('#impRiesgo2').val(),
+	     		idNivelImpacto:$('#impRiesgo2').val(),
 	     		idTipoImpacto: $('#tipoImpacto').val()
 	     	}
 	     	var jsonData = JSON.stringify(data);
+	     	console.log(data);
 			$.ajax({
 				type: 'GET',
 				url: getImpactLevel2 +'/'+ jsonData,
