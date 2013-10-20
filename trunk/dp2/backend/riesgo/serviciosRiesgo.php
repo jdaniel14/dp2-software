@@ -143,38 +143,38 @@
 
     function R_getRiesgo($idRiesgoXProyecto){
         
-
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, version, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
+        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
                 FROM RIESGO_X_PROYECTO RXP
-                left join EDT on RXP.id_proyecto=EDT.id_proyecto
-                left join TIPO_IMPACTO TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
-                ,NIVEL_IMPACTO NI, PROBABILIDAD_RIESGO PR, EMPLEADO E
-                where 
-                RXP.id_riesgo_x_proyecto=".$idRiesgoXProyecto." and RXP.id_nivel_impacto=NI.id_nivel_impacto and RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo and
-                RXP.id_empleado=E.id_empleado";
+                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
+                left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
+                left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
+                left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
+                where RXP.id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
             $stmt->execute();
             $row = $stmt->fetchObject();
             $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
                             "nombre" => $row->nombre_riesgo,
-                            "paqueteTrabajo" => $row->version,//PT
+                            "paqueteTrabajo" => $row->nombre_paquete_trabajo,//PT
                             "impactoDescripcion" => $row->impacto_descripcion,//TI
                             "impacto" => $row->impacto,
                             "nivelImpactoDescripcion" => $row->nivel_impacto_descripcion,
                             "probabilidad" => $row->probabilidad,
                             "probabilidadDescripcion" => $row->probabilidad_descripcion,
-                            //"severidad" => $row->severidad"],
+                            "severidad" => $row->severidad,
                             //"estrategia" => $row->nombre,//X
                             "accionesEspecificas" => $row->acciones_especificas,//X
                             "costoPotencial" => $row->costo_potencial,//RXP
                             "demoraPotencial" => $row->demora_potencial,//RXP
-                            "nombreResponsable" => $row->nombre_corto//X
+                            "nombreResponsable" => $row->nombre_corto//
                             );
             $db = null;
-            //echo json_encode($data);
+            echo json_encode($data);
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
                 //'{"error":{"text":'. $e->getMessage() .'}}';
