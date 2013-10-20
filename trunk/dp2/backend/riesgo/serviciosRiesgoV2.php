@@ -169,7 +169,7 @@
 
     function R_getGenerarMatriz($idProyecto){
         //Nivel Impacto
-        $query = "SELECT nivel FROM NIVEL_IMPACTO WHERE id_proyecto=:idProyecto ORDER BY 1 ASC";
+        $query = "SELECT nivel FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
         try{
             $arregloNivel= array();
             $db=getConnection();
@@ -184,7 +184,7 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
         //Probabilidad Riesgo
-        $query = "SELECT nivel FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:idProyecto ORDER BY 1 ASC";
+        $query = "SELECT nivel FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
         try{
             $arregloProbabilidad= array();
             $db=getConnection();
@@ -202,10 +202,11 @@
         $arregloMatriz = array();
         foreach($arregloProbabilidad as $valorProb){
             $arregloLinea = array();
-            $data = array("valorProb" => $valorProb);
+            $data = array("valorProb" => ($valorProb['nivel']));
             array_push($arregloLinea,$data);
             foreach($arregloNivel as $valorNivel){
-                $data = array("valorImpacto" => $valorNivel, "valorMult" => $valorNivel*$valorImpacto);
+                $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
+                $data = array("valorImpacto" => $valorNivel['nivel'], "valorMult" => $valorMult);
                 array_push($arregloLinea,$data);
             }
             array_push($arregloMatriz, $arregloLinea);
