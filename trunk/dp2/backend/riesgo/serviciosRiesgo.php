@@ -274,7 +274,7 @@
         $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
         FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
         WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
-        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor and :valor<=limite_mayor;";
+        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor ;";//and :valor<=limite_mayor
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
