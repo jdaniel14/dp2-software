@@ -200,23 +200,6 @@
         }        
     }
 
-    function R_getListaCategoriaRiesgo(){
-        $query = "SELECT * FROM CATEGORIA_RIESGO";
-        try {
-            $arregloListaCategoriaRiesgo= array();
-            $db=getConnection();
-            $stmt = $db->query($query);
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("id" => $row['id_categoria_riesgo'], "descripcion" => $row['descripcion']);
-                array_push($arregloListaCategoriaRiesgo,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaCategoriaRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
     function R_getListaNivelesImpacto($idProyecto){
         /*$query*/$sql = "SELECT * FROM CONFIGURACION_RIESGO WHERE id_proyecto=".$idProyecto;
         $arregloListaNivelesImpacto = array();
@@ -251,23 +234,6 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
         
-    }
-
-    function R_getListaEquipoRiesgo($idProyecto){//FALTA MODIFICAR
-        $query = "SELECT * FROM EDT WHERE id_proyecto=".$idProyecto;
-        try {
-            $arregloListaEquipoRiesgo= array();
-            $db=getConnection();
-            $stmt = $db->query($sql);
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("id" => $row['idEquipo'], "nombre" => $row['nombre']);
-                array_push($arregloListaEquipoRiesgo,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaEquipoRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
     }
 
     function R_getEstadoLogicoRiesgo($idRiesgo){
