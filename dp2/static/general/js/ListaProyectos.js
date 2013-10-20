@@ -173,8 +173,8 @@ var l_objetivos=[];
 	    	ido:""
 	    };
 		aux.desc = objetivos[i].cells[0].innerHTML;
-		aux.ido = objetivos[i]cells[1].innerHTML;
-		aux.est = objetivos[i]cells[2].children[0].checked;
+		aux.ido = objetivos[i].cells[1].innerHTML;
+		aux.est = objetivos[i].cells[2].children[0].checked;
 		l_objetivos.push(aux);
 	}
 	obj["l_objetivos"]=l_objetivos;
