@@ -110,6 +110,7 @@
         $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, version, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
                 FROM RIESGO_X_PROYECTO RXP
                 left join EDT on RXP.id_proyecto=EDT.id_proyecto
+                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join TIPO_IMPACTO TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
                 ,NIVEL_IMPACTO NI, PROBABILIDAD_RIESGO PR, EMPLEADO E
                 where 
@@ -383,16 +384,19 @@
     }
 
     function R_getDescripcionNivelImpactoTipoImpacto($json){
-				$var = json_decode($json);
-        $query = "SELECT * FROM TIPO_IMPACTO_X_NIVEL_IMPACTO
-									WHERE id_proyecto=:id_proyecto AND id_tipo_impacto=:id_tipo_impacto";
+		$var = json_decode($json);
+        $query = "SELECT * FROM TIPO_IMPACTO_X_NIVEL_IMPACTO 
+            WHERE id_proyecto=:id_proyecto AND id_tipo_impacto=:id_tipo_impacto;";
         try {
             $arreglo= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $var->idProyecto);
-						$stmt->bindParam("id_tipo_impacto", $var->idTipoImpacto);
+			$stmt->bindParam("id_tipo_impacto", $var->idTipoImpacto);
+            //echo $var->idProyecto." ".$var->idTipoImpacto;
+            //echo $query;
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                //echo "Hola";
                 $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'], 								"descripcion" => $row['descripcion']);
                 array_push($arreglo,$data);
             }
