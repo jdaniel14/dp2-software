@@ -101,45 +101,32 @@
 
     function R_getListaRiesgo($var){
         $riesgo = json_decode($var);
-        /*$query = "SELECT * FROM RIESGO_X_PROYECTO as RXP 
-                left join EDT on RXP.id_proyecto=EDT.id_proyecto
-                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
-                left join CATEGORIA_RIESGO as CR on RXP.id_categoria_riesgo=CR.id_categoria_riesgo
-                where RXP.id_proyecto=:id_proyecto and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
-*/
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, version, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
+
+        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
                 FROM RIESGO_X_PROYECTO RXP
-                left join EDT on RXP.id_proyecto=EDT.id_proyecto
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
-                left join TIPO_IMPACTO TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
-                ,NIVEL_IMPACTO NI, PROBABILIDAD_RIESGO PR, EMPLEADO E
+                left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
+                left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
+                left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
+                left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
                 where 
-                RXP.id_proyecto=".$riesgo->idProyecto." and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%' and 
-                RXP.id_nivel_impacto=NI.id_nivel_impacto and RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo and
-                RXP.id_empleado=E.id_empleado";
-                
-
-//        if ($riesgo->idPaqueteTrabajo!=0) $query .=" and RXP.id_paquete_trabajo=".$riesgo->idPaqueteTrabajo." ";
-        //if ($riesgo->idCategoriaRiesgo!=0) $query .=" and RXP.id_categoria_riesgo=".$riesgo->idCategoriaRiesgo." ";
-
+                RXP.id_proyecto=".$riesgo->idProyecto." and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
         try {
             $arregloListaRiesgo= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
-        
-            //$stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombre" => $row['nombre_riesgo'],
-                            "paqueteTrabajo" => $row['version'],//PT
+                            "paqueteTrabajo" => $row['nombre_paquete_trabajo'],//PT
                             "impactoDescripcion" => $row['impacto_descripcion'],//TI
                             "impacto" => $row['impacto'],
                             "nivelImpactoDescripcion" => $row['nivel_impacto_descripcion'],
                             "probabilidad" => $row['probabilidad'],
                             "probabilidadDescripcion" => $row['probabilidad_descripcion'],
-                            //"severidad" => $row->severidad"],
-                            //"estrategia" => $row->nombre,//X
+                            "severidad" => $row['severidad'],
+                            //"estrategia" => $row[nombre,//X
                             "accionesEspecificas" => $row['acciones_especificas'],//X
                             "costoPotencial" => $row['costo_potencial'],//RXP
                             "demoraPotencial" => $row['demora_potencial'],//RXP
