@@ -49,7 +49,8 @@
 		$con = getConnection();
 		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), P.ultima_actualizacion, E.descripcion as estado  ".
 			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
-			"WHERE E.id_estado = P.id_estado AND P.id_edt= ?");
+			"WHERE E.id_estado = P.id_estado AND P.id_edt= ? 
+			AND (SELECT count(*) FROM PAQUETE_TRABAJO WHERE id_componente_padre = P.id_paquete_trabajo) = 0");
 		$pstmt->execute(array($id_edt));
 		$lista = array();
 
