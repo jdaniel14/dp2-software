@@ -26,7 +26,7 @@ function cargaTitulo(){
 function guardarCambios(){
 	var objAlcance = {
 		idproyecto : id_proyecto,
-		idestado : $("#id_estado_alcance").val();
+		idestado : $("#id_estado_alcance").val()
 	}
 	$.ajax({
 		type:'POST',
@@ -37,7 +37,7 @@ function guardarCambios(){
 	});
 	var objEDT = {
 		idproyecto : id_proyecto,
-		idestado : $("#id_estado_EDT").val();
+		idestado : $("#id_estado_EDT").val()
 	}
 	$.ajax({
 		type:'POST',
@@ -60,7 +60,7 @@ function cargarComboEstadoEDT(){
 				var opt = $("<option></option>");
 				opt.val(data[obj]["id_estado"]);
 				opt.html(data[obj]["descripcion"]);
-				$("#id_estado").append(opt);
+				$("#id_estado_edt").append(opt);
 			}
 		}
 	});
@@ -78,18 +78,20 @@ function cargarComboEstadoAlcance(){
 				var opt = $("<option></option>");
 				opt.val(data[obj]["id_estado_alcance"]);
 				opt.html(data[obj]["descripcion"]);
-				$("#id_estado").append(opt);
+				$("#id_estado_alcance").append(opt);
 			}
 		}
 	});
 }
 
 function cargarEstados(){
+   var obj = {"idproyecto":id_proyecto};
 	$.ajax({
 		type: 'GET',
 		url : '../../api/AL_getEstadoAlcance',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+    data: obj,
 		success:function(data){
 			$("#id_estado_alcance").val(data["id_estado_alcance"]);
 		}
@@ -99,7 +101,8 @@ function cargarEstados(){
 		url : '../../api/AL_getEstadoEDT',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
-		success:function(data){
+    data : obj,
+    success:function(data){
 			$("#id_estado_edt").val(data["id_estado"]);
 		}
 	});
