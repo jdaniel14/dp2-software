@@ -109,6 +109,19 @@ function cargarEstados(){
 
 }
 
+function cargaTablaCambios(data){
+	var tabla = $('#cambiosAlcance');
+	for(var i=0; i< data.length; i++){
+		var fila = $('<tr>');
+		fila.append('<td>'+data[i]["id_cambio"]+'</td>');
+		fila.append('<td>'+data[i]["descripcion"]+'</td>');
+		fila.append('<td>'+data[i]["fecha"]+'</td>');
+		fila.append('<td>'+data[i]["responsable"]+'</td>');
+		fila.append('<td>'+data[i]["estado"]+'</td>');
+		tabla.append(fila);
+	}
+}
+
 function cargarTabla(){
 	$.ajax({
 		type: 'GET',
@@ -116,7 +129,7 @@ function cargarTabla(){
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
-			
+			cargaTablaCambios(data);
 		}
 	});	
 }
@@ -126,5 +139,6 @@ $(document).ready(function(){
 	cargarComboEstadoEDT();
 	cargarComboEstadoAlcance();
 	cargarEstados();
+  cargarTabla();
 	$("#guardarCambios").click(guardarCambios);
 });
