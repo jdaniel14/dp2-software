@@ -37,7 +37,7 @@ function guardarCambios(){
 	});
 	var objEDT = {
 		"idproyecto" : id_proyecto,
-		"idestado" : $("#id_estado_EDT").val()
+		"idestado" : $("#id_estado_edt").val()
 	}
 	$.ajax({
 		type:'POST',
