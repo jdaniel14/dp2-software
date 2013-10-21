@@ -89,15 +89,18 @@ function main() {
             url: "../../api/R_registrarAcuerdos",
             data: jsonData,
             dataType: "json",
-            success: function(data) {
+            success: function() {
                 alert("Registrado con éxito");
+                     listarAcuerdos();
+           
 
             },
             fail: function(data) {
                 alert(data.me);
+                
             }
         });
-
+ 
 
     });
 
