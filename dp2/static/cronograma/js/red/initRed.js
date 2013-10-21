@@ -3,15 +3,15 @@ var listaRed;
 var dataAJAX;
 
 var xIni = 1;
-var yIni = 30;
+var yIni = 60;
 
 //Factor que se mueve en el mismo bloque
-var factorXEnB = 30;
-var factorYEnB = 30;
+var factorXEnB = 160;
+var factorYEnB = 100;
 
 //Factor que se mueve de bloque en bloque
-var factorX = 100;
-var factorY = 30;
+var factorX = 500;
+var factorY = 100;
 
 //Posicion actual
 var x = 1;
@@ -63,6 +63,9 @@ function cargarDatos(){
         	console.log(data);
         	dataAJAX = data;
         	listaRed = data.listaRed;
+        	listaRed[1].predecesores = "1325";
+        	listaRed[2].predecesores = "1325";
+        	listaRed[3].predecesores = "1326,1327";
         	iniciarFiesta()
         }
 	});
@@ -70,7 +73,7 @@ function cargarDatos(){
 
 function crearConexionNodos(id_from,id_to,pitaSize){
 	if((id_from != undefined) && (id_to != undefined)){
-		diagram.addConnection(new Connection(id_from,'n',id_to,'s','#AA0000', pitaSize));
+		diagram.addConnection(new Connection(id_from,'e',id_to,'w','#AA0000', pitaSize));
 	}
 }
 
@@ -120,9 +123,9 @@ function imprimirHijos(padre,rX,rY){
 	$.each(actXBloque,function(r,re){
 		if(re.marcado != 1){
 			var arrPapis = re.predecesores.split(',');
-			
+			console.log("Es HIJO -> X: " + rX + " - Y: " + rY);
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
-				if(re.esCritico == 0){
+				if(re.EsCritico == 0){
 					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColor,borderWidth);
 				}
 				else{
@@ -157,15 +160,13 @@ function iniciarFiesta(){
 		
 	//Recorro todos los bloques y dibujo todas las actividades
 	for(var b = 0; b < dataAJAX.cantBloques; b++){ //hasta listaRed.cantBloques
-		console.log("Bloque actual: " + b);
+		//console.log("Bloque actual: " + b);
 				
 		//Obtener las actividades del bloque
 		actXBloque = new Array();
 
 		var n = 0;
 		$.each(listaRed,function(e,el){
-			console.log(el.bloque);
-			console.log(b);
 			if(el.bloque == b){
 				actXBloque[n] = el;
 				n++;
@@ -173,7 +174,7 @@ function iniciarFiesta(){
 		});
 		//Fin obtener actividades del bloque
 		
-		console.log("ACtividades por bloque");
+		console.log("Actividades por el bloque: " + b);
 		console.log(actXBloque);
 
 		//Inicializar X e Y
@@ -188,17 +189,21 @@ function iniciarFiesta(){
 			//Dibujar si es que aun no se ha dibujado (marcado == 0)
 			if(el.marcado == 0){
 				//imprimir el nodo
-				if(el.esCritico == 0){
+				if(el.EsCritico == 0){
+					console.log("ENTRO UN NO CRITICOOOOOO");
 					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColor,borderWidth);
+					console.log("Es Daddy -> X: " + x + " - Y: " + y);
 				}
 				else{
+					console.log("ENTRO UN CRITICOOOOOO");
 					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColorC,borderWidthC);
+					console.log("Es Daddy -> X: " + x + " - Y: " + y);
 				}
 				//marcar el nodo como  ya impreso
 				el.marcado = 1;//0->no dibujado ni conectado, 1-> dibujado, 2->conectado y dibujado		
 				
 				//recursiva imprimirHijosEnBloque(padre,x,y,actxbloq)
-				imprimirHijos(el.id_actividad, x + factorXEnB, y);
+				imprimirHijos(el.id_actividad, x + factorXEnB, y + factorYEnB);
 				
 				//Aumento la posicion en la que estoy
 				x = x;
@@ -216,18 +221,20 @@ function iniciarFiesta(){
 	
 	//Una vez que ya estan dibujadas todas las actividades las recorro y las conecto entre si
 	$.each(listaRed,function(e,el){
-		if((el.marcado != 2) && (el.predecesores != undefined)){ //si no lo han conectado aun con su/sus padre(s)...
+		if(el.marcado != 2){ //si no lo han conectado aun con su/sus padre(s)...
 			
-			var arrPapis = el.predecesores.split(',');
-			
-			$.each(arrPapis,function(p,pa){
-				if (el.esCritico == 0){
+			if(el.predecesores != ""){//si no tiene predecesores
+				
+				var arrPapis = el.predecesores.split(',');
+				console.log(el.id_actividad);
+				console.log(arrPapis);
+				$.each(arrPapis,function(p,pa){
+					
 					crearConexionNodos(pa,el.id_actividad,anchoPita);
-				}
-				else{
-					crearConexionNodos(pa,el.id_actividad,anchoPitaC);
-				}
-			});
+					
+				});
+				
+			}
 			
 			el.marcado = 2;
 			
