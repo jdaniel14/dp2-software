@@ -168,27 +168,37 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_getCostoFijoPlaneado($json) { //servicio 15//
+	function CO_getCostoFijoPlaneado($json) { //servicio 15//COMPLETO
 		$proy = json_decode($json);
 
 		$jsonRespuesta = new stdClass();
-    	$jsonRespuesta->costoFijoTotalPlaneado = CO_consultarCostoFijoTotalPlaneado($proy->idProyecto);
-		$jsonRespuesta->lista = CO_consultarListaRecursos($proy->idProyecto);
+    	$jsonRespuesta->lista = CO_consultarCostoFijoTotalPlaneado($proy->idProyecto);
+    	$jsonRespuesta->costoFijoTotalPlaneado = 0;
+    	if ($jsonRespuesta->lista != null && sizeof($jsonRespuesta->lista) > 0) {
+    		foreach ($jsonRespuesta->lista as $recurso) {
+				$jsonRespuesta->costoFijoTotalPlaneado += $recurso->costoFijoTotal;
+			}
+    	}
 
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_getCostoFijoReal($json) { //servicio 16//
+	function CO_getCostoFijoReal($json) { //servicio 16//COMPLETO
 		$proy = json_decode($json);
 
 		$jsonRespuesta = new stdClass();
-    	$jsonRespuesta->costoFijoTotalReal = CO_consultarCostoFijoTotalReal($proy->idProyecto);
-		$jsonRespuesta->lista = CO_consultarListaRecursos($proy->idProyecto);
+    	$jsonRespuesta->lista = CO_consultarCostoFijoTotalReal($proy->idProyecto);
+    	$jsonRespuesta->costoFijoTotalReal = 0;
+    	if ($jsonRespuesta->lista != null && sizeof($jsonRespuesta->lista) > 0) {
+    		foreach ($jsonRespuesta->lista as $recurso) {
+				$jsonRespuesta->costoFijoTotalReal += $recurso->costoFijoTotal;
+			}
+    	}
 
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_saveCostoFijoReal($json) { //servicio 17 //COMPLETO
+	function CO_saveCostoFijoRealProyecto($json) { //servicio 17 //ID PROYECTO? ID RECURSO? GGGGGGGG!
 		$objeto = json_decode($json);
 		
 		$yearI = $objeto->yearI;
@@ -278,6 +288,10 @@
 	//funciones para obtener indicadores
 	function CO_obtenerPV($idProyecto, $fecha) { //Valor planeado
 		$sql = "SELECT 
+		SUM(Z.VALOR_PLANEADO) VALOR_PLANEADO
+		FROM
+		(
+		SELECT 
 		SUM(H.COSTO_PLANEADO_SOLES) AS VALOR_PLANEADO
 		FROM
 		(
@@ -309,7 +323,17 @@
 		AND DATE_FORMAT(D.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		GROUP BY
 		A.ID_ACTIVIDAD
-		) H;";
+		) H
+		union
+		/*PV PARA LOS COSTOS FIJOS MATERIALES*/
+		SELECT
+		IFNULL(SUM(A.COSTO_FIJO_DIARIO_ESTIMADO*(DATEDIFF(LEAST(DATE_FORMAT(:fecha,'%Y%m%d'),A.FECHA_PLAN_FIN_COSTO_FIJO),A.FECHA_PLAN_INICIO_COSTO_FIJO)+1)*B.CAMBIO_A_SOL),0) VALOR_PLANEADO
+		FROM
+		RECURSO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND A.ESTADO='ACTIVO'
+		AND DATE_FORMAT(A.FECHA_PLAN_INICIO_COSTO_FIJO,'%Y%m%d')<= :fecha and A.COSTO_FIJO_DIARIO_ESTIMADO>0
+		) Z;";
 
 		$valor = 0;
 
@@ -337,6 +361,10 @@
 
 	function CO_obtenerEV($idProyecto, $fecha) { //Valor ganado
 		$sql = "SELECT 
+		sum(Z.VALOR_GANADO) VALOR_GANADO
+		FROM
+		(
+		SELECT 
 		SUM(H.COSTO_PLANEADO_SOLES) AS VALOR_GANADO
 		FROM
 		(
@@ -349,7 +377,7 @@
 		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
-		AND DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')<= :fecha
+		AND DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')<=:fecha
 		AND DATE_FORMAT(D.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		GROUP BY
 		A.ID_ACTIVIDAD
@@ -363,12 +391,22 @@
 		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
-		AND (DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')> :fecha OR A.FECHA_ACTUAL_FIN IS NULL)
-		AND (DATE_FORMAT(A.FECHA_ACTUAL_INICIO,'%Y%m%d')<= :fecha OR A.FECHA_ACTUAL_INICIO IS NULL)
+		AND (DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')>:fecha OR A.FECHA_ACTUAL_FIN IS NULL)
+		AND (DATE_FORMAT(A.FECHA_ACTUAL_INICIO,'%Y%m%d')<=:fecha OR A.FECHA_ACTUAL_INICIO IS NULL)
 		AND DATE_FORMAT(D.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		GROUP BY
 		A.ID_ACTIVIDAD
-		) H;";
+		) H
+		UNION
+		/*EV PARA COSTO FIJO*/
+		SELECT
+		IFNULL(SUM(A.COSTO_FIJO_DIARIO_ESTIMADO*(DATEDIFF(LEAST(DATE_FORMAT(:fecha,'%Y%m%d'),A.FECHA_PLAN_FIN_COSTO_FIJO),A.FECHA_PLAN_INICIO_COSTO_FIJO)+1)*B.CAMBIO_A_SOL),0) VALOR_GANADO
+		FROM
+		RECURSO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.ESTADO='ACTIVO' AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND DATE_FORMAT(A.FECHA_PLAN_INICIO_COSTO_FIJO,'%Y%m%d')<=:fecha AND A.COSTO_FIJO_DIARIO_ESTIMADO>0
+		) Z;";
 
 		$valor = 0;
 
@@ -396,6 +434,10 @@
 
 	function CO_obtenerAC($idProyecto, $fecha) { //Valor actual
 		$sql = "SELECT
+		SUM(Z.VALOR_ACTUAL) VALOR_ACTUAL
+		FROM
+		(
+		SELECT
 		SUM(H.COSTO_REAL_SOLES) VALOR_ACTUAL
 		FROM
 		(
@@ -408,7 +450,7 @@
 		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
-		AND DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')<= :fecha
+		AND DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')<=:fecha
 		AND DATE_FORMAT(D.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		GROUP BY
 		A.ID_ACTIVIDAD
@@ -422,12 +464,22 @@
 		JOIN CAMBIO_HISTORICO D ON C.ID_CAMBIO_MONEDA=D.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
-		AND (DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')> :fecha OR A.FECHA_ACTUAL_FIN IS NULL)
-		AND (DATE_FORMAT(A.FECHA_ACTUAL_INICIO,'%Y%m%d')<= :fecha OR A.FECHA_ACTUAL_INICIO IS NULL)
+		AND (DATE_FORMAT(A.FECHA_ACTUAL_FIN,'%Y%m%d')>:fecha OR A.FECHA_ACTUAL_FIN IS NULL)
+		AND (DATE_FORMAT(A.FECHA_ACTUAL_INICIO,'%Y%m%d')<=:fecha OR A.FECHA_ACTUAL_INICIO IS NULL)
 		AND DATE_FORMAT(D.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		GROUP BY
 		A.ID_ACTIVIDAD
-		) H;";
+		) H
+		UNION
+		/*COSTOS FIJOS*/
+		SELECT
+		IFNULL(SUM(A.COSTO_FIJO_DIARIO_REAL*(DATEDIFF(LEAST(DATE_FORMAT(:fecha,'%Y%m%d'),A.FECHA_REAL_FIN_COSTO_FIJO),A.FECHA_REAL_INICIO_COSTO_FIJO)+1)*B.CAMBIO_A_SOL),0) VALOR_ACTUAL
+		FROM
+		RECURSO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.ESTADO='ACTIVO' AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND DATE_FORMAT(A.FECHA_REAL_INICIO_COSTO_FIJO,'%Y%m%d')<=:fecha AND A.COSTO_FIJO_DIARIO_REAL>0
+		) Z;";
 
 		$valor = 0;
 
@@ -477,6 +529,10 @@
 
 	function CO_obtenerBAC($idProyecto) { //Valor bac. Este valor no depende de la fecha
 		$sql = "SELECT
+		SUM(Z.BAC_SOLES) BAC_SOLES
+		FROM
+		(
+		SELECT
 		SUM(IFNULL(B.CANTIDADESTIMADA,0)*IFNULL(C.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0)) BAC_SOLES
 		FROM
 		ACTIVIDAD A JOIN ACTIVIDAD_X_RECURSO B ON A.ID_ACTIVIDAD=B.ID_ACTIVIDAD
@@ -484,7 +540,16 @@
 		JOIN CAMBIO_HISTORICO X ON C.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND A.PROFUNDIDAD<>0 AND A.ELIMINADO<>1 AND B.ESTADO<>0 AND C.ESTADO<>'ELIMINADO'
-		AND DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
+		AND DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		UNION
+		SELECT
+		IFNULL(SUM(A.COSTO_FIJO_DIARIO_ESTIMADO*(DATEDIFF(A.FECHA_PLAN_FIN_COSTO_FIJO,A.FECHA_PLAN_INICIO_COSTO_FIJO)+1)*B.CAMBIO_A_SOL),0) BAC_SOLES
+		FROM
+		RECURSO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND A.ESTADO='ACTIVO'
+		and A.COSTO_FIJO_DIARIO_ESTIMADO>0
+		) Z;";
 
 		$valor = 0;
 
@@ -613,33 +678,55 @@
 	//////////SPRINT 1
 	function CO_consultarInfoProyecto($idProyecto) { //COMPLETO
 		$sql = "SELECT
+		H.ID_PROYECTO,
+		H.NOMBRE_PROYECTO,
+		H.PORCENTAJE_RESERVA,
+		SUM(H.PRESUP_SOLES)
+		FROM
+		(
+		select
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
-		IFNULL(A.PORCENTAJE_RESERVA,0) PORCENTAJE_RESERVA,
-		SUM(
-		CASE 
-		WHEN B.ID_PROYECTO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL OR X.FECHA IS NULL THEN 0
-		WHEN C.ESTADO<>0 AND B.PROFUNDIDAD<>0  AND D.ESTADO<>'ELIMINADO' AND B.ELIMINADO<>1 AND (B.ID_ACTIVIDAD IS NOT NULL OR C.ID_RECURSO IS NOT NULL)
-			THEN 	IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))
-		ELSE 0
-		END
-		) PRESUP_SOLES
+		A.PORCENTAJE_RESERVA,
+		SUM(IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))) PRESUP_SOLES
 		from 
 		PROYECTO A LEFT JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		LEFT JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
 		LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
-		LEFT JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		WHERE
-		((B.ID_PROYECTO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL OR X.FECHA IS NULL)		 
+		((B.ID_PROYECTO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL
+		)
 		OR
 		(DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
-		))
+		AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1))
 		AND
 		A.ID_PROYECTO= :idProyecto
 		GROUP BY
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
-		IFNULL(A.PORCENTAJE_RESERVA,0);";
+		A.PORCENTAJE_RESERVA
+		UNION /*COSTO FIJO*/
+		SELECT
+		A.ID_PROYECTO,
+		A.NOMBRE_PROYECTO,
+		A.PORCENTAJE_RESERVA,
+		SUM(B.COSTO_FIJO_DIARIO_ESTIMADO*(DATEDIFF(B.FECHA_PLAN_FIN_COSTO_FIJO,B.FECHA_PLAN_INICIO_COSTO_FIJO)+1)*X.CAMBIO_A_SOL) PRESUP_SOLES
+		FROM
+		PROYECTO A JOIN RECURSO B ON A.ID_PROYECTO=B.ID_PROYECTO
+		JOIN CAMBIO_HISTORICO X ON B.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND B.ESTADO='ACTIVO' AND B.COSTO_FIJO_DIARIO_ESTIMADO>0
+		AND DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		GROUP BY
+		A.ID_PROYECTO,
+		A.NOMBRE_PROYECTO,
+		A.PORCENTAJE_RESERVA
+		) H
+		GROUP BY
+		H.ID_PROYECTO,
+		H.NOMBRE_PROYECTO,
+		H.PORCENTAJE_RESERVA;";
 
 		try {
 			$db = getConnection();
@@ -649,7 +736,7 @@
         	$db = null;
         	$proyecto = null; //new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
+					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["SUM(H.PRESUP_SOLES)"]);
 			}
 			//echo json_encode($listaRecursos);
 
@@ -669,28 +756,44 @@
 		$sql = "SELECT 
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
-		A.DESCRIPCION,
 		A.ID_CAMBIO_MONEDA,
+		A.DESCRIPCION,
 		Y.DESCRIPCION MONEDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
-		SUM(IFNULL(C.CANTIDADESTIMADA,0)) CANTIDAD_NECESARIA,
-		AVG(IFNULL(A.COSTO_UNITARIO_ESTIMADO,0)) COSTO_PROM_SOLES
+		SUM(
+		CASE
+		WHEN C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1 THEN IFNULL(C.CANTIDADESTIMADA,0)
+		ELSE 0
+		END
+		) CANTIDAD_NECESARIA,
+		A.COSTO_UNITARIO_ESTIMADO COSTO_PROM_SOLES,
+		IFNULL(A.COSTO_FIJO_DIARIO_ESTIMADO,0) COSTO_FIJO_DIARIO_ESTIMADO,
+		(
+		CASE 
+		WHEN A.ID_MIEMBROS_EQUIPO IS NULL THEN FALSE ELSE TRUE
+		END
+		) IND_RECURSO_HUMANO
 		FROM
 		RECURSO A LEFT JOIN ACTIVIDAD_X_RECURSO C ON A.ID_RECURSO=C.ID_RECURSO 
 		LEFT JOIN ACTIVIDAD B ON C.ID_ACTIVIDAD=B.ID_ACTIVIDAD AND A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN CAMBIO_MONEDA Y ON A.ID_CAMBIO_MONEDA=Y.ID_CAMBIO_MONEDA
 		JOIN UNIDAD_MEDIDA Z ON A.ID_UNIDAD_MEDIDA=Z.ID_UNIDAD_MEDIDA
 		WHERE
-		(A.ID_PROYECTO= :idProyecto
-		AND A.ESTADO<>'ELIMINADO' AND (C.ESTADO<>0 OR C.ESTADO IS NULL) AND (B.PROFUNDIDAD<>0 OR B.PROFUNDIDAD IS NULL) AND B.ELIMINADO<>1)
-		OR
-		((A.ID_PROYECTO= :idProyecto AND A.ESTADO<>'ELIMINADO') AND (C.ID_RECURSO IS NULL OR B.ID_ACTIVIDAD IS NULL OR B.ID_PROYECTO IS NULL))
+		A.ID_PROYECTO= :idProyecto AND A.ESTADO<>'ELIMINADO' 
 		GROUP BY
 		A.ID_RECURSO,
 		A.ID_UNIDAD_MEDIDA,
 		A.DESCRIPCION,
 		Y.DESCRIPCION,
-		Z.DESCRIPCION;";
+		Z.DESCRIPCION,
+		A.COSTO_UNITARIO_ESTIMADO,
+		IFNULL(A.COSTO_FIJO_DIARIO_ESTIMADO,0),
+		(
+		CASE 
+		WHEN A.ID_MIEMBROS_EQUIPO IS NULL THEN FALSE ELSE TRUE
+		END
+		)
+		;";
 
 		$listaRecursos = array();
 		try {
@@ -701,7 +804,8 @@
         	$db = null;
         	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"], 0, 0));
+        														//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, 	cantidad estimada, 			costo unitario, 		costo fijo diario, 		costo fijo total, indicador rrhh
+					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"], $p["COSTO_FIJO_DIARIO_ESTIMADO"], -1, $p["IND_RECURSO_HUMANO"]));
 			}
 			//echo json_encode($listaRecursos);
 
@@ -723,13 +827,7 @@
 		B.ID_ACTIVIDAD,
 		B.NOMBRE_ACTIVIDAD,
 		IFNULL(Y.DESCRIPCION,'') ASIENTO_CONTABLE,
-		SUM(
-		CASE
-		WHEN DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d') AND Z.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1  AND C.ID_ACTIVIDAD IS NOT NULL
-			THEN IFNULL(C.CANTIDADESTIMADA,0)*IFNULL(Z.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0)
-		ELSE 0
-		END
-		) COSTO_ACTIVIDAD_SOLES
+		SUM(IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(Z.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))) COSTO_ACTIVIDAD_SOLES
 		from 
 		PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		LEFT JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
@@ -737,10 +835,14 @@
 		LEFT JOIN CAMBIO_HISTORICO X ON Z.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		LEFT JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
 		WHERE
-		B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1 
+		((B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1 AND (C.ID_ACTIVIDAD IS NULL OR Z.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL 
+		OR Y.ID_ASIENTO_CONTABLE IS NULL))
+		OR 
+		(
+		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		AND Z.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1))
 		AND
-		(X.FECHA IS NULL OR DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')) AND 
-		A.ID_PROYECTO= :idProyecto 
+		A.ID_PROYECTO= :idProyecto AND C.ESTADO<>0
 		GROUP BY
 		A.ID_PROYECTO,
 		B.ID_ACTIVIDAD,
@@ -819,8 +921,8 @@
         	$db = null;
         	$listaRecursos = array();
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-        													//id recurso, idunidad medida, unidad medida, nombre recurso, id moneda, moneda, cantidad estimada, costo unitario
-				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"], 0, 0));
+        													//id recurso, idunidad medida, unidad medida, nombre recurso, id moneda, moneda, cantidad estimada, costo unitario, costo fijo diario, costo fijo total, indicador rrhh
+				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"], -1, -1, -1));
 			}
 		} catch(PDOException $e) {
         	echo json_encode(array("me"=> $e->getMessage()));
@@ -845,13 +947,13 @@
 		WHERE
 		DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		AND
-		A.ID_PROYECTO= :idProyecto AND B.ID_ACTIVIDAD= :idActividad
+		A.ID_PROYECTO= :idProyecto AND B.ID_ACTIVIDAD>= :idActividad
 		AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1
 		GROUP BY
 		A.ID_PROYECTO,
 		B.ID_ACTIVIDAD,
 		B.NOMBRE_ACTIVIDAD,
-		IFNULL(Y.DESCRIPCION,'');";
+		IFNULL(Y.DESCRIPCION,'') ;";
 
 		$actividad = null;
 		try {
@@ -898,9 +1000,11 @@
 
 		try {
         	//Para actualizar cada recurso
-        	$sql = "
-        	UPDATE RECURSO
-			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, COSTO_UNITARIO_ESTIMADO= :costoUnitario, ESTADO='ACTIVO'
+        	$sql = "UPDATE RECURSO /*VALIDAR SI SE MODIFICA FECHA PLANIFICADA O REAL*/
+			SET ID_UNIDAD_MEDIDA= :idUnidadMedida, ID_CAMBIO_MONEDA= :idMoneda, 
+			COSTO_UNITARIO_ESTIMADO= :costoUnitario, ESTADO='ACTIVO',COSTO_FIJO_DIARIO_ESTIMADO= :costoFijo,
+			FECHA_PLAN_INICIO_COSTO_FIJO=STR_TO_DATE(:fechaI,'%Y%m%d') ,
+			FECHA_PLAN_FIN_COSTO_FIJO=STR_TO_DATE(:fechaF,'%Y%m%d')
 			WHERE
 			ID_RECURSO= :idRecurso;
 			COMMIT;";
@@ -913,8 +1017,30 @@
 		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
 		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
 		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->bindParam("costoFijo", $recurso->costoFijo);
 
-//					$stmt->bindParam("costoFijo", $recurso->costoFijo);
+		        	$yearI = $recurso->yearI;
+					$monthI = $recurso->monthI;
+					$dayI = $recurso->dayI;
+
+					$yearF = $recurso->yearF;
+					$monthF = $recurso->monthF;
+					$dayF = $recurso->dayF;
+
+					/*
+					if ($recurso->month < 10) {
+						$month = '0' . $month;
+					}
+
+					if ($recurso->day < 10) {
+						$day = '0' . $day;
+					}*/
+
+					$fechaI = $yearI . $monthI . $dayI;
+					$fechaF = $yearF . $monthF . $dayF;
+
+					$stmt->bindParam("fechaI", $fechaI);
+					$stmt->bindParam("fechaF", $fechaF);
 
 		        	$stmt->execute();
 		        	$db = null;
@@ -923,10 +1049,11 @@
 			}
 
 			//Para crear recursos
-			$sql = "
-        	INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,ID_CAMBIO_MONEDA,ESTADO)
+			$sql = "INSERT INTO RECURSO (ID_UNIDAD_MEDIDA,DESCRIPCION,ID_PROYECTO,COSTO_UNITARIO_ESTIMADO,
+			ID_CAMBIO_MONEDA,ESTADO,COSTO_FIJO_DIARIO_ESTIMADO,FECHA_PLAN_INICIO_COSTO_FIJO,FECHA_PLAN_FIN_COSTO_FIJO)
 			VALUES
-			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda,'ACTIVO');
+			(:idUnidadMedida, :nombreRecurso, :idProyecto, :costoUnitario, :idMoneda,'ACTIVO', :costoFijo,
+			STR_TO_DATE(:fechaI,'%Y%m%d'),STR_TO_DATE(:fechaF,'%Y%m%d'));
 			COMMIT;";
 
 			if ($obj->listaRecursosCrear != null) {
@@ -938,8 +1065,30 @@
 		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
 		        	$stmt->bindParam("costoUnitario", $recurso->CostoUnitario);
 		        	$stmt->bindParam("idMoneda", $recurso->idMoneda);
+					$stmt->bindParam("costoFijo", $recurso->costoFijo);
 
-//					$stmt->bindParam("costoFijo", $recurso->costoFijo);
+					$yearI = $recurso->yearI;
+					$monthI = $recurso->monthI;
+					$dayI = $recurso->dayI;
+
+					$yearF = $recurso->yearF;
+					$monthF = $recurso->monthF;
+					$dayF = $recurso->dayF;
+
+					/*
+					if ($recurso->month < 10) {
+						$month = '0' . $month;
+					}
+
+					if ($recurso->day < 10) {
+						$day = '0' . $day;
+					}*/
+
+					$fechaI = $yearI . $monthI . $dayI;
+					$fechaF = $yearF . $monthF . $dayF;
+
+					$stmt->bindParam("fechaI", $fechaI);
+					$stmt->bindParam("fechaF", $fechaF);
 
 		        	$stmt->execute();
 		        	$db = null;
@@ -948,8 +1097,7 @@
 			}
 
 			//Para eliminar lógicamente los recursos
-			$sql = "
-        	UPDATE RECURSO
+			$sql = "UPDATE RECURSO
 			SET ESTADO='ELIMINADO'
 			WHERE
 			ID_RECURSO= :idRecurso AND ID_PROYECTO= :idProyecto;
@@ -1330,7 +1478,22 @@
 	}
 
 	function CO_consultarCostoFijoTotalPlaneado($idProyecto) { //COMPLETO
-		$sql = "MISSING_SQL";
+		$sql = "SELECT
+		A.ID_RECURSO,
+		A.ID_UNIDAD_MEDIDA,
+		B.DESCRIPCION NOMBRE_UNIDAD_MEDIDA,
+		A.DESCRIPCION,
+		A.ID_CAMBIO_MONEDA,
+		C.DESCRIPCION NOMBRE_MONEDA,
+		IFNULL(A.COSTO_FIJO_DIARIO_ESTIMADO,0) COSTO_FIJO_DIARIO,
+		IFNULL(A.COSTO_FIJO_DIARIO_ESTIMADO,0)*(DATEDIFF(A.FECHA_PLAN_FIN_COSTO_FIJO,A.FECHA_PLAN_INICIO_COSTO_FIJO)+1) COSTO_FIJO_TOTAL
+		FROM
+		RECURSO A JOIN UNIDAD_MEDIDA B ON A.ID_UNIDAD_MEDIDA=B.ID_UNIDAD_MEDIDA
+		JOIN CAMBIO_MONEDA C ON A.ID_CAMBIO_MONEDA=C.ID_CAMBIO_MONEDA
+		WHERE 
+		A.ID_PROYECTO= :idProyecto AND A.ESTADO='ACTIVO' AND A.COSTO_FIJO_DIARIO_ESTIMADO>0;";
+
+		$listaRecursos = array();
 
 		try {
 			$db = getConnection();
@@ -1338,21 +1501,39 @@
         	$stmt->bindParam("idProyecto", $idProyecto);
         	$stmt->execute();
         	$db = null;
-        	$costoFijoTotal = null;
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$costoFijoTotal = $p["COSTO_FIJO_PLANEADO_TOTAL"];
-				break;
+        													//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, cantidad estimada, costo unitario, costo fijo diario, costo fijo total, indicador rrhh
+				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["NOMBRE_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["NOMBRE_MONEDA"], -1, -1, $p["COSTO_FIJO_DIARIO"], $p["COSTO_FIJO_TOTAL"], -1));
 			}
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         	echo json_encode(array("me"=> $e->getMessage()));
 		}
 		
-		return $costoFijoTotal;
+		return $listaRecursos;
 	}
 
 	function CO_consultarCostoFijoTotalReal($idProyecto) { //COMPLETO
-		$sql = "MISSING_SQL";
+		$sql = "SELECT
+		A.ID_RECURSO,
+		A.ID_PROYECTO,
+		A.DESCRIPCION,
+		A.ID_UNIDAD_MEDIDA,
+		B.DESCRIPCION NOMBRE_UNIDAD_MEDIDA,
+		A.ID_CAMBIO_MONEDA,
+		C.DESCRIPCION NOMBRE_MONEDA,
+		A.COSTO_FIJO_DIARIO_REAL,
+		A.FECHA_REAL_INICIO_COSTO_FIJO,
+		A.FECHA_REAL_FIN_COSTO_FIJO,
+		IFNULL(A.COSTO_FIJO_DIARIO_REAL,0)*(DATEDIFF(A.FECHA_REAL_FIN_COSTO_FIJO,A.FECHA_REAL_INICIO_COSTO_FIJO)+1) COSTO_FIJO_TOTAL
+		FROM
+		RECURSO A JOIN UNIDAD_MEDIDA B ON A.ID_UNIDAD_MEDIDA=B.ID_UNIDAD_MEDIDA
+		JOIN CAMBIO_MONEDA C ON  A.ID_CAMBIO_MONEDA=C.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND A.ESTADO='ACTIVO' AND A.COSTO_FIJO_DIARIO_REAL>0
+		AND A.ID_MIEMBROS_EQUIPO IS NULL;";
+
+		$listaRecursos = array();
 
 		try {
 			$db = getConnection();
@@ -1360,17 +1541,16 @@
         	$stmt->bindParam("idProyecto", $idProyecto);
         	$stmt->execute();
         	$db = null;
-        	$costoFijoTotal = null;
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$costoFijoTotal = $p["COSTO_FIJO_REAL_TOTAL"];
-				break;
+        													//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, cantidad estimada, costo unitario, costo fijo diario, costo fijo total, indicador rrhh
+				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["NOMBRE_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["NOMBRE_MONEDA"], -1, -1, $p["COSTO_FIJO_DIARIO_REAL"], $p["COSTO_FIJO_TOTAL"], -1));
 			}
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
         	echo json_encode(array("me"=> $e->getMessage()));
 		}
 		
-		return $costoFijoTotal;
+		return $listaRecursos;
 	}
 
 	function CO_guardarCostoFijoReal($obj, $fechaI, $fechaF) { //
@@ -1384,8 +1564,12 @@
 		*/
 		
 		try {
-        	//Para actualizar el tipo de cuenta
-			$sql = "SQL";
+			$sql = "UPDATE RECURSO
+			SET
+			COSTO_FIJO_DIARIO_ESTIMADO=XXXX,FECHA_REAL_INICIO_COSTO_FIJO=STR_TO_DATE('INICIO FORMATO YYYYMMDD','%Y%m%d'),
+			FECHA_REAL_FIN_COSTO_FIJO=STR_TO_DATE('FIN FORMATO YYYYMMDD','%Y%m%d')
+			WHERE ID_PROYECTO=XXX;
+			COMMIT;";
 
 			if ($obj->listaRecursos != null) {
 	        	foreach ($obj->listaRecursos as $recurso) {
