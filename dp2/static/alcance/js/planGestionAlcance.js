@@ -30,7 +30,7 @@ function guardarCambios(){
 	}
 	$.ajax({
 		type:'POST',
-		url: '../../api/AL_modificaEstadoEDT',
+		url: '../../api/AL_modificarEstadoEDT',
 		data: JSON.stringify(objAlcance),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
@@ -41,7 +41,7 @@ function guardarCambios(){
 	}
 	$.ajax({
 		type:'POST',
-		url: '../../api/AL_modificaEstadoAlcance',
+		url: '../../api/AL_modificarEstadoAlcance',
 		data: JSON.stringify(objEDT),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
