@@ -375,7 +375,7 @@
 		$estado = json_decode($request->getBody(),TRUE);
 		$con=getConnection();
 		$pstmt = $con->prepare("UPDATE EDT SET id_estado = ? WHERE id_proyecto = ?");
-		$pstmt->execute(array($estado["idestado"],$req["idproyecto"]));
+		$pstmt->execute(array($estado["idestado"],$estado["idproyecto"]));
 	}
 
 
