@@ -795,7 +795,7 @@ function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodead
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $array_prueba = array(); //validando que los dias son la duracion
                 //$rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], (int)($fecha_inicio), 0, (int)($fecha_inicio) + (int)($j["dias"]), 0, $array_prueba, $array_prueba);
-                $rec = new Activity($j["numero_fila"], $j["id_actividad"],(int)$j["dias"], 0, 0, 0, 0, $array_prueba, $array_prueba);
+                $rec = new Activity( $j["numero_fila"], $j["id_actividad"],(int)$j["dias"], 0, 0, 0, 0, $array_prueba, $array_prueba);
                 
                 array_push($listaActividades_criticas, $rec);
                 //echo json_encode($rec);
@@ -951,7 +951,7 @@ function hallar_arreglo_ids_cmp($listaActividades_criticas) {
 function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//simil con lo hardcodeado ATP
     $listaDependencias = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-
+	$listaMapeoNumeroFilas = null;
     $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
@@ -1009,12 +1009,17 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
                     }
                 }
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+				//$prueba=array_map("CR_mezcla", $recursos);
+				
+				
+					$listaMapeoNumeroFilas["".$j["numero_fila"]] = "".$j["id_actividad"];
+					
+	
                 $rec = array("id_actividad" => $j["id_actividad"], "nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores" => $j["predecesores"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
                 array_push($listaDependencias, $rec);
             }
         }
-
+		$listaDependencias=CR_obtenerArregloActividades($listaDependencias,$listaMapeoNumeroFilas);
         $db = null;
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
@@ -1024,6 +1029,33 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
     return $listafinaljsondependencias;
 }
 
+//funcion que mapea un arreglo de predecesores en string y retorna un arreglo con cada elemento
+function CR_obtenerArregloActividades($listaDependencias,$listaMapeoNumeroFilas){
+
+		    //echo json_encode($listaDependencias);
+			
+			//echo json_encode($listaMapeoNumeroFilas);
+			for($i=0;$i<sizeof($listaDependencias);$i++){
+				if ($listaDependencias[$i]["predecesores"]=="") continue;
+				$array[] = array();
+				$array = explode(",", $listaDependencias[$i]["predecesores"]);
+				$resultado="";
+				//echo  json_encode($array);
+				$cont=0;
+				foreach($array as $j){
+					//echo $j;
+					//echo json_encode($array);
+					
+					//echo " oli ".$listaMapeoNumeroFilas["".$j]. " olic ";
+					if ($cont==0)$resultado=$resultado . $listaMapeoNumeroFilas["".$j];
+					else $resultado=$resultado . ",".$listaMapeoNumeroFilas["".$j];
+					$cont++;
+				}
+				$listaDependencias[$i]["predecesores"]=$resultado;
+			}
+			return $listaDependencias;
+
+}
 function CR_obteneListaDependenciaPaqueteTrabajo($idpaquetetrabajo) {//simil con lo harcodeado
     $listaDependencias = array();
 
