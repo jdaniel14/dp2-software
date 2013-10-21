@@ -26,7 +26,7 @@ function getEdt(){
        $pIni = $pstmt->fetch(PDO::FETCH_ASSOC);
 
        //Obtener hijos
-       $hijos = getHijos($pIni["id_paquete_trabajo"],$version);
+       $hijos = getHijos($pIni["id_paquete_trabajo"]);
 
        //armar objeto
        $arbol = new EdtArbol($pIni["id_paquete_trabajo"], $pIni["nombre"],count($hijos) ,$pIni["dias"], $pIni["descripcion"], $hijos);
@@ -94,30 +94,6 @@ function getEdt(){
 
 
     //GUARDAR===============================================================================================================
-
-    function dameEdt(){
-       
-      $h1=array();
-      $h2=array();
-      $h3=array();
-       
-      $hijo1=new EdtArbol(10,"Analisis",0,5,"El analisis",$h1);
-      $hijo2=new EdtArbol(11,"Desarrollo",0,2,"El desarrollo",$h2);
-      $hijo3=new EdtArbol(12,"Transicion",0,3,"La transicion",$h3);
-       
-      $lista=array();
-      array_push($lista,$hijo1,$hijo2,$hijo3);
-      $arbol=new EdtArbol(9,"DP2",3,10,"El proyeto",$lista);
-      return json_encode($arbol);
-    }
-    
-    function obtenerIdEliminado(){
-      $con = getConnection();
-      $pstmt= $con->prepare("SELECT * FROM ESTADO_EDT WHERE descripcion='Eliminado'");
-      $pstmt->execute();
-      $idEstado = $pstmt->fetch(PDO::FETCH_ASSOC)["id_estado"];
-      return $idEstado;
-    }
     
     function guardoPaquete($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias){
       $con = getConnection();
@@ -142,23 +118,22 @@ function getEdt(){
       $pstmt->execute();
       $idEstado = $pstmt->fetch(PDO::FETCH_ASSOC)["id_estado"];
        
-      //id miembros
+      //obtengo los id_miembros
       $pstmt= $con->prepare("SELECT * FROM MIEMBROS_EQUIPO WHERE id_proyecto=?");
       $pstmt->execute(array($idproyecto));
       $paquete= $pstmt->fetch(PDO::FETCH_ASSOC);
       if (count($paquete)==0) $idMiembros='NULL';
       else $idMiembros = $paquete["id_miembros_equipo"];
       //echo $idMiembros;
-      //Guardo el edt
+      //Con los datos que obtengo ahora Guardo el edt
       $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
       $pstmt->execute(array($version,$idEstado,$idMiembros,$idproyecto));
        
-      //Id de edt
-      $idEliminado=obtenerIdEliminado();
-      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ? AND id_estado!= ?");
-      $pstmt->execute(array($idproyecto,$idEliminado));
+      //Obtengo el Id de edt
+      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
+      $pstmt->execute(array($idproyecto));
       $idEdt = $pstmt->fetch(PDO::FETCH_ASSOC)["id_edt"];
-      $idPadre=NULL;
+      $idPadre=NULL; // Ya que el primer paquete, no tiene padre
        
       //Guardo el paquete principal
       guardoPaquete($edt->{"title"},$edt->{"descripcion"},$idEstado,$idMiembros,$idEdt,$idPadre,$version,$edt->{"dias"});
@@ -173,6 +148,7 @@ function getEdt(){
       $pstmt= $con->prepare("UPDATE EDT SET id_paquete_trabajo_inicial= ? WHERE id_proyecto= ?");
       $pstmt->execute(array($idPaqueteInicial,$idproyecto));
     
+      //Ahora guardo los hijos
       guardarHijos($edt->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaqueteInicial);
     }
     
@@ -360,4 +336,118 @@ function getEdt(){
       $pstmt= $con->prepare("DELETE FROM ALCANCE WHERE id_proyecto= ?");
       $pstmt->execute(array($idproyecto));
     }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //TERCER SPRINT ==========================================================================================================
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    function mostrarMatriz(){
+    	$request = \Slim\Slim::getInstance()->request(); //json parameters
+    	$edt = json_decode($request->getBody()); //object convert
+    	$idProyecto=$edt->{"idproyecto"};
+    	$con = getConnection();
+    	
+    	//Obtener el arreglo de prioridades
+    	$pstmt= $con->prepare("SELECT id_prioridad_requisito,descripcion FROM PRIORIDAD_REQUISITO");
+    	$pstmt->execute(array());
+    	$ar_Prioridad=array();
+    		//creo el arreglo de prioridades para ensenar un combobox
+    	while ($ar1 = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$hijo = new Prioridad($ar1["id_prioridad_requisito"],$ar1["descripcion"]);
+    		array_push($ar_Prioridad,$hijo);
+    	}
+    	
+    	//Obtener el arreglo de estado
+    	$pstmt= $con->prepare("SELECT id_estado_requisito,descripcion FROM ESTADO_REQUISITO");
+    	$pstmt->execute(array());
+		$ar_Estado=array();
+			//creo el arreglo de estados para ensenar un combobox
+    	while ($ar2 = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$hijo2 = new Estado($ar2["id_estado_requisito"],$ar2["descripcion"]);
+    		array_push($ar_Estado,$hijo2);
+    	}
+
+    	//Busco el id del ER
+    	$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ?");
+    	$pstmt->execute(array($idProyecto));
+    	$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
+    	
+    	//Busco todos los requisitos que existen con el id del ER obtenido antes
+    	$pstmt= $con->prepare("SELECT id_requisito,descripcion,fecha_termino,solicitud,cargo,fundamento_incorporacion,
+    			id_prioridad_requisito,id_estado_requisito,entregable,criterio_aceptacion,id_miembros_equipo 
+    			FROM REQUISITO WHERE id_especificacion_requisitos= ?");
+    	$pstmt->execute(array($idER));
+    	$ar_Requisitos=array();
+    	
+    	while ($listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$hijo = new Requisito($listaRequisito["id_requisito"],$listaRequisito["descripcion"],$listaRequisito["fecha_termino"],
+    	$listaRequisito["solicitud"],$listaRequisito["cargo"],$listaRequisito["fundamento_incorporacion"],$listaRequisito["id_prioridad_requisito"],
+    	$listaRequisito["id_estado_requisito"],$listaRequisito["entregable"],$listaRequisito["criterio_aceptacion"],$listaRequisito["id_miembros_equipo"]);
+    		array_push($ar_Requisitos,$hijo);	
+    	}
+    	
+    	//Formo lo que voy a pasar al front
+    	$matriz= [ "ar_prioridad"=> $ar_Prioridad,
+    			   "ar_estado"=> $ar_Estado,
+    			   "requisitos"=>$ar_Requisitos
+    			  ];
+    	
+    	echo json_encode($matriz);
+    }
+    
+    
+    //Modificar la matriz, por cada requisito ===========================================================================================
+    
+    function modificarRequisitoM(){
+
+    	$request = \Slim\Slim::getInstance()->request(); //json parameters
+    	$data = json_decode($request->getBody()); //object convert
+    	$idRequisito=$data->{"id_requisito"};
+    	$con = getConnection();
+    
+    	$pstmt= $con->prepare("UPDATE REQUISITO SET descripcion=?,fecha_termino=?,solicitud=?,cargo=?,fundamento_incorporacion=?,
+    			id_prioridad_requisito=?,id_estado_requisito=?,entregable=?,criterio_aceptacion=?,id_miembros_equipo=? where id_requisito=?");
+    	$pstmt->execute(array($data->{"descripcion"},$data->{"fecha"},$data->{"solicitado"},$data->{"cargo"},$data->{"fundamento"},
+    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"entregable"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$idRequisito));
+    	 
+    	echo $request->getBody();
+    }
+    
+    function buscarMiembros(){
+    	$request = \Slim\Slim::getInstance()->request(); //json parameters
+    	$data = json_decode($request->getBody()); //object convert
+    	$idProyecto=$data->{"idproyecto"};
+    	$con = getConnection();
+    	
+    	//Obtengo la lista de personas 
+
+    	$pstmt= $con->prepare("SELECT a.id_miembros_equipo as id , a.nombres as nombre, a.apellidos as apellido
+    			, a.telefono as telefono, a.email as email FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE 
+    			 b.id_proyecto= ? and a.nombres LIKE ? and a.apellidos LIKE ?");
+    	$pstmt->execute(array($idProyecto,$data->{"nombre"},$data->{"apellido"}));
+    	$ar_lista=array();
+    	while ($lista = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$hijo = new Miembro($lista["id"],$lista["nombre"],$lista["apellido"],$lista["telefono"],$lista["email"]);
+    		array_push($ar_lista,$hijo);
+    	}
+    	
+    	$lista=["ar_miembro" =>$ar_lista
+    		   ];
+    	echo json_decode($lista);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     ?>
