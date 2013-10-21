@@ -82,7 +82,7 @@ function crearNodo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoB
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
-			'nodeContent': 'Outcomexxx',
+			'nodeContent': nombre_actividad,
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': '120',
