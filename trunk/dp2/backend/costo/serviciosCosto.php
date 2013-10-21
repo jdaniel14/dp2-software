@@ -168,18 +168,55 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_getCostoFijoProyecto($json) { //servicio 15//
+	function CO_getCostoFijoPlaneado($json) { //servicio 15//
 		$proy = json_decode($json);
 
 		$jsonRespuesta = new stdClass();
-    	$jsonRespuesta->costoFijoTotal = CO_consultarCostoFijoTotal($proy->idProyecto);
+    	$jsonRespuesta->costoFijoTotalPlaneado = CO_consultarCostoFijoTotalPlaneado($proy->idProyecto);
 		$jsonRespuesta->lista = CO_consultarListaRecursos($proy->idProyecto);
 
 		echo json_encode($jsonRespuesta);
 	}
-  
-  
-  ///////////FOR TESTING ONLY/////////////
+
+	function CO_getCostoFijoReal($json) { //servicio 16//
+		$proy = json_decode($json);
+
+		$jsonRespuesta = new stdClass();
+    	$jsonRespuesta->costoFijoTotalReal = CO_consultarCostoFijoTotalReal($proy->idProyecto);
+		$jsonRespuesta->lista = CO_consultarListaRecursos($proy->idProyecto);
+
+		echo json_encode($jsonRespuesta);
+	}
+
+	function CO_saveCostoFijoReal($json) { //servicio 17 //COMPLETO
+		$objeto = json_decode($json);
+		
+		$yearI = $objeto->yearI;
+		$monthI = $objeto->monthI;
+		$dayI = $objeto->dayI;
+
+		$yearF = $objeto->yearF;
+		$monthF = $objeto->monthF;
+		$dayF = $objeto->dayF;
+
+		/*
+		if ($objeto->month < 10) {
+			$month = '0' . $month;
+		}
+
+		if ($objeto->day < 10) {
+			$day = '0' . $day;
+		}*/
+
+		$fechaI = $yearI . $monthI . $dayI;
+		$fechaF = $yearF . $monthF . $dayF;
+		
+		$jsonRespuesta = CO_guardarCostoFijoReal($objeto, $fechaI, $fechaF);
+		
+		echo json_encode($jsonRespuesta);
+	}
+
+	///////////FOR TESTING ONLY/////////////
 	function CO_testFunction() {
 		echo "add me blood999\n";
 		echo "add me ANHUE blood999\n";
@@ -191,6 +228,13 @@
 		echo "add me TSM blood999\n";
 		echo "add me C9 blood999\n";
 	}
+
+	function CO_testFunctionPOST() {
+    $request = \Slim\Slim::getInstance()->request();
+    $acta = json_decode($request->getBody());
+   
+    echo json_encode($acta);
+}
 	
 	//---------------------------------------------------------------
 	//funciones que apoyan a los servicios.(Ordenados por número de sprint descendentemente)
@@ -776,7 +820,7 @@
         	$listaRecursos = array();
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
         													//id recurso, idunidad medida, unidad medida, nombre recurso, id moneda, moneda, cantidad estimada, costo unitario
-				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"]));
+				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"], 0, 0));
 			}
 		} catch(PDOException $e) {
         	echo json_encode(array("me"=> $e->getMessage()));
@@ -1285,7 +1329,7 @@
 		return $listaActividades;
 	}
 
-	function CO_consultarCostoFijoTotal($idProyecto) { //COMPLETO
+	function CO_consultarCostoFijoTotalPlaneado($idProyecto) { //COMPLETO
 		$sql = "MISSING_SQL";
 
 		try {
@@ -1296,7 +1340,7 @@
         	$db = null;
         	$costoFijoTotal = null;
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$costoFijoTotal = $p["COSTO_FIJO_TOTAL"];
+				$costoFijoTotal = $p["COSTO_FIJO_PLANEADO_TOTAL"];
 				break;
 			}
 		} catch(PDOException $e) {
@@ -1305,6 +1349,68 @@
 		}
 		
 		return $costoFijoTotal;
+	}
+
+	function CO_consultarCostoFijoTotalReal($idProyecto) { //COMPLETO
+		$sql = "MISSING_SQL";
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	$costoFijoTotal = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+				$costoFijoTotal = $p["COSTO_FIJO_REAL_TOTAL"];
+				break;
+			}
+		} catch(PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+		
+		return $costoFijoTotal;
+	}
+
+	function CO_guardarCostoFijoReal($obj, $fechaI, $fechaF) { //
+		//insertar en la bd...
+		/*
+		$obj->idProyecto;
+		$obj->listaActividades;
+			$obj->listaActividades[0];
+		$obj->listaTipoCuenta;
+			$obj->listaTipoCuenta[0];
+		*/
+		
+		try {
+        	//Para actualizar el tipo de cuenta
+			$sql = "SQL";
+
+			if ($obj->listaRecursos != null) {
+	        	foreach ($obj->listaRecursos as $recurso) {
+	        		$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->bindParam("costoFijoDiarioReal", $recurso->costoFijoDiarioReal);
+		        	$stmt->bindParam("fechaI", $fechaI);
+		        	$stmt->bindParam("fechaF", $fechaF);
+		        	$stmt->execute();
+		        	$db = null;
+				}
+				unset($actividad);
+			}
+
+        	$respuesta = CO_crearRespuesta(0, 'Ok');
+
+		} catch(PDOException $e) {
+        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		
+		//obtener respuesta falsa;
+		//$respuesta = CO_obtenerRespuestaPositivaDeGuardadoFalsa();
+		
+		return $respuesta;
 	}
   
   //RESPUESTAS
