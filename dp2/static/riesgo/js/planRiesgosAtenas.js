@@ -111,9 +111,9 @@ function main() {
             var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
 
             //creo inputs dinamicos
-            $('#tablaCategorizacion').append("<tr><td><input  class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
-                                                   <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
-                                                   <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
+            $('#tablaCategorizacion').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+                                                   <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
+                                                   <td><input class=\"input prioridad\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
                                                    <td><select class=\"estrategia\" id=\"estrategia" + i + "\">\n\
                                                         <option  value=\"evitar\" >Evitar</option>\n\
                                                         <option  value=\"transferir\">Transferir</option>\n\
@@ -121,7 +121,7 @@ function main() {
                                                          <option  value=\"compartir\" >Compartir</option>\n\
                                                          <option  value=\"mejorar\" >Mejorar</option>\n\
                                                          <option  value=\"explotar\" >Explotar</option></select></td>\n\
-                                                     <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + i + "\"></td></tr>");
+                                                     <td><input class=\"significado\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
 
             valor = valor + factorSuma;
 
@@ -269,12 +269,12 @@ function leerCategorias() {
                 var significado = data[obj]["significado"];
 
                 $('#tablaCategorizacion').append("<tr>\n\
-                                                     <td><input  class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
-                                                     <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
-                                                     <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
-                                                     <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
-                                                              <option  value=\"" + estrategia + "\">" + estrategia + "</option>\n\
-                                                     <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+                                                     <td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input class=\"input prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><select disabled class=\"estrategia\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
+                                                              <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
+                                                     <td><input class=\"significado\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
 
             }
@@ -575,22 +575,26 @@ function  leerEquipo() {
 function leerMatriz() {
 
     // var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}]]');
-    var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
-    return data;
+    //var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
+    
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
 
-//var i=0;
-//     for (obj in data) {
-//         
-//         //data[obj] de frente los dos arreglos [0] 1 linea, [1] 2 linea
-//           console.log(data[obj][i]['valorProb']);
-//         for(var j=1;j<data[obj].length;j++){
-//            console.log(data[obj][j]['valorImpacto']);
-//            console.log(data[obj][j]['valorMult']);   
-//            $("#nivel1").append("hola");
-//         }
-//         
-//         i=0;
-    // }
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_crearMatriz' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+      
+             return data;
+        }
+    });
+    
+
+
 
 
 }

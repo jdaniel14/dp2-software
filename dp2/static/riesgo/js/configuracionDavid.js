@@ -13,7 +13,9 @@ $(document).ready(main);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var tipoImpacto=0;
 var listaProbabilidades=[];
+
 var listaNiveles = [];
+
 // var objeto1 = {
 // 	descripcion: "Muy Bajo",
 // 	tipo: 2,
@@ -760,7 +762,8 @@ function agregarDataImpacto(data){
 	arreglo=data;
 	if (arreglo!=null){
 		$("#headerTipoImpactoXNivelImpacto").append("<th> Impacto </th>");
-		for (i=0; i<arreglo.length;i++){
+		
+                for (i=0; i<arreglo.length;i++){
 			agregaFilaImpacto(arreglo[i],i);
 		}
 		$("#headerTipoImpactoXNivelImpacto").append("<th colspan =\"2\"> Acciones </th>");
