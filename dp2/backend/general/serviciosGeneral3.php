@@ -78,6 +78,7 @@ function G_postObjetivosPorProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
 //    $request = "{ \"id\": 1,\"l_objetivos\":[{\"desc\": \"ola k ase\"},{\"desc\": \"ola k ase 2\"}]}";
+//   $request = "{ \"l_objetivos\":[{\"estado_cumplido\": 0, \"id_obj\": 1},{\"estado_cumplido\": 1, \"id_obj\": 2}]}";
 //   $body = json_decode($request);
 
     $id = $body->id;
@@ -124,8 +125,8 @@ function G_postCumpObjetivosPorProyecto() {
     try {
         $db = getConnection();
         for ($i = 0; $i < count($l_objetivos); $i++) {
-            $id_obj = $l_objetivos[$i]->id_obj;
-            $estado_cumplido = $l_objetivos[$i]->estado_cumplido;
+            $id_obj = $l_objetivos[$i]->ido;
+            $estado_cumplido = $l_objetivos[$i]->est;
 
 
             //UPDATE
