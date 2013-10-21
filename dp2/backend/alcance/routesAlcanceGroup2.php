@@ -11,4 +11,9 @@
 	$app->post('/AL_mostrarAlcance','mostrarAlcance');
 	$app->post('/AL_modificarAlcance','modificarAlcance');
 	$app->post('/AL_eliminarAlcance','eliminarAlcance');
+	
+	//TERCER SPRINT
+	$app->post('/AL_mostrarMatriz','mostrarMatriz');
+	$app->post('/AL_modificarRequisitoM','modificarRequisitoM');
+	$app->post('/AL_buscarMiembro','buscarMiembros');
 ?>
