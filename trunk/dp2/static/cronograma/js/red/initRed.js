@@ -63,9 +63,9 @@ function cargarDatos(){
         	console.log(data);
         	dataAJAX = data;
         	listaRed = data.listaRed;
-        	listaRed[1].predecesores = "1325";
-        	listaRed[2].predecesores = "1325";
-        	listaRed[3].predecesores = "1326,1327";
+        	listaRed[1].predecesores = "1330";
+        	listaRed[2].predecesores = "1330";
+        	listaRed[3].predecesores = "1331,1332";
         	iniciarFiesta()
         }
 	});
