@@ -7,6 +7,7 @@ var addImpact = "../../api/R_registrarHeaderImpactoRiesgo";
 var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
 var addTypeImpactsXLevelImpacts1 = "../../api/R_registrarTipoImpactoXNivelImpacto1";
 var addTypeImpactsXLevelImpacts2 = "../../api/R_registrarTipoImpactoXNivelImpacto2";
+var getMaxProbability = "../../R_obtenerProbabilidadRiesgoMaxima";
 
 $(document).ready(main);
 // localStorage.setItem("idProyecto",1);
@@ -102,10 +103,6 @@ var listaNiveles = [];
 // 		lista:listafila2
 // 	},
 	
-// ];
-
-	
-// console.log(listaTipoImpacto);	
 /*------------------------------VALIDACIONES AGREGAR PROBABILIDAD---------------------------*/
 
 
@@ -116,7 +113,6 @@ function esNumEntPos(strNum){
 		if (isNaN(car))
 			return false;
 	}
-	// if (strNum*1 == 0 || strNum*1 > 100) return false;
 	if (strNum*1 == 0) return false;
 	return true;
 }
@@ -213,7 +209,7 @@ function validarAgregarNivel(){
 	else
 		$("#errorNivelMenor").hide();
 		
-	if (!esNumEntPos(probabilidadMinNivel) || esMayor(probabilidadMinNivel,probabilidadMaxNivel)){
+	if (!esNumEntPos(probabilidadMinNivel) || esMayor(probabilidadMinNivel,probabilidadMaxNivel) || esMayor(probabilidadMinNivel,100)){
 		$("#errorProbabilidadMin").show();
 		error = true;
 	}
@@ -221,7 +217,7 @@ function validarAgregarNivel(){
 		$("#errorProbabilidadMin").hide();
 
 	
-	if (!esNumEntPos(probabilidadMaxNivel) || esMayor(probabilidadMinNivel,probabilidadMaxNivel)){
+	if (!esNumEntPos(probabilidadMaxNivel) || esMayor(0,probabilidadMaxNivel) || esMayor(probabilidadMinNivel,probabilidadMaxNivel) || esMayor(probabilidadMaxNivel,100)){
 		$("#errorProbabilidadMax").show();
 		error = true;
 	}
@@ -519,6 +515,7 @@ function main(){
 		$("#errorProbabilidadMaxMenor").hide();
 		$("#descripcionProbabilidad").val("");
 		$("#errorDescripcion").hide();
+		obtenerMayorProbabilidad();
 	});
 
 /*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
@@ -676,16 +673,20 @@ function main(){
 		}
 		
 	});
-
-
+}
 /*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 2--------------------------*/
 
 
+/*---------------------OBTENER MAYOR PROBABILIDAD--------------------------*/
 
+function obtenerMayorProbabilidad () {
+
+// getMaxProbability
 
 }
 
 
+/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 2--------------------------*/
 
 /*---------------------------------LISTAR PROBABILIDADES-------------------------------------------*/
 
