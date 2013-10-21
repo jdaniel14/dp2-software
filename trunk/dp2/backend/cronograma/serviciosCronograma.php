@@ -51,7 +51,7 @@ function CR_getDependencias($json) {//servicio6
     //$arreglo_fecha=array();
 
     //$arreglo_fecha = hallar_fechainicio_fechafin_red($proy->idProyecto);
-    //echo 1;
+    //echo 123;
     //$arreglo_feriados = hallar_holydays_arreglos($proy->idProyecto, $arreglo_fecha[0], $arreglo_fecha[1]);
     //echo 2;
     $arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto);
