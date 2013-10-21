@@ -24,7 +24,7 @@ var anchoPita = '3';
 var anchoPitaC = '6';
 var borderColor = '#AAAAAA';
 var borderWidth = '1';
-var borderColorC = '#BBBBBB';
+var borderColorC = '#B32323';
 var borderWidthC = '5';
 
 
