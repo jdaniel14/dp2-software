@@ -25,23 +25,23 @@ function cargaTitulo(){
 
 function guardarCambios(){
 	var objAlcance = {
-		idproyecto : id_proyecto,
-		idestado : $("#id_estado_alcance").val()
+		"idproyecto" : id_proyecto,
+		"idestado" : $("#id_estado_alcance").val()
 	}
 	$.ajax({
 		type:'POST',
-		url: '../../api/AL_modificarEstadoEDT',
+		url: '../../api/AL_modificarEstadoAlcance',
 		data: JSON.stringify(objAlcance),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 	});
 	var objEDT = {
-		idproyecto : id_proyecto,
-		idestado : $("#id_estado_EDT").val()
+		"idproyecto" : id_proyecto,
+		"idestado" : $("#id_estado_EDT").val()
 	}
 	$.ajax({
 		type:'POST',
-		url: '../../api/AL_modificarEstadoAlcance',
+		url: '../../api/AL_modificarEstadoEDT',
 		data: JSON.stringify(objEDT),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
