@@ -4,7 +4,7 @@ var addItem = "../../api/R_registrarRiesgo";
 var updateItem = "../../api/R_modificarRiesgo";
 var deleteItem = "../../api/R_eliminarRiesgo";
 var getAllPackets = "../../api/R_listaPaquetesEDT";
-var getAllCategories = "../../api/R_listaCategoriaRiesgo";
+// var getAllCategories = "../../api/R_listaCategoriaRiesgo";
 // var getAllImpactLevels = "../../api/R_listaNivelesImpacto";
 var getAllKnownItems = "../../api/R_listarRiesgoComun";
 var addList = "../../api/R_asignarRiesgoComun"
@@ -52,7 +52,7 @@ var listaTipos = [];
 function main(){
 
 	listarPaquetesTrabajo();
-	listarCategoriasRiesgo();
+	// listarCategoriasRiesgo();
 	// listarNivelesImpacto();
 	listarResponsable();
 	listarRiesgos(buscar);
@@ -82,7 +82,7 @@ function main(){
 			nombreResponsable: ''
 		};
 
-		if (tipoImpacto){
+		if (tipoImpacto==1){
 			data.impacto = $('#impRiesgo1').val();
 		} else if (tipoImpacto==2){
 			data.impacto = $('#impRiesgo2').val();
@@ -464,28 +464,28 @@ function obtenerRiesgo(id){
 		});
 }
 
-function listarCategoriasRiesgo(){
-	var data = {
-		id: idProyectoLocal
-	};
-	var jsonData = JSON.stringify(data);
-	$.ajax({
-		type: 'GET',
-		url: getAllCategories,
-		dataType: "json",
-		success: function(data){
-			var lista = data;
+// function listarCategoriasRiesgo(){
+// 	var data = {
+// 		id: idProyectoLocal
+// 	};
+// 	var jsonData = JSON.stringify(data);
+// 	$.ajax({
+// 		type: 'GET',
+// 		url: getAllCategories,
+// 		dataType: "json",
+// 		success: function(data){
+// 			var lista = data;
 			
-			$.each(lista, function (i, value){
-				$('#tipoImpacto').append("<option value="+ value.id +">" + value.descripcion + "</option>");
-				$('#tipoImpactoM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
-                                $('#idCategoriaRiesgo').append("<option value="+ value.id +">" + value.descripcion + "</option>");
-                        });	
+// 			$.each(lista, function (i, value){
+// 				$('#tipoImpacto').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+// 				$('#tipoImpactoM').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+//                                 $('#idCategoriaRiesgo').append("<option value="+ value.id +">" + value.descripcion + "</option>");
+//                         });	
 				
-		},
-		fail: codigoError
-	});
-} 
+// 		},
+// 		fail: codigoError
+// 	});
+// } 
 // function listarNivelesImpacto(){
 // 	var data = {
 // 		idProyecto: idProyectoLocal
