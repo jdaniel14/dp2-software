@@ -1043,11 +1043,11 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
 					$listaMapeoNumeroFilas["".$j["numero_fila"]] = "".$j["id_actividad"];
 					
 	
-                $rec = array("id_actividad" => $j["id_actividad"],"numero_fila" => $j["numero_fila"], "nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores_id" => $j["predecesores"],"predecesores_id_real" => $j["predecesores_id_concatenado"], "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
+                $rec = array("id_actividad" => $j["id_actividad"],"numero_fila" => $j["numero_fila"], "nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores_id" => $j["predecesores"],/*"predecesores_id_real"*/ "predecesores"=> ($j["predecesores_id_concatenado"].""), "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
                 array_push($listaDependencias, $rec);
             }
         }
-		$listaDependencias=CR_obtenerArregloActividades($listaDependencias,$listaMapeoNumeroFilas);
+		//$listaDependencias=CR_obtenerArregloActividades($listaDependencias,$listaMapeoNumeroFilas);
         $db = null;
     } catch (PDOException $e) {
         return (array("me" => $e->getMessage()));
