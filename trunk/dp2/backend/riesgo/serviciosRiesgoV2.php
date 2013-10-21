@@ -49,11 +49,11 @@
                 $stmt->execute();
                 $id = $db->lastInsertId();
                 $db = null;
-                echo json_encode("{Se registro con exito}");
             } catch(PDOException $e) {
                 echo json_encode(array("me"=> $e->getMessage()));
             }
         }
+        echo json_encode("{Se registro con exito}");
     }
 
 
@@ -121,11 +121,11 @@
                 $stmt->bindParam("acuerdos", $acuerdos->acuerdo);
                 $stmt->execute();
                 $db = null;
-                echo json_encode("{Se registro con exito}");
             } catch(PDOException $e) {
                 echo json_encode(array("me"=> $e->getMessage()));
             }
         }
+        echo json_encode("{Se registro con exito}");
     }
 
     //--------------------------------------HEADER IMPACTO--------------------------------------
