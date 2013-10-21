@@ -125,7 +125,7 @@ function cargaTablaCambios(data){
 function cargarTabla(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/getCambiosAlcance',
+		url : '../../api/AL_getListaCambios',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
