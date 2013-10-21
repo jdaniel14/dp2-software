@@ -404,50 +404,52 @@ function leerNivelProbabilidad(impactos) {
     };
     var jsonData = JSON.stringify(data);
     var datos = leerMatriz();
-//var i=0;
-//     for (obj in data) {
-//         
-//         //data[obj] de frente los dos arreglos [0] 1 linea, [1] 2 linea
-//           console.log(data[obj][i]['valorProb']);
-//         for(var j=1;j<data[obj].length;j++){
-//            console.log(data[obj][j]['valorImpacto']);
-//            console.log(data[obj][j]['valorMult']);   
-//            $("#nivel1").append("hola");
-//         }
-//         
-//         i=0;
-    // }
 
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatriz' + '/' + data.idProyecto,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(data) {
-            var fila, opt, fil, cad;
-            var i = 0;
-            for (obj in data) {
+        success: function(datos) {
+            $.ajax({
+                type: 'GET',
+                url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var fila, opt, fil, cad;
+                    var i = 0;
+                    for (obj in data) {
 
-                fila = $("<tr></tr>");
-                opt = $("<td >" + data[obj]["nivel"] + "</td> ");
+                        fila = $("<tr></tr>");
+                        opt = $("<td >" + data[obj]["nivel"] + "</td> ");
 
-                $(fila).append(opt);
-                for (var j = 1; j < datos[i].length; j++) {
+                        $(fila).append(opt);
+                        for (var j = 1; j < datos[i].length; j++) {
 
-                    fil = $("<td class=\"matriz\" id=\""+i+datos[i][j]['valorMult']  +"\">" + datos[i][j]['valorMult'] + "</td>");
-                    $(fila).append(fil);
+                            fil = $("<td class=\"matriz\" id=\"" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            $(fila).append(fil);
 
+                        }
+                        i++;
+
+
+                        $("#tablaMatrizRiesgos").append(fila);
+
+                    }
+                    pintarMatriz(impactos);
                 }
-                i++;
-
-
-                $("#tablaMatrizRiesgos").append(fila);
-
-            }
-            pintarMatriz(impactos);
+            });
         }
     });
+
+
+
 }
 
 function pintarMatriz(impactos) {
@@ -463,40 +465,40 @@ function pintarMatriz(impactos) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-            var i=0;
-            var longitud=impactos.length;
-            r=Math.round(Math.random()*255);
-g=Math.round(Math.random()*255);
-b=Math.round(Math.random()*255);
+            var i = 0;
+            var longitud = impactos.length;
+            r = Math.round(Math.random() * 255);
+            g = Math.round(Math.random() * 255);
+            b = Math.round(Math.random() * 255);
             for (obj in data) {
-               // var idEstrategia = data[obj]["idEstrategia"];
+                // var idEstrategia = data[obj]["idEstrategia"];
                 var puntajeMin = data[obj]["puntajeMin"];
                 var puntajeMax = data[obj]["puntajeMax"];
-                console.log("puntajeMin"+puntajeMin);
-                
-                console.log("puntajeMax"+puntajeMax);
-               // var prioridad = data[obj]["prioridad"];
-               // var estrategia = data[obj]["estrategia"];
+                console.log("puntajeMin" + puntajeMin);
+
+                console.log("puntajeMax" + puntajeMax);
+                // var prioridad = data[obj]["prioridad"];
+                // var estrategia = data[obj]["estrategia"];
                 //var significado = data[obj]["significado"];
-           
-           //    for(var i;i<longitud;i++){
-           
-           console.log("nuevo");
-                 $(".matriz").each(function() {     
-                var puntaje= $($(".matriz")[i]).attr("id");
-                var porcion=puntaje.substring(1);
-                   if(parseInt(porcion)>=parseInt(puntajeMin) && parseInt(porcion)<=parseInt(puntajeMax)){
-                     console.log("puntaje"+porcion);
-                         $("#"+ puntaje+"").css('background-color', 'rgb('+r+' ,'+g+','+b+')');
-                 
-                     }
-                     i++;
-                 });
-                 i=0;
-                r=Math.round(Math.random()*255);
-                g=Math.round(Math.random()*255);
-                b=Math.round(Math.random()*255);
-             //   }
+
+                //    for(var i;i<longitud;i++){
+
+                console.log("nuevo");
+                $(".matriz").each(function() {
+                    var puntaje = $($(".matriz")[i]).attr("id");
+                    var porcion = puntaje.substring(1);
+                    if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
+                        console.log("puntaje" + porcion);
+                        $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+
+                    }
+                    i++;
+                });
+                i = 0;
+                r = Math.round(Math.random() * 255);
+                g = Math.round(Math.random() * 255);
+                b = Math.round(Math.random() * 255);
+                //   }
                 //if(parseInt(puntaje))
                 //i=longitud;
                 //longitud=longitud+impactos.length;
@@ -576,7 +578,7 @@ function leerMatriz() {
 
     // var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}]]');
     //var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
-    
+
     var data = {
         idProyecto: idProyectoLocal
     };
@@ -588,11 +590,11 @@ function leerMatriz() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-      
-             return data;
+
+            return data;
         }
     });
-    
+
 
 
 
