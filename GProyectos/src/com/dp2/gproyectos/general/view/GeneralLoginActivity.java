@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
@@ -100,7 +101,8 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	@Override
 	public void afterLoadingData() {
 		if (usuario==null){
-			
+			//mensaje de error
+			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesión. Reintente nuevamente.", Toast.LENGTH_LONG).show();
 		}
 		else if (Long.parseLong(usuario.id) >0){
 			Intent intent = new Intent(GeneralLoginActivity.this, GeneralHomeProyectosListaActivity.class);
