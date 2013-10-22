@@ -288,8 +288,26 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
         }
 
       } else if (field == "duration") {
+    	  
         var dur = task.duration;
+        
+        if(parseInt(el.val()) == 0){
+        	console.log("Entroooo histeando");
+        	task.startIsMilestone = true;
+        	task.endIsMilestone = true;
+        }
+        else{
+        	task.startIsMilestone = false;
+        	task.endIsMilestone = false;
+        }
+        
         dur = parseInt(el.val()) || 1;
+        
+        console.log(task.startIsMilestone);
+        if(task.startIsMilestone == true){
+        	dur = 0;
+        }
+        
         el.val(dur);
         var newEnd = computeEndByDuration(task.start, dur);
         self.master.changeTaskDates(task, task.start, newEnd);
@@ -571,6 +589,10 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       $(this).dateField({
         inputField:$(this),
         callback:  function (end) {
+        	
+          taskEditor.find("#endIsMilestone").removeAttr("checked");
+          taskEditor.find("#startIsMilestone").removeAttr("checked");
+          
           var start = Date.parseString(taskEditor.find("#start").val());
           end.setHours(23, 59, 59, 999);
 
@@ -581,16 +603,85 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           } else {
             taskEditor.find("#duration").val(recomputeDuration(start.getTime(), end.getTime()));
           }
+          
+          
+          
         }
       });
     });
 
+    
+    taskEditor.find("#endIsMilestone").click(function(){
+    	if ($(this).is(':checked')){
+   			$(this).parent().parent().find('#startIsMilestone').attr('checked','checked');
+   			
+   			var start = Date.parseString(taskEditor.find("#start").val());
+   			var el = taskEditor.find("#duration");
+   			var dur = parseInt(el.val());
+   			dur = dur <= 0 ? 1 : dur;
+   			if (taskEditor.find("#startIsMilestone").is(":checked")){
+   	    	  dur = 0;    	  
+   			}
+   			el.val(dur);
+   			taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
+   		}
+   		else{
+   			$(this).parent().parent().find('#startIsMilestone').removeAttr('checked');
+   			var start = Date.parseString(taskEditor.find("#start").val());
+   			var el = taskEditor.find("#duration");
+   			var dur = parseInt(el.val());
+   			dur = dur <= 0 ? 1 : dur;
+   			if (taskEditor.find("#startIsMilestone").is(":checked")){
+   	    	  dur = 0;    	  
+   			}
+   			el.val(dur);
+   			taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
+   		}		
+    });
+    
     //bind blur on duration
     taskEditor.find("#duration").change(function () {
+      
       var start = Date.parseString(taskEditor.find("#start").val());
       var el = $(this);
       var dur = parseInt(el.val());
+      
+      if(dur == 0){
+    	  taskEditor.find("#startIsMilestone").attr("checked","checked");
+    	  taskEditor.find("#endIsMilestone").attr("checked","checked");
+    	  
+    	  var start = Date.parseString(taskEditor.find("#start").val());
+ 		  var el2 = taskEditor.find("#duration");
+ 		  var dur = parseInt(el2.val());
+ 		  dur = dur <= 0 ? 1 : dur;
+ 		  if (taskEditor.find("#startIsMilestone").is(":checked")){
+ 	        dur = 0;    	  
+ 		  }
+ 		  el2.val(dur);
+ 		  taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
+    	  
+      }
+      else{
+    	  taskEditor.find("#startIsMilestone").removeAttr("checked");
+    	  taskEditor.find("#endIsMilestone").removeAttr("checked");
+    	  
+    	  var start = Date.parseString(taskEditor.find("#start").val());
+ 		  var el2 = taskEditor.find("#duration");
+ 		  var dur = parseInt(el2.val());
+ 		  dur = dur <= 0 ? 1 : dur;
+ 		  if (taskEditor.find("#startIsMilestone").is(":checked")){
+ 	        dur = 0;    	  
+ 		  }
+ 		  el2.val(dur);
+ 		  taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
+      }
+      
       dur = dur <= 0 ? 1 : dur;
+      
+      if (taskEditor.find("#startIsMilestone").is(":checked")){
+    	  dur = 0;    	  
+      }
+      
       el.val(dur);
       taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
     });

@@ -3,23 +3,33 @@ var listaRed;
 var dataAJAX;
 
 var xIni = 1;
-var yIni = 60;
+var yIni = 100;
 
 //Factor que se mueve en el mismo bloque
-var factorXEnB = 160;
-var factorYEnB = 100;
+var factorXEnB = 150;
+var factorYEnB = 70;
 
 //Factor que se mueve de bloque en bloque
 var factorX = 500;
 var factorY = 100;
 
-//Posicion actual
+//Posicion actual -> Va variando
 var x = 1;
 var y = 1;
 
+//Posicion de los titulos de cada bloque
+var xTitulo = 1;
+var yTitulo = 1;
+var borderColorT = '#63449A';
+var borderWidthT = 3;
+
+//Parametros del diagrama
+var widthDiagram = 1200;
+var heightDiagram = 620;
+
 //Parametros de dibujo de los cuadraditos
-var width = 10;
-var height = 10;
+var width = 120;
+var height = 70;
 var anchoPita = '3';
 var anchoPitaC = '6';
 var borderColor = '#AAAAAA';
@@ -30,7 +40,7 @@ var borderWidthC = '5';
 
 //Lista de actividades en un bloque determinado
 var actXBloque;
-
+var cantActXBloque = 0;
 
 
 //Cogue del local Storage
@@ -63,9 +73,6 @@ function cargarDatos(){
         	console.log(data);
         	dataAJAX = data;
         	listaRed = data.listaRed;
-        	/*listaRed[1].predecesores = "1330";
-        	listaRed[2].predecesores = "1330";
-        	listaRed[3].predecesores = "1331,1332";*/
         	iniciarFiesta()
         }
 	});
@@ -77,7 +84,7 @@ function crearConexionNodos(id_from,id_to,pitaSize){
 	}
 }
 
-function crearNodo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoBorde){
+function crearNodo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoBorde, widthN, heightN){
 	if(id_actividad != undefined){
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
@@ -85,8 +92,8 @@ function crearNodo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoB
 			'nodeContent': nombre_actividad,
 			'xPosition':posX,
 			'yPosition':posY,
-			'width': '120',
-			'height' : '70',
+			'width': widthN,
+			'height' : heightN,
 			'bgColor':'#FFFFFF',
 			'borderColor':colorBorde,
 			'borderWidth':anchoBorde,
@@ -102,11 +109,11 @@ function crearNodo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoB
 			'sPort':true,
 			'wPort':true,
 			'image':'',
-			'draggable':true,
-			'resizable':true,
-			'editable':true,
-			'selectable':true,
-			'deletable':true,
+			'draggable':false,
+			'resizable':false,
+			'editable':false,
+			'selectable':false,
+			'deletable':false,
 			'nPortMakeConnection': true,
 			'ePortMakeConnection': true,
 			'sPortMakeConnection': true,
@@ -123,13 +130,13 @@ function imprimirHijos(padre,rX,rY){
 	$.each(actXBloque,function(r,re){
 		if(re.marcado != 1){
 			var arrPapis = re.predecesores.split(',');
-			console.log("Es HIJO -> X: " + rX + " - Y: " + rY);
+			
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
 				if(re.EsCritico == 0){
-					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColor,borderWidth);
+					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColor,borderWidth, width, height);
 				}
 				else{
-					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColorC,borderWidthC);
+					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColorC,borderWidthC, width, height);
 				}
 				re.marcado = 1;
 				imprimirHijos(re.id_actividad,rX + factorXEnB,rY);
@@ -140,20 +147,33 @@ function imprimirHijos(padre,rX,rY){
 	});
 }
 
+function imprimirTituloDelBloque(bloque, rX, rY){
+	crearNodo('-1',"Bloque: " + bloque,rX,rY,borderColorT,borderWidthT, factorX, height);
+}
+
+function cantidadDeActividadesEnElBloque(actividadesEnBloque){
+	$.each(actividadesEnBloque, function(e,el){
+		
+	});
+}
+
 function iniciarFiesta(){
 		
 	//Creo el diagrama general
 	diagram = new Diagram({
 		'xPosition':20, 
 		'yPosition':30, 
-		'width':1024, 
-		'height':620,
+		'width':widthDiagram, 
+		'height':heightDiagram,
 		'imagesPath': '../../../static/cronograma/pirateado/images/',
 		'connectionColor': '#AA0000',
 		onSave: function(data){
 			alert('from on save event \n' +data);
 		}
 	});	
+	
+	//Inicializo los valores para el tama–o de cada bloque
+	factorX = widthDiagram / dataAJAX.cantBloques;
 	
 	console.log("Inicio de la impresion de diagrama de red...");
 	console.log(listaRed);
@@ -175,12 +195,30 @@ function iniciarFiesta(){
 		//Fin obtener actividades del bloque
 		
 		console.log("Actividades por el bloque: " + b);
+		console.log("Cantidad de actividades en el bloque = " + n);
 		console.log(actXBloque);
+		
+		//Inicializo el factor de movimiento en este bloque
+		//Calculo cantActXBloque (niveles en el bloque)
+		cantidadDeActividadesEnElBloque(actXBloque);
+		
+		factorXEnB = factorX / n;
+		//Fin Inicializar el factor de movimiento en este bloque
 
 		//Inicializar X e Y
 		x = xIni + (b * factorX);
 		y = yIni;
 		//Fin inicializar X e Y
+		
+		//Inicializar la posicion del titulo del bloque
+		xTitulo = x;
+		yTitulo = y - 70;		
+		console.log("Posiciones en que se imprimiran el titulo del bloque " + b);
+		console.log("xTitulo: " + xTitulo);
+		console.log("yTitulo: " + yTitulo);
+		
+		imprimirTituloDelBloque(b, xTitulo, yTitulo);
+		//Fin inicializar la posicion del titulo del bloque
 		
 		//Recorro la lista de las actividades que pertenecen al bloque en el que estoy
 		//actXBloque
@@ -190,20 +228,17 @@ function iniciarFiesta(){
 			if(el.marcado == 0){
 				//imprimir el nodo
 				if(el.EsCritico == 0){
-					console.log("ENTRO UN NO CRITICOOOOOO");
-					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColor,borderWidth);
-					console.log("Es Daddy -> X: " + x + " - Y: " + y);
+					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColor,borderWidth, width, height);
+					
 				}
 				else{
-					console.log("ENTRO UN CRITICOOOOOO");
-					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColorC,borderWidthC);
-					console.log("Es Daddy -> X: " + x + " - Y: " + y);
+					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColorC,borderWidthC, width, height);
 				}
 				//marcar el nodo como  ya impreso
 				el.marcado = 1;//0->no dibujado ni conectado, 1-> dibujado, 2->conectado y dibujado		
 				
 				//recursiva imprimirHijosEnBloque(padre,x,y,actxbloq)
-				imprimirHijos(el.id_actividad, x + factorXEnB, y + factorYEnB);
+				imprimirHijos(el.id_actividad, x + factorXEnB, y /*+ factorYEnB*/);
 				
 				//Aumento la posicion en la que estoy
 				x = x;
@@ -226,12 +261,9 @@ function iniciarFiesta(){
 			if(el.predecesores != ""){//si no tiene predecesores
 				
 				var arrPapis = el.predecesores.split(',');
-				console.log(el.id_actividad);
-				console.log(arrPapis);
-				$.each(arrPapis,function(p,pa){
-					
-					crearConexionNodos(pa,el.id_actividad,anchoPita);
-					
+				
+				$.each(arrPapis,function(p,pa){					
+					crearConexionNodos(pa,el.id_actividad,anchoPita);					
 				});
 				
 			}
@@ -240,463 +272,6 @@ function iniciarFiesta(){
 			
 		}
 	});
-	
-
-	/*
-	diagram.addNode(new Node({
-		'nodeId': '1',
-		'nodeType':'NODE',
-		'nodeContent': 'Outcomexxx',
-		'xPosition':x,
-		'yPosition':y,
-		'width': '120',
-		'height' : '70',
-		'bgColor':'#FFFFFF',
-		'borderColor':'#AAAAAA',
-		'borderWidth':'1',
-		'fontColor':'#000000',
-		'fontSize':'',
-		'fontType':'',
-		'minHeight':50,
-		'maxHeight':200,
-		'minWidth':100,
-		'maxWidth':200,
-		'nPort':true,
-		'ePort':true,
-		'sPort':true,
-		'wPort':true,
-		'image':'',
-		'draggable':true,
-		'resizable':true,
-		'editable':true,
-		'selectable':true,
-		'deletable':true,
-		'nPortMakeConnection': true,
-		'ePortMakeConnection': true,
-		'sPortMakeConnection': true,
-		'wPortMakeConnection': true,
-		'nPortAcceptConnection': true,
-		'ePortAcceptConnection': true,
-		'sPortAcceptConnection': true,
-		'wPortAcceptConnection': true
-	}));
-	
-	
-	
-	
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '2',
-				'nodeType':'NODE',
-				'nodeContent': 'Output',
-				'xPosition':1,
-				'yPosition':1,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '3',
-				'nodeType':'NODE',
-				'nodeContent': 'Output',
-				'xPosition':400,
-				'yPosition':350,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '4',
-				'nodeType':'NODE',
-				'nodeContent': 'Output',
-				'xPosition':600,
-				'yPosition':350,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '5',
-				'nodeType':'NODE',
-				'nodeContent': 'Activity',
-				'xPosition':194,
-				'yPosition':450,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '6',
-				'nodeType':'NODE',
-				'nodeContent': 'Activity',
-				'xPosition':394,
-				'yPosition':450,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '7',
-				'nodeType':'NODE',
-				'nodeContent': 'Activity',
-				'xPosition':530,
-				'yPosition':450,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':100,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '8',
-				'nodeType':'NODE',
-				'nodeContent': 'Activity',
-				'xPosition':690,
-				'yPosition':450,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '9',
-				'nodeType':'NODE',
-				'nodeContent': 'Goal',
-				'xPosition':200,
-				'yPosition':150,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '10',
-				'nodeType':'NODE',
-				'nodeContent': 'Goal',
-				'xPosition':412,
-				'yPosition':150,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-				'ePort':true,
-				'sPort':true,
-				'wPort':true,
-				'image':'',
-				'draggable':true,
-				'resizable':true,
-				'editable':true,
-				'selectable':true,
-				'deletable':true,
-				'nPortMakeConnection': true,
-				'ePortMakeConnection': true,
-				'sPortMakeConnection': true,
-				'wPortMakeConnection': true,
-				'nPortAcceptConnection': true,
-				'ePortAcceptConnection': true,
-				'sPortAcceptConnection': true,
-				'wPortAcceptConnection': true
-	
-			}));
-	
-	
-	diagram.addNode(new Node({
-				'nodeId': '11',
-				'nodeType':'NODE',
-				'nodeContent': 'Goal',
-				'xPosition':600,
-				'yPosition':150,
-				'width': '120',
-				'height' : '70',
-				'bgColor':'#FFFFFF',
-				'borderColor':'#AAAAAA',
-				'borderWidth':'1',
-				'fontColor':'#000000',
-				'fontSize':'',
-				'fontType':'',
-				'minHeight':50,
-				'maxHeight':200,
-				'minWidth':100,
-				'maxWidth':200,
-				'nPort':true,
-		'ePort':true,
-		'sPort':true,
-		'wPort':true,
-		'image':'',
-		'draggable':true,
-		'resizable':true,
-		'editable':true,
-		'selectable':true,
-		'deletable':true,
-		'nPortMakeConnection': true,
-		'ePortMakeConnection': true,
-		'sPortMakeConnection': true,
-		'wPortMakeConnection': true,
-		'nPortAcceptConnection': true,
-		'ePortAcceptConnection': true,
-		'sPortAcceptConnection': true,
-		'wPortAcceptConnection': true
-	
-	}));
-	
-	diagram.addConnection(new Connection('2','n','1','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('3','n','1','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('4','n','1','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('5','n','2','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('6','n','3','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('7','n','4','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('8','n','4','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('1','n','9','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('1','n','10','s','#AA0000', '3'));
-	diagram.addConnection(new Connection('1','n','11','s','#AA0000', '3'));
-	*/
 }
 
 $(document).ready(function() {
