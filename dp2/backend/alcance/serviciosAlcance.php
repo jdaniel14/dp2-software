@@ -379,21 +379,29 @@
 	}
 
 
-// FALTAAAAAAA D:<
-
 	function getListaCambios(){//obtener los cambios de alcance dado un id_proyecto
-		$con=getConnection();
-		$pstmt = $con->prepare("SELECT * FROM ESTADO_EDT");
-		$pstmt->execute();
-		$listaEstados = array();
-		while($estado = $pstmt->fetch(PDO::FETCH_ASSOC)){
-			$listaEstados[] = $estado;
+		$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idproyecto = $val["id_proyecto"];
+    	$con=getConnection();
+		$pstmt = $con->prepare("SELECT C.id_cambios_alcance as id_cambio , C.id_proyecto, C.descripcion, C.fecha,EA.descripcion as estado, E.nombre_corto as responsable
+			FROM CAMBIOS_ALCANCE C , ESTADO_ALCANCE EA, EMPLEADO E
+			WHERE id_proyecto = ? AND EA.id_estado_alcance = C.id_estado_alcance AND E.id_empleado = C.id_miembros_equipo");
+    	$pstmt->execute(array($idproyecto));
+    	$cambios= array();
+ 		while($cambio = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$cambios[]=$cambio;
 		}
-		echo json_encode($listaEstados);
-
+		echo json_encode($cambios);
 	}
 	function registrarCambio(){//registrar un cambio en la tabla CAMBIOS_ALCANCE
-
+		$con=getConnection();
+		$request = \Slim\Slim::getInstance()->request();
+		$cambio = json_decode($request->getBody(),TRUE);
+		$pstmt = $con->prepare("INSERT INTO CAMBIOS_ALCANCE
+								(id_proyecto, descripcion, fecha, id_estado_alcance,id_miembros_equipo) 	
+					   			VALUES (?,?,?,?,?)");
+		$pstmt->execute(array($cambio["idproyecto"],$cambio["descripcion"],date('Y-m-d H:i:s'),$cambio["id_estado"],$cambio["id_miembros_equipo"]));
 	}
 
 ?>
