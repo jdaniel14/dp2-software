@@ -110,7 +110,7 @@
                 left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
                 left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
                 left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
-                where 
+                where RXP.estado_logico!=0 and 
                 RXP.id_proyecto=".$riesgo->idProyecto." and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
         try {
             $arregloListaRiesgo= array();
@@ -179,36 +179,6 @@
                             "demoraPotencial" => $row->demora_potencial,//RXP
                             "idResponsable" => $row->id_empleado,
                             "nombreResponsable" => $row->nombre_corto//
-/*X nombre: “Riesgo 2”, 
-X paqueteTrabajo: 1 (o null),
-
-idTipoImpacto: 4,
-tipoImpacto: 1,
-impacto: 1000,
-
-idNivelImpacto: 2,
-probabilidad: 20,
-idProbabilidad: 3,
-descProbabilidad: “Bajo”
-accionesEspecificas: “una accion”,
-costoPotencial: 1002.13,
-demoraPotencial: 120,
-idResponsable: 1,
-severidad: 30
-
-idNivelProbabilidad
-idTipoImpacto
-idNivelImpacto
-
-
-
-
-
-*/
-
-
-
-
                             );
             $db = null;
             echo json_encode($data);
@@ -273,32 +243,73 @@ idNivelImpacto
         
     }
 
-    function R_getEstadoLogicoRiesgo($idRiesgo){
-        $query = "SELECT * FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgo);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data=array("id" => $row->id_riesgo_x_proyecto, "estado" => $row->estado_logico);
-            $db = null;
-            echo json_encode($data);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
+    
+    function R_getEstadoLogicoRiesgo($idRiesgoXProyecto){
+        
+        $query = "SELECT * 
+                FROM RIESGO_X_PROYECTO
+                where id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
-    function R_setEstadoLogicoRiesgo($idRiesgo){
-
-        $query = "UPDATE RIESGO_X_PROYECTO SET estado = 0 WHERE id_riesgo_x_actividad=:id";
         try {
             $db = getConnection();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("id", $query);
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $db = null;
+            echo json_encode($row->estado_logico);
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }  
+
+
+    function R_deleteFisicoRiesgo($idRiesgoXProyecto){
+
+        $query = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
             $stmt->execute();
             $db = null;
-            echo '{Set}';
+            echo "Riesgo eliminado con exito";
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
+    function R_deleteLogicoRiesgo($idRiesgoXProyecto){
+
+        $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 0 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
+            $stmt->execute();
+            $db = null;
+            echo "Se confirmo el riesgo";
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
+
+
+    function R_setConfirmarRiesgo($idRiesgoXProyecto){
+
+        $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
+            $stmt->execute();
+            $db = null;
+            echo "Se confirmo el riesgo";
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
@@ -409,21 +420,6 @@ idNivelImpacto
     }*/
 
 
-    function R_deleteRiesgo($idRiesgo){
-
-        $sql = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:idRiesgo";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("idRiesgo", $idRiesgo);
-            $stmt->execute();
-            $db = null;
-            echo '{Riesgo eliminado con exito}';
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
-    }
 
     //--------------------------------------CONFIGURACION--------------------------------------
 
