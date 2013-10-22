@@ -1,0 +1,469 @@
+var rootURL = "../../api/";
+var codProyecto='1';
+var idProyecto=obtenerIdProyecto();
+var numRecursos= 0;
+var comboMoneda='';
+var comboUnidadMedida='';
+
+iniciaProyecto();		
+iniciarTabla()
+$(function(){
+  $(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
+});
+
+//Funciones para obtener datos de AJAX
+
+
+function obtenProyecto(/*idProyecto*/){
+	var obj ={
+		idProyecto : idProyecto
+	}
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:agregarDataProyecto	
+
+	});		
+}
+/*aca temrmina*/
+function obtenRecursos(/*idProyecto,*/tipo){
+	var obj ={
+		idProyecto : idProyecto
+	}
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFila(data,tipo);}
+	});
+}
+
+function obtenMoneda(){
+	$.ajax({
+		type: 'GET',		
+		url: rootURL + 'CO_obtenerListaMonedas/',
+		dataType: "json", // data type of response
+		success: creaComboMoneda
+	});
+}
+
+function obtenUnidadMedida(){
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerUnidadesMedidas/',		
+		dataType: "json",
+		async: false,
+		success:creaComboUnidadMedida
+	});
+}
+
+
+//Fin funciones para obtener datos de AJAX
+
+//Funciones para pasar los datos de ajax
+function iniciaRecursos(tipo){
+	limpiaTablaRecursos(tipo);	
+	arreglo= obtenRecursos(tipo);
+}
+
+function agregaDataFila(data, tipo){
+	if (data!=null){
+		arreglo=data.lista;
+		for (i=0; i<arreglo.length;i++){
+			filaRecurso=arreglo[i];
+			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, filaRecurso.indRRHH);
+			numRecursos=i;
+		}
+	}
+}
+
+function iniciaProyecto(){
+			
+	obtenProyecto(/*idProyecto*/);
+	//var proy = JSON.parse(proyecto);
+	//agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
+
+}
+
+function iniciaUnidadMedida(){
+
+
+}
+
+function agregarDataProyecto(data){
+	if (data!=null){
+		proy=data;
+		agregaDatosProyecto( proy.nombre);
+	}
+}
+
+
+function agregaDatosProyecto(nombreProyecto){
+	$("#nombreProyecto").html(nombreProyecto);
+		
+}
+
+function agregaFilaRecurso(){
+	a=$("#numFilas").val();
+	a++;
+	inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
+	inputMoneda= creaInputMoneda(a,"0");
+	inputUnidadMedida= creaInputUnidadMedida(a,"0");
+	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
+	inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')">';
+	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+	inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+	inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+	
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
+	+'<td align="center">'+inputFechaFin+'</td></tr>'
+	+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
+	+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
+								);	
+	inicializaFechas(a);
+	$("#numFilas").val(a);
+}
+
+function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, indRecursoHumano){
+	a=i;
+	a++;
+	if 	(tipo==0)
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td></tr>');
+	else{
+		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
+		inputMoneda= creaInputMoneda(a,true);
+		inputUnidadMedida= creaInputUnidadMedida(a,true);
+		
+		if (indRecursoHumano=='0'){
+			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
+			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+			
+		}else{
+		
+			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputFechaInicio='<input type="text" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
+			inputFechaFin='<input type="text" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
+			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'" disabled readOnly>';
+				
+		}
+		
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputCostoFijo
+		+'<td align="center">'+inputFechaInicio+'</td>'+'<td align="center">'+inputFechaFin+'</td></tr>'
+		+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
+		+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
+		+'<input type="hidden" name="idRecurso'+a+'"  id="idRecurso'+a+'" value="'+idRecurso+'" >'	
+		+'<input type="hidden" name="indRecursoH'+a+'"  id="indRecursoH'+a+'" value="'+indRecursoHumano+'" >'										
+									);
+		inicializaFechas(a);
+	}
+	$("#numFilas").val(a);
+}
+
+function inicializaFechas(a){
+	$('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'dd-mm-yy' });
+	
+		
+
+}
+
+function modifica(num){
+
+	select='#modificado'+num;
+	
+	$(select).val('1');
+
+}
+
+
+
+
+function creaComboMoneda(data){
+	if (data!=null){
+		comboMoneda='';
+		arreglo=data.lista;
+		
+		for (i=0; i<arreglo.length;i++){
+			moneda=arreglo[i];
+			agregaOpcionMoneda(moneda.idMoneda, moneda.nombre);
+			
+		}		
+	}
+}
+
+
+function creaComboUnidadMedida(data){
+	if (data!=null){
+		comboUnidadMedida='';
+		arreglo=data.lista;
+		
+		for (i=0; i<arreglo.length;i++){
+			unidad=arreglo[i];
+			agregaOpcionUnidadMedida(unidad.idUM, unidad.descripcion);
+			
+		}
+
+	}
+}
+
+
+//Fin funciones para pasar los datos de ajax
+
+//Funcion para agregar una opcion de moneda
+
+function agregaOpcionMoneda(idMoneda, nombre){
+	comboMoneda+='<option value="'+idMoneda+'">'+nombre+'</option>';
+}
+
+function agregaOpcionUnidadMedida(idUnidad, nombre){
+	comboUnidadMedida+='<option value="'+idUnidad+'">'+nombre+'</option>';
+}
+
+
+
+function creaInputMoneda(num, deshabilitado){
+	
+	if (deshabilitado=='1')
+		combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')"  readOnly disabled >'+ comboMoneda + '</select>';
+	else
+		combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')" >'+ comboMoneda + '</select>';
+	return combo;
+}
+
+
+function creaInputUnidadMedida(num, deshabilitado){
+	if (deshabilitado=='1')
+		combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" readOnly disabled >'+ comboUnidadMedida + '</select>';
+	else
+		combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" >'+ comboUnidadMedida + '</select>';
+	return combo;
+}
+
+//Desabilita el input moneda
+
+function desabilitaMoneda(a){
+	
+	idSelect='#comboMoneda'+a;
+	$(idSelect).attr('disabled', 'disabled');
+}
+
+function desabilitaUnidadMoneda(a){
+	
+	idSelect='#comboUnidadMedida'+a;
+	$(idSelect).attr('disabled', 'disabled');
+}
+
+//obtener la seleccionada moneda
+
+//Funciones para grabar
+
+$("#btnGrabar").click(function(){
+
+	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+		grabarRecursos();
+	}
+});
+
+function grabarRecursos(){
+	var recursosGrabar=new Array();
+	var recursosModificar=new Array();
+	var recursosEliminar=new Array();
+	num=$("#numFilas").val();
+	for (i=1; i<=num;i++){
+		recH= "#indRecursoH"+i;
+		elim="eliminar"+i;
+		crea="#creado"+i;
+		modif="#modificado"+i;
+		recu="#idRecurso"+i;
+		cu="#costoUnitario"+i;
+		nom="#recurso"+i;
+		moned="#comboMoneda"+i;
+		med="#comboUnidadMedida"+i;
+		cof="#costoFijo"+i;
+		feI="#fechaInicio"+i;
+		feF="#fechaFin"+i;
+		
+		eliminar=document.getElementById(elim).checked;
+		crear=$(crea).val();
+		modificar=$(modif).val();
+		indRecH=$(recH).val();
+	
+		if (eliminar && crear!='1'){
+			var recurso = {
+				idRecurso: $(recu).val()
+			}
+			recursosEliminar.push(recurso);
+		}else{
+			if (!eliminar && indRecH=='0'){
+				costo=$(cu).val();
+				nomRecurso=$(nom).val();
+				moneda=$(moned).val();
+				medida=$(med).val();
+				costoF=$(cof).val();
+				fechaI=$(feI).val();
+				fechaF=$(feF).val();
+				
+				if (nomRecurso==''){	
+					alert('El recurso de la fila ' + i +' debe tener un nombre');
+					return;
+				}
+				
+				if (costo!='' && !isNaN(costo) && costo>=0){		
+					
+				}else{
+					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
+					return;
+				}
+				
+				if (costoF!='' && !isNaN(costoF) && costoF>=0){
+						
+				}else{
+					alert('El costo fijo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
+					return;
+				}
+				
+				if (fechaI!=""){
+					diaI=fechaI.substr(0,2);
+					mesI=fechaI.substr(3,2);
+					anioI=fechaI.substr(6,4);
+				}else{	
+					alert('La fecha inicio del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
+					return;
+				}
+				if (fechaF!=""){
+					diaF=fechaF.substr(0,2);
+					mesF=fechaF.substr(3,2);
+					anioF=fechaF.substr(6,4);
+				}else{
+					alert('La fecha fin del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
+					return;
+				}
+			
+				if (crear=='1'){
+					var recurso = {
+						nombreRecurso:nomRecurso,
+						CostoUnitario: costo,			
+						idMoneda: moneda,
+						idUnidadMedida:medida,
+						costoFijo: costoF,
+						dayI:  new Number(diaI),
+						monthI:  new Number(mesI),
+						yearI: new Number(anioI),
+						dayF:  new Number(diaF),
+						monthF:  new Number(mesF),
+						yearF: new Number(anioF)
+					}
+					recursosGrabar.push(recurso);
+				}else{
+					if (modificar=='1'){
+						var recurso = {
+							idRecurso: $(recu).val(),
+							nombreRecurso:nomRecurso,
+							CostoUnitario: costo,			
+							idMoneda: moneda,
+							idUnidadMedida:medida,
+							costoFijo: costoF,
+							dayI:  new Number(diaI),
+							monthI:  new Number(mesI),
+							yearI: new Number(anioI),
+							dayF:  new Number(diaF),
+							monthF:  new Number(mesF),
+							yearF: new Number(anioF)
+						}
+						recursosModificar.push(recurso);
+					}
+				
+				
+				}
+			}
+		}
+	}
+	var obj={
+		idProyecto: idProyecto,
+		listaRecursosModificar: recursosModificar,
+		listaRecursosCrear: recursosGrabar,
+		listaRecursosEliminar: recursosEliminar
+	}
+	enviaDatos(obj);
+//	alert("se grabó " + obj);
+	/*
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFila(data,tipo);}
+	});
+	*/
+}
+
+function enviaDatos(obj){
+
+
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
+		dataType: "json", 
+		async: true,
+		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);}
+	});
+
+	/*
+	$.ajax({
+		type: 'POST',
+		url: rootURL + 'CO_enviarCURecursos/'+ JSON.stringify(obj),				
+		dataType: "json",
+		async: true,
+		success:function(response, status){ alert("se grabó"); }
+	});
+*/
+
+}
+
+
+//Fin funciones para grabar
+
+//Funciones para el uso del sidebar
+
+function iniciarTabla(){
+	$("#btnGrabar").show();
+	$("#btnCancelar").show();
+	obtenUnidadMedida();
+	obtenMoneda();
+	$("#numFilas").val(0);
+	iniciaRecursos(1);	
+}
+
+
+//Fin de funciones para el uso del sidebar
+
+
+//Limpia la tabla
+
+function limpiaTablaRecursos(){
+	$("#tablaRecursos").html('');
+	$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Costo fijo diario</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td></tr>');
+}
+
+$("#btnCancelar").click(function(){
+	history.back();
+});
+
+function obtenerIdProyecto(){
+	//localStorage.setItem('idProyecto','1');
+	id= localStorage.idProyecto;
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	return id;
+}
+
