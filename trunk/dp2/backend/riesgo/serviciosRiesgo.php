@@ -144,7 +144,7 @@
 
     function R_getRiesgo($idRiesgoXProyecto){
         
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
+        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,RXP.id_empleado ,nombre_corto
                 FROM RIESGO_X_PROYECTO RXP
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
@@ -161,18 +161,54 @@
             $row = $stmt->fetchObject();
             $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
                             "nombre" => $row->nombre_riesgo,
+                            "idPaqueteTrabajo" => $row->id_paquete_trabajo,
                             "paqueteTrabajo" => $row->nombre_paquete_trabajo,//PT
+                            "idTipoImpacto" => $row->id_tipo_impacto,
+                            "tipoImpacto" => $row->tipo_impacto,
                             "impactoDescripcion" => $row->impacto_descripcion,//TI
+                            "idNivelImpacto" => $row->id_nivel_impacto,
                             "impacto" => $row->impacto,
                             "nivelImpactoDescripcion" => $row->nivel_impacto_descripcion,
+                            "idProbabilidadRiesgo" => $row->id_probabilidad_riesgo,
                             "probabilidad" => $row->probabilidad,
-                            "probabilidadDescripcion" => $row->probabilidad_descripcion,
+                            "descProbabilidad" => $row->probabilidad_descripcion,
                             "severidad" => $row->severidad,
                             //"estrategia" => $row->nombre,//X
                             "accionesEspecificas" => $row->acciones_especificas,//X
                             "costoPotencial" => $row->costo_potencial,//RXP
                             "demoraPotencial" => $row->demora_potencial,//RXP
+                            "idResponsable" => $row->id_empleado,
                             "nombreResponsable" => $row->nombre_corto//
+/*X nombre: “Riesgo 2”, 
+X paqueteTrabajo: 1 (o null),
+
+idTipoImpacto: 4,
+tipoImpacto: 1,
+impacto: 1000,
+
+idNivelImpacto: 2,
+probabilidad: 20,
+idProbabilidad: 3,
+descProbabilidad: “Bajo”
+accionesEspecificas: “una accion”,
+costoPotencial: 1002.13,
+demoraPotencial: 120,
+idResponsable: 1,
+severidad: 30
+
+idNivelProbabilidad
+idTipoImpacto
+idNivelImpacto
+
+
+
+
+
+*/
+
+
+
+
                             );
             $db = null;
             echo json_encode($data);
