@@ -146,7 +146,7 @@ function agregaDataFila(data, tipo){
 		for (i=0; i<arreglo.length;i++){
 			filaRecurso=arreglo[i];
 			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
-			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, filaRecurso.indRRHH);
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, filaRecurso.indRRHH,filaRecurso.fechaInicio,filaRecurso.fechaFin);
 			numRecursos=i;
 		}
 	}
@@ -202,11 +202,11 @@ function agregaFilaRecurso(){
 }
 
 
-function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, indRecursoHumano){
+function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, indRecursoHumano, fechaInicio, fechaFin){
 	a=i;
 	a++;
 	if 	(tipo==0)
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td></tr>');
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td><td>'+fechaInicio+'</td><td>'+fechaFin+'</td></tr>');
 	else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
 		inputMoneda= creaInputMoneda(a,indRecursoHumano);
@@ -215,16 +215,16 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		if (indRecursoHumano=='0'){
 			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
 			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
-			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
-			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 			
 		}else{
 		
 			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')" disabled readOnly>';
 			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')" disabled readOnly>';
-			inputFechaInicio='<input type="text" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
-			inputFechaFin='<input type="text" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
+			inputFechaInicio='<input type="text" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
+			inputFechaFin='<input type="text" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'" disabled readOnly>';
 				
 		}
@@ -502,12 +502,12 @@ function grabarRecursos(){
 						idMoneda: moneda,
 						idUnidadMedida:medida,
 						costoFijo: costoF,
-						dayI:  new Number(diaI),
-						monthI:  new Number(mesI),
-						yearI: new Number(anioI),
-						dayF:  new Number(diaF),
-						monthF:  new Number(mesF),
-						yearF: new Number(anioF)
+						dayI:  diaI,
+						monthI:  mesI,
+						yearI: anioI,
+						dayF:  diaF,
+						monthF:  mesF,
+						yearF: anioF
 					}
 					recursosGrabar.push(recurso);
 					
@@ -521,12 +521,12 @@ function grabarRecursos(){
 							idMoneda: moneda,
 							idUnidadMedida:medida,
 							costoFijo: costoF,
-							dayI:  new Number(diaI),
-							monthI:  new Number(mesI),
-							yearI: new Number(anioI),
-							dayF:  new Number(diaF),
-							monthF:  new Number(mesF),
-							yearF: new Number(anioF)
+							dayI:  diaI,
+							monthI:  mesI,
+							yearI: anioI,
+							dayF:  diaF,
+							monthF:  mesF,
+							yearF: anioF
 						}
 						recursosModificar.push(recurso);
 					}
