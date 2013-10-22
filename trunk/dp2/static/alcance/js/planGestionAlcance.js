@@ -127,6 +127,7 @@ function cargarTabla(){
 		type: 'GET',
 		url : '../../api/AL_getListaCambios',
 		dataType: "json",
+		data: {"id_proyecto":id_proyecto},
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			cargaTablaCambios(data);
