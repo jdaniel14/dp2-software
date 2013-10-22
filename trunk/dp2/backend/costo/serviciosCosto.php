@@ -1564,18 +1564,13 @@
 		*/
 		
 		try {
-			$sql = "UPDATE RECURSO
-			SET
-			COSTO_FIJO_DIARIO_ESTIMADO=XXXX,FECHA_REAL_INICIO_COSTO_FIJO=STR_TO_DATE('INICIO FORMATO YYYYMMDD','%Y%m%d'),
-			FECHA_REAL_FIN_COSTO_FIJO=STR_TO_DATE('FIN FORMATO YYYYMMDD','%Y%m%d')
-			WHERE ID_PROYECTO=XXX;
-			COMMIT;";
+			$sql = "MISSING_SQL";
 
 			if ($obj->listaRecursos != null) {
 	        	foreach ($obj->listaRecursos as $recurso) {
 	        		$db = getConnection();
 		        	$stmt = $db->prepare($sql);
-		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+		        	$stmt->bindParam("idProyecto", $recurso->idProyecto);
 		        	$stmt->bindParam("costoFijoDiarioReal", $recurso->costoFijoDiarioReal);
 		        	$stmt->bindParam("fechaI", $fechaI);
 		        	$stmt->bindParam("fechaF", $fechaF);
