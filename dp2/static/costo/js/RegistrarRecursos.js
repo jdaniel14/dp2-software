@@ -146,7 +146,7 @@ function agregaDataFila(data, tipo){
 		for (i=0; i<arreglo.length;i++){
 			filaRecurso=arreglo[i];
 			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
-			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, 10);
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, filaRecurso.indRRHH);
 			numRecursos=i;
 		}
 	}
@@ -184,8 +184,8 @@ function agregaFilaRecurso(){
 	a++;
 	
 	inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
-	inputMoneda= creaInputMoneda(a);
-	inputUnidadMedida= creaInputUnidadMedida(a);
+	inputMoneda= creaInputMoneda(a,"0");
+	inputUnidadMedida= creaInputUnidadMedida(a,"0");
 	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
 	inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')">';
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
@@ -202,26 +202,40 @@ function agregaFilaRecurso(){
 }
 
 
-function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo){
+function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, indRecursoHumano){
 	a=i;
 	a++;
 	if 	(tipo==0)
 		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td></tr>');
 	else{
-		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')">';
-		inputMoneda= creaInputMoneda(a);
-		inputUnidadMedida= creaInputUnidadMedida(a);
-		inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
-		inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
-		inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
-		inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
-		check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
+		inputMoneda= creaInputMoneda(a,indRecursoHumano);
+		inputUnidadMedida= creaInputUnidadMedida(a,indRecursoHumano);
+		
+		if (indRecursoHumano=='0'){
+			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
+			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
+			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+			
+		}else{
+		
+			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputFechaInicio='<input type="text" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
+			inputFechaFin='<input type="text" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
+			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'" disabled readOnly>';
+				
+		}
+		
 		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 									+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center" >'+inputCostoFijo
 									+'<td align="center">'+inputFechaInicio+'</td>'+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
 									+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
 									+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
-									+'<input type="hidden" name="idRecurso'+a+'"  id="idRecurso'+a+'" value="'+idRecurso+'" >'									
+									+'<input type="hidden" name="idRecurso'+a+'"  id="idRecurso'+a+'" value="'+idRecurso+'" >'	
+									+'<input type="hidden" name="indRecursoH'+a+'"  id="indRecursoH'+a+'" value="'+indRecursoHumano+'" >'										
 									);
 		obtenUnidadMedidaSeleccionada(a,unidadMedida);
 		obtenMonedaSeleccionada(a,idmoneda);
@@ -297,17 +311,22 @@ function agregaOpcionUnidadMedida(idUnidad, nombre){
 
 
 
-function creaInputMoneda(num){
-
-	combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')" >'+ comboMoneda + '</select>';
+function creaInputMoneda(num, deshabilitado){
+	
+	if (deshabilitado=='1')
+		combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')"  readOnly disabled >'+ comboMoneda + '</select>';
+	else
+		combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')" >'+ comboMoneda + '</select>';
 	return combo;
 	
 }
 
 
-function creaInputUnidadMedida(num){
-
-	combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" >'+ comboUnidadMedida + '</select>';
+function creaInputUnidadMedida(num, deshabilitado){
+	if (deshabilitado=='1')
+		combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" readOnly disabled >'+ comboUnidadMedida + '</select>';
+	else
+		combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" >'+ comboUnidadMedida + '</select>';
 	return combo;
 	
 }
@@ -384,6 +403,7 @@ function grabarRecursos(){
 	num=$("#numFilas").val();
 	
 	for (i=1; i<=num;i++){
+		recH= "#indRecursoH"+i;
 		elim="eliminar"+i;
 		crea="#creado"+i;
 		modif="#modificado"+i;
@@ -399,6 +419,7 @@ function grabarRecursos(){
 		eliminar=document.getElementById(elim).checked;
 		crear=$(crea).val();
 		modificar=$(modif).val();
+		indRecH=$(recH).val();
 	
 	
 		if (eliminar && crear!='1'){
@@ -411,7 +432,7 @@ function grabarRecursos(){
 			recursosEliminar.push(recurso);
 		
 		}else{
-			if (!eliminar){
+			if (!eliminar && indRecH=='0'){
 				costo=$(cu).val();
 				nomRecurso=$(nom).val();
 				moneda=$(moned).val();
@@ -480,7 +501,7 @@ function grabarRecursos(){
 						CostoUnitario: costo,			
 						idMoneda: moneda,
 						idUnidadMedida:medida,
-						CostoFijo: costoF,
+						costoFijo: costoF,
 						dayI:  new Number(diaI),
 						monthI:  new Number(mesI),
 						yearI: new Number(anioI),
@@ -499,7 +520,7 @@ function grabarRecursos(){
 							CostoUnitario: costo,			
 							idMoneda: moneda,
 							idUnidadMedida:medida,
-							CostoFijo: costoF,
+							costoFijo: costoF,
 							dayI:  new Number(diaI),
 							monthI:  new Number(mesI),
 							yearI: new Number(anioI),
