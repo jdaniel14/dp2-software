@@ -1,14 +1,13 @@
 <?php
 
 //Sprint 1!
-	$app->get('/dameAlgo', 'getDameAlgo'); // traer info
-	$app->get('/comboEstado','getComboEstado');
-	$app->get('/detallePaquete/:id_paquete', 'detallePaquete');
-	$app->get('/listaDiccionario/:id_edt', 'listaDiccionario');
-	$app->post('/modificaPaquete', 'modificaPaquete');
-	$app->get('/comboMiembrosEquipo/:id_proyecto', 'getComboMiembrosEquipo');
-	$app->get('/infoProyectoFromEDT/:id_edt','getInfoProyectoFromEDT');
-	$app->get('/idEdtFromIdProyecto','getIdEdtFromIdProyecto');
+	$app->get('/AL_getComboEstado','getComboEstado');
+	$app->get('/AL_getDetallePaquete/:id_paquete', 'detallePaquete');
+	$app->get('/AL_getListaDiccionario/:id_edt', 'listaDiccionario');
+	$app->post('/AL_modificaPaquete', 'modificaPaquete');
+	$app->get('/AL_getComboMiembrosEquipo/:id_proyecto', 'getComboMiembrosEquipo');
+	$app->get('/AL_getInfoProyectoFromEDT/:id_edt','getInfoProyectoFromEDT');
+	$app->get('/AL_getIdEdtFromIdProyecto','getIdEdtFromIdProyecto');
 
 //Sprint 2!
 	//Lista de requisitos
@@ -32,6 +31,7 @@
 	$app->get('/AL_getEstadoEDT','getEstadoEDT');
 	$app->post('/AL_modificarEstadoEDT','modificarEstadoEDT');
 
-	$app->post('/AL_getListaCambios','getListaCambios');
+	$app->get('/AL_getListaCambios','getListaCambios');
+	$app->post('/AL_registrarCambio','registrarCambio');
 
 ?>

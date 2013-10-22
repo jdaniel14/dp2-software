@@ -29,7 +29,7 @@ function cargaData(data){
 	}
 	$.ajax({
 		type: 'GET',
-		url : '../../api/infoProyectoFromEDT/'+data["id_edt"],
+		url : '../../api/AL_getInfoProyectoFromEDT/'+data["id_edt"],
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: function(datos){
@@ -41,7 +41,7 @@ function cargaData(data){
 function cargarComboResponsable(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboMiembrosEquipo/'+id_proyecto,
+		url : '../../api/AL_getComboMiembrosEquipo/'+id_proyecto,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		async:false,
@@ -59,7 +59,7 @@ function cargarComboResponsable(){
 function cargarComboEstado(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/comboEstado',
+		url : '../../api/AL_getComboEstado',
 		dataType: "json",
 		async:false,
 		contentType: "application/json; charset=utf-8",
@@ -102,7 +102,7 @@ $(document).ready(function(){
 
 	$.ajax({
 		type: 'GET',
-		url : '../../api/detallePaquete/'+id_paquete,
+		url : '../../api/AL_getDetallePaquete/'+id_paquete,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
@@ -122,7 +122,7 @@ $("#modificarPaquete").click(function(){
 	obj["id_paquete_trabajo"]=id_paquete;
 	$.ajax({
 		type:'POST',
-		url: '../../api/modificaPaquete',
+		url: '../../api/AL_modificaPaquete',
 		data: JSON.stringify(obj),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",

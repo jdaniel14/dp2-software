@@ -381,7 +381,7 @@
 
 // FALTAAAAAAA D:<
 
-	function getListaCambios(){//obtener los cambios del E 
+	function getListaCambios(){//obtener los cambios de alcance dado un id_proyecto
 		$con=getConnection();
 		$pstmt = $con->prepare("SELECT * FROM ESTADO_EDT");
 		$pstmt->execute();
@@ -390,6 +390,9 @@
 			$listaEstados[] = $estado;
 		}
 		echo json_encode($listaEstados);
+
+	}
+	function registrarCambio(){//registrar un cambio en la tabla CAMBIOS_ALCANCE
 
 	}
 
