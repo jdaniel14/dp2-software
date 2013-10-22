@@ -127,6 +127,7 @@ $("#modificarPaquete").click(function(){
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 	});
+	logChange("Se modificó el paquete de trabajo "+id_paquete);
 	scrollTo();
 	return false;
 });

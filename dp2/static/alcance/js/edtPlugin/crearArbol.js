@@ -321,6 +321,7 @@ $("#guardarCambios").click(function(){
                       url: "../../api/obtenerEdt",
                       success: function (data) {
                           console.log(data);
+                          logChange("Se creó el EDT");
                           alert("#Edt creada");
                       }
         });

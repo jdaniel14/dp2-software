@@ -82,7 +82,7 @@ $(document).ready(function(){
 			contentType: "application/json; charset=utf-8"
 		});
 		deshabilitarCampos();
-
+		logChange("Se modificó la declaración del alcance");
 	});
 
 	$("#editar").click(habilitarCampos);

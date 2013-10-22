@@ -294,7 +294,7 @@
 
           $("#eliminarEdt").click(function(){
              console.log("eliminar");
-             $("#myModal").modal();   
+             $("#myModal").modal();  
              return false;
              //$('#eliminarEdtModal').modal('show');
           });
@@ -320,6 +320,7 @@
                           console.log(data, "eliminado");
                           $("#CrearEDTCero").show("slow");
                           $("#edtCrearLogError").show("slow");
+                          logChange("Se eliminó el EDT");
                       }
                        
                     });
