@@ -760,6 +760,8 @@
 		A.DESCRIPCION,
 		Y.DESCRIPCION MONEDA,
 		Z.DESCRIPCION UNIDAD_MEDIDA,
+		DATE_FORMAT(A.FECHA_REAL_INICIO_COSTO_FIJO,'%d-%m-%Y') FECHA_INICIO,
+		DATE_FORMAT(A.FECHA_REAL_FIN_COSTO_FIJO,'%d-%m-%Y') FECHA_FIN,
 		SUM(
 		CASE
 		WHEN C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1 THEN IFNULL(C.CANTIDADESTIMADA,0)
@@ -804,8 +806,11 @@
         	$db = null;
         	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-        														//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, 	cantidad estimada, 			costo unitario, 		costo fijo diario, 		costo fijo total, indicador rrhh
-					array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"], $p["COSTO_FIJO_DIARIO_ESTIMADO"], -1, $p["IND_RECURSO_HUMANO"]));
+        									//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, 	cantidad estimada, 			costo unitario, 		costo fijo diario, 		costo fijo total, indicador rrhh
+					$recurso = new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"], $p["COSTO_FIJO_DIARIO_ESTIMADO"], -1, $p["IND_RECURSO_HUMANO"]);
+					$recurso->fechaInicio = $p["FECHA_INICIO"];
+					$recurso->fechaFin = $p["FECHA_FIN"];
+					array_push($listaRecursos, $recurso);
 			}
 			//echo json_encode($listaRecursos);
 
@@ -1564,13 +1569,19 @@
 		*/
 		
 		try {
-			$sql = "MISSING_SQL";
+			$sql = "UPDATE RECURSO
+			SET
+			COSTO_FIJO_DIARIO_REAL= :costoFijoDiarioReal,FECHA_REAL_INICIO_COSTO_FIJO=STR_TO_DATE(:fechaI,'%Y%m%d'),
+			FECHA_REAL_FIN_COSTO_FIJO=STR_TO_DATE(:fechaF,'%Y%m%d')
+			WHERE ID_PROYECTO=:idProyecto AND ID_RECURSO=:idRecurso;
+			COMMIT;";
 
 			if ($obj->listaRecursos != null) {
 	        	foreach ($obj->listaRecursos as $recurso) {
 	        		$db = getConnection();
 		        	$stmt = $db->prepare($sql);
-		        	$stmt->bindParam("idProyecto", $recurso->idProyecto);
+		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
 		        	$stmt->bindParam("costoFijoDiarioReal", $recurso->costoFijoDiarioReal);
 		        	$stmt->bindParam("fechaI", $fechaI);
 		        	$stmt->bindParam("fechaF", $fechaF);
