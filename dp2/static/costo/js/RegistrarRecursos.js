@@ -43,7 +43,9 @@ var arregloMoneda= new Array(
 								
 iniciaProyecto();		
 iniciaRecursos(0);
-
+$(function(){
+  $(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
+});
 
 //Funciones para obtener datos de AJAX
 
@@ -187,11 +189,15 @@ function agregaFilaRecurso(){
 	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
 	inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')">';
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
+	inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+	inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
 	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
-								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center">'+check+'</td><td>'+inputCostoFijo+'</td></tr>'
+								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
+								+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
 								+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
 								+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
 								);	
+	inicializaFechas(a);
 	$("#numFilas").val(a);
 }
 
@@ -207,17 +213,28 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		inputUnidadMedida= creaInputUnidadMedida(a);
 		inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
 		inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
+		inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+		inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
 		check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
-									+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center" >'+inputCostoFijo+'</td><td align="center">'+check+'</td></tr>'
+									+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center" >'+inputCostoFijo
+									+'<td align="center">'+inputFechaInicio+'</td>'+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
 									+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
 									+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
-									+'<input type="hidden" name="idRecurso'+a+'"  id="idRecurso'+a+'" value="'+idRecurso+'" >'
+									+'<input type="hidden" name="idRecurso'+a+'"  id="idRecurso'+a+'" value="'+idRecurso+'" >'									
 									);
 		obtenUnidadMedidaSeleccionada(a,unidadMedida);
 		obtenMonedaSeleccionada(a,idmoneda);
+		inicializaFechas(a);
 	}
 	$("#numFilas").val(a);
+}
+
+function inicializaFechas(a){
+	$('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'dd-mm-yy' });
+	
+		
+
 }
 
 function modifica(num){
@@ -376,6 +393,9 @@ function grabarRecursos(){
 		moned="#comboMoneda"+i;
 		med="#comboUnidadMedida"+i;
 		cof="#costoFijo"+i;
+		feI="#fechaInicio"+i;
+		feF="#fechaFin"+i;
+		
 		eliminar=document.getElementById(elim).checked;
 		crear=$(crea).val();
 		modificar=$(modif).val();
@@ -397,6 +417,10 @@ function grabarRecursos(){
 				moneda=$(moned).val();
 				medida=$(med).val();
 				costoF=$(cof).val();
+				fechaI=$(feI).val();
+				fechaF=$(feF).val();
+				
+				
 				if (nomRecurso==''){
 						
 					alert('El recurso de la fila ' + i +' debe tener un nombre');
@@ -418,8 +442,34 @@ function grabarRecursos(){
 					
 				}else{
 				
-					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
+					alert('El costo fijo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
 					return;
+				}
+				
+				if (fechaI!=""){
+				
+					diaI=fechaI.substr(0,2);
+					mesI=fechaI.substr(3,2);
+					anioI=fechaI.substr(6,4);
+					
+				}else{
+					
+					alert('La fecha inicio del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
+					return;
+				
+				}
+				
+				if (fechaF!=""){
+				
+					diaF=fechaF.substr(0,2);
+					mesF=fechaF.substr(3,2);
+					anioF=fechaF.substr(6,4);
+					
+				}else{
+					
+					alert('La fecha fin del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
+					return;
+				
 				}
 			
 				if (crear=='1'){
@@ -430,7 +480,13 @@ function grabarRecursos(){
 						CostoUnitario: costo,			
 						idMoneda: moneda,
 						idUnidadMedida:medida,
-						CostoFijo: costoF
+						CostoFijo: costoF,
+						dayI:  new Number(diaI),
+						monthI:  new Number(mesI),
+						yearI: new Number(anioI),
+						dayF:  new Number(diaF),
+						monthF:  new Number(mesF),
+						yearF: new Number(anioF)
 					}
 					recursosGrabar.push(recurso);
 					
@@ -443,7 +499,13 @@ function grabarRecursos(){
 							CostoUnitario: costo,			
 							idMoneda: moneda,
 							idUnidadMedida:medida,
-							CostoFijo: costoF
+							CostoFijo: costoF,
+							dayI:  new Number(diaI),
+							monthI:  new Number(mesI),
+							yearI: new Number(anioI),
+							dayF:  new Number(diaF),
+							monthF:  new Number(mesF),
+							yearF: new Number(anioF)
 						}
 						recursosModificar.push(recurso);
 					}
@@ -547,9 +609,9 @@ function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos").html('');
 	
 	if (esEdicion==0)
-		$("#tablaRecursos").append('<tr width="100%"><td width="5%"><b>#</b></td><td width="20%"><b>Recurso</b></td><td width="20%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diario</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diario</b></td><td width="14%"><b>Fecha Inicio</b></td><td width="14%"><b>Fecha Fin</b></td></tr>');
 	else
-		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="15%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="12%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diariol</b></td><td width="10%"><b>Eliminar</b></td></tr>');
+		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="12%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diario</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td><td width="5%"><b>Eliminar</b></td></tr>');
 }
 
 
@@ -574,3 +636,4 @@ function obtenerIdProyecto(){
 	return id;
 
 }
+
