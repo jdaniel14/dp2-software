@@ -347,14 +347,12 @@ function limpiarObtener(){
 	$('#paqEdtM').val(0);
 	$('#tipoImpactoM').val(0);
 	$('#impRiesgo1M').val('');
-	$('#impRiesgo2M').val(0);
-	$('#impRiesgoM').val(0);
 	$('#proRiesgoM').val('');
 	$('#svrRiesgoM').val('');
 	$('#accEspM').val('');
 	$('#costRiesgoM').val('');
 	$('#tiemRiesgoM').val('');
-	$('#equResM').val(0);
+	$('#equResM').val();
 	$('#nivelImpactoRiesgoM').val('');
 	$('#idnivelProbabilidadRiesgoM').val('');
 	$('#nivelProbabilidadRiesgoM').val('');
@@ -473,19 +471,20 @@ function obtenerRiesgo(id){
 					$('#RiesgoCaso1M').hide();
 					$('#impRiesgo2M').val(item.impacto);
 				}
-
-				if (item.idResponsable==null){
-					$('#equResM').val(0);
-				} else $('#equResM').val(item.idResponsable);
+				$('#nivelImpactoRiesgoM').val(item.nivelImpacto),
+				
 				$('#impRiesgoM').append("<option value="+ item.idNivelImpacto +" selected>" + item.nivelImpactoDescripcion + "</option>");
 				$('#proRiesgoM').val(item.probabilidad);
-				$('#idnivelProbabilidadRiesgoM').val(item.idProbabilidad);
+				$('#idnivelProbabilidadRiesgoM').val(item.idProbabilidadRiesgo);
 				$('#descnivelProbabilidadRiesgoM').val(item.descProbabilidad);
-				$('#nivelProbabilidadRiesgoM').val(item.idNivelProbabilidad);
+				$('#nivelProbabilidadRiesgoM').val(item.nivelProbabilidad);
 				$('#svrRiesgoM').val(item.severidad);
 				$('#accEspM').val(item.accionesEspecificas);
 				$('#costRiesgoM').val(item.costoPotencial);
 				$('#tiemRiesgoM').val(item.demoraPotencial);
+				if (item.idResponsable==null){
+					$('#equResM').val(0);
+				} else $('#equResM').val(item.idResponsable);
 			},
 			fail: codigoError
 		});
@@ -704,7 +703,7 @@ function agregaFilaRiesgo(arreglo,i){
 							  "\"><td>" + arreglo.idRiesgoProyecto + 
 							  "</td><td>" + arreglo.nombre + 
 							  "</td><td>" + arreglo.paqueteTrabajo + 
-							  "</td><td>" + arreglo.categoria + 
+							  "</td><td>" + arreglo.impactoDescripcion + 
 							  "</td><td>" + arreglo.nivelImpactoDescripcion + 
 							  "</td><td>" + arreglo.probabilidadDescripcion +
 							  "</td><td>" + arreglo.severidad +
@@ -794,6 +793,7 @@ $('#proRiesgoM').change(
 					var obj = JSON.parse(data);
 					$('#descnivelProbabilidadRiesgoM').val(obj.descripcion);
 					$('#idnivelProbabilidadRiesgoM').val(obj.idProbabilidadRiesgo);
+					$('#nivelProbabilidadRiesgoM').val(obj.nivel);
 					if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
 						console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
 			         	$('#svrRiesgoM').val($('#nivelProbabilidadRiesgoM').val()*$('#nivelImpactoRiesgoM').val());
@@ -841,7 +841,7 @@ $('#impRiesgo1').change(
 			});
 
      	} else {
-     		$('#impRiesgo').clear();
+     		$('#impRiesgo').empty();
      		$('#impRiesgo').append("<option value=\"0\" disabled selected>Primero, ingresa un impacto estimado</option>");
      		$('#nivelImpactoRiesgo').val('');
      		$('#svrRiesgo').val('');
@@ -863,7 +863,7 @@ $('#impRiesgo1M').change(
 				url: getImpactLevel1 +'/'+ jsonData,
 				success: function(data){
 					var obj = JSON.parse(data);
-					$('#impRiesgo1M').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
+					$('#impRiesgoM').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
 					$('#nivelImpactoRiesgoM').val(obj.nivel);
 					if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
 						console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
@@ -874,8 +874,8 @@ $('#impRiesgo1M').change(
 			});
 
      	} else {
-     		$('#impRiesgo1M').clear();
-     		$('#impRiesgo1M').append("<option value=\"0\" disabled selected>Primero, Seleccione un impacto estimado</option>");
+     		$('#impRiesgoM').empty();
+     		$('#impRiesgoM').append("<option value=\"0\" disabled selected>Primero, Seleccione un impacto estimado</option>");
      		$('#nivelImpactoRiesgoM').val('');
      		$('#svrRiesgoM').val('');
      	}
@@ -906,7 +906,7 @@ $('#impRiesgo2').change(
 			});
 
      	} else {
-     		$('#impRiesgo').clear();
+     		$('#impRiesgo').empty();
      		$('#impRiesgo').append("<option value=\"0\" disabled selected>Primero, Seleccione un impacto estimado</option>");
      		$('#nivelImpactoRiesgo').val('');
      		$('#svrRiesgo').val('');
@@ -927,7 +927,7 @@ $('#impRiesgo2M').change(
 				url: getImpactLevel2 +'/'+ jsonData,
 				success: function(data){
 					var obj = JSON.parse(data);
-					$('#impRiesgo2M').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
+					$('#impRiesgoM').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
 					$('#nivelImpactoRiesgoM').val(obj.nivel);
 					if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
 						console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
@@ -938,8 +938,8 @@ $('#impRiesgo2M').change(
 			});
 
      	} else {
-     		$('#impRiesgo2M').clear();
-     		$('#impRiesgo2M').append("<option value=\"0\" disabled selected>Primero, Seleccione un impacto estimado</option>");
+     		$('#impRiesgoM').empty();
+     		$('#impRiesgoM').append("<option value=\"0\" disabled selected>Primero, Seleccione un impacto estimado</option>");
      		$('#nivelImpactoRiesgoM').val('');
      		$('#svrRiesgoM').val('');
      	}
@@ -1053,6 +1053,8 @@ function listarTipoXNivelImpacto(idTipoImpactoLocal,tipo){
 			dataType: "json",
 			success: function(data){
 				if (data!=null){
+					$('#impRiesgo2').empty();
+					$('#impRiesgo2').append("<option value=\"0\" disabled>Escoge un valor estimado para el impacto</option>");
 					$.each(data, function (i, value){
 						$('#impRiesgo2').append("<option value="+ value.idNivelImpacto +">" + value.descripcion + "</option>");
 			        });
@@ -1063,7 +1065,6 @@ function listarTipoXNivelImpacto(idTipoImpactoLocal,tipo){
 			
 		});
 	} else if (tipo ==2) { //Modificar
-		alert("9");
 		var data = {
 			idTipoImpacto: idTipoImpactoLocal,
 			idProyecto: idProyectoLocal
@@ -1075,6 +1076,8 @@ function listarTipoXNivelImpacto(idTipoImpactoLocal,tipo){
 			dataType: "json",
 			success: function(data){
 				if (data!=null){
+					$('#impRiesgo2M').empty();
+					$('#impRiesgo2M').append("<option value=\"0\" disabled>Escoge un valor estimado para el impacto</option>");
 					$.each(data, function (i, value){
 						$('#impRiesgo2M').append("<option value="+ value.idNivelImpacto +">" + value.descripcion + "</option>");
 			        });
