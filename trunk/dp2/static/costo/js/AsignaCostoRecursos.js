@@ -51,7 +51,7 @@ var arregloMoneda= new Array(
 iniciaActividades();
 iniciaProyecto();		
 iniciaRecursos();
-
+iniciaRecursosFijos();
 
 //Funciones para obtener datos de AJAX
 
@@ -104,9 +104,21 @@ function obtenRecursos(/*idProyecto,*/tipo){
 		async: true,
 		success:function(data){agregaDataFila(data,tipo);}
 	});
+
+}
+
+function obtenRecursosFijo(){
+	var obj ={
+		idProyecto : idProyecto
+	}
 	
-	
-	//return arregloRecursos;
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerCostoFijoPlaneadoProyecto/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFilaFijo(data);}
+	});
 
 }
 
@@ -149,8 +161,13 @@ function obtenMoneda(){
 function iniciaRecursos(){
 	limpiaTablaRecursos();
 	obtenMoneda();
-	arreglo= obtenRecursos(/*idProyecto,*/0);
-	//agregaDataFila( arreglo, 0);
+	obtenRecursos(0);
+
+}
+
+function iniciaRecursosFijos(){
+	limpiaTablaRecursosFijo();	
+	obtenRecursosFijo(0);
 
 }
 
@@ -158,7 +175,7 @@ function iniciaConfirmaRecursos(){
 	limpiaTablaRecursos();
 	obtenMoneda();
 	iniciaProyecto();			
-	arreglo= obtenRecursos(/*idProyecto,*/1);
+	obtenRecursos(/*idProyecto,*/1);
 	//agregaDataFila( arreglo, 1 );
 
 }
@@ -168,6 +185,15 @@ function agregaDataFila(data, tipo){
 	for (i=0; i<arreglo.length;i++){
 		filaRecurso=arreglo[i];
 		agregaFilaRecurso(tipo,i,filaRecurso.idRecurso,filaRecurso.unidadMedida,filaRecurso.descripcion,filaRecurso.costoUnitario,filaRecurso.moneda,filaRecurso.cantidadEstimada);
+		numRecursos=i;
+	}
+}
+
+function agregaDataFilaFijo(data){
+	arreglo=data.lista;
+	for (i=0; i<arreglo.length;i++){
+		filaRecurso=arreglo[i];
+		agregaFilaRecursoFijo(i,filaRecurso.idRecurso,filaRecurso.unidadMedida,filaRecurso.descripcion,filaRecurso.costoFijoDiario,filaRecurso.moneda,filaRecurso.costoFijoTotal);
 		numRecursos=i;
 	}
 }
@@ -302,6 +328,17 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 
 }
 
+function agregaFilaRecursoFijo(i,idRecurso,unidadMedida, nombreRecurso, costoFijoDiario, moneda, costoFijoTotal){
+	a=i;
+	a++;
+	
+	//Si es para confirmar				
+	$("#tablaResumenCostoFijo").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+costoFijoDiario
+								+'</td><td>'+moneda+'</td><td>'+costoFijoTotal+'</td></tr><input type="hidden" id="idRecurso'
+								+(a)+'" value="'+idRecurso+'">');
+	
+}
+
 function creaInputMoneda(num){
 
 	combo='<select id="comboMoneda'+num+'" onChange="actualizaCostos();" >'+ comboMoneda + '</select>';
@@ -433,6 +470,13 @@ function cambiaConfirmaPresupuesto(){
 function limpiaTablaResumen(){
 	$("#tablaResumen").html('');
 	$("#tablaResumen").append('<tr><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>');
+		
+
+}
+
+function limpiaTablaRecursosFijo(){
+	$("#tablaResumenCostoFijo").html('');
+	$("#tablaResumenCostoFijo").append('<tr><td width="10%"><b>#</b></td><td width="30%"><b>Recurso</b></td><td width="20%"><b>Costo Fijo Diario</b></td><td width="20%"><b>Moneda</b></td><td width="20%"><b>Costo Fijo Total</b></td></tr>');
 		
 
 }
