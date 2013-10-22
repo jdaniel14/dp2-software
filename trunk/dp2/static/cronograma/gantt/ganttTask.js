@@ -158,9 +158,16 @@ Task.prototype.setPeriod = function (start, end) {
     this.end = end;
     somethingChanged = true;
   }
-
+  
   this.duration = recomputeDuration(this.start, this.end);
 
+  console.log("THISSS");
+  console.log(this);
+  
+  if(this.startIsMilestone == true){
+	  this.duration = 0;
+  }
+  
   //profilerSetPer.stop();
 
   //nothing changed exit
@@ -206,8 +213,12 @@ Task.prototype.setPeriod = function (start, end) {
       //console.debug("restricting start");
       this.start = Math.min(bs, this.start);
     }
-
+    
      this.duration = recomputeDuration(this.start, this.end);
+     
+     if(this.startIsMilestone == true){
+    	 this.duration = 0;
+     }
   } else {
 
     //check global boundaries
