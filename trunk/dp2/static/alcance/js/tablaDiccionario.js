@@ -33,7 +33,7 @@ $(document).ready(function(){
 	}
 	$.ajax({
 		type: 'GET',
-		url : '../../api/idEdtFromIdProyecto',
+		url : '../../api/AL_getIdEdtFromIdProyecto',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		data : obj,
@@ -45,14 +45,14 @@ $(document).ready(function(){
 
 	$.ajax({
 		type: 'GET',
-		url : '../../api/listaDiccionario/'+ id_edt,
+		url : '../../api/AL_getListaDiccionario/'+ id_edt,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: cargaLista
 	});
 	$.ajax({
 		type: 'GET',
-		url : '../../api/infoProyectoFromEDT/'+id_edt,
+		url : '../../api/AL_getInfoProyectoFromEDT/'+id_edt,
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: function(data){
