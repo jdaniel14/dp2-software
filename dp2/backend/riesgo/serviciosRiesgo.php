@@ -71,25 +71,29 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "UPDATE RIESGO_X_PROYECTO SET nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
-        id_categoria_riesgo=:id_categoria_riesgo, impacto=:impacto,probabilidad=:probabilidad, severidad=:severidad,
-        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , disparador=:disparador
+        $query = "UPDATE RIESGO_X_PROYECTO SET  id_proyecto=:id_proyecto, nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
+        id_tipo_impacto=:id_tipo_impacto, id_nivel_impacto=:id_nivel_impacto,probabilidad=:probabilidad, impacto=:impacto, severidad=:severidad,
+        id_probabilidad_riesgo=:id_probabilidad_riesgo,
+        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , id_empleado=:id_empleado , acciones_especificas=:acciones_especificas
         WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
             $stmt->bindParam("nombre_riesgo", $riesgo->nombreRiesgo);
             $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("id_categoria_riesgo", $riesgo->idCategoriaRiesgo);
-            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+            $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
             $stmt->bindParam("probabilidad", $riesgo->probabilidad);
-            //$severidad=$riesgo->probabilidad*$riesgo->impacto;
-            //$stmt->bindParam("severidad", $severidad);
+            $stmt->bindParam("impacto", $riesgo->impacto);
+            $stmt->bindParam("severidad", $riesgo->severidad);
+            $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
             $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->bindParam("disparador", $riesgo->nombreResponsable);
+            $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
+            $stmt->bindParam("acciones_especificas", $riesgo->acciones);
+
             $stmt->execute();
             $db = null;
             echo json_encode($idRiesgoXProyecto);
