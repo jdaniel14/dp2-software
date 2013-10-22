@@ -27,6 +27,9 @@ class CO_Recurso {
 	public $costoFijoDiario;
 	public $costoFijoTotal;
 	public $indRRHH;
+
+	public $fechaInicio;
+	public $fechaFin;
 	
 	//constructor
 	function __construct($idRecurso, $idUnidadMedida, $unidadMedida, $descripcion, $idMoneda, $moneda, $cantidadEstimada, $costoUnitario, $costoFijoDiario, $costoFijoTotal, $indRRHH) {
@@ -41,6 +44,8 @@ class CO_Recurso {
 	   $this->costoFijoDiario = $costoFijoDiario;
 	   $this->costoFijoTotal = $costoFijoTotal;
 	   $this->indRRHH = $indRRHH;
+	   $this->fechaInicio = null;
+	   $this->fechaFin = null;
    }
 }
 
