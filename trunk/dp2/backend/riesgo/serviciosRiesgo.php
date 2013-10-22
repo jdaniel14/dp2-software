@@ -80,6 +80,7 @@
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
             $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
             $stmt->bindParam("nombre_riesgo", $riesgo->nombreRiesgo);
             $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
