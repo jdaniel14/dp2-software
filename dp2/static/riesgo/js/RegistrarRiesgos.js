@@ -127,14 +127,15 @@ function main(){
 			probabilidad: $('#proRiesgoM').val(),
 			impacto: '',
 			idProbabilidad: $('#idnivelProbabilidadRiesgoM').val(),
-			// acciones: $('#accEspM').val(),
+			acciones: $('#accEspM').val(),
 			costoPotencial: $('#costRiesgoM').val(),
 			demoraPotencial: $('#tiemRiesgoM').val(),
 			idEmpleado: $('#equResM').val(),
+			severidad: $('#svrRiesgoM').val(),
 			nombreResponsable: ''
 		};
 		
-		if (tipoImpacto){
+		if (tipoImpacto==1){
 			data.impacto = $('#impRiesgo1M').val();
 		} else if (tipoImpacto==2){
 			data.impacto = $('#impRiesgo2M').val();
@@ -199,35 +200,35 @@ function main(){
 
 
 	//Boton guardar datos en la ventana de configuración
-	$("#btnConfiguracion").click( function(){
-		var data = {
-			idProyecto: idProyectoLocal,
-			muyBajo: $('#muyBajo').val(),
-			bajo: $('#bajo').val(),
-			medio: $('#medio').val(),
-			alto: $('#alto').val(),
-			muyAlto: $('#muyAlto').val()
-		};
-		limpiarConfiguracion();
-		if (!validarConfiguracion(data)){
-			console.log(data);
-			var jsonData = JSON.stringify(data);
-			$.ajax({
-				type: 'POST',
-				url: addConfg,
-				data: jsonData,
-				dataType: "json",
-				success: function(data){
-					alert("Actualizado con éxito");
-					$('#modalConfiguracion').modal('hide');
-				},
-				fail: function(data){
-					alert(data.me);
-				}
-			});	
-		}
+	// $("#btnConfiguracion").click( function(){
+	// 	var data = {
+	// 		idProyecto: idProyectoLocal,
+	// 		muyBajo: $('#muyBajo').val(),
+	// 		bajo: $('#bajo').val(),
+	// 		medio: $('#medio').val(),
+	// 		alto: $('#alto').val(),
+	// 		muyAlto: $('#muyAlto').val()
+	// 	};
+	// 	limpiarConfiguracion();
+	// 	if (!validarConfiguracion(data)){
+	// 		console.log(data);
+	// 		var jsonData = JSON.stringify(data);
+	// 		$.ajax({
+	// 			type: 'POST',
+	// 			url: addConfg,
+	// 			data: jsonData,
+	// 			dataType: "json",
+	// 			success: function(data){
+	// 				alert("Actualizado con éxito");
+	// 				$('#modalConfiguracion').modal('hide');
+	// 			},
+	// 			fail: function(data){
+	// 				alert(data.me);
+	// 			}
+	// 		});	
+	// 	}
 		
-	});
+	// });
 
 	// $("#listarConf").click( function(){
 	// 	$('#muyBajo').val('');
@@ -433,32 +434,32 @@ function obtenerRiesgo(id){
 			data: jsonData,
 			dataType: "json",
 			success: function(data){
+				console.log(data);
 				var item = data;
 				$('#idRiesgoM').val(id);
 				$('#nomRiesgoM').val(item.nombre);
 				if (item.paqueteTrabajo==null){
 					$('#paqEdtM').val(0);
 				} else $('#paqEdtM').val(item.paqueteTrabajo);
-				$('#tipoImpactoM').val(item.tipoImpacto);
+				$('#tipoImpactoM').val(item.idTipoImpacto);
 				if (item.tipoImpacto==1){
 					$('#impRiesgo1M').val(item.impacto);
 				} else if (item.tipoImpacto==2){
 					$('#impRiesgo2M').val(item.impacto);
 				}
 
-				if (item.equipoEesponsable==null){
+				if (item.idResponsable==null){
 					$('#equResM').val(0);
 				} else $('#equResM').val(item.idResponsable);
 				$('#impRiesgoM').val(item.idNivelImpacto);
 				$('#proRiesgoM').val(item.probabilidad);
 				$('#idnivelProbabilidadRiesgoM').val(item.idProbabilidad);
 				$('#descnivelProbabilidadRiesgoM').val(item.descProbabilidad);
-				$('#nivelProbabilidadRiesgoM').val(item.idProbabilidad);
+				$('#nivelProbabilidadRiesgoM').val(item.idNivelProbabilidad);
 				$('#svrRiesgoM').val(item.severidad);
 				$('#accEspM').val(item.accionesEspecificas);
 				$('#costRiesgoM').val(item.costoPotencial);
 				$('#tiemRiesgoM').val(item.demoraPotencial);
-				$('#equResM').val(item.idResponsable);
 			},
 			fail: codigoError
 		});
@@ -557,7 +558,7 @@ function listarRiesgos(search){
 				var id = $(this).closest("tr").attr("id");
 				obtenerRiesgo(id);
 				limpiarImpacto();
-				listarNivelesImpacto();
+				// listarNivelesImpacto();
 				limpiarModificar();
 			});
 			$(".glyphicon.glyphicon-remove").click( function(){
@@ -658,6 +659,19 @@ function agregaFilaRiesgo(arreglo,i){
 	if (arreglo.demoraPotencial==null){
 		arreglo.demoraPotencial='-';
 	}
+	if (arreglo.paqueteTrabajo==null){
+		arreglo.paqueteTrabajo='-';
+	}
+	if (arreglo.nivelImpactoDescripcion==null){
+		arreglo.nivelImpactoDescripcion='-';
+	}
+	if (arreglo.probabilidadDescripcion==null){
+		arreglo.probabilidadDescripcion='-';
+	}
+	if (arreglo.nombreResponsable==null){
+		arreglo.nombreResponsable='-';
+	}
+
 
 	$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
 							  "\"><td>" + arreglo.idRiesgoProyecto + 
@@ -969,12 +983,13 @@ $('#tipoImpacto').change(
 
 $('#tipoImpactoM').change(
     function(){
-    	var tipoImpacto;
+    	var idTipoImpactoLocal;
     	if ($('#tipoImpactoM').val()!=0){
 			
 			$.each(listaTipos, function (index){
 				if (this.idTipo==$('#tipoImpactoM').val()){
 					tipoImpacto=this.formas;
+					idTipoImpactoLocal = this.idTipo;
 					return false;
 				}
 			});
