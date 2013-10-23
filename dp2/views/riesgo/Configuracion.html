@@ -177,12 +177,12 @@
               <div class="modal-body">
                 <div class="form-horizontal col-lg-12">
                   <h5><b>Por favor, ingrese los datos del nuevo nivel de probabilidad</b>
-                  <br/><br/><small>Se recomienda que el nivel 1 tenga como descripción "Muy Bajo", el nivel 2 descripción "Bajo" y así sucesivamente. Recuerde tener una cantidad impar de niveles</small><br/></h5>
+                  <br/><br/><small>Se recomienda que el nivel 1 tenga como descripción "Muy Bajo", el nivel 2 descripción "Bajo" y así sucesivamente. Para una óptima valoración de riesgos, le recomendamos tener una cantidad impar de niveles</small><br/></h5>
 
                     <div class="form-group col-lg-12">
                         <label class="col-lg-5 control-label">*Nivel</label>
                         <div class="col-lg-7">
-                            <input type="number" class="form-control" id="numeroNivel" placeholder="Número de Nivel" min="1">
+                            <input type="number" class="form-control" id="numeroNivel" placeholder="Número de Nivel" min="1" readonly="readonly">
                         </div>
                         <div class="alert-modal alert-danger" id="errorNivel" style="display: none;">
                             <span class="pull-right">Por favor, inserte un número adecuado</span>
@@ -194,7 +194,7 @@
                     <div class="form-group col-lg-12">
                         <label class="col-lg-5 control-label">*Probabilidad Mínima</label>
                         <div class="col-lg-7">
-                            <input type="text" class="form-control" id="probabilidadMinNivel" placeholder="Probabilidad minima en %" maxlength="3">
+                            <input type="text" class="form-control" id="probabilidadMinNivel" placeholder="Probabilidad minima en %" maxlength="3" readonly="readonly">
                         </div>
                         <div class="alert-modal alert-danger" id="errorProbabilidadMin" style="display: none;">
                             <span class="pull-right">Por favor, inserte un número mayor a cero y menor al máximo</span>
