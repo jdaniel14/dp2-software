@@ -6,6 +6,7 @@ var getAllHeadersImpacts = "../../api/R_listaHeadersImpactoRiesgo";
 
 $(document).ready(main);
 var listaNiveles = [];
+var idProyectoLocal = localStorage.getItem("idProyecto");
 
 function main(){
 	listarTiposImpactosXNivelImpactos();
