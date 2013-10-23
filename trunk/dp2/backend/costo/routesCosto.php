@@ -18,6 +18,7 @@
 	$app->get('/CO_obtenerCostoFijoPlaneadoProyecto/:parametro', 'CO_getCostoFijoPlaneado'); //servicio15
 	$app->get('/CO_obtenerCostoFijoRealProyecto/:parametro', 'CO_getCostoFijoReal'); //servicio16
 	$app->get('/CO_enviarCostoFijoRealProyecto/:parametro', 'CO_saveCostoFijoRealProyecto'); //servicio17
+	$app->get('/CO_obtenerHistorialIndicador/:parametro', 'CO_getHistorialIndicador'); //servicio18
 	
 
 	$app->get('/CO_test/', 'CO_testFunction');
