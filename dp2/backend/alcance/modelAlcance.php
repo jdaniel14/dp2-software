@@ -67,9 +67,11 @@ Precondicion -> EDTARBOL
 		public $entregable;
 		public $criterioAceptacion;
 		public $idmiembros;
+		public $nombre;
+		public $apellido;
 		
 		function __construct($id_requisito,$descripcion,$fecha_termino,$solicitud,$cargo,$fundamento_incorporacion,
-    			$id_prioridad_requisito,$id_estado_requisito,$entregable,$criterio_aceptacion,$id_miembros_equipo){
+    			$id_prioridad_requisito,$id_estado_requisito,$entregable,$criterio_aceptacion,$id_miembros_equipo,$nombre,$apellido){
 			$this->idrequisito=$id_requisito;
 			$this->descripcion=$descripcion;
 			$this->fecha=$fecha_termino;
@@ -81,6 +83,8 @@ Precondicion -> EDTARBOL
 			$this->entregable=$entregable;
 			$this->criterioAceptacion=$criterio_aceptacion;
 			$this->idmiembros=$id_miembros_equipo;
+			$this->nombre=$nombre;
+			$this->apellido=$apellido;
 		}
 	}
 		
@@ -92,7 +96,7 @@ Precondicion -> EDTARBOL
 			public $email;
 		
 			function __construct($id,$nombre,$apellido,$tele,$email){
-				$this->idMiembros=$id;
+				$this->idMiembro=$id;
 				$this->nombre=$nombre;
 				$this->apellido=$apellido;
 				$this->telefono=$tele;
