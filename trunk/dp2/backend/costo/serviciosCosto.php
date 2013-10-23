@@ -201,14 +201,6 @@
 	function CO_saveCostoFijoRealProyecto($json) { //servicio 17 //ID PROYECTO? ID RECURSO? GGGGGGGG!
 		$objeto = json_decode($json);
 		
-		$yearI = $objeto->yearI;
-		$monthI = $objeto->monthI;
-		$dayI = $objeto->dayI;
-
-		$yearF = $objeto->yearF;
-		$monthF = $objeto->monthF;
-		$dayF = $objeto->dayF;
-
 		/*
 		if ($objeto->month < 10) {
 			$month = '0' . $month;
@@ -218,10 +210,8 @@
 			$day = '0' . $day;
 		}*/
 
-		$fechaI = $yearI . $monthI . $dayI;
-		$fechaF = $yearF . $monthF . $dayF;
 		
-		$jsonRespuesta = CO_guardarCostoFijoReal($objeto, $fechaI, $fechaF);
+		$jsonRespuesta = CO_guardarCostoFijoReal($objeto);
 		
 		echo json_encode($jsonRespuesta);
 	}
@@ -1558,7 +1548,7 @@
 		return $listaRecursos;
 	}
 
-	function CO_guardarCostoFijoReal($obj, $fechaI, $fechaF) { //
+	function CO_guardarCostoFijoReal($obj) { //
 		//insertar en la bd...
 		/*
 		$obj->idProyecto;
@@ -1580,6 +1570,16 @@
 	        	foreach ($obj->listaRecursos as $recurso) {
 	        		$db = getConnection();
 		        	$stmt = $db->prepare($sql);
+					$yearI = $recurso->yearI;
+					$monthI = $recurso->monthI;
+					$dayI = $recurso->dayI;
+
+					$yearF = $recurso->yearF;
+					$monthF = $recurso->monthF;
+					$dayF = $recurso->dayF;
+
+					$fechaI = $yearI . $monthI . $dayI;
+					$fechaF = $yearF . $monthF . $dayF;
 		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
 		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
 		        	$stmt->bindParam("costoFijoDiarioReal", $recurso->costoFijoDiarioReal);
