@@ -342,6 +342,8 @@ function getEdt(){
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     function mostrarMatriz(){
+    	
+      try{	
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$edt = json_decode($request->getBody()); //object convert
     	$idProyecto=$edt->{"idproyecto"};
@@ -416,22 +418,37 @@ function getEdt(){
     			  ];
     	
     	echo json_encode($matriz);
+      }
+      catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+      }
+      
     }
     
     function dameNombre($v){
+      try{	
     	$con = getConnection();
     	$pstmt= $con->prepare("SELECT a.nombres, a.apellidos FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE b.id_miembros_equipo= ?  AND a.id_empleado=b.id_empleado ");
     	$pstmt->execute(array($v));
     	$b=$pstmt->fetch(PDO::FETCH_ASSOC)["nombres"];
     	return $b;
+      }
+      catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+      }
     }
     
     function dameApellido($v){
+      try{
     	$con = getConnection();
     	$pstmt= $con->prepare("SELECT a.nombres, a.apellidos FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE b.id_miembros_equipo= ?  AND a.id_empleado=b.id_empleado ");
     	$pstmt->execute(array($v));
     	$a=$pstmt->fetch(PDO::FETCH_ASSOC)["apellidos"];
     	return $a;
+      }
+      catch (PDOException $e) {
+      	echo json_encode(array("me" => $e->getMessage()));
+      }      
     }
     
     //Modificar la matriz, por cada requisito ===========================================================================================
@@ -454,6 +471,7 @@ function getEdt(){
     }
     
     function buscarMiembros(){
+      try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idProyecto=$data->{"idproyecto"};
@@ -475,16 +493,11 @@ function getEdt(){
     		   ];
     	
     	echo json_encode($lista);
+      }
+      catch (PDOException $e) {
+      	echo json_encode(array("me" => $e->getMessage()));
+      }      
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
