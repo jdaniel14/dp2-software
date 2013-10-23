@@ -152,9 +152,35 @@ function imprimirTituloDelBloque(bloque, rX, rY){
 }
 
 function cantidadDeActividadesEnElBloque(actividadesEnBloque){
+	//console.log("Hallando los niveles");
+	//console.log(actividadesEnBloque);
+	cantActXBloque = 0;
+	
 	$.each(actividadesEnBloque, function(e,el){
-		
+		el.numero_fila = 0;
+		el.predecesores_id = 0;
 	});
+	
+	$.each(actividadesEnBloque, function(e,el){
+		el.predecesores_id = 1; //aca manejo si es que ha sido recorridos
+		
+		$.each(actividadesEnBloque, function(e1,el1){
+			var arrPredecesores = el1.predecesores.split(',');
+			
+			if((el1.predecesores_id != 1) && ($.inArray(el.id_actividad,arrPredecesores) != -1)){
+				el1.numero_fila = Math.max(el.numero_fila + 1,el1.numero_fila);
+				el1.predecesores_id = 1;
+			}
+		});
+	});
+	
+	$.each(actividadesEnBloque,function(e,el){
+		cantActXBloque = Math.max(cantActXBloque, el.numero_fila);
+	});
+	
+	cantActXBloque++;
+	//console.log(cantActXBloque);
+	
 }
 
 function iniciarFiesta(){
@@ -195,14 +221,14 @@ function iniciarFiesta(){
 		//Fin obtener actividades del bloque
 		
 		console.log("Actividades por el bloque: " + b);
-		console.log("Cantidad de actividades en el bloque = " + n);
 		console.log(actXBloque);
 		
 		//Inicializo el factor de movimiento en este bloque
 		//Calculo cantActXBloque (niveles en el bloque)
 		cantidadDeActividadesEnElBloque(actXBloque);
+		console.log("Cantidad de niveles en el bloque = " + cantActXBloque);
 		
-		factorXEnB = factorX / n;
+		factorXEnB = factorX / cantActXBloque;
 		//Fin Inicializar el factor de movimiento en este bloque
 
 		//Inicializar X e Y
@@ -212,10 +238,7 @@ function iniciarFiesta(){
 		
 		//Inicializar la posicion del titulo del bloque
 		xTitulo = x;
-		yTitulo = y - 70;		
-		console.log("Posiciones en que se imprimiran el titulo del bloque " + b);
-		console.log("xTitulo: " + xTitulo);
-		console.log("yTitulo: " + yTitulo);
+		yTitulo = y - 70;
 		
 		imprimirTituloDelBloque(b, xTitulo, yTitulo);
 		//Fin inicializar la posicion del titulo del bloque
