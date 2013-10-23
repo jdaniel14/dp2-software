@@ -262,7 +262,7 @@ function iniciarFiesta(){
 				el.marcado = 1;//0->no dibujado ni conectado, 1-> dibujado, 2->conectado y dibujado		
 				
 				//recursiva imprimirHijosEnBloque(padre,x,y,actxbloq)
-				imprimirHijos(el.id_actividad, x + factorXEnB, y /*+ factorYEnB*/);
+				imprimirHijos(el.id_actividad, x + factorXEnB, y + factorYEnB);
 				
 				//Aumento la posicion en la que estoy
 				x = x;
