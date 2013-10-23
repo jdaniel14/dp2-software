@@ -740,11 +740,11 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         
         //selectTCosto.val(task.);
         
-          console.log("Valorrrrr: " + assig.idTipoCosto);
-    	  selectTCosto.val(assig.idTipoCosto);
-    	  if(assig.idTipoCosto == null){
-    		  selectTCosto.val(1);
-    	  }  
+          //console.log("Valorrrrr: " + assig.idTipoCosto);
+    	  //console.log(assig);
+    	  
+    	 selectTCosto.val(1);
+    	  
         
         
         /***** Fin asignar Tipo Costo ****/
