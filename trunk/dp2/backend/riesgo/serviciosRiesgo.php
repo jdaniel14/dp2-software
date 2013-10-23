@@ -108,7 +108,10 @@
     function R_getListaRiesgo($var){
         $riesgo = json_decode($var);
 
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, nombre_corto
+        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
+        TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
+        PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
+        nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad
                 FROM RIESGO_X_PROYECTO RXP
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
@@ -137,6 +140,8 @@
                             "costoPotencial" => $row['costo_potencial'],//RXP
                             "demoraPotencial" => $row['demora_potencial'],//RXP
                             "nombreResponsable" => $row['nombre_corto']//X
+                            "nivelImpacto" => $row['nivel_impacto']//X
+                            "nivelProbabilidad" => $row['nivel_probabilidad']//X
                             );
                 array_push($arregloListaRiesgo,$data);
             }
