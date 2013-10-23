@@ -936,7 +936,7 @@ function Link(taskFrom, taskTo, lagInWorkingDays) {
 // *Modificacion
 
 //<%------------------------------------------------------------------------  ASSIGNMENT ---------------------------------------------------------------%>
-function Assignment(id, resourceId, roleId, effort, typeCost, costRate, value, idrecurso, costRateReal, valueReal) {
+function Assignment(id, resourceId, roleId, effort, typeCost, costRate, value, idrecurso, costRateReal, valueReal, idTipoCosto) {
   this.id = id;
   this.resourceId = resourceId;
   this.roleId = roleId;
