@@ -492,6 +492,11 @@ function grabarRecursos(){
 					return;
 				
 				}
+				
+				if (!comparaMenorFecha(diaI,mesI, anioI,diaF,mesF, anioF)){
+					alert('La fecha de inicio debe ser menor a la fecha de fin');
+					return;
+				}
 			
 				if (crear=='1'){
 
