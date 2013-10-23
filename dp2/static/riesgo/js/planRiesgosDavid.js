@@ -57,13 +57,9 @@ function agregarDataTiposImpactosXNivelImpactos(data){
 	var descripcionTipoImpacto;
 	var tipoImpacto;
 	$.each(listaTotal, function (index, valor){
-		console.log(valor);
 		idTipoImpactoXNivelImpacto=valor.idTipoImpacto;
 		descripcionTipoImpacto=valor.descripcionTipoImpacto;
 		tipoImpacto=valor.tipoImpacto;
-		console.log(idTipoImpactoXNivelImpacto);
-		console.log(descripcionTipoImpacto);
-		console.log(tipoImpacto);
 		$.each(valor.lista, function (j, valor2){
 			columna.min = valor2.min;
 			columna.max= valor2.max;
@@ -83,32 +79,37 @@ function agregarDataTiposImpactosXNivelImpactos(data){
 }
 
 function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, descripcionTipoImpacto, tipoImpacto, fila){
-	$("#tablaTipoImpactoXNivelImpacto").append("<tr id=\""+idTipoImpactoXNivelImpacto+"\"></tr>");
+	$("#tablaTipoImpactoXNivelImpacto").append("<tr id=\"Nivel"+idTipoImpactoXNivelImpacto+"\"></tr>");
 	var cadena = "";
 	var tamano=fila.length;
 	cadena+="<td>"+descripcionTipoImpacto+"</td>";
-	console.log(cadena);
+	console.log(idTipoImpactoXNivelImpacto);
+	console.log(descripcionTipoImpacto);
+	console.log(tipoImpacto);
+	console.log(fila);
 	$.each(fila, function (index, valor){
 		if (tipoImpacto==1){
 			if (index==0) {
-				cadena+="<td> < "+valor.max+" </td>";
+				cadena+="<td>< "+valor.max+"</td>";
 			} else if (index==tamano-1) {
-				cadena+="<td> > "+valor.min+" </td>";
+				cadena+="<td>> "+valor.min+"</td>";
 			} else {
-				cadena+="<td> "+valor.min+" - "+valor.max+" </td>";
+				cadena+="<td>"+valor.min+" - "+valor.max+"</td>";
 			}
 		} else if (tipoImpacto==2) {
-			cadena+="<td> "+valor.descripcion+" </td>";
+
+			cadena+="<td>"+valor.descripcion+"</td>";
+			console.log(cadena);
 		}
 		
 	});
-	$("#"+idTipoImpactoXNivelImpacto).html(cadena);
+	$("#Nivel"+idTipoImpactoXNivelImpacto).html(cadena);
 }
 
 
 /*---------------------------------FIN LISTAR NIVEL X TIPO DE IMPACTO-------------------------------------------*/
 
-/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 1-------------------------*/
+/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 2-------------------------*/
 	$("#btnAgregarTipoXNivel2").click( function(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
@@ -169,9 +170,9 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 	});
 
 
-/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 1--------------------------*/
+/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 2--------------------------*/
 
-/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 2-------------------------*/
+/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 1-------------------------*/
 	$("#btnAgregarTipoXNivel1").click( function(){
 
 		var flag = true;  //if true se registra, if false mensaje de error!
@@ -182,17 +183,8 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 			
 		};
 
-		// var data = [];
 		var fila = [];
 		var valor = {};
-		// var idProyecto;
-		// var idTipoImpacto;
-		// idProyecto = idProyectoLocal;
-		// data.push(idProyecto);
-		// fila = {};
-		// idTipoImpacto = tipoImpacto;
-		// data.push(idTipoImpacto);
-		// fila = {};
 
 		for (var i = 0; i < listaNiveles.length ; i++) {
 			if (i==0){
@@ -205,10 +197,11 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 			} else if (i==listaNiveles.length-1) {
 				valor.min=$("#minTiposImpactoxNivelImpacto"+i).val();
 				valor.max=0;
+				console.log("Min: "+valor.min+" Max anterior: "+$("#maxTiposImpactoxNivelImpacto"+(i-1)).val());
 				if (!esNumEntPos(valor.min)){
 					$("#errorNumeroEntero"+i).fadeIn('slow');
 					flag=false;
-				} else if (valor.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
+				} else if ((valor.min*1)<= ($("#maxTiposImpactoxNivelImpacto"+(i-1)).val()*1)) {
 					$("#errorMinImpacto"+i).fadeIn('slow');
 					flag=false;
 				}
@@ -218,12 +211,18 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 				if ((!esNumEntPos(valor.min)) || (!esNumEntPos(valor.max))){
 					$("#errorNumeroEntero"+i).fadeIn('slow');
 					flag=false;
-				} else if (fila.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
+				} else {
+					console.log("Min: "+valor.min+" Max anterior: "+$("#maxTiposImpactoxNivelImpacto"+(i-1)).val());
+					if ((valor.min*1) <= ($("#maxTiposImpactoxNivelImpacto"+(i-1)).val()*1)){
 					$("#errorMinImpacto"+i).fadeIn('slow');
 					flag=false;
-				} else if (valor.min>=valor.max){
-					$("#errorMaxImpacto"+i).fadeIn('slow');
-					flag=false;
+					} else {
+						if ((valor.min*1)>=(valor.max*1)){
+							console.log("Min: "+valor.min+" Max:"+valor.max);
+							$("#errorMaxImpacto"+i).fadeIn('slow');
+							flag=false;
+						}
+					}
 				}
 			}
 			valor.nivel=$("#nivelImpacto"+i).val();
@@ -241,7 +240,6 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 		// $('#errorProbabilidadMaxMenor').hide();
 		// $('#errorDescripcion').hide();
 
-		console.log(data);
 		var jsonData = JSON.stringify(data);
 		if (flag){
 			$.ajax({
@@ -250,8 +248,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 				data: jsonData,
 				dataType: "json",
 				success: function(data){
-					var item = data;
-					alert("Se registró exitosamente el nivel " + item.descripcion);
+					alert("Se registraron exitosamente los valores del impacto ");
 					listarTiposImpactosXNivelImpactos();
 					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
 				},
@@ -261,7 +258,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 		
 	});
 
-/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 2--------------------------*/
+/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 1--------------------------*/
 
 /*-----------------------------------------ERRORES----------------------------------------------------*/
 function codigoError(){
@@ -347,7 +344,7 @@ function agregarDataTiposImpacto(data){
 			                        "<span class=\"pull-right\">Por favor ingrese un numero entero positivo</span>" +
 			                    "</div>" +
 			                    "<div class=\"alert-modal alert-danger\" id=\"errorMinImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número máximo del nivel anterior</span>" +
+			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número de la derecha de la fila anterior</span>" +
 			                    "</div>" +
 	                        "</div>");
 					} else {
@@ -366,10 +363,10 @@ function agregarDataTiposImpacto(data){
 			                        "<span class=\"pull-right\">Por favor ingrese un numero entero positivo</span>" +
 			                    "</div>" +
 			                    "<div class=\"alert-modal alert-danger\" id=\"errorMinImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número máximo del nivel anterior</span>" +
+			                        "<span class=\"pull-right\">Por favor ingrese a la izquierda un numero mayor al número de la derecha de la fila anterior</span>" +
 			                    "</div>" +
 			                    "<div class=\"alert-modal alert-danger\" id=\"errorMaxImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número mínimo de este nivel</span>" +
+			                        "<span class=\"pull-right\">Por favor ingrese a la derecha un numero mayor al número de la izquierda</span>" +
 			                    "</div>" +
 	                        "</div>");
 					}
@@ -438,11 +435,30 @@ function listarHeaderNivelImpacto(){
 		success: function(data){
 			listaNiveles = data;
 			console.log(data);
-			// agregarDataImpacto(data);
+			agregarDataImpacto(data);
 		},
 		fail: codigoError
 		// fail: agregarDataImpacto(listaNiveles)
 	});
 }
 
+function agregarDataImpacto(data){
+	arreglo=data;
+	if (arreglo!=null){
+		$("#headerTipoImpactoXNivelImpacto").append("<th> Impacto </th>");
+		
+                for (i=0; i<arreglo.length;i++){
+			agregaFilaImpacto(arreglo[i],i);
+		}
+		$("#headerTipoImpactoXNivelImpacto").append("<th colspan =\"2\"> Acciones </th>");
+
+
+	}
+}
+
+function agregaFilaImpacto(arreglo,i){
+	$("#headerTipoImpactoXNivelImpacto").append("<th>" + arreglo.descripcion + "</th>");
+	$("#tablaImpacto").append("<tr><td>" + arreglo.nivel + 
+	  "</td><td>" + arreglo.descripcion + "</td></tr>");
+}
 
