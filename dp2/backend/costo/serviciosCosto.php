@@ -198,7 +198,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_saveCostoFijoRealProyecto($json) { //servicio 17 //ID PROYECTO? ID RECURSO? GGGGGGGG!
+	function CO_saveCostoFijoRealProyecto($json) { //servicio 17 //COMPLETO
 		$objeto = json_decode($json);
 		
 		/*
@@ -213,6 +213,15 @@
 		
 		$jsonRespuesta = CO_guardarCostoFijoReal($objeto);
 		
+		echo json_encode($jsonRespuesta);
+	}
+
+	function CO_getHistorialIndicador($json) {
+		$objeto = json_decode($json);
+
+		$jsonRespuesta = new stdClass();
+    	$jsonRespuesta->lista = CO_consultarHistorialIndicador($objeto);
+
 		echo json_encode($jsonRespuesta);
 	}
 
@@ -1602,7 +1611,147 @@
 		
 		return $respuesta;
 	}
+
+	function CO_consultarHistorialIndicador($obj) { //
+
+		$listaIndicadores = CO_obtenerIndidacoresRelacionados($obj->indicador);
+
+		$sql = "SELECT
+		A.ID_INDICADOR,
+		B.NOMBRE,
+		A.VALOR,
+		DATE_FORMAT(A.FECHA,'%d-%m-%Y') FECHA
+		FROM 
+		INDICADOR_X_PROYECTO A JOIN INDICADOR B ON A.ID_INDICADOR=B.ID_INDICADOR
+		WHERE
+		DATE_FORMAT(A.FECHA,'%Y%m%d') <= :fecha
+		AND A.ID_INDICADOR= :idIndicador
+		AND A.ID_PROYECTO = :idProyecto
+		ORDER BY A.FECHA;";
+
+		$listaHistorialIndicadores = array();
+
+		if ($listaIndicadores != null) {
+			foreach ($listaIndicadores as $tempInd) {
+				$indicador = new stdClass();
+				$indicador->nombre = $tempInd->nombre;
+				$listaValores = array();
+				try {
+					$db = getConnection();
+		        	$stmt = $db->prepare($sql);
+		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+		        	$stmt->bindParam("idIndicador", $tempInd->id);
+		        	$stmt->bindParam("fecha", $obj->fecha);
+		        	$stmt->execute();
+		        	$db = null;
+		        	
+		        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+		        		$valorFecha = new stdClass();
+		        		$valorFecha->fecha = $p["FECHA"];
+		        		$valorFecha->valor = $p["VALOR"];
+
+		        		array_push($listaValores, $valorFecha);
+					}
+				} catch(PDOException $e) {
+		        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+				}
+
+				$indicador->historial = $listaValores;
+
+				array_push($listaHistorialIndicadores, $indicador);
+			}
+			
+		}
+		return $listaHistorialIndicadores;
+	}
   
+	function CO_obtenerIndidacoresRelacionados($indicador) {
+		$lista = array();
+		if ($indicador != null) {
+			if ((strcasecmp($indicador, "pv") == 0) || (strcasecmp($indicador, "ev") == 0) || (strcasecmp($indicador, "ac") == 0)) {
+				$ind = new stdClass();
+				$ind->id = CO_PV;
+				$ind->nombre = "PV";
+				array_push($lista, $ind);
+
+				$ind = new stdClass();
+				$ind->id = CO_EV;
+				$ind->nombre = "EV";
+				array_push($lista, $ind);
+
+				$ind = new stdClass();
+				$ind->id = CO_AC;
+				$ind->nombre = "AC";
+				array_push($lista, $ind);
+			} else {
+				if (strcasecmp($indicador, "cv") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_CV;
+					$ind->nombre = "CV";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "cpi") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_CPI;
+					$ind->nombre = "CPI";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "spi") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_SPI;
+					$ind->nombre = "SPI";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "sv") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_SV;
+					$ind->nombre = "SV";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "BAC") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_BAC;
+					$ind->nombre = "BAC";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "eac") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_EAC;
+					$ind->nombre = "EAC";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "etc") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_ETC;
+					$ind->nombre = "ETC";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "vac") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_VAC;
+					$ind->nombre = "VAC";
+					array_push($lista, $ind);
+				}
+
+				if (strcasecmp($indicador, "tcpi") == 0) {
+					$ind = new stdClass();
+					$ind->id = CO_TCPI;
+					$ind->nombre = "TCPI";
+					array_push($lista, $ind);
+				}
+			}
+		}
+
+		return $lista;
+	}
+
   //RESPUESTAS
 	function CO_crearRespuesta($codRespuesta, $mensaje) {
 		$respuesta = new stdClass();
