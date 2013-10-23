@@ -5,8 +5,6 @@ var getAllHeadersImpacts = "../../api/R_listaHeadersImpactoRiesgo";
 var deleteAllImpacts = "../../api/R_eliminarHeaderImpactoRiesgo";
 var addImpact = "../../api/R_registrarHeaderImpactoRiesgo";
 var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
-var addTypeImpactsXLevelImpacts1 = "../../api/R_registrarTipoImpactoXNivelImpacto1";
-var addTypeImpactsXLevelImpacts2 = "../../api/R_registrarTipoImpactoXNivelImpacto2";
 var getMaxProbability = "../../R_obtenerProbabilidadRiesgoMaxima";
 
 $(document).ready(main);
@@ -18,92 +16,6 @@ var listaProbabilidades=[];
 
 var listaNiveles = [];
 
-// var objeto1 = {
-// 	descripcion: "Muy Bajo",
-// 	tipo: 2,
-// 	idTipo: 2
-// };
-// var objeto2 = {
-// 	descripcion: "Bajo",
-// 	tipo: 2,
-// 	idTipo: 2
-// };
-// var objeto3 = {
-// 	descripcion: "Muy Alto",
-// 	tipo: 2,
-// 	idTipo: 1
-// };
-// var listaNiveles = [
-// 	objeto1,
-// 	objeto2,
-// 	objeto3];
-
-// var listaTipos = [
-// 	{idTipoImpacto:1,
-// 	descripcion:"seguridad",
-// 	tipo:2},
-// 	{idTipoImpacto:2,
-// 	descripcion:"Costo",
-// 	tipo:1},
-// 	{idTipoImpacto:3,
-// 	descripcion:"Cronograma",
-// 	tipo:1},
-// 	{idTipoImpacto:4,
-// 	descripcion:"Ambiente",
-// 	tipo:2},
-// 	];
-
-// var listafila1 = [
-// 	{
-// 		min:0,
-// 		max:1000,
-// 		descripcion:""
-// 	},
-// 	{
-		
-// 		min:1001,
-// 		max:2000,
-// 		descripcion:""
-// 	},
-// 	{
-// 		min:2001,
-// 		max:2000,
-// 		descripcion:""
-// 	}
-// ];
-
-// var listafila2 = [
-// 	{
-// 		min:0,
-// 		max:1000,
-// 		descripcion:"Leve"
-// 	},
-// 	{
-		
-// 		min:1001,
-// 		max:2000,
-// 		descripcion:"Grave"
-// 	},
-// 	{
-// 		min:2001,
-// 		max:2000,
-// 		descripcion:"Muy Grave"
-// 	}
-// ];
-// var listaTipoImpacto = [
-// 	{
-// 		idTipoImpactoXNivelImpacto:1,
-// 		descripcionTipoImpacto: "Costos",
-// 		tipoImpacto: 1,
-// 		lista:listafila1
-// 	},
-// 	{
-// 		idTipoImpactoXNivelImpacto:2,
-// 		descripcionTipoImpacto: "Seguridad",
-// 		tipoImpacto: 2,
-// 		lista:listafila2
-// 	},
-	
 /*------------------------------VALIDACIONES AGREGAR PROBABILIDAD---------------------------*/
 
 
@@ -258,7 +170,7 @@ function validarAgregarNivel(){
 function main(){
 	listarProbabilidades();
 	listarHeaderNivelImpacto();
-	listarTiposImpacto();
+	
 	// listarTiposImpactosXNivelImpactos();
 /*---------------------------------AGREGAR UN NIVEL-------------------------------------------*/
 	
@@ -382,126 +294,7 @@ function main(){
 /*---------------------------------FIN ELIMINAR UN NIVEL IMPACTO-------------------------------------------*/
 
 
-/*------------------------- CREAR CUERPO MODAL TIPO IMPACTO X NIVEL IMPACTO----------------------------------*/
-	$('#listarTiposImpactos').change( function(){
-	// 
-		var tamano = listaNiveles.length;
-		
-		$('#btnAgregarTipoXNivel2').hide();
-		$('#btnAgregarTipoXNivel1').hide();
-		tipoImpacto=0;
-		$('#CuerpoModalTiposImpactoxNivelImpacto').empty();
-		if ($('#listarTiposImpactos').val()!=0) {
-			$.each(listaTipos, function ( index){
-				if (this.idTipo==$('#listarTiposImpactos').val()){
-					tipoImpacto=this.formas;
-					return false;
-				}
-			});
-			$.each(listaNiveles, function ( index){
-				if (tipoImpacto==1){
-					if (index==0){
-						$('#CuerpoModalTiposImpactoxNivelImpacto').append(
-							"<div class=\"form-group col-lg-12\">"+
-								"<input type=\"text\" id=\"nivelImpacto"+index+"\" value=\""+this.nivel+"\" style=\"display: none;\">" +
-                                "<label class=\"col-lg-5 control-label\">*Ingrese el valor "+this.descripcion+"</label>"+
-                                "<label class=\"col-lg-1 col-lg-offset-3 control-label\">&lt;</label>"+
-                                "<div class=\"col-lg-3\">"+
-                                    "<input type=\"text\" class=\"form-control\" id=\"maxTiposImpactoxNivelImpacto"+index+"\" maxlength=\"6\">"+
-                                "</div>"+
-                                "<div class=\"alert-modal alert-danger\" id=\"errorNumeroEntero"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero entero positivo</span>" +
-			                    "</div>" +
-                            "</div>");
-					} else if (index==tamano-1){
-						$('#CuerpoModalTiposImpactoxNivelImpacto').append(
-							"<div class=\"form-group col-lg-12\">"+
-	                            "<input type=\"text\" id=\"nivelImpacto"+index+"\" value=\""+this.nivel+"\" style=\"display: none;\">" +
-	                            "<label class=\"col-lg-5 control-label\">*Ingrese el valor "+this.descripcion+"</label>"+
-	                            "<label class=\"col-lg-1 col-lg-offset-3 control-label\">&gt;</label>"+
-	                            "<div class=\"col-lg-3\">"+
-	                                "<input type=\"text\" class=\"form-control\" id=\"minTiposImpactoxNivelImpacto"+index+"\" maxlength=\"6\">"+
-	                            "</div>"+
-	                            "<div class=\"alert-modal alert-danger\" id=\"errorNumeroEntero"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero entero positivo</span>" +
-			                    "</div>" +
-			                    "<div class=\"alert-modal alert-danger\" id=\"errorMinImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número máximo del nivel anterior</span>" +
-			                    "</div>" +
-	                        "</div>");
-					} else {
-						$('#CuerpoModalTiposImpactoxNivelImpacto').append(
-							"<div class=\"form-group col-lg-12\">"+
-	                            "<input type=\"text\" id=\"nivelImpacto"+index+"\" value=\""+this.nivel+"\" style=\"display: none;\">" +
-	                            "<label class=\"col-lg-5 control-label\">*Ingrese el valor "+this.descripcion+"</label>"+
-	                            "<div class=\"col-lg-3\">"+
-	                                "<input type=\"text\" class=\"form-control\" id=\"minTiposImpactoxNivelImpacto"+index+"\" maxlength=\"6\">"+
-	                            "</div>"+
-	                            "<label class=\"col-lg-1 control-label\">&lt;</label>"+
-	                            "<div class=\"col-lg-3\">"+
-	                                "<input type=\"text\" class=\"form-control\" id=\"maxTiposImpactoxNivelImpacto"+index+"\" maxlength=\"6\">"+
-	                            "</div>"+
-	                            "<div class=\"alert-modal alert-danger\" id=\"errorNumeroEntero"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero entero positivo</span>" +
-			                    "</div>" +
-			                    "<div class=\"alert-modal alert-danger\" id=\"errorMinImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número máximo del nivel anterior</span>" +
-			                    "</div>" +
-			                    "<div class=\"alert-modal alert-danger\" id=\"errorMaxImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor ingrese un numero mayor al número mínimo de este nivel</span>" +
-			                    "</div>" +
-	                        "</div>");
-					}
-					$('#btnAgregarTipoXNivel1').fadeIn('slow');
-				} else if (tipoImpacto==2){
-					$('#CuerpoModalTiposImpactoxNivelImpacto').append(
-							"<div class=\"form-group col-lg-12\">"+
-                                "<input type=\"text\" id=\"nivelImpacto"+index+"\" value=\""+this.nivel+"\" style=\"display: none;\">" +
-                                "<label class=\"col-lg-5 control-label\">*Ingrese el valor "+this.descripcion+"</label>"+
-                                "<div class=\"col-lg-7\">"+
-                                    "<input type=\"text\" class=\"form-control\" id=\"descTiposImpactoxNivelImpacto"+index+"\" maxlength=\"35\">"+
-                                "</div>"+
-                                "<div class=\"alert-modal alert-danger\" id=\"errordescImpacto"+index+"\" style=\"display: none;\">" +
-			                        "<span class=\"pull-right\">Por favor, ingrese un valor para continuar</span>" +
-			                    "</div>" +
-                            "</div>");
-					$('#btnAgregarTipoXNivel2').fadeIn('slow');
-				}
-			});
 
-			
-				
-		}
-
-	});
-
-/*-------------------------FIN CREAR CUERPO MODAL TIPO IMPACTO X NIVEL IMPACTO----------------------------------*/
-
-
-/*-------------------------LIMPIAR Y VALIDACIONES DEL MODAL IMPACTO X NIVEL IMPACTO----------------------------------*/
-
-	$("#btnAumentar").click(function(){
-		var tamano = listaNiveles.length;
-		for (var i = 0; i < tamano ; i++) {
-
-			$("#descTiposImpactoxNivelImpacto"+i).val("");
-			$("#errordescImpacto"+i).hide();
-
-			if (i==0){
-				$("#maxTiposImpactoxNivelImpacto"+i).val("");
-			} else {
-				if (i!=tamano -1) {
-					$("#maxTiposImpactoxNivelImpacto"+i).val("");
-					$("#errorMaxImpacto"+i).hide();
-				}
-				$("#minTiposImpactoxNivelImpacto"+i).val("");
-				$("#errorMinImpacto"+i).hide();
-			} 
-			$("#errorNumeroEntero"+i).hide();
-		}
-	});
-
-/*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL IMPACTO X NIVEL IMPACTO----------------------------------*/
 
 /*-------------------------LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
 
@@ -519,164 +312,11 @@ function main(){
 		$("#errorDescripcion").hide();
 		obtenerMayorProbabilidad();
 	});
-
+}
 /*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
 
 
-/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 1-------------------------*/
-	$("#btnAgregarTipoXNivel2").click( function(){
 
-		var flag = true;  //if true se registra, if false mensaje de error!
-		// var data = [];
-		var fila = [];
-		var valor = {};
-
-		var data = {
-			idProyecto: idProyectoLocal,
-			idTipoImpacto: tipoImpacto
-			
-		};
-
-		// fila = {};
-
-		for (var i = 0; i < listaNiveles.length ; i++) {
-			valor.descripcion=$("#descTiposImpactoxNivelImpacto"+i).val();
-			console.log(valor.descripcion);
-			valor.nivel=$("#nivelImpacto"+i).val();
-			if (valor.descripcion==""){
-				$("#errordescImpacto"+i).fadeIn('slow');
-				flag=false;
-			}
-
-
-			fila.push(valor);
-			valor = {};
-		};
-		data.valor=fila;
-
-
-		// $('#errorNivel').hide();
-		// $('#errorNivelMenor').hide();
-		// $('#errorProbabilidadMin').hide();
-		// $('#errorProbabilidadMinMayor').hide();
-		// $('#errorProbabilidadMax').hide();
-		// $('#errorProbabilidadMaxMenor').hide();
-		// $('#errorDescripcion').hide();
-
-		console.log(data);
-		var jsonData = JSON.stringify(data);
-		if (flag){
-			$.ajax({
-				type: 'POST',
-				url: addTypeImpactsXLevelImpacts2,
-				data: jsonData,
-				dataType: "json",
-				success: function(data){
-					var item = data;
-					alert("Se registró exitosamente el nivel " + item.descripcion);
-					listarTiposImpactosXNivelImpactos();
-					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
-				},
-				fail: codigoError
-			});
-		}
-		
-	});
-
-
-/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 1--------------------------*/
-
-/*--------------------------AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 2-------------------------*/
-	$("#btnAgregarTipoXNivel1").click( function(){
-
-		var flag = true;  //if true se registra, if false mensaje de error!
-
-		var data = {
-			idProyecto: idProyectoLocal,
-			idTipoImpacto: tipoImpacto
-			
-		};
-
-		// var data = [];
-		var fila = [];
-		var valor = {};
-		// var idProyecto;
-		// var idTipoImpacto;
-		// idProyecto = idProyectoLocal;
-		// data.push(idProyecto);
-		// fila = {};
-		// idTipoImpacto = tipoImpacto;
-		// data.push(idTipoImpacto);
-		// fila = {};
-
-		for (var i = 0; i < listaNiveles.length ; i++) {
-			if (i==0){
-				valor.min=0;
-				valor.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
-				if (!esNumEntPos(valor.max)){
-					$("#errorNumeroEntero"+i).fadeIn('slow');
-					flag=false;
-				}
-			} else if (i==listaNiveles.length-1) {
-				valor.min=$("#minTiposImpactoxNivelImpacto"+i).val();
-				valor.max=0;
-				if (!esNumEntPos(valor.min)){
-					$("#errorNumeroEntero"+i).fadeIn('slow');
-					flag=false;
-				} else if (valor.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
-					$("#errorMinImpacto"+i).fadeIn('slow');
-					flag=false;
-				}
-			} else {
-				valor.max=$("#maxTiposImpactoxNivelImpacto"+i).val();
-				valor.min=$("#minTiposImpactoxNivelImpacto"+i).val();
-				if ((!esNumEntPos(valor.min)) || (!esNumEntPos(valor.max))){
-					$("#errorNumeroEntero"+i).fadeIn('slow');
-					flag=false;
-				} else if (fila.min<=$("#maxTiposImpactoxNivelImpacto"+(i-1)).val()){
-					$("#errorMinImpacto"+i).fadeIn('slow');
-					flag=false;
-				} else if (valor.min>=valor.max){
-					$("#errorMaxImpacto"+i).fadeIn('slow');
-					flag=false;
-				}
-			}
-			valor.nivel=$("#nivelImpacto"+i).val();
-			fila.push(valor);
-			valor = {};
-			data.valor=fila;
-		};
-
-
-		// $('#errorNivel').hide();
-		// $('#errorNivelMenor').hide();
-		// $('#errorProbabilidadMin').hide();
-		// $('#errorProbabilidadMinMayor').hide();
-		// $('#errorProbabilidadMax').hide();
-		// $('#errorProbabilidadMaxMenor').hide();
-		// $('#errorDescripcion').hide();
-
-		console.log(data);
-		var jsonData = JSON.stringify(data);
-		if (flag){
-			$.ajax({
-				type: 'POST',
-				url: addTypeImpactsXLevelImpacts1,
-				data: jsonData,
-				dataType: "json",
-				success: function(data){
-					var item = data;
-					alert("Se registró exitosamente el nivel " + item.descripcion);
-					listarTiposImpactosXNivelImpactos();
-					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
-				},
-				fail: codigoError
-			});
-		}
-		
-	});
-}
-/*---------------------FIN AGREGAR FILA MATRIZ NIVEL X TIPO DE IMPACTO---TIPO 2--------------------------*/
 
 
 /*---------------------OBTENER MAYOR PROBABILIDAD--------------------------*/
@@ -804,36 +444,3 @@ function agregaFilaImpacto(arreglo,i){
 /*---------------------------------FIN MOSTRAR HEADER NIVEL IMPACTO------------------------------------------*/
 
 
-/*---------------------------------LISTAR TIPOS DE IMPACTO------------------------------------------*/
-
-function listarTiposImpacto(){
-	var data = {
-		idProyecto: idProyectoLocal, 
-	};
-	var jsonData = JSON.stringify(data);
-	$.ajax({
-		type: 'GET',                
-		url: getAllTypesImpacts + '/' + data.idProyecto,
-		dataType: "json",
-		success: function(data){
-			listaTipos = data;
-			console.log(data);
-			agregarDataTiposImpacto(data);
-		},
-		fail: 
-			codigoError
-			// agregarDataTiposImpacto(listaTipos)
-		
-	});
-}
-
-function agregarDataTiposImpacto(data){
-	arreglo=data;
-	if (arreglo!=null){
-		$.each(arreglo, function (i, value){
-			$('#listarTiposImpactos').append("<option value="+ value.idTipo +">" + value.tipoRi + "</option>");
-        });	
-	}
-}
-
-/*---------------------------------LISTAR TIPOS DE IMPACTO------------------------------------------*/
