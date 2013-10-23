@@ -384,18 +384,27 @@ function getEdt(){
     	while ($listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC)){
     		
     		//obtengo el nombre y apellido del empleado con id=$listaRequisito['id_miembros_equipo']
-    		if($listaRequisito["id_miembros_equipo"]==0) {
+    		if($listaRequisito["id_miembros_equipo"]==0) {//debido a que la primera vez no se han ingresado datos, el id_miembros es =0
     			$nombre="";
     			$apellido="";
     		}
     		else {
-    			$nombre=dameNombre($listaRequisito["id_miembros_equipo"]);
-    			$apellido=dameApellido($listaRequisito["id_miembros_equipo"]);
+    			$nombre=dameNombre($listaRequisito["id_miembros_equipo"]);//obtengo el nombre de la persona
+    			$apellido=dameApellido($listaRequisito["id_miembros_equipo"]);//obtengo el apellido de la persona
     		}
     		
-    		$hijo = new Requisito($listaRequisito["id_requisito"],$listaRequisito["descripcion"],$listaRequisito["fecha_termino"],
-    				$listaRequisito["solicitud"],$listaRequisito["cargo"],$listaRequisito["fundamento_incorporacion"],$listaRequisito["id_prioridad_requisito"],
-    				$listaRequisito["id_estado_requisito"],$listaRequisito["entregable"],$listaRequisito["criterio_aceptacion"],$listaRequisito["id_miembros_equipo"],
+    		//debido a que al principio no tienen valores, elimino los null poniendo en cada uno ""
+    		if($listaRequisito["descripcion"]==null)$desc="";else $desc=$listaRequisito["descripcion"];
+    		if($listaRequisito["solicitud"]==null)$sol="";else $sol=$listaRequisito["solicitud"];
+    		if($listaRequisito["cargo"]==null)$car="";else $car=$listaRequisito["cargo"];
+    		if($listaRequisito["fundamento_incorporacion"]==null)$fun="";else $fun=$listaRequisito["fundamento_incorporacion"];
+    		if($listaRequisito["entregable"]==null)$ent="";else $ent=$listaRequisito["entregable"];
+    		if($listaRequisito["criterio_aceptacion"]==null)$cri="";else $cri=$listaRequisito["criterio_aceptacion"];
+    		if($listaRequisito["fecha_termino"]==null)$fecha=date('Y-m-d', time());else $fecha=$listaRequisito["fecha_termino"];
+    		
+    		$hijo = new Requisito($listaRequisito["id_requisito"],$desc,$fecha,
+    				$sol,$car,$fun,$listaRequisito["id_prioridad_requisito"],
+    				$listaRequisito["id_estado_requisito"],$ent,$cri,$listaRequisito["id_miembros_equipo"],
     				$nombre,$apellido);
     		array_push($ar_Requisitos,$hijo);	
     	}
@@ -434,6 +443,8 @@ function getEdt(){
     	$idRequisito=$data->{"id_requisito"};
     	$con = getConnection();
     
+    	if ($data->{"fecha"}=="")$fecha=$fecha=date('Y-m-d', time());else $fecha=date("Y-m-d", $data->fecha / 1000);
+    	
     	$pstmt= $con->prepare("UPDATE REQUISITO SET descripcion=?,fecha_termino=?,solicitud=?,cargo=?,fundamento_incorporacion=?,
     			id_prioridad_requisito=?,id_estado_requisito=?,entregable=?,criterio_aceptacion=?,id_miembros_equipo=? where id_requisito=?");
     	$pstmt->execute(array($data->{"descripcion"},$data->{"fecha"},$data->{"solicitado"},$data->{"cargo"},$data->{"fundamento"},
