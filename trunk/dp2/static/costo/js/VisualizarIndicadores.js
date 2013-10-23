@@ -68,9 +68,9 @@ function obtenIndicadores(/*idProyecto,*/dia, mes , anio){
 	//alert(dia+" "+mes+" "+anio);
 	var obj ={
 		idProyecto : idProyecto,
-		year: new Number(anio),
-		month: new Number(mes),
-		day: new Number(dia)
+		year: anio,
+		month: mes,
+		day: dia
 	}
 	
 	
