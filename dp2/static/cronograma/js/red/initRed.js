@@ -266,7 +266,7 @@ function iniciarFiesta(){
 				
 				//Aumento la posicion en la que estoy
 				x = x;
-				y = y ;
+				y = y + factorYEnB;
 				
 			}
 			
