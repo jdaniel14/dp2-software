@@ -11,6 +11,7 @@ var getMaxProbability = "../../R_obtenerProbabilidadRiesgoMaxima";
 
 $(document).ready(main);
 // localStorage.setItem("idProyecto",1);
+
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var tipoImpacto=0;
 var listaProbabilidades=[];
@@ -255,7 +256,6 @@ function validarAgregarNivel(){
 
 /*------------------------------FIN VALIDACIONES AGREGAR PROBABILIDAD---------------------------*/
 function main(){
-	
 	listarProbabilidades();
 	listarHeaderNivelImpacto();
 	listarTiposImpacto();
@@ -347,6 +347,8 @@ function main(){
 			success: function(){
 				alert("Se elimino el riesgo correctamente");
 				listarProbabilidades();
+				$('#btnModalAgregarNivel').removeAttr("disabled");
+				$('#btnAgregarNivel').removeAttr("disabled");
 			},
 			fail: codigoError
 		});
@@ -681,7 +683,28 @@ function main(){
 
 function obtenerMayorProbabilidad () {
 
-// getMaxProbability
+
+	var data = {
+		idProyecto: idProyectoLocal, 
+	};
+	$.ajax({
+		type: 'GET',                
+		url: getMaxProbability + '/' + data.idProyecto,
+		success: function(data){
+			if (data==null) {
+				$('#numeroNivel').val(1);
+				$('#probabilidadMinNivel').val(1);
+			} else if (data.maximo==100){
+				$('#btnModalAgregarNivel').attr("disabled", "disabled");
+				$('#btnAgregarNivel').attr("disabled", "disabled");
+			} else {
+				$('#numeroNivel').val(data.nivel + 1);
+				$('#probabilidadMinNivel').val(data.maximo + 1);
+			}
+		},
+		fail: codigoError
+	});
+// 
 
 }
 
