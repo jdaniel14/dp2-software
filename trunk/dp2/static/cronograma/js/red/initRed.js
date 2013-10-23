@@ -17,6 +17,10 @@ var factorY = 100;
 var x = 1;
 var y = 1;
 
+//Dentro de los hijos
+var hX;
+var hY;
+
 //Posicion de los titulos de cada bloque
 var xTitulo = 1;
 var yTitulo = 1;
@@ -134,18 +138,20 @@ function imprimirHijos(padre,rX,rY){
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
 				if(re.EsCritico == 0){
 					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColor,borderWidth, width, height);
+					hY = rY + factorYEnB;
 				}
 				else{
 					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColorC,borderWidthC, width, height);
+					hY = rY + factorYEnB;
 				}
 				re.marcado = 1;
 				imprimirHijos(re.id_actividad,rX + factorXEnB,rY);
 				rX = rX;
-				rY = rY + factorYEnB;
-				y = rY;
+				rY = hY;			
 			}			
 		}
 	});
+	y = rY;
 }
 
 function imprimirTituloDelBloque(bloque, rX, rY){
@@ -266,7 +272,7 @@ function iniciarFiesta(){
 				
 				//Aumento la posicion en la que estoy
 				x = x;
-				y = y + factorYEnB;
+				y = y;
 				
 			}
 			
