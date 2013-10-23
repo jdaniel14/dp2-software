@@ -142,6 +142,7 @@ function imprimirHijos(padre,rX,rY){
 				imprimirHijos(re.id_actividad,rX + factorXEnB,rY);
 				rX = rX;
 				rY = rY + factorYEnB;
+				y = rY;
 			}			
 		}
 	});
@@ -265,7 +266,7 @@ function iniciarFiesta(){
 				
 				//Aumento la posicion en la que estoy
 				x = x;
-				y = y + factorYEnB;
+				y = y ;
 				
 			}
 			
