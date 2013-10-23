@@ -373,16 +373,30 @@ function getEdt(){
     	$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
     	
     	//Busco todos los requisitos que existen con el id del ER obtenido antes
-    	$pstmt= $con->prepare("SELECT id_requisito,descripcion,fecha_termino,solicitud,cargo,fundamento_incorporacion,
-    			id_prioridad_requisito,id_estado_requisito,entregable,criterio_aceptacion,id_miembros_equipo 
-    			FROM REQUISITO WHERE id_especificacion_requisitos= ?");
+    	$pstmt= $con->prepare("SELECT a.id_requisito,a.descripcion,a.fecha_termino,a.solicitud,a.cargo,a.fundamento_incorporacion,
+    			a.id_prioridad_requisito,a.id_estado_requisito,a.entregable,a.criterio_aceptacion,a.id_miembros_equipo 
+    			FROM REQUISITO a WHERE a.id_especificacion_requisitos= ? ");
     	$pstmt->execute(array($idER));
     	$ar_Requisitos=array();
     	
+    	//CREO LOS REQUISITOS
+    	
     	while ($listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		
+    		//obtengo el nombre y apellido del empleado con id=$listaRequisito['id_miembros_equipo']
+    		if($listaRequisito["id_miembros_equipo"]==0) {
+    			$nombre="";
+    			$apellido="";
+    		}
+    		else {
+    			$nombre=dameNombre($listaRequisito["id_miembros_equipo"]);
+    			$apellido=dameApellido($listaRequisito["id_miembros_equipo"]);
+    		}
+    		
     		$hijo = new Requisito($listaRequisito["id_requisito"],$listaRequisito["descripcion"],$listaRequisito["fecha_termino"],
-    	$listaRequisito["solicitud"],$listaRequisito["cargo"],$listaRequisito["fundamento_incorporacion"],$listaRequisito["id_prioridad_requisito"],
-    	$listaRequisito["id_estado_requisito"],$listaRequisito["entregable"],$listaRequisito["criterio_aceptacion"],$listaRequisito["id_miembros_equipo"]);
+    				$listaRequisito["solicitud"],$listaRequisito["cargo"],$listaRequisito["fundamento_incorporacion"],$listaRequisito["id_prioridad_requisito"],
+    				$listaRequisito["id_estado_requisito"],$listaRequisito["entregable"],$listaRequisito["criterio_aceptacion"],$listaRequisito["id_miembros_equipo"],
+    				$nombre,$apellido);
     		array_push($ar_Requisitos,$hijo);	
     	}
     	
@@ -395,6 +409,21 @@ function getEdt(){
     	echo json_encode($matriz);
     }
     
+    function dameNombre($v){
+    	$con = getConnection();
+    	$pstmt= $con->prepare("SELECT a.nombres, a.apellidos FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE b.id_miembros_equipo= ?  AND a.id_empleado=b.id_empleado ");
+    	$pstmt->execute(array($v));
+    	$b=$pstmt->fetch(PDO::FETCH_ASSOC)["nombres"];
+    	return $b;
+    }
+    
+    function dameApellido($v){
+    	$con = getConnection();
+    	$pstmt= $con->prepare("SELECT a.nombres, a.apellidos FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE b.id_miembros_equipo= ?  AND a.id_empleado=b.id_empleado ");
+    	$pstmt->execute(array($v));
+    	$a=$pstmt->fetch(PDO::FETCH_ASSOC)["apellidos"];
+    	return $a;
+    }
     
     //Modificar la matriz, por cada requisito ===========================================================================================
     
@@ -421,19 +450,20 @@ function getEdt(){
     	
     	//Obtengo la lista de personas 
 
-    	$pstmt= $con->prepare("SELECT a.id_miembros_equipo as id , a.nombres as nombre, a.apellidos as apellido
-    			, a.telefono as telefono, a.email as email FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE 
-    			 b.id_proyecto= ? and a.nombres LIKE ? and a.apellidos LIKE ?");
-    	$pstmt->execute(array($idProyecto,$data->{"nombre"},$data->{"apellido"}));
+    	$pstmt= $con->prepare("SELECT b.id_miembros_equipo , a.id_empleado,a.nombres, a.apellidos,a.telefono,a.email 
+    			FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE 
+    			b.id_proyecto= ? and b.id_empleado=a.id_empleado and a.nombres LIKE ? and a.apellidos LIKE ? group by a.id_empleado");
+    	$pstmt->execute(array($idProyecto,'%'.$data->{"nombre"}.'%','%'.$data->{"apellido"}.'%'));
     	$ar_lista=array();
     	while ($lista = $pstmt->fetch(PDO::FETCH_ASSOC)){
-    		$hijo = new Miembro($lista["id"],$lista["nombre"],$lista["apellido"],$lista["telefono"],$lista["email"]);
+    		$hijo = new Miembro($lista["id_miembros_equipo"],$lista["nombres"],$lista["apellidos"],$lista["telefono"],$lista["email"]);
     		array_push($ar_lista,$hijo);
     	}
     	
     	$lista=["ar_miembro" =>$ar_lista
     		   ];
-    	echo json_decode($lista);
+    	
+    	echo json_encode($lista);
     }
     
     
