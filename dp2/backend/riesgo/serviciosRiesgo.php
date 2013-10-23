@@ -139,8 +139,8 @@
                             "accionesEspecificas" => $row['acciones_especificas'],//X
                             "costoPotencial" => $row['costo_potencial'],//RXP
                             "demoraPotencial" => $row['demora_potencial'],//RXP
-                            "nombreResponsable" => $row['nombre_corto']//X
-                            "nivelImpacto" => $row['nivel_impacto']//X
+                            "nombreResponsable" => $row['nombre_corto'],//X
+                            "nivelImpacto" => $row['nivel_impacto'],//X
                             "nivelProbabilidad" => $row['nivel_probabilidad']//X
                             );
                 array_push($arregloListaRiesgo,$data);
