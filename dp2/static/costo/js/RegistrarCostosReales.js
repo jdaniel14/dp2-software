@@ -34,7 +34,7 @@ function obtenRecursos(/*idProyecto,*/tipo){
 	}
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_obtenerCostoFijoRealProyecto/'+JSON.stringify(obj),		
 		dataType: "json",
 		async: true,
 		success:function(data){agregaDataFila(data,tipo);}
@@ -75,7 +75,7 @@ function agregaDataFila(data, tipo){
 		for (i=0; i<arreglo.length;i++){
 			filaRecurso=arreglo[i];
 			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
-			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, filaRecurso.indRRHH);
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, false);
 			numRecursos=i;
 		}
 	}
@@ -290,10 +290,10 @@ function grabarRecursos(){
 		feI="#fechaInicio"+i;
 		feF="#fechaFin"+i;
 		
-		eliminar=document.getElementById(elim).checked;
-		crear=$(crea).val();
-		modificar=$(modif).val();
-		indRecH=$(recH).val();
+		crear=0;
+		modificar=1;
+		indRecH=0;
+		eliminar=0;
 	
 		if (eliminar && crear!='1'){
 			var recurso = {
@@ -312,13 +312,6 @@ function grabarRecursos(){
 				
 				if (nomRecurso==''){	
 					alert('El recurso de la fila ' + i +' debe tener un nombre');
-					return;
-				}
-				
-				if (costo!='' && !isNaN(costo) && costo>=0){		
-					
-				}else{
-					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
 					return;
 				}
 				
@@ -346,50 +339,24 @@ function grabarRecursos(){
 					return;
 				}
 			
-				if (crear=='1'){
-					var recurso = {
-						nombreRecurso:nomRecurso,
-						CostoUnitario: costo,			
-						idMoneda: moneda,
-						idUnidadMedida:medida,
-						costoFijo: costoF,
-						dayI:  new Number(diaI),
-						monthI:  new Number(mesI),
-						yearI: new Number(anioI),
-						dayF:  new Number(diaF),
-						monthF:  new Number(mesF),
-						yearF: new Number(anioF)
-					}
-					recursosGrabar.push(recurso);
-				}else{
-					if (modificar=='1'){
-						var recurso = {
-							idRecurso: $(recu).val(),
-							nombreRecurso:nomRecurso,
-							CostoUnitario: costo,			
-							idMoneda: moneda,
-							idUnidadMedida:medida,
-							costoFijo: costoF,
-							dayI:  new Number(diaI),
-							monthI:  new Number(mesI),
-							yearI: new Number(anioI),
-							dayF:  new Number(diaF),
-							monthF:  new Number(mesF),
-							yearF: new Number(anioF)
-						}
-						recursosModificar.push(recurso);
-					}
-				
-				
+				var recurso = {
+					idRecurso: $(recu).val(),
+					costoFijoDiarioReal: costoF,
+					dayI:  diaI,
+					monthI:  mesI,
+					yearI: anioI,
+					dayF:  diaF,
+					monthF:  mesF,
+					yearF: anioF
 				}
+				recursosModificar.push(recurso);
+				
 			}
 		}
 	}
 	var obj={
 		idProyecto: idProyecto,
-		listaRecursosModificar: recursosModificar,
-		listaRecursosCrear: recursosGrabar,
-		listaRecursosEliminar: recursosEliminar
+		listaRecursos: recursosModificar
 	}
 	enviaDatos(obj);
 //	alert("se grabó " + obj);
@@ -410,10 +377,10 @@ function enviaDatos(obj){
 
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_enviarCostoFijoRealProyecto/'+JSON.stringify(obj),		
 		dataType: "json", 
 		async: true,
-		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);}
+		success:function(data){if (data.codRespuesta!='0') alert(data.mensaje);}
 	});
 
 	/*
