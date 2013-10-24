@@ -7,13 +7,15 @@
         
         //jose
 	function G_getListaJP(){
-		$sql = "SELECT id_empleado, CONCAT(nombres, ' ', apellidos) as nombres FROM EMPLEADO WHERE id_rol = 1 ";
+		$sql = "SELECT id_empleado,
+                        E.NOMBRE_CORTO
+                        FROM EMPLEADO E";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
 			$lista_jp = array();
 			while($j = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$jp = array("id"=>$j["id_empleado"], "nom"=>$j["nombres"]);
+					$jp = array("id"=>$j["id_empleado"], "nom"=>$j["NOMBRE_CORTO"]);
 					array_push($lista_jp, $jp);
 			}
 
