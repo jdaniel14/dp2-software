@@ -6,6 +6,7 @@
 	include_once '../backend/conexion.php';
         
         //jose
+        //corregido
 	function G_getListaJP(){
 		$sql = "SELECT id_empleado,
                         E.NOMBRE_CORTO
@@ -60,7 +61,7 @@
     }
   }
 
-            
+        //corregido    
 	function G_getListaProyecto(){
 
 
@@ -263,8 +264,8 @@
                         where p.id_proyecto=:id
                         and p.id_proyecto=me.id_proyecto
                         and me.id_empleado=e.id_empleado
-                        and re.id_rol=e.id_rol
-                        and re.id_rol=1;";
+                        and re.id_rol=me.id_rol
+                        and re.id_rol=2;";
 		try {
                         
 			$db = getConnection();
