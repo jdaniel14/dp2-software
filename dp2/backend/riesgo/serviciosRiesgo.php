@@ -154,7 +154,7 @@
 
     function R_getRiesgo($idRiesgoXProyecto){
         
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,RXP.id_empleado ,nombre_corto
+        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,RXP.id_empleado ,nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad
                 FROM RIESGO_X_PROYECTO RXP
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
@@ -188,7 +188,9 @@
                             "costoPotencial" => $row->costo_potencial,//RXP
                             "demoraPotencial" => $row->demora_potencial,//RXP
                             "idResponsable" => $row->id_empleado,
-                            "nombreResponsable" => $row->nombre_corto//
+                            "nombreResponsable" => $row->nombre_corto,//
+                            "nivelImpacto" => $row->nivel_impacto,//X
+                            "nivelProbabilidad" => $row->nivel_probabilidad//X
                             );
             $db = null;
             echo json_encode($data);
@@ -332,7 +334,8 @@
         $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
         FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
         WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
-        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor ;";//and :valor<=limite_mayor
+        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor 
+        order by nivel desc limit 1;";//and :valor<=limite_mayor
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
