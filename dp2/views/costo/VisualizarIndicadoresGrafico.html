@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+	<script src="https://www.google.com/jsapi"></script>
 
     <title>Starter Template for Bootstrap</title>
 
@@ -14,6 +15,12 @@
 
     <!-- Custom styles for this template -->
     <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+	<link type="text/css" href="../../static/costo/datepicker/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+	<script src="../../assets/js/jquery.js"></script>
+	<script src="../../static/costo/datepicker/js/jquery-1.9.1.js"></script>
+	<script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.js"></script>
+	<script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,7 +44,30 @@
         <h1 id="nombreProyecto"></h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
-	  	  
+	  <form class="form-horizontal" name="formReserva" id="formReserva">
+			
+			<div class="form-group">			
+				<label class="col-lg-2 control-label">Fecha límite:</label>
+				<div class="col-lg-4">
+				  <input type="text" class="calendar hasDatepicker" id="fechaLimite" >
+				  <input type="hidden" id="fechaUnix">
+				</div>
+			</div>
+			<div class="form-group">			
+				<label class="col-lg-2 control-label">Indicador:</label>
+				<div class="col-lg-4">
+				  <select id="comboIndicador">
+					<option value="ac">PV/EV/AC</option>
+				  </select>
+				  <input type="hidden" id="indicador">
+				</div>
+			</div>
+			<button type="button" class="btn btn-default" onclick="cargaChart()">Graficar</button>
+			<button type="button" class="btn btn-default" onclick="history.back()">Atras</button>
+			
+	  <input type='text' class='calendar' style='display:none'>
+
+	  </form>
 	  
 	  <div id="chart_div" style="width: 900px; height: 500px;"></div>
 			
@@ -54,12 +84,8 @@
 	var puedeConfirmar='1';
 	
 	</script>
-    <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
 	<script src="../../assets/js/header.js"></script>
-	<script src="../../static/costo/js/AsignaCuenta.js"></script>
-	<script src="https://www.google.com/jsapi"></script>
     <script src="../../static/costo/js/VisualizarIndicadoresGrafico.js">
 	</script>
 	
