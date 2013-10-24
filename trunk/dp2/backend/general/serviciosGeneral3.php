@@ -331,6 +331,11 @@ function G_consultarListaPaquetes($idProyecto) { //COMPLETO
 				$jsonRespuesta->raiz = $paqueteRaiz;
 				//echo 'aaaa';
 				$paqueteRaiz->sumarCostosPaquete();
+
+                foreach ($paqueteRaiz->listaPaquetesHijo as $hijo) {
+                    $hijo->listaPaquetesHijo = null;
+                }
+
 				array_push($listaPaquetes, $paqueteRaiz);
 			}
 
@@ -341,7 +346,7 @@ function G_consultarListaPaquetes($idProyecto) { //COMPLETO
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
 		
-		return $listaPaquetes;
+		echo json_encode($listaPaquetes);
 	}
 
 	function G_obtenerPaquetesHijo(&$paquete) {
