@@ -114,14 +114,6 @@
 		$month = $proy->month;
 		$day = $proy->day;
 
-		if ($proy->month < 10) {
-			$month = '0' . $month;
-		}
-
-		if ($proy->day < 10) {
-			$day = '0' . $day;
-		}
-
 		$fecha = $year . $month . $day;
 
 		$indicadores = CO_consultarIndicadores($proy->idProyecto, $fecha);
@@ -1030,15 +1022,6 @@
 					$yearF = $recurso->yearF;
 					$monthF = $recurso->monthF;
 					$dayF = $recurso->dayF;
-
-					/*
-					if ($recurso->month < 10) {
-						$month = '0' . $month;
-					}
-
-					if ($recurso->day < 10) {
-						$day = '0' . $day;
-					}*/
 
 					$fechaI = $yearI . $monthI . $dayI;
 					$fechaF = $yearF . $monthF . $dayF;
