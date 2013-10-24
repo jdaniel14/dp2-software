@@ -208,11 +208,11 @@ function G_getCostoPorProyecto($id) {
     Y.ID_PAQUETE_TRABAJO,
     Y.NOMBRE ";
 
-  
+
     $l_costos_edt = array();
     $costo_total_real = 0;
     $costo_total_est = 0;
-    
+
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -261,19 +261,19 @@ function G_getCostoPorProyecto($id) {
                     //id paquete, nombre paquete, lista de paquetes hijo
                     $c_real = $p["COSTO_PAQUETE_SOLES"];
                     $c_est = $p["COSTO_PAQUETE_SOLES"];
-                    
+
                     $paqueteHijo = array(
                         "nombre" => $p["DESCRIPCION"],
                         "estado" => $p["ESTADO"],
-                        "c_est" => (string)$c_est,
-                        "c_real" => (string)$c_real
+                        "c_est" => (string) $c_est,
+                        "c_real" => (string) $c_real
                     );
                     $costo_total_real += $c_real;
                     $costo_total_est += $c_est;
                     array_push($l_costos_edt, $paqueteHijo);
                 }
             } catch (PDOException $e) {
-                $db=null;
+                $db = null;
                 echo json_encode(array("me" => $e->getMessage()));
                 return;
             }
@@ -285,11 +285,125 @@ function G_getCostoPorProyecto($id) {
         );
         echo json_encode(array("costos" => $costos));
     } catch (PDOException $e) {
-        $db=null;
+        $db = null;
         echo json_encode(array("me" => $e->getMessage()));
         return;
     }
     $db = null;
+}
+
+function G_consultarListaPaquetes($idProyecto) { //COMPLETO
+    //obtener paquete raíz
+    $sql = "SELECT
+		A.ID_PROYECTO,
+		Y.ID_PAQUETE_TRABAJO,
+		Y.NOMBRE NOMBRE_PAQUETE,
+		0 as COSTO_PAQUETE_SOLES
+		from 
+		PROYECTO A 
+		JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+		JOIN PAQUETE_TRABAJO Y ON Z.ID_EDT=Y.ID_EDT
+		WHERE
+		Y.ID_COMPONENTE_PADRE IS NULL 
+		AND
+		A.ID_PROYECTO= :idProyecto AND Z.ID_ESTADO<>4
+		GROUP BY
+		A.ID_PROYECTO,
+		Y.ID_PAQUETE_TRABAJO,
+		Y.NOMBRE;";
+
+    $paqueteRaiz = null;
+    $listaPaquetes = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("idProyecto", $idProyecto);
+        $stmt->execute();
+        $db = null;
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            //id paqute, nombre paquete, lista de paquetes hijo
+            $paqueteRaiz = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+            
+        }
+
+        if ($paqueteRaiz != null) {
+            G_obtenerPaquetesHijo($paqueteRaiz);
+            $jsonRespuesta = new stdClass();
+            $jsonRespuesta->raiz = $paqueteRaiz;
+            //echo 'aaaa';
+            $paqueteRaiz->sumarCostosPaquete();
+            echo json_encode($paqueteRaiz);
+            array_push($listaPaquetes, $paqueteRaiz);
+        }
+    } catch (PDOException $e) {
+        //$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        $listaPaquetes = null;
+    }
+    //se llamara una funcion que devuelve data falsa por mientras.		
+    //$listaPaquetes = CO_obtenerListaPaquetesFalsa();
+
+    return $listaPaquetes;
+}
+
+function G_obtenerPaquetesHijo(&$paquete) {
+    if ($paquete != null) {
+
+        $sql = "SELECT
+			A.ID_PROYECTO,
+			Y.ID_PAQUETE_TRABAJO,
+			Y.NOMBRE NOMBRE_PAQUETE,
+			SUM(CASE
+			WHEN B.ID_PAQUETE_TRABAJO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL THEN 0
+			WHEN B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1  AND Z.ID_ESTADO<>4 AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0
+				THEN IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL,0))
+			ELSE 0	
+			END
+			) COSTO_PAQUETE_SOLES
+			from 
+			PROYECTO A 
+			JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+			JOIN PAQUETE_TRABAJO Y ON Z.ID_EDT=Y.ID_EDT
+			LEFT JOIN ACTIVIDAD B ON Y.ID_PAQUETE_TRABAJO=B.ID_PAQUETE_TRABAJO
+			LEFT JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+			LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+			LEFT JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+			WHERE
+			Y.ID_COMPONENTE_PADRE= :idPaquete AND (X.FECHA IS NULL OR DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d'))
+			GROUP BY
+			A.ID_PROYECTO,
+			Y.ID_PAQUETE_TRABAJO,
+			Y.NOMBRE;";
+
+        $listaPaquetesHijo = array();
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idPaquete", $paquete->idPaquete);
+            $stmt->execute();
+            $db = null;
+            while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                //id paqute, nombre paquete, lista de paquetes hijo
+                $paqueteHijo = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+                array_push($listaPaquetesHijo, $paqueteHijo);
+            }
+
+            $paquete->listaPaquetesHijo = $listaPaquetesHijo;
+        } catch (PDOException $e) {
+            //$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+            $listaPaquetes = null;
+            echo json_encode($respuesta);
+            return;
+        }
+
+        //echo 'paquete <' . $paquete->idPaquete . '>';
+        //echo sizeof($paquete->listaPaquetesHijo);
+        foreach ($paquete->listaPaquetesHijo as $hijo) {
+            G_obtenerPaquetesHijo($hijo);
+        }
+
+        return;
+    }
+    return;
 }
 
 ?>
