@@ -9,14 +9,20 @@
         //corregido
 	function G_getListaJP(){
 		$sql = "SELECT id_empleado,
-                        E.NOMBRE_CORTO
-                        FROM EMPLEADO E";
+                        E.NOMBRE_CORTO,
+			PR.DESCRIPCION
+                        FROM EMPLEADO E,
+                        PROFESION PR
+                        WHERE PR.ID_PROFESION=E.ID_PROFESION";
 		try {
 			$db = getConnection();
 			$stmt = $db->query($sql);
 			$lista_jp = array();
 			while($j = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$jp = array("id"=>$j["id_empleado"], "nom"=>$j["NOMBRE_CORTO"]);
+					$jp = array("id"=>$j["id_empleado"],
+                                                    "nom"=>$j["NOMBRE_CORTO"],
+                                                    "prof"=>$j["DESCRIPCION"]
+                                                );
 					array_push($lista_jp, $jp);
 			}
 
@@ -38,7 +44,14 @@
     $proj = json_decode($request->getBody());
 
     try {
-				$sql = "INSERT INTO PROYECTO (nombre_proyecto, fecha_inicio_planificada, fecha_fin_planificada, id_tipo_proyecto) VALUES (:nom, :fi, :ff, :tp)";
+        $sql = "INSERT INTO PROYECTO (nombre_proyecto, 
+                                      fecha_inicio_planificada,
+                                      fecha_fin_planificada, 
+                                      id_tipo_proyecto) 
+                              VALUES (:nom, 
+                                     :fi,
+                                     :ff,
+                                     :tp)";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
@@ -48,8 +61,21 @@
         $stmt->execute();
         $proj->id = $db->lastInsertId();
 				
-				$sql = "INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado) VALUES (:id_proy, :jp)";
-				$stmt = $db->prepare($sql);
+        $sql = "INSERT INTO MIEMBROS_EQUIPO (id_proyecto,
+                                            id_empleado,
+                                            fecha_entrada,
+                                            fecha_salida,
+                                            id_rol,
+                                            id_profesion_actual,
+                                            estado)
+                                     VALUES (:id_proy,
+                                            :jp,
+                                            :fi,
+                                            :ff,
+                                            2,
+                                            1,
+                                            1)";
+        $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $proj->id);
         $stmt->bindParam("jp", $proj->jp);
         $stmt->execute();
@@ -243,6 +269,7 @@
 		}
 	}
         
+        //corregido
 	function G_getActa($id){
 	
 		$sql = "select p.id_prioridad,
