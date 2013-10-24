@@ -11,7 +11,7 @@ var factorYEnB = 70;
 
 //Factor que se mueve de bloque en bloque
 var factorX = 500;
-var factorY = 100;
+var factorY = 70;
 
 //Posicion actual -> Va variando
 var x = 1;
@@ -138,14 +138,18 @@ function imprimirHijos(padre,rX,rY){
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
 				if(re.EsCritico == 0){
 					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColor,borderWidth, width, height);
+					re.x = rX;
+					re.y = rY;
 					hY = rY + factorYEnB;
 				}
 				else{
 					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColorC,borderWidthC, width, height);
+					re.x = rX;
+					re.y = rY;
 					hY = rY + factorYEnB;
 				}
 				re.marcado = 1;
-				imprimirHijos(re.id_actividad,rX + factorXEnB,rY);
+				imprimirHijos(re.id_actividad,rX + factorXEnB,rY + factorYEnB);
 				rX = rX;
 				rY = hY;			
 			}			
@@ -164,30 +168,35 @@ function cantidadDeActividadesEnElBloque(actividadesEnBloque){
 	cantActXBloque = 0;
 	
 	$.each(actividadesEnBloque, function(e,el){
-		el.numero_fila = 0;
-		el.predecesores_id = 0;
+		el.nivel = 0;
+		el.recorrido_nivel = 0;
+		el.x = 0;
+		el.y = 0;
 	});
 	
 	$.each(actividadesEnBloque, function(e,el){
-		el.predecesores_id = 1; //aca manejo si es que ha sido recorridos
+		el.recorrido_nivel = 1; //aca manejo si es que ha sido recorridos
 		
 		$.each(actividadesEnBloque, function(e1,el1){
 			var arrPredecesores = el1.predecesores.split(',');
 			
-			if((el1.predecesores_id != 1) && ($.inArray(el.id_actividad,arrPredecesores) != -1)){
-				el1.numero_fila = Math.max(el.numero_fila + 1,el1.numero_fila);
-				el1.predecesores_id = 1;
+			if((el1.recorrido_nivel != 1) && ($.inArray(el.id_actividad,arrPredecesores) != -1)){
+				el1.nivel = Math.max(el.nivel + 1,el1.nivel);
 			}
 		});
 	});
 	
 	$.each(actividadesEnBloque,function(e,el){
-		cantActXBloque = Math.max(cantActXBloque, el.numero_fila);
+		cantActXBloque = Math.max(cantActXBloque, el.nivel);
 	});
 	
 	cantActXBloque++;
 	//console.log(cantActXBloque);
 	
+}
+
+function modificacionesAlRed(){
+	$("#toolbar_undefined").hide();
 }
 
 function iniciarFiesta(){
@@ -203,14 +212,17 @@ function iniciarFiesta(){
 		onSave: function(data){
 			alert('from on save event \n' +data);
 		}
-	});	
+	});
+	
+	modificacionesAlRed();
 	
 	//Inicializo los valores para el tama–o de cada bloque
 	factorX = widthDiagram / dataAJAX.cantBloques;
 	
 	console.log("Inicio de la impresion de diagrama de red...");
 	console.log(listaRed);
-		
+	
+	y = yIni;
 	//Recorro todos los bloques y dibujo todas las actividades
 	for(var b = 0; b < dataAJAX.cantBloques; b++){ //hasta listaRed.cantBloques
 		//console.log("Bloque actual: " + b);
@@ -240,12 +252,12 @@ function iniciarFiesta(){
 
 		//Inicializar X e Y
 		x = xIni + (b * factorX);
-		y = yIni;
+		
 		//Fin inicializar X e Y
 		
 		//Inicializar la posicion del titulo del bloque
 		xTitulo = x;
-		yTitulo = y - 70;
+		yTitulo = yIni - 70;
 		
 		imprimirTituloDelBloque(b, xTitulo, yTitulo);
 		//Fin inicializar la posicion del titulo del bloque
@@ -257,12 +269,57 @@ function iniciarFiesta(){
 			//Dibujar si es que aun no se ha dibujado (marcado == 0)
 			if(el.marcado == 0){
 				//imprimir el nodo
-				if(el.EsCritico == 0){
-					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColor,borderWidth, width, height);
+				if(el.EsCritico == 0){					
+					/*
+					var impY = 0;
+					var arrPredecesores = el.predecesores.split(',');
+					$.each(arrPredecesores,function(eAux,elAux){
+						var axx = 0;
+						$.each(listaRed,function(e1Aux,el1Aux){
+							if(el1Aux.id_actividad == elAux){
+								axx = el1Aux.y;
+							}
+						});
+						impY = Math.max(impY,axx);
+						impY = parseInt(impY) + parseInt(factorYEnB);
+					});
 					
+					if(impY != 0){
+						crearNodo(el.id_actividad, el.nombre_actividad,x,impY,borderColor,borderWidth, width, height);
+						el.x = x;
+						el.y = impY;
+					}
+					else{
+					*/	crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColor,borderWidth, width, height);
+						el.x = x;
+						el.y = y;
+					//}
 				}
 				else{
-					crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColorC,borderWidthC, width, height);
+					/*
+					var impY = 0;
+					var arrPredecesores = el.predecesores.split(',');
+					$.each(arrPredecesores,function(eAux,elAux){
+						var axx = 0;
+						$.each(listaRed,function(e1Aux,el1Aux){
+							if(el1Aux.id_actividad == elAux){
+								axx = el1Aux.y;
+							}
+						});
+						impY = Math.max(impY,axx);
+						impY = parseInt(impY) + parseInt(factorYEnB);
+					});
+					
+					if(impY != 0){
+						crearNodo(el.id_actividad, el.nombre_actividad,x,impY,borderColorC,borderWidthC, width, height);
+						el.x = x;
+						el.y = impY;
+					}
+					else{
+					*/	crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColorC,borderWidthC, width, height);
+						el.x = x;
+						el.y = y;
+					//}
 				}
 				//marcar el nodo como  ya impreso
 				el.marcado = 1;//0->no dibujado ni conectado, 1-> dibujado, 2->conectado y dibujado		

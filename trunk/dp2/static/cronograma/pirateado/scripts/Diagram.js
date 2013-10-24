@@ -301,8 +301,8 @@ Diagram = function(params)
 
 
 
-		
-		$( "#"+node.nodeId ).hover(function() { if(callerObj.hoverEffect){$(ports).css("visibility","visible")} },function() { if(callerObj.hoverEffect){$(ports).css("visibility","hidden");} });
+		//Comentado por pancho
+		//$( "#"+node.nodeId ).hover(function() { if(callerObj.hoverEffect){$(ports).css("visibility","visible")} },function() { if(callerObj.hoverEffect){$(ports).css("visibility","hidden");} });
 
 
 		if(node.draggable)
@@ -613,6 +613,9 @@ Diagram = function(params)
 
 	this.deleteConnection = function(connectionId)
 	{
+		
+		//Comentado por pancho
+		/*
 		if(confirm('delete this connection ...'))
 		{
 			var conn='';
@@ -629,7 +632,7 @@ Diagram = function(params)
 			
 			
 		}
-		
+		*/
 	};
 
 	this.setNodeAffectedConnections = function(nodeId)
