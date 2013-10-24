@@ -343,7 +343,7 @@ function G_consultarListaPaquetes($idProyecto) { //COMPLETO
             foreach ($paqueteRaiz->listaPaquetesHijo as $hijo) {
                 $hijo->listaPaquetesHijo = null;
                 $paqueteHijo = array(
-                    "nombre" => $hijo->nombre,
+                    "nombre" => $hijo->descripcion,
                     "estado" => $hijo->estado,
                     "c_est" => (string) $hijo->costoTotalPaquete,
                     "c_real" => (string) $hijo->costoRealTotalPaquete
@@ -428,7 +428,7 @@ function G_obtenerPaquetesHijo(&$paquete) {
         } catch (PDOException $e) {
             //$respuesta = CO_crearRespuesta(-1, $e->getMessage());
             $listaPaquetes = null;
-            echo json_encode($respuesta);
+            echo json_encode(array("me" => $e->getMessage()));
             return;
         }
 
