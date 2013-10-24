@@ -71,8 +71,8 @@
                 FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
                 WHERE P.id_proyecto = M.id_proyecto 
                 AND E.id_empleado = M.id_empleado 
-                AND E.id_rol=r.id_rol
-                and E.id_rol=1
+                AND M.id_rol=r.id_rol
+                and r.id_rol=2
                 AND P.id_tipo_proyecto = T.id_tipo_proyecto 
                 ORDER BY P.id_proyecto";
 		try {
