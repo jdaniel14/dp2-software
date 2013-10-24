@@ -409,15 +409,26 @@ function G_getListarRecDisp() {
 
 
 	function G_getListaRecursosEnProyecto($id) {
-		  $sql = " SELECT E.ID_EMPLEADO,E.NOMBRE_CORTO,RE.NOMBRE_ROL,M.COSTO_EMPLEADO, P.nombre_proyecto,M.PORCENTAJE
+		  $sql = " SELECT E.ID_EMPLEADO,
+		E.NOMBRE_CORTO ,
+		PR1.DESCRIPCION PROFESION_BASE,		
+		PR.DESCRIPCION PROFESION_ACTUAL,
+		RE.NOMBRE_ROL,
+		M.COSTO_EMPLEADO,
+		P.nombre_proyecto,
+		M.PORCENTAJE
 		          FROM MIEMBROS_EQUIPO  M,
 		          EMPLEADO E,
 		          ROL_EMPLEADO RE, 
-                          PROYECTO P
-		          WHERE P.id_proyecto = :id
+				  PROYECTO P,
+				  PROFESION PR,
+				  PROFESION PR1
+		          WHERE P.id_proyecto =:id
                           AND E.ID_EMPLEADO=M.ID_EMPLEADO
-		          AND E.ID_ROL=RE.ID_ROL
-		          AND M.ID_PROYECTO=P.id_proyecto";
+						  AND M.ID_PROFESION_ACTUAL=PR.ID_PROFESION
+						  AND M.ID_ROL=RE.ID_ROL
+						  AND M.ID_PROYECTO=P.id_proyecto
+						  AND PR1.ID_PROFESION=E.ID_PROFESION";
 		  try {
 		      $db = getConnection();
 
@@ -433,7 +444,9 @@ function G_getListarRecDisp() {
 		              "nom" => $j["NOMBRE_CORTO"],
 		              "rol" => $j["NOMBRE_ROL"],
 		              "costo" => $j["COSTO_EMPLEADO"],
-                              "porc"=>$j["PORCENTAJE"]
+                              "porc"=>$j["PORCENTAJE"],
+                              "prof_base"=>$j["PROFESION_BASE"],
+                              "prof_act"=>$j["PROFESION_BASE"]
 		          );
 		          array_push($l_recxpro, $rec);
 		      }
