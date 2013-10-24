@@ -449,7 +449,7 @@ function grabarRecursos(){
 				}
 				
 				
-				if (costo!='' && !isNaN(costo) && costo>=0){
+				if (costo!='' && !isNaN(costo) && new Number(costo)>=0){
 						
 					
 				}else{
@@ -458,7 +458,7 @@ function grabarRecursos(){
 					return;
 				}
 				
-				if (costoF!='' && !isNaN(costoF) && costoF>=0){
+				if (costoF!='' && !isNaN(costoF) && new Number(costoF)>=0){
 						
 					
 				}else{
