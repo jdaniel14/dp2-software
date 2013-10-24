@@ -75,6 +75,8 @@ class CO_Paquete {
 	public $costoTotalPaquete;
 	public $costoRealTotalPaquete;
 	public $listaPaquetesHijo;
+	public $estado;
+	public $descripcion;
 	
 	function __construct($idPaquete, $nombre, $costoPaquete, $listaPaquetesHijo) {
 		$this->idPaquete = $idPaquete;
@@ -84,6 +86,8 @@ class CO_Paquete {
 		$this->costoRealTotalPaquete = 0;
 		$this->costoRealPaquete = 0;
 		$this->listaPaquetesHijo = $listaPaquetesHijo;
+		$this->estado = "";
+		$this->descripcion = "";
 	}
    
 	function sumarCostosPaquete() {
