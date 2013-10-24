@@ -362,7 +362,14 @@ function G_consultarListaPaquetes($idProyecto) { //COMPLETO
 				THEN IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO*CAMBIO_A_SOL,0))
 			ELSE 0	
 			END
-			) COSTO_PAQUETE_SOLES
+			) COSTO_PAQUETE_SOLES,
+            SUM(CASE
+            WHEN B.ID_PAQUETE_TRABAJO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL THEN 0
+            WHEN B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1  AND Z.ID_ESTADO<>4 AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0
+                THEN IFNULL(C.CANTIDADREAL,0)*(IFNULL(C.COSTO_UNITARIO_REAL*CAMBIO_A_SOL,0))
+            ELSE 0  
+            END
+            ) COSTO_REAL_PAQUETE_SOLES
 			from 
 			PROYECTO A 
 			JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
@@ -388,6 +395,7 @@ function G_consultarListaPaquetes($idProyecto) { //COMPLETO
 	        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 													//id paqute, nombre paquete, lista de paquetes hijo
 					$paqueteHijo = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+                    $paqueteHijo->costoRealPaquete = $p["COSTO_REAL_PAQUETE_SOLES"];
 					array_push($listaPaquetesHijo, $paqueteHijo);
 				}
 
