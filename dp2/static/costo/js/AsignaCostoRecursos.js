@@ -379,13 +379,13 @@ function obtenMonedaSeleccionada(a,moneda){
 
 $("#btnGrabar").click(function(){
 
-	/*
-		VERIFICAR LA NUMEROSIDAD DE LOS COSTOS UNITARIOS
-	
-	
-	*/
+	porcentajeReserva=$("#inputReserva").val();
 
-
+	if (isNaN(porcentajeReserva) || (!isNaN(porcentajeReserva) && new Number(porcentajeReserva)<0)){
+	
+		alert('El porcentaje de reserva debe ser un número mayor igual a 0 y menor a 100');
+		return;
+	}
 
 
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
