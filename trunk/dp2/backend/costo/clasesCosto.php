@@ -71,7 +71,9 @@ class CO_Paquete {
 	public $idPaquete;
 	public $nombre;
 	public $costoPaquete;
+	public $costoRealPaquete;
 	public $costoTotalPaquete;
+	public $costoRealTotalPaquete;
 	public $listaPaquetesHijo;
 	
 	function __construct($idPaquete, $nombre, $costoPaquete, $listaPaquetesHijo) {
@@ -79,17 +81,21 @@ class CO_Paquete {
 		$this->nombre = $nombre;
 		$this->costoPaquete = $costoPaquete;
 		$this->costoTotalPaquete = 0;
+		$this->costoRealTotalPaquete = 0;
+		$this->costoRealPaquete = 0;
 		$this->listaPaquetesHijo = $listaPaquetesHijo;
 	}
    
 	function sumarCostosPaquete() {
 		$this->costoTotalPaquete = $this->costoPaquete;
+		$this->costoRealTotalPaquete = $this->costoRealPaquete;
 		
 		//en caso tenga hijos, se le suma el costo de los hijos.
 		if (($this->listaPaquetesHijo != null) && (sizeof($this->listaPaquetesHijo) > 0)) {
 			foreach ($this->listaPaquetesHijo as $paquete) {
 				$paquete->sumarCostosPaquete();
 				$this->costoTotalPaquete += $paquete->costoTotalPaquete;
+				$this->costoRealTotalPaquete += $paquete->costoRealTotalPaquete;
 			}
 			unset($paquete);
 		}
