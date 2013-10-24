@@ -208,11 +208,11 @@ function G_getCostoPorProyecto($id) {
     Y.ID_PAQUETE_TRABAJO,
     Y.NOMBRE ";
 
-
+  
     $l_costos_edt = array();
     $costo_total_real = 0;
     $costo_total_est = 0;
-
+    
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -261,19 +261,19 @@ function G_getCostoPorProyecto($id) {
                     //id paquete, nombre paquete, lista de paquetes hijo
                     $c_real = $p["COSTO_PAQUETE_SOLES"];
                     $c_est = $p["COSTO_PAQUETE_SOLES"];
-
+                    
                     $paqueteHijo = array(
                         "nombre" => $p["DESCRIPCION"],
                         "estado" => $p["ESTADO"],
-                        "c_est" => (string) $c_est,
-                        "c_real" => (string) $c_real
+                        "c_est" => (string)$c_est,
+                        "c_real" => (string)$c_real
                     );
                     $costo_total_real += $c_real;
                     $costo_total_est += $c_est;
                     array_push($l_costos_edt, $paqueteHijo);
                 }
             } catch (PDOException $e) {
-                $db = null;
+                $db=null;
                 echo json_encode(array("me" => $e->getMessage()));
                 return;
             }
@@ -285,7 +285,7 @@ function G_getCostoPorProyecto($id) {
         );
         echo json_encode(array("costos" => $costos));
     } catch (PDOException $e) {
-        $db = null;
+        $db=null;
         echo json_encode(array("me" => $e->getMessage()));
         return;
     }
@@ -293,8 +293,8 @@ function G_getCostoPorProyecto($id) {
 }
 
 function G_consultarListaPaquetes($idProyecto) { //COMPLETO
-    //obtener paquete raíz
-    $sql = "SELECT
+		//obtener paquete raíz
+		$sql = "SELECT
 		A.ID_PROYECTO,
 		Y.ID_PAQUETE_TRABAJO,
 		Y.NOMBRE NOMBRE_PAQUETE,
@@ -312,43 +312,42 @@ function G_consultarListaPaquetes($idProyecto) { //COMPLETO
 		Y.ID_PAQUETE_TRABAJO,
 		Y.NOMBRE;";
 
-    $paqueteRaiz = null;
-    $listaPaquetes = array();
-    try {
-        $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("idProyecto", $idProyecto);
-        $stmt->execute();
-        $db = null;
-        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            //id paqute, nombre paquete, lista de paquetes hijo
-            $paqueteRaiz = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
-            
-        }
+		$paqueteRaiz = null;
+		$listaPaquetes = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+												//id paqute, nombre paquete, lista de paquetes hijo
+				$paqueteRaiz = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+			}
 
-        if ($paqueteRaiz != null) {
-            G_obtenerPaquetesHijo($paqueteRaiz);
-            $jsonRespuesta = new stdClass();
-            $jsonRespuesta->raiz = $paqueteRaiz;
-            //echo 'aaaa';
-            $paqueteRaiz->sumarCostosPaquete();
-            echo json_encode($paqueteRaiz);
-            array_push($listaPaquetes, $paqueteRaiz);
-        }
-    } catch (PDOException $e) {
-        //$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-        $listaPaquetes = null;
-    }
-    //se llamara una funcion que devuelve data falsa por mientras.		
-    //$listaPaquetes = CO_obtenerListaPaquetesFalsa();
+			if ($paqueteRaiz != null) {
+				G_obtenerPaquetesHijo($paqueteRaiz);
+				$jsonRespuesta = new stdClass();
+				$jsonRespuesta->raiz = $paqueteRaiz;
+				//echo 'aaaa';
+				$paqueteRaiz->sumarCostosPaquete();
+				array_push($listaPaquetes, $paqueteRaiz);
+			}
 
-    return $listaPaquetes;
-}
+		} catch(PDOException $e) {
+			//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+			$listaPaquetes = null;
+		}
+		//se llamara una funcion que devuelve data falsa por mientras.		
+		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
+		
+		return $listaPaquetes;
+	}
 
-function G_obtenerPaquetesHijo(&$paquete) {
-    if ($paquete != null) {
+	function G_obtenerPaquetesHijo(&$paquete) {
+		if ($paquete != null) {
 
-        $sql = "SELECT
+			$sql = "SELECT
 			A.ID_PROYECTO,
 			Y.ID_PAQUETE_TRABAJO,
 			Y.NOMBRE NOMBRE_PAQUETE,
@@ -374,36 +373,38 @@ function G_obtenerPaquetesHijo(&$paquete) {
 			Y.ID_PAQUETE_TRABAJO,
 			Y.NOMBRE;";
 
-        $listaPaquetesHijo = array();
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("idPaquete", $paquete->idPaquete);
-            $stmt->execute();
-            $db = null;
-            while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                //id paqute, nombre paquete, lista de paquetes hijo
-                $paqueteHijo = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
-                array_push($listaPaquetesHijo, $paqueteHijo);
-            }
+			$listaPaquetesHijo = array();
+			try {
+				$db = getConnection();
+	        	$stmt = $db->prepare($sql);
+	        	$stmt->bindParam("idPaquete", $paquete->idPaquete);
+	        	$stmt->execute();
+	        	$db = null;
+	        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+													//id paqute, nombre paquete, lista de paquetes hijo
+					$paqueteHijo = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+					array_push($listaPaquetesHijo, $paqueteHijo);
+				}
 
-            $paquete->listaPaquetesHijo = $listaPaquetesHijo;
-        } catch (PDOException $e) {
-            //$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-            $listaPaquetes = null;
-            echo json_encode($respuesta);
-            return;
-        }
+				$paquete->listaPaquetesHijo = $listaPaquetesHijo;
 
-        //echo 'paquete <' . $paquete->idPaquete . '>';
-        //echo sizeof($paquete->listaPaquetesHijo);
-        foreach ($paquete->listaPaquetesHijo as $hijo) {
-            G_obtenerPaquetesHijo($hijo);
-        }
+			} catch(PDOException $e) {
+				//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+				$listaPaquetes = null;
+				echo json_encode($respuesta);
+				return;
+			}
 
-        return;
-    }
-    return;
-}
+			//echo 'paquete <' . $paquete->idPaquete . '>';
+			//echo sizeof($paquete->listaPaquetesHijo);
+			foreach ($paquete->listaPaquetesHijo as $hijo) {
+				G_obtenerPaquetesHijo($hijo);
+			}
+
+			return;
+		}
+		return;
+	}
+	
 
 ?>
