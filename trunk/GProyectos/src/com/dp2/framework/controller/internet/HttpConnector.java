@@ -2,6 +2,7 @@ package com.dp2.framework.controller.internet;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 
 import org.apache.http.HttpResponse;
@@ -48,7 +49,8 @@ public abstract class HttpConnector {
 	
 	public static HttpResponse makeGetRequest(String uri, String json) {
 	    try {
-	        HttpGet httpGet = new HttpGet(uri + json);
+	    	String ruta = uri + URLEncoder.encode(json,"UTF-8");
+	        HttpGet httpGet = new HttpGet(ruta);
 	        return new DefaultHttpClient().execute(httpGet);
 	    } catch (UnsupportedEncodingException e) {
 	        e.printStackTrace();
