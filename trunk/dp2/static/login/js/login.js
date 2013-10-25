@@ -17,7 +17,13 @@ $("#ingresarSistema").click(function(){
            if(data["me"]["nom_user"]!=null){
             var idUsuario = data["me"]["id_user"];
             localStorage.setItem("idUsuario",idUsuario);
-            localStorage.setItem("idRol",1);
+            
+            if(idUsuario==1){
+                localStorage.setItem("idRol",1);
+            }else{
+                localStorage.setItem("idRol",3);
+            }
+        
             $(location).attr('href','views/general/ListaProyectos.html');
            }else{
                alert("usuario incorrecto");
