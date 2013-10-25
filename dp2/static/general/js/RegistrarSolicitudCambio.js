@@ -1,16 +1,22 @@
-$("#btnGrabar").click(function(){
+$("#btnEnviar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 		registrarSolicitud();
 	}
 });
 
 function registrarSolicitud(){
+    var cad='';
+
+    if ($("#general").checked==true)    { cad+='1'; } else { cad+='0'; }
+    if ($("#alcance").checked==true)    { cad+='1'; } else { cad+='0'; }
+    if ($("#cronograma").checked==true) { cad+='1'; } else { cad+='0'; }
+    if ($("#costo").checked==true)      { cad+='1'; } else { cad+='0'; }
+    if ($("#riesgo").checked==true)     { cad+='1'; } else { cad+='0'; }
+
+
 	var jsonCliente = {
-		nom : $("#nombreProyecto").val(),
-		jp  : $("#jefeProyecto").val(),
-		tp  : $("#tipoProyecto").val(),
-		fi  : $("#fechaInicio").val(),
-		ff  : $("#fechaFin").val()
+		mod : cad,
+		mot : $("#motivo").val()
     };
 
     $.ajax({
