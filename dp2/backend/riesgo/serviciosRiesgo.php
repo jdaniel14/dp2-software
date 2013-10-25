@@ -76,7 +76,7 @@
         id_tipo_impacto=:id_tipo_impacto, id_nivel_impacto=:id_nivel_impacto,probabilidad=:probabilidad, impacto=:impacto, severidad=:severidad,
         id_probabilidad_riesgo=:id_probabilidad_riesgo,
         costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , id_empleado=:id_empleado , acciones_especificas=:acciones_especificas
-        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto, positivo_negativo=:positivo_negativo";
 
         try {
             $db = getConnection();
@@ -95,7 +95,7 @@
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
             $stmt->bindParam("acciones_especificas", $riesgo->acciones);
-
+            $stmt->bindParam("positivo_negativo", $riesgo->tipoRiesgo);
             $stmt->execute();
             $db = null;
             echo json_encode($idRiesgoXProyecto);
@@ -844,6 +844,25 @@
         }        
     }
 
+    function R_deleteTipoImpactoxNivelImpacto($idProyecto){
+    
+    	$query = "DELETE FROM TIPO_IMPACTO_X_NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto";
+    	try {
+    		$db = getConnection();
+    		$stmt = $db->prepare($query);
+    		$stmt->bindParam("id_proyecto", $idProyecto);
+    		$stmt->execute();
+    		$db = null;
+    		echo "Tabla eliminada con exito";
+    	} catch(PDOException $e) {
+    		echo '{"error":{"text":'. $e->getMessage() .'}}';
+    	}
+    
+    }
+    
+    
+    
+    
     //--------------------------------------EQUIPO RIESGO--------------------------------------
 
     function R_postRegistrarComiteRiesgo(){
