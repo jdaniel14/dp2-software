@@ -43,7 +43,7 @@ function registrarRecurso(){
         contentType: "application/json; charset=utf-8",
         url: "../../api/G_registrarRecurso",
         success: function (data) {
-            $(location).attr('href','RegistrarRecursoHumano.html.html');
+            $(location).attr('href','RegistrarRecursoHumano.html');
         }
     });
 }
