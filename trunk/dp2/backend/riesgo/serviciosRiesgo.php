@@ -933,27 +933,38 @@
 
 
     function R_getProbabilidadRiesgoMaxima($idProyecto){
-        
-        $query = "SELECT * FROM dp2.PROBABILIDAD_RIESGO 
+
+    	$query = "SELECT count(*) cantidad FROM dp2.PROBABILIDAD_RIESGO
                 where id_proyecto=:id_proyecto
                 order by nivel desc
                 limit 1";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data = array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo, 
-                            "nivel" => $row->nivel,
-                            "minimo" => $row->minimo,
-                            "maximo" => $row->maximo
-                            );
-            $db = null;
-            echo json_encode($data);
-            
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
+    	try {
+    		$db = getConnection();
+    		$stmt = $db->prepare($query);
+    		$stmt->bindParam("id_proyecto", $idProyecto);
+    		$stmt->execute();
+    		$row = $stmt->fetchObject();
+    		if ($row->cantidad==0) echo json_encode(null);
+    		else {
+    			$query = "SELECT * FROM dp2.PROBABILIDAD_RIESGO
+                where id_proyecto=:id_proyecto
+                order by nivel desc
+                limit 1";
+    			$stmt = $db->prepare($query);
+    			$stmt->bindParam("id_proyecto", $idProyecto);
+    			$stmt->execute();
+    			$row = $stmt->fetchObject();
+    			$data = array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo,
+    					"nivel" => $row->nivel,
+    					"minimo" => $row->minimo,
+    					"maximo" => $row->maximo
+    			);
+    			$db = null;
+    			echo json_encode($data);
+    		}
+    	
+    	} catch(PDOException $e) {
+    		echo '{"error":{"text":'. $e->getMessage() .'}}';
+    	}     
     }
 ?>
