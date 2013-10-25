@@ -36,7 +36,7 @@ function armaMenu( data ){
 
 		for ( j = 0 ; j < submenu.length; j++ ){
 			menu += '<li>';
-			menu += '<a href="' +  + submenu[j].href + '">'+ submenu[j].title+ '</a>';
+			menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
 			menu += '</li>';
 
 		}
