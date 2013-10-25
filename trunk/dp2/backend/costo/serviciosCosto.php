@@ -92,8 +92,9 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_saveReserva($json) { //servicio 10 //COMPLETO
-		$objeto = json_decode($json);
+	function CO_saveReserva() { //servicio 10 //COMPLETO
+		$request = \Slim\Slim::getInstance()->request();
+    	$objeto = json_decode($request->getBody());
 		$jsonRespuesta = CO_guardarReserva($objeto);
 		
 		echo json_encode($jsonRespuesta);
