@@ -31,10 +31,11 @@ $("#btnGrabar").click(function(){
 function registrarRecurso(){
 	var jsonRecurso = {
 		nr 	: $("#nombreRecurso").val(),
-		rr  : $("#rolRecurso").val(),
+		pr  : $("#profesionRecurso").val(),
+		cr  : $("#correoRecurso").val(),
 		fi  : $("#fechaIngreso").val()
     };
-
+    alert(JSON.stringify(jsonRecurso));
     $.ajax({
         type: "POST",
         data: JSON.stringify(jsonRecurso),
@@ -42,7 +43,7 @@ function registrarRecurso(){
         contentType: "application/json; charset=utf-8",
         url: "../../api/G_registrarRecurso",
         success: function (data) {
-            $(location).attr('href','ListaProyectos.html');
+            $(location).attr('href','RegistrarRecursoHumano.html.html');
         }
     });
 }
