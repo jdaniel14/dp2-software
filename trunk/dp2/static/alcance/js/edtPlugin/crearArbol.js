@@ -296,6 +296,10 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
 
 
 $("#guardarCambios").click(function(){
+    // $("#botonerasEditar").hide("slow");
+     $("#botonerasEditarControl").hide("slow");
+     $("#progressEdtGuardarEdt").show("slow");
+     
      console.log("guardando EDT");
      var arbol = $("#org").html();
      console.log(arbol);
@@ -322,11 +326,14 @@ $("#guardarCambios").click(function(){
                       success: function (data) {
                           console.log(data);
                           logChange("Se creó el EDT");
-                          alert("#Edt creada");
+                          //alert("#Edt creada");
+                          //$("#progressEdtGuardarEdt").hide("slow");
+                          location.reload();
+                          
                       }
         });
     
-    console.log(jsonResult);
+    //console.log(jsonResult);
 });
 
   function dameHijosEDT( selector, numHijos , nodos ){
