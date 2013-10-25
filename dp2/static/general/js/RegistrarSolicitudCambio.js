@@ -13,10 +13,12 @@ function registrarSolicitud(){
     if ($("#costo").checked==true)      { cad+='1'; } else { cad+='0'; }
     if ($("#riesgo").checked==true)     { cad+='1'; } else { cad+='0'; }
 
+    var id=localStorage.getItem("idProyecto");
 
 	var jsonCliente = {
-		mod : cad,
-		mot : $("#motivo").val()
+        id_proy     : id,
+		flag_cambio : cad,
+		motivo      : $("#motivo").val()
     };
 
     $.ajax({
