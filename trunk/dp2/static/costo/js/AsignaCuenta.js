@@ -88,13 +88,16 @@ function crearArregloAsientosContables(data){
 }
 
 function agregaDataFila(data){
+	var totalCuenta = 0;
 	if (data!=null){
 		var arreglo = data.lista;
 		nAct = arreglo.length;
 		for (i=0; i<arreglo.length;i++){
 			var filaAct=arreglo[i];
 			agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Soles",filaAct.idActividad);
+			totalCuenta += filaAct.costoSubtotal*1;
 		}
+		$("#totalCuentas").html(totalCuenta + "");
 	}
 }
 
@@ -126,7 +129,7 @@ function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda
 		options += '<option value='+asientosContables[k].id+''+(idAsiento==asientosContables[k].descripcion?' selected ':'')+'>'+asientosContables[k].descripcion+'</option>';		
 		if (idAsiento==asientosContables[k].descripcion) cuenta= asientosContables[k].id;
 	}
-	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select id="tipoCuenta'+(a)+'">'+options+'</select>';
+	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select class="form-control" id="tipoCuenta'+(a)+'">'+options+'</select>';
 	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
 	obtenCuentaSeleccionada(a,cuenta)
 }
@@ -182,8 +185,6 @@ function obtenCuentaSeleccionada(a,cuenta){
 
 	idSelect='#tipoCuenta'+a;
 	if (cuenta!='' && cuenta!=null){
-	
-		
 		$(idSelect).val(cuenta);
 		var indiceDatos = $(idSelect)[0].selectedIndex;
 		if (indiceDatos!=null && indiceDatos!='')
