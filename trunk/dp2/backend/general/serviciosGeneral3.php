@@ -520,5 +520,27 @@ function G_getProfesiones() {
     }
 }
 
+function G_postRegistrarRecurso() {
+    $request = \Slim\Slim::getInstance()->request();
+    $proj = json_decode($request->getBody());
+
+    try {
+        $sql = " INSERT INTO EMPLEADO (nombres, apellidos, email, nombre_corto, id_profesion) VALUES (:noms, :aps, :email, :nomcorto, :idprof) ";
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $nomcorto = $proj->nr + $proj-> ar;
+        $stmt->bindParam("noms", $proj->nr);
+        $stmt->bindParam("aps", $proj->ar);
+        $stmt->bindParam("email", $proj->cr);
+        $stmt->bindParam("nomcorto", $nomcorto);
+        $stmt->bindParam("idprof", $proj->pr);
+        $stmt->execute();
+
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
 ?>

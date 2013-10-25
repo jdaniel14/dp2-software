@@ -16,7 +16,7 @@ $app->get('/G_listarSolicitudesCambio', 'G_getListaSolicitud');
 $app->post('/G_solicitudCambioAceptDeneg', 'G_postAceptDenegSolicitud');
 //sprint 4
 $app->get('/G_listaProfesionRecurso', 'G_getProfesiones');
-
+$app->post('/G_registrarRecurso', 'G_postRegistrarRecurso');
 
 //
 //servicios de gestion de cambios
