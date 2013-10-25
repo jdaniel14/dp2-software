@@ -167,6 +167,8 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 					
 					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
 					i.putExtra("nombreIndicador", indicador.nombre);
+					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
+					i.putExtra("idProyecto", idProyecto);
 					overridePendingTransition(0, 0);
 					startActivity(i);
 					overridePendingTransition(0, 0);
@@ -294,7 +296,14 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 					IndicadorBean indicador = indicadores.get(position);
 				
 					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
-					i.putExtra("nombreIndicador", indicador.nombre);
+					String nombre = "";
+					if ((indicador.nombre.compareToIgnoreCase("pv") == 0) || (indicador.nombre.compareToIgnoreCase("ev") == 0) || (indicador.nombre.compareToIgnoreCase("ac") == 0))
+						nombre = "PV, EV, AC";
+					else 
+						nombre = indicador.nombre;
+					i.putExtra("nombreIndicador", nombre);
+					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
+					i.putExtra("idProyecto", idProyecto);
 					overridePendingTransition(0, 0);
 					startActivity(i);
 					overridePendingTransition(0, 0);

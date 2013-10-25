@@ -14,5 +14,5 @@ public class ServerConstants {
 	
 	//COSTOS
 	public static String COSTOS_CO_GETLISTAINDICADORES_URL = "CO_obtenerIndicadores";
-
+	public static String COSTOS_CO_GETHISTORIALINDICADOR_URL = "CO_obtenerHistorialIndicador";
 }

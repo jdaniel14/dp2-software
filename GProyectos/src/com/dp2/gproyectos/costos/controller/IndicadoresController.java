@@ -1,25 +1,32 @@
 package com.dp2.gproyectos.costos.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.graphics.Color;
 
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
+import com.dp2.gproyectos.costos.entities.HistorialIndicadorBean;
 import com.dp2.gproyectos.costos.entities.Result;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
+import com.dp2.gproyectos.costos.model.GetListaHistorialIndicadoresResponse;
 import com.dp2.gproyectos.costos.model.GetListaIndicadoresResponse;
 import com.google.gson.Gson;
 
 public class IndicadoresController extends Controller {
 	public static IndicadoresController instance = null;
 	private static ArrayList<IndicadorBean> listaIndicadores = null;
+	private static ArrayList<HistorialIndicadorBean> listaHistorialIndicadores = null;
 	
 	public static IndicadoresController getInstance() {
 		if (instance == null) {
@@ -37,10 +44,10 @@ public class IndicadoresController extends Controller {
 		String strResponse = "";
 		GetListaIndicadoresResponse objResponse = null;
 		
-		String json = "%7B%22idProyecto%22:" + idProyecto + ",";
-		json = json + "%22year%22:" + year +",";
-		json = json + "%22month%22:" + month +",";
-		json = json + "%22day%22:" + day + "%7D";
+		String json = "{\"idProyecto\":" + idProyecto + ",";
+		json = json + "\"year\":" + year +",";
+		json = json + "\"month\":" + month +",";
+		json = json + "\"day\":" + day + "}";
 		
 		//strResponse = "{\"lista\":[{\"nombre\":\"PV\",\"valor\":\"4016\"},{\"nombre\":\"EV\",\"valor\":\"4016\"},{\"nombre\":\"AC\",\"valor\":\"3808\"},{\"nombre\":\"CV\",\"valor\":\"208\"},{\"nombre\":\"CPI\",\"valor\":\"1.0546218487395\"},{\"nombre\":\"SPI\",\"valor\":\"1\"},{\"nombre\":\"SV\",\"valor\":\"0\"}]}";
 		//strResponse = getStringFromPOST(path, null);
@@ -94,6 +101,64 @@ public class IndicadoresController extends Controller {
 		}
 	}
 	
+	public ArrayList<HistorialIndicadorBean> getHistorialIndicadores(String idProyecto, String indicador, String fecha) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.COSTOS_CO_GETHISTORIALINDICADOR_URL + "/";
+		
+		String strFecha = "";
+		Gson gs = new Gson();
+		String strResponse = "";
+		GetListaHistorialIndicadoresResponse objResponse = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar calendar = Calendar.getInstance();
+		
+		try {
+			calendar.setTime(sdf.parse(fecha));
+			sdf = new SimpleDateFormat("yyyyMMdd");
+			strFecha = sdf.format(calendar.getTime());
+		} catch (java.text.ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		JSONObject json = new JSONObject();
+		try {
+			json.put("idProyecto", idProyecto);
+			json.put("indicador", indicador);
+			json.put("fecha", strFecha);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, json.toString());
+		String result;
+		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+				objResponse = gs.fromJson(result, GetListaHistorialIndicadoresResponse.class);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		//objResponse = gs.fromJson(result, GetListaIndicadoresResponse.class); //temporalmente para pruebas, luego se debe borrar esta linea.
+		if (objResponse!=null){
+			listaHistorialIndicadores = objResponse.indicadores;
+		} else {
+			listaHistorialIndicadores = null;
+		}
+		return listaHistorialIndicadores;
+	}
+	
+	//ya no se usan
 	public ArrayList<Double> getValoresIndicador() {
 		return llenarDataFalsaIndicadores();
 	}

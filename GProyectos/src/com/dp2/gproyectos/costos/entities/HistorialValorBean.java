@@ -18,7 +18,7 @@ public class HistorialValorBean implements Serializable {
 
 	public HistorialValorBean(String fecha, String valor) {
 		super();
-		this.fecha = fecha;
+		this.fecha = fecha.replaceAll("-", "/");
 		this.valor = valor;
 	}
 	

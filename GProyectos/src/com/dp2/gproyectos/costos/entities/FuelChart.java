@@ -2,6 +2,7 @@ package com.dp2.gproyectos.costos.entities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
+import org.achartengine.model.SeriesSelection;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.SimpleSeriesRenderer;
@@ -17,30 +19,34 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.widget.Toast;
 
 public class FuelChart {
 	private String nombreIndicador = "";
+	private String fecha = "";
 	
-	private static final String DATE_FORMAT = "dd/MM/yyyy";
+	//private static GraphicalView graphicalView;
 	
-	public FuelChart(String nombreIndicador) {
+	private static final String DATE_FORMAT = "dd-MM-yyyy";
+	
+	public FuelChart(String nombreIndicador, String fecha) {
 		this.nombreIndicador = nombreIndicador;
+		this.fecha = fecha;
 	}
 
-	public GraphicalView getView(Context context, List<Result> results) {
+	public GraphicalView getView(final Context context, ArrayList<HistorialIndicadorBean> results) {
 		
 		String title;
 		double min, max;
 		long fechaMin, fechaMax;
-		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-		
 
 		if (results.size() > 0) {
-			title = "Valores del indicador " + nombreIndicador + " hasta la fecha " + dateFormat.format(results.get(results.size() - 1).getDate().getTime());
-			max = Collections.max(results).getValue();
-			min = Collections.min(results).getValue();
-			fechaMin = results.get(0).getDate().getTime();
-			fechaMax = results.get(results.size() - 1).getDate().getTime();
+			title = "Valores hasta la fecha " + fecha;
+			max = HistorialIndicadorBean.getMaxValue(results);
+			min = HistorialIndicadorBean.getMinValue(results, max);
+			fechaMin = HistorialIndicadorBean.getMinDate(results);
+			fechaMax = HistorialIndicadorBean.getMaxDate(results);
 		} else {
 			Calendar calendar = Calendar.getInstance(); 
 			title = "";
@@ -52,25 +58,44 @@ public class FuelChart {
 		}
 		
 		
-
+		
 		int[] colors = new int[] { Color.GREEN };
 		PointStyle[] styles = new PointStyle[] { PointStyle.POINT};
+		
+		if (results.size() > 1) {
+			colors = new int[] { Color.GREEN, Color.BLUE, Color.MAGENTA };
+			styles = new PointStyle[] { PointStyle.POINT, PointStyle.TRIANGLE, PointStyle.SQUARE};
+		}
+		
 		XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
 
 		
 
 		setChartSettings(renderer,
 				title, //titulo del chart
-				"Fecha", "Valor", //nombre del eje X, nombre del eje Y
+				"Fecha (dd-mm-aaaa)", "Valor", //nombre del eje X, nombre del eje Y
 				fechaMin, fechaMax, //x minimo, x maximo
 				min, max, //y minimo, y maximo
 				Color.GRAY, Color.LTGRAY, Color.RED); //color de los ejes, color de los textos en los ejes, color del fondo del chart
 		
 		renderer.setXLabels(5);
 		renderer.setYLabels(10);
-		SimpleSeriesRenderer seriesRenderer = renderer.getSeriesRendererAt(0);
-		seriesRenderer.setDisplayChartValues(true);
+		
+		for (int i = 0; i < results.size(); i++) {
+			SimpleSeriesRenderer seriesRenderer = renderer.getSeriesRendererAt(i);
+			seriesRenderer.setDisplayChartValues(true);
+	    }
+		
+		if (results.size() == 0) {
+			SimpleSeriesRenderer seriesRenderer = renderer.getSeriesRendererAt(0);
+			seriesRenderer.setDisplayChartValues(true);
+		}
 
+		
+		
+		
+		
+		
 		return ChartFactory.getTimeChartView(context,
 				buildDateDataset(title, results), renderer, DATE_FORMAT);
 	}
@@ -99,13 +124,29 @@ public class FuelChart {
 	}
 
 	protected XYMultipleSeriesDataset buildDateDataset(String title,
-			List<Result> results) {
+			List<HistorialIndicadorBean> results) {
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		TimeSeries series = new TimeSeries(title);
-		for (Result result : results) {
-			series.add(result.getDate(), result.getValue());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		
+		for (HistorialIndicadorBean result : results) {
+			TimeSeries series = new TimeSeries(result.nombre);
+			for (HistorialValorBean valor : result.historial) {
+				try {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(sdf.parse(valor.fecha));
+					
+					series.add(calendar.getTime(), Double.valueOf(valor.valor));
+				} catch (Exception e) {}
+			}
+				
+			dataset.addSeries(series);
 		}
-		dataset.addSeries(series);
+		
+		if (results.isEmpty()) {
+			TimeSeries series = new TimeSeries("");
+			dataset.addSeries(series);
+		}
+		
 		return dataset;
 	}
 
