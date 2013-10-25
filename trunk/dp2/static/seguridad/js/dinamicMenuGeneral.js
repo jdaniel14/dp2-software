@@ -15,14 +15,14 @@ $(document).ready(function(){
 	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cfxBvGCGIy?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
-			    	console.log(menu);
+			    	//console.log(menu);
 			    	$("#seguridadMenu").html(menu);
 			  })
      }else{
          var jqxhr = $.getJSON( "http://www.json-generator.com/j/cghalrwIPm?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
-			    	console.log(menu);
+			    	//console.log(menu);
 			    	$("#seguridadMenu").html(menu);
 			  })
          
