@@ -77,7 +77,9 @@
                                             1)";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $proj->id);
-        $stmt->bindParam("jp", $proj->jp);
+        $stmt->bindParam("jp", $proj->jp);        
+        $stmt->bindParam("fi", $proj->fi);
+        $stmt->bindParam("ff", $proj->ff);
         $stmt->execute();
         $db = null;
         echo json_encode(array("me"=>"", "id"=>$proj->id));
