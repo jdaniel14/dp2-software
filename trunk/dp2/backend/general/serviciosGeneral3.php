@@ -504,11 +504,9 @@ function G_postAceptDenegSolicitud(){
         $db = getConnection();
 
         $id_proy = $solicitud->id_proy;
-        $sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, motivo, estado) VALUES (:id_proy, :flag_cambio, :motivo, 1)";
+        $sql = "UPDATE SOLICITUD_CAMBIO SET estado = 2 WHERE id_proyecto = :id_proy";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $id_proy);
-        $stmt->bindParam("flag_cambio", $flag_cambio);
-        $stmt->bindParam("motivo", $motivo);
         $stmt->execute();
 
         $db = null;
