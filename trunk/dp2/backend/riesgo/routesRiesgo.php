@@ -48,6 +48,8 @@
 	$app->get('/R_listarTipoImpactoXNivelImpacto/:id', 'R_getListaTipoImpactoXNivelImpacto');
 	$app->get('/R_listaTipoImpacto/:id', 'R_getListaTipoImpacto');
 	$app->get('/R_listaHeadersImpactoRiesgo/:id', 'R_getListaHeadersImpactoRiesgo');
+	$app->delete('/R_eliminarTipoImpactoxNivelImpacto/:id','R_deleteTipoImpactoxNivelImpacto');
+	
 
 
 	//Equipo Riesgo
