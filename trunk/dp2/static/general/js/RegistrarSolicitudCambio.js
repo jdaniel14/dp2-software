@@ -7,7 +7,7 @@ $("#btnEnviar").click(function(){
 function registrarSolicitud(){
     var cad='';
 
-    if ($("#general").checked==true)    { cad+='1'; } else { cad+='0'; }
+    if ($("#general").attr("checked") == "checked")    { cad+='1'; } else { cad+='0'; }
     if ($("#alcance").checked==true)    { cad+='1'; } else { cad+='0'; }
     if ($("#cronograma").checked==true) { cad+='1'; } else { cad+='0'; }
     if ($("#costo").checked==true)      { cad+='1'; } else { cad+='0'; }
@@ -18,7 +18,7 @@ function registrarSolicitud(){
 	var jsonCliente = {
         id_proy     : id,
 		flag_cambio : '\''+cad+'\'',
-		motivo      : '\''+$("#motivo").val()+'\''
+		motivo      : $("#motivo").val()
     };
 
     $.ajax({
