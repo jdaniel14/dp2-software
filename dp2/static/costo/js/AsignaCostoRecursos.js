@@ -58,7 +58,7 @@ iniciaRecursosFijos();
 
 //Funciones para obtener datos de AJAX
 
-
+//Obtener lista de actividades
 function obtenActividades(/*idProyecto*/){
 	var obj ={
 		idProyecto : idProyecto
@@ -77,7 +77,7 @@ function obtenActividades(/*idProyecto*/){
 
 }
 
-/*esta es la que vale! has todas asi*/
+//Obtener proyectto y sus datos
 function obtenProyecto(/*idProyecto*/){
 	var obj ={
 		idProyecto : idProyecto
@@ -94,7 +94,7 @@ function obtenProyecto(/*idProyecto*/){
 	//return arregloProyecto;
 
 }
-/*aca temrmina*/
+//Obtener lista de recursos
 function obtenRecursos(/*idProyecto,*/tipo){
 	var obj ={
 		idProyecto : idProyecto
@@ -109,7 +109,7 @@ function obtenRecursos(/*idProyecto,*/tipo){
 	});
 
 }
-
+//Obtener lista de recursos con costo fijo
 function obtenRecursosFijo(){
 	var obj ={
 		idProyecto : idProyecto
@@ -124,7 +124,7 @@ function obtenRecursosFijo(){
 	});
 
 }
-
+//Lista de actividades con sus respectivos recursos
 function obtenDatosActividad(idActividad){
 	
 	var obj ={
@@ -141,18 +141,9 @@ function obtenDatosActividad(idActividad){
 	});
 
 }
-
+//Iniciar la obtencion y creacion del combo para las monedas
 function obtenMoneda(){
 		
-	/*
-	$.ajax({
-		type: 'GET',		
-		url: rootURL + 'CO_obtenerInfoActividad/',
-		dataType: "json", // data type of response
-		success: agregaDataFilaResumen
-	});*/
-	
-	
 	creaComboMoneda(arregloMoneda);
 
 }
