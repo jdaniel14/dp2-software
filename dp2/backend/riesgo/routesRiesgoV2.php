@@ -16,7 +16,8 @@
 	$app->get('/R_crearMatriz/:id','R_getGenerarMatriz');
 
 	//ESTRATEGIAS
-	$app->get('/R_listarEstrategias/:id','R_getEstrategias');
+	$app->get('/R_listarEstrategiasPositivo/:id','R_getEstrategiasPositivo');
+	$app->get('/R_listarEstrategiasNegativo/:id','R_getEstrategiasNegativo');
 	$app->post('/R_registrarEstrategias','R_postRegistrarEstrategias');
 	$app->delete('/R_eliminarEstrategias/:id','R_deleteEstrategias');
 
