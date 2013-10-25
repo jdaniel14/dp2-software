@@ -443,6 +443,62 @@ function G_obtenerPaquetesHijo(&$paquete) {
     return;
 }
 
+function G_postRegistraSolicitud(){
+    $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
+    $solicitud = $body->solicitud;
+    try {
+        $db = getConnection();
+
+        $id_proy = $solicitud->id_proy;
+        $flag_cambio = $solicitud->flag_cambio;
+        $motivo = $solicitud->motivo;
+        $sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, motivo, estado) VALUES (:id_proy, :flag_cambio, :motivo, 1)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id_proy", $id_proy);
+        $stmt->bindParam("flag_cambio", $flag_cambio);
+        $stmt->bindParam("motivo", $motivo);
+        $stmt->execute();
+
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_getListaSolicitud(){
+	  $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.motivo
+FROM SOLICITUD_CAMBIO S, MIEMBROS_EQUIPO M, EMPLEADO E, PROYECTO P
+WHERE S.id_proyecto = M.id_proyecto AND M.id_proyecto = P.id_proyecto AND M.id_rol = 2 AND M.id_empleado = E.id_empleado AND S.estado = 1";
+    try {
+      $db = getConnection();
+      $stmt = $db->prepare($sql);
+      $stmt->execute();
+
+			$lista_solic = array();
+			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+				 $sol = array(	"id_proy"=>$p["id_proyecto"],
+				                "nomb_proy"=> $p["nombre_proy"],
+				                "nomb_jefe"=> $p["nombre_jefe"],
+				                "est"=> $p["estado"],
+				                "flag_cambio"=> $p["flag_cambio"],
+				                "motivo"=> $p["motivo"],
+);
+					array_push($lista_solic, $sol);
+			}
+      $db = null;
+      echo json_encode(array("lista_solic"=>$lista_solic,"me" => $cantidad)); 
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_postAceptDenegSolicitud(){
+
+}
+
+
 function G_getProfesiones() {
     $sql = " SELECT id_profesion, descripcion FROM PROFESION ";
     try {
@@ -463,5 +519,6 @@ function G_getProfesiones() {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
+
 
 ?>
