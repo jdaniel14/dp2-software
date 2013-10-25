@@ -196,6 +196,7 @@ function agregaFilaRecurso(){
 								+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
 								+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
 								+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
+								+'<input type="hidden" name="indRecursoH'+a+'"  id="indRecursoH'+a+'" value="0" >'
 								);	
 	inicializaFechas(a);
 	$("#numFilas").val(a);
