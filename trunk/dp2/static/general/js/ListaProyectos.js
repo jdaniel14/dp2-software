@@ -173,8 +173,8 @@ var l_objetivos=[];
 	    	desc:"",
 	    	ido:""
 	    };
-		aux.desc = objetivos[i].cells[0].innerHTML;
-		aux.ido = objetivos[i].cells[1].innerHTML;
+		aux.ido = objetivos[i].cells[0].innerHTML;
+		aux.desc = objetivos[i].cells[1].innerHTML;
 		aux.est = objetivos[i].cells[2].children[0].checked;
 		l_objetivos.push(aux);
 	}
@@ -185,10 +185,10 @@ var l_objetivos=[];
 			type: 'POST',
 			url: actualizarObjetivos,
 			dataType: "json", // data type of response
-			data: JSON.stringify(envio),
+			data: JSON.stringify(obj),
 			async: false,
 	        success: function(data){
-	            alert("Ya se cerro pe causha");
+	            alert("Ya Actualizo Objetivos");
 	        }
 		});  
         $.ajax({

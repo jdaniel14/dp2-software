@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	//cargar Combos
-	cargarComboRolRecurso();
+	//cargarComboRolRecurso();
 });
 
 function cargarComboJefeProyecto(){
@@ -12,6 +12,7 @@ function cargarComboJefeProyecto(){
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
 			for(obj in data){
+				var l_rol = data["l_rol"];
 				var opt = $("<option></option>");
 				opt.val(data[obj]["id"]);
 				opt.html(data[obj]["nom"]);
