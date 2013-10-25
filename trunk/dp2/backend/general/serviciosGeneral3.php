@@ -446,7 +446,7 @@ function G_obtenerPaquetesHijo(&$paquete) {
 function G_postRegistraSolicitud(){
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
-    $solicitud = $body->solicitud;
+    $solicitud = $body;
     try {
         $db = getConnection();
 
@@ -468,7 +468,7 @@ function G_postRegistraSolicitud(){
 }
 
 function G_getListaSolicitud(){
-	  $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.motivo
+	  $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto as nombre_proy, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.motivo
 FROM SOLICITUD_CAMBIO S, MIEMBROS_EQUIPO M, EMPLEADO E, PROYECTO P
 WHERE S.id_proyecto = M.id_proyecto AND M.id_proyecto = P.id_proyecto AND M.id_rol = 2 AND M.id_empleado = E.id_empleado AND S.estado = 1";
     try {
@@ -488,13 +488,33 @@ WHERE S.id_proyecto = M.id_proyecto AND M.id_proyecto = P.id_proyecto AND M.id_r
 					array_push($lista_solic, $sol);
 			}
       $db = null;
-      echo json_encode(array("lista_solic"=>$lista_solic,"me" => $cantidad)); 
+      echo json_encode(array("lista_solic"=>$lista_solic,"me" => "")); 
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
 
 function G_postAceptDenegSolicitud(){
+    $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
+    $solicitud = $body;
+    try {
+        $db = getConnection();
+
+        $id_proy = $solicitud->id_proy;
+        $sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, motivo, estado) VALUES (:id_proy, :flag_cambio, :motivo, 1)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id_proy", $id_proy);
+        $stmt->bindParam("flag_cambio", $flag_cambio);
+        $stmt->bindParam("motivo", $motivo);
+        $stmt->execute();
+
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+
 
 }
 
