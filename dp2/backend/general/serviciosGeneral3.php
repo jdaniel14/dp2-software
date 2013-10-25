@@ -28,6 +28,8 @@ function G_getValidarSuccess($id) {
 function G_postCerrarProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $resultado = json_decode($request->getBody());
+    //$request = "{ \"id\": 1 }";
+    //$resultado = json_decode($request);
     $sql = " UPDATE PROYECTO SET estado='CERRADO' where id_proyecto=:id ";
     try {
         $db = getConnection();
@@ -545,14 +547,15 @@ function G_postRegistrarRecurso() {
     $proj = json_decode($request->getBody());
 
     try {
-        $sql = " INSERT INTO EMPLEADO (nombres, apellidos, email, nombre_corto, id_profesion) VALUES (:noms, :aps, :email, :nomcorto, :idprof) ";
+        $sql = " INSERT INTO EMPLEADO (nombres, apellidos, email, nombre_corto, pago_mensual, id_profesion) VALUES (:noms, :aps, :email, :nomcorto, :pm, :idprof) ";
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $nomcorto = $proj->nr + $proj-> ar;
+        $nomcorto = (string)$proj->nr + (string)$proj-> ar;
         $stmt->bindParam("noms", $proj->nr);
         $stmt->bindParam("aps", $proj->ar);
         $stmt->bindParam("email", $proj->cr);
         $stmt->bindParam("nomcorto", $nomcorto);
+        $stmt->bindParam("pm", $proj->pm);
         $stmt->bindParam("idprof", $proj->pr);
         $stmt->execute();
 
