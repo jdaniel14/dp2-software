@@ -10,9 +10,10 @@ $(document).ready(function(){
 
 function iniciaProyectos(){
 	
+        
 	$.ajax({
 		type: 'GET',
-		url: rootURL,
+		url: '../../api/G_listaProyecto/'+localStorage.getItem("idUsuario"),
 		dataType: "json", // data type of response
         success: function(data){                    
             agregaDataFila(data);

@@ -8,7 +8,7 @@
 //Jose
 $app->get('/G_listaJefeProyectos', 'G_getListaJP'); //lista de los jefes de projectos
 $app->post('/G_registrarProyecto', 'G_postRegistrarProyecto'); //registrar un proyecto
-$app->get('/G_listaProyecto', 'G_getListaProyecto'); //lista de los proyectos
+$app->get('/G_listaProyecto/:id', 'G_getListaProyecto'); //lista de los proyectos
 $app->get('/G_listaTipoProyecto', 'G_getListaTipoProyecto'); //lista de los proyectos  
 
 //Alfonso -- acta de constitucion

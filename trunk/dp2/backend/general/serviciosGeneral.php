@@ -88,7 +88,7 @@
   }
 
         //corregido    
-	function G_getListaProyecto(){
+	function G_getListaProyecto($id){
 
 
 		$sql = "SELECT P.id_proyecto, 
@@ -103,11 +103,13 @@
                 AND M.id_rol=r.id_rol
                 and r.id_rol=2
                 AND P.id_tipo_proyecto = T.id_tipo_proyecto 
+                AND M.ID_EMPLEADO=:id
                 ORDER BY P.id_proyecto";
 		try {
-			$db = getConnection();
-                        //mysql_query("SET NAMES 'utf8'");
-			$stmt = $db->query($sql);
+                        $db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam("id", $id);
+                        $stmt->execute();		
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 				
