@@ -5,6 +5,7 @@ var numRecursos= 0;
 var comboMoneda='';
 var HashTipoCambio='';
 
+/*Data inicial para pruebas, previo php*/
 var arregloProyecto= new Array(
 							'Mi proyecto', '566', '1.5'
 								);
@@ -46,7 +47,9 @@ var arregloMoneda= new Array(
 									)
 								);
 								
+/*Fin data inicial de pruebas*/
 
+//Función de inicio de la pagina
 
 iniciaActividades();
 iniciaProyecto();		
@@ -403,28 +406,25 @@ function grabarRecursos(){
 		porcReserva: porcentajeReserva
 		
 		
-	}
+	}	
 	/*
-	$.ajax({
-		type: 'POST',
-		url: rootURL + 'CO_grabarReserva/'+JSON.stringify(obj),		
-		dataType: "json",
-		async: true,
-		success:function(data){if (data!=null) alert("se grabó");}
-	});
-	*/
-	
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_enviarPorcReserva/'+JSON.stringify(obj),		
 		dataType: "json", 
 		async: true,
 		success:function(data,B){alert("Se grabó correctamente");}
+	});*/
+	
+	$.ajax({
+		type: 'POST',
+		url: rootURL + 'CO_enviarPorcReserva',		
+		data: JSON.stringify(obj),		
+		dataType: "json", 
+		contentType: "application/json; charset=utf-8",
+		async: true,
+		success:function(data,B){alert("Se grabó correctamente");}
 	});
-	
-	//alert("se grabó");
-	
-	//CO_enviarCURecursos
 	
 }
 

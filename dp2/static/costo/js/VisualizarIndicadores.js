@@ -208,23 +208,20 @@ function grabarIndicadores(){
 		TCPI: obtenerValorIndicador('TCPI')		
 	}
 	
-	
 	/*
-	
-	agregaIndicador("VP", indicadores.PV, 0, 1);
-	agregaIndicador("VA", indicadores.AC, 0, 1);
-	agregaIndicador("VG", indicadores.EV, 0, 1);
-	agregaIndicador("DC", indicadores.CV, 0, 1);
-	agregaIndicador("CPI", indicadores.CPI, 6, 7);
-	agregaIndicador("SPI", indicadores.SPI, 2, 10);
-	agregaIndicador("SV", indicadores.SV, 3, 4);
-	
-	
-	*/
-	
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_enviarIndicadores/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else alert('Se grabo exitosamente');}
+	});
+	*/
+	
+	$.ajax({
+		type: 'POST',
+		url: rootURL + 'CO_enviarIndicadores',		
+		data:JSON.stringify(obj),
 		dataType: "json",
 		async: true,
 		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else alert('Se grabo exitosamente');}

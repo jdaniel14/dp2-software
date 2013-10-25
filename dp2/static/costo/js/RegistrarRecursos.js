@@ -554,30 +554,13 @@ function grabarRecursos(){
 	}
 	
 	enviaDatos(obj);
-	
-	
-//	alert("se grabó " + obj);
-	
-	//CO_enviarCURecursos
-	
-	/*
-	
-	$.ajax({
-		type: 'GET',
-		url: rootURL + 'CO_obtenerListaRecursos/'+JSON.stringify(obj),		
-		dataType: "json",
-		async: true,
-		success:function(data){agregaDataFila(data,tipo);}
-	});
-	
-	*/
-	
+
 	
 }
 
 function enviaDatos(obj){
 
-
+	/*
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_enviarCURecursos/'+JSON.stringify(obj),		
@@ -585,16 +568,15 @@ function enviaDatos(obj){
 		async: true,
 		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else cambiaConsultar();}
 	});
-
-	/*
+	*/
 	$.ajax({
 		type: 'POST',
-		url: rootURL + 'CO_enviarCURecursos/'+ JSON.stringify(obj),				
-		dataType: "json",
+		url: rootURL + 'CO_enviarCURecursos',
+		data: JSON.stringify(obj),		
+		dataType: "json", 
 		async: true,
-		success:function(response, status){ alert("se grabó"); }
+		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else cambiaConsultar();}
 	});
-*/
 
 }
 
