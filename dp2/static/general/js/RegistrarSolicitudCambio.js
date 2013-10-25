@@ -17,8 +17,8 @@ function registrarSolicitud(){
 
 	var jsonCliente = {
         id_proy     : id,
-		flag_cambio : cad,
-		motivo      : $("#motivo").val()
+		flag_cambio : '\''+cad+'\'',
+		motivo      : '\''+$("#motivo").val()+'\''
     };
 
     $.ajax({
