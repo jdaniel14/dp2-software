@@ -1,69 +1,31 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">DP2</a>
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DP2</a>
+        </div>
+        <div class="collapse navbar-collapse">
+
+
+    <div id = "seguridadMenu"> 
     </div>
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li class="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">General<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="../../views/general/ListaProyectos.html">Ver Lista de Proyectos</a></li>
-            <li><a href="../../views/general/RegistrarActaConstitucion.html">Registrar Acta de Constitucion</a></li>
-            <li><a href="../../views/general/VisualizarActaConstitucion.html">Ver Acta de Constitucion</a></li>
-            <li><a href="../../views/general/ListaRecursosHumanosXProyecto.html">Ver Lista de Recursos Humanos</a></li>
-            <li><a href="../../views/general/RegistrarLeccionAprendida.html">Registrar Lecciones Aprendidas</a></li>
-            <li><a href="../../views/general/ListaLeccionesAprendidas.html">Ver Lista de Lecciones Aprendidas</a></li>
-          </ul>
-        </li>
-        <li class="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Alcance<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="../../views/alcance/PlanGestionAlcance.html">Plan de gestión de alcance</a></li>
-            <li><a href="../../views/alcance/index.html">Ver EDT</a></li>
-            <li><a href="../../views/alcance/diccionario.html">Diccionario EDT</a></li>
-            <li><a href="../../views/alcance/gestionAlcance.html">Gestión de alcance</a></li> 
-            <li><a href="../../views/alcance/requisitos.html">Gestión de requisitos</a></li>           
-          </ul>
-        </li>
-        <li class="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cronograma<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="../../views/cronograma/index.html">Mostrar Gantt</a></li>  
-			<li><a href="../../views/cronograma/diagramaRed.html">Mostrar Diagrama de red</a></li>  
-          </ul>
-        </li>
-        <li class="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Costo<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-			<li><a href="../../views/costo/RegistrarRecursos.html">Registrar Recursos</a></li>
-            <li><a href="../../views/costo/AsignaCostoRecursos.html">Resumen presupuesto/Reserva</a></li>
-			<li><a href="../../views/costo/AsignaCuenta.html">Asignar cuenta contable</a></li>
-            <li><a href="../../views/costo/VisualizarPresupuesto.html">Visualizar Presupuesto</a></li>            
-			<li><a href="../../views/costo/VisualizarIndicadores.html">Visualizar Indicadores</a></li>
-			<li><a href="../../views/costo/VisualizarIndicadoresGrafico.html">Visualizar Indicadores Grafico</a></li>
-			<li><a href="../../views/costo/VisualizarCostoPorCuenta.html">Visualizar Costo por Cuenta</a></li>			
-          </ul>
-        </li>
-        <li class="active" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Riesgos<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="../../views/riesgo/RegistrarRiesgo.html">Mostrar riesgos</a></li>   
-            <li><a href="../../views/riesgo/AcuerdosModificaciones.html">Acuerdos y Modificaciones</a></li> 
-            <li><a href="../../views/riesgo/PlanRiesgos.html">Plan Riesgos</a></li> 
-             <li><a href="../../views/riesgo/Configuracion.html">Configuracion</a></li> 
-             
-             <li><a href="../../views/riesgo/MatrizRiesgos.html">Matriz Riesgos</a></li> 
-          </ul>
-        </li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</div>
+    
+    <ul class="nav navbar-nav navbar-right">
+                <li id="logeado" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>Bienvenido Admin, Admin <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Preferencias</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+<script src="../../static/seguridad/js/dinamicMenu.js"></script>
