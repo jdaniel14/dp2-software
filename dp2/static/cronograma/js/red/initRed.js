@@ -32,7 +32,7 @@ var widthDiagram = 1200;
 var heightDiagram = 620;
 
 //Parametros de dibujo de los cuadraditos
-var width = 120;
+var width = 130;
 var height = 70;
 var anchoPita = '3';
 var anchoPitaC = '6';
@@ -46,6 +46,8 @@ var borderWidthC = '5';
 var actXBloque;
 var cantActXBloque = 0;
 
+//Meses de cada bloque
+var meses = new Array();
 
 //Cogue del local Storage
 var idProyecto;
@@ -65,7 +67,7 @@ function cargarDatos(){
 	
 	var objProy ={
 		idProyecto : idProyecto
-	}
+	};
 	
 	var rootURL = "../../../api/CR_getDependencias/"+JSON.stringify(objProy);
 	$.ajax({
@@ -77,7 +79,7 @@ function cargarDatos(){
         	console.log(data);
         	dataAJAX = data;
         	listaRed = data.listaRed;
-        	iniciarFiesta()
+        	iniciarFiesta();
         }
 	});
 }
@@ -88,12 +90,54 @@ function crearConexionNodos(id_from,id_to,pitaSize){
 	}
 }
 
-function crearNodo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoBorde, widthN, heightN){
+function crearTitulo(id_actividad,nombre_actividad, posX, posY, colorBorde, anchoBorde, widthN, heightN){
 	if(id_actividad != undefined){
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
 			'nodeContent': nombre_actividad,
+			'xPosition':posX,
+			'yPosition':posY,
+			'width': widthN,
+			'height' : heightN,
+			'bgColor':'#FFFFFF',
+			'borderColor':colorBorde,
+			'borderWidth':anchoBorde,
+			'fontColor':'#000000',
+			'fontSize':'',
+			'fontType':'',
+			'minHeight':50,
+			'maxHeight':200,
+			'minWidth':100,
+			'maxWidth':200,
+			'nPort':true,
+			'ePort':true,
+			'sPort':true,
+			'wPort':true,
+			'image':'',
+			'draggable':false,
+			'resizable':false,
+			'editable':false,
+			'selectable':false,
+			'deletable':false,
+			'nPortMakeConnection': true,
+			'ePortMakeConnection': true,
+			'sPortMakeConnection': true,
+			'wPortMakeConnection': true,
+			'nPortAcceptConnection': true,
+			'ePortAcceptConnection': true,
+			'sPortAcceptConnection': true,
+			'wPortAcceptConnection': true
+		}));
+	}
+}
+
+function crearNodo(id_actividad,nombre_actividad, fecha_actual_inicio, fecha_actual_fin, posX, posY, colorBorde, anchoBorde, widthN, heightN){
+	if(id_actividad != undefined){
+		diagram.addNode(new Node({
+			'nodeId': id_actividad,
+			'nodeType':'NODE',
+			'nodeContent': nombre_actividad + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin,
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': widthN,
@@ -137,13 +181,13 @@ function imprimirHijos(padre,rX,rY){
 			
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
 				if(re.EsCritico == 0){
-					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColor,borderWidth, width, height);
+					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,rX,rY,borderColor,borderWidth, width, height);
 					re.x = rX;
 					re.y = rY;
 					hY = rY + factorYEnB;
 				}
 				else{
-					crearNodo(re.id_actividad,re.nombre_actividad,rX,rY,borderColorC,borderWidthC, width, height);
+					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,rX,rY,borderColorC,borderWidthC, width, height);
 					re.x = rX;
 					re.y = rY;
 					hY = rY + factorYEnB;
@@ -159,7 +203,7 @@ function imprimirHijos(padre,rX,rY){
 }
 
 function imprimirTituloDelBloque(bloque, rX, rY){
-	crearNodo('-1',"Bloque: " + bloque,rX,rY,borderColorT,borderWidthT, factorX, height);
+	crearTitulo('-1',"Mes: " + bloque,rX,rY,borderColorT,borderWidthT, factorX, height);
 }
 
 function cantidadDeActividadesEnElBloque(actividadesEnBloque){
@@ -199,6 +243,21 @@ function modificacionesAlRed(){
 	$("#toolbar_undefined").hide();
 }
 
+function crearArregloDeMeses(){
+	meses[1]="Enero";
+	meses[2]="Febrero";
+	meses[3]="Marzo";
+	meses[4]="Abril";
+	meses[5]="Mayo";
+	meses[6]="Junio";
+	meses[7]="Julio";
+	meses[8]="Agosto";
+	meses[9]="Setiembre";
+	meses[10]="Octubre";
+	meses[11]="Noviembre";
+	meses[12]="Diciembre";
+}
+
 function iniciarFiesta(){
 		
 	//Creo el diagrama general
@@ -214,6 +273,7 @@ function iniciarFiesta(){
 		}
 	});
 	
+	crearArregloDeMeses();
 	modificacionesAlRed();
 	
 	//Inicializo los valores para el tama–o de cada bloque
@@ -223,6 +283,8 @@ function iniciarFiesta(){
 	console.log(listaRed);
 	
 	y = yIni;
+	
+	var mesAnterior;//Para controlar bloques que no tienen nada
 	//Recorro todos los bloques y dibujo todas las actividades
 	for(var b = 0; b < dataAJAX.cantBloques; b++){ //hasta listaRed.cantBloques
 		//console.log("Bloque actual: " + b);
@@ -259,7 +321,17 @@ function iniciarFiesta(){
 		xTitulo = x;
 		yTitulo = yIni - 70;
 		
-		imprimirTituloDelBloque(b, xTitulo, yTitulo);
+		var fechita = actXBloque[0].fecha_plan_inicio.split("-");
+		var mes;
+		if(fechita != undefined){
+			mes = meses[parseInt(fechita[1])];
+			mesAnterior = parseInt(fechita[1]);
+		}
+		else{
+			mes = meses[parseInt(mesAnterior) + 1];
+		}
+		
+		imprimirTituloDelBloque(mes, xTitulo, yTitulo);
 		//Fin inicializar la posicion del titulo del bloque
 		
 		//Recorro la lista de las actividades que pertenecen al bloque en el que estoy
@@ -270,56 +342,14 @@ function iniciarFiesta(){
 			if(el.marcado == 0){
 				//imprimir el nodo
 				if(el.EsCritico == 0){					
-					/*
-					var impY = 0;
-					var arrPredecesores = el.predecesores.split(',');
-					$.each(arrPredecesores,function(eAux,elAux){
-						var axx = 0;
-						$.each(listaRed,function(e1Aux,el1Aux){
-							if(el1Aux.id_actividad == elAux){
-								axx = el1Aux.y;
-							}
-						});
-						impY = Math.max(impY,axx);
-						impY = parseInt(impY) + parseInt(factorYEnB);
-					});
-					
-					if(impY != 0){
-						crearNodo(el.id_actividad, el.nombre_actividad,x,impY,borderColor,borderWidth, width, height);
-						el.x = x;
-						el.y = impY;
-					}
-					else{
-					*/	crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColor,borderWidth, width, height);
-						el.x = x;
-						el.y = y;
-					//}
+					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,x,y,borderColor,borderWidth, width, height);
+					el.x = x;
+					el.y = y;				
 				}
 				else{
-					/*
-					var impY = 0;
-					var arrPredecesores = el.predecesores.split(',');
-					$.each(arrPredecesores,function(eAux,elAux){
-						var axx = 0;
-						$.each(listaRed,function(e1Aux,el1Aux){
-							if(el1Aux.id_actividad == elAux){
-								axx = el1Aux.y;
-							}
-						});
-						impY = Math.max(impY,axx);
-						impY = parseInt(impY) + parseInt(factorYEnB);
-					});
-					
-					if(impY != 0){
-						crearNodo(el.id_actividad, el.nombre_actividad,x,impY,borderColorC,borderWidthC, width, height);
-						el.x = x;
-						el.y = impY;
-					}
-					else{
-					*/	crearNodo(el.id_actividad, el.nombre_actividad,x,y,borderColorC,borderWidthC, width, height);
-						el.x = x;
-						el.y = y;
-					//}
+					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,x,y,borderColorC,borderWidthC, width, height);
+					el.x = x;
+					el.y = y;				
 				}
 				//marcar el nodo como  ya impreso
 				el.marcado = 1;//0->no dibujado ni conectado, 1-> dibujado, 2->conectado y dibujado		
