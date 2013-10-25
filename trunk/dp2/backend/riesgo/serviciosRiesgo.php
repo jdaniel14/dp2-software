@@ -27,8 +27,8 @@
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado,acciones_especificas) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado,:acciones_especificas)";
+        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado,acciones_especificas,positivo_negativo) 
+                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado,:acciones_especificas,:positivo_negativo)";
         try {
             $db = getConnection();
             $stmt = $db->prepare($query);
@@ -46,7 +46,8 @@
             $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
             $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
             $stmt->bindParam("acciones_especificas", $riesgo->acciones);
-
+            $stmt->bindParam("positivo_negativo", $riesgo->tipoRiesgo);
+            
             //$stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
             
             
@@ -111,7 +112,7 @@
         $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
         TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
         PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
-        nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad
+        nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo
                 FROM RIESGO_X_PROYECTO RXP
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
@@ -141,7 +142,8 @@
                             "demoraPotencial" => $row['demora_potencial'],//RXP
                             "nombreResponsable" => $row['nombre_corto'],//X
                             "nivelImpacto" => $row['nivel_impacto'],//X
-                            "nivelProbabilidad" => $row['nivel_probabilidad']//X
+                            "nivelProbabilidad" => $row['nivel_probabilidad'],//X
+                			"tipoRiesgo" => $row['positivo_negativo']
                             );
                 array_push($arregloListaRiesgo,$data);
             }
@@ -154,7 +156,11 @@
 
     function R_getRiesgo($idRiesgoXProyecto){
         
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,RXP.id_empleado ,nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad
+        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,
+        		RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, 
+        		RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, 
+        		PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,
+        		RXP.id_empleado ,nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo
                 FROM RIESGO_X_PROYECTO RXP
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
@@ -190,7 +196,8 @@
                             "idResponsable" => $row->id_empleado,
                             "nombreResponsable" => $row->nombre_corto,//
                             "nivelImpacto" => $row->nivel_impacto,//X
-                            "nivelProbabilidad" => $row->nivel_probabilidad//X
+                            "nivelProbabilidad" => $row->nivel_probabilidad,//X
+            				"tipoRiesgo" => $row->positivo_negativo
                             );
             $db = null;
             echo json_encode($data);
