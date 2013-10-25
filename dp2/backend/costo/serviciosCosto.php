@@ -110,8 +110,9 @@
 	}
   
 	///////////SPRINT 2/////////////
-	function CO_getIndicadores($json) { //servicio 12 //COMPLETO
-		$proy = json_decode($json);
+	function CO_getIndicadores() { //servicio 12 //COMPLETO
+		$request = \Slim\Slim::getInstance()->request();
+    	$proy = json_decode($request->getBody());
 		$year = $proy->year;
 		$month = $proy->month;
 		$day = $proy->day;

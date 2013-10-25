@@ -11,7 +11,7 @@
 	$app->post('/CO_enviarPorcReserva/', 'CO_saveReserva'); //servicio10
 	$app->get('/CO_obtenerAsientosContables/', 'CO_getAsientosContables'); //servicio11
 
-	$app->get('/CO_obtenerIndicadores/:parametro', 'CO_getIndicadores'); //servicio12
+	$app->post('/CO_obtenerIndicadores/', 'CO_getIndicadores'); //servicio12
 	$app->get('/CO_enviarIndicadores/:parametro', 'CO_saveIndicadores'); //servicio13
    
 	$app->get('/CO_obtenerListaCuentasDesglozable/:parametro', 'CO_getListaCuentasDesglozable'); //servicio14
