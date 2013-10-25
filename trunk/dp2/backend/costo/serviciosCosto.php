@@ -53,8 +53,9 @@
 		echo json_encode($infoActividad);
 	}
 	
-	function CO_saveCURecursos($json) { //servicio 5 //COMPLETO
-		$objeto = json_decode($json);
+	function CO_saveCURecursos() { //servicio 5 //COMPLETO
+		$request = \Slim\Slim::getInstance()->request();
+    	$objeto = json_decode($request->getBody());
 		$jsonRespuesta = CO_guardarCUR($objeto);
 		
 		echo json_encode($jsonRespuesta);
