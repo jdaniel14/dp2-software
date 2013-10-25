@@ -888,6 +888,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         }
 
       });
+  
 
       //remove untouched assigs
       task.assigs = task.assigs.filter(function (ass) {
@@ -895,6 +896,26 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         delete ass.touched;
         return ret;
       });
+
+      for (var i = 0; i < task.assigs.length; i++) {
+          var ass = task.assigs[i];
+          if (ass.valueReal > task.duration*8){
+            alert("Alguno de los recursos sobrepasa la capacidad máxima de horas asignadas en la actividad");
+            return false;
+          }
+          for (var j = 0; j < ge.tasks.length; j++){
+            var tsk = ge.tasks[j];
+            if ((task.startIsMilestone >= tsk.startIsMilestone && task.startIsMilestone <= tsk.endIsMilestone) || (task.endIsMilestone >= tsk.startIsMilestone && task.endIsMilestone <= tsk.endIsMilestone)){
+              for (var k = 0; k < tsk.assigs.length; k++){
+                var asg = tsk.assigs[k];
+                if (asg.id == ass.id){
+                  alert("Existe un recurso que ha sido asignado en mas de una actividad al mismo tiempo");
+                  return false;
+                }
+              }
+            }
+          }
+      }
 
       //change dates
       task.setPeriod(Date.parseString(taskEditor.find("#start").val()).getTime(), Date.parseString(taskEditor.find("#end").val()).getTime() + (3600000 * 24));
