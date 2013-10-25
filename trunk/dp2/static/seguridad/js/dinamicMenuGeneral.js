@@ -10,7 +10,7 @@
 
 $(document).ready(function(){
 
-    var idRol=2;//localStorage.getItem("idRol");
+    var idRol=1;//localStorage.getItem("idRol");
     if(idRol==1){
 	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cfxBvGCGIy?indent=4", function() {
 			}).done(function( data ) {
