@@ -10,6 +10,10 @@ $app->get('/G_devuelveCostoPorProyecto/:id', 'G_consultarListaPaquetes');
 //$app->get('/G_devuelveCostoPorProyectoPrueba/:id', 'G_getCostoPorProyectoPrueba');
 //$app->get('/G_devuelveCostoPorProyectoPrueba2/:id', 'G_consultarListaPaquetes');
 
+//Jose -- Solicitud de Cambio
+$app->post('/G_registrarSolicitudCambio', 'G_postRegistraSolicitud');
+$app->get('/G_listarSolicitudesCambio', 'G_getListaSolicitud');
+$app->post('/G_solicitudCambioAceptDeneg', 'G_postAceptDenegSolicitud');
 //sprint 4
 $app->get('/G_listaProfesionRecurso', 'G_getProfesiones');
 
