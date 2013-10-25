@@ -90,19 +90,93 @@ function CR_getPaquetesEDT($json) {//Servicio 7
 function CR_postActividades() {//servicio8
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
+	$flag=CR_validarActividades($actividades);
+	if ($flag->me==""){
+		$idProyecto = $actividades->idProyecto;
+		$arreglo_actividades = $actividades->task;
+		//$respuesta = CR_Guardar_Calendario_Base($idProyecto,$actividades->calendarBase->id);
+		$respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
+		$respuesta = CR_Eliminacion_Logica_Actividades($idProyecto);
 
-    $idProyecto = $actividades->idProyecto;
-    $arreglo_actividades = $actividades->task;
-    //$respuesta = CR_Guardar_Calendario_Base($idProyecto,$actividades->calendarBase->id);
-    $respuesta = CR_Eliminacion_Logica_Recursos_Asignados($idProyecto);
-    $respuesta = CR_Eliminacion_Logica_Actividades($idProyecto);
-
-    if ($respuesta->me == "") {
-        echo json_encode(CR_guardar_actividades_BD($arreglo_actividades, $idProyecto));
-    }
-    else
-        echo json_encode($respuesta);
+		if ($respuesta->me == "") {
+			echo json_encode(CR_guardar_actividades_BD($arreglo_actividades, $idProyecto));
+		}
+		else
+			echo json_encode($respuesta);
+	}
+	else 
+		echo json_encode($flag);
 }
+function CR_validarActividades($actividades){
+
+	$sql = "select count(*) as cantidad, id_miembros_equipo, descripcion from RECURSO where id_miembros_equipo is not null and id_proyecto=? and id_recurso=? ; ";
+	$sql2= "select count(*) as cantidad , id_empleado from dp2.MIEMBROS_EQUIPO where id_proyecto=? and id_miembros_equipo=? and (? between fecha_entrada and fecha_salida) and (? between fecha_entrada and fecha_salida) ;" ;
+	$sql2_1= "select * from dp2.MIEMBROS_EQUIPO where id_proyecto=? and id_miembros_equipo=? ;" ;
+	$sql3= "select count( A.id_actividad ) as cantidad 
+			from dp2.MIEMBROS_EQUIPO ME ,dp2.ACTIVIDAD_X_RECURSO AXR, (select AC.* from dp2.ACTIVIDAD AC, dp2.PROYECTO P where AC.id_proyecto=P.id_proyecto and AC.eliminado=0 and AC.dias>0 and P.estado='ACTIVO')A,dp2.RECURSO R 
+			where   A.id_proyecto<>? AND
+			R.estado='ACTIVO'
+			AND R.id_miembros_equipo=ME.id_miembros_equipo
+			and A.id_actividad=AXR.id_actividad
+			and R.id_recurso=AXR.id_recurso 
+			and ME.id_empleado=?
+			and ME.id_proyecto=A.id_proyecto
+			and (? between A.fecha_plan_inicio and A.fecha_plan_fin)
+			and (? between A.fecha_plan_inicio and A.fecha_plan_fin) ;";
+			
+	try {
+        $db = getConnection();
+		$stmt = $db->prepare($sql);
+		foreach($actividades->task as $A){
+		
+			foreach ($A->assigs as $R){
+				$stmt->execute(array($actividades->idProyecto+0,$R->idrecurso+0));
+				$p = $stmt->fetch(PDO::FETCH_ASSOC); 
+				if ($p["cantidad"]+0>0){
+					$id_miembros_equipo=$p["id_miembros_equipo"];
+					$stmt2= $db->prepare($sql2);
+					$stmt2->execute(array($actividades->idProyecto+0,$id_miembros_equipo+0,date("Y-m-d", $A->start / 1000),date("Y-m-d", $A->end / 1000)));
+					$p2 = $stmt2->fetch(PDO::FETCH_ASSOC) ;
+					
+					//echo json_encode(array($actividades->idProyecto+0,$id_miembros_equipo+0,date("Y-m-d", $A->start / 1000),date("Y-m-d", $A->end / 1000))) . $p2["cantidad"];
+					if ($p2["cantidad"]==0){
+						
+						//echo "mira aca 1";	
+						//$ejemplo=array("me" =>  ("En la fila".$A->id ."El recurso". $p["descripcion"]."fue asignado en fechas invalidas" ));
+						//echo $ejemplo["me"];
+						$stmt2_1= $db->prepare($sql2_1);
+						$stmt2_1->execute(array($actividades->idProyecto+0,$id_miembros_equipo+0));
+						$p2_1 = $stmt2_1->fetch(PDO::FETCH_ASSOC) ;
+						$db = null;
+						return CR_obtenerRespuestaError("En la fila".$A->id ."El recurso ". $p["descripcion"]." fue asignado en fechas invalidas. Debe estar entre ".$p2_1["fecha_entrada"]." y ".$p2_1["fecha_salida"]);
+					}
+					else{
+							$stmt3= $db->prepare($sql3);
+							$stmt3->execute(array($actividades->idProyecto+0,$p2["id_empleado"]+0,date("Y-m-d", $A->start / 1000),date("Y-m-d", $A->end / 1000)));
+							$p3 = $stmt3->fetch(PDO::FETCH_ASSOC) ;
+							//echo json_encode(array($actividades->idProyecto+0,$p2["id_empleado"]+0,date("Y-m-d", $A->start / 1000),date("Y-m-d", $A->end / 1000)));
+							if ($p3["cantidad"]>0){
+								$db = null;
+								//echo "mira aca 2";
+								return CR_obtenerRespuestaError( "En la fila".$A->id ."El recurso ". $p["descripcion"]." ya tiene ocupado algunos dias en otro proyecto" );
+							}
+					}
+				}
+				
+				
+			}
+		}
+		$db = null; 
+	} catch (PDOException $e) {
+	//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		    echo "mira aca";
+			return CR_obtenerRespuestaError(  $e->getMessage());
+    }
+	
+    return CR_obtenerRespuestaExito();
+
+}
+
 
 function CR_Guardar_Calendario_Base($calendarioBase) {
 
@@ -221,6 +295,8 @@ function CR_consultarInfoActividades($idProyecto) {
     $lista_mapeo = CR_obtenerListaMaps($recursos);
     $sql = "select a.*,((DATEDIFF(a.fecha_actual_inicio,a.fecha_actual_fin)/DATEDIFF(a.fecha_plan_inicio,a.fecha_plan_fin))*100)  as 'indicador_fecha',d.indicador_costo FROM `dp2`.`ACTIVIDAD` a  left join (SELECT n.id_actividad,((sum(n.cantidadReal*n.costo_unitario_real)/sum(r.COSTO_UNITARIO_ESTIMADO*n.cantidadEstimada))*100) AS 'indicador_costo' FROM `dp2`.`ACTIVIDAD_X_RECURSO` n  inner join `dp2`.`RECURSO` r on r.id_recurso=n.id_recurso where n.estado=1 group by n.id_actividad) d on d.id_actividad=a.id_actividad WHERE a.id_proyecto=? and a.eliminado=0 order by a.numero_fila ";
     $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
+	
+	
     $lista_actividad = array();
     try {
         $db = getConnection();
@@ -465,6 +541,16 @@ function CR_obtenerRespuestaFracaso() {
 
     return $respuesta;
 }
+
+function CR_obtenerRespuestaError($error){
+	$respuesta = new stdClass();
+    $respuesta->codRespuesta = 0;
+    $respuesta->me = $error;
+
+    return $respuesta;
+}
+
+
 
 function CR_guardar_actividades_BD($listaActividad, $idProyecto) {
 
