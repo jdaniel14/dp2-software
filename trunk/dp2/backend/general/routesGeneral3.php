@@ -2,7 +2,7 @@
 
 //Bonnie -- cierre de proyecto
 $app->post('/G_cerrarProyecto', 'G_postCerrarProyecto');
-$app->get('/G_devuelveValidarCierreProyecto/:id', 'G_getValidarSuccess');
+//$app->get('/G_devuelveValidarCierreProyecto/:id', 'G_getValidarSuccess');
 $app->get('/G_listarObjetivosPorProyecto/:id', 'G_getObjetivosPorProyecto');
 $app->post('/G_registrarObjetivosPorProyecto', 'G_postObjetivosPorProyecto');
 $app->post('/G_actualizarCumpObjetivosPorProyecto', 'G_postCumpObjetivosPorProyecto');
@@ -14,6 +14,7 @@ $app->get('/G_devuelveCostoPorProyecto/:id', 'G_consultarListaPaquetes');
 $app->post('/G_registrarSolicitudCambio', 'G_postRegistraSolicitud');
 $app->get('/G_listarSolicitudesCambio', 'G_getListaSolicitud');
 $app->post('/G_solicitudCambioAceptDeneg', 'G_postAceptDenegSolicitud');
+
 //sprint 4
 $app->get('/G_listaProfesionRecurso', 'G_getProfesiones');
 $app->post('/G_registrarRecurso', 'G_postRegistrarRecurso');
