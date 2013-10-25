@@ -110,9 +110,8 @@
 	}
   
 	///////////SPRINT 2/////////////
-	function CO_getIndicadores() { //servicio 12 //COMPLETO
-		$request = \Slim\Slim::getInstance()->request();
-    	$proy = json_decode($request->getBody());
+	function CO_getIndicadores($json) { //servicio 12 //COMPLETO
+		$proy = json_decode($json);
 		$year = $proy->year;
 		$month = $proy->month;
 		$day = $proy->day;
@@ -127,8 +126,9 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_saveIndicadores($json) { //servicio 13 //COMPLETO
-		$objeto = json_decode($json);
+	function CO_saveIndicadores() { //servicio 13 //COMPLETO
+		$request = \Slim\Slim::getInstance()->request();
+    	$objeto = json_decode($request->getBody());
 		
 		$year = $objeto->year;
 		$month = $objeto->month;
