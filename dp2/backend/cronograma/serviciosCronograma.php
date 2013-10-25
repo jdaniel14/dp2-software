@@ -57,6 +57,8 @@ function CR_getDependencias($json) {//servicio6
     $arreglo_actividades = Llenar_actividades_ruta_critica($proy->idProyecto);
     
     $arreglo_actividades_sucesores = Ruta_critica_sucesores_predecesores($arreglo_actividades, $proy->idProyecto);
+    
+    
     //echo 4;
     $arreglo_actividades_previo = WalkListAhead($arreglo_actividades_sucesores);
     //echo 5 . json_encode($arreglo_actividades_previo);
@@ -714,6 +716,13 @@ function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodead
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             if ($p == 0) {
+                
+                $array_prueba = array();
+                
+                $rec = new Activity("0","0",0, 0, 0, 0, 0, $array_prueba, $array_prueba);
+                
+                array_push($listaActividades_criticas, $rec);
+                
 
                 /*$listafechas = array();
                 $cont = 0;
@@ -801,6 +810,11 @@ function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodead
                 //echo json_encode($rec);
             }
         }
+                 $array_prueba = array();
+                
+                $rec = new Activity( "0","0",0, 0, 0, 0, 0, $array_prueba, $array_prueba);
+                
+                array_push($listaActividades_criticas, $rec);
 
         $db = null;
     } catch (PDOException $e) {
@@ -811,15 +825,68 @@ function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodead
 
 function Ruta_critica_sucesores_predecesores($listaActividades_criticas, $id_proyecto) {
    
-    for ($i = 0; $i < sizeof($listaActividades_criticas); $i++) {
+    for ($i = 1; $i < (sizeof($listaActividades_criticas)-1); $i++) {
        
+   // for ($i = 1; $i < (2); $i++) {
+        
         $listaActividades_criticas[$i]->predecessors = lista_predecesores($listaActividades_criticas[$i]->id_real, $listaActividades_criticas);
         $listaActividades_criticas[$i]->successors = lista_sucesores($listaActividades_criticas[$i]->id, $listaActividades_criticas, $id_proyecto);
   
     }
     
+    $listaActividades_criticas=enlistar_inicio_fin($listaActividades_criticas);
+    
     //echo json_encode($listaActividades_criticas);
     return $listaActividades_criticas;
+}
+
+function enlistar_inicio_fin($listaActividades_criticas){
+    
+    $sucesores=array();
+    
+    for ($i = 1; $i < (sizeof($listaActividades_criticas)-1); $i++) {
+        
+        if ($listaActividades_criticas[$i]->predecessors==null){
+            
+            $lista_pred=array();
+            $pred=0;
+             array_push($lista_pred,$pred);
+             
+             $listaActividades_criticas[$i]->predecessors=$lista_pred;
+           
+            array_push($sucesores,$i);
+            
+        }
+        
+    }
+    
+    $listaActividades_criticas[0]->successors=$sucesores;
+    
+    $predecesores=array();
+    
+    for ($i = 1; $i < (sizeof($listaActividades_criticas)-1); $i++) {
+        
+        if ($listaActividades_criticas[$i]->successors==null){
+            
+            $lista_suc=array();
+            $suc=sizeof($listaActividades_criticas)-1;
+             array_push($lista_suc,$suc);
+             
+             $listaActividades_criticas[$i]->successors=$lista_suc;
+            
+            array_push($predecesores,$i);
+            
+        }
+        
+    }
+    
+    $listaActividades_criticas[sizeof($listaActividades_criticas)-1]->predecessors=$predecesores;
+    
+    
+    
+    
+  
+    return  $listaActividades_criticas;
 }
 
 function WalkListAhead($listaActividades_criticas) {
@@ -878,6 +945,10 @@ function lista_predecesores($id, $listaActividades_criticas) {
         //$stmt = $db->query($sql);
 
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+           
+            if  ($j["predecesores"]<>""){
+            
+            
             $p = $j["predecesores"]; //falta la parte de validar los dos puntos 
 
             $array[] = array();
@@ -894,6 +965,8 @@ function lista_predecesores($id, $listaActividades_criticas) {
                 }
 
                 $k--;
+            }
+            
             }
         }
 
@@ -940,7 +1013,7 @@ function hallar_arreglo_ids_cmp($listaActividades_criticas) {
 
     foreach ($listaActividades_criticas as $activity) {
 
-        if (($activity->eet - $activity->let == 0) && ($activity->est - $activity->lst == 0))
+        if ((($activity->eet - $activity->let == 0) && ($activity->est - $activity->lst == 0))&&($activity->id!="0"))
             array_push($arreglo_critico, $activity->id);
     }
 
