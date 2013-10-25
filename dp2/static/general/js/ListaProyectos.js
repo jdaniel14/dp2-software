@@ -199,6 +199,7 @@ var l_objetivos=[];
 			async: true,
 	        success: function(data){
 	            alert("Ya se cerro pe causha");
+	             $(location).attr('href','ListaProyectos.html');
 	        }
 		});      
 }) 
