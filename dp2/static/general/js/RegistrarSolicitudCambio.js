@@ -26,7 +26,7 @@ function registrarSolicitud(){
         data: JSON.stringify(jsonCliente),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        url: "../../api/G_registrarSolicitud",
+        url: "../../api/G_registrarSolicitudCambio",
         success: function (data) {
             $(location).attr('href','MenuProyecto.html');
         }
