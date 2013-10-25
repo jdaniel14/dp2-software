@@ -262,8 +262,8 @@ function iniciarFiesta(){
 		
 	//Creo el diagrama general
 	diagram = new Diagram({
-		'xPosition':20, 
-		'yPosition':30, 
+		'xPosition':40, 
+		'yPosition':0, 
 		'width':widthDiagram, 
 		'height':heightDiagram,
 		'imagesPath': '../../../static/cronograma/pirateado/images/',
@@ -359,36 +359,26 @@ function iniciarFiesta(){
 				
 				//Aumento la posicion en la que estoy
 				x = x;
-				y = y;
-				
-			}
-			
+				y = y;				
+			}			
 		});
-		//Fin recorro la lista
-		
-		
+		//Fin recorro la lista		
 	}
 	//Fin recorro todos los bloques
 	
-	
 	//Una vez que ya estan dibujadas todas las actividades las recorro y las conecto entre si
 	$.each(listaRed,function(e,el){
-		if(el.marcado != 2){ //si no lo han conectado aun con su/sus padre(s)...
-			
+		if(el.marcado != 2){ //si no lo han conectado aun con su/sus padre(s)...			
 			if(el.predecesores != ""){//si no tiene predecesores
-				
 				var arrPapis = el.predecesores.split(',');
 				
 				$.each(arrPapis,function(p,pa){					
 					crearConexionNodos(pa,el.id_actividad,anchoPita);					
-				});
-				
-			}
-			
-			el.marcado = 2;
-			
+				});	
+			}			
+			el.marcado = 2;			
 		}
-	});
+	});	
 }
 
 $(document).ready(function() {
