@@ -163,7 +163,8 @@ var currentDate = new Date();
 			        success: function(data){
 			        	console.log("Recibido...")
 			        	console.log(data);
-						alert("Los datos se almacenaron con éxito");
+						if (data.me!="")alert(data.me);
+						else alert("Los datos se almacenaron con éxito");
 						
 			        }				
 				});		
