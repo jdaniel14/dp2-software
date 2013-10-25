@@ -443,4 +443,25 @@ function G_obtenerPaquetesHijo(&$paquete) {
     return;
 }
 
+function G_getProfesiones() {
+    $sql = " SELECT id_profesion, descripcion FROM PROFESION ";
+    try {
+        $db = getConnection();
+
+        $stmt = $db->query($sql);
+        $lista = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $elemento = array(
+                "id" => $j["id_profesion"],
+                "nom" => $j["descripcion"]
+            );
+            array_push($lista, $elemento);
+        }
+        $db = null;
+        echo json_encode(array("profesiones" => $lista));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
 ?>

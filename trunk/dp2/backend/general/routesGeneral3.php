@@ -10,6 +10,9 @@ $app->get('/G_devuelveCostoPorProyecto/:id', 'G_consultarListaPaquetes');
 //$app->get('/G_devuelveCostoPorProyectoPrueba/:id', 'G_getCostoPorProyectoPrueba');
 //$app->get('/G_devuelveCostoPorProyectoPrueba2/:id', 'G_consultarListaPaquetes');
 
+//sprint 4
+$app->get('/G_listaProfesionRecurso', 'G_getProfesiones');
+
 
 //
 //servicios de gestion de cambios
