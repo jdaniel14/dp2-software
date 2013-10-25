@@ -48,7 +48,7 @@
 	$app->get('/R_listarTipoImpactoXNivelImpacto/:id', 'R_getListaTipoImpactoXNivelImpacto');
 	$app->get('/R_listaTipoImpacto/:id', 'R_getListaTipoImpacto');
 	$app->get('/R_listaHeadersImpactoRiesgo/:id', 'R_getListaHeadersImpactoRiesgo');
-	$app->delete('/R_eliminarTodosTipoImpactoxNivelImpacto/:id','R_deleteTipoImpactoxNivelImpacto');
+	$app->delete('/R_eliminarTodosTipoImpactoXNivelImpacto/:id','R_deleteTipoImpactoxNivelImpacto');
 	
 
 
