@@ -127,7 +127,7 @@
       </div>  
 
 
-  <!-- Modal -->
+  <!-- Modal Recursos Disponibles -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -136,8 +136,45 @@
               <h4 class="modal-title">Recursos disponibles</h4>
             </div>
             <div class="modal-body">
-              <div class="" >
-                <table id="listaRecursosHumanos" class="tablesorter" width="90%" >      
+              <div id="busquedaRecursosDisponibles">
+                <form class="form-horizontal" role="form" action='' method="POST">
+                  <fieldset>
+                  <h4>Ingrese un rango de fechas para buscar</h4>
+                    <div class="form-group">
+                      <!-- Fecha de Preparacion -->
+                      <label class="col-lg-4 control-label"  for="fi">Fecha Inicio</label>
+                      <div class="controls col-lg-6">
+                      <input class="form-control"type="date" id="fi" name="fi" placeholder="" class="input-xlarge" max=today>
+                      <!--<p class="help-block">Please confirm password</p>-->
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <!-- Fecha de Preparacion -->
+                      <label class="col-lg-4 control-label"  for="ff">Fecha Final</label>
+                      <div class="controls col-lg-6">
+                      <input class="form-control"type="date" id="ff" name="ff" placeholder="" class="input-xlarge" max=today>
+                      <!--<p class="help-block">Please confirm password</p>-->
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div class="form-group">
+                  <!-- Button -->
+                    <div class="controls">
+                    <table width="100%">      
+                      <tr width="100%">
+                        <td width="50%" align="center">
+                          <button type="button" class="btn btn-info" id="buscar">
+                          Buscar
+                          </button>
+                        </td>
+                      </tr>     
+                    </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div id="tablaRecursosDisponibles"style="display:none" >
+                <table id="listaRecursosHumanos" class="tablesorter" width="90%">      
                   <thead>
                     <tr>
                       <th><b>#</b></th>
@@ -171,32 +208,7 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                      <!--
-                      <tr><td>8</td><td>Student02</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>9</td><td>Student03</td><td>Languages</td><td></td></tr>
-                      <tr><td>10</td><td>Student04</td><td>Languages</td><td></td></tr>
-                      
-                      <tr><td>11</td><td>Student05</td><td>Languages</td><td></td></tr>
-                      <tr><td>12</td><td>Student06</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>13</td><td>Student01</td><td>Languages</td><td></td></tr>
-                      <tr><td>14</td><td>Student02</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>15</td><td>Student03</td><td>Languages</td><td></td></tr>
-                      <tr><td>16</td><td>Student04</td><td>Languages</td><td></td></tr>
-                      <tr><td>17</td><td>Student05</td><td>Languages</td><td></td></tr>
-                      <tr><td>18</td><td>Student06</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>19</td><td>Student01</td><td>Languages</td><td></td></tr>
-                      <tr><td>20</td><td>Student02</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>21</td><td>Student03</td><td>Languages</td><td></td></tr>
-                      <tr><td>22</td><td>Student04</td><td>Languages</td><td></td></tr>
-                      <tr><td>23</td><td>Student05</td><td>Languages</td><td></td></tr>
-                      <tr><td>24</td><td>Student06</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>25</td><td>Student01</td><td>Languages</td><td></td></tr>
-                      <tr><td>26</td><td>Student02</td><td>Mathematics</td><td></td></tr>
-                      <tr><td>27</td><td>Student03</td><td>Languages</td><td></td></tr>
-                      <tr><td>28</td><td>Student04</td><td>Languages</td><td></td></tr>
-                      <tr><td>29</td><td>Student05</td><td>Languages</td><td></td></tr>
-                      <tr><td>30</td><td>Student06</td><td>Mathematics</td><td></td></tr>
-                      -->
+                  
                   </tbody>
                 </table>
 
@@ -204,7 +216,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              <button id="pasar" type="button" class="btn btn-primary">Asignar</button>
+              <button id="pasar" style="display:none" type="button" class="btn btn-primary">Asignar</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
