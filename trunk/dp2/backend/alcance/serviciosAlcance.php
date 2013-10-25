@@ -376,6 +376,14 @@
 		$con=getConnection();
 		$pstmt = $con->prepare("UPDATE EDT SET id_estado = ? WHERE id_proyecto = ?");
 		$pstmt->execute(array($estado["idestado"],$estado["idproyecto"]));
+
+		$pstmt = $con->prepare("SELECT id_edt FROM EDT WHERE id_proyecto =? ORDER BY id_edt DESC");
+		$pstmt->execute(array($estado["idproyecto"]));
+		$result = $pstmt->fetch(PDO::FETCH_ASSOC);
+		$id_edt = $result["id_edt"];
+
+		$pstmt = $con->prepare("UPDATE PAQUETE_TRABAJO SET id_estado = ? WHERE id_edt = ?");
+		$pstmt->execute(array($estado["idestado"],$id_edt));			
 	}
 
 
