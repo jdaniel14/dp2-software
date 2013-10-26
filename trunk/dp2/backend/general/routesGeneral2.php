@@ -16,7 +16,7 @@ $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
 
 
 //jose -- RRHH
-$app->get('/G_listarRecursoDisponible', 'G_getListarRecDisp');//devuelve la lista de recursos disponibles para asignar a un proyeco
+$app->post('/G_listarRecursoDisponible', 'G_getListarRecDisp');//devuelve la lista de recursos disponibles para asignar a un proyeco
 $app->post('/G_asignarRecursoProyecto', 'G_postAsignarRecProy');//inserta los recursos a un proyecto
 $app->post('/G_listaTodosRecurso', 'G_postListaTodosRecurso');//mostrar todos los recursos que estan disponibles
 

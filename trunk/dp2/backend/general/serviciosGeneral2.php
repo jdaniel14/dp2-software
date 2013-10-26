@@ -246,12 +246,23 @@ function G_getListarRecDisp() {
 
 
         try {
+            $request = \Slim\Slim::getInstance()->request();
+	    $body = json_decode($request->getBody());
+ 
+			$str1 = $body->fechaIni;
+			$str2 = $body->fechaFin;
+                        $fecha_Inicio = new DateTime($str1);
+                        $f_ini=$fecha_Inicio->format('Y-m-d');
+                        
+			$fecha_Fin = new DateTime($str2);
+                        $f_fin=$fecha_Fin->format('Y-m-d');
+                        
             /*$sql = "SELECT M.id_empleado as id
                       FROM MIEMBROS_EQUIPO M
                       WHERE ( fecha_entrada <= DATE(NOW()) 
                       AND DATE(NOW()) <= fecha_salida )";*/
 
-            /*$sql="  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+            $sql="  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
                     ACTIVIDAD A,
                     ACTIVIDAD_X_RECURSO AR,
@@ -263,30 +274,41 @@ function G_getListarRecDisp() {
                     AND R.ID_PROYECTO=M.ID_PROYECTO
                     AND R.ID_PROYECTO=A.ID_PROYECTO
                     AND E.ID_EMPLEADO=M.ID_EMPLEADO
-                    AND NOW() BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN";
+                    AND A.FECHA_PLAN_INICIO>=:FI
+                    AND A.FECHA_PLAN_FIN<=:FF
+                    ";
 
             $db = getConnection();
-            $stmt = $db->query($sql);
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("FI", $f_ini);
+            $stmt->bindParam("FF", $f_fin);
+            $stmt->execute();
+            
+            
             $lista_falsa = array();
             while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $id = $j["id"];
                 $lista_falsa[$id] = true;
             }
 
-            $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, R.NOMBRE_ROL as rol
-                    FROM EMPLEADO E, ROL_EMPLEADO R
-                    WHERE R.ID_ROL = E.ID_ROL";
+            $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, PR.DESCRIPCION as PROF
+                    FROM EMPLEADO E, PROFESION PR
+                    WHERE PR.ID_PROFESION = E.ID_PROFESION";
             $stmt = $db->query($sql);
             $lista = array();
 
             while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $id = $j["id"];
                 if( ! array_key_exists($id, $lista_falsa) ){
-                    $lista[$id] = array("id"=>$j["id"],"nom"=> $j["nom"],"rol"=> $j["rol"]);
+                    $lista[$id] = array("id"=>$j["id"],
+                                        "nom"=> $j["nom"],
+                                        "prof"=> $j["prof"]
+                            );
                 }
-            }*/
+            }
             
-            $sql="SELECT A.ID_EMPLEADO AS id,A.NOMBRE_CORTO as nom,A.NOMBRE_ROL as rol, 100-A.POR AS porc_libre FROM (
+                        
+            /*$sql="SELECT A.ID_EMPLEADO AS id,A.NOMBRE_CORTO as nom,A.NOMBRE_ROL as rol, 100-A.POR AS porc_libre FROM (
                     SELECT E.ID_EMPLEADO, E.NOMBRE_CORTO,M.ID_PROYECTO,R.NOMBRE_ROL,SUM(M.PORCENTAJE) AS POR
                     FROM MIEMBROS_EQUIPO M,
                     EMPLEADO E,
@@ -305,7 +327,7 @@ function G_getListarRecDisp() {
                     "porc" => $j["porc_libre"]
                 );
                 array_push($lista, $recurso);
-            }
+            }*/
             
             $db = null;
             echo json_encode(array("l_recurso" => array_values($lista)));
