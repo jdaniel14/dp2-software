@@ -266,7 +266,7 @@
                 $db = getConnection();
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("id_proyecto", $listaEstrategia->idProyecto);
-                $stmt->bindParam("tipo", $estrategia->idProyecto);
+                $stmt->bindParam("tipo", $estrategia->tipo);
                 $stmt->bindParam("puntaje_limite_bajo", $estrategia->puntajeMin);
                 $stmt->bindParam("puntaje_limite_alto", $estrategia->puntajeMax);
                 $stmt->bindParam("prioridad", $estrategia->prioridad);
