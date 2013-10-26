@@ -5,7 +5,7 @@ var getAllHeadersImpacts = "../../api/R_listaHeadersImpactoRiesgo";
 var deleteAllImpacts = "../../api/R_eliminarHeaderImpactoRiesgo";
 var addImpact = "../../api/R_registrarHeaderImpactoRiesgo";
 var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
-var getMaxProbability = "../../R_obtenerProbabilidadRiesgoMaxima";
+var getMaxProbability = "../../api/R_obtenerProbabilidadRiesgoMaxima";
 
 $(document).ready(main);
 // localStorage.setItem("idProyecto",1);
@@ -331,15 +331,17 @@ function obtenerMayorProbabilidad () {
 		type: 'GET',                
 		url: getMaxProbability + '/' + data.idProyecto,
 		success: function(data){
-			if (data==null) {
+			var obj = JSON.parse(data);
+			// console.log(obj);
+			if (obj==null) {
 				$('#numeroNivel').val(1);
 				$('#probabilidadMinNivel').val(1);
-			} else if (data.maximo==100){
+			} else if ((obj.maximo*1)==100){
 				$('#btnModalAgregarNivel').attr("disabled", "disabled");
 				$('#btnAgregarNivel').attr("disabled", "disabled");
 			} else {
-				$('#numeroNivel').val(data.nivel + 1);
-				$('#probabilidadMinNivel').val(data.maximo + 1);
+				$('#numeroNivel').val((obj.nivel*1) + 1);
+				$('#probabilidadMinNivel').val((obj.maximo*1) + 1);
 			}
 		},
 		fail: codigoError
