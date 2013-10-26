@@ -75,7 +75,7 @@ function agregaDataFila(data, tipo){
 		for (i=0; i<arreglo.length;i++){
 			filaRecurso=arreglo[i];
 			//tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,tipoRecurso,unidadMedida,idmoneda, nombreMoneda
-			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario, false);
+			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario,filaRecurso.fechaInicio,filaRecurso.fechaFin, false);
 			numRecursos=i;
 		}
 	}
@@ -128,7 +128,7 @@ function agregaFilaRecurso(){
 	$("#numFilas").val(a);
 }
 
-function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, indRecursoHumano){
+function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, fechainicio,fechafin,indRecursoHumano){
 	a=i;
 	a++;
 	if 	(tipo==0)
@@ -141,8 +141,8 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		if (indRecursoHumano=='0'){
 			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')" disabled readOnly>';
 			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
-			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
-			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'"'+' value="'+fechainicio+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'"'+' value="'+fechafin+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 			
 		}else{
