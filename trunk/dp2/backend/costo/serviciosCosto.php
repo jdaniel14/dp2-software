@@ -1532,8 +1532,11 @@
         	$stmt->execute();
         	$db = null;
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-        													//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, cantidad estimada, costo unitario, costo fijo diario, costo fijo total, indicador rrhh
-				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["NOMBRE_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["NOMBRE_MONEDA"], -1, -1, $p["COSTO_FIJO_DIARIO_REAL"], $p["COSTO_FIJO_TOTAL"], -1));
+												//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, cantidad estimada, costo unitario, costo fijo diario, costo fijo total, indicador rrhh
+        		$recurso = new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["NOMBRE_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["NOMBRE_MONEDA"], -1, -1, $p["COSTO_FIJO_DIARIO_REAL"], $p["COSTO_FIJO_TOTAL"], -1);
+				$recurso->fechaInicio = $p["FECHA_REAL_INICIO_COSTO_FIJO"];
+				$recurso->fechaFin = $p["FECHA_REAL_FIN_COSTO_FIJO"];
+				array_push($listaRecursos, $recurso);
 			}
 		} catch(PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
