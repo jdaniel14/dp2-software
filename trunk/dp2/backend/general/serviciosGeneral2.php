@@ -314,7 +314,6 @@ function G_getListarRecDisp() {
                     EMPLEADO E,
                     ROL_EMPLEADO R
                     WHERE  E.ID_EMPLEADO=M.ID_EMPLEADO
-                    AND R.ID_ROL = E.ID_ROL
                     GROUP BY E.ID_EMPLEADO)A WHERE A.POR<100 ";
             $db = getConnection();
             $stmt = $db->query($sql);

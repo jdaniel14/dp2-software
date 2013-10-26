@@ -1,6 +1,6 @@
-var listaRecursosHumanos = "../../api/G_listarRecursoDisponible";
+var buscarRecursosProyectoFecha = "../../api/G_listarRecursoDisponible";
 var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
-var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
+//var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
 
 $(document).ready(function(){
 	listarRRHHxProyecto();
@@ -10,7 +10,6 @@ $(document).ready(function(){
             	$(this).append("</td><td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>");
             	$(this).removeClass("seleccionado");
             	$(this).addClass("noMostrar");
-            	
             	//console.log("click");
                $("#ListaRecursosHumanosXProyecto").append($(this));
               
@@ -130,9 +129,9 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + 
+	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["prof_base"] + 
 
-		'</td><td>'+ arreglo["porc"] +
+		'</td><td>'+ arreglo["prof_act"] +
 		'</td><td>' + arreglo["costo"] + '</td>' +
 		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent());>Eliminar</button></td></tr>';
 
@@ -141,7 +140,7 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 }
 $("#buscar").click(function(){
 	var envio = {fi : $("#fi").val(),ff : $("#ff").val()};
-   	//console.log(JSON.stringify(envio));
+   	console.log(JSON.stringify(envio));
    	$.ajax({
 		type: 'POST',
 		url: buscarRecursosProyectoFecha,
@@ -189,10 +188,20 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["rol"] + '</td><td>' + arreglo["porc"] + '</td></tr>';
+	
+	var profesion = "<select>"+
+					 "<option value='1'>Analista 1</option>"+
+					 "<option value='2'>Analista 2</option>"+
+					 "<option value='3'>Desarrollador 1</option>"+
+					 "<option value='4'>Desarrollador 2</option>"+
+					"</select>";
+	
+
+	var costohh = "<input type='text' name='costohh'>"
+	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["prof"] + '</td><td>' + profesion +'</td><td>' + costohh +'</td></tr>';
+	
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
 	$("#listaRecursosHumanos").trigger("update"); 
 	$(".fila"+(i+1)).click(clickRecurso);
-	console.log(".fila"+a);
 }
