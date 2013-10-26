@@ -23,13 +23,10 @@
         <div id="header"></div>
 
         <div class="container">
-            <div class="col-lg-12">
-                <button id="listarConf" data-toggle="modal" href="#modalConfiguracion" class="btn btn-success pull-right">Configuración</button>
-            </div>
             <div class="h1-title">
                 <h1>Mi Proyecto</h1>
 
-                <div class="col-lg-12">
+                <!-- div class="col-lg-12">
                     <form class="well" action="#" method="get">
                         <fieldset>
 
@@ -64,7 +61,7 @@
 
                         </fieldset>
                     </form>
-                </div>
+                </div> -->
             </div>
             <div class="col-lg-12">
                 <table class="table table-striped">
@@ -72,6 +69,7 @@
                     <th>ID</th>
                     <th>Nombre de Riesgo</th>
                     <th>Paquete de EDT</th>
+                    <th>Tipo</th>
                     <th>Categoria Riesgo</th>
                     <th>Impacto</th>
                     <th>Probabilidad</th>
@@ -86,6 +84,9 @@
 
                     </tbody>
                 </table>
+            </div>
+            <div>
+                <a data-toggle="modal" href="#myModalRegister" class="btn btn-primary pull-right" id="registrarRiesgo">Agregar Riesgo</a>
             </div>
             <div class="modal" id="confirmDelete">
                 <div class="modal-dialog">
@@ -145,6 +146,19 @@
                                                         <select class="form-control" id="paqEdt">
                                                             <option value="0" disabled selected>Escoge un paquete del EDT</option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">*Tipo de Riesgo</label>
+                                                    <div class="col-lg-8">
+                                                        <select class="form-control" id="tipoRiesgo">
+                                                            <option value="-1" disabled selected>Escoge un tipo de riesgo</option>
+                                                            <option value="0">Negativo</option>
+                                                            <option value="1">Positivo</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="alert alert-danger" id="errorTipoRiesgo" style="display: none;">
+                                                        <span class="pull-right">Por favor, seleccione algun tipo de riesgo</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -329,6 +343,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-lg-4 control-label">*Tipo de Riesgo</label>
+                                    <div class="col-lg-8">
+                                        <select class="form-control" id="tipoRiesgoM">
+                                            <option value="-1" disabled selected>Escoge un tipo de riesgo</option>
+                                            <option value="0">Negativo</option>
+                                            <option value="1">Positivo</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert alert-danger" id="errorTipoRiesgoM" style="display: none;">
+                                        <span class="pull-right">Por favor, seleccione algun tipo de riesgo</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-lg-4 control-label">*Tipo de Impacto</label>
                                     <div class="col-lg-8">
                                         <select class="form-control" id="tipoImpactoM">
@@ -355,7 +382,7 @@
                                             <option value="0" disabled selected>Escoge un valor estimado para el impacto</option>
                                         </select>
                                     </div>
-                                    <div class="alert alert-danger" id="errorImpacto2M" style="display: none;">
+                                    <div class="alert alert-danger" id="errorImpacto2M" >
                                         <span class="pull-right">Por favor, seleccione alor estimado para asignar un impacto al riesgo</span>
                                     </div>
                                 </div>
@@ -375,7 +402,7 @@
                                     <div class="col-lg-8">
                                         <input type="number" class="form-control" min="0" max="100" id="proRiesgoM" maxlength="3">
                                     </div>
-                                    <div class="alert alert-danger" id="errorProbaM" style="display: none;">
+                                    <div class="alert alert-danger" id="errorProbaM" >
                                         <span class="pull-right">Por favor, ingrese un valor entre 0 y 100</span>
                                     </div>
                                 </div>
@@ -445,88 +472,6 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
             <!-- Modal para la venta de configuración -->
-            <div id="modalConfiguracion" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Pantalla de configuración de riesgos</h4>
-                        </div>
-                        <div class="modal-body titulo-tabla col-lg-12">
-                            <div class="well">
-                                <div class="col-lg-12">
-                                    <legend>Impacto</legend>
-                                </div>
-                                <div class="form-horizontal col-lg-12">
-                                    <div class="form-group">
-                                        <div class="col-lg-9">
-                                            <label class=" control-label">Ingrese el valor del impacto Muy Bajo (0-0.2):</label>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="muyBajo" maxlength="4">
-                                        </div>
-                                        <div class="alert alert-danger" id="errorMuyBajo" style="display: none;">
-                                            <span class="pull-right">Por favor, corrija el valor del impacto muy bajo. Debe estar entre 0 y 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-lg-9"> 
-                                            <label class="control-label">Ingrese el valor del impacto Bajo (0.2-0.4):</label>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="bajo" maxlength="4">
-                                        </div>
-                                        <div class="alert alert-danger" id="errorBajo" style="display: none;">
-                                            <span class="pull-right">Por favor, corrija el valor del impacto bajo. Debe estar entre 0 y 1</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-lg-9">
-                                            <label class="control-label">Ingrese el valor del impacto Medio (0.4-0.5):</label>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="medio" maxlength="4">
-                                        </div>
-                                        <div class="alert alert-danger" id="errorMedio" style="display: none;">
-                                            <span class="pull-right">Por favor, corrija el valor del impacto medio.Debe estar entre 0 y 0.56</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-lg-9">
-                                            <label class="control-label">Ingrese el valor del impacto Alto (0.5-0.7):</label>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="alto" maxlength="4">
-                                        </div>
-                                        <div class="alert alert-danger" id="errorAlto" style="display: none;">
-                                            <span class="pull-right">Por favor, corrija el valor del impacto alto.Debe estar entre 0 y 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-lg-9">
-                                            <label class="control-label">Ingrese el valor del impacto Muy Alto (0.7-1):</label>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="muyAlto" maxlength="4">
-                                        </div>
-                                        <div class="alert alert-danger" id="errorMuyAlto" style="display: none;">
-                                            <span class="pull-right" >Por favor, corrija el valor del impacto muy alto. Debe estar entre 0 y 1</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="big-alert alert-danger" id="errorImpactos" style="display: none;">
-                                <span >Complete los campos. Considerar: Muy bajo &lt; bajo &lt; medio &lt; alto &lt; muy alto</span>
-                            </div>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="button" id="btnConfiguracion" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
 
             <!-- Modal para la confirmación de riesgo -->
             <div id="confirmRisk" class="modal fade">
