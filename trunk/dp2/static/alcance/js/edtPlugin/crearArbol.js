@@ -75,7 +75,9 @@ $("#inputAgregarHijo").click(function(){
                     console.log("agregando un hijo");
                     var title = $("#inputTitulo1").val();
                     var desc =  $("#inputDescripcion1").val();
+
                     var tiempo = $("#inputTiempo1").val();
+                    
                     var mensaje = valida (title,  desc,  tiempo );
                     if (mensaje == null ){
                       console.log("Hijo validado");
@@ -96,6 +98,11 @@ $("#inputAgregarHijo").click(function(){
 
                     $("#errorMensaje").hide();
                     var id = $("#padreEdt").val();
+
+                    var nid = id.split("-")[1];
+                    var timeE = "#tiempo-"+nid;
+                    console.log("tiempo padre: ", $(timeE).html );
+
                     console.log("el valor es> " + id);
                     if (id == ""){
                       //alert("Escoja un padre");
