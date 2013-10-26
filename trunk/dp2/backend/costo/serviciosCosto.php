@@ -1513,8 +1513,8 @@
 		A.ID_CAMBIO_MONEDA,
 		C.DESCRIPCION NOMBRE_MONEDA,
 		A.COSTO_FIJO_DIARIO_REAL,
-		A.FECHA_REAL_INICIO_COSTO_FIJO,
-		A.FECHA_REAL_FIN_COSTO_FIJO,
+		DATE_FORMAT(A.FECHA_REAL_INICIO_COSTO_FIJO,'%d-%m-%Y') FECHA_INICIO,
+		DATE_FORMAT(A.FECHA_REAL_FIN_COSTO_FIJO,'%d-%m-%Y') FECHA_FIN,
 		IFNULL(A.COSTO_FIJO_DIARIO_REAL,0)*(DATEDIFF(A.FECHA_REAL_FIN_COSTO_FIJO,A.FECHA_REAL_INICIO_COSTO_FIJO)+1) COSTO_FIJO_TOTAL
 		FROM
 		RECURSO A JOIN UNIDAD_MEDIDA B ON A.ID_UNIDAD_MEDIDA=B.ID_UNIDAD_MEDIDA
@@ -1534,8 +1534,8 @@
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 												//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, cantidad estimada, costo unitario, costo fijo diario, costo fijo total, indicador rrhh
         		$recurso = new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["NOMBRE_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["NOMBRE_MONEDA"], -1, -1, $p["COSTO_FIJO_DIARIO_REAL"], $p["COSTO_FIJO_TOTAL"], -1);
-				$recurso->fechaInicio = $p["FECHA_REAL_INICIO_COSTO_FIJO"];
-				$recurso->fechaFin = $p["FECHA_REAL_FIN_COSTO_FIJO"];
+				$recurso->fechaInicio = $p["FECHA_INICIO"];
+				$recurso->fechaFin = $p["FECHA_FIN"];
 				array_push($listaRecursos, $recurso);
 			}
 		} catch(PDOException $e) {
