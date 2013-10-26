@@ -258,7 +258,11 @@
     function R_postRegistrarEstrategias(){
         $request = \Slim\Slim::getInstance()->request();
         $listaEstrategia = json_decode($request->getBody());
-        R_deleteEstrategias($listaEstrategia->idProyecto);
+        if ($listaEstrategia->tipo == 1){
+            R_deleteEstrategiasPositivo($listaEstrategia->idProyecto);
+        } else{
+            R_deleteEstrategiasNegativo($listaEstrategia->idProyecto);
+        }
         foreach ($listaEstrategia->listaEstrategias as $estrategia){
             $query = "INSERT INTO CATEGORIZACION_ESTRATEGIAS (id_proyecto,tipo,puntaje_limite_bajo,puntaje_limite_alto, prioridad, estrategia, significado) 
                         VALUES (:id_proyecto,:tipo,:puntaje_limite_bajo, :puntaje_limite_alto, :prioridad, :estrategia, :significado)";
