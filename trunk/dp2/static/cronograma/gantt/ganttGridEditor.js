@@ -897,6 +897,15 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         return ret;
       });
 
+      
+
+      //change dates
+      task.setPeriod(Date.parseString(taskEditor.find("#start").val()).getTime(), Date.parseString(taskEditor.find("#end").val()).getTime() + (3600000 * 24));
+      //task.setPeriod(Date.parseString(taskEditor.find("#realStart").val()).getTime(), Date.parseString(taskEditor.find("#realEnd").val()).getTime() + (3600000 * 24));
+      
+      //change status
+      task.changeStatus(taskEditor.find("#status").attr("status"));
+      var gg;
       for (var i = 0; i < task.assigs.length; i++) {
           var ass = task.assigs[i];
           if (ass.valueReal > task.duration*8){
@@ -904,11 +913,19 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             return false;
           }
           for (var j = 0; j < ge.tasks.length; j++){
+        	
             var tsk = ge.tasks[j];
+            if (task.id == tsk.id){
+        		gg = tsk.id
+        	}
             if ((task.startIsMilestone >= tsk.startIsMilestone && task.startIsMilestone <= tsk.endIsMilestone) || (task.endIsMilestone >= tsk.startIsMilestone && task.endIsMilestone <= tsk.endIsMilestone)){
               for (var k = 0; k < tsk.assigs.length; k++){
                 var asg = tsk.assigs[k];
-                if (asg.id == ass.id){
+                if (asg.idrecurso == ass.idrecurso && ass.typeCost == "HORAS HOMBRE" && tsk.id != task.id){
+                	
+                  console.log(asg.idrecurso);
+                  console.log(ass.idrecurso);
+                  console.log(ass.typeCost);
                   alert("Existe un recurso que ha sido asignado en mas de una actividad al mismo tiempo");
                   return false;
                 }
@@ -917,16 +934,10 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           }
       }
 
-      //change dates
-      task.setPeriod(Date.parseString(taskEditor.find("#start").val()).getTime(), Date.parseString(taskEditor.find("#end").val()).getTime() + (3600000 * 24));
-      //task.setPeriod(Date.parseString(taskEditor.find("#realStart").val()).getTime(), Date.parseString(taskEditor.find("#realEnd").val()).getTime() + (3600000 * 24));
-      
-      //change status
-      task.changeStatus(taskEditor.find("#status").attr("status"));
-
       if (self.master.endTransaction()) {
         $("#__blackpopup__").trigger("close");
       }
+      
 
     });
   }
