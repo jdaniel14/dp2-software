@@ -75,8 +75,8 @@
         $query = "UPDATE RIESGO_X_PROYECTO SET  id_proyecto=:id_proyecto, nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
         id_tipo_impacto=:id_tipo_impacto, id_nivel_impacto=:id_nivel_impacto,probabilidad=:probabilidad, impacto=:impacto, severidad=:severidad,
         id_probabilidad_riesgo=:id_probabilidad_riesgo,
-        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , id_empleado=:id_empleado , acciones_especificas=:acciones_especificas
-        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto, positivo_negativo=:positivo_negativo";
+        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , id_empleado=:id_empleado , acciones_especificas=:acciones_especificas, positivo_negativo=:positivo_negativo
+        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
         try {
             $db = getConnection();
