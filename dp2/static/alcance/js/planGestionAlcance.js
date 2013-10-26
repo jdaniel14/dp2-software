@@ -46,6 +46,7 @@ function guardarCambios(){
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 	});
+	showAlert("form-plan",true,"Se guardaron los cambios","Hay errores en el formulario");
 }
 
 function cargarComboEstadoEDT(){
