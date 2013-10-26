@@ -20,8 +20,8 @@ function validEstrategia1() {
         alert("la cantidad de Estrategias no puede ser vacio");
         return false;
     }
-    if (cantidadEstrategias > 7 || cantidadEstrategias < 2) {
-        alert("la cantidad de Estrategias debe ser entre 2 y 7");
+    if (cantidadEstrategias > 4 || cantidadEstrategias < 2) {
+        alert("la cantidad de Estrategias debe ser entre 2 y 4");
         return false;
     }
 
@@ -39,8 +39,8 @@ function validEstrategia2() {
         alert("la cantidad de Estrategias no puede ser vacio");
         return false;
     }
-    if (cantidadEstrategias > 7 || cantidadEstrategias < 2) {
-        alert("la cantidad de Estrategias debe ser entre 2 y 7");
+    if (cantidadEstrategias > 4 || cantidadEstrategias < 2) {
+        alert("la cantidad de Estrategias debe ser entre 2 y 4");
         return false;
     }
 
@@ -161,10 +161,8 @@ function main() {
             $('#tablaCategorizacion1').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
                                                    <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
                                                    <td><input class=\"input prioridad1\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
-                                                   <td><select class=\"estrategia1\" id=\"estrategia" + i + "\">\n\
-                                                        <option  value=\"evitar\" >Evitar</option>\n\
-                                                        <option  value=\"transferir\">Transferir</option>\n\
-                                                         <option  value=\"mitigar\" >Mitigar</option>\n\
+                                                   <td><select class=\"estrategia1\" id=\"estrategia" + i + "\">\n\\n\
+                                                        <option  value=\"aceptar\" >Aceptar</option>\n\
                                                          <option  value=\"compartir\" >Compartir</option>\n\
                                                          <option  value=\"mejorar\" >Mejorar</option>\n\
                                                          <option  value=\"explotar\" >Explotar</option></select></td>\n\
@@ -210,13 +208,12 @@ function main() {
             $('#tablaCategorizacion2').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
                                                    <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
                                                    <td><input class=\"input prioridad2\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
-                                                   <td><select class=\"estrategia2\" id=\"estrategia" + i + "\">\n\
+                                                   <td><select class=\"estrategia2\" id=\"estrategia" + i + "\">\n\\n\
+                                                        <option  value=\"aceptar\" >Aceptar</option>\n\
                                                         <option  value=\"evitar\" >Evitar</option>\n\
                                                         <option  value=\"transferir\">Transferir</option>\n\
                                                          <option  value=\"mitigar\" >Mitigar</option>\n\
-                                                         <option  value=\"compartir\" >Compartir</option>\n\
-                                                         <option  value=\"mejorar\" >Mejorar</option>\n\
-                                                         <option  value=\"explotar\" >Explotar</option></select></td>\n\
+                                                        </select></td>\n\
                                                      <td><input class=\"significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
 
             valor = valor + factorSuma;
