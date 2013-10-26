@@ -55,11 +55,9 @@ public class ProyectoController extends Controller {
 			try {
 				result = EntityUtils.toString(respuesta.getEntity());
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				result = strResponse;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				result = strResponse;
 			}
