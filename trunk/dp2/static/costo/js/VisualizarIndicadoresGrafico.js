@@ -13,6 +13,14 @@ function cargaChart(){
 	obtenDatosTabla()
 }
 
+$(function (){
+	$("#fechaLimite").datepicker({dateFormat:'dd-mm-yy'});
+});
+
+
+
+
+
 function obtenerIdProyecto(){
 	//localStorage.setItem('idProyecto','1');
 	id= localStorage.idProyecto;
