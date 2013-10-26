@@ -1,22 +1,22 @@
 $(document).ready(function(){
 	//cargar Combos
-	//cargarComboRolRecurso();
+	cargarComboProfesionRecurso();
 });
 
-function cargarComboJefeProyecto(){
+function cargarComboProfesionRecurso(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/G_listaRolRecurso',
+		url : '../../api/G_listaProfesionRecurso',
 		dataType: "json",
 		async:false,
 		contentType: "application/json; charset=utf-8",
 		success:function(data){
-			for(obj in data){
-				var l_rol = data["l_rol"];
+			var l_profesion = data["profesiones"];
+			for(obj in l_profesion){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id"]);
-				opt.html(data[obj]["nom"]);
-				$("#rolRecurso").append(opt);
+				opt.val(l_profesion[obj]["id"]);
+				opt.html(l_profesion[obj]["nom"]);
+				$("#profesionRecurso").append(opt);
 			}
 		}
 	});
@@ -31,9 +31,10 @@ $("#btnGrabar").click(function(){
 function registrarRecurso(){
 	var jsonRecurso = {
 		nr 	: $("#nombreRecurso").val(),
+		ar 	: $("#apellidoRecurso").val(),
 		pr  : $("#profesionRecurso").val(),
 		cr  : $("#correoRecurso").val(),
-		fi  : $("#fechaIngreso").val()
+		pm  : $("#pagoMensual").val()
     };
     alert(JSON.stringify(jsonRecurso));
     $.ajax({
