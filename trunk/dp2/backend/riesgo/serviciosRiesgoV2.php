@@ -258,6 +258,7 @@
     function R_postRegistrarEstrategias(){
         $request = \Slim\Slim::getInstance()->request();
         $listaEstrategia = json_decode($request->getBody());
+      
         R_deleteEstrategias($listaEstrategia->idProyecto);
         foreach ($listaEstrategia->listaEstrategias as $estrategia){
             $query = "INSERT INTO CATEGORIZACION_ESTRATEGIAS (id_proyecto,tipo,puntaje_limite_bajo,puntaje_limite_alto, prioridad, estrategia, significado) 
@@ -266,7 +267,7 @@
                 $db = getConnection();
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("id_proyecto", $listaEstrategia->idProyecto);
-                $stmt->bindParam("tipo", $estrategia->tipo);
+                $stmt->bindParam("tipo", $listaEstrategia->tipo);
                 $stmt->bindParam("puntaje_limite_bajo", $estrategia->puntajeMin);
                 $stmt->bindParam("puntaje_limite_alto", $estrategia->puntajeMax);
                 $stmt->bindParam("prioridad", $estrategia->prioridad);
