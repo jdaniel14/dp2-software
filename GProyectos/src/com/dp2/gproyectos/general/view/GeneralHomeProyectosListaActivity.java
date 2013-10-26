@@ -32,6 +32,7 @@ import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
 import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
 import com.dp2.gproyectos.costos.view.adapter.IndicadorAdapter;
 import com.dp2.gproyectos.general.controller.ProyectoController;
+import com.dp2.gproyectos.general.controller.UsuarioController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
@@ -51,6 +52,8 @@ public class GeneralHomeProyectosListaActivity extends
 	public static int tipoBusqueda;
 	public static boolean primeraCarga = true;
 	
+	private static final int CONST_MENU_VERLECCIONES = 0;
+	private static final int CONST_MENU_LOGOUT= 1;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -263,87 +266,37 @@ public class GeneralHomeProyectosListaActivity extends
             super.onPostExecute(result);
         }
     }
-	/*
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		menu.add(0, MENU_ENVIAR, 0,
-				getString(R.string.boton_enviar_mayusculas)).setIcon(
-				R.drawable.enviar);
-		menu.add(1, CONSMECOTIZAR, 1,
-				getString(R.string.boton_cotizar_mayusculas)).setIcon(
-				R.drawable.calcular);
-		menu.add(1, CONSMEELIMINA, 2,
-				getString(R.string.boton_eliminar_mayuscula)).setIcon(
-				R.drawable.eliminar);
-		menu.add(1, CONSMEULTIMACOT, 3,
-				getString(R.string.boton_ultcotizacion_mayusculas)).setIcon(
-				R.drawable.ultimacotizacion);
+		menu.add(0, CONST_MENU_VERLECCIONES, 0,
+				"Ver lecciones").setIcon(
+				R.drawable.maleta);
+		menu.add(1, CONST_MENU_LOGOUT, 1,
+				"Logout").setIcon(
+				R.drawable.maleta);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case CONSMENUENVIAR:
-			Log.v("XXX", "--------->Enviar");
+		case CONST_MENU_VERLECCIONES:
+			Log.v("XXX", "--------->Ver lecciones");
+			Intent intent = new Intent(GeneralHomeProyectosListaActivity.this, GeneralHomeLeccionesListaActivity.class);
+			overridePendingTransition(0, 0);
+			startActivityForResult(intent,1);
+			overridePendingTransition(0, 0);
 			break;
-		case CONSMECOTIZAR:
-			Log.v("XXX", "--------->Cotizar");
-			try {
-				new LoadTaskDialog(PedidosNormPedidoTabsActivity.this,
-						"Cargando...").execute();
-			} catch (Exception e) {
-				Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
-				e.printStackTrace();
-			}
-			break;
-		case CONSMEELIMINA:
-			Log.v("XXX", "--------->Elimina");
-			new AlertDialog.Builder(this)
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle("Regresar")
-					.setMessage(
-							"¿Está seguro de que desea eliminar este pedido?")
-
-					.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-
-								}
-							})
-					.setPositiveButton("Sí",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									PedidosNormWorkingSet.pedidoEspecial = null;
-									PedidosNormWorkingSet.producto = null;
-									PedidosNormWorkingSet.linea = null;
-									eliminarPedido();
-									finish();
-								}
-
-							}).show();
-			break;
-		case CONSMEULTIMACOT:
-			Log.v("XXX", "--------->Ultima cotizacion");
-			ArrayList<String> mensajes = new ArrayList<String>();
-			mensajes.add("MENSAJE 1");
-			mensajes.add("MENSAJE 2");
-			mensajes.add("MENSAJE 3");
-
-			PopupMensaje popup = new PopupMensaje();
-			popup.dialog(this, "PEDIDO COTIZADO " + estePedido.getCod(),
-					mensajes, PopupMensaje.PROC_PEDIDOSNORMALES);
-
+		case CONST_MENU_LOGOUT:
+			Log.v("XXX", "--------->Logout");
+			UsuarioController.getInstance().currentUser = null;
+			finish();
 			break;
 		}
 		return false;
-	}*/
+	}
 	
 
 }
