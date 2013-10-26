@@ -918,7 +918,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             if (task.id == tsk.id){
         		gg = tsk.id
         	}
-            if ((task.startIsMilestone >= tsk.startIsMilestone && task.startIsMilestone <= tsk.endIsMilestone) || (task.endIsMilestone >= tsk.startIsMilestone && task.endIsMilestone <= tsk.endIsMilestone)){
+            if ((task.startIsMilestone > tsk.startIsMilestone && task.startIsMilestone < tsk.endIsMilestone) || (task.endIsMilestone > tsk.startIsMilestone && task.endIsMilestone < tsk.endIsMilestone)){
               for (var k = 0; k < tsk.assigs.length; k++){
                 var asg = tsk.assigs[k];
                 if (asg.idrecurso == ass.idrecurso && ass.typeCost == "HORAS HOMBRE" && tsk.id != task.id){

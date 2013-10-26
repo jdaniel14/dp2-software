@@ -32,6 +32,7 @@ describe('TasksRouter', function(){
         it('should send the label to the handler', function(done){
             tasksRouter.onSelected(function(label){
                 label.should.match(/task-1/);
+                done();
             });
             tasksRouter.select('task-1');
         });

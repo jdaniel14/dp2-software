@@ -9,10 +9,14 @@ describe('TasksView',function(){
     beforeEach(function(){
        tasks = [
            {
-               name: "task-1"
+               name: "task-1",
+               description: "task-1 description",
+               resources: [{name: 'resource-1'},{name: 'resource-2'}]
            },
            {
-               name: "task-2"
+               name: "task-2",
+               description: "task-2 description",
+               resources: [{name: 'resource-3'},{name: 'resource-4'}]
            }
        ];
        tasksView = new TasksView(taskListElement);
@@ -32,8 +36,8 @@ describe('TasksView',function(){
 
         it('should render every assignments of the task',function(){
             tasksView.bind(tasks);
-            taskListElement.children[0].querySelector('section>p').innerHTML.should.match(/resource-1,resource-2/);
-            taskListElement.children[1].querySelector('section>p').innerHTML.should.match(/resource-3,resource-4/);
+            taskListElement.children[0].querySelector('section>p').innerHTML.should.match(/resource-1, resource-2/);
+            taskListElement.children[1].querySelector('section>p').innerHTML.should.match(/resource-3, resource-4/);
         });
     });
 });
