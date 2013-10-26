@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+    
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+        <title>Registrar Riesgos</title>
+        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div id="header"></div>
+
+        <div class="container">
+            <div class="h1-title">
+                <h1>Mi Proyecto</h1>
+            </div>
+
+            
+                        
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#pane1" data-toggle="tab">Registrar Nuevo Riesgo</a>
+                    </li>
+                    <li>
+                        <a href="#pane2" data-toggle="tab">Buscar en los Riesgos Comunes</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="pane1" class="tab-pane active col-lg-12">
+
+                        <div class="form-horizontal ">
+                            <h5><b>Ingrese los campos</b></h5>
+                            <div class="form-group col-lg-12">
+                                <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
+                                <label class="col-lg-4 control-label">*Nombre de Riesgo</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" id="nomRiesgo" placeholder="Nombre de Riesgo" maxlength="199">
+                                </div>
+                                <div class="alert alert-danger " id="errorNombre" style="display: none;">
+                                    <span class="pull-right">Por favor, corrija el Nombre</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
+                                <label class="col-lg-4 control-label">Paquete de EDT</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control" id="paqEdt">
+                                        <option value="0" disabled selected>Escoge un paquete del EDT</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">*Tipo de Riesgo</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control" id="tipoRiesgo">
+                                        <option value="-1" disabled selected>Escoge un tipo de riesgo</option>
+                                        <option value="0">Negativo</option>
+                                        <option value="1">Positivo</option>
+                                    </select>
+                                </div>
+                                <div class="alert alert-danger" id="errorTipoRiesgo" style="display: none;">
+                                    <span class="pull-right">Por favor, seleccione algun tipo de riesgo</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">*Tipo de Impacto</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control" id="tipoImpacto">
+                                        <option value="0" disabled selected>Escoge un tipo de impacto</option>
+                                    </select>
+                                </div>
+                                <div class="alert alert-danger" id="errorTipoImpacto" style="display: none;">
+                                    <span class="pull-right">Por favor, seleccione algun tipo de impacto</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12" id="RiesgoCaso1">
+                                <label class="col-lg-4 control-label">*Impacto Estimado</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" id="impRiesgo1" placeholder="Ingrese un estimado del impacto del riesgo" maxlength="20">
+                                </div>
+                                <div class="alert alert-danger" id="errorImpacto1" style="display: none;">
+                                    <span class="pull-right">Por favor, ingrese algún valor estimado para asignar un impacto al riesgo</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12" id="RiesgoCaso2">
+                                <label class="col-lg-4 control-label">*Impacto Estimado</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control" id="impRiesgo2">
+                                        <option value="0" disabled selected>Escoge un valor estimado para el impacto</option>
+                                    </select>
+                                </div>
+                                <div class="alert alert-danger" id="errorImpacto2" style="display: none;">
+                                    <span class="pull-right">Por favor, seleccione un valor estimado para asignar un impacto al riesgo</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">*Nivel de impacto</label>
+                                <div class="col-lg-8">
+                                    <div>
+                                        <input type="text" class="form-control" id="nivelImpactoRiesgo" style="display: none;"> 
+                                    </div>
+                                    <select class="form-control" id="impRiesgo" readonly="readonly">
+                                        <option value="0" disabled selected>Primero, ingresa un impacto estimado</option>
+                                    </select>
+                                </div>
+                                <div class="alert alert-danger" id="errorNivelImpacto" style="display: none;">
+                                    <span class="pull-right">Para llenar este campo debe ingresar un impacto estimado</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">*Probabilidad de riesgo (%)</label>
+                                <div class="col-lg-8">
+                                    <input type="number" class="form-control" min="0" max="100" id="proRiesgo" maxlength="3">
+                                </div>
+                                <div class="alert alert-danger" id="errorProba" style="display: none;">
+                                    <span class="pull-right">Por favor, ingrese un valor entero entre 0 y 100</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">Nivel de Probabilidad</label>
+                                <div>
+                                    <input type="text" class="form-control" id="idnivelProbabilidadRiesgo" style="display: none;"> 
+                                </div>
+                                <div>
+                                    <input type="text" class="form-control" id="nivelProbabilidadRiesgo" style="display: none;"> 
+                                </div>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" id="descnivelProbabilidadRiesgo" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">*Severidad del riesgo</label>
+                                <div class="col-lg-8">
+                                    <input type="number" step="positive floating-point number" class="form-control" id="svrRiesgo"  placeholder="Severidad del Riesgo" disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">Acciones especificas</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control" id="accEsp" placeholder="Acciones Específicas" rows="5" maxlength="499"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">Costo Potencial</label>
+                                <div class="col-lg-8">
+                                    <input type="number" step="positive floating-point number" class="form-control" id="costRiesgo" placeholder="Costo estimado de Riesgo" min="0">
+                                </div>
+                                <div class="alert alert-danger" id="errorCosto" style="display: none;">
+                                    <span class="pull-right">Por favor, ingrese un numero positivo</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">Demora Potencial</label>
+                                <div class="col-lg-8">
+                                    <input type="number" step="positive floating-point number" class="form-control" id="tiemRiesgo" placeholder="Tiempo estimado de Riesgo" min="0">
+                                </div>
+                                <div class="alert alert-danger" id="errorTiempo" style="display: none;">
+                                    <span class="pull-right">Por favor, ingrese un numero positivo</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 control-label">*Responsable</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control" id="equRes">
+                                        <option value="0" disabled selected>Escoge un responsable</option>
+                                    </select>
+                                </div>
+                                <div class="alert alert-danger" id="errorResponsable" style="display: none;">
+                                    <span class="pull-right">Por favor, ingrese algun responsable</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="col-lg-4 col-lg-offset-8 control-label">Los campos con * son obligatorios</label>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <div class="col-lg-2 col-lg-offset-10">
+                                    <button class="btn btn-success pull-right" id="btnRegistrar">Registrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="pane2" class="tab-pane">
+                        <br/>
+                        <div class="form-horizontal">
+                            <legend>Riesgos comunes</legend>
+                            <div class="well well-lg col-lg-12">
+                                <table id="tablaRiesgosComunes" class="table table-striped">
+                                    <thead class="titulo-tabla">
+                                    <th>ID</th>
+                                    <th>Nombre de Riesgo</th>
+                                    <th>Última Probabilidad</th>
+                                    <th>Último Impacto</th>
+                                    <th>Última Severidad</th>
+                                    <th>Agregar</th>
+                                    </thead>
+                                    <tbody class="cuerpo-tabla">
+
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-success pull-right" id="btnAgregar" data-dismiss="modal">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+        <script src="../../bootstrap/js/bootstrap.min.js"></script>
+        <script src="../../static/riesgo/js/RegistrarRiesgos.js"></script>
+        <script src="../../assets/js/header.js"></script>
+    </body>
