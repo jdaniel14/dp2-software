@@ -33,6 +33,28 @@
        }
     //-->
     </style>
+
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/header.js"></script>
+
+    <script>
+      var id=localStorage.getItem("idProyecto");
+
+      function obtenerTitulo(){ 
+        $.ajax({
+          type: 'GET',
+          dataType: "json", // data type of response
+          contentType: "application/json; charset=utf-8",
+          url: "../../api/G_listaRecursoxProyecto/" + id,
+              success: function(data){
+                document.getElementsByTagName('h1')[0].innerHTML=data["nom_proy"];
+              }
+        });
+      }
+
+      obtenerTitulo();
+    </script>
   </head>
 
   <body>
@@ -43,7 +65,7 @@
 
       <div class="starter-template">
           <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
-        <h1>a</h1>
+        <h1></h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 
