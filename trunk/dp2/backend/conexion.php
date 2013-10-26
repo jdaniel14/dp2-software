@@ -29,17 +29,15 @@
 }*/
 
 	function getConnection() {
-                
-                //$dbhost="127.0.0.1:3306";/*para el servidor*/
-$dbhost="127.0.0.1";
-$dbuser="usuario";
-$dbpass="usuario.2013.";
-$dbname="dp2";
-$dbport="20900";
-$dbh = new PDO("mysql:host=$dbhost;port=$dbport;dbname=$dbname", $dbuser, $dbpass);
-$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-return $dbh;	  
-}
+		  $dbhost="127.0.0.1";
+		  $dbuser="usuario";
+		  $dbpass="usuario.2013.";
+		  $dbname="dp2";
+		  $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		  return $dbh;
+
+	}
 
 	    
 
