@@ -724,10 +724,11 @@ function pintarMatriz1(impactos) {
                 console.log("nuevo");
                 $(".matriz1").each(function() {
                     var puntaje = $($(".matriz1")[i]).attr("id");
-                    var porcion = puntaje.substring(1);
+                    console.log(puntaje);
+                    var porcion = puntaje.substring(4);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
-                        console.log("puntaje" + porcion);
-                        $("#pos" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+                        //console.log("puntaje" + porcion);
+                        $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
 
                     }
                     i++;
@@ -779,10 +780,11 @@ function pintarMatriz2(impactos) {
                 console.log("nuevo");
                 $(".matriz2").each(function() {
                     var puntaje = $($(".matriz2")[i]).attr("id");
-                    var porcion = puntaje.substring(1);
+                    var porcion = puntaje.substring(4);
+                    console.log(porcion);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
                         console.log("puntaje" + porcion);
-                        $("#neg" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+                        $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
 
                     }
                     i++;
