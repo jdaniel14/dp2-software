@@ -17,11 +17,12 @@ import com.dp2.gproyectos.general.controller.UsuarioController;
 import com.dp2.gproyectos.general.entities.UsuarioBean;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.utils.ValidacionesUtility;
+import com.dp2.gproyectos.view.components.BotonIconTexto;
 
 public class GeneralLoginActivity extends Activity implements Loadingable {
 	EditText edtUser;
 	EditText edtPassword;
-	LinearLayout btnInicio;
+	BotonIconTexto btnInicio;
 	UsuarioBean usuario;
 	
 	@Override
@@ -30,10 +31,11 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.general_login_layout);
 
-		btnInicio = (LinearLayout) findViewById(R.id.btnInicio);
+		btnInicio = (BotonIconTexto) findViewById(R.id.btnInicio);
 		edtUser = (EditText) findViewById(R.id.edtUser);
 		edtPassword = (EditText) findViewById(R.id.edtPassword);
 
+		btnInicio.setAtributos("Login");
 		btnInicio.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -102,7 +104,7 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	public void afterLoadingData() {
 		if (usuario==null){
 			//mensaje de error
-			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesiÃ³n. Reintente nuevamente.", Toast.LENGTH_LONG).show();
+			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesión. Reintente nuevamente.", Toast.LENGTH_LONG).show();
 		}
 		else if (Long.parseLong(usuario.id) >0){
 			Intent intent = new Intent(GeneralLoginActivity.this, GeneralHomeProyectosListaActivity.class);
