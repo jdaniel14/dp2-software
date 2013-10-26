@@ -237,7 +237,7 @@
     }
 
     function R_getEstrategiasNegativo($idProyecto){
-        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 2 id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 2 AND id_proyecto=".$idProyecto;
         try{
             $arregloListaEstrategias= array();
             $db=getConnection();
