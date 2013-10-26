@@ -258,7 +258,6 @@
     function R_postRegistrarEstrategias(){
         $request = \Slim\Slim::getInstance()->request();
         $listaEstrategia = json_decode($request->getBody());
-      
         R_deleteEstrategias($listaEstrategia->idProyecto);
         foreach ($listaEstrategia->listaEstrategias as $estrategia){
             $query = "INSERT INTO CATEGORIZACION_ESTRATEGIAS (id_proyecto,tipo,puntaje_limite_bajo,puntaje_limite_alto, prioridad, estrategia, significado) 
@@ -282,9 +281,25 @@
         }
     }
 
-    function R_deleteEstrategias($idProyecto){
+    function R_deleteEstrategiasPositivo($idProyecto){
 
-        $sql = "DELETE FROM CATEGORIZACION_ESTRATEGIAS WHERE id_Proyecto=:idProyecto";
+        $sql = "DELETE FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 1 AND id_Proyecto=:idProyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
+            $db = null;
+            echo '{Categorizacion de estrategias eliminados con exito}';
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+
+    function R_deleteEstrategiasNegativo($idProyecto){
+
+        $sql = "DELETE FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 2 AND id_Proyecto=:idProyecto";
         try {
             $db = getConnection();
             $stmt = $db->prepare($sql);

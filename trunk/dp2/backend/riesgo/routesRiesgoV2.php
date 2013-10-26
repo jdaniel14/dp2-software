@@ -19,7 +19,8 @@
 	$app->get('/R_listarEstrategiasPositivo/:id','R_getEstrategiasPositivo');
 	$app->get('/R_listarEstrategiasNegativo/:id','R_getEstrategiasNegativo');
 	$app->post('/R_registrarEstrategias','R_postRegistrarEstrategias');
-	$app->delete('/R_eliminarEstrategias/:id','R_deleteEstrategias');
+	$app->delete('/R_eliminarEstrategiasPositivo/:id','R_deleteEstrategiasPositivo');
+	$app->delete('/R_eliminarEstrategiasNegativo/:id','R_deleteEstrategiasNegativo');
 
 	//PUNTAJE MINIMO Y MAXIMO
 	$app->get('/R_obtenerPuntajes/:id','R_getPuntajes');
