@@ -9,9 +9,9 @@ function validAtenas() {
     return true;
 }
 
-function validEstrategia() {
-    var cantidadEstrategias = $("#cantidadEstrategias").val();
-    var puntajeMax = $("#puntajeMax").val();
+function validEstrategia1() {
+    var cantidadEstrategias = $("#cantidadEstrategias1").val();
+    var puntajeMax = $(".puntajeMax").val();
     if (parseInt(puntajeMax) < parseInt(cantidadEstrategias)) {
         alert("la cantidad de estrategias no debe ser mayor al puntaje maximo");
         return false;
@@ -28,12 +28,31 @@ function validEstrategia() {
     return true;
 }
 
-function validCampos() {
+function validEstrategia2() {
+    var cantidadEstrategias = $("#cantidadEstrategias2").val();
+    var puntajeMax = $(".puntajeMax").val();
+    if (parseInt(puntajeMax) < parseInt(cantidadEstrategias)) {
+        alert("la cantidad de estrategias no debe ser mayor al puntaje maximo");
+        return false;
+    }
+    if (cantidadEstrategias == null || cantidadEstrategias.length == 0) {
+        alert("la cantidad de Estrategias no puede ser vacio");
+        return false;
+    }
+    if (cantidadEstrategias > 7 || cantidadEstrategias < 2) {
+        alert("la cantidad de Estrategias debe ser entre 2 y 7");
+        return false;
+    }
+
+    return true;
+}
+
+function validCampos1() {
     var i = 0;
     var valor;
-    $(".prioridad").each(function() {
-        var prioridad = $($("input.prioridad")[i]).val(); // valor de inputs
-        var significado = $($("input.significado")[i]).val();
+    $(".prioridad1").each(function() {
+        var prioridad = $($("input.prioridad1")[i]).val(); // valor de inputs
+        var significado = $($("input.significado1")[i]).val();
         var puntajeMax = $($("input.puntajeMax")[i]).val();
         var puntajeMin = $($("input.puntajeMin")[i]).val();
         if (prioridad === null || prioridad.length === 0 || significado === null || significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || puntajeMin === null || puntajeMin.length === 0) {
@@ -52,6 +71,32 @@ function validCampos() {
     else
         return true;
 }
+
+function validCampos2() {
+    var i = 0;
+    var valor;
+    $(".prioridad2").each(function() {
+        var prioridad = $($("input.prioridad2")[i]).val(); // valor de inputs
+        var significado = $($("input.significado2")[i]).val();
+        var puntajeMax = $($("input.puntajeMax")[i]).val();
+        var puntajeMin = $($("input.puntajeMin")[i]).val();
+        if (prioridad === null || prioridad.length === 0 || significado === null || significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || puntajeMin === null || puntajeMin.length === 0) {
+            //ALERTAR
+            valor = "vacio";
+            alert("Debe registrar todos los campos");
+            return false;
+
+        }
+
+        i++;
+
+    });
+    if (valor === "vacio")
+        return false;
+    else
+        return true;
+}
+
 
 
 
@@ -75,28 +120,30 @@ $(document).on('change', '.puntajeMax', function() {
 
 function main() {
     leerEquipo();
-    leerNivelImpacto();
+    leerNivelImpacto1();
+    leerNivelImpacto2();
     //leerNivelProbabilidad();
 
     leerComite();
     leerPuntajes();
-    leerCategorias();
+    leerCategorias1();
+     leerCategorias2();
 
     $("#btnCancelar").click(function() {
         parent.location.reload();
     });
 
 
-    $("#btnGenerar").click(function() {
-        if (!validEstrategia())
+    $("#btnGenerar1").click(function() {
+        if (!validEstrategia1())
             return;
         alert("Se borrará si existe datos anteriores");
-        var estrategias = $("#cantidadEstrategias").val();
+        var estrategias = $("#cantidadEstrategias1").val();
 
         puntajeMin = $("#puntajeMin").val();
 
         puntajeMax = $("#puntajeMax").val();
-        $('#tablaCategorizacion').html("");
+        $('#tablaCategorizacion1').html("");
 
         var factorSuma = parseFloat(puntajeMax) / parseFloat(estrategias);
 
@@ -111,17 +158,66 @@ function main() {
             var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
 
             //creo inputs dinamicos
-            $('#tablaCategorizacion').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+            $('#tablaCategorizacion1').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
                                                    <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
-                                                   <td><input class=\"input prioridad\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
-                                                   <td><select class=\"estrategia\" id=\"estrategia" + i + "\">\n\
+                                                   <td><input class=\"input prioridad1\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
+                                                   <td><select class=\"estrategia1\" id=\"estrategia" + i + "\">\n\
                                                         <option  value=\"evitar\" >Evitar</option>\n\
                                                         <option  value=\"transferir\">Transferir</option>\n\
                                                          <option  value=\"mitigar\" >Mitigar</option>\n\
                                                          <option  value=\"compartir\" >Compartir</option>\n\
                                                          <option  value=\"mejorar\" >Mejorar</option>\n\
                                                          <option  value=\"explotar\" >Explotar</option></select></td>\n\
-                                                     <td><input class=\"significado\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
+                                                     <td><input class=\"significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
+
+            valor = valor + factorSuma;
+
+        }
+        $($(".puntajeMin")[0]).prop('disabled', true);
+        $("#tablaRecursos").find("tr:last td:eq(1) input").prop('disabled', true);
+        //$($(".puntajeMin")[0]).prop('disabled',false);
+
+
+
+
+
+    });
+
+    $("#btnGenerar2").click(function() {
+        if (!validEstrategia2())
+            return;
+        alert("Se borrará si existe datos anteriores");
+        var estrategias = $("#cantidadEstrategias2").val();
+
+        puntajeMin = $("#puntajeMin").val();
+
+        puntajeMax = $("#puntajeMax").val();
+        $('#tablaCategorizacion2').html("");
+
+        var factorSuma = parseFloat(puntajeMax) / parseFloat(estrategias);
+
+
+        var residuo = parseInt(puntajeMax) % parseInt(estrategias);
+
+        var valor = 0;
+        for (var i = 1; i <= estrategias; i++) {
+            var puntajeMinim = parseFloat(puntajeMin) + parseFloat(valor);
+            var puntajeMinimo = Math.round(puntajeMinim);
+
+            var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
+
+            //creo inputs dinamicos
+            $('#tablaCategorizacion2').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+                                                   <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
+                                                   <td><input class=\"input prioridad2\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
+                                                   <td><select class=\"estrategia2\" id=\"estrategia" + i + "\">\n\
+                                                        <option  value=\"evitar\" >Evitar</option>\n\
+                                                        <option  value=\"transferir\">Transferir</option>\n\
+                                                         <option  value=\"mitigar\" >Mitigar</option>\n\
+                                                         <option  value=\"compartir\" >Compartir</option>\n\
+                                                         <option  value=\"mejorar\" >Mejorar</option>\n\
+                                                         <option  value=\"explotar\" >Explotar</option></select></td>\n\
+                                                     <td><input class=\"significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
 
             valor = valor + factorSuma;
 
@@ -138,33 +234,34 @@ function main() {
 
 
 
+    $("#btnGrabarCategorizacion1").click(function() {
 
-    $("#btnGrabarCategorizacion").click(function() {
-
-        if (!validCampos())
+        if (!validCampos1())
             return;
 
         var data = {
             idProyecto: idProyectoLocal,
-            listaEstrategias: []
+            listaEstrategias: [],
+            tipo:1
+           
         };
 
         var i = 0;
-        $(".puntajeMin").each(function() {
+        $(".prioridad1").each(function() {
 
             var obj = {
                 puntajeMin: $($("input.puntajeMin")[i]).val(), // valor de inputs
                 puntajeMax: $($("input.puntajeMax")[i]).val(),
-                prioridad: $($("input.prioridad")[i]).val(),
-                estrategia: $($("select.estrategia")[i]).val(),
-                significado: $($("input.significado")[i]).val()
-
+                prioridad: $($("input.prioridad1")[i]).val(),
+                estrategia: $($("select.estrategia1")[i]).val(),
+                significado: $($("input.significado1")[i]).val()
+                
             };
             i++;
             data.listaEstrategias[i - 1] = obj;
         });
         var jsonData = JSON.stringify(data);
-        //console.log(data);
+        console.log(data);
 
         $.ajax({
             type: 'POST',
@@ -181,10 +278,55 @@ function main() {
         });
         alert("Se registró la categorización exitosamente");
 
-
-
     });
 
+ $("#btnGrabarCategorizacion2").click(function() {
+
+        if (!validCampos2())
+            return;
+
+        var data = {
+            idProyecto: idProyectoLocal,
+            listaEstrategias: [],
+            tipo:2
+            
+        };
+
+        var i = 0;
+        $(".prioridad2").each(function() {
+
+            var obj = {
+                puntajeMin: $($("input.puntajeMin")[i]).val(), // valor de inputs
+                puntajeMax: $($("input.puntajeMax")[i]).val(),
+                prioridad: $($("input.prioridad2")[i]).val(),
+                estrategia: $($("select.estrategia2")[i]).val(),
+                significado: $($("input.significado2")[i]).val()
+                
+            };
+            i++;
+            data.listaEstrategias[i - 1] = obj;
+        });
+        var jsonData = JSON.stringify(data);
+        console.log(data);
+
+        $.ajax({
+            type: 'POST',
+            url: "../../api/R_registrarEstrategias",
+            data: jsonData,
+            dataType: "json",
+            success: function(data) {
+                alert("Se registró la categorización exitosamente");
+            },
+            fail: function(data) {
+                alert(data.me);
+            }
+
+        });
+        alert("Se registró la categorización exitosamente");
+
+    });
+    
+    
 
     $("#btnGuardarComite").click(function() {
         agregarEquipo();
@@ -222,7 +364,46 @@ function main() {
 
 
 
-function leerCategorias() {
+
+function leerCategorias2() {
+
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+            for (obj in data) {
+                var idEstrategia = data[obj]["idEstrategia"];
+                var puntajeMin = data[obj]["puntajeMin"];
+                var puntajeMax = data[obj]["puntajeMax"];
+                var prioridad = data[obj]["prioridad"];
+                var estrategia = data[obj]["estrategia"];
+                var significado = data[obj]["significado"];
+
+                $('#tablaCategorizacion2').append("<tr>\n\
+                                                     <td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input class=\"input prioridad\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><select disabled class=\"estrategia2\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
+                                                              <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
+                                                     <td><input class=\"significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+
+
+            }
+
+            $($(".puntajeMin")[0]).prop('disabled', true);
+            $("#tablaRecursos").find("tr:last td:eq(1) input").prop('disabled', true);
+        }
+    }); 
+}
+
+function leerCategorias1() {
 
 //
 //    var data =$.parseJSON('[{"idEstrategia":1,"puntajeMin":1, "puntajeMax":25, "prioridad":"Muy Baja", "estrategia":"evitar", "significado": "No hacer nada"}, {"idEstrategia":2,"puntajeMin":26, "puntajeMax":50, "prioridad":"Baja", "estrategia":"mitigar", "significado": "Dejar por escrito"}]');
@@ -256,7 +437,7 @@ function leerCategorias() {
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarEstrategias' + '/' + data.idProyecto,
+        url: '../../api/R_listarEstrategiasPositivo' + '/' + data.idProyecto,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -268,13 +449,13 @@ function leerCategorias() {
                 var estrategia = data[obj]["estrategia"];
                 var significado = data[obj]["significado"];
 
-                $('#tablaCategorizacion').append("<tr>\n\
+                $('#tablaCategorizacion1').append("<tr>\n\
                                                      <td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
                                                      <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
-                                                     <td><input class=\"input prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
-                                                     <td><select disabled class=\"estrategia\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
+                                                     <td><input class=\"input prioridad1\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><select disabled class=\"estrategia1\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
                                                               <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
-                                                     <td><input class=\"significado\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+                                                     <td><input class=\"significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
 
             }
@@ -310,8 +491,8 @@ function  leerPuntajes() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-            $("#puntajeMin").val(data["puntajeMin"]);
-            $("#puntajeMax").val(data["puntajeMax"]);
+            $(".puntajeMin").val(data["puntajeMin"]);
+            $(".puntajeMax").val(data["puntajeMax"]);
         }
     });
 
@@ -397,7 +578,9 @@ function  agregarComite() {
 
 
 }
-function leerNivelProbabilidad(impactos) {
+
+
+function leerNivelProbabilidad1(impactos) {
 
     var data = {
         idProyecto: idProyectoLocal
@@ -432,17 +615,17 @@ function leerNivelProbabilidad(impactos) {
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td class=\"matriz\" id=\"" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            fil = $("<td class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
                             $(fila).append(fil);
 
                         }
                         i++;
 
 
-                        $("#tablaMatrizRiesgos").append(fila);
+                        $("#tablaMatrizRiesgos1").append(fila);
 
                     }
-                    pintarMatriz(impactos);
+                    pintarMatriz1(impactos);
                 }
             });
         }
@@ -452,7 +635,13 @@ function leerNivelProbabilidad(impactos) {
 
 }
 
-function pintarMatriz(impactos) {
+function leerNivelProbabilidad2(impactos) {
+
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+    var datos = leerMatriz();
 
     var data = {
         idProyecto: idProyectoLocal
@@ -461,7 +650,56 @@ function pintarMatriz(impactos) {
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarEstrategias' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatriz' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(datos) {
+            $.ajax({
+                type: 'GET',
+                url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var fila, opt, fil, cad;
+                    var i = 0;
+                    for (obj in data) {
+
+                        fila = $("<tr></tr>");
+                        opt = $("<td >" + data[obj]["nivel"] + "</td> ");
+
+                        $(fila).append(opt);
+                        for (var j = 1; j < datos[i].length; j++) {
+
+                            fil = $("<td class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            $(fila).append(fil);
+
+                        }
+                        i++;
+
+
+                        $("#tablaMatrizRiesgos2").append(fila);
+
+                    }
+                    pintarMatriz2(impactos);
+                }
+            });
+        }
+    });
+
+
+
+}
+
+function pintarMatriz1(impactos) {
+
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_listarEstrategiasPositivo' + '/' + data.idProyecto,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -484,12 +722,67 @@ function pintarMatriz(impactos) {
                 //    for(var i;i<longitud;i++){
 
                 console.log("nuevo");
-                $(".matriz").each(function() {
-                    var puntaje = $($(".matriz")[i]).attr("id");
+                $(".matriz1").each(function() {
+                    var puntaje = $($(".matriz1")[i]).attr("id");
                     var porcion = puntaje.substring(1);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
                         console.log("puntaje" + porcion);
-                        $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+                        $("#pos" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+
+                    }
+                    i++;
+                });
+                i = 0;
+                r = Math.round(Math.random() * 255);
+                g = Math.round(Math.random() * 255);
+                b = Math.round(Math.random() * 255);
+                //   }
+                //if(parseInt(puntaje))
+                //i=longitud;
+                //longitud=longitud+impactos.length;
+            }
+        }
+    });
+}
+
+function pintarMatriz2(impactos) {
+
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+            var i = 0;
+            var longitud = impactos.length;
+            r = Math.round(Math.random() * 255);
+            g = Math.round(Math.random() * 255);
+            b = Math.round(Math.random() * 255);
+            for (obj in data) {
+                // var idEstrategia = data[obj]["idEstrategia"];
+                var puntajeMin = data[obj]["puntajeMin"];
+                var puntajeMax = data[obj]["puntajeMax"];
+                console.log("puntajeMin" + puntajeMin);
+
+                console.log("puntajeMax" + puntajeMax);
+                // var prioridad = data[obj]["prioridad"];
+                // var estrategia = data[obj]["estrategia"];
+                //var significado = data[obj]["significado"];
+
+                //    for(var i;i<longitud;i++){
+
+                console.log("nuevo");
+                $(".matriz2").each(function() {
+                    var puntaje = $($(".matriz2")[i]).attr("id");
+                    var porcion = puntaje.substring(1);
+                    if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
+                        console.log("puntaje" + porcion);
+                        $("#neg" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
 
                     }
                     i++;
@@ -508,7 +801,7 @@ function pintarMatriz(impactos) {
 }
 
 
-function leerNivelImpacto() {
+function leerNivelImpacto1() {
 
 
     var data = {
@@ -528,13 +821,39 @@ function leerNivelImpacto() {
                 var opt = $("<td width=\"15%\">" + data[obj]["nivel"] + "</td>");
                 $(fila).append(opt);
             }
-            $("#tablaMatrizRiesgos").append(fila);
-            leerNivelProbabilidad(data);
+            $("#tablaMatrizRiesgos1").append(fila);
+            leerNivelProbabilidad1(data);
         }
     });
 
 }
 
+function leerNivelImpacto2() {
+
+
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+            var fila = $("<tr></tr>");
+            $(fila).append("<td width=\"15%\"><b>Probabilidad/Impacto<b></td>");
+            for (obj in data) {
+                var opt = $("<td width=\"15%\">" + data[obj]["nivel"] + "</td>");
+                $(fila).append(opt);
+            }
+            $("#tablaMatrizRiesgos2").append(fila);
+            leerNivelProbabilidad2(data);
+        }
+    });
+
+}
 
 function  leerEquipo() {
     //HARDCODEADO
@@ -596,10 +915,9 @@ function leerMatriz() {
     });
 
 
-
-
-
 }
+
+
 
 
 function  leerComite() {
