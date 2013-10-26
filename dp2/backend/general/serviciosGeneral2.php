@@ -249,8 +249,8 @@ function G_getListarRecDisp() {
             $request = \Slim\Slim::getInstance()->request();
 	    $body = json_decode($request->getBody());
  
-			$str1 = $body->fechaIni;
-			$str2 = $body->fechaFin;
+			$str1 = $body->fi;
+			$str2 = $body->ff;
                         $fecha_Inicio = new DateTime($str1);
                         $f_ini=$fecha_Inicio->format('Y-m-d');
                         
@@ -279,7 +279,7 @@ function G_getListarRecDisp() {
                     ";
 
             $db = getConnection();
-            $stmt = $db->prepare($query);
+            $stmt = $db->prepare($sql);
             $stmt->bindParam("FI", $f_ini);
             $stmt->bindParam("FF", $f_fin);
             $stmt->execute();
@@ -291,7 +291,7 @@ function G_getListarRecDisp() {
                 $lista_falsa[$id] = true;
             }
 
-            $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, PR.DESCRIPCION as PROF
+            $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, PR.DESCRIPCION as prof
                     FROM EMPLEADO E, PROFESION PR
                     WHERE PR.ID_PROFESION = E.ID_PROFESION";
             $stmt = $db->query($sql);
