@@ -485,7 +485,10 @@ function getEdt(){
     	$pstmt->execute(array($idProyecto,'%'.$data->{"nombre"}.'%','%'.$data->{"apellido"}.'%'));
     	$ar_lista=array();
     	while ($lista = $pstmt->fetch(PDO::FETCH_ASSOC)){
-    		$hijo = new Miembro($lista["id_miembros_equipo"],$lista["nombres"],$lista["apellidos"],$lista["telefono"],$lista["email"]);
+    		if($lista["telefono"]==null)$tele="";else $tele=$lista["telefono"];
+    		if($lista["email"]==null)$ema="";else $ema=$lista["email"];
+    		
+    		$hijo = new Miembro($lista["id_miembros_equipo"],$lista["nombres"],$lista["apellidos"],$tele,$ema);
     		array_push($ar_lista,$hijo);
     	}
     	
