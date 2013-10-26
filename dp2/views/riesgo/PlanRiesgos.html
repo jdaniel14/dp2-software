@@ -70,7 +70,7 @@
                         </table>
                         <div class="col-md-12"  style="text-align:center">
                             <a data-toggle="modal" href="#modalAumentarTipoImpactoXNivelImpacto" class="btn btn-primary" id="btnAumentar">Aumentar</a>
-
+                            <a data-toggle="modal" href="#modalEliminarTipoImpactoXNivelImpacto" class="btn btn-danger" id="btnEliminarTipoXNivel">Eliminar</a>
                         </div>
                     </form>  
                 </div>
@@ -162,7 +162,24 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
+        <div class="modal fade" id="modalEliminarTipoImpactoXNivelImpacto">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Eliminar Definición del Tipo de Impacto</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal col-lg-12">
+                            <h5><b>¿Esta seguro de querer eliminar todo el contenido de la tabla?</br>Este es un cambio que no puede ser deshecho</b></h5>
+                            
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" id="btnEliminarTipoXNivel">Continuar</button>
+                        <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </body>
 </html>
 
