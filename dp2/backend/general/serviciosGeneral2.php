@@ -437,7 +437,9 @@ function G_getListarRecDisp() {
 		RE.NOMBRE_ROL,
 		M.COSTO_EMPLEADO,
 		P.nombre_proyecto,
-		M.PORCENTAJE
+		M.PORCENTAJE,
+		M.fecha_entrada FECHAINI,
+		M.fecha_salida	FECHAFIN
 		          FROM MIEMBROS_EQUIPO  M,
 		          EMPLEADO E,
 		          ROL_EMPLEADO RE, 
@@ -467,7 +469,9 @@ function G_getListarRecDisp() {
 		              "costo" => $j["COSTO_EMPLEADO"],
                               "porc"=>$j["PORCENTAJE"],
                               "prof_base"=>$j["PROFESION_BASE"],
-                              "prof_act"=>$j["PROFESION_BASE"]
+                              "prof_act"=>$j["PROFESION_BASE"],
+                              "fechaini"=>$j["FECHAINI"],
+                              "fechafin"=>$j["FECHAFIN"]
 		          );
 		          array_push($l_recxpro, $rec);
 		      }
