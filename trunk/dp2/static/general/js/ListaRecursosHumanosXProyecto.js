@@ -12,41 +12,51 @@ $(document).ready(function(){
             	$(this).addClass("noMostrar");
             	//console.log("click");
                $("#ListaRecursosHumanosXProyecto").append($(this));
-              
+              	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
         })
     }) 
     $("#btnGuardar").click(function(){
-    	var arrayTR = $($("#ListaRecursosHumanosXProyecto").children("tbody")).children("tr");
-    	//console.log("antes");
-    	//console.log(arrayTR);
-    	//console.log("despues");
-    	
+    	var arrayTR = $(".noMostrar");    	
     	var id_proyecto = localStorage.getItem("idProyecto");
     	var bool = true;
     	var lista_recursos = [];
-    	$.each(arrayTR,function(e,el){
-			//console.log("Valor1: " + $($(el).children("td")[0]).text());
+
+    	if(arrayTR.length != 0 ){
+
+    		$(arrayTR).each(function(e,el){
+			//console.log("Valor1: " + el.cells[0].innerHTML);
 			//console.log("Valor2: " + $($( $(el).children("td")[3])).children("input").val());
-			var idRec = $($(el).children("td")[0]).text();
-			var montoAsignado = $($( $(el).children("td")[3])).children("input").val();
-			var rec = {
-					idr : idRec, 
-					costo : montoAsignado
-			}
-			lista_recursos.push(rec);
-			if(montoAsignado.length == 0 ) bool = false;
-		});
-    	
-    	if(bool){
-    		var envio = {
+				
+				if (el.cells[4].children[0].value!="" && el.cells[5].children[0].value!="" && el.cells[6].children[0].value!="" && el.cells[7].children[0].value!=""){
+					var rec = {
+						idrec :  el.cells[0].innerHTML, 
+						prof_act : el.cells[4].children[0].value,
+						costohh : el.cells[5].children[0].value,
+						fi : el.cells[6].children[0].value,
+						ff : el.cells[7].children[0].value,
+						XD : "Bonnie se come los mocos"
+					}
+					lista_recursos.push(rec);
+
+				}
+				else bool=false;
+				
+			});
+
+    		if (bool)
+			{
+				var envio = {
     				id_proy : id_proyecto,
     				l_rrhhxpr : lista_recursos
     			};
-    		console.log(JSON.stringify(envio));
-    		//console.log("listo para envio");
-    		grabarRecursos(envio);
-    	}
-    	else alert("Llene los campos, por favor");
+    			//console.log(JSON.stringify(envio));
+    			//console.log("listo para envio");
+    			grabarRecursos(envio);
+			}
+			else alert("Llene todos los campos correctamente");
+
+    	} 
+    	else alert("No hay filas que modificar");
     })
 });
 
@@ -129,10 +139,12 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["prof_base"] + 
+	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
 
 		'</td><td>'+ arreglo["prof_act"] +
-		'</td><td>' + arreglo["costo"] + '</td>' +
+		'</td><td>' + arreglo["costo"] +
+		'</td><td>' + arreglo["fechaini"] +
+		'</td><td>' + arreglo["fechafin"] +
 		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent());>Eliminar</button></td></tr>';
 
 	$("#ListaRecursosHumanosXProyecto tbody").append(tbody);
@@ -140,7 +152,7 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 }
 $("#buscar").click(function(){
 	var envio = {fi : $("#fi").val(),ff : $("#ff").val()};
-   	console.log(JSON.stringify(envio));
+   	//console.log(JSON.stringify(envio));
    	$.ajax({
 		type: 'POST',
 		url: buscarRecursosProyectoFecha,
@@ -152,6 +164,7 @@ $("#buscar").click(function(){
 	        $("#pasar").show();
 	        $("#tablaRecursosDisponibles").show();	
 	        agregaDataFila(data); 
+	        $("#listaRecursosHumanos").trigger("update"); 
         }
 	});
 }) 
@@ -161,7 +174,7 @@ function agregaDataFila(data){
 	
 	//console.log(data);
 	var arrAux = $(".noMostrar");
-	console.log(arrAux);
+
 	
 	if (data!=null){
 		arreglo=data["l_recurso"];
@@ -170,7 +183,7 @@ function agregaDataFila(data){
 	for (i=0; i<arreglo.length;i++){
 		var bool = false;
 		$.each(arrAux,function(e,el){
-			console.log("Valor: " + $($(el).children("td")[0]).text());
+			//console.log("Valor: " + $($(el).children("td")[0]).text());
 			//console.log($(el).children("td")[0]);
 			//console.log(arreglo[i]["id"]);
 			if($($(el).children("td")[0]).text() == arreglo[i]["id"]){
@@ -189,19 +202,23 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
 	
-	var profesion = "<select>"+
+	var profesion = "<select class='form-control input-sm'>"+
 					 "<option value='1'>Analista 1</option>"+
 					 "<option value='2'>Analista 2</option>"+
 					 "<option value='3'>Desarrollador 1</option>"+
 					 "<option value='4'>Desarrollador 2</option>"+
 					"</select>";
 	
+	var fechaini="<input class='form-control input-sm' type='date' name='fechaini'>";
+	var fechafin="<input class='form-control input-sm' type='date' name='fechafin'>";
+	var rol = "Miembro de Equipo";
 
-	var costohh = "<input type='text' name='costohh'>"
-	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["prof"] + '</td><td>' + profesion +'</td><td>' + costohh +'</td></tr>';
+	var costohh = "<input  class='form-control input-sm' type='text' name='costohh'>"
+	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' +  arreglo["nom"]+ '</td><td>' + rol + '</td><td>'+ arreglo["prof"] + '</td><td>' + 
+				profesion +'</td><td>' + costohh +'</td><td>' + fechaini +'</td><td>' + fechafin +'</td></tr>';
 	
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
-	$("#listaRecursosHumanos").trigger("update"); 
+	
 	$(".fila"+(i+1)).click(clickRecurso);
 }

@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 
 function armaMenu( data ){
-	console.log(data);
+	//console.log(data);
 
 	var menu = '<ul class = "nav navbar-nav">';
 	for ( i = 0 ; i < data.menu.length; i++ ){
