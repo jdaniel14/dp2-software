@@ -98,7 +98,8 @@
                         CONCAT(E.nombres, ' ', E.apellidos) as nombres, 
                         T.nombre_tipo_proyecto, 
                         DATE(P.fecha_inicio_planificada) as fi, 
-                        DATE(P.fecha_fin_planificada) as ff 
+                        DATE(P.fecha_fin_planificada) as ff,
+                        P.estado as es 
                 FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
                 WHERE P.id_proyecto = M.id_proyecto 
                 AND E.id_empleado = M.id_empleado 
@@ -120,7 +121,7 @@
                                                         "jp"=>utf8_encode( $p["nombres"]),
                                                         "tp"=>utf8_encode( $p["nombre_tipo_proyecto"]),
                                                         "fi"=>utf8_encode( $p["fi"]),
-                                                        "ff"=>utf8_encode($p["ff"]),
+                                               	         "ff"=>utf8_encode($p["ff"]),
                                                          "es"=>utf8_encode( "Ok"));*/
                                          $proj = array("id"=>$p["id_proyecto"],
                                                         "nom"=>$p["nombre_proyecto"],
@@ -128,7 +129,7 @@
                                                         "tp"=> $p["nombre_tipo_proyecto"],
                                                         "fi"=>$p["fi"],
                                                         "ff"=>$p["ff"],
-                                                         "es"=> "Ok");
+                                                         "es"=>$p["es"]);
                                         array_push($lista_project, $proj);
 
                                         
