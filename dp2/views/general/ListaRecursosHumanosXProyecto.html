@@ -65,9 +65,12 @@
           <tr>
             <th><b>#</b></th>
             <th><b>Nombre del Recurso</b></th>
+            <th><b>Rol</b></th>
             <th><b>Profesion Base</b></th>
             <th><b>Profesion en el Proyecto</b></th>
             <th><b>Costo HH (S/.)</b></th>
+            <th><b>Fecha Inicio Participación</b></th>
+            <th><b>Fecha Fin Participación</b></th>
             <th><b>Eliminar</b></th>
           </tr>
         </thead>
@@ -75,13 +78,16 @@
           <tr>
             <th><b>#</b></th>
             <th><b>Nombre del Recurso</b></th>
+            <th><b>Rol</b></th>
             <th><b>Profesion Base</b></th>
             <th><b>Profesion en el Proyecto</b></th>
             <th><b>Costo HH (S/.)</b></th>
+            <th><b>Fecha Inicio Participación</b></th>
+            <th><b>Fecha Fin Participación</b></th>
             <th><b>Eliminar</b></th>
           </tr>
           <tr>
-            <th colspan="7" class="pager form-horizontal">
+            <th colspan="9" class="pager form-horizontal">
               <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
               <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
               <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
@@ -129,7 +135,7 @@
 
   <!-- Modal Recursos Disponibles -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="width:1000px;">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -179,9 +185,12 @@
                     <tr>
                       <th><b>#</b></th>
                       <th><b>Nombre del Colaborador</b></th>
-                      <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Profesion Colaborador</b></th>
-                      <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Profesion en el Proyecto</b></th>
+                      <th>Rol del Colaborador</th>
+                      <th>Profesion Colaborador</th>
+                      <th>Profesion en el Proyecto</th>
                       <th>Costo Hora Hombre</th>
+                      <th>Fecha de inicio de la Colaboración</th>
+                      <th>Fecha de fin de la Colaboración</th>
                       
                     </tr>
                   </thead>
@@ -189,13 +198,16 @@
                     <tr>
                       <th>#</th>
                       <th>Nombre del Colaborador</th>
+                      <th>Rol del Colaborador</th>
                       <th>Profesion Colaborador</th>
                       <th>Profesion en el Proyecto</th>
                       <th>Costo Hora Hombre</th>
+                      <th>Fecha de inicio de la Colaboración</th>
+                      <th>Fecha de fin de la Colaboración</th>
                   
                     </tr>
                     <tr>
-                      <th colspan="7" class="pager form-horizontal">
+                      <th colspan="8" class="pager form-horizontal">
                         <button type="button" class="btn first"><i class="icon-step-backward"></i></button>
                         <button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
                         <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
