@@ -44,6 +44,9 @@ function agregaDataFila(data){
 		alert(idProyecto + " ola k ase");
 		localStorage.setItem("idProyecto",idProyecto);
 		});
+
+		$("[data-toggle=popover]").popover()
+
     $("#listaProyectos").trigger("update"); 
    
 }
@@ -52,12 +55,19 @@ function agregaFilaProyecto(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
+	if (arreglo["es"]=="CERRADO")
+	{
+	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
+	'</td><td>No Administrable</td><td><a class="btn  btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cerrado!!!">CERRADO</a></td></tr>';
+	$("#listaProyectos tbody").append(tbody);
+	}
+	else{
 	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
 	'</td><td><button type="button" class="btn btn-primary">Administrar</button></td><td><button data-toggle="modal" id="'+arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
-	$("#listaProyectos tbody").append(tbody);
-
-
+	$("#listaProyectos tbody").append(tbody);		
+	}
 }
+
 function cerrarP(){	
 	limpiaEntregable();
 	limpiaCostos();
