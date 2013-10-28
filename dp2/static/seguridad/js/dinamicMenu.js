@@ -60,3 +60,6 @@ function armaMenu( data ){
 	return menu;
 
 }
+$('#logout').click(function(){
+    localStorage.clear();
+});
