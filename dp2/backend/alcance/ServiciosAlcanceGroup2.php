@@ -150,6 +150,7 @@ function getEdt(){
     
       //Ahora guardo los hijos
       guardarHijos($edt->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaqueteInicial);
+      echo '{"me" : ""}';
     }
     
     function obtenerIdPaquete($nombre,$descripcion,$idEstado,$idEdt,$idPadre,$version){
