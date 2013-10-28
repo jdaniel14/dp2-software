@@ -663,6 +663,14 @@ $("#btnGrabar").click(function(){
 function grabarRiesgos(){
 	alert("Se grabó");
 }
+
+$("#checkearTodos").change(
+	function(){
+		$('#tablaRiesgosComunes input[type="checkbox"]').each(function(){
+	        $('input[type="checkbox"]').attr('checked', true);
+    	});
+	});
+
 /*------------------------------------VALIDACIONES-----------------------------------------*/
 
 //Calculo automatico del nivel de probabilidad
