@@ -13,13 +13,11 @@ $app->post('/G_actualizarLeccionAprendida', 'G_postActualizarLeccionAprendida');
 $app->get('/G_devuelveLeccionesAprendidas', 'G_getLeccionesAprendidas'); //leer todas las lecciones aprendidas
 $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
 
-
+$app->post('/G_asignarRecursoProyecto', 'G_postAsignarRecProy');//inserta los recursos a un proyecto
 
 //jose -- RRHH
 $app->post('/G_listarRecursoDisponible', 'G_getListarRecDisp');//devuelve la lista de recursos disponibles para asignar a un proyeco
-$app->post('/G_asignarRecursoProyecto', 'G_postAsignarRecProy');//inserta los recursos a un proyecto
 $app->post('/G_listaTodosRecurso', 'G_postListaTodosRecurso');//mostrar todos los recursos que estan disponibles
-
 $app->get('/G_listaRecursoxProyecto/:id', 'G_getListaRecursosEnProyecto');//mostrar los empleados vfffque estan en el proyecto
 //PRUEBA :3 xD
 
