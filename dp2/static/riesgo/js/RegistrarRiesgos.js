@@ -189,8 +189,11 @@ function main(){
 	$("#confirmarRiesgo").click( function(){
 		var arreglo = [];
     	$('#tablaRiesgosGlobal input[type="checkbox"]:checked').each(function(){
-	        var $row = $(this).parents('tr'); 
-	        arreglo.push($row.find('td:eq(13) input').val()); //cambiar aca si se editan las filas
+	        var $row = $(this).parents('tr');
+	         console.log($row);
+	        if ($row.find('td:eq(13) input').val()!=null)  {
+	        	arreglo.push($row.find('td:eq(13) input').val()); //cambiar aca si se editan las filas
+	        }
     	});
     	var data = {
     		lista: arreglo,
@@ -200,8 +203,8 @@ function main(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'PUT',
-			url: confirmAllRisks + "/" + data,
-			// data: jsonData,
+			url: confirmAllRisks,
+			data: jsonData,
 			dataType: "json",
 			success: function(data){
 				var item = data;
