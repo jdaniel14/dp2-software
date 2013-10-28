@@ -607,12 +607,12 @@ function leerNivelProbabilidad1(impactos) {
                     for (obj in data) {
 
                         fila = $("<tr></tr>");
-                        opt = $("<td >" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td> ");
+                        opt = $("<td align=\"center\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td> ");
 
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            fil = $("<td align=\"center\" class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
                             $(fila).append(fil);
 
                         }
@@ -662,12 +662,12 @@ function leerNivelProbabilidad2(impactos) {
                     for (obj in data) {
 
                         fila = $("<tr></tr>");
-                        opt = $("<td >" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td> ");
+                        opt = $("<td align=\"center\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td> ");
 
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            fil = $("<td align=\"center\" class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
                             $(fila).append(fil);
 
                         }
@@ -815,9 +815,9 @@ function leerNivelImpacto1() {
         contentType: "application/json; charset=utf-8",
         success: function(data) {
             var fila = $("<tr></tr>");
-            $(fila).append("<td width=\"15%\"><b>Probabilidad/Impacto<b></td>");
+            $(fila).append("<td width=\"15%\" align=\"center\"><b>Probabilidad/Impacto<b></td>");
             for (obj in data) {
-                var opt = $("<td width=\"15%\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td>");
+                var opt = $("<td width=\"15%\" align=\"center\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td>");
                 $(fila).append(opt);
             }
             $("#tablaMatrizRiesgos1").append(fila);
@@ -842,9 +842,9 @@ function leerNivelImpacto2() {
         contentType: "application/json; charset=utf-8",
         success: function(data) {
             var fila = $("<tr></tr>");
-            $(fila).append("<td width=\"15%\"><b>Probabilidad/Impacto<b></td>");
+            $(fila).append("<td width=\"15%\" align=\"center\"><b>Probabilidad/Impacto<b></td>");
             for (obj in data) {
-                var opt = $("<td width=\"15%\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td>");
+                var opt = $("<td width=\"15%\" align=\"center\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td>");
                 $(fila).append(opt);
             }
             $("#tablaMatrizRiesgos2").append(fila);
