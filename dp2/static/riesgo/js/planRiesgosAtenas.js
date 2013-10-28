@@ -607,7 +607,7 @@ function leerNivelProbabilidad1(impactos) {
                     for (obj in data) {
 
                         fila = $("<tr></tr>");
-                        opt = $("<td >" + data[obj]["nivel"] + "</td> ");
+                        opt = $("<td >" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td> ");
 
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
@@ -662,7 +662,7 @@ function leerNivelProbabilidad2(impactos) {
                     for (obj in data) {
 
                         fila = $("<tr></tr>");
-                        opt = $("<td >" + data[obj]["nivel"] + "</td> ");
+                        opt = $("<td >" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td> ");
 
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
@@ -817,7 +817,7 @@ function leerNivelImpacto1() {
             var fila = $("<tr></tr>");
             $(fila).append("<td width=\"15%\"><b>Probabilidad/Impacto<b></td>");
             for (obj in data) {
-                var opt = $("<td width=\"15%\">" + data[obj]["nivel"] + "</td>");
+                var opt = $("<td width=\"15%\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td>");
                 $(fila).append(opt);
             }
             $("#tablaMatrizRiesgos1").append(fila);
@@ -844,7 +844,7 @@ function leerNivelImpacto2() {
             var fila = $("<tr></tr>");
             $(fila).append("<td width=\"15%\"><b>Probabilidad/Impacto<b></td>");
             for (obj in data) {
-                var opt = $("<td width=\"15%\">" + data[obj]["nivel"] + "</td>");
+                var opt = $("<td width=\"15%\">" + data[obj]["descripcion"] + "</br>" + data[obj]["nivel"] + "</td>");
                 $(fila).append(opt);
             }
             $("#tablaMatrizRiesgos2").append(fila);
