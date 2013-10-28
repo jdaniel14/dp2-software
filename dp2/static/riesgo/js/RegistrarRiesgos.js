@@ -183,10 +183,41 @@ function main(){
 		});
 	});
 
+//Funcion para confirmar los riesgos seleccionados con el checkbox
+
+	$("#confirmarRiesgo").click( function(){
+		var arreglo = [];
+    	$('#tablaRiesgosGlobal input[type="checkbox"]:checked').each(function(){
+	        var $row = $(this).parents('tr'); 
+	        arreglo.push($row.find('td:eq(13) input').val()); //cambiar aca si se editan las filas
+    	});
+    	var data = {
+    		lista: arreglo,
+    		idProyecto : idProyectoLocal
+    	};
+    	console.log(data);
+		var jsonData = JSON.stringify(data);
+		// $.ajax({
+		// 	type: 'POST',
+		// 	url: addList,
+		// 	data: jsonData,
+		// 	dataType: "json",
+		// 	success: function(data){
+		// 		var item = data;
+		// 		alert("Se agregaron exitosamente los " + item.length + " riesgos");
+		// 		listarRiesgos();
+		// 		$('#myModalRegister').modal('hide');
+		// 	},
+		// 	fail: function(data){
+		// 		alert(data.me);
+		// 	}
+		// });
+	});
 
 
 	$("#registrarRiesgo").click( function(){
 		limpiarImpacto();
+		limpiarConfirmar();
 		$('#nomRiesgo').val('');
 		$('#paqEdt').val(0);
 		$('#tipoImpacto').val(0);
@@ -435,6 +466,7 @@ function listarRiesgos(){
 		dataType: "json",
 		success: function(data){
 			var lista = data;
+			// limpiarConfirmar();
 			agregaDataFila(data);
 			$(".glyphicon.glyphicon-edit").click( function(){
 				var id = $(this).closest("tr").attr("id");
@@ -492,6 +524,17 @@ function limpiarImpacto(){
 	$('#impRiesgo').append("<option value=\"0\" disabled selected>Escoge un nivel de impacto</option>");
 	$('#impRiesgoM').append("<option value=\"0\" disabled selected>Escoge un nivel de impacto</option>");
 }
+
+function limpiarConfirmar(){
+	$('#tablaRiesgosComunes input[type="checkbox"]:checked').each(function(){
+	        $('input[type="checkbox"]').attr('checked', false);
+
+	        // var $row = $(this).parents('tr'); 
+	        // $row.find('td:eq(13) input').val()); //cambiar aca si se editan las filas
+	
+    	});
+}
+
 function listarRiesgosComunes(){
 		
 	$.ajax({
@@ -541,9 +584,9 @@ function agregaFilaRiesgo(arreglo,i){
 	if (arreglo.severidad==null){
 		arreglo.severidad='-';
 	}
-	if (arreglo.accionesEspecificas==null){
-		arreglo.accionesEspecificas='-';
-	}
+	// if (arreglo.accionesEspecificas==null){
+	// 	arreglo.accionesEspecificas='-';
+	// }
 	if (arreglo.tipoRiesgo==null){
 		arreglo.tipoRiesgo='-';
 	} else if (arreglo.tipoRiesgo==0){
@@ -583,13 +626,14 @@ function agregaFilaRiesgo(arreglo,i){
 							  "</td><td>" + arreglo.nivelImpactoDescripcion + 
 							  "</td><td>" + arreglo.probabilidadDescripcion +
 							  "</td><td>" + arreglo.severidad +
-							  "</td><td>" + arreglo.accionesEspecificas +
+							  // "</td><td>" + arreglo.accionesEspecificas +
 							  "</td><td>" + arreglo.costoPotencial +
 							  "</td><td>" + arreglo.demoraPotencial +
 							  "</td><td>" + arreglo.nombreResponsable + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
-							  "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
+							  // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
+							  "</td><td align=\"center\"><input type=\"checkbox\" value=\""+arreglo.idRiesgoProyecto+"\">"+
 							  "</td></tr>");
 	
 }
@@ -1121,7 +1165,7 @@ function validarRegistro(data, caso){
 			}
 		}
 		if (data.idEmpleado==0){
-			data.idContacto=null;
+			data.idEmpleado=null;
 			flag=false;
 			$('#errorResponsable').fadeIn('slow');
 		}
@@ -1169,8 +1213,8 @@ function validarRegistro(data, caso){
 			}
 		}
 
-		if (data.idContacto==0){
-			data.idContacto=null;
+		if (data.idEmpleado==0){
+			data.idEmpleado=null;
 			flag=false;
 			$('#errorResponsableM').fadeIn('slow');
 		}
