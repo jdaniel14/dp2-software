@@ -4,34 +4,24 @@
 
 	//Riesgo
 	$app->post('/R_registrarRiesgo', 'R_postRegistrarRiesgo');//Registrar un riesgo
-
-	$app->get('/R_listaRiesgo/:var', 'R_getListaRiesgo');
 	$app->get('/R_obtenerRiesgo/:id', 'R_getRiesgo');//Obtener 1 riesgo
+	$app->put('/R_modificarRiesgo/:id','R_updateRiesgo');
+	$app->get('/R_listaRiesgo/:var', 'R_getListaRiesgo');
 	$app->get('/R_listaPaquetesEDT/:id', 'R_getListaPaquetesEDT');//Obtener los paquetes de un proyecto
-	$app->get('/R_listaNivelesImpacto/:id', 'R_getListaNivelesImpacto');//Obtener la lista de niveles de impacto
-	
-
-	//Actualizando Sprint 1
-	//$app->get('/R_obtenerNivelImpactoTipoImpacto1/:var', 'R_getNivelImpactoTipoImpacto1');
+	//$app->get('/R_listaNivelesImpacto/:id', 'R_getListaNivelesImpacto');//Obtener la lista de niveles de impacto
 	$app->get('/R_obtenerNivelImpactoTipoImpacto1/:var', 'R_getNivelImpactoTipoImpacto1');
 	$app->get('/R_obtenerNivelImpactoTipoImpacto2/:var', 'R_getNivelImpactoTipoImpacto2');
 	$app->get('/R_obtenerProbabilidadRiesgo/:var', 'R_getProbabilidadRiesgo');
 	$app->get('/R_obtenerDescripcionNivelImpactoTipoImpacto/:var', 'R_getDescripcionNivelImpactoTipoImpacto');
-
-
 	$app->get('/R_obtenerEstadoLogicoRiesgo/:id', 'R_getEstadoLogicoRiesgo');
-	$app->delete('/R_eliminarFisicoRiesgo/:id', 'R_deleteFisicoRiesgo');
-	$app->put('/R_eliminarLogicoRiesgo/:id', 'R_deleteLogicoRiesgo');
-
 	$app->put('/R_confirmarRiesgo/:id', 'R_setConfirmarRiesgo');
+	$app->put('/R_confirmarRiesgos/:id', 'R_setConfirmarRiesgos');
+	$app->put('/R_eliminarLogicoRiesgo/:id', 'R_deleteLogicoRiesgo');
+	$app->delete('/R_eliminarFisicoRiesgo:id', 'R_deleteFisicoRiesgo');
 
-
-	$app->put('/R_modificarRiesgo/:id','R_updateRiesgo');
-
-	
 
 	//Registrar configuracion 
-	$app->post('/R_registrarConfiguracionProyecto', 'R_postRegistrarConfiguracionProyecto');//Registrar configuracion
+	//$app->post('/R_registrarConfiguracionProyecto', 'R_postRegistrarConfiguracionProyecto');//Registrar configuracion
 
 	//Listar Riesgos Comunes
 	$app->get('/R_listarRiesgoComun', 'R_getListaRiesgoComun');//Obtener la lista de riesgos comunes
@@ -50,8 +40,6 @@
 	$app->get('/R_listaHeadersImpactoRiesgo/:id', 'R_getListaHeadersImpactoRiesgo');
 	$app->delete('/R_eliminarTodosTipoImpactoXNivelImpacto/:id','R_deleteTipoImpactoxNivelImpacto');
 	
-
-
 	//Equipo Riesgo
 	
 	$app->post('/R_registrarComiteRiesgo', 'R_postRegistrarComiteRiesgo');
