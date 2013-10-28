@@ -10,7 +10,11 @@ body {
   width: 270px;
 }
 .titulo-tabla {
+  
   font-size: 13px;
+}
+th {
+  text-align: center;
 }
 .cuerpo-tabla {
   font-size: 11px;
