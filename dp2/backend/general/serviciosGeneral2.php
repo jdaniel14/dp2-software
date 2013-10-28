@@ -201,8 +201,11 @@ function G_postAsignarRecProy() {
     $l_rrhhxpr = $body->l_rrhhxpr;
     try {
         for ($i = 0; $i < count($l_rrhhxpr); $i++) {
-            $idr = $l_rrhhxpr[$i]->idr;
-            $costo = $l_rrhhxpr[$i]->costo;
+            $idr = $l_rrhhxpr[$i]->idrec;
+            $prof_act = $l_rrhhxpr[$i]->prof_act;
+            $costo = $l_rrhhxpr[$i]->costohh;
+            $fi = $l_rrhhxpr[$i]->fi;
+            $ff = $l_rrhhxpr[$i]->ff;
 
             $db = getConnection();
             $query = "  SELECT count(*) as cantidad FROM MIEMBROS_EQUIPO where id_proyecto = :idproy and id_empleado = :idemp ";
@@ -216,27 +219,31 @@ function G_postAsignarRecProy() {
 
             if ($cantidad > 0) {
                 //UPDATE
-                $update = " UPDATE MIEMBROS_EQUIPO SET COSTO_EMPLEADO = :costo WHERE id_proyecto = :idproy and id_empleado = :idemp ";
+                $update = " UPDATE MIEMBROS_EQUIPO SET COSTO_EMPLEADO = :costo, id_profesion_actual = :prof_act WHERE id_proyecto = :idproy and id_empleado = :idemp ";
                 // $db = getConnection();
                 $stmt = $db->prepare($update);
                 $stmt->bindParam("costo", $costo);
+                $stmt->bindParam("prof_act", $prof_act);
                 $stmt->bindParam("idproy", $id_proy);
                 $stmt->bindParam("idemp", $idr);
                 $stmt->execute();
                 
             } else {
                 //INSERT
-                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO) values (:idproy, :idemp, :costo) ";
+                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act) ";
                 // $db = getConnection();
                 $stmt = $db->prepare($insert);
                 $stmt->bindParam("idproy", $id_proy);
                 $stmt->bindParam("idemp", $idr);
                 $stmt->bindParam("costo", $costo);
+                $stmt->bindParam("fi", $fi);
+                $stmt->bindParam("ff", $ff);
+                $stmt->bindParam("prof_act", $prof_act);
                 $stmt->execute();
             }
         }
          $db = null;
-         echo json_encode(array("me" => "Beleza"));
+         echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
