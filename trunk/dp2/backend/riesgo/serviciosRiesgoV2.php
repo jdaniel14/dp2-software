@@ -165,18 +165,18 @@
 
     }
 
-    //--------------------------------------CREAR MATRIZ--------------------------------------
+   //--------------------------------------CREAR MATRIZ--------------------------------------
 
     function R_getGenerarMatriz($idProyecto){
         //Nivel Impacto
-        $query = "SELECT nivel FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
         try{
             $arregloNivel= array();
             $db=getConnection();
             $stmt = $db->query($query);
             $stmt->bindParam("idProyecto", $idProyecto);
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $data= array("nivel" => $row['nivel']);
+                $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
                 array_push($arregloNivel,$data);
             }
             $db = null;
@@ -184,14 +184,14 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
         //Probabilidad Riesgo
-        $query = "SELECT nivel FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        $query = "SELECT nivel, descripcion FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
         try{
             $arregloProbabilidad= array();
             $db=getConnection();
             $stmt = $db->query($query);
             $stmt->bindParam("idProyecto", $idProyecto);
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $data= array("nivel" => $row['nivel']);
+                $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
                 array_push($arregloProbabilidad,$data);
             }
             $db = null;
@@ -202,11 +202,11 @@
         $arregloMatriz = array();
         foreach($arregloProbabilidad as $valorProb){
             $arregloLinea = array();
-            $data = array("valorProb" => ($valorProb['nivel']));
+            $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
             array_push($arregloLinea,$data);
             foreach($arregloNivel as $valorNivel){
                 $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
-                $data = array("valorImpacto" => $valorNivel['nivel'], "valorMult" => $valorMult);
+                $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "valorMult" => $valorMult);
                 array_push($arregloLinea,$data);
             }
             array_push($arregloMatriz, $arregloLinea);
