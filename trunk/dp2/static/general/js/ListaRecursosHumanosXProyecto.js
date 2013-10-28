@@ -49,7 +49,7 @@ $(document).ready(function(){
     				id_proy : id_proyecto,
     				l_rrhhxpr : lista_recursos
     			};
-    			//console.log(JSON.stringify(envio));
+    			console.log(JSON.stringify(envio));
     			//console.log("listo para envio");
     			grabarRecursos(envio);
 			}
