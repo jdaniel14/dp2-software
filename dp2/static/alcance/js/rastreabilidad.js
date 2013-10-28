@@ -58,17 +58,145 @@ function llena_requisitos1( data, dataestado ){
 		var idmiembros =  data[i].idmiembros;
 		var nombre =  data[i].nombre;
 		var apellido =  data[i].apellido;
+
 		var tr = armaTr(idrequisito, desc, fecha, solicitado, cargo, fundamento, idprioridadR, idestadoR, entregable, criterioAceptacion,idmiembros, nombre, apellido )
 		//var tr = armaTr(idrequisito, desc, fecha, solicitado, "",idprioridadR, idestadoR, entregable, criterioAceptacion, nombre, apellido )
 		
 		html += tr;
 		//console.log(tr);
 	}
+
+
 	$("#progressTickets").hide("slow");
 	$("#dataTickets").html( html );
+	listeners();
 
 }
 
+
+function listeners(){
+
+	function dameTR( data ){
+	//{"idMiembro":"3","nombre":"Alucion","apellido":"Montoya","telefono":"673273","email":"el@gmail.com"}]
+	//console.log("result", data, arrm.length);
+     var arrm = data.ar_miembro;
+     var i = 0;
+     var html= "";
+     for ( i = 0; i < arrm.length; i++ ){
+     		html += armaTrModal(arrm[i]);
+     }                   	
+	return html;
+}
+
+	function armaTrModal( data ){
+		var idmiembro = data.idMiembro;
+		var nombre = data.nombre;
+		var apellido = data.apellido;
+		var telefono = data.telefono;
+		var email = data.email;
+
+		var tr = "<tr>";
+		//tr += '<td>' + cmbestado + '</td>';
+
+		tr += '<td> <input name="group1" type = "radio" value = "'+ idmiembro+ '"> </td>';
+		
+		tr += '<td>' + nombre + '</td>';
+		tr += '<td>' + apellido + '</td>';
+		tr += '<td>' + telefono + '</td>';
+
+		tr += '<td>' + email + '</td>';
+		tr += '</tr>';
+		return tr;
+	}
+
+
+
+
+	console.log('rebind functions');
+	$(".buscarMiembro").click(function(){
+			console.log("sape");
+			$('#myModal').modal('show');
+
+			console.log($(this).parent().parent()[0].id);
+			var idre = $(this).parent().parent()[0].id.split('-')[1];
+			console.log(idre);
+			localStorage.setItem("currentRequisito", idre );
+	});
+
+	$("#buscarModal").click(function(){
+			console.log("saa");
+			//{"idproyecto":1,"nombre":"Lu","apellido":"Mo"}.va
+			$("#progressUsers").show("slow");
+			var nombre = $("#inputNombreModal").val();
+			var app = $("#inputApeModal").val();
+
+			var jsonCliente = {
+                     idproyecto : localStorage.getItem("idProyecto"),
+                     nombre : nombre,
+                     apellido: app              
+                  };
+			$.ajax({
+                      type: "POST",
+                      data: JSON.stringify(jsonCliente),
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                      url: "../../api/AL_buscarMiembro",
+                      success: function (data) {
+                          	console.log("serv", data );
+                          	$("#progressUsers").hide("slow");
+                          	var sape = dameTR(data);
+                          	console.log(sape);
+                          	$("#dataUsersModal").html(sape);
+                      }
+ 			});
+ 			
+
+			return false;
+	})
+
+	$("#guardarModal").click(function(){
+			//guar
+
+			console.log("guardando");
+			var idescogido = $("[name=group1]").val();
+			console.log("guardando", idescogido);
+
+
+			var jsonCliente = {
+                     id_requisito : idrequisito,
+                     desc : desc,
+                     fecha: "2013-06-15",
+                     solicitado : "Jose martin",
+                     cargo : "Gerente",
+                     idprioridadR: idprioridadR,
+                     idestadoR : idestadoR,
+                     entregable : entregable,
+                     criterioAceptacion : criterioAceptacion,
+                     idmiembros :     idescogido          
+                  };
+			$.ajax({
+                      type: "POST",
+                      data: JSON.stringify(jsonCliente),
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                      url: "../../api/AL_buscarMiembro",
+                      success: function (data) {
+                          	console.log("serv", data );
+                          	$("#progressUsers").hide("slow");
+                          	var sape = dameTR(data);
+                          	console.log(sape);
+                          	$("#dataUsersModal").html(sape);
+                      }
+ 			});
+
+ 			return false;
+			
+	});
+
+	
+
+	//{"idproyecto":1,"nombre":"Lu","apellido":"Mo"}
+}
 
 
  function arma_cmb (  estado, idestado ){
@@ -153,7 +281,7 @@ function armaTr(idrequisito, desc, fecha, solicitado, cargo, fundamento, idprior
 	//var tr = armaTr(idrequisito, desc, solicitado, cargo, fundamento, idprioridadR, idestadoR, entregable, criterioAceptacion,idmiembros, nombre, apellido )
 	console.log(idrequisito, desc, solicitado, cargo, fundamento, idprioridadR, idestadoR, entregable, criterioAceptacion,idmiembros, nombre, apellido );
 	
-	var tr = "<tr>";
+	var tr = '<tr id = "requisito-' + idrequisito+'" >';
 	//tr += '<td>' + cmbestado + '</td>';
 	tr += '<td>' + idrequisito + '</td>';
 	tr += '<td>' + desc + '</td>';
@@ -168,6 +296,8 @@ function armaTr(idrequisito, desc, fecha, solicitado, cargo, fundamento, idprior
 	tr += '<td>' + entregable + '</td>';
 	tr += '<td>' +  criterioAceptacion + '</td>';
 	tr += '<td>' +  nombre + ' ' + apellido + '</td>';
+	tr += '<td> <button class = "buscarMiembro">   Buscar Miembro </button></td>';
+	
 	tr += '</tr>';
 	return tr;
 	
