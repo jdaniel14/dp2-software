@@ -200,8 +200,8 @@ function main(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'PUT',
-			url: confirmAllRisks,
-			data: jsonData,
+			url: confirmAllRisks + "/" + data,
+			// data: jsonData,
 			dataType: "json",
 			success: function(data){
 				var item = data;
