@@ -16,6 +16,7 @@ var getImpactLevel2 = "../../api/R_obtenerNivelImpactoTipoImpacto2";
 var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
 var getDescImpactLevelType = "../../api/R_obtenerDescripcionNivelImpactoTipoImpacto";
 var confirmRisk = "../../api/R_confirmarRiesgo";
+var confirmAllRisks = "../../api/R_confirmarRiesgos";
 
 $(document).ready(main);
 
@@ -197,21 +198,21 @@ function main(){
     	};
     	console.log(data);
 		var jsonData = JSON.stringify(data);
-		// $.ajax({
-		// 	type: 'POST',
-		// 	url: addList,
-		// 	data: jsonData,
-		// 	dataType: "json",
-		// 	success: function(data){
-		// 		var item = data;
-		// 		alert("Se agregaron exitosamente los " + item.length + " riesgos");
-		// 		listarRiesgos();
-		// 		$('#myModalRegister').modal('hide');
-		// 	},
-		// 	fail: function(data){
-		// 		alert(data.me);
-		// 	}
-		// });
+		$.ajax({
+			type: 'PUT',
+			url: confirmAllRisks,
+			data: jsonData,
+			dataType: "json",
+			success: function(data){
+				var item = data;
+				alert("Se agregaron exitosamente los " + item.length + " riesgos");
+				listarRiesgos();
+				$('#myModalRegister').modal('hide');
+			},
+			fail: function(data){
+				alert(data.me);
+			}
+		});
 	});
 
 
