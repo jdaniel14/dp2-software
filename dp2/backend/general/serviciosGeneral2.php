@@ -230,7 +230,7 @@ function G_postAsignarRecProy() {
                 
             } else {
                 //INSERT
-                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act) ";
+                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual, estado, id_rol) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act, 1, 3) ";
                 // $db = getConnection();
                 $stmt = $db->prepare($insert);
                 $stmt->bindParam("idproy", $id_proy);
