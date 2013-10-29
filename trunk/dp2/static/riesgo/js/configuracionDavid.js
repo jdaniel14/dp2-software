@@ -293,8 +293,15 @@ function main(){
 
 /*---------------------------------FIN ELIMINAR UN NIVEL IMPACTO-------------------------------------------*/
 
-
-
+/*-------------------------LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR IMPACTOS----------------------------------*/
+$("#btnModalAgregarNivelImpacto").click(function(){
+		$("#errorPesoImpacto").hide();
+		$("#numeroPesoImpacto").val("");
+		$("#errorDescripcionImpacto").hide();
+		$("#descripcionImpacto").val("");
+		$("#errorPesoRegistrado").hide();
+	});
+/*-------------------------FIN LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR IMPACTOS----------------------------------*/
 
 /*-------------------------LIMPIAR Y VALIDACIONES DEL MODAL AGREGAR PROBABILIDADES----------------------------------*/
 
