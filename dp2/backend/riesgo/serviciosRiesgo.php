@@ -385,14 +385,14 @@
     function R_setConfirmarRiesgos($var){
         //$request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($var);
-        //echo $riesgolista;
-        echo $riesgolista->idproyecto;
-        //echo $riesgolista->lista;
+        
+        echo $riesgolista->{"idproyecto"};
+        
+        $listaIdRiesgo = $riesgolista->{"lista"};
         //$db = getConnection();
         
-        
-        //foreach ($riesgolista->lista as $idRiesgoXProyecto){
-          //  echo $idRiesgoXProyecto->id;
+        foreach ($listaIdRiesgo as $row){
+            echo $row->{"id"};
             /*$query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
             try {
                 
@@ -406,7 +406,7 @@
             }
 
             */
-        //}
+        }
         
         echo 'Se confirmo los riesgos';
     }
