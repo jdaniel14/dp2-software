@@ -382,13 +382,18 @@
 
     }
 
-    function R_setConfirmarRiesgos($riesgolista){
-        $request = \Slim\Slim::getInstance()->request();
-        $db = getConnection();
-        echo $riesgolista;
+    function R_setConfirmarRiesgos($var){
+        //$request = \Slim\Slim::getInstance()->request();
+        $riesgolista = json_decode($var);
+        //echo $riesgolista;
+        echo $riesgolista->idproyecto;
+        //echo $riesgolista->lista;
+        //$db = getConnection();
         
-        foreach ($riesgolista->lista as $idRiesgoXProyecto){
-            $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        
+        //foreach ($riesgolista->lista as $idRiesgoXProyecto){
+          //  echo $idRiesgoXProyecto->id;
+            /*$query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
             try {
                 
                 $stmt = $db->prepare($query);
@@ -400,8 +405,8 @@
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
 
-
-        }
+            */
+        //}
         
         echo 'Se confirmo los riesgos';
     }

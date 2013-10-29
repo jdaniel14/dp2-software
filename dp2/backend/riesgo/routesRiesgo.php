@@ -15,7 +15,7 @@
 	$app->get('/R_obtenerDescripcionNivelImpactoTipoImpacto/:var', 'R_getDescripcionNivelImpactoTipoImpacto');
 	$app->get('/R_obtenerEstadoLogicoRiesgo/:id', 'R_getEstadoLogicoRiesgo');
 	$app->put('/R_confirmarRiesgo/:id', 'R_setConfirmarRiesgo');
-	$app->put('/R_confirmarRiesgos/:id', 'R_setConfirmarRiesgos');
+	$app->put('/R_confirmarRiesgos/:var', 'R_setConfirmarRiesgos');
 	$app->put('/R_eliminarLogicoRiesgo/:id', 'R_deleteLogicoRiesgo');
 	$app->delete('/R_eliminarFisicoRiesgo:id', 'R_deleteFisicoRiesgo');
 
