@@ -15,6 +15,7 @@
     <string name="general_proyecto_fechainicio">Fecha Inicio</string>
     <string name="general_proyecto_fechafin">Fecha Fin</string>
     <string name="menu_proyectos">Proyectos</string>
+    <string name="menu_leccionesaprendidas">Lecciones aprendidas</string>
     <string name="indicadores_datepicker">AAAA-MM-DD</string>
     <string name="indicadores_seleccionar_fecha">Ingrese una fecha</string>
     <string name="indicadores_btnVerIndicadores">Cargar indicadores</string>
