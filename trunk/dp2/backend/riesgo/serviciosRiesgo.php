@@ -481,7 +481,7 @@
             $db = getConnection();
             $stmt = $db->query($sql);
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $arregloListaRiesgoComun= array("idRiesgoComun" => $row['id_riesgo_comun'], "nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad']);
+                $arregloListaRiesgoComun= array("idRiesgoComun" => $row['id_riesgo_comun'], "nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad'],"tipo" => $row['tipo']);
                 array_push($listaRiesgoComun,$arregloListaRiesgoComun);
             }
             $arregloListaRiesgoComun = $stmt->fetchAll();
@@ -504,8 +504,8 @@
             $stmt = $db->prepare($consulta);
             $stmt->execute();
             $row = $stmt->fetchObject();
-            $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad,estado,estado_logico) 
-                    VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad,1,1)";
+            $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad,estado,estado_logico,positivo_negativo) 
+                    VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad,1,1,:tipo)";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
@@ -515,6 +515,7 @@
                 $stmt->bindParam("impacto", $row->ult_impacto);
                 $stmt->bindParam("probabilidad", $row->ult_probabilidad);
                 $stmt->bindParam("severidad", $row->ult_severidad);
+                $stmt->bindParam("tipo", $row->tipo);
                 $stmt->execute();
                 $id = $db->lastInsertId();
                 $db = null;
