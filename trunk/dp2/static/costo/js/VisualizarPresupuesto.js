@@ -3,6 +3,7 @@ var codProyecto='1';
 var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
 iniciaProyecto();		
 iniciaPaquetes();
+obtenRecursos();
 
 //Funciones para obtener datos de AJAX
 
@@ -31,7 +32,6 @@ function obtenProyecto(){
 	var obj ={
 		idProyecto : idProyecto
 	}
-	
 	$.ajax({
 		type: 'GET',
 		url: rootURL + 'CO_obtenerInfoProyecto/'+JSON.stringify(obj),
@@ -40,20 +40,55 @@ function obtenProyecto(){
 		success:agregarDataProyecto	
 
 	});	
-	
-	//return arregloProyecto;
-
+}
+function obtenRecursos(){
+	var obj ={
+		idProyecto : idProyecto
+	}
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerCostoFijoRealProyecto/'+JSON.stringify(obj),		
+		dataType: "json",
+		async: true,
+		success:function(data){agregaDataFila(data);}
+	});
 }
 
 //Fin funciones para obtener datos de AJAX
 
 //Funciones para pasar los datos de ajax
+function agregaDataFila(data){
+	if (data!=null){
+		arreglo=data.lista;
+		for (i=0; i<arreglo.length;i++){
+			filaRecurso=arreglo[i];
+			if (filaRecurso.costoFijoTotal*1 == 0) continue;
+			agregaFilaconRecursos(i,filaRecurso.costoFijoTotal,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario, filaRecurso.moneda, filaRecurso.costoFijoDiario,filaRecurso.fechaInicio,filaRecurso.fechaFin);
+			numRecursos=i;
+		}
+	}
+}
 
+
+function agregaFilaconRecursos(i,costoFijoTotal,descripcion,unidadMedida,costoUnitario, moneda, costoFijoDiario,fechaInicio,fechaFin){
+var newdiv = '<div class="panel panel-default">'+
+'	  <div class="panel-heading">'+
+'	  <h4 class="panel-title">'+
+'	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#padreCostoFijo"+ href="#nodoCostoFijo'+i+'">'+descripcion+'</a> </h4></div>'+
+'	  <div id="nodoCostoFijo'+i+'" class="panel-collapse in" style="height: auto;">'+
+'	  <div class="panel-body"> '+
+'	  <div class="panel panel-default">'+ 'Costo fijo total: '+costoFijoTotal+' ' + moneda+'<br>' + costoFijoDiario + ' ' + moneda +
+' diario <br>' + 'Desde: ' + fechaInicio + ' Hasta: ' + fechaFin;
+'	  </div>'+
+'	  </div>'+
+'	  </div>'+
+'	  </div>';
+var oldHTML = $("#panelNodoCostosFijos").html();
+$("#panelNodoCostosFijos").html(oldHTML + newdiv);
+
+}
 function iniciaPaquetes(){
-	//limpiaTablaCuentaxActividad();
 	obtenPaquetes();
-	//creaDesplegable( arreglo );
-
 }
 function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 	var nombrePropio = nombrePadre+''+numeroHijo;
@@ -91,8 +126,6 @@ function creaDesplegable(data){
 function iniciaProyecto(){
 			
 	proyecto= obtenProyecto();
-	//agregaDatosProyecto( proyecto[0] , proyecto[1], proyecto[2] );
-
 }
 
 function agregarDataProyecto(proyecto){
@@ -134,3 +167,4 @@ function obtenerIdProyecto(){
 	return id;
 
 }
+
