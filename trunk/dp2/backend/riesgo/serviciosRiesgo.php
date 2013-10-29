@@ -386,9 +386,10 @@
         //$request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($var);
         
-        echo $riesgolista->{"idproyecto"};
-        
+        //echo $riesgolista->{"idproyecto"};
+
         $listaIdRiesgo = $riesgolista->{"lista"};
+        //echo $listaIdRiesgo;
         //$db = getConnection();
         
         foreach ($listaIdRiesgo as $row){
