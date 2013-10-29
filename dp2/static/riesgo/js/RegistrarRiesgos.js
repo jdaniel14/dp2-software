@@ -81,7 +81,6 @@ function main(){
 
 		limpiarRegistrar();
 
-		console.log(data);
 		if (validarRegistro(data,1)) {
 			var jsonData = JSON.stringify(data);
 			$.ajax({
@@ -135,7 +134,6 @@ function main(){
 
 		limpiarModificar();
 
-		console.log(data);
 		if (validarRegistro(data,2)) {
 			var jsonData = JSON.stringify(data);
 			$.ajax({
@@ -261,8 +259,6 @@ function main(){
 			idRiesgoProyecto : idArray
 		}
 		var jsonData = JSON.stringify(data);
-		console.log(data);
-		console.log(estadoLogico);
 		if (estadoLogico==1){
 			$.ajax({
 				type: 'DELETE',
@@ -350,7 +346,6 @@ function listarTiposImpacto() {
 		dataType: "json",
 		success: function(data){
 			listaTipos = data;
-			console.log(data);
 			agregarDataTiposImpacto(data);
 		},
 		fail: 
@@ -385,14 +380,12 @@ function obtenerRiesgo(id){
 			id_riesgo_x_proyecto: id
 		};
 		var jsonData = JSON.stringify(data);
-		console.log(jsonData);
 		$.ajax({
 			type: 'GET',
 			url: getItem + '/' + data.id_riesgo_x_proyecto,
 			data: jsonData,
 			dataType: "json",
 			success: function(data){
-				console.log(data);
 				var item = data;
 				tipoImpacto=item.tipoImpacto;
 				$('#idRiesgoM').val(id);
@@ -695,7 +688,7 @@ $('#proRiesgo').change(
 					$('#idnivelProbabilidadRiesgo').val(obj.idProbabilidadRiesgo);
 					$('#nivelProbabilidadRiesgo').val(obj.nivel);
 					if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
-						console.log("Proba:"+$('#nivelProbabilidadRiesgo').val()+" Imp: "+$('#nivelImpactoRiesgo').val());
+						// console.log("Proba:"+$('#nivelProbabilidadRiesgo').val()+" Imp: "+$('#nivelImpactoRiesgo').val());
 			         	$('#svrRiesgo').val($('#nivelProbabilidadRiesgo').val()*$('#nivelImpactoRiesgo').val());
 			        }
 				},
@@ -727,7 +720,7 @@ $('#proRiesgoM').change(
 					$('#idnivelProbabilidadRiesgoM').val(obj.idProbabilidadRiesgo);
 					$('#nivelProbabilidadRiesgoM').val(obj.nivel);
 					if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
-						console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
+						// console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
 			         	$('#svrRiesgoM').val($('#nivelProbabilidadRiesgoM').val()*$('#nivelImpactoRiesgoM').val());
 			         }
 				},
@@ -765,7 +758,7 @@ $('#impRiesgo1').change(
 					$('#impRiesgo').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
 					$('#nivelImpactoRiesgo').val(obj.nivel);
 					if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
-						console.log("Proba:"+$('#nivelProbabilidadRiesgo').val()+" Imp: "+$('#nivelImpactoRiesgo').val());
+						// console.log("Proba:"+$('#nivelProbabilidadRiesgo').val()+" Imp: "+$('#nivelImpactoRiesgo').val());
 			         	$('#svrRiesgo').val($('#nivelProbabilidadRiesgo').val()*$('#nivelImpactoRiesgo').val());
 			         }
 				},
@@ -786,10 +779,9 @@ $('#impRiesgo1M').change(
     	if ($('#impRiesgo1M').val()!=0) {
 	     	var data = {
 	     		idProyecto:idProyectoLocal,
-	     		idNivelImpacto:$('#impRiesgo1M').val(),
+	     		valor:$('#impRiesgo1M').val(),
 	     		idTipoImpacto: $('#tipoImpactoM').val()
 	     	}
-	     	console.log(data);
 	     	var jsonData = JSON.stringify(data);
 			$.ajax({
 				type: 'GET',
@@ -799,7 +791,7 @@ $('#impRiesgo1M').change(
 					$('#impRiesgoM').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
 					$('#nivelImpactoRiesgoM').val(obj.nivel);
 					if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
-						console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
+						// console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
 			         	$('#svrRiesgoM').val($('#nivelProbabilidadRiesgoM').val()*$('#nivelImpactoRiesgoM').val());
 			         }
 				},
@@ -831,7 +823,7 @@ $('#impRiesgo2').change(
 					$('#impRiesgo').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
 					$('#nivelImpactoRiesgo').val(obj.nivel);
 					if (($('#proRiesgo').val() != 0) && ($('#impRiesgo').val()!=0)){
-						console.log("Proba:"+$('#nivelProbabilidadRiesgo').val()+" Imp: "+$('#nivelImpactoRiesgo').val());
+						// console.log("Proba:"+$('#nivelProbabilidadRiesgo').val()+" Imp: "+$('#nivelImpactoRiesgo').val());
 			         	$('#svrRiesgo').val($('#nivelProbabilidadRiesgo').val()*$('#nivelImpactoRiesgo').val());
 			         }
 				},
@@ -863,7 +855,7 @@ $('#impRiesgo2M').change(
 					$('#impRiesgoM').append("<option value="+ obj.idNivelImpacto +" selected>" + obj.descripcion + "</option>");
 					$('#nivelImpactoRiesgoM').val(obj.nivel);
 					if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
-						console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
+						// console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
 			         	$('#svrRiesgoM').val($('#nivelProbabilidadRiesgoM').val()*$('#nivelImpactoRiesgoM').val());
 			         }
 				},
@@ -932,7 +924,7 @@ $('#tipoImpactoM').change(
 function cargarImpactoEstimado2(impacto) {
     	var idTipoImpactoLocal;
     	if ($('#tipoImpactoM').val()!=0){
-			console.log(listaTipos);
+			// console.log(listaTipos);
 			$.each(listaTipos, function (index){
 				if (this.idTipo==$('#tipoImpactoM').val()){
 					tipoImpacto=this.formas;
@@ -966,7 +958,7 @@ function listarTipoXNivelImpacto(idTipoImpactoLocal,tipo,impacto){
 			idTipoImpacto: idTipoImpactoLocal,
 			idProyecto: idProyectoLocal
 		};
-		console.log(data);
+		// console.log(data);
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'GET',                
@@ -1064,7 +1056,7 @@ function listarTiposImpacto(){
 		dataType: "json",
 		success: function(data){
 			listaTipos = data;
-			console.log(data);
+			// console.log(data);
 			agregarDataTiposImpacto(data);
 		},
 		fail: 
@@ -1250,7 +1242,6 @@ function validarRegistro(data, caso){
 					}
 			}	
 		}
-		console.log(data.costoPotencial);
 		if (data.costoPotencial==''){
 				data.costoPotencial=null;
 		} else {
@@ -1259,7 +1250,6 @@ function validarRegistro(data, caso){
 				 $('#errorCostoM').fadeIn('slow');
 			}
 		}
-		console.log(data.demoraPotencial);
 		if (data.demoraPotencial==''){
 			data.demoraPotencial=null;
 		} else {
