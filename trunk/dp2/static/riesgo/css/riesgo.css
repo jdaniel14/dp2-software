@@ -9,13 +9,19 @@ body {
 .input-xlarge {
   width: 270px;
 }
+.riesgos-titulo-tabla {
+  
+  font-size: 13px;
+}
+.riesgos-titulo-tabla th {
+  text-align: center;
+}
+
 .titulo-tabla {
   
   font-size: 13px;
 }
-th {
-  text-align: center;
-}
+
 .cuerpo-tabla {
   font-size: 11px;
 }
