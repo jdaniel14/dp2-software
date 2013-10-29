@@ -163,7 +163,7 @@ function main(){
     		lista: arreglo,
     		idProyecto : idProyectoLocal
     	};
-
+    	console.log(data);
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'POST',
@@ -193,6 +193,7 @@ function main(){
 	        	arreglo.push($row.find('td:eq(13) input').val()); //cambiar aca si se editan las filas
 	        }
     	});
+
     	var data = {
     		lista: arreglo,
     		idProyecto : idProyectoLocal
