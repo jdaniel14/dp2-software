@@ -263,18 +263,18 @@
 		$VAC = CO_obtenerVAC($BAC, $EAC) . "";
 		$TCPI = CO_obtenerTCPI($BAC, $EV, $EAC, $AC) . "";
 
-		array_push($indicadores, new CO_Indicador("PV", $PV));
-		array_push($indicadores, new CO_Indicador("EV", $EV));
-		array_push($indicadores, new CO_Indicador("AC", $AC));
-		array_push($indicadores, new CO_Indicador("CV", $CV));
-		array_push($indicadores, new CO_Indicador("CPI", $CPI));
-		array_push($indicadores, new CO_Indicador("SPI", $SPI));
-		array_push($indicadores, new CO_Indicador("SV", $SV));
-		array_push($indicadores, new CO_Indicador("BAC", $BAC));
-		array_push($indicadores, new CO_Indicador("EAC", $EAC));
-		array_push($indicadores, new CO_Indicador("ETC", $ETC));
-		array_push($indicadores, new CO_Indicador("VAC", $VAC));
-		array_push($indicadores, new CO_Indicador("TCPI", $TCPI));
+		array_push($indicadores, new CO_Indicador("PV", $PV, "Planned Value"));
+		array_push($indicadores, new CO_Indicador("EV", $EV, "Earned Value"));
+		array_push($indicadores, new CO_Indicador("AC", $AC, "Actual Cost"));
+		array_push($indicadores, new CO_Indicador("CV", $CV, "Cost Variance"));
+		array_push($indicadores, new CO_Indicador("CPI", $CPI, "Cost Performance Indicator"));
+		array_push($indicadores, new CO_Indicador("SPI", $SPI, "Schedule Performance Indicator"));
+		array_push($indicadores, new CO_Indicador("SV", $SV, "Schedule Variance"));
+		array_push($indicadores, new CO_Indicador("BAC", $BAC, "Budget At Completion"));
+		array_push($indicadores, new CO_Indicador("EAC", $EAC, "Estimate At Completion"));
+		array_push($indicadores, new CO_Indicador("ETC", $ETC, "Estimate To Complete"));
+		array_push($indicadores, new CO_Indicador("VAC", $VAC, "Variance At Completion"));
+		array_push($indicadores, new CO_Indicador("TCPI", $TCPI, "To Complete Cost Performance Indicator"));
 
 		return $indicadores;
 	}
