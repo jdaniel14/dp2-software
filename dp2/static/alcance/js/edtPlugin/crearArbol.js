@@ -79,7 +79,8 @@ $("#inputAgregarHijo").click(function(){
                     var tiempo = $("#inputTiempo1").val();
                     
                     var mensaje = valida (title,  desc,  tiempo );
-                    if (mensaje == null ){
+                    console.log ( "validador", mensaje );
+                    if ( mensaje ){
                       console.log("Hijo validado");
                       agregaNodoEdt(title,desc,tiempo);
                       
@@ -143,8 +144,49 @@ $("#inputAgregarHijo").click(function(){
 
 repaintEdit();
 
-function valida ( title, desc, tiempo ){
-        return null;
+function valida ( title, desc, time ){
+
+      $("#inputValidacionError").hide("slow");
+      console.log("items valida: ", title, desc, time);
+      var flag = true;
+      if ( title == "" ){
+          console.log("title vacio");
+          $("#inputValidacionError").html("Ingrese Titulo");
+          $("#inputValidacionError").show("slow");
+          flag = false;
+      }
+      if ( desc == "" ){
+          console.log("desc vacio");
+          $("#inputValidacionError").html("Ingrese descripcion");
+          $("#inputValidacionError").show("slow");
+          flag = false;
+      }
+      if ( time == "" ){
+         console.log("time vacio");
+         $("#inputValidacionError").html("Ingrese Tiempo en dias (numero)");
+          $("#inputValidacionError").show("slow");
+         flag = false;
+      }else{
+         if ( isNumber( time ) ){
+            if ( time > 0 ) {
+              console.log("numero valido ");
+            }else{
+              console.log("numero invalido");
+              $("#inputValidacionError").html("NO, número negativo");
+              $("#inputValidacionError").show("slow");
+              flag = false;
+            }
+            
+           // $("#inputValidacionError").html("Ingrese Titulo");
+          //$("#inputValidacionError").show();
+         }else{
+            console.log("numero invalido");
+            $("#inputValidacionError").html("Número Inválido");
+            $("#inputValidacionError").show("slow");
+            flag = false;
+         }
+      }
+      return flag;
 }
 
 $("#inputEliminarHijo").click(function(){
@@ -188,13 +230,15 @@ $("#inputModificar").click(function(){
                       var title = "#title-"+idmodificado;
                       var desc = "#descripcion-"+idmodificado;
                       var time = "#tiempo-"+idmodificado;
+                      var mensaje = validaItems( $("#inputTitulo1").val() , $("#inputDescripcion1").val(), $("#inputTiempo1").val() );  
+                      console.log ("modifica flag", mensaje );
 
-                      validaItems( $("#inputTitulo1").val() , $("#inputDescripcion1").val(), $("#inputTiempo1").val() );
-
-                      if ( validaItems ){
+                      if ( mensaje  == true )
+                      {
                           $(title).html($("#inputTitulo1").val());
                           $(desc).html($("#inputDescripcion1").val());
                           $(time).html($("#inputTiempo1").val());
+
                       }
 
                      
@@ -224,6 +268,7 @@ function validaItems( title, desc, time ){
           console.log("title vacio");
           $("#inputValidacionError").html("Ingrese Titulo");
           $("#inputValidacionError").show("slow");
+          flag = false;
       }
       if ( desc == "" ){
           console.log("desc vacio");
@@ -244,6 +289,7 @@ function validaItems( title, desc, time ){
               console.log("numero invalido");
               $("#inputValidacionError").html("NO, número negativo");
               $("#inputValidacionError").show("slow");
+              flag = false;
             }
             
            // $("#inputValidacionError").html("Ingrese Titulo");
@@ -252,9 +298,10 @@ function validaItems( title, desc, time ){
             console.log("numero invalido");
             $("#inputValidacionError").html("Número Inválido");
             $("#inputValidacionError").show("slow");
+            flag = false;
          }
       }
-      return true;
+      return flag;
 }
  
  /*
