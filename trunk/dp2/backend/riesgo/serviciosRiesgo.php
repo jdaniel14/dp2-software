@@ -383,32 +383,22 @@
     }
 
     function R_setConfirmarRiesgos($var){
-        //$request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($var);
-        
-        //echo $riesgolista->{"idproyecto"};
-
-        $listaIdRiesgo = $riesgolista->{"lista"};
-        //echo $listaIdRiesgo;
-        //$db = getConnection();
-        
-        foreach ($listaIdRiesgo as $row){
-            echo $row->{"id"};
-            /*$query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        $db = getConnection();
+        foreach ($riesgolista->lista as $riesgo){
+            echo $riesgo;
+            $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
             try {
                 
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo);
                 $stmt->execute();
-                $db = null;
-                
             } catch(PDOException $e) {
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-
-            */
-        }
-        
+            
+        }        
+        $db = null;
         echo 'Se confirmo los riesgos';
     }
 
