@@ -25,6 +25,7 @@ public class CostosIndicadoresChartActivity extends Activity implements Loadinga
 	private static FuelChart chart;
 	
 	private String nombreIndicador = "";
+	private String titulo = "";
 	private String idProyecto = "";
 	private String fecha = "";
 	//private List<Result> valores;
@@ -38,11 +39,12 @@ public class CostosIndicadoresChartActivity extends Activity implements Loadinga
 		super.onCreate(savedInstanceState);
 		
 		nombreIndicador = getIntent().getExtras().getString("nombreIndicador");
+		titulo = getIntent().getExtras().getString("titulo");
 		fecha = getIntent().getExtras().getString("fecha");
 		idProyecto = getIntent().getExtras().getString("idProyecto");
-		setTitle(nombreIndicador);
+		setTitle(titulo);
 		
-		chart = new FuelChart(nombreIndicador, fecha);
+		chart = new FuelChart(titulo, fecha);
 		
 		graphicalView = chart.getView(this, new ArrayList<HistorialIndicadorBean>());
 		graphicalView.setOnClickListener(new View.OnClickListener() {
