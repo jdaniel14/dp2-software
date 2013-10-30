@@ -66,7 +66,7 @@ function CR_getDependencias($json) {//servicio6
     //echo 6;
     $arreglo_critico = hallar_arreglo_ids_cmp($arreglo_actividades_final);
     //echo 7;
-    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico);
+    $listaDependencias = CR_obteneListaDependenciaProyecto($proy->idProyecto, $arreglo_critico,$arreglo_actividades_final);
 
     echo json_encode($listaDependencias);
     //echo json_encode($arreglo_actividades_sucesores);
@@ -1107,7 +1107,7 @@ function hallar_arreglo_ids_cmp($listaActividades_criticas) {
     //Console.Write("\n\n         Total duration: {0}\n\n", list[list.Length - 1].Eet);
 }
 
-function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//simil con lo hardcodeado ATP
+function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arreglo_actividades_final) {//simil con lo hardcodeado ATP
     $listaDependencias = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta 6,
     
@@ -1133,7 +1133,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
         $sql=$sql."union (select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', ".$g_1."), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', ".$g.")) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) ";
         }
         
-        $sql=$sql.") b left join (select  a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc) c on c.numero_fila=b.numero_filas) d  where d.id_proyecto=? and d.eliminado=0  group by d.id_actividad order by d.fecha_plan_inicio asc";
+        $sql=$sql.") b left join (select  a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) c on c.numero_fila=b.numero_filas) d  where d.id_proyecto=? and d.eliminado=0  group by d.id_actividad order by d.fecha_plan_inicio asc,d.fecha_plan_fin desc";
 
         
         
@@ -1143,6 +1143,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
         $tem_bloque = "";
         $numbloque = -1;
         $p = 0;
+        $ind=1;
         //$lista_jp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
             if ($p == 0) {
@@ -1200,10 +1201,11 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico) {//sim
 				
 				
 					$listaMapeoNumeroFilas["".$j["numero_fila"]] = "".$j["id_actividad"];
-					
-	
-                $rec = array("id_actividad" => $j["id_actividad"],"numero_fila" => $j["numero_fila"], "nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores_id" => $j["predecesores"],/*"predecesores_id_real"*/ "predecesores"=> ($j["predecesores_id_concatenado"].""), "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
+                                        
+                           
+                $rec = array("id_actividad" => $j["id_actividad"],"numero_fila" => $j["numero_fila"], "est" => $arreglo_actividades_final[$ind]->est,"lst" =>$arreglo_actividades_final[$ind]->lst,"eet" =>$arreglo_actividades_final[$ind]->eet,"let" =>$arreglo_actividades_final[$ind]->let,"nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores_id" => $j["predecesores"],/*"predecesores_id_real"*/ "predecesores"=> ($j["predecesores_id_concatenado"].""), "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
                 array_push($listaDependencias, $rec);
+                $ind++;
             }
         }
 		//$listaDependencias=CR_obtenerArregloActividades($listaDependencias,$listaMapeoNumeroFilas);
