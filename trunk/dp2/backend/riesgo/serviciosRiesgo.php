@@ -386,7 +386,6 @@
         $riesgolista = json_decode($var);
         $db = getConnection();
         foreach ($riesgolista->lista as $riesgo){
-            echo $riesgo;
             $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
             try {
                 $stmt = $db->prepare($query);
