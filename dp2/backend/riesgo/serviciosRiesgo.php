@@ -389,7 +389,6 @@
             echo $riesgo;
             $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
             try {
-                
                 $stmt = $db->prepare($query);
                 $stmt->bindParam("id_riesgo_x_proyecto", $riesgo);
                 $stmt->execute();
