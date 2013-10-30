@@ -19,10 +19,17 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
 public class FuelChart {
+	
+	public static final int TEXT_SIZE_XHDPI = 24;
+	public static final int TEXT_SIZE_HDPI = 20;
+	public static final int TEXT_SIZE_MDPI = 18;
+	public static final int TEXT_SIZE_LDPI = 13;
+	
 	private String nombreIndicador = "";
 	private String fecha = "";
 	
@@ -59,11 +66,11 @@ public class FuelChart {
 		
 		
 		
-		int[] colors = new int[] { Color.GREEN };
+		int[] colors = new int[] { Color.RED };
 		PointStyle[] styles = new PointStyle[] { PointStyle.POINT};
 		
 		if (results.size() > 1) {
-			colors = new int[] { Color.GREEN, Color.BLUE, Color.MAGENTA };
+			colors = new int[] { Color.RED, Color.BLUE, Color.MAGENTA };
 			styles = new PointStyle[] { PointStyle.POINT, PointStyle.TRIANGLE, PointStyle.SQUARE};
 		}
 		
@@ -71,12 +78,12 @@ public class FuelChart {
 
 		
 
-		setChartSettings(renderer,
+		setChartSettings(context, renderer,
 				title, //titulo del chart
 				"Fecha (dd-mm-aaaa)", "Valor", //nombre del eje X, nombre del eje Y
 				fechaMin, fechaMax, //x minimo, x maximo
 				min, max, //y minimo, y maximo
-				Color.GRAY, Color.LTGRAY, Color.RED); //color de los ejes, color de los textos en los ejes, color del fondo del chart
+				Color.CYAN, Color.GREEN, Color.WHITE); //color de los ejes, color de los textos en los ejes, color del fondo del chart
 		
 		renderer.setXLabels(5);
 		renderer.setYLabels(10);
@@ -100,7 +107,7 @@ public class FuelChart {
 				buildDateDataset(title, results), renderer, DATE_FORMAT);
 	}
 
-	protected void setChartSettings(XYMultipleSeriesRenderer renderer,
+	protected void setChartSettings(Context context, XYMultipleSeriesRenderer renderer,
 			String title, String xTitle, String yTitle, double xMin,
 			double xMax, double yMin, double yMax, int axesColor,
 			int labelsColor, int backgroundColor) {
@@ -113,7 +120,34 @@ public class FuelChart {
 		renderer.setYAxisMax(yMax);
 		renderer.setAxesColor(axesColor);
 		renderer.setLabelsColor(labelsColor);
+		renderer.setApplyBackgroundColor(true);
+		renderer.setDisplayValues(true);
 		renderer.setBackgroundColor(backgroundColor);
+		renderer.setLabelsTextSize(21);
+		renderer.setChartValuesTextSize(20);
+//		switch (context.getResources().getDisplayMetrics().densityDpi) {
+//	        case DisplayMetrics.DENSITY_XHIGH:
+//	                renderer.setMargins(new int[] { 40, 90, 25, 10 });
+//	                renderer.setAxisTitleTextSize(TEXT_SIZE_XHDPI);
+//	                renderer.setChartTitleTextSize(TEXT_SIZE_XHDPI);
+//	                renderer.setLabelsTextSize(TEXT_SIZE_XHDPI);
+//	                renderer.setLegendTextSize(TEXT_SIZE_XHDPI);
+//	                break;
+//	        case DisplayMetrics.DENSITY_HIGH:
+//	                renderer.setMargins(new int[] { 30, 50, 20, 10 });
+//	                renderer.setAxisTitleTextSize(TEXT_SIZE_HDPI);
+//	                renderer.setChartTitleTextSize(TEXT_SIZE_HDPI);
+//	                renderer.setLabelsTextSize(TEXT_SIZE_HDPI);
+//	                renderer.setLegendTextSize(TEXT_SIZE_HDPI);
+//	                break;
+//	        default:
+//	                renderer.setMargins(new int[] { 30, 50, 20, 10 });
+//	                renderer.setAxisTitleTextSize(TEXT_SIZE_LDPI);
+//	                renderer.setChartTitleTextSize(TEXT_SIZE_LDPI);
+//	                renderer.setLabelsTextSize(TEXT_SIZE_LDPI);
+//	                renderer.setLegendTextSize(TEXT_SIZE_LDPI);
+//	                break;
+//	    }
 	}
 
 	protected XYMultipleSeriesRenderer buildRenderer(int[] colors,

@@ -9,6 +9,7 @@ import org.achartengine.model.SeriesSelection;
 
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
+import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.costos.controller.IndicadoresController;
 import com.dp2.gproyectos.costos.entities.FuelChart;
 import com.dp2.gproyectos.costos.entities.HIndicador;
@@ -17,8 +18,11 @@ import com.dp2.gproyectos.costos.entities.Result;
 import com.dp2.gproyectos.utils.MensajesUtility;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 public class CostosIndicadoresChartActivity extends Activity implements Loadingable {
@@ -44,9 +48,14 @@ public class CostosIndicadoresChartActivity extends Activity implements Loadinga
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		setTitle(titulo);
 		
+		setContentView(R.layout.costos_historial_indicadores_layout);
+		findViewById(R.id.historialIndicadoresLayout).setBackgroundColor(Color.WHITE);
+		LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
+		
 		chart = new FuelChart(titulo, fecha);
 		
 		graphicalView = chart.getView(this, new ArrayList<HistorialIndicadorBean>());
+		graphicalView.setBackgroundColor(Color.WHITE);
 		graphicalView.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	            // handle the click event on the chart
@@ -65,7 +74,9 @@ public class CostosIndicadoresChartActivity extends Activity implements Loadinga
 	          }
 	        });
 		
-		setContentView(graphicalView);
+		layout.addView(graphicalView, new LayoutParams
+				(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		//setContentView(graphicalView);
 		
 		try {
 			new LoadTaskDialog(CostosIndicadoresChartActivity.this, MensajesUtility.INFO_CARGANDO).execute();
