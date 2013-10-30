@@ -166,6 +166,15 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 					IndicadorBean indicador = indicadores.get(position);
 					
 					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
+					String titulo = "";
+					if ((indicador.nombre.compareToIgnoreCase("pv") == 0) || (indicador.nombre.compareToIgnoreCase("ev") == 0) || (indicador.nombre.compareToIgnoreCase("ac") == 0)) {
+						titulo = "PV, EV, AC";
+					} else if ((indicador.nombre.compareToIgnoreCase("bac") == 0) || (indicador.nombre.compareToIgnoreCase("EAC") == 0) || (indicador.nombre.compareToIgnoreCase("ETC") == 0)) {
+						titulo = "BAC, EAC, ETC";
+						
+					} else
+						titulo = indicador.nombre;
+					i.putExtra("titulo", titulo);
 					i.putExtra("nombreIndicador", indicador.nombre);
 					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
 					i.putExtra("idProyecto", idProyecto);
@@ -296,12 +305,13 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 					IndicadorBean indicador = indicadores.get(position);
 				
 					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
-					String nombre = "";
+					String titulo = "";
 					if ((indicador.nombre.compareToIgnoreCase("pv") == 0) || (indicador.nombre.compareToIgnoreCase("ev") == 0) || (indicador.nombre.compareToIgnoreCase("ac") == 0))
-						nombre = "PV, EV, AC";
+						titulo = "PV, EV, AC";
 					else 
-						nombre = indicador.nombre;
-					i.putExtra("nombreIndicador", nombre);
+						titulo = indicador.nombre;
+					i.putExtra("titulo", titulo);
+					i.putExtra("nombreIndicador", indicador.nombre);
 					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
 					i.putExtra("idProyecto", idProyecto);
 					overridePendingTransition(0, 0);
