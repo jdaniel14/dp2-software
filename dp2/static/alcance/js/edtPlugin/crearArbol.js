@@ -238,7 +238,14 @@ function validaItems( title, desc, time ){
          flag = false;
       }else{
          if ( isNumber( time ) ){
-            console.log("numero valido ");
+            if ( time > 0 ) {
+              console.log("numero valido ");
+            }else{
+              console.log("numero invalido");
+              $("#inputValidacionError").html("NO, número negativo");
+              $("#inputValidacionError").show("slow");
+            }
+            
            // $("#inputValidacionError").html("Ingrese Titulo");
           //$("#inputValidacionError").show();
          }else{
