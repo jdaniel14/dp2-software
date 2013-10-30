@@ -1672,70 +1672,67 @@
 				$ind->id = CO_AC;
 				$ind->nombre = "AC";
 				array_push($lista, $ind);
-			} else {
-				if (strcasecmp($indicador, "cv") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_CV;
-					$ind->nombre = "CV";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "cpi") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_CPI;
-					$ind->nombre = "CPI";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "spi") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_SPI;
-					$ind->nombre = "SPI";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "sv") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_SV;
-					$ind->nombre = "SV";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "BAC") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_BAC;
-					$ind->nombre = "BAC";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "eac") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_EAC;
-					$ind->nombre = "EAC";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "etc") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_ETC;
-					$ind->nombre = "ETC";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "vac") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_VAC;
-					$ind->nombre = "VAC";
-					array_push($lista, $ind);
-				}
-
-				if (strcasecmp($indicador, "tcpi") == 0) {
-					$ind = new stdClass();
-					$ind->id = CO_TCPI;
-					$ind->nombre = "TCPI";
-					array_push($lista, $ind);
-				}
 			}
+
+			if ((strcasecmp($indicador, "BAC") == 0) || (strcasecmp($indicador, "eac") == 0) || (strcasecmp($indicador, "etc") == 0)) {
+				$ind = new stdClass();
+				$ind->id = CO_BAC;
+				$ind->nombre = "BAC";
+				array_push($lista, $ind);
+
+				$ind = new stdClass();
+				$ind->id = CO_EAC;
+				$ind->nombre = "EAC";
+				array_push($lista, $ind);
+
+				$ind = new stdClass();
+				$ind->id = CO_ETC;
+				$ind->nombre = "ETC";
+				array_push($lista, $ind);
+			}
+			
+			if (strcasecmp($indicador, "cv") == 0) {
+				$ind = new stdClass();
+				$ind->id = CO_CV;
+				$ind->nombre = "CV";
+				array_push($lista, $ind);
+			}
+
+			if (strcasecmp($indicador, "cpi") == 0) {
+				$ind = new stdClass();
+				$ind->id = CO_CPI;
+				$ind->nombre = "CPI";
+				array_push($lista, $ind);
+			}
+
+			if (strcasecmp($indicador, "spi") == 0) {
+				$ind = new stdClass();
+				$ind->id = CO_SPI;
+				$ind->nombre = "SPI";
+				array_push($lista, $ind);
+			}
+
+			if (strcasecmp($indicador, "sv") == 0) {
+				$ind = new stdClass();
+				$ind->id = CO_SV;
+				$ind->nombre = "SV";
+				array_push($lista, $ind);
+			}
+
+			if (strcasecmp($indicador, "vac") == 0) {
+				$ind = new stdClass();
+				$ind->id = CO_VAC;
+				$ind->nombre = "VAC";
+				array_push($lista, $ind);
+			}
+
+			if (strcasecmp($indicador, "tcpi") == 0) {
+				$ind = new stdClass();
+				$ind->id = CO_TCPI;
+				$ind->nombre = "TCPI";
+				array_push($lista, $ind);
+			}
+			
 		}
 
 		return $lista;
