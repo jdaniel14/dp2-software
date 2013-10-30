@@ -168,10 +168,12 @@ class CO_AsientoContable {
 class CO_Indicador {
 	public $nombre;
 	public $valor;
+	public $nombreLargo;
 	
-	function __construct($nombre, $valor) {
+	function __construct($nombre, $valor, $nombreLargo) {
 		$this->nombre = $nombre;
 		$this->valor = $valor;
+		$this->nombreLargo = $nombreLargo;
 	}
 }
 
