@@ -56,7 +56,11 @@ public class LoadTaskDialog extends AsyncTask<Void, Integer, Void> {
 			}
 			pd.setCancelable(false);
 			pd.setMessage(message);
-			pd.show();
+			try {
+				pd.show();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

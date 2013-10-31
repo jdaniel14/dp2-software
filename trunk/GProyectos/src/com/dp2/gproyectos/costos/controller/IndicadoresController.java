@@ -82,8 +82,8 @@ public class IndicadoresController extends Controller {
 	}
 	
 	public static boolean isSpecial(IndicadorBean i) {
-		if (i.nombre.equalsIgnoreCase("CPI") || i.nombre.equalsIgnoreCase("SPI"))
-			return true;
+//		if (i.nombre.equalsIgnoreCase("CPI") || i.nombre.equalsIgnoreCase("SPI"))
+//			return true;
 		return false;
 	}
 	

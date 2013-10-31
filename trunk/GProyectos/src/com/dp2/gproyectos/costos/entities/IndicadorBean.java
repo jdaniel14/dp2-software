@@ -11,15 +11,18 @@ public class IndicadorBean implements Serializable {
 	public String nombre;
 	@SerializedName("valor")
 	public String valor;
+	@SerializedName("nombreLargo")
+	public String nombreLargo;
 	
 	public IndicadorBean() {
 		super();
 	}
 
-	public IndicadorBean(String nombre, String valor) {
+	public IndicadorBean(String nombre, String valor, String nombreLargo) {
 		super();
 		this.nombre = nombre;
 		this.valor = valor;
+		this.nombreLargo = nombreLargo;
 	}
 	
 }

@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -23,6 +21,9 @@ import android.widget.Toast;
 //import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.GProyectosConstants;
@@ -72,7 +73,7 @@ public class GeneralHomeProyectosListaActivity extends
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.general_home_proyectos_lista_layout);
 
@@ -163,7 +164,6 @@ public class GeneralHomeProyectosListaActivity extends
 						long id) {
 					if (position > 0) {
 						ProyectoBean proyecto = proyectos.get(position-1);
-						
 						Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
 						i.putExtra("idProyecto", proyecto.id);
 						i.putExtra("nombreProyecto", proyecto.nombre);
@@ -270,26 +270,29 @@ public class GeneralHomeProyectosListaActivity extends
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		menu.add(0, CONST_MENU_VERLECCIONES, 0,
-				"Ver lecciones").setIcon(
-				R.drawable.maleta);
-		menu.add(1, CONST_MENU_LOGOUT, 1,
-				"Logout").setIcon(
-				R.drawable.maleta);
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.menu_general_lista_proyectos, menu);
+		
+//		menu.add(0, CONST_MENU_VERLECCIONES, 0,
+//				"Ver lecciones").setIcon(
+//				R.drawable.maleta);
+//		menu.add(1, CONST_MENU_LOGOUT, 1,
+//				"Logout").setIcon(
+//				R.drawable.maleta);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case CONST_MENU_VERLECCIONES:
+		case R.id.menuGeneralListaProyectos_VerLeccionesAprendidas:
 			Log.v("XXX", "--------->Ver lecciones");
 			Intent intent = new Intent(GeneralHomeProyectosListaActivity.this, GeneralHomeLeccionesListaActivity.class);
 			overridePendingTransition(0, 0);
 			startActivityForResult(intent,1);
 			overridePendingTransition(0, 0);
 			break;
-		case CONST_MENU_LOGOUT:
+		case R.id.menuGeneralListaProyectos_Logout:
 			Log.v("XXX", "--------->Logout");
 			UsuarioController.getInstance().currentUser = null;
 			finish();

@@ -4,10 +4,9 @@ import java.util.Calendar;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,9 +15,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.gproyectos.R;
 
-public class CalendarioPruebaActivity extends FragmentActivity {
+public class CalendarioPruebaActivity extends SherlockFragmentActivity {
 
 	private Context context;
 	public Dialog dialog;
@@ -53,33 +53,33 @@ public class CalendarioPruebaActivity extends FragmentActivity {
 		//edtFecha.setText(estaVisita.getFechaVisita());
 	}
 
-	public static class DatePickerFragment extends DialogFragment implements
-			DatePickerDialog.OnDateSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-			// Create a new instance of DatePickerDialog and return it
-			DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
-					year, month, day);
-
-			return dialog;
-		}
-
-		public void onDateSet(DatePicker view, int year, int month, int day) {
-			// Do something with the date chosen by the user
-			month++;
-			edtFecha.setText(day + "/" + month + "/" + year);
-		}
-	}
+//	public static class DatePickerFragment extends DialogFragment implements
+//			DatePickerDialog.OnDateSetListener {
+//
+//		@Override
+//		public Dialog onCreateDialog(Bundle savedInstanceState) {
+//			// Use the current date as the default date in the picker
+//			final Calendar c = Calendar.getInstance();
+//			int year = c.get(Calendar.YEAR);
+//			int month = c.get(Calendar.MONTH);
+//			int day = c.get(Calendar.DAY_OF_MONTH);
+//			// Create a new instance of DatePickerDialog and return it
+//			DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
+//					year, month, day);
+//
+//			return dialog;
+//		}
+//
+//		public void onDateSet(DatePicker view, int year, int month, int day) {
+//			// Do something with the date chosen by the user
+//			month++;
+//			edtFecha.setText(day + "/" + month + "/" + year);
+//		}
+//	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		newFragment.show(((CalendarioPruebaActivity) context)
-				.getSupportFragmentManager(), "datePicker");
+//		DialogFragment newFragment = new DatePickerFragment();
+//		newFragment.show(((CalendarioPruebaActivity) context)
+//				.getSupportFragmentManager(), "datePicker");
 	}
 }

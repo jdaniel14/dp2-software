@@ -32,14 +32,16 @@ public class FuelChart {
 	
 	private String nombreIndicador = "";
 	private String fecha = "";
+	private String desripcion = "";
 	
 	//private static GraphicalView graphicalView;
 	
 	private static final String DATE_FORMAT = "dd-MM-yyyy";
 	
-	public FuelChart(String nombreIndicador, String fecha) {
+	public FuelChart(String nombreIndicador, String fecha, String descripcion) {
 		this.nombreIndicador = nombreIndicador;
 		this.fecha = fecha;
+		this.desripcion = descripcion;
 	}
 
 	public GraphicalView getView(final Context context, ArrayList<HistorialIndicadorBean> results) {
@@ -49,7 +51,7 @@ public class FuelChart {
 		long fechaMin, fechaMax;
 
 		if (results.size() > 0) {
-			title = "Valores hasta la fecha " + fecha;
+			title = desripcion;
 			max = HistorialIndicadorBean.getMaxValue(results);
 			min = HistorialIndicadorBean.getMinValue(results, max);
 			fechaMin = HistorialIndicadorBean.getMinDate(results);

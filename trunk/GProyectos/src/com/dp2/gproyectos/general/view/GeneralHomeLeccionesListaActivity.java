@@ -2,34 +2,24 @@ package com.dp2.gproyectos.general.view;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.GProyectosConstants;
 import com.dp2.gproyectos.R;
-import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
 import com.dp2.gproyectos.general.controller.LeccionController;
-import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.entities.LeccionBean;
-import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.view.adapter.LeccionAdapter;
-import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.VerticalBarraTituloActivity;
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -44,11 +34,8 @@ public class GeneralHomeLeccionesListaActivity extends
 	Spinner spnBuscar;
 	EditText edtBuscar;
 	ArrayAdapter<String> busquedaAdapter;
-	String[] items = new String[] { "Categoría"};
+	String[] items = new String[] { "Categorï¿½a"};
 	public static boolean primeraCarga = true;
-	
-	private static final int CONST_MENU_VERLECCIONES = 0;
-	private static final int CONST_MENU_LOGOUT= 1;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -67,7 +54,7 @@ public class GeneralHomeLeccionesListaActivity extends
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.general_home_lecciones_lista_layout);
 
@@ -147,7 +134,7 @@ public class GeneralHomeLeccionesListaActivity extends
 						LeccionBean leccion = lecciones.get(position-1);
 						
 						PopupMensaje popup = new PopupMensaje();
-						popup.dialog(GeneralHomeLeccionesListaActivity.this, "Lección :3", leccion);
+						popup.dialog(GeneralHomeLeccionesListaActivity.this, "Lecciï¿½n :3", leccion);
 					}
 				}
 			});
