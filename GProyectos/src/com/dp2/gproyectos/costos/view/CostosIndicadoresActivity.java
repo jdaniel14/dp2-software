@@ -2,26 +2,18 @@ package com.dp2.gproyectos.costos.view;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-
-import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.TimeChart;
-import org.achartengine.model.TimeSeries;
-import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.costos.controller.IndicadoresController;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
 import com.dp2.gproyectos.costos.view.adapter.IndicadorAdapter;
-import com.dp2.gproyectos.general.entities.ProyectoBean;
-import com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity;
-import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
+
 import com.dp2.gproyectos.utils.MensajesUtility;
 
 import android.app.DatePickerDialog;
@@ -30,7 +22,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -47,7 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CostosIndicadoresActivity extends FragmentActivity implements Loadingable {
+public class CostosIndicadoresActivity extends SherlockFragmentActivity implements Loadingable {
 	
 	
 	private String idProyecto;
@@ -139,7 +130,9 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		nombreProyecto = getIntent().getExtras().getString("nombreProyecto");
 		
-		this.setTitle(nombreProyecto);
+		getSherlock().getActionBar().setTitle(nombreProyecto);
+		getSherlock().getActionBar().setLogo(R.drawable.maleta);
+		//this.setTitle(nombreProyecto);
 		//this.getActionBar().setIcon(R.drawable.maleta);
 		
 		if (isIdProyectoValido()) {
@@ -167,15 +160,32 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 					
 					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
 					String titulo = "";
+					String descripcion = "";
 					if ((indicador.nombre.compareToIgnoreCase("pv") == 0) || (indicador.nombre.compareToIgnoreCase("ev") == 0) || (indicador.nombre.compareToIgnoreCase("ac") == 0)) {
 						titulo = "PV, EV, AC";
+						descripcion = "Planned Value, Earned Value, Actual Cost";
 					} else if ((indicador.nombre.compareToIgnoreCase("bac") == 0) || (indicador.nombre.compareToIgnoreCase("EAC") == 0) || (indicador.nombre.compareToIgnoreCase("ETC") == 0)) {
 						titulo = "BAC, EAC, ETC";
-						
-					} else
+						descripcion = "Budget At Completion, Estimate At Completion, Estimate To Complete";
+					} else {
 						titulo = indicador.nombre;
+						if (indicador.nombre.compareToIgnoreCase("cv") == 0) {
+							descripcion = "Cost Variance";
+						} else if (indicador.nombre.compareToIgnoreCase("cpi") == 0) {
+							descripcion = "Cost Performance Indicator";
+						} else if (indicador.nombre.compareToIgnoreCase("spi") == 0) {
+							descripcion = "Schedule Performance Indicator";
+						} else if (indicador.nombre.compareToIgnoreCase("sv") == 0) {
+							descripcion = "Schedule Variance";
+						} else if (indicador.nombre.compareToIgnoreCase("vac") == 0) {
+							descripcion = "Variance At Completion";
+						} else if (indicador.nombre.compareToIgnoreCase("tcpi") == 0) {
+							descripcion = "To Complete Cost Performance Indicator";
+						}
+					}
 					i.putExtra("titulo", titulo);
 					i.putExtra("nombreIndicador", indicador.nombre);
+					i.putExtra("descripcion", descripcion);
 					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
 					i.putExtra("idProyecto", idProyecto);
 					overridePendingTransition(0, 0);
@@ -306,12 +316,32 @@ public class CostosIndicadoresActivity extends FragmentActivity implements Loadi
 				
 					Intent i = new Intent(CostosIndicadoresActivity.this, CostosIndicadoresChartActivity.class);
 					String titulo = "";
-					if ((indicador.nombre.compareToIgnoreCase("pv") == 0) || (indicador.nombre.compareToIgnoreCase("ev") == 0) || (indicador.nombre.compareToIgnoreCase("ac") == 0))
+					String descripcion = "";
+					if ((indicador.nombre.compareToIgnoreCase("pv") == 0) || (indicador.nombre.compareToIgnoreCase("ev") == 0) || (indicador.nombre.compareToIgnoreCase("ac") == 0)) {
 						titulo = "PV, EV, AC";
-					else 
+						descripcion = "Planned Value, Earned Value, Actual Cost";
+					} else if ((indicador.nombre.compareToIgnoreCase("bac") == 0) || (indicador.nombre.compareToIgnoreCase("EAC") == 0) || (indicador.nombre.compareToIgnoreCase("ETC") == 0)) {
+						titulo = "BAC, EAC, ETC";
+						descripcion = "Budget At Completion, Estimate At Completion, Estimate To Complete";
+					} else {
 						titulo = indicador.nombre;
+						if (indicador.nombre.compareToIgnoreCase("cv") == 0) {
+							descripcion = "Cost Variance";
+						} else if (indicador.nombre.compareToIgnoreCase("cpi") == 0) {
+							descripcion = "Cost Performance Indicator";
+						} else if (indicador.nombre.compareToIgnoreCase("spi") == 0) {
+							descripcion = "Schedule Performance Indicator";
+						} else if (indicador.nombre.compareToIgnoreCase("sv") == 0) {
+							descripcion = "Schedule Variance";
+						} else if (indicador.nombre.compareToIgnoreCase("vac") == 0) {
+							descripcion = "Variance At Completion";
+						} else if (indicador.nombre.compareToIgnoreCase("tcpi") == 0) {
+							descripcion = "To Complete Cost Performance Indicator";
+						}
+					}
 					i.putExtra("titulo", titulo);
 					i.putExtra("nombreIndicador", indicador.nombre);
+					i.putExtra("descripcion", descripcion);
 					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
 					i.putExtra("idProyecto", idProyecto);
 					overridePendingTransition(0, 0);

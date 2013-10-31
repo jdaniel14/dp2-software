@@ -7,6 +7,7 @@ import java.util.List;
 import org.achartengine.GraphicalView;
 import org.achartengine.model.SeriesSelection;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
@@ -17,7 +18,6 @@ import com.dp2.gproyectos.costos.entities.HistorialIndicadorBean;
 import com.dp2.gproyectos.costos.entities.Result;
 import com.dp2.gproyectos.utils.MensajesUtility;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -25,13 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
-public class CostosIndicadoresChartActivity extends Activity implements Loadingable {
+public class CostosIndicadoresChartActivity extends SherlockActivity implements Loadingable {
 	private static FuelChart chart;
 	
 	private String nombreIndicador = "";
 	private String titulo = "";
 	private String idProyecto = "";
 	private String fecha = "";
+	private String descripcion = "";
 	//private List<Result> valores;
 	private ArrayList<HistorialIndicadorBean> historial;
 	private ArrayList<HIndicador> historial2;
@@ -46,13 +47,18 @@ public class CostosIndicadoresChartActivity extends Activity implements Loadinga
 		titulo = getIntent().getExtras().getString("titulo");
 		fecha = getIntent().getExtras().getString("fecha");
 		idProyecto = getIntent().getExtras().getString("idProyecto");
-		setTitle(titulo);
+
+		descripcion = getIntent().getExtras().getString("descripcion");
+		
+		getSherlock().getActionBar().setTitle(titulo);
+		getSherlock().getActionBar().setIcon(R.drawable.maleta);
+		getSherlock().getActionBar().setSubtitle(descripcion);
 		
 		setContentView(R.layout.costos_historial_indicadores_layout);
 		findViewById(R.id.historialIndicadoresLayout).setBackgroundColor(Color.WHITE);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
 		
-		chart = new FuelChart(titulo, fecha);
+		chart = new FuelChart(titulo, fecha, "Valores hasta la fecha " + fecha);
 		
 		graphicalView = chart.getView(this, new ArrayList<HistorialIndicadorBean>());
 		graphicalView.setBackgroundColor(Color.WHITE);

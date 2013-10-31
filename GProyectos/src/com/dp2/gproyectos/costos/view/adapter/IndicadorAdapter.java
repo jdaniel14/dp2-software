@@ -47,7 +47,7 @@ public class IndicadorAdapter extends ArrayAdapter<IndicadorBean> {
 		TextView txtValor = (TextView) nuevaVista.findViewById(R.id.txtCostosValorIndicador);
 		LinearLayout background = (LinearLayout) nuevaVista.findViewById(R.id.itemBackground);
 
-		txtNombre.setText(item.nombre);
+		txtNombre.setText(item.nombre + " (" + item.nombreLargo + ")");
 		txtValor.setText(new DecimalFormat("#.##").format(Double.valueOf(item.valor)));
 		background.setBackgroundColor(IndicadoresController.getColor(indicadores.get(position)));
 		

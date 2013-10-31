@@ -104,7 +104,7 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	public void afterLoadingData() {
 		if (usuario==null){
 			//mensaje de error
-			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesión. Reintente nuevamente.", Toast.LENGTH_LONG).show();
+			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesiï¿½n. Reintente nuevamente.", Toast.LENGTH_LONG).show();
 		}
 		else if (Long.parseLong(usuario.id) >0){
 			Intent intent = new Intent(GeneralLoginActivity.this, GeneralHomeProyectosListaActivity.class);

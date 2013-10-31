@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/menuGeneralListaProyectos_opciones"
+        android:showAsAction="always|collapseActionView"
+        android:icon="@android:drawable/ic_menu_more"
+        android:title="Más opciones"
+        android:titleCondensed="Más opciones">
+        <menu>
+	        <item
+	            android:id="@+id/menuGeneralListaProyectos_VerLeccionesAprendidas"
+	            android:icon="@android:drawable/ic_menu_agenda"
+	            android:title="Ver lecciones" />
+	        <item
+	            android:id="@+id/menuGeneralListaProyectos_Logout"
+	            android:icon="@android:drawable/ic_menu_set_as"
+	            android:title="Logout" />
+	    </menu>
+    </item>
+</menu>
