@@ -17,6 +17,7 @@ var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
 var getDescImpactLevelType = "../../api/R_obtenerDescripcionNivelImpactoTipoImpacto";
 var confirmRisk = "../../api/R_confirmarRiesgo";
 var confirmAllRisks = "../../api/R_confirmarRiesgos";
+var getProjectName = "../../api/G_listaRecursoxProyecto";
 
 $(document).ready(main);
 
@@ -43,6 +44,10 @@ function main(){
 	listarRiesgos();
 	listarRiesgosComunes();
 	listarTiposImpacto();
+	if (localStorage.getItem("idRiesgo")!=null){
+		obtenerRiesgo(localStorage.getItem("idRiesgo"));
+	}
+	obtenerTitulo();
 
 
 	$("#btnRegistrar").click( function(){
@@ -91,8 +96,9 @@ function main(){
 				success: function(data){
 					var item = data;
 					alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
-					listarRiesgos();
-					$('#myModalRegister').modal('hide');
+					// listarRiesgos();
+					// $('#myModalRegister').modal('hide');
+					window.location.replace("../riesgo/MostrarRiesgos.html");
 				},
 				fail: codigoError
 			});
@@ -144,8 +150,9 @@ function main(){
 				success: function(data){
 					var item = data;
 					alert("Se actualizó exitosamente el Riesgo ");
-					listarRiesgos();
-					$('#myModal').modal('hide');
+					// listarRiesgos();
+					// $('#myModal').modal('hide');
+					window.location.replace("../riesgo/MostrarRiesgos.html");
 				},
 				fail: codigoError
 			});
@@ -169,12 +176,13 @@ function main(){
 			type: 'POST',
 			url: addList,
 			data: jsonData,
-			dataType: "json",
+			// dataType: "json",
 			success: function(data){
 				var item = data;
-				alert("Se agregaron exitosamente los " + item.length + " riesgos");
-				listarRiesgos();
-				$('#myModalRegister').modal('hide');
+				alert("Se agregaron exitosamente");
+				// listarRiesgos();
+				// $('#myModalRegister').modal('hide');
+				window.location.replace("../riesgo/MostrarRiesgos.html");
 			},
 			fail: function(data){
 				alert(data.me);
@@ -202,12 +210,12 @@ function main(){
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'PUT',
-			url: confirmAllRisks,
-			data: jsonData,
-			dataType: "json",
+			url: confirmAllRisks + '/' + jsonData,
+			// data: jsonData,
+			// dataType: "json",
 			success: function(data){
 				var item = data;
-				alert("Se agregaron exitosamente los " + item.length + " riesgos");
+				alert(item);
 				listarRiesgos();
 				$('#myModalRegister').modal('hide');
 			},
@@ -376,55 +384,58 @@ function listarPaquetesTrabajo(){
 	});
 }
 function obtenerRiesgo(id){
-	
+	limpiarImpacto();
+	limpiarObtener();
+	limpiarModificar();
 	var data = {
 			id_riesgo_x_proyecto: id
 		};
-		var jsonData = JSON.stringify(data);
-		$.ajax({
-			type: 'GET',
-			url: getItem + '/' + data.id_riesgo_x_proyecto,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				var item = data;
-				tipoImpacto=item.tipoImpacto;
-				$('#idRiesgoM').val(id);
-				$('#nomRiesgoM').val(item.nombre);
-				if (item.paqueteTrabajo==null){
-					$('#paqEdtM').val(0);
-				} else $('#paqEdtM').val(item.paqueteTrabajo);
-				$('#tipoRiesgoM').val(item.tipoRiesgo);
-				if (item.idTipoImpacto!=null){
-					$('#tipoImpactoM').val(item.idTipoImpacto);
-				} else $('#tipoImpactoM').val(0);
-				if (item.tipoImpacto==1){
-					$('#RiesgoCaso1M').fadeIn('slow');
-					$('#RiesgoCaso2M').hide();
-					$('#impRiesgo1M').val(item.impacto);
-				} else if (item.tipoImpacto==2){
-					cargarImpactoEstimado2(item.impacto);
-					$('#RiesgoCaso2M').fadeIn('slow');
-					$('#RiesgoCaso1M').hide();
-				}
-				$('#nivelImpactoRiesgoM').val(item.nivelImpacto);
-				if (item.nivelImpactoDescripcion!= null){
-					$('#impRiesgoM').append("<option value="+ item.idNivelImpacto +" selected>" + item.nivelImpactoDescripcion + "</option>");
-				}
-				$('#proRiesgoM').val(item.probabilidad);
-				$('#idnivelProbabilidadRiesgoM').val(item.idProbabilidadRiesgo);
-				$('#descnivelProbabilidadRiesgoM').val(item.descProbabilidad);
-				$('#nivelProbabilidadRiesgoM').val(item.nivelProbabilidad);
-				$('#svrRiesgoM').val(item.severidad);
-				$('#accEspM').val(item.accionesEspecificas);
-				$('#costRiesgoM').val(item.costoPotencial);
-				$('#tiemRiesgoM').val(item.demoraPotencial);
-				if (item.idResponsable==null){
-					$('#equResM').val(0);
-				} else $('#equResM').val(item.idResponsable);
-			},
-			fail: codigoError
-		});
+	var jsonData = JSON.stringify(data);
+	$.ajax({
+		type: 'GET',
+		url: getItem + '/' + data.id_riesgo_x_proyecto,
+		data: jsonData,
+		dataType: "json",
+		success: function(data){
+			var item = data;
+			tipoImpacto=item.tipoImpacto;
+			$('#idRiesgoM').val(id);
+			$('#nomRiesgoM').val(item.nombre);
+			if (item.paqueteTrabajo==null){
+				$('#paqEdtM').val(0);
+			} else $('#paqEdtM').val(item.paqueteTrabajo);
+			$('#tipoRiesgoM').val(item.tipoRiesgo);
+			if (item.idTipoImpacto!=null){
+				$('#tipoImpactoM').val(item.idTipoImpacto);
+			} else $('#tipoImpactoM').val(0);
+			if (item.tipoImpacto==1){
+				$('#RiesgoCaso1M').fadeIn('slow');
+				$('#RiesgoCaso2M').hide();
+				$('#impRiesgo1M').val(item.impacto);
+			} else if (item.tipoImpacto==2){
+				cargarImpactoEstimado2(item.impacto);
+				$('#RiesgoCaso2M').fadeIn('slow');
+				$('#RiesgoCaso1M').hide();
+			}
+			$('#nivelImpactoRiesgoM').val(item.nivelImpacto);
+			if (item.nivelImpactoDescripcion!= null){
+				$('#impRiesgoM').append("<option value="+ item.idNivelImpacto +" selected>" + item.nivelImpactoDescripcion + "</option>");
+			}
+			$('#proRiesgoM').val(item.probabilidad);
+			$('#idnivelProbabilidadRiesgoM').val(item.idProbabilidadRiesgo);
+			$('#descnivelProbabilidadRiesgoM').val(item.descProbabilidad);
+			$('#nivelProbabilidadRiesgoM').val(item.nivelProbabilidad);
+			$('#svrRiesgoM').val(item.severidad);
+			$('#accEspM').val(item.accionesEspecificas);
+			$('#costRiesgoM').val(item.costoPotencial);
+			$('#tiemRiesgoM').val(item.demoraPotencial);
+			if (item.idResponsable==null){
+				$('#equResM').val(0);
+			} else $('#equResM').val(item.idResponsable);
+		},
+		fail: codigoError
+	});
+	localStorage.removeItem("idRiesgo");
 }
 
 function listarResponsable(){
@@ -468,10 +479,12 @@ function listarRiesgos(){
 			agregaDataFila(data);
 			$(".glyphicon.glyphicon-edit").click( function(){
 				var id = $(this).closest("tr").attr("id");
-				limpiarImpacto();
-				limpiarObtener();
-				limpiarModificar();
-				obtenerRiesgo(id);
+				// limpiarImpacto();
+				// limpiarObtener();
+				// limpiarModificar();
+				localStorage.setItem("idRiesgo",id);
+				window.location.href = "../riesgo/ModificarRiesgos.html";
+				// obtenerRiesgo(id);
 			});
 			$(".glyphicon.glyphicon-remove").click( function(){
 				var idRiesgoProyecto= $(this).closest("tr").attr("id");
@@ -628,7 +641,7 @@ function agregaFilaRiesgo(arreglo,i){
 							  "</td><td>" + arreglo.costoPotencial +
 							  "</td><td>" + arreglo.demoraPotencial +
 							  "</td><td>" + arreglo.nombreResponsable + 
-							  "</td><td><a data-toggle=\"modal\" href=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
+							  "</td><td><a href=\"#\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
 							  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
 							  // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
 							  "</td><td align=\"center\"><input type=\"checkbox\" value=\""+arreglo.idRiesgoProyecto+"\">"+
@@ -1263,3 +1276,14 @@ function validarRegistro(data, caso){
 	}
 		
 }
+function obtenerTitulo(){ 
+        $.ajax({
+          type: 'GET',
+          dataType: "json", // data type of response
+          contentType: "application/json; charset=utf-8",
+          url: getProjectName + '/' + idProyectoLocal,
+              success: function(data){
+                document.getElementsByTagName('h2')[0].innerHTML=data["nom_proy"];
+              }
+        });
+      }
