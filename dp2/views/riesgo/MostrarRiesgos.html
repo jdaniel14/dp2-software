@@ -17,6 +17,13 @@
           <script src="../../assets/js/html5shiv.js"></script>
           <script src="../../assets/js/respond.min.js"></script>
         <![endif]-->
+
+        <!-- Tablesorter: optional -->
+        <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+        <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+        <style>
+
+        </style>
     </head>
 
     <body>
@@ -24,7 +31,7 @@
 
         <div class="container">
             <div class="h1-title">
-                <h1>Mi Proyecto</h1>
+                <h2>Mi Proyecto</h2>
 
                 <!-- div class="col-lg-12">
                     <form class="well" action="#" method="get">
@@ -64,8 +71,8 @@
                 </div> -->
             </div>
             <div class="col-lg-12">
-                <table id="tablaRiesgosGlobal" class="table table-striped">
-                    <thead class="riesgos-titulo-tabla">
+                <table id="tablaRiesgosGlobal">
+                    <thead class="riesgos-titulo-tabla tablesorter - {bootstrap}">
                     <th>ID</th>
                     <th>Nombre de Riesgo</th>
                     <th>Paquete de EDT</th>
@@ -87,7 +94,7 @@
             </div>
             <div>
                 <div class="col-lg-2 pull-right">
-                <a data-toggle="modal" href="#myModalRegister" class="btn btn-success pull-right" id="registrarRiesgo">Agregar Riesgo</a>
+                <a href="../riesgo/RegistrarRiesgos.html" class="btn btn-success pull-right" id="registrarRiesgo">Agregar Riesgo</a>
                 </div>
                 <div class="col-lg-2 pull-right">
                     <a class="btn btn-primary pull-right" id="confirmarRiesgo">Confirmar Riesgos</a>
@@ -113,7 +120,7 @@
             </div>
 
             <!-- Modal Register -->
-            <div class="modal" id="myModalRegister">
+            <!-- <div class="modal" id="myModalRegister">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -137,7 +144,6 @@
                                             <div class="form-horizontal">
                                                 <h5><b>Ingrese los campos</b></h5>
                                                 <div class="form-group">
-                                                    <!--<label class="col-lg-2 control-label">Nombre de Riesgo</label>-->
                                                     <label class="col-lg-4 control-label">*Nombre de Riesgo</label>
                                                     <div class="col-lg-8">
                                                         <input type="text" class="form-control" id="nomRiesgo" placeholder="Nombre de Riesgo" maxlength="199">
@@ -147,7 +153,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <!--<label class="col-lg-2 control-label">Paquete de EDT</label>-->
                                                     <label class="col-lg-4 control-label">Paquete de EDT</label>
                                                     <div class="col-lg-8">
                                                         <select class="form-control" id="paqEdt">
@@ -314,9 +319,9 @@
                         <div class="modal-footer">
                             <button class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+                    </div>
+                </div>
+            </div>-->
 
             <!-- Modal Update -->
             <div class="modal" id="myModal">
@@ -503,6 +508,19 @@
         <script src="../../bootstrap/js/bootstrap.min.js"></script>
         <script src="../../static/riesgo/js/RegistrarRiesgos.js"></script>
         <script src="../../assets/js/header.js"></script>
+
+        <!-- Tablesorter: required for bootstrap -->
+        <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+        <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+        <!-- Tablesorter: optional -->
+        <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+        <!-- Tablesorter: Config bootstrap -->
+        <script src="../../tablesorter/js/config.js"></script>
+        
+        <!-- Tablesorter: Config filtros -->
+        <script src="../../tablesorter/js/filtros.js"></script>
 
     </body>
 </html>
