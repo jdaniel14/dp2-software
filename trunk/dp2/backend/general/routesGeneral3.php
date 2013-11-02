@@ -14,9 +14,12 @@ $app->get('/G_devuelveCostoPorProyecto/:id', 'G_consultarListaPaquetes');
 $app->post('/G_registrarSolicitudCambio', 'G_postRegistraSolicitud');
 $app->get('/G_listarSolicitudesCambio', 'G_getListaSolicitud');
 $app->post('/G_solicitudCambioAceptDeneg', 'G_postAceptDenegSolicitud');
+$app->get('/G_visualizarSolicituCambio/:id', 'G_getVisualizarSolicitud');
+
+//sprint 4
+$app->get('/G_listaProfesionRecurso', 'G_getProfesiones');
+$app->post('/G_registrarRecurso/:id', 'G_postRegistrarRecurso');
 
 //
 //servicios de gestion de cambios
-
-
 ?>
