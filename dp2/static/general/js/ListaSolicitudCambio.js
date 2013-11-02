@@ -71,7 +71,7 @@ function visualizaSolicitud(idProyecto,nombreProyecto){
 
 	$.ajax({
 		type: 'GET',
-		url: '../../api/G_visualizarSolicitudCambio' + idProyecto,
+		url: '../../api/G_visualizarSolicitudCambio/' + idProyecto,
 		dataType: "json", // data type of response
         success: function(data){
             for (obj in data){
