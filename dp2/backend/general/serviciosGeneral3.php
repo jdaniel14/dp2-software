@@ -519,13 +519,17 @@ function G_postAceptDenegSolicitud() {
 }
 
 function G_getVisualizarSolicitud($id){
-    $sql = " SELECT id_proyecto, flag_cambio FROM SOLICITUD_CAMBIO WHERE id_proyecto=%id_proy";
+    $sql = " SELECT id_proyecto, flag_cambio FROM SOLICITUD_CAMBIO WHERE id_proyecto=:id_proy";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $id);
         $stmt->execute();
 
+        $id="";
+        $flag_cambio="";
+        $descripcion="";
+        $justificacion="";
         if ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $j["id_proyecto"];
             $flag_cambio = $j["flag_cambio"];
