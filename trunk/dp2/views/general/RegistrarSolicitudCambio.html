@@ -23,6 +23,8 @@
   </head>
 
   <body>
+ 	<div id="header"></div>>
+
     <div class="container">
       <div class="starter-template">
 	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
@@ -35,9 +37,6 @@
 		<p>
 		<form class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
-			<label class="col-lg-6 control-label" for="general">General:</label>
-			<input class="form-control" type="checkbox" id="general" name="modulo">						
-
 			<label class="col-lg-6 control-label" for="alcance">Alcance:</label>
 			<input class="form-control" type="checkbox" id="alcance" name="modulo">
 
@@ -47,11 +46,11 @@
 			<label class="col-lg-6 control-label" for="costo">Costo:</label>
 			<input class="form-control" type="checkbox" id="costo" name="modulo">
 			
-			<label class="col-lg-6 control-label" for="riesgo">Riesgo:</label>
-			<input class="form-control" type="checkbox" id="riesgo" name="modulo">
-			
-			<label class="col-lg-6 control-label" for="motivo">Motivo:</label>
-			<textarea rows="4" cols="50" id="motivo"></textarea>
+			<label class="col-lg-6 control-label" for="motivo">Descripción:</label>
+			<textarea rows="4" cols="50" id="descripcion"></textarea>
+
+			<label class="col-lg-6 control-label" for="motivo">Justificación:</label>
+			<textarea rows="4" cols="50" id="justificacion"></textarea>			
 
 			<br><br>
 
@@ -89,5 +88,6 @@
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
   	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
   	<script src="../../static/general/js/RegistrarSolicitudCambio.js"></script>
+  	<script src="../../assets/js/header.js"></script>
   </body>
 </html>
