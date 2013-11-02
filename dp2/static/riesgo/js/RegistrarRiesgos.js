@@ -676,7 +676,7 @@ function grabarRiesgos(){
 
 $("#checkearTodos").change(
 	function(){
-		$('#tablaRiesgosComunes input[type="checkbox"]').each(function(){
+		$('#tablaRiesgos input[type="checkbox"]').each(function(){
 	        $('input[type="checkbox"]').attr('checked', true);
     	});
 	});
