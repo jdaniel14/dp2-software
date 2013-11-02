@@ -48,7 +48,7 @@
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
 
-        <div class="" id="ListaRecursos">
+        <div class="" id="ListaSolicitudesCambio">
           
         <form role="form" name="formListaSolicitudes">
 
@@ -102,7 +102,90 @@
 
         </form>   
       </div>  
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Solicitud de Cambio</h4>
+            </div>
+            <div class="modal-body">
+              <div id="busquedaRecursosDisponibles">
+                <form class="form-horizontal" role="form" action='' method="POST">
+                  <fieldset>
+                    
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label" for="nombreProyecto">Nombre del proyecto:</label>
+                      <div class="controls col-lg-6">
+                        <input class="form-control" type="text" id="nombreProyecto" name="nombreProyecto" readonly>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label" for="rubroCambio">Rubros de Cambio:</label>
+                      <div class="controls col-lg-6">
+                        <input class="form-control" type="text" id="rubroCambio" name="rubroCambio" readonly>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label" for="descripcion">Descripción:</label>
+                      <div class="controls col-lg-6">
+                        <textarea rows="4" cols="50" id="descripcion" name="descripcion" readonly></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label" for="justificacion">Justificación:</label>
+                      <div class="controls col-lg-6">
+                        <textarea rows="4" cols="50" id="justificacion" name="justificacion" readonly></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <!-- Fecha de Preparacion -->
+                      <label class="col-lg-4 control-label" for="ff">Fecha:</label>
+                      <div class="controls col-lg-6">
+                      <input class="form-control"type="date" id="ff" name="ff" placeholder="" class="input-xlarge" max=today readonly>
+                      <!--<p class="help-block">Please confirm password</p>-->
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  <div class="form-group">
+                    <div class="controls">
+                      <table width="100%">      
+                        <tr width="100%">
+                          <td width="50%" align="right">
+                            <button type="button" class="btn btn-primary" id="btnAceptar">
+                              Aceptar
+                            </button>
+                          </td>
+                          <td width="50%" align="left">
+                            <button type="button" class="btn btn-primary" id="btnDenegar">
+                              Denegar
+                            </button>
+                          </td>
+                        </tr>     
+                      </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->     
+
+
+
+
     </div><!-- /.container -->
+
+
+
+
 
 
     <!-- Bootstrap core JavaScript
