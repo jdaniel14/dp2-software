@@ -12,14 +12,14 @@ $(document).ready(function(){
 
     var idRol=localStorage.getItem("idRol");
     if(idRol==1){
-	var jqxhr = $.getJSON( "http://www.json-generator.com/j/bVXcbcHDZu?indent=4", function() {
+	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cvrpAzgmdK?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
 			    	$("#seguridadMenu").html(menu);
 			  })
      }else{
-         var jqxhr = $.getJSON( "http://www.json-generator.com/j/cghalrwIPm?indent=4", function() {
+         var jqxhr = $.getJSON( "http://www.json-generator.com/j/bOpjQIbsmW?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
