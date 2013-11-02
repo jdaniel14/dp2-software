@@ -527,10 +527,10 @@ function G_getVisualizarSolicitud($id){
         $stmt->execute();
 
         if ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $id => $j["id_proyecto"],
-                $flag_cambio => $j["flag_cambio"],
-                $descripcion => "descripcion",
-                $justificacion => "justificacion"
+            $id = $j["id_proyecto"];
+            $flag_cambio = $j["flag_cambio"];
+            $descripcion = "descripcion";
+            $justificacion = "justificacion";
         }
         $db = null;
         echo json_encode(array("id_proyecto" => $id, "flag_cambio" => $flag_cambio, "descripcion" => $descripcion, "justificacion" =>$justificacion));
