@@ -25,22 +25,11 @@
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
     <script src="../../assets/js/header.js"></script>
 
+    <!--Se obtiene el titulo del proyecto desde el localStorage-->
     <script>
-      var id=localStorage.getItem("idProyecto");
-
-      function obtenerTitulo(){ 
-        $.ajax({
-          type: 'GET',
-          dataType: "json", // data type of response
-          contentType: "application/json; charset=utf-8",
-          url: "../../api/G_listaRecursoxProyecto/" + id,
-              success: function(data){
-                document.getElementsByTagName('h1')[0].innerHTML=data["nom_proy"];
-              }
-        });
-      }
-
-      obtenerTitulo();
+      $(document).ready(function(){
+          document.getElementsByTagName('h1')[0].innerHTML=localStorage.getItem("nombreProyecto");
+      });
     </script>
 
   </head>
