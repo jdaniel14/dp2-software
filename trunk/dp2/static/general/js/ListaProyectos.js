@@ -3,6 +3,17 @@ var listaObjetivos = "../../api/G_listarObjetivosPorProyecto/";
 var listaCostos = "../../api/G_devuelveCostoPorProyecto/";
 var cerrarProyecto = "../../api/G_cerrarProyecto";
 var actualizarObjetivos = "../../api/G_actualizarCumpObjetivosPorProyecto";
+var idRol=localStorage.getItem("idRol");
+
+if(idRol==1){
+	rootURL = "../../api/G_listaProyecto";
+	alert('hola');
+
+}else{
+	rootURL = '../../api/G_listaProyecto/'+localStorage.getItem("idUsuario");
+	alert('hola1');
+}
+
 
 $(document).ready(function(){
 	iniciaProyectos();
@@ -13,7 +24,7 @@ function iniciaProyectos(){
         
 	$.ajax({
 		type: 'GET',
-		url: '../../api/G_listaProyecto/'+localStorage.getItem("idUsuario"),
+		url: rootURL,
 		dataType: "json", // data type of response
         success: function(data){                    
             agregaDataFila(data);
