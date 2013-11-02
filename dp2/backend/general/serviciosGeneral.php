@@ -115,14 +115,6 @@
                         $stmt->execute();		
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-				
-					/*$proj = array("id"=>utf8_encode($p["id_proyecto"]),
-                                                        "nom"=>utf8_encode( $p["nombre_proyecto"]),
-                                                        "jp"=>utf8_encode( $p["nombres"]),
-                                                        "tp"=>utf8_encode( $p["nombre_tipo_proyecto"]),
-                                                        "fi"=>utf8_encode( $p["fi"]),
-                                               	         "ff"=>utf8_encode($p["ff"]),
-                                                         "es"=>utf8_encode( "Ok"));*/
                                          $proj = array("id"=>$p["id_proyecto"],
                                                         "nom"=>$p["nombre_proyecto"],
                                                         "jp"=> $p["nombres"],
@@ -139,7 +131,51 @@
 			echo json_encode(array("prs"=>$lista_project)) ;
                         
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+                               echo json_encode(array("me"=> $e->getMessage()));
+                               
+		}
+	}
+
+	function G_getListaTodosProyecto(){
+
+
+		$sql = "SELECT P.id_proyecto, 
+                        P.nombre_proyecto, 
+                        CONCAT(E.nombres, ' ', E.apellidos) as nombres, 
+                        T.nombre_tipo_proyecto, 
+                        DATE(P.fecha_inicio_planificada) as fi, 
+                        DATE(P.fecha_fin_planificada) as ff,
+                        P.estado as es 
+                FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
+                WHERE P.id_proyecto = M.id_proyecto 
+                AND E.id_empleado = M.id_empleado 
+                AND M.id_rol=r.id_rol
+                and r.id_rol=2
+                AND P.id_tipo_proyecto = T.id_tipo_proyecto 
+                ORDER BY P.id_proyecto";
+		try {
+                        $db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam("id", $id);
+                        $stmt->execute();		
+			$lista_project = array();
+			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+                                         $proj = array("id"=>$p["id_proyecto"],
+                                                        "nom"=>$p["nombre_proyecto"],
+                                                        "jp"=> $p["nombres"],
+                                                        "tp"=> $p["nombre_tipo_proyecto"],
+                                                        "fi"=>$p["fi"],
+                                                        "ff"=>$p["ff"],
+                                                         "es"=>$p["es"]);
+                                        array_push($lista_project, $proj);
+
+                                        
+			}
+                        
+			$db = null;
+			echo json_encode(array("prs"=>$lista_project)) ;
+                        
+		} catch(PDOException $e) {
                                echo json_encode(array("me"=> $e->getMessage()));
                                
 		}
