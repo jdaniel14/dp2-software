@@ -454,12 +454,14 @@ function G_postRegistraSolicitud() {
 
         $id_proy = $solicitud->id_proy;
         $flag_cambio = $solicitud->flag_cambio;
-        $motivo = $solicitud->motivo;
-        $sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, motivo, estado) VALUES (:id_proy, :flag_cambio, :motivo, 1)";
+        $justificacion = $solicitud->justificacion;
+        $descripcion = $solicitud->descripcion;
+        //$sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, estado, justificacion, descripcion) VALUES (:id_proy, :flag_cambio, 1, :justificacion, :descripcion)";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $id_proy);
         $stmt->bindParam("flag_cambio", $flag_cambio);
-        $stmt->bindParam("motivo", $motivo);
+        //$stmt->bindParam("justificacion", $justificacion);
+        //$stmt->bindParam("descripcion", $descripcion);
         $stmt->execute();
 
         $db = null;
@@ -516,5 +518,25 @@ function G_postAceptDenegSolicitud() {
     }
 }
 
+function G_getVisualizarSolicitud($id){
+    $sql = " SELECT id_proyecto, flag_cambio FROM SOLICITUD_CAMBIO WHERE id_proyecto=%id_proy";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id_proy", $id);
+        $stmt->execute();
 
+        if ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $id => $j["id_proyecto"],
+                $flag_cambio => $j["flag_cambio"],
+                $descripcion => "descripcion",
+                $justificacion => "justificacion"
+        }
+        $db = null;
+        echo json_encode(array("id_proyecto" => $id, "flag_cambio" => $flag_cambio, "descripcion" => $descripcion, "justificacion" =>$justificacion));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }    
+
+}
 ?>
