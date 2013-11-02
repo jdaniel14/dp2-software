@@ -14,7 +14,7 @@ $app->get('/G_devuelveCostoPorProyecto/:id', 'G_consultarListaPaquetes');
 $app->post('/G_registrarSolicitudCambio', 'G_postRegistraSolicitud');
 $app->get('/G_listarSolicitudesCambio', 'G_getListaSolicitud');
 $app->post('/G_solicitudCambioAceptDeneg', 'G_postAceptDenegSolicitud');
-$app->get('/G_visualizarSolicituCambio/:id', 'G_getVisualizarSolicitud');
+$app->get('/G_visualizarSolicitudCambio/:id', 'G_getVisualizarSolicitud');
 
 //sprint 4
 //$app->get('/G_listaProfesionRecurso', 'G_getProfesiones');
