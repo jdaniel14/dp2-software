@@ -190,8 +190,8 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
     }
 }
 
+/* * ******************************************recuros humanos */
 
-/********************************************recuros humanos*/
 function G_postAsignarRecProy() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
@@ -227,7 +227,6 @@ function G_postAsignarRecProy() {
                 $stmt->bindParam("idproy", $id_proy);
                 $stmt->bindParam("idemp", $idr);
                 $stmt->execute();
-                
             } else {
                 //INSERT
                 $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual, estado, id_rol) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act, 1, 3) ";
@@ -242,8 +241,8 @@ function G_postAsignarRecProy() {
                 $stmt->execute();
             }
         }
-         $db = null;
-         echo json_encode(array("me" => ""));
+        $db = null;
+        echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
@@ -252,24 +251,24 @@ function G_postAsignarRecProy() {
 function G_getListarRecDisp() {
 
 
-        try {
-            $request = \Slim\Slim::getInstance()->request();
-	    $body = json_decode($request->getBody());
- 
-			$str1 = $body->fi;
-			$str2 = $body->ff;
-                        $fecha_Inicio = new DateTime($str1);
-                        $f_ini=$fecha_Inicio->format('Y-m-d');
-                        
-			$fecha_Fin = new DateTime($str2);
-                        $f_fin=$fecha_Fin->format('Y-m-d');
-                        
-            /*$sql = "SELECT M.id_empleado as id
-                      FROM MIEMBROS_EQUIPO M
-                      WHERE ( fecha_entrada <= DATE(NOW()) 
-                      AND DATE(NOW()) <= fecha_salida )";*/
+    try {
+        $request = \Slim\Slim::getInstance()->request();
+        $body = json_decode($request->getBody());
 
-            $sql="  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+        $str1 = $body->fi;
+        $str2 = $body->ff;
+        $fecha_Inicio = new DateTime($str1);
+        $f_ini = $fecha_Inicio->format('Y-m-d');
+
+        $fecha_Fin = new DateTime($str2);
+        $f_fin = $fecha_Fin->format('Y-m-d');
+
+        /* $sql = "SELECT M.id_empleado as id
+          FROM MIEMBROS_EQUIPO M
+          WHERE ( fecha_entrada <= DATE(NOW())
+          AND DATE(NOW()) <= fecha_salida )"; */
+
+        $sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
                     ACTIVIDAD A,
                     ACTIVIDAD_X_RECURSO AR,
@@ -285,103 +284,103 @@ function G_getListarRecDisp() {
                     AND A.FECHA_PLAN_FIN<=:FF
                     ";
 
-            $db = getConnection();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("FI", $f_ini);
-            $stmt->bindParam("FF", $f_fin);
-            $stmt->execute();
-            
-            
-            $lista_falsa = array();
-            while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $id = $j["id"];
-                $lista_falsa[$id] = true;
-            }
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("FI", $f_ini);
+        $stmt->bindParam("FF", $f_fin);
+        $stmt->execute();
 
-            $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, PR.DESCRIPCION as prof
+
+        $lista_falsa = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $id = $j["id"];
+            $lista_falsa[$id] = true;
+        }
+
+        $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, PR.DESCRIPCION as prof
                     FROM EMPLEADO E, PROFESION PR
                     WHERE PR.ID_PROFESION = E.ID_PROFESION";
-            $stmt = $db->query($sql);
-            $lista = array();
+        $stmt = $db->query($sql);
+        $lista = array();
 
-            while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $id = $j["id"];
-                if( ! array_key_exists($id, $lista_falsa) ){
-                    $lista[$id] = array("id"=>$j["id"],
-                                        "nom"=> $j["nom"],
-                                        "prof"=> $j["prof"]
-                            );
-                }
-            }
-            
-                        
-            /*$sql="SELECT A.ID_EMPLEADO AS id,A.NOMBRE_CORTO as nom,A.NOMBRE_ROL as rol, 100-A.POR AS porc_libre FROM (
-                    SELECT E.ID_EMPLEADO, E.NOMBRE_CORTO,M.ID_PROYECTO,R.NOMBRE_ROL,SUM(M.PORCENTAJE) AS POR
-                    FROM MIEMBROS_EQUIPO M,
-                    EMPLEADO E,
-                    ROL_EMPLEADO R
-                    WHERE  E.ID_EMPLEADO=M.ID_EMPLEADO
-                    GROUP BY E.ID_EMPLEADO)A WHERE A.POR<100 ";
-            $db = getConnection();
-            $stmt = $db->query($sql);
-            $lista = array();
-            while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $recurso = array(
-                    "id" => $j["id"],
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $id = $j["id"];
+            if (!array_key_exists($id, $lista_falsa)) {
+                $lista[$id] = array("id" => $j["id"],
                     "nom" => $j["nom"],
-                    "rol" => $j["rol"],
-                    "porc" => $j["porc_libre"]
+                    "prof" => $j["prof"]
                 );
-                array_push($lista, $recurso);
-            }*/
-            
-            $db = null;
-            echo json_encode(array("l_recurso" => array_values($lista)));
+            }
+        }
+
+
+        /* $sql="SELECT A.ID_EMPLEADO AS id,A.NOMBRE_CORTO as nom,A.NOMBRE_ROL as rol, 100-A.POR AS porc_libre FROM (
+          SELECT E.ID_EMPLEADO, E.NOMBRE_CORTO,M.ID_PROYECTO,R.NOMBRE_ROL,SUM(M.PORCENTAJE) AS POR
+          FROM MIEMBROS_EQUIPO M,
+          EMPLEADO E,
+          ROL_EMPLEADO R
+          WHERE  E.ID_EMPLEADO=M.ID_EMPLEADO
+          GROUP BY E.ID_EMPLEADO)A WHERE A.POR<100 ";
+          $db = getConnection();
+          $stmt = $db->query($sql);
+          $lista = array();
+          while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+          $recurso = array(
+          "id" => $j["id"],
+          "nom" => $j["nom"],
+          "rol" => $j["rol"],
+          "porc" => $j["porc_libre"]
+          );
+          array_push($lista, $recurso);
+          } */
+
+        $db = null;
+        echo json_encode(array("l_recurso" => array_values($lista)));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
 
-	function G_postListaTodosRecurso() {
-	    $request = \Slim\Slim::getInstance()->request();
-	    $body = json_decode($request->getBody());
- 
-			$str1 = $body->fechaIni;
-			$str2 = $body->fechaFin;
-			//echo json_encode(array($str1, $str2));
+function G_postListaTodosRecurso() {
+    $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
 
-			$fecha_Inicio_IN = strtotime($str1);
-			$fecha_Fin_IN = strtotime($str2);
-			//echo $fecha_Inicio_IN->format('Y-m-d')." ".$fecha_Fin_IN->format('Y-m-d')."<br>";
+    $str1 = $body->fechaIni;
+    $str2 = $body->fechaFin;
+    //echo json_encode(array($str1, $str2));
 
-			$interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
-			$num_dias = $interval/(60*60*24);
-			//echo $num_dias;
+    $fecha_Inicio_IN = strtotime($str1);
+    $fecha_Fin_IN = strtotime($str2);
+    //echo $fecha_Inicio_IN->format('Y-m-d')." ".$fecha_Fin_IN->format('Y-m-d')."<br>";
+
+    $interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
+    $num_dias = $interval / (60 * 60 * 24);
+    //echo $num_dias;
 //			echo $fecha_Inicio_IN." ".$fecha_Fin_IN. " ". $num_dias;
-			$sql_empleados = "SELECT * FROM EMPLEADO ORDER BY id_empleado";
-			$db = getConnection();
-		  $stmt = $db->query($sql_empleados);
+    $sql_empleados = "SELECT * FROM EMPLEADO ORDER BY id_empleado";
+    $db = getConnection();
+    $stmt = $db->query($sql_empleados);
 
-			$lista_empleados = array();
-			while ($emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
-				$empleado = array();
-		    $empleado["id_emp"] = $emp["id_empleado"];
-				$id = $empleado["id_emp"];
-		    $empleado["nom"] = $emp["NOMBRE_CORTO"];
-		    $empleado["rol"] = $emp["ID_ROL"];
-		    $empleado["detalle_dias"] = new SplFixedArray($num_dias+1);
-	      for ($i = 0; $i < $num_dias; $i++) {
-		        $empleado["detalle_dias"][$i] = 0;
-		    }
-				$lista_empleados[$id] = $empleado;
-			}
+    $lista_empleados = array();
+    while ($emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $empleado = array();
+        $empleado["id_emp"] = $emp["id_empleado"];
+        $id = $empleado["id_emp"];
+        $empleado["nom"] = $emp["NOMBRE_CORTO"];
+        $empleado["rol"] = $emp["ID_ROL"];
+        $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
+        for ($i = 0; $i < $num_dias; $i++) {
+            $empleado["detalle_dias"][$i] = 0;
+        }
+        $lista_empleados[$id] = $empleado;
+    }
 
-			$k = 0;
-			$size = count($lista_empleados);
-			while($k<$size){
+    $k = 0;
+    $size = count($lista_empleados);
+    while ($k < $size) {
 //	    	if (hayconexion(listaHab.ElementAt(k).idHabit, fechaIni, fechaFin)){
-	              
-		      $sql_proy_emp = "	SELECT A.ID_ACTIVIDAD,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+
+        $sql_proy_emp = "	SELECT A.ID_ACTIVIDAD,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
 														FROM 
 															MIEMBROS_EQUIPO M,
 															ACTIVIDAD A,
@@ -401,43 +400,42 @@ function G_getListarRecDisp() {
 														ORDER BY A.FECHA_PLAN_INICIO
 														";
 
-          $stmt = $db->prepare($sql_proy_emp);
-          $stmt->bindParam("id_emp", $lista_empleados[$k]["id_emp"]);
-          $stmt->bindParam("fecha_ini", $str1);
-          $stmt->bindParam("fecha_fin", $str2);
-					$stmt->execute();
+        $stmt = $db->prepare($sql_proy_emp);
+        $stmt->bindParam("id_emp", $lista_empleados[$k]["id_emp"]);
+        $stmt->bindParam("fecha_ini", $str1);
+        $stmt->bindParam("fecha_fin", $str2);
+        $stmt->execute();
 
-		      while ($proy_emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
-	          $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
-	          $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
-						//echo $proy_emp["ID_ACTIVIDAD"]." ".$fecha_Inicio." ".$fecha_Final."<br>";
-						$interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN)/(60*60*24);
+        while ($proy_emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
+            $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
+            //echo $proy_emp["ID_ACTIVIDAD"]." ".$fecha_Inicio." ".$fecha_Final."<br>";
+            $interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24);
 //						echo "interval1 ".$interval."<br>";
-						$a = $interval;
+            $a = $interval;
 
 //	          $dife = $fecha_Inicio_IN - $fecha_Inicio;
 //	          $a = Math.Abs(dife.Days);
-						$interval = (strtotime($fecha_Final)-strtotime($fecha_Inicio))/(60*60*24);
+            $interval = (strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24);
 //						echo "interval2 ".$interval."<br>";
-						$b = $interval + $a;
+            $b = $interval + $a;
 
 //	          $dife =  $fecha_Final - $fecha_Inicio;
 //	          $b = $dife.Days + a;
-	          if ($b > $num_dias)
-	              $b = $num_dias;
-	          for ($j = $a; $j < $b; $j++) {
-							$lista_empleados[$k]["detalle_dias"][$j] = $proy_emp["ID_ACTIVIDAD"];
-	          }//for
-		      }//while
+            if ($b > $num_dias)
+                $b = $num_dias;
+            for ($j = $a; $j < $b; $j++) {
+                $lista_empleados[$k]["detalle_dias"][$j] = $proy_emp["ID_ACTIVIDAD"];
+            }//for
+        }//while
 //        }//if
-				$k++;
-			}//while
-			echo json_encode($lista_empleados);
-	}	
+        $k++;
+    }//while
+    echo json_encode($lista_empleados);
+}
 
-
-	function G_getListaRecursosEnProyecto($id) {
-		  $sql = " SELECT E.ID_EMPLEADO,
+function G_getListaRecursosEnProyecto($id) {
+    $sql = " SELECT E.ID_EMPLEADO,
 		E.NOMBRE_CORTO ,
 		PR1.DESCRIPCION PROFESION_BASE,		
 		PR.DESCRIPCION PROFESION_ACTUAL,
@@ -459,42 +457,41 @@ function G_getListarRecDisp() {
 						  AND M.ID_ROL=RE.ID_ROL
 						  AND M.ID_PROYECTO=P.id_proyecto
 						  AND PR1.ID_PROFESION=E.ID_PROFESION";
-		  try {
-		      $db = getConnection();
+    try {
+        $db = getConnection();
 
-		      $stmt = $db->prepare($sql);
-		      $stmt->bindParam("id", $id);
-		      $stmt->execute();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
 
-		      $l_recxpro = array();
-		      while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-							$nom_proy = $j["nombre_proyecto"];
-		          $rec = array(
-		              "id" => $j["ID_EMPLEADO"],
-		              "nom" => $j["NOMBRE_CORTO"],
-		              "rol" => $j["NOMBRE_ROL"],
-		              "costo" => $j["COSTO_EMPLEADO"],
-                              "porc"=>$j["PORCENTAJE"],
-                              "prof_base"=>$j["PROFESION_BASE"],
-                              "prof_act"=>$j["PROFESION_BASE"],
-                              "fechaini"=>$j["FECHAINI"],
-                              "fechafin"=>$j["FECHAFIN"]
-		          );
-		          array_push($l_recxpro, $rec);
-		      }
-		      $db = null;
-		      echo json_encode(array("nom_proy"=>$nom_proy,"l_recurso"=>$l_recxpro));
-		  } catch (PDOException $e) {
-		      echo json_encode(array("me" => $e->getMessage()));
-		  }
-		  
-	}
-        
-        
+        $l_recxpro = array();
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $nom_proy = $j["nombre_proyecto"];
+            $rec = array(
+                "id" => $j["ID_EMPLEADO"],
+                "nom" => $j["NOMBRE_CORTO"],
+                "rol" => $j["NOMBRE_ROL"],
+                "costo" => $j["COSTO_EMPLEADO"],
+                "porc" => $j["PORCENTAJE"],
+                "prof_base" => $j["PROFESION_BASE"],
+                "prof_act" => $j["PROFESION_BASE"],
+                "fechaini" => $j["FECHAINI"],
+                "fechafin" => $j["FECHAFIN"]
+            );
+            array_push($l_recxpro, $rec);
+        }
+        $db = null;
+        echo json_encode(array("nom_proy" => $nom_proy, "l_recurso" => $l_recxpro));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
 function G_prueba() {
     $request = \Slim\Slim::getInstance()->request();
     $acta = json_decode($request->getBody());
-   
+
     echo json_encode($acta);
 }
+
 ?>
