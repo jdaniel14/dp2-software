@@ -143,6 +143,7 @@ function G_postCumpObjetivosPorProyecto() {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
+
 //
 //function G_getCostoPorProyectoPrueba($id) {
 //    //$sql = " SELECT id_objetivo, descripcion, comentarios, flag_cumplido FROM OBJETIVO where id_proyecto=:id";
@@ -444,7 +445,7 @@ function G_obtenerPaquetesHijo(&$paquete) {
     return;
 }
 
-function G_postRegistraSolicitud(){
+function G_postRegistraSolicitud() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
     $solicitud = $body;
@@ -468,34 +469,34 @@ function G_postRegistraSolicitud(){
     }
 }
 
-function G_getListaSolicitud(){
-	  $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto as nombre_proy, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.motivo
+function G_getListaSolicitud() {
+    $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto as nombre_proy, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.motivo
 FROM SOLICITUD_CAMBIO S, MIEMBROS_EQUIPO M, EMPLEADO E, PROYECTO P
 WHERE S.id_proyecto = M.id_proyecto AND M.id_proyecto = P.id_proyecto AND M.id_rol = 2 AND M.id_empleado = E.id_empleado AND S.estado = 1";
     try {
-      $db = getConnection();
-      $stmt = $db->prepare($sql);
-      $stmt->execute();
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
 
-			$lista_solic = array();
-			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-				 $sol = array(	"id_proy"=>$p["id_proyecto"],
-				                "nomb_proy"=> $p["nombre_proy"],
-				                "nomb_jefe"=> $p["nombre_jefe"],
-				                "est"=> $p["estado"],
-				                "flag_cambio"=> $p["flag_cambio"],
-				                "motivo"=> $p["motivo"],
-);
-					array_push($lista_solic, $sol);
-			}
-      $db = null;
-      echo json_encode(array("lista_solic"=>$lista_solic,"me" => "")); 
+        $lista_solic = array();
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $sol = array("id_proy" => $p["id_proyecto"],
+                "nomb_proy" => $p["nombre_proy"],
+                "nomb_jefe" => $p["nombre_jefe"],
+                "est" => $p["estado"],
+                "flag_cambio" => $p["flag_cambio"],
+                "motivo" => $p["motivo"],
+            );
+            array_push($lista_solic, $sol);
+        }
+        $db = null;
+        echo json_encode(array("lista_solic" => $lista_solic, "me" => ""));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
 
-function G_postAceptDenegSolicitud(){
+function G_postAceptDenegSolicitud() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
     $solicitud = $body;
@@ -513,54 +514,7 @@ function G_postAceptDenegSolicitud(){
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
-
-
 }
 
-
-function G_getProfesiones() {
-    $sql = " SELECT id_profesion, descripcion FROM PROFESION ";
-    try {
-        $db = getConnection();
-
-        $stmt = $db->query($sql);
-        $lista = array();
-        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $elemento = array(
-                "id" => $j["id_profesion"],
-                "nom" => $j["descripcion"]
-            );
-            array_push($lista, $elemento);
-        }
-        $db = null;
-        echo json_encode(array("profesiones" => $lista));
-    } catch (PDOException $e) {
-        echo json_encode(array("me" => $e->getMessage()));
-    }
-}
-
-function G_postRegistrarRecurso() {
-    $request = \Slim\Slim::getInstance()->request();
-    $proj = json_decode($request->getBody());
-
-    try {
-        $sql = " INSERT INTO EMPLEADO (nombres, apellidos, email, nombre_corto, pago_mensual, id_profesion) VALUES (:noms, :aps, :email, :nomcorto, :pm, :idprof) ";
-        $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $nomcorto = (string)$proj->nr + (string)$proj-> ar;
-        $stmt->bindParam("noms", $proj->nr);
-        $stmt->bindParam("aps", $proj->ar);
-        $stmt->bindParam("email", $proj->cr);
-        $stmt->bindParam("nomcorto", $nomcorto);
-        $stmt->bindParam("pm", $proj->pm);
-        $stmt->bindParam("idprof", $proj->pr);
-        $stmt->execute();
-
-        $db = null;
-        echo json_encode(array("me" => ""));
-    } catch (PDOException $e) {
-        echo json_encode(array("me" => $e->getMessage()));
-    }
-}
 
 ?>
