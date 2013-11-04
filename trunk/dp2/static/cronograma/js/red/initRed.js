@@ -28,8 +28,8 @@ var borderColorT = '#63449A';
 var borderWidthT = 3;
 
 //Parametros del diagrama
-var widthDiagram = 1200;
-var heightDiagram = 620;
+var widthDiagram = 2000;
+var heightDiagram = 2000;
 
 //Parametros de dibujo de los cuadraditos
 var width = 130;
