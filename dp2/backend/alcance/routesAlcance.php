@@ -34,4 +34,7 @@
 	$app->get('/AL_getListaCambios','getListaCambios');
 	$app->post('/AL_registrarCambio','registrarCambio');
 
+//Sprint 4!
+	$app->get('/AL_getPDF','generarPDF');
+
 ?>
