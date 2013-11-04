@@ -3,6 +3,7 @@
 	include('routesAlcance.php');
 	include ('modelAlcance.php');
 	include_once '../backend/conexion.php';
+	require_once("../dompdf/dompdf_config.inc.php");
 
 	function getConexionLocal(){
 		$con=mysqli_connect("127.0.0.1:3307","usuario","usuario.2013.","dp2");
@@ -410,6 +411,40 @@
 								(id_proyecto, descripcion, fecha, id_estado_alcance,id_miembros_equipo) 	
 					   			VALUES (?,?,?,?,?)");
 		$pstmt->execute(array($cambio["idproyecto"],$cambio["descripcion"],date('Y-m-d H:i:s'),$cambio["id_estado"],$cambio["id_miembros_equipo"]));
+	}
+
+	function generarPDF(){
+		$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$idproyecto = $val["idproyecto"];
+		//obtener datos del alcance
+		$con = getConnection();
+    	$pstmt= $con->prepare("SELECT * FROM ALCANCE WHERE id_proyecto= ?");
+    	$pstmt->execute(array($idproyecto));
+    	$alcance = $pstmt->fetch(PDO::FETCH_ASSOC);
+
+		//obtener el archivo plantilla
+		$html = file_get_contents('../views/alcance/gestionAlcance.html');
+		
+		//reemplazar las variables de la plantilla
+		$outputHtml = renderTemplate($html,$alcance);
+
+		//crear el pdf
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($outputHtml);
+		$dompdf->render();
+
+		//setear el response como stream de bytes
+		\Slim\Slim::getInstance()->response->headers->set('Content-Type', 'application/octet-stream');
+		//devolver el archivo COMO STREAM
+		return $dompdf->stream("sample.pdf");
+	}
+
+	function renderTemplate($html , $variables){
+		foreach ($variables as $key => $value) {
+			str_replace("{" . $key . "}", $value, $html);
+		}
+		return $html;
 	}
 
 ?>
