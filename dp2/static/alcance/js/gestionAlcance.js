@@ -34,6 +34,7 @@ function cargaTitulo(){
 var noAlcance;
 $(document).ready(function(){
 	cargaTitulo();
+	$("#exportar").attr("href","../../api/AL_getPDF?idproyecto="+id_proyecto);
 	var obj ={
 		"idproyecto" : id_proyecto
 	}

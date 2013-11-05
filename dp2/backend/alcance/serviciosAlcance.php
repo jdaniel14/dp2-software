@@ -419,12 +419,21 @@
 		$idproyecto = $val["idproyecto"];
 		//obtener datos del alcance
 		$con = getConnection();
-    	$pstmt= $con->prepare("SELECT * FROM ALCANCE WHERE id_proyecto= ?");
+    	$pstmt= $con->prepare("SELECT *  FROM ALCANCE  WHERE id_proyecto= ?");
     	$pstmt->execute(array($idproyecto));
     	$alcance = $pstmt->fetch(PDO::FETCH_ASSOC);
 
+		$pstmt = $con->prepare("SELECT nombre_proyecto 
+			FROM PROYECTO
+			WHERE id_proyecto = ? 
+		");
+		$pstmt->execute(array($idproyecto));
+		if($id = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$alcance["proyecto"] = $id["nombre_proyecto"];
+		}
+
 		//obtener el archivo plantilla
-		$html = file_get_contents('../views/alcance/gestionAlcance.html');
+		$html = file_get_contents('../views/alcance/plantillaPDFAlcance.html');
 		
 		//reemplazar las variables de la plantilla
 		$outputHtml = renderTemplate($html,$alcance);
@@ -435,14 +444,14 @@
 		$dompdf->render();
 
 		//setear el response como stream de bytes
-		\Slim\Slim::getInstance()->response->headers->set('Content-Type', 'application/octet-stream');
+		\Slim\Slim::getInstance()->response->headers->set('Content-Type', 'application/pdf');
 		//devolver el archivo COMO STREAM
-		return $dompdf->stream("sample.pdf");
+		return $dompdf->stream("Alcance.pdf");
 	}
 
 	function renderTemplate($html , $variables){
 		foreach ($variables as $key => $value) {
-			str_replace("{" . $key . "}", $value, $html);
+			$html = str_replace("{" . $key . "}", $value, $html);
 		}
 		return $html;
 	}
