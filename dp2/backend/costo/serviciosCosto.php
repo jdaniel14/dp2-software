@@ -730,7 +730,7 @@
         	$db = null;
         	$proyecto = null; //new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["SUM(H.PRESUP_SOLES)"]);
+					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
 					$proyecto->indicadorCerrado = "";
 					$proyecto->indicadorLineaBase = "";
 					break;
