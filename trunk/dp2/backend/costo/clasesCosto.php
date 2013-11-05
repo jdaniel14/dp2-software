@@ -5,6 +5,8 @@ class CO_Proyecto {
 	public $nombre;
 	public $porcentajeReserva;
 	public $presupuesto;
+	public $indicadorCerrado;
+	public $indicadorLineaBase;
 	
 	//constructor
 	function __construct($idProyecto, $nombre, $porcentajeReserva, $presupuesto) {
