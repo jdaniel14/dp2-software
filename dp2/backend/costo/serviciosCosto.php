@@ -805,8 +805,14 @@
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
         									//id recurso, 	idunidad medida, 			unidad medida, 				nombre recurso, 	id moneda, 		moneda, 	cantidad estimada, 			costo unitario, 		costo fijo diario, 		costo fijo total, indicador rrhh
 					$recurso = new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDAD_NECESARIA"], $p["COSTO_PROM_SOLES"], $p["COSTO_FIJO_DIARIO_ESTIMADO"], -1, $p["IND_RECURSO_HUMANO"]);
-					$recurso->fechaInicio = $p["FECHA_INICIO"];
-					$recurso->fechaFin = $p["FECHA_FIN"];
+					if ($p["FECHA_INICIO"] != null)
+						$recurso->fechaInicio = $p["FECHA_INICIO"];
+					else
+						$recurso->fechaInicio = "";
+					if ($p["FECHA_FIN"] != null)
+						$recurso->fechaFin = $p["FECHA_FIN"];
+					else
+						$recurso->fechaFin = "";
 					array_push($listaRecursos, $recurso);
 			}
 			//echo json_encode($listaRecursos);
