@@ -158,8 +158,8 @@ function main() {
             var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
 
             //creo inputs dinamicos
-            $('#tablaCategorizacion1').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
-                                                   <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
+            $('#tablaCategorizacion1').append("<tr><td><input  class=\"input puntajeMin1\" type=\"text\" id=\"puntajeMin1" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+                                                   <td><input class=\"input puntajeMax1\" type=\"text\" id=\"puntajeMax1" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
                                                    <td><input class=\"input prioridad1\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
                                                    <td><select class=\"estrategia1\" id=\"estrategia" + i + "\">\n\\n\
                                                         <option  value=\"aceptar\" >Aceptar</option>\n\
@@ -205,8 +205,8 @@ function main() {
             var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
 
             //creo inputs dinamicos
-            $('#tablaCategorizacion2').append("<tr><td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
-                                                   <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
+            $('#tablaCategorizacion2').append("<tr><td><input  class=\"input puntajeMin2\" type=\"text\" id=\"puntajeMin2" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+                                                   <td><input class=\"input puntajeMax2\" type=\"text\" id=\"puntajeMax2" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
                                                    <td><input class=\"input prioridad2\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
                                                    <td><select class=\"estrategia2\" id=\"estrategia" + i + "\">\n\\n\
                                                         <option  value=\"aceptar\" >Aceptar</option>\n\
@@ -247,8 +247,8 @@ function main() {
         $(".prioridad1").each(function() {
 
             var obj = {
-                puntajeMin: $($("input.puntajeMin")[i]).val(), // valor de inputs
-                puntajeMax: $($("input.puntajeMax")[i]).val(),
+                puntajeMin: $($("input.puntajeMin1")[i]).val(), // valor de inputs
+                puntajeMax: $($("input.puntajeMax1")[i]).val(),
                 prioridad: $($("input.prioridad1")[i]).val(),
                 estrategia: $($("select.estrategia1")[i]).val(),
                 significado: $($("input.significado1")[i]).val()
@@ -257,7 +257,9 @@ function main() {
             i++;
             data.listaEstrategias[i - 1] = obj;
         });
+        
         var jsonData = JSON.stringify(data);
+        
         console.log(data);
 
         $.ajax({
@@ -293,8 +295,8 @@ function main() {
         $(".prioridad2").each(function() {
 
             var obj = {
-                puntajeMin: $($("input.puntajeMin")[i]).val(), // valor de inputs
-                puntajeMax: $($("input.puntajeMax")[i]).val(),
+                puntajeMin: $($("input.puntajeMin2")[i]).val(), // valor de inputs
+                puntajeMax: $($("input.puntajeMax2")[i]).val(),
                 prioridad: $($("input.prioridad2")[i]).val(),
                 estrategia: $($("select.estrategia2")[i]).val(),
                 significado: $($("input.significado2")[i]).val()
@@ -384,8 +386,8 @@ function leerCategorias2() {
                 var significado = data[obj]["significado"];
 
                 $('#tablaCategorizacion2').append("<tr>\n\
-                                                     <td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
-                                                     <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input  class=\"input puntajeMin\" type=\"text\" id=\"puntajeMin2" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input class=\"input puntajeMax\" type=\"text\" id=\"puntajeMax2" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
                                                      <td><input class=\"input prioridad\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
                                                      <td><select disabled class=\"estrategia2\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
                                                               <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
@@ -431,6 +433,7 @@ function leerCategorias1() {
         idProyecto: idProyectoLocal
     };
     var jsonData = JSON.stringify(data);
+ 
 
     $.ajax({
         type: 'GET',
@@ -612,7 +615,7 @@ function leerNivelProbabilidad1(impactos) {
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td align=\"center\" class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            fil = $("<td align=\"center\" class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\"><b>" + datos[i][j]['valorMult'] + "</b></td>");
                             $(fila).append(fil);
 
                         }
@@ -667,7 +670,7 @@ function leerNivelProbabilidad2(impactos) {
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td align=\"center\" class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\">" + datos[i][j]['valorMult'] + "</td>");
+                            fil = $("<td align=\"center\" class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\"><b>" + datos[i][j]['valorMult'] + "</b></td>");
                             $(fila).append(fil);
 
                         }
@@ -700,7 +703,7 @@ function pintarMatriz1(impactos) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-            var i = 0;
+            var i = 0,j=0;
             var longitud = impactos.length;
             r = Math.round(Math.random() * 255);
             g = Math.round(Math.random() * 255);
@@ -731,6 +734,9 @@ function pintarMatriz1(impactos) {
                     i++;
                 });
                 i = 0;
+                j++;
+                 $("#leyendaPos").append("<div id="+j+"><label>"+puntajeMin+"-"+puntajeMax+"</label></div>");
+                 $("#"+j+"").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
                 r = Math.round(Math.random() * 255);
                 g = Math.round(Math.random() * 255);
                 b = Math.round(Math.random() * 255);
@@ -756,7 +762,7 @@ function pintarMatriz2(impactos) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-            var i = 0;
+            var i = 0,j=0;
             var longitud = impactos.length;
             r = Math.round(Math.random() * 255);
             g = Math.round(Math.random() * 255);
@@ -782,11 +788,18 @@ function pintarMatriz2(impactos) {
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
                         console.log("puntaje" + porcion);
                         $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
-
+                        
+               
                     }
                     i++;
-                });
+                   });
+                  
+                   
                 i = 0;
+                j++;
+                
+                 $("#leyendaNeg").append("<div id="+j+"><label>"+puntajeMin+"-"+puntajeMax+"</label></div>");
+                 $("#"+j+"").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
                 r = Math.round(Math.random() * 255);
                 g = Math.round(Math.random() * 255);
                 b = Math.round(Math.random() * 255);
