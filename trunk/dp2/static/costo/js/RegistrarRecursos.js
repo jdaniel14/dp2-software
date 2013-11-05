@@ -102,6 +102,7 @@ function obtenMoneda(){
 		type: 'GET',		
 		url: rootURL + 'CO_obtenerListaMonedas/',
 		dataType: "json", // data type of response
+		async: false,
 		success: creaComboMoneda
 	});
 	
