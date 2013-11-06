@@ -1,6 +1,6 @@
 var listarSolicitud ="../../api/G_listarSolicitudesCambio";
 var visualizarSolicitud ="../../api/G_visualizarSolicitudCambio/";
-var aprobarSolicitud = "../../api/G_aprobarSolicitudCambio";
+var aprobarSolicitud = "../../api/G_solicitudCambioAceptDeneg";
 
 $(document).ready(function(){
 	listaSolicitud();
