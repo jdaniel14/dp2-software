@@ -89,16 +89,17 @@ function main() {
             type: 'POST',
             url: "../../api/R_registrarTiposImpactoRiesgo",
             data: jsonData,
-            dataType: "json",
             success: function(data) {
                 alert("Registrado con éxito");
-
+                        $("#tablaTiposRiesgos").html("");
+listaTipoImpactos();
+                              
             },
             fail: function(data) {
                 alert(data.me);
             }
         });
-
+         
 
     });
  
@@ -123,7 +124,10 @@ function main() {
 			data: jsonData,
 			dataType: "html",
 			success: function(){
-				alert("Se elimino el tipoimpacto correctamente");
+                             alert("Se elimino el tipo de impacto correctamente");
+                              $("#tablaTiposRiesgos").html("");
+                              listaTipoImpactos();
+                             
 		
 			},
 			fail: codigoError
