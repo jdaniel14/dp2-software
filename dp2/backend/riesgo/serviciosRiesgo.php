@@ -156,7 +156,7 @@
         $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
         TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
         PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
-        nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo
+        nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo, estado_logico
                 FROM RIESGO_X_PROYECTO RXP
                 left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                 left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
@@ -187,7 +187,8 @@
                             "nombreResponsable" => $row['nombre_corto'],//X
                             "nivelImpacto" => $row['nivel_impacto'],//X
                             "nivelProbabilidad" => $row['nivel_probabilidad'],//X
-                            "tipoRiesgo" => $row['positivo_negativo']
+                            "tipoRiesgo" => $row['positivo_negativo'],
+                            "estadoLogico" => $row['estado_logico']
                             );
                 array_push($arregloListaRiesgo,$data);
             }
@@ -888,12 +889,13 @@
                 $stmt->bindParam("id_empleado", $integrante);
                 $stmt->execute();
                 $db = null;
-                echo json_encode("Se registro con exito");
+                
             } catch(PDOException $e) {
                 echo json_encode(array("me"=> $e->getMessage()));
                     //'{"error":{"text":'. $e->getMessage() .'}}';
             }
         }
+        echo json_encode("Se registro con exito");
     }    
 
     function R_getListaIntegrantesProyecto($idProyecto){
