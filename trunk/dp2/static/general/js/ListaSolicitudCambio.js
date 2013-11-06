@@ -1,16 +1,21 @@
+var listarSolicitud ="../../api/G_listarSolicitudesCambio";
+var visualizarSolicitud ="../../api/G_visualizarSolicitudCambio/";
+var aprobarSolicitud = "../../api/G_aprobarSolicitudCambio";
+
 $(document).ready(function(){
 	listaSolicitud();
 });
 
 
-//Listar solicitudes de cmambios
+//Lista las solicitudes
 
 function listaSolicitud(){        
 	$.ajax({
 		type: 'GET',
-		url: '../../api/G_listarSolicitudesCambio',
+		url: listarSolicitud,
 		dataType: "json", // data type of response
         success: function(data){
+        	console.log(data);
             agregaDataFila(data);
 
             $(".btn.btn-primary").click(function(){
@@ -20,25 +25,6 @@ function listaSolicitud(){
 
 				visualizaSolicitud(idProyecto,nombreProyecto);
 			});
-            
-            /*
-            $("myModal").modal("toogle");
-
-            $(".btn.btn-primary").click(function(){
-            	var tr = $(this).parent().parent();
-				var auxtd = $(this).closest("tr").find("td");
-				var idProyecto = auxtd[0].innerHTML;		
-
-				//console.log(idProyecto);
-				$.each(data.lista_solic,function(e,el){
-					if(el.id_proy == idProyecto){
-						
-					}
-				});
-				//localStorage.setItem("idProyecto",idProyecto);
-				//$(location).attr('href','MenuProyecto.html');
-			});	
-			*/
         }
 	});
 }
@@ -66,24 +52,64 @@ function agregaFilaSolicitud(arreglo,i){
 	$("#ListaSolicitudes").trigger("update"); 
 }
 
+
+//Visualiza una solicitud de la lista
+
 function visualizaSolicitud(idProyecto,nombreProyecto){
 	$("#nombreProyecto").val(nombreProyecto);
 
 	$.ajax({
 		type: 'GET',
-		url: '../../api/G_visualizarSolicitudCambio/' + idProyecto,
+		url: visualizarSolicitud + idProyecto,
 		dataType: "json", // data type of response
-        success: function(data){
-            for (obj in data){
-              	var cad = data[obj]["flag_cambio"];
+        success: function(data){            
+          	var cad = data["flag_cambio"].toString();
+          	var rubros = '';
 
-            	if (cad[0]==1) { $("#rubroCambio").html("Alcance "); }
-            	if (cad[1]==1) { $("#rubroCambio").html("Cronograma "); }
-            	if (cad[2]==1) { $("#rubroCambio").html("Costo "); }
+          	if (cad.charAt(0)=='1') { rubros+="Alcance - "; }
+        	if (cad.charAt(1)=='1') { rubros+="Cronograma - "; }
+        	if (cad.charAt(2)=='1') { rubros+="Costo - "; }
 
-            	$("#descripcion").html(data[obj]["descripcion"]);
-            	$("#justificacion").html(data[obj]["justificacion"]);
-            }
+        	$("#rubroCambio").val(rubros.substring(0,rubros.length-2));
+        	$("#descripcion").html(data["descripcion"]);
+        	$("#justificacion").html(data["justificacion"]);            
         }
 	});
+}
+
+
+//Se acepta la solicitud
+
+$("#btnAprobar").click(function(){
+	if (confirm("¿Está seguro que desea aprobar la solicitud de cambio?")){
+		flag = 1;
+		apruebaSolicitud(flag);
+	}
+});
+
+$("#btnRechazar").click(function(){
+	if (confirm("¿Está seguro que desea rechazar la solicitud de cambio?")){
+		flag = 0;
+		apruebaSolicitud(flag);
+	}
+});
+
+function apruebaSolicitud(flag){
+	var jsonCliente = {
+		flag_Cambio : flag
+    };
+
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(jsonCliente),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        url: aprobarSolicitud,
+        success: function (data) {
+        	if (flag==1) { alert("Solicitud de cambio APROBADA con éxito");	}
+        	if (flag==0) { alert("Solicitud de cambio RECHAZADA con éxito"); }
+
+            $(location).attr('href','ListaSolicitudes.html');
+        }
+    });
 }
