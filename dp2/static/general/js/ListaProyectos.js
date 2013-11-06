@@ -31,7 +31,8 @@ function iniciaProyectos(){
             agregaDataFila(data);
             $(".btn.btn-primary").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
-				var idProyecto = auxtd[0].innerHTML;		
+				var idProyecto = auxtd[0].innerHTML;
+				var nombreProyecto = auxtd[1].innerHTML;		
 				localStorage.setItem("idProyecto",idProyecto);
 				localStorage.setItem("nombreProyecto",nombreProyecto);
 				$(location).attr('href','MenuProyecto.html');
