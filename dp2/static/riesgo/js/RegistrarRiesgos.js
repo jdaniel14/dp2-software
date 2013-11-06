@@ -293,6 +293,12 @@ function main(){
 		}
 	});
 
+	$("#btnAtrasRegistrar").click(function(){
+		window.location.replace("../riesgo/MostrarRiesgos.html");
+	});
+
+	
+
 }
 
 function limpiarRegistrar(){
@@ -589,66 +595,74 @@ function agregaDataComunFila(data){
 }
 
 function agregaFilaRiesgo(arreglo,i){
+	var tipoCheckbox="";
 	a=i;
 	a++;
-	if (arreglo.categoria==null){
-		arreglo.categoria='-';
-	}
-	if (arreglo.severidad==null){
-		arreglo.severidad='-';
-	}
-	// if (arreglo.accionesEspecificas==null){
-	// 	arreglo.accionesEspecificas='-';
-	// }
-	if (arreglo.tipoRiesgo==null){
-		arreglo.tipoRiesgo='-';
-	} else if (arreglo.tipoRiesgo==0){
-		arreglo.tipoRiesgo='Negativo';
-	} else if (arreglo.tipoRiesgo==1){
-		arreglo.tipoRiesgo='Positivo';
-	}
-	if (arreglo.costoPotencial==null){
-		arreglo.costoPotencial='-';
-	}
-	if (arreglo.demoraPotencial==null){
-		arreglo.demoraPotencial='-';
-	}
-	if (arreglo.paqueteTrabajo==null){
-		arreglo.paqueteTrabajo='-';
-	}
-	if (arreglo.nivelImpactoDescripcion==null){
-		arreglo.nivelImpactoDescripcion='-';
-	}
-	if (arreglo.probabilidadDescripcion==null){
-		arreglo.probabilidadDescripcion='-';
-	}
-	if (arreglo.nombreResponsable==null){
-		arreglo.nombreResponsable='-';
-	}
+	if (estadoLogico!=0){
+		if (arreglo.categoria==null){
+			arreglo.categoria='-';
+		}
+		if (arreglo.severidad==null){
+			arreglo.severidad='-';
+		}
+		// if (arreglo.accionesEspecificas==null){
+		// 	arreglo.accionesEspecificas='-';
+		// }
+		if (arreglo.tipoRiesgo==null){
+			arreglo.tipoRiesgo='-';
+		} else if (arreglo.tipoRiesgo==0){
+			arreglo.tipoRiesgo='Negativo';
+		} else if (arreglo.tipoRiesgo==1){
+			arreglo.tipoRiesgo='Positivo';
+		}
+		if (arreglo.costoPotencial==null){
+			arreglo.costoPotencial='-';
+		}
+		if (arreglo.demoraPotencial==null){
+			arreglo.demoraPotencial='-';
+		}
+		if (arreglo.paqueteTrabajo==null){
+			arreglo.paqueteTrabajo='-';
+		}
+		if (arreglo.nivelImpactoDescripcion==null){
+			arreglo.nivelImpactoDescripcion='-';
+		}
+		if (arreglo.probabilidadDescripcion==null){
+			arreglo.probabilidadDescripcion='-';
+		}
+		if (arreglo.nombreResponsable==null){
+			arreglo.nombreResponsable='-';
+		}
 
-	if (arreglo.impactoDescripcion==null){
-		arreglo.impactoDescripcion='-';
+		if (arreglo.impactoDescripcion==null){
+			arreglo.impactoDescripcion='-';
+		}
+		if (arreglo.estadoLogico==1){
+			tipoCheckbox= "</td><td align=\"center\"><input type=\"checkbox\" value=\""+arreglo.idRiesgoProyecto+"\">";
+			arreglo.estadoLogico="Por confirmar"
+		} else if (arreglo.estadoLogico==2) {
+			tipoCheckbox = "</td><td align=\"center\"><input type=\"checkbox\" value=\""+arreglo.idRiesgoProyecto+"\" disabled >";
+			arreglo.estadoLogico="Confirmado"
+		}
+		$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
+								  "\"><td>" + arreglo.idRiesgoProyecto + 
+								  "</td><td>" + arreglo.nombre + 
+								  "</td><td>" + arreglo.paqueteTrabajo +
+								  "</td><td>" + arreglo.tipoRiesgo + 
+								  "</td><td>" + arreglo.impactoDescripcion + 
+								  "</td><td>" + arreglo.nivelImpactoDescripcion + 
+								  "</td><td>" + arreglo.probabilidadDescripcion +
+								  "</td><td>" + arreglo.severidad +
+								  // "</td><td>" + arreglo.accionesEspecificas +
+								  // "</td><td>" + arreglo.costoPotencial +
+								  // "</td><td>" + arreglo.demoraPotencial +
+								  "</td><td>" + arreglo.estadoLogico + 
+								  "</td><td>" + arreglo.nombreResponsable + 
+								  "</td><td><a href=\"#\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
+								  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
+								  // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
+								  tipoCheckbox + "</td></tr>");	
 	}
-
-	$("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto + 
-							  "\"><td>" + arreglo.idRiesgoProyecto + 
-							  "</td><td>" + arreglo.nombre + 
-							  "</td><td>" + arreglo.paqueteTrabajo +
-							  "</td><td>" + arreglo.tipoRiesgo + 
-							  "</td><td>" + arreglo.impactoDescripcion + 
-							  "</td><td>" + arreglo.nivelImpactoDescripcion + 
-							  "</td><td>" + arreglo.probabilidadDescripcion +
-							  "</td><td>" + arreglo.severidad +
-							  // "</td><td>" + arreglo.accionesEspecificas +
-							  "</td><td>" + arreglo.costoPotencial +
-							  "</td><td>" + arreglo.demoraPotencial +
-							  "</td><td>" + arreglo.nombreResponsable + 
-							  "</td><td><a href=\"#\"><span class=\"glyphicon glyphicon-edit\"></span></a>" + 
-							  "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" + 
-							  // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
-							  "</td><td align=\"center\"><input type=\"checkbox\" value=\""+arreglo.idRiesgoProyecto+"\">"+
-							  "</td></tr>");
-	
 }
 
 
@@ -658,9 +672,9 @@ function agregaFilaRiesgoComun(arreglo,i){
 	$("#tablaRiesgosComunes").append("<tr id=\"" + arreglo.idRiesgoComun + 
 							  "\"><td>" + arreglo.idRiesgoComun + 
 							  "</td><td>" + arreglo.nombre + 
-							  "</td><td>" + arreglo.ultProbabilidad + 
-							  "</td><td>" + arreglo.ultImpacto + 
-							  "</td><td>" + arreglo.ultSeveridad +
+							  "</td><td hidden>" + arreglo.ultProbabilidad + 
+							  "</td><td hidden>" + arreglo.ultImpacto + 
+							  "</td><td hidden>" + arreglo.ultSeveridad +
 							  "</td><td><input type=\"checkbox\" value=\""+arreglo.idRiesgoComun+"\">"+
 							  "</td></tr>");
 }
