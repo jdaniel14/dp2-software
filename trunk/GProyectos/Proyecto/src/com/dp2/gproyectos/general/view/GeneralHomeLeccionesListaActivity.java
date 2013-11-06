@@ -34,7 +34,7 @@ public class GeneralHomeLeccionesListaActivity extends
 	Spinner spnBuscar;
 	EditText edtBuscar;
 	ArrayAdapter<String> busquedaAdapter;
-	String[] items = new String[] { "Categor�a"};
+	String[] items = new String[] { "Categoría"};
 	public static boolean primeraCarga = true;
 
 	@Override
