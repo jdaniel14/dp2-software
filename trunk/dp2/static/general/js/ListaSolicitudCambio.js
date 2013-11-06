@@ -20,14 +20,14 @@ function listaSolicitud(){
 
             $(".btn.btn-primary").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
-				var idProyecto = auxtd[0].innerHTML;
-				var nombreProyecto = auxtd[1].innerHTML;
-				var idSolicitud = auxtd[2].innerHTML;	
-
+				var idSolicitud = auxtd[0].innerHTML;
+				var idProyecto = auxtd[1].innerHTML;
+				var nombreProyecto = auxtd[2].innerHTML;
+					
+				localStorage.setItem("idSolicitud",idSolicitud);
 				localStorage.setItem("idProyecto",idProyecto);
 				localStorage.setItem("nombreProyecto",nombreProyecto);
-				localStorage.setItem("idSolicitud",idSolicitud);
-
+				
 				visualizaSolicitud();
 			});
         }
@@ -102,8 +102,9 @@ $("#btnRechazar").click(function(){
 
 function apruebaSolicitud(flag){
 	var jsonCliente = {
-		idProyecto  : localStorage.getItem("idProyecto"),
-		flag_Cambio : flag
+		id_proy : localStorage.getItem("idProyecto"),
+		id_sol	: localStorage.getItem("idSolicitud"),
+		flag 	: flag
     };
 
     $.ajax({
