@@ -54,7 +54,8 @@ function agregaDataFila(data){
 	}
 		$(".btn.btn-danger").click(function(){
 			var auxtd = $(this).closest("tr").find("td");
-			var idProyecto = auxtd[0].innerHTML;		
+			var idProyecto = auxtd[0].innerHTML;
+			var nombreProyecto = auxtd[1].innerHTML;
 			//alert(idProyecto + " ola k ase");
 			localStorage.setItem("idProyecto",idProyecto);
 			localStorage.setItem("nombreProyecto",nombreProyecto);
