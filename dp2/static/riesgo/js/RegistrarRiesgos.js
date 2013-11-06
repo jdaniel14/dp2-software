@@ -476,6 +476,7 @@ function listarRiesgos(){
 		success: function(data){
 			var lista = data;
 			// limpiarConfirmar();
+			$('#checkearTodos').attr('checked', false);
 			agregaDataFila(data);
 			$(".glyphicon.glyphicon-edit").click( function(){
 				var id = $(this).closest("tr").attr("id");
@@ -537,6 +538,7 @@ function limpiarImpacto(){
 }
 
 function limpiarConfirmar(){
+
 	$('#tablaRiesgosComunes input[type="checkbox"]:checked').each(function(){
 	        $('input[type="checkbox"]').attr('checked', false);
 
@@ -676,9 +678,16 @@ function grabarRiesgos(){
 
 $("#checkearTodos").change(
 	function(){
-		$('#tablaRiesgos input[type="checkbox"]').each(function(){
-	        $('input[type="checkbox"]').attr('checked', true);
-    	});
+		if ($("#checkearTodos").prop('checked')) {
+			$('#tablaRiesgos input[type="checkbox"]').each(function(){
+		        $('input[type="checkbox"]').attr('checked', true);
+	    	});
+		} else {
+			$('#tablaRiesgos input[type="checkbox"]').each(function(){
+		        $('input[type="checkbox"]').attr('checked', false);
+	    	});
+		}
+		
 	});
 
 /*------------------------------------VALIDACIONES-----------------------------------------*/
