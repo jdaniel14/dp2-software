@@ -1,6 +1,9 @@
 package com.dp2.gproyectos.costos.view;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +50,7 @@ public class CostosIndicadoresChartActivity extends SherlockActivity implements 
 		titulo = getIntent().getExtras().getString("titulo");
 		fecha = getIntent().getExtras().getString("fecha");
 		idProyecto = getIntent().getExtras().getString("idProyecto");
-
+		
 		descripcion = getIntent().getExtras().getString("descripcion");
 		
 		getSherlock().getActionBar().setTitle(titulo);
@@ -136,15 +139,15 @@ public class CostosIndicadoresChartActivity extends SherlockActivity implements 
 			 	            // handle the click event on the chart
 			 	            SeriesSelection seriesSelection = graphicalView.getCurrentSeriesAndPoint();
 			 	            if (seriesSelection == null) {
-			 	            	Toast.makeText(CostosIndicadoresChartActivity.this, "No chart element", Toast.LENGTH_SHORT).show();
+			 	            	//Toast.makeText(CostosIndicadoresChartActivity.this, "No chart element", Toast.LENGTH_SHORT).show();
 			 	            } else {
 			 	              // display information of the clicked point
-			 	              Toast.makeText(
-			 	            		  CostosIndicadoresChartActivity.this,
-			 	                  "Chart element in series index " + seriesSelection.getSeriesIndex()
-			 	                      + " data point index " + seriesSelection.getPointIndex() + " was clicked"
-			 	                      + " closest point value X=" + seriesSelection.getXValue() + ", Y="
-			 	                      + seriesSelection.getValue(), Toast.LENGTH_SHORT).show();
+			 	            	Toast.makeText(
+			 	            		 CostosIndicadoresChartActivity.this,
+			 	            		 //nombres.get(seriesSelection.getSeriesIndex()) +
+			 	            		historial.get(seriesSelection.getSeriesIndex()).nombre +
+			 	            		 ". Fecha: " + historial.get(seriesSelection.getSeriesIndex()).historial.get(seriesSelection.getPointIndex()).fecha +
+			 	            		 ". Valor: " + historial.get(seriesSelection.getSeriesIndex()).historial.get(seriesSelection.getPointIndex()).valor, Toast.LENGTH_SHORT).show();
 			 	            }
 			 	          }
 			 	        });
