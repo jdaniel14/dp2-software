@@ -114,6 +114,7 @@ public class FuelChart {
 			double xMax, double yMin, double yMax, int axesColor,
 			int labelsColor, int backgroundColor) {
 		renderer.setChartTitle(title);
+		renderer.setClickEnabled(true);
 		renderer.setXTitle(xTitle);
 		renderer.setYTitle(yTitle);
 		renderer.setXAxisMin(xMin);
@@ -127,6 +128,9 @@ public class FuelChart {
 		renderer.setBackgroundColor(backgroundColor);
 		renderer.setLabelsTextSize(21);
 		renderer.setChartValuesTextSize(20);
+		//renderer.setExternalZoomEnabled(true);
+		//double[] d = {xMin-1, xMax+1, yMin-1, yMax+1};
+		//renderer.setPanLimits(d);
 //		switch (context.getResources().getDisplayMetrics().densityDpi) {
 //	        case DisplayMetrics.DENSITY_XHIGH:
 //	                renderer.setMargins(new int[] { 40, 90, 25, 10 });
