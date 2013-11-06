@@ -918,7 +918,13 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             if (task.id == tsk.id){
         		gg = tsk.id
         	}
-            if ((task.startIsMilestone > tsk.startIsMilestone && task.startIsMilestone < tsk.endIsMilestone) || (task.endIsMilestone > tsk.startIsMilestone && task.endIsMilestone < tsk.endIsMilestone)){
+			var date_start_1 = new Date(task.start);
+			var date_end_1 = new Date(task.end);
+			
+			var date_start_2 = new Date(tsk.start);
+			var date_end_2 = new Date(tsk.end);
+			if((date_start_1>=date_start_2  && date_start_1<=date_end_2)||(date_end_1>=date_start_2  && date_start_1<=date_end_2)){
+            //if ((task.startIsMilestone > tsk.startIsMilestone && task.startIsMilestone < tsk.endIsMilestone) || (task.endIsMilestone > tsk.startIsMilestone && task.endIsMilestone < tsk.endIsMilestone)){
               for (var k = 0; k < tsk.assigs.length; k++){
                 var asg = tsk.assigs[k];
                 if (asg.idrecurso == ass.idrecurso && ass.typeCost == "HORAS HOMBRE" && tsk.id != task.id){
@@ -926,7 +932,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
                   console.log(asg.idrecurso);
                   console.log(ass.idrecurso);
                   console.log(ass.typeCost);
-                  alert("Existe un recurso que ha sido asignado en mas de una actividad al mismo tiempo");
+				  alert('En la fila '+(j+1)+', la actividad '+tsk.name +' ya tiene asignado al recurso '+((asg.descripcion_recurso==null)?k+1:asg.descripcion_recurso)+' en fechas que comparten algunos dias de trabajo')
+                  //alert("Existe un recurso que ha sido asignado en mas de una actividad al mismo tiempo");
                   return false;
                 }
               }
