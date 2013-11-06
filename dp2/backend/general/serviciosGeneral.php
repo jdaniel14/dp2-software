@@ -51,14 +51,14 @@ function G_postRegistrarProyecto() {
                               VALUES (:nom, 
                                      :fi,
                                      :ff,
-                                     :tp, :est)";
+                                     :tp, \"ACTIVO\")";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
         $stmt->bindParam("fi", $proj->fi);
         $stmt->bindParam("ff", $proj->ff);
         $stmt->bindParam("tp", $proj->tp);
-        $stmt->bindParam("est", "ACTIVO");
+//        $stmt->bindParam("est", "ACTIVO");
         $stmt->execute();
         $proj->id = $db->lastInsertId();
 
