@@ -2,6 +2,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(cargaChart);
 var idProyecto=obtenerIdProyecto();
 var rootURL = "../../api/";
+obtenProyecto();
 
 function cargaChart(){
 	$("#indicador").val($("#comboIndicador").val());
@@ -18,7 +19,16 @@ $(function (){
 });
 
 
+function agregarDataProyecto(data){
 
+	proy=data;
+	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva);
+}
+
+
+function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva){
+	$("#nombreProyecto").html(nombreProyecto);
+}
 
 
 function obtenerIdProyecto(){

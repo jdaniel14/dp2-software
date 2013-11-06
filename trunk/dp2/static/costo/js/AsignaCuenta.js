@@ -6,7 +6,6 @@ var asientosContables = [];
 
 iniciaProyecto();	
 obtenAsientosContables()	
-iniciaCuentaxActividad();
 
 
 //Funciones para obtener datos de AJAX
@@ -85,6 +84,7 @@ function agregarDataProyecto(proyecto){
 }
 function crearArregloAsientosContables(data){
 	asientosContables = data.lista;
+	iniciaCuentaxActividad();
 }
 
 function agregaDataFila(data){
