@@ -71,7 +71,9 @@ function agregaFilaProyecto(arreglo,i){
 	if (arreglo["es"]=="CERRADO")
 	{
 		var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-		'</td><td>No Administrable</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cerrado!!!">CERRADO</a></td></tr>';
+		'</td><td><button type="button" class="btn btn-default" disabled>No Administrable</button>' + 
+		'</td><td><button type="button" class="btn btn-default" disabled>No Administrable</button>' + 
+		'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cerrado!!!">CERRADO</a></td></tr>';
 		$("#listaProyectos tbody").append(tbody);
 	}
 	else{
