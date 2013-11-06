@@ -1,6 +1,7 @@
 var rootURL = "../../api/G_listaProyecto";
 var listaObjetivos = "../../api/G_listarObjetivosPorProyecto/";
 var listaCostos = "../../api/G_devuelveCostoPorProyecto/";
+var establecerLineaBase = "../../api/G_establecerLineaBase/";
 var cerrarProyecto = "../../api/G_cerrarProyecto";
 var actualizarObjetivos = "../../api/G_actualizarCumpObjetivosPorProyecto";
 var idRol=localStorage.getItem("idRol");
