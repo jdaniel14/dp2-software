@@ -472,7 +472,7 @@ function G_postRegistraSolicitud() {
 }
 
 function G_getListaSolicitud() {
-    $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto as nombre_proy, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.motivo
+    $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto as nombre_proy, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio
 FROM SOLICITUD_CAMBIO S, MIEMBROS_EQUIPO M, EMPLEADO E, PROYECTO P
 WHERE S.id_proyecto = M.id_proyecto AND M.id_proyecto = P.id_proyecto AND M.id_rol = 2 AND M.id_empleado = E.id_empleado AND S.estado = 1";
     try {
@@ -486,8 +486,7 @@ WHERE S.id_proyecto = M.id_proyecto AND M.id_proyecto = P.id_proyecto AND M.id_r
                 "nomb_proy" => $p["nombre_proy"],
                 "nomb_jefe" => $p["nombre_jefe"],
                 "est" => $p["estado"],
-                "flag_cambio" => $p["flag_cambio"],
-                "motivo" => $p["motivo"],
+                "flag_cambio" => $p["flag_cambio"]
             );
             array_push($lista_solic, $sol);
         }
