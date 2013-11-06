@@ -7,11 +7,11 @@ var idRol=localStorage.getItem("idRol");
 
 if(idRol==1){
 	rootURL = "../../api/G_listaProyecto";
-	alert('hola');
+	//alert('hola');
 
 }else{
 	rootURL = '../../api/G_listaProyecto/'+localStorage.getItem("idUsuario");
-	alert('hola1');
+	//alert('hola1');
 }
 
 
@@ -32,6 +32,7 @@ function iniciaProyectos(){
 				var auxtd = $(this).closest("tr").find("td");
 				var idProyecto = auxtd[0].innerHTML;		
 				localStorage.setItem("idProyecto",idProyecto);
+				localStorage.setItem("nombreProyecto",nombreProyecto);
 				$(location).attr('href','MenuProyecto.html');
 			});
 			
@@ -50,10 +51,11 @@ function agregaDataFila(data){
 		agregaFilaProyecto(arreglo[i],i);
 	}
 		$(".btn.btn-danger").click(function(){
-		var auxtd = $(this).closest("tr").find("td");
-		var idProyecto = auxtd[0].innerHTML;		
-		alert(idProyecto + " ola k ase");
-		localStorage.setItem("idProyecto",idProyecto);
+			var auxtd = $(this).closest("tr").find("td");
+			var idProyecto = auxtd[0].innerHTML;		
+			//alert(idProyecto + " ola k ase");
+			localStorage.setItem("idProyecto",idProyecto);
+			localStorage.setItem("nombreProyecto",nombreProyecto);
 		});
 
 		$("[data-toggle=popover]").popover()
@@ -69,12 +71,14 @@ function agregaFilaProyecto(arreglo,i){
 	if (arreglo["es"]=="CERRADO")
 	{
 		var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-		'</td><td>No Administrable</td><td><a class="btn  btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cerrado!!!">CERRADO</a></td></tr>';
+		'</td><td>No Administrable</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cerrado!!!">CERRADO</a></td></tr>';
 		$("#listaProyectos tbody").append(tbody);
 	}
 	else{
 		var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-		'</td><td><button type="button" class="btn btn-primary">Administrar</button></td><td><button data-toggle="modal" id="'+arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
+		'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
+		'</td><td><button type="button" class="btn btn-warning">Establecer Línea Base</button>' + 
+		'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
 		$("#listaProyectos tbody").append(tbody);		
 	}
 }
