@@ -88,10 +88,11 @@ function main() {
             type: 'POST',
             url: "../../api/R_registrarAcuerdos",
             data: jsonData,
-            dataType: "json",
+           
             success: function() {
                 alert("Registrado con éxito");
-                     listarAcuerdos();
+                $("#tablaAcuerdosMod").html("");
+                listarAcuerdos();
            
 
             },
