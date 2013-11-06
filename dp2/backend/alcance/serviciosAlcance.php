@@ -102,6 +102,29 @@
 			date('Y-m-d H:i:s'),
 			$val["id_paquete_trabajo"]
 		));
+		$pstmt = $con->prepare("SELECT id_componente_padre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo = ?");
+		$pstmt->execute(array($val["id_paquete_trabajo"]));
+		if($res = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			if($res["id_componente_padre"] != null){
+				actualizaPadre($res["id_componente_padre"]);
+			}
+		}
+	}
+
+	function actualizaPadre($id_paquete){
+		$con= getConnection();
+		$pstmt = $con->prepare("SELECT SUM(costo) as costo, SUM(dias) as dias, id_componente_padre FROM PAQUETE_TRABAJO WHERE id_componente_padre = ?");
+		$pstmt->execute(array($id_paquete));
+		if($res = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$pstmt = $con->prepare("UPDATE PAQUETE_TRABAJO SET 
+			dias=?,
+			costo=?
+			WHERE id_paquete_trabajo=?");
+			$pstmt->execute(array($res["dias"],$res["costo"],$id_paquete));
+			if($res["id_componente_padre"]!= null){
+				actualizaPadre($res["id_componente_padre"]);
+			}
+		}
 	}
 
 	function getComboMiembrosEquipo($id_proyecto){
