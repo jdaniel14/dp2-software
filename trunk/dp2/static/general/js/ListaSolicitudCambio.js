@@ -15,15 +15,20 @@ function listaSolicitud(){
 		url: listarSolicitud,
 		dataType: "json", // data type of response
         success: function(data){
-        	console.log(data);
+        	//console.log(data);
             agregaDataFila(data);
 
             $(".btn.btn-primary").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
 				var idProyecto = auxtd[0].innerHTML;
-				var nombreProyecto = auxtd[1].innerHTML;				
+				var nombreProyecto = auxtd[1].innerHTML;
+				var idSolicitud = auxtd[2].innerHTML;	
 
-				visualizaSolicitud(idProyecto,nombreProyecto);
+				localStorage.setItem("idProyecto",idProyecto);
+				localStorage.setItem("nombreProyecto",nombreProyecto);
+				localStorage.setItem("idSolicitud",idSolicitud);
+
+				visualizaSolicitud();
 			});
         }
 	});
@@ -45,7 +50,8 @@ function agregaFilaSolicitud(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["id_proy"] + '</td><td>' + arreglo["nomb_proy"] + '</td><td>' + arreglo["nomb_jefe"] + '</td><td>' + arreglo["est"] + 
+	var tbody = '<tr><td>'+ arreglo["id_sol"] + '</td><td>' + arreglo["id_proy"] +
+	'</td><td>' + arreglo["nomb_proy"] + '</td><td>' + arreglo["nomb_jefe"] + '</td><td>' + arreglo["est"] + 
 	'</td><td><a data-toggle="modal" href="#myModal" id="btnVer" class="btn btn-primary">Ver</a></td></tr>';
 	//tbody += '<tr style = "display:none"></tr>'
 	$("#ListaSolicitudes tbody").append(tbody);
@@ -55,12 +61,12 @@ function agregaFilaSolicitud(arreglo,i){
 
 //Visualiza una solicitud de la lista
 
-function visualizaSolicitud(idProyecto,nombreProyecto){
-	$("#nombreProyecto").val(nombreProyecto);
+function visualizaSolicitud(){
+	$("#nombreProyecto").val(localStorage.getItem("nombreProyecto"));
 
 	$.ajax({
 		type: 'GET',
-		url: visualizarSolicitud + idProyecto,
+		url: visualizarSolicitud + localStorage.getItem("idProyecto"),
 		dataType: "json", // data type of response
         success: function(data){            
           	var cad = data["flag_cambio"].toString();
@@ -78,7 +84,7 @@ function visualizaSolicitud(idProyecto,nombreProyecto){
 }
 
 
-//Se acepta la solicitud
+//Se acepta o rechaza la solicitud
 
 $("#btnAprobar").click(function(){
 	if (confirm("¿Está seguro que desea aprobar la solicitud de cambio?")){
@@ -96,6 +102,7 @@ $("#btnRechazar").click(function(){
 
 function apruebaSolicitud(flag){
 	var jsonCliente = {
+		idProyecto  : localStorage.getItem("idProyecto"),
 		flag_Cambio : flag
     };
 
