@@ -505,9 +505,21 @@ function G_postAceptDenegSolicitud() {
         $db = getConnection();
 
         $id_proy = $solicitud->id_proy;
-        $sql = "UPDATE SOLICITUD_CAMBIO SET estado = 2 WHERE id_proyecto = :id_proy";
+        $id_sol = $solicitud->id_sol;
+        $id_flag_cambio = $solicitud->id_flag_cambio;
+				if($id_flag_cambio == 1)
+					$flag = 2;//aceptado
+				else 
+					$flag = 3;//denegado
+        $sql = "UPDATE SOLICITUD_CAMBIO SET estado = :flag WHERE id_solicitud_cambio = :id_sol";
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("id_proy", $id_proy);
+        $stmt->bindParam("id_sol", $id_sol);
+        $stmt->bindParam("flag", $flag);
+        $stmt->execute();
+			
+				if($flag == 2)
+					$sql = "UPDATE PROYECTO SET flag_linea_base_editable = 1 WHERE id_proyecto = :id_proy";
+        $stmt = $db->prepare($sql);
         $stmt->execute();
 
         $db = null;
@@ -542,4 +554,5 @@ function G_getVisualizarSolicitud($id){
     }    
 
 }
+
 ?>
