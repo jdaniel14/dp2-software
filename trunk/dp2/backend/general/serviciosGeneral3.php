@@ -507,7 +507,7 @@ function G_postAceptDenegSolicitud() {
 
         $id_proy = $solicitud->id_proy;
         $id_sol = $solicitud->id_sol;
-        $id_flag_cambio = $solicitud->id_flag_cambio;
+        $id_flag_cambio = $solicitud->flag;
 				if($id_flag_cambio == 1)
 					$flag = 2;//aceptado
 				else 
@@ -521,6 +521,7 @@ function G_postAceptDenegSolicitud() {
 				if($flag == 2)
 					$sql = "UPDATE PROYECTO SET flag_linea_base_editable = 1 WHERE id_proyecto = :id_proy";
         $stmt = $db->prepare($sql);
+        $stmt->bindParam("id_proy", $id_proy);
         $stmt->execute();
 
         $db = null;
