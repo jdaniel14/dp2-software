@@ -17,7 +17,7 @@
 	$app->put('/R_confirmarRiesgo/:id', 'R_setConfirmarRiesgo');
 	$app->put('/R_confirmarRiesgos/:var', 'R_setConfirmarRiesgos');
 	$app->put('/R_eliminarLogicoRiesgo/:id', 'R_deleteLogicoRiesgo');
-	$app->delete('/R_eliminarFisicoRiesgo:id', 'R_deleteFisicoRiesgo');
+	$app->delete('/R_eliminarFisicoRiesgo/:id', 'R_deleteFisicoRiesgo');
 
 
 	//Registrar configuracion 
