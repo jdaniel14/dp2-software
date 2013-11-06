@@ -141,10 +141,10 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 		$.ajax({
 			type: 'DELETE',
 			url: deleteAllTypeImpactsXLevelImpacts + '/' + idProyecto,
-			dataType: "json",
+			
 			success: function(data){
 				var item = data;
-				alert("Se registró exitosamente el nivel " + item.descripcion);
+				alert(item);
 				listarTiposImpactosXNivelImpactos();
 				$('#modalEliminarTipoImpactoXNivelImpacto').modal('hide');
 			},
@@ -189,7 +189,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 				dataType: "json",
 				success: function(data){
 					var item = data;
-					alert("Se registró exitosamente el nivel " + item.descripcion);
+					alert("Se registró exitosamente el nivel");
 					listarTiposImpactosXNivelImpactos();
 					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
 				},
