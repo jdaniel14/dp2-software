@@ -58,29 +58,25 @@ Precondicion -> EDTARBOL
 	class Requisito {
 		public $idrequisito;
 		public $descripcion;
-		public $fecha;
 		public $solicitado;
 		public $cargo;
 		public $fundamento;
 		public $idprioridadR;
 		public $idestadoR;
-		public $entregable;
 		public $criterioAceptacion;
 		public $idmiembros;
 		public $nombre;
 		public $apellido;
 		
-		function __construct($id_requisito,$descripcion,$fecha_termino,$solicitud,$cargo,$fundamento_incorporacion,
-    			$id_prioridad_requisito,$id_estado_requisito,$entregable,$criterio_aceptacion,$id_miembros_equipo,$nombre,$apellido){
+		function __construct($id_requisito,$descripcion,$solicitud,$cargo,$fundamento_incorporacion,
+    			$id_prioridad_requisito,$id_estado_requisito,$criterio_aceptacion,$id_miembros_equipo,$nombre,$apellido){
 			$this->idrequisito=$id_requisito;
 			$this->descripcion=$descripcion;
-			$this->fecha=$fecha_termino;
 			$this->solicitado=$solicitud;
 			$this->cargo=$cargo;
 			$this->fundamento=$fundamento_incorporacion;
 			$this->idprioridadR=$id_prioridad_requisito;
 			$this->idestadoR=$id_estado_requisito;
-			$this->entregable=$entregable;
 			$this->criterioAceptacion=$criterio_aceptacion;
 			$this->idmiembros=$id_miembros_equipo;
 			$this->nombre=$nombre;
@@ -103,5 +99,23 @@ Precondicion -> EDTARBOL
 				$this->email=$email;
 			}
 		}
+		
+		
+	class RequisitoXFase{	
+		public $idRequisito;
+		public $entregable;
+		public $fecha;
+		public $idFase;
+		public $descFase;
+		
+		function __construct($id,$entre,$fecha,$idFase,$desc){
+			$this->idRequisito=$id;
+			$this->entregable=$entre;
+			$this->fecha=$fecha;
+			$this->idFase=$idFase;
+			$this->descFase=$desc;
+		}
+	}
+	
 
 ?>
