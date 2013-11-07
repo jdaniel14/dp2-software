@@ -4,6 +4,9 @@
 	include ('modelAlcance.php');
 	include_once '../backend/conexion.php';
 	require_once("../dompdf/dompdf_config.inc.php");
+	require_once ("../phpexcel/Classes/PHPExcel.php");
+	require_once ("../phpexcel/Classes/PHPExcel/IOFactory.php");
+	require_once ("../phpexcel/Classes/PHPExcel/Writer/Excel2007.php");
 
 	function getConexionLocal(){
 		$con=mysqli_connect("127.0.0.1:3307","usuario","usuario.2013.","dp2");
@@ -436,6 +439,8 @@
 		$pstmt->execute(array($cambio["idproyecto"],$cambio["descripcion"],date('Y-m-d H:i:s'),$cambio["id_estado"],$cambio["id_miembros_equipo"]));
 	}
 
+	//CUARTO SPRINT
+	
 	function generarPDF(){
 		$request = \Slim\Slim::getInstance()->request();
 		$val = $request->params();
@@ -477,6 +482,106 @@
 			$html = str_replace("{" . $key . "}", $value, $html);
 		}
 		return $html;
+	}
+
+
+	function generarExcel(){
+
+		//Se crea el Excel
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setTitle("Diccionario de datos")
+                 					 ->setSubject("Diccionario de datos")
+                					 ->setDescription("Información del diccionario de datos");
+
+    	$objPHPExcel->setActiveSheetIndex(0);
+
+		//Conseguir el id de edt con el id del proyecto
+
+    	$request = \Slim\Slim::getInstance()->request();
+		$val = $request->params();
+		$id_proyecto = $val["id_proyecto"];
+		$con=getConnection();
+
+		$pstmt = $con->prepare("SELECT id_edt FROM EDT WHERE id_proyecto =? ORDER BY id_edt DESC");
+		$pstmt->execute(array($id_proyecto));
+
+		$id_edt; 
+
+		if($result = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$id_edt=$result["id_edt"];	
+		}
+
+
+		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), P.ultima_actualizacion, E.descripcion as estado  ".
+			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
+			"WHERE E.id_estado = P.id_estado AND P.id_edt= ? 
+			AND (SELECT count(*) FROM PAQUETE_TRABAJO WHERE id_componente_padre = P.id_paquete_trabajo) = 0");
+		$pstmt->execute(array($id_edt));
+		$lista = array();
+
+		$paquete = $pstmt->fetchall(PDO::FETCH_ASSOC);
+		
+		print_r($paquete);
+
+		$objPHPExcel->getActiveSheet()
+                    ->fromArray($paquete,NULL,'B3');
+
+        //Se crea la cabecera del documento y se da formato 
+
+        $styleArray = array(
+        'alignment' => array(
+             'wrap' => true,
+             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+        ),
+    	'font'  => array(
+        	'bold'  => true,
+        	'color' => array('rgb' => '1D56A1'),
+        	'size'  => 14,
+    	),
+  		'borders' => array(
+    		'allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+  		)
+
+    	);
+
+
+        $styleComun = array(
+    	'borders' => array(
+    		'allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+  		)
+
+    	);  	
+
+
+	    $objPHPExcel->getActiveSheet()->setCellValue("B3", 'Id');
+	    $objPHPExcel->getActiveSheet()->setCellValue("C3", 'Paquete de trabajo');
+		$objPHPExcel->getActiveSheet()->setCellValue("D3", 'Descripción');
+	    $objPHPExcel->getActiveSheet()->setCellValue("E3", 'Versión');
+	    $objPHPExcel->getActiveSheet()->setCellValue("F3", 'Última actualización');
+	    $objPHPExcel->getActiveSheet()->setCellValue("G3", 'Estado');
+
+	    $objPHPExcel->getActiveSheet()->getStyle('B3')->applyFromArray($styleArray);
+	    $objPHPExcel->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
+	    $objPHPExcel->getActiveSheet()->getStyle('D3')->applyFromArray($styleArray);
+	    $objPHPExcel->getActiveSheet()->getStyle('E3')->applyFromArray($styleArray);
+	    $objPHPExcel->getActiveSheet()->getStyle('F3')->applyFromArray($styleArray);
+	    $objPHPExcel->getActiveSheet()->getStyle('G3')->applyFromArray($styleArray);
+
+
+	    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);
+	    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+	    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);
+	    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+
+        
+        echo date('H:i:s') . " Se ha generado el documento en la carpeta files\n";
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->save('../files/archivoDiccionario.xlsx');	
+
 	}
 
 ?>

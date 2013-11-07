@@ -28,6 +28,8 @@ function cargaLista(data){
 }
 
 $(document).ready(function(){
+	$("#exportarAExcel").attr("href","../../api/AL_getExcel?id_proyecto="+id_proyecto);
+	
 	var obj={
 		id_proyecto : id_proyecto
 	}

@@ -36,5 +36,6 @@
 
 //Sprint 4!
 	$app->get('/AL_getPDF','generarPDF');
+	$app->get('/AL_getExcel','generarExcel');
 
 ?>
