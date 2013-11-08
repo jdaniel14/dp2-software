@@ -170,6 +170,7 @@ function agregarDataProyecto(data){
 	if (data!=null){
 		proy=data;
 		agregaDatosProyecto( proy.nombre);
+		verificaEditable(proy.indicadorCerrado, proy.indicadorLineaBase);
 	}
 }
 
@@ -612,6 +613,16 @@ function cambiaConsultar(){
 
 //Fin de funciones para el uso del sidebar
 
+//Funcion para saber si se edita o no
+
+function verificaEditable(indicadorCerrado, indicadorLineaBase){
+
+	if (indicadorCerrado=="1" || indicadorLineaBase=="1"){
+	
+		$("#btnEditar").hide();
+		$("#btnGrabar").hide();
+	}
+}
 
 //Limpia la tabla
 
