@@ -165,14 +165,6 @@ function iniciaRecursosFijos(){
 
 }
 
-function iniciaConfirmaRecursos(){
-	limpiaTablaRecursos();
-	obtenMoneda();
-	iniciaProyecto();			
-	obtenRecursos(/*idProyecto,*/1);
-	//agregaDataFila( arreglo, 1 );
-
-}
 
 function agregaDataFila(data, tipo){
 	arreglo=data.lista;
@@ -203,14 +195,13 @@ function iniciaProyecto(){
 function agregarDataProyecto(data){
 
 	proy=data;
-	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva);
+	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva,proy.indicadorCerrado, proy.indicadorLineaBase);
 }
 
 function iniciaActividades(){
 
 	$("#listado").append('<li>Costo unitario y resumen</li>');
-	$("#listado").append('<li class="active"><a href="javascript:cambiaCostoUnitario();">Costos unitarios por recurso</a></li>');
-	if(puedeConfirmar=='1') $("#listado").append('<li class="active"><a href="javascript:cambiaConfirmaPresupuesto();">Confirmar presupuesto</a></li>');
+	$("#listado").append('<li class="active"><a href="javascript:cambiaCostoUnitario();">Reservas del proyecto</a></li>');
 	$("#listado").append('<li>Resumen por actividad</li>');
 	
 	obtenActividades(/*idProyecto*/);	
@@ -252,7 +243,7 @@ function agregaDataFilaResumen(datosActividad){
 	}	
 }
 
-function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva){
+function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva, indCerrado, indLineaBase){
 	$("#nombreProyecto").html(nombreProyecto);
 	$("#inputMontoSinReserva").val(montoSinReserva);
 	$("#inputReserva").val(porcentajeReserva);
@@ -260,6 +251,20 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 	var reseForm=reseTotal.toFixed(2);
 	$("#reservaTotal").val(reseForm);
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	
+	if (indCerrado=="1" || indLineaBase=="1"){
+	
+		$("#inputReserva").attr('disabled', 'disabled');
+		$("#inputReserva").attr('readOnly', 'readOnly');
+		$("#btnGrabar").hide();
+		$("#btnCancelar").hide();
+	}else{
+		$("#inputReserva").removeAttr('disabled');
+		$("#inputReserva").removeAttr('readOnly');
+		$("#btnGrabar").show();
+		$("#btnCancelar").show();
+	}
+	
 }
 
 function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
@@ -437,21 +442,7 @@ function cambiaCostoUnitario(){
 	iniciaRecursos();
 	$("#inputReserva").removeAttr('disabled');
 	$("#inputReserva").removeAttr('readOnly');
-	$("#btnGrabar").show();
-	$("#btnCancelar").show();
-	$("#btnConfirmar").hide();
-}
-
-function cambiaConfirmaPresupuesto(){
 	
-	$("#AsignarCostosRecursos").show();
-	$("#ResumenCostosRecursos").hide();
-	iniciaConfirmaRecursos();
-	$("#inputReserva").attr('disabled', 'disabled');
-	$("#inputReserva").attr('readOnly', 'readOnly');
-	$("#btnGrabar").hide();
-	$("#btnCancelar").hide();
-	$("#btnConfirmar").show();
 }
 
 //Fin de funciones para el uso del sidebar
