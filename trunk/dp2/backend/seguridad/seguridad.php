@@ -23,7 +23,7 @@ class Menu {
 	private $listaSubmenu;
 	
 	function Menu() {
-
+		
 	}
 
 	
