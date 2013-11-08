@@ -47,11 +47,11 @@ function G_postRegistrarProyecto() {
         $sql = "INSERT INTO PROYECTO (nombre_proyecto, 
                                       fecha_inicio_planificada,
                                       fecha_fin_planificada, 
-                                      id_tipo_proyecto, estado) 
+                                      id_tipo_proyecto, estado, flag_linea_base_editable) 
                               VALUES (:nom, 
                                      :fi,
                                      :ff,
-                                     :tp, \"ACTIVO\")";
+                                     :tp, \"ACTIVO\", 0)";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
@@ -100,7 +100,9 @@ function G_getListaProyecto($id) {
                         T.nombre_tipo_proyecto, 
                         DATE(P.fecha_inicio_planificada) as fi, 
                         DATE(P.fecha_fin_planificada) as ff,
-                        P.estado as es 
+                        P.estado as es ,
+                        P.flag_linea_base_editable as flag_lb,
+                        P.linea_base_fecha_inicio as fecha_lb
                 FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
                 WHERE P.id_proyecto = M.id_proyecto 
                 AND E.id_empleado = M.id_empleado 
@@ -116,31 +118,18 @@ function G_getListaProyecto($id) {
                         $stmt->execute();		
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-                                         $proj = array("id"=>$p["id_proyecto"],
-                                                        "nom"=>$p["nombre_proyecto"],
-                                                        "jp"=> $p["nombres"],
-                                                        "tp"=> $p["nombre_tipo_proyecto"],
-                                                        "fi"=>$p["fi"],
-                                                        "ff"=>$p["ff"],
-                                                         "es"=>$p["es"]);
-                                        array_push($lista_project, $proj);
-
-            /* $proj = array("id"=>utf8_encode($p["id_proyecto"]),
-              "nom"=>utf8_encode( $p["nombre_proyecto"]),
-              "jp"=>utf8_encode( $p["nombres"]),
-              "tp"=>utf8_encode( $p["nombre_tipo_proyecto"]),
-              "fi"=>utf8_encode( $p["fi"]),
-              "ff"=>utf8_encode($p["ff"]),
-              "es"=>utf8_encode( "Ok")); */
-            $proj = array("id" => $p["id_proyecto"],
-                "nom" => $p["nombre_proyecto"],
-                "jp" => $p["nombres"],
-                "tp" => $p["nombre_tipo_proyecto"],
-                "fi" => $p["fi"],
-                "ff" => $p["ff"],
-                "es" => $p["es"]);
-            array_push($lista_project, $proj);
-        }
+                 $proj = array("id"=>$p["id_proyecto"],
+                                "nom"=>$p["nombre_proyecto"],
+                                "jp"=> $p["nombres"],
+                                "tp"=> $p["nombre_tipo_proyecto"],
+                                "fi"=>$p["fi"],
+                                "ff"=>$p["ff"],
+                                "es"=>$p["es"],
+                                "flag_lb"=>$p["flag_lb"],
+                                "fecha_lb"=>$p["fecha_lb"]
+                                );
+                array_push($lista_project, $proj);
+            }
 
         $db = null;
         echo json_encode(array("prs" => $lista_project));
@@ -159,7 +148,9 @@ function G_getListaProyecto($id) {
                         T.nombre_tipo_proyecto, 
                         DATE(P.fecha_inicio_planificada) as fi, 
                         DATE(P.fecha_fin_planificada) as ff,
-                        P.estado as es 
+                        P.estado as es ,
+                        P.flag_linea_base_editable as flag_lb,
+                        P.linea_base_fecha_inicio as fecha_lb
                 FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
                 WHERE P.id_proyecto = M.id_proyecto 
                 AND E.id_empleado = M.id_empleado 
@@ -180,7 +171,9 @@ function G_getListaProyecto($id) {
                                                         "tp"=> $p["nombre_tipo_proyecto"],
                                                         "fi"=>$p["fi"],
                                                         "ff"=>$p["ff"],
-                                                         "es"=>$p["es"]);
+                                                         "es"=>$p["es"],
+                                                        "flag_lb"=>$p["flag_lb"],
+                                                        "fecha_lb"=>$p["fecha_lb"]);
                                         array_push($lista_project, $proj);
 
                                         
