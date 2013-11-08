@@ -71,20 +71,26 @@ function agregaFilaProyecto(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	if (arreglo["es"]=="CERRADO")
-	{
+	if (arreglo["es"]=="CERRADO") {
 		var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
 		'</td><td><button type="button" class="btn btn-default" disabled>No Administrable</button>' + 
 		'</td><td><button type="button" class="btn btn-default" disabled>No Administrable</button>' + 
-		'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cerrado!!!">CERRADO</a></td></tr>';
+		'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cierre">CERRADO</a></td></tr>';
 		$("#listaProyectos tbody").append(tbody);
-	}
-	else{
-		var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
-		'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
-		'</td><td><button type="button" class="btn btn-warning">Establecer Línea Base</button>' + 
-		'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
-		$("#listaProyectos tbody").append(tbody);		
+	} else {
+		if (arreglo["flag_lb"]==1) {
+			var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
+			'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
+			'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Linea Base cerrada el día "' + arreglo["fecha_lb"] + '" data-original-title="Cierre">Establecer Línea Base</button>' + 
+			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
+			$("#listaProyectos tbody").append(tbody);
+		} else {
+			var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
+			'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
+			'</td><td><button type="button" class="btn btn-warning">Establecer Línea Base</button>' + 
+			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
+			$("#listaProyectos tbody").append(tbody);
+		}				
 	}
 }
 
