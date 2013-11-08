@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Fases del Proyecto</title>
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/alcance/css/diccionario.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="header"></div>
+
+    <div class="container">
+      <div class="h1-title">
+        <h1 id="nombre_proyecto">Proyecto 1</h1>
+      </div>
+      <div class="h2-title">
+        <h2>Fases del proyecto</h2>
+      </div>  
+      <div class="container">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="header-fases">
+              <th>Id</th>
+              <th>Descripción</th>
+              <th colspan="1" style="display:true">Acciones</th>
+            </thead>
+            <tbody class="cuerpo-tabla" id="listaFases">
+                
+            </tbody>
+          </table>
+        </div>
+        <div class="pull-right col-md-offset-10">
+          <button type="button" id="agregar" class="btn btn-default btn-md">
+            Agregar Fase <span class="glyphicon glyphicon-plus-sign"></span>
+          </button>
+        </div>
+        <div class="col-md-2">
+          <button type="button" id="guardarCambios" class="btn btn-default btn-md">
+            Guardar Cambios
+          </button>
+        </div>       
+      </div>  
+    </div>
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/alcance/js/validation.js"></script>
+    <script src="../../static/alcance/js/fases.js"></script>
+    <script src="../../assets/js/header.js"></script>
+  </body>
+</html>

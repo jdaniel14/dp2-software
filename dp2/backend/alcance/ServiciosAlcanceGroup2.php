@@ -581,7 +581,7 @@ function getEdt(){
     	
     	$con = getConnection(); // Accedo a los datos de las fases desde la BD
     	$pstmt= $con->prepare("SELECT id_fase,descripcion from FASE WHERE id_proyecto = ? ");
-    	$pstmt->execute(array($idProyecto));
+    	$pstmt->execute(array($idproyecto));
     	$arrFase = $pstmt->fetch(PDO::FETCH_ASSOC);
     	
     	echo json_encode($arrFase);

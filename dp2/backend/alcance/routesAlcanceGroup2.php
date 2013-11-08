@@ -19,10 +19,10 @@
 	
 	//Fases
 	$app->post('/AL_guardarFases','guardarFases'); //ver esto bien ya que uso row y row2 y no se si funciona
-	$app->post('AL_mostrarFases','mostrarFases');
-	$app->post('AL_modificarFases','modificarFases');
-	$app->post('AL_eliminarFase','eliminarFase');
+	$app->post('/AL_mostrarFases','mostrarFases');
+	$app->post('/AL_modificarFases','modificarFases');
+	$app->post('/AL_eliminarFase','eliminarFase');
 	
-	$app->post('AL_mostrarRequisitoXFase','requisitoXFase');
-	$app->post('AL_modificarRequistoXFase','modificarRequisitoXFase');
+	$app->post('/AL_mostrarRequisitoXFase','requisitoXFase');
+	$app->post('/AL_modificarRequistoXFase','modificarRequisitoXFase');
 ?>
