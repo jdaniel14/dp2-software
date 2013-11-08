@@ -29,7 +29,7 @@
 }*/
 
 	function getConnection() {
-		  $dbhost="127.0.0.1";
+		  $dbhost="127.0.0.1:10800";
 		  $dbuser="usuario";
 		  $dbpass="usuario.2013.";
 		  $dbname="dp2";

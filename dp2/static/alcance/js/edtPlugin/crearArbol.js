@@ -4,7 +4,7 @@ function repaint(){
                 $("#chart").html("");
                 $("#org").jOrgChart({
                     chartElement : '#chart',
-                    dragAndDrop  : true
+                    dragAndDrop  : false
                 });
 
                 $( "#chart" ).keypress(function( event ) {

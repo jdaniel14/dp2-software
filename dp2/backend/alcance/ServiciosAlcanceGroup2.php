@@ -245,6 +245,7 @@ function getEdt(){
         guardarHijos($row->{"nodos"},$edt["id_estado"],$edt["id_miembros_equipo"],$edt["id_edt"],$version,$idPadre);
       }
        
+       echo '{"me":""}';
       //cambiaVersion($edt["id_edt"],$version,$edt["id_paquete_trabajo_inicial"]);
     }
     
