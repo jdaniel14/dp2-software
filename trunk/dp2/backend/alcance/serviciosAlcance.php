@@ -517,12 +517,17 @@
 			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
 			"WHERE E.id_estado = P.id_estado AND P.id_edt= ? 
 			AND (SELECT count(*) FROM PAQUETE_TRABAJO WHERE id_componente_padre = P.id_paquete_trabajo) = 0");
+		//cambiar el sql anterior por el siguiente
+		//hacer cruce con otras tablas para sacar las descripciones deestado o miembros_equipo
+		//quitar el * y poner los campos que sean necesarios
+		//$pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE (SELECT count(*) FROM PAQUETE_TRABAJO WHERE id_componente_padre = P.id_paquete_trabajo) = 0");
+
 		$pstmt->execute(array($id_edt));
 		$lista = array();
 
 		$paquete = $pstmt->fetchall(PDO::FETCH_ASSOC);
 		
-		print_r($paquete);
+		//print_r($paquete);
 
 		$objPHPExcel->getActiveSheet()
                     ->fromArray($paquete,NULL,'B3');
@@ -554,7 +559,6 @@
 
     	);  	
 
-
 	    $objPHPExcel->getActiveSheet()->setCellValue("B3", 'Id');
 	    $objPHPExcel->getActiveSheet()->setCellValue("C3", 'Paquete de trabajo');
 		$objPHPExcel->getActiveSheet()->setCellValue("D3", 'Descripción');
@@ -562,6 +566,7 @@
 	    $objPHPExcel->getActiveSheet()->setCellValue("F3", 'Última actualización');
 	    $objPHPExcel->getActiveSheet()->setCellValue("G3", 'Estado');
 
+	    //se puede acceder a varias celdas a la vez usando rango tipo excel ('B3:G3')
 	    $objPHPExcel->getActiveSheet()->getStyle('B3')->applyFromArray($styleArray);
 	    $objPHPExcel->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
 	    $objPHPExcel->getActiveSheet()->getStyle('D3')->applyFromArray($styleArray);
@@ -578,10 +583,12 @@
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
 
         
-        echo date('H:i:s') . " Se ha generado el documento en la carpeta files\n";
+        //echo date('H:i:s') . " Se ha generado el documento en la carpeta files\n";
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-		$objWriter->save('../files/archivoDiccionario.xlsx');	
-
+		$objWriter->save('../files/archivoDiccionario.xlsx');
+		//setear el response como stream de bytes
+		\Slim\Slim::getInstance()->response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		return file_get_contents('../files/archivoDiccionario.xlsx');
 	}
 
 ?>
