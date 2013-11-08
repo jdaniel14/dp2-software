@@ -47,7 +47,7 @@ function obtenRecursos(){
 	}
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_obtenerCostoFijoRealProyecto/'+JSON.stringify(obj),		
+		url: rootURL + 'CO_obtenerCostoFijoPlaneadoProyecto/'+JSON.stringify(obj),		
 		dataType: "json",
 		async: true,
 		success:function(data){agregaDataFila(data);}
@@ -78,7 +78,7 @@ var newdiv = '<div class="panel panel-default">'+
 '	  <div id="nodoCostoFijo'+i+'" class="panel-collapse in" style="height: auto;">'+
 '	  <div class="panel-body"> '+
 '	  <div class="panel panel-default">'+ 'Costo fijo total: '+costoFijoTotal+' ' + moneda+'<br>' + costoFijoDiario + ' ' + moneda +
-' diario <br>' + 'Desde: ' + fechaInicio + ' Hasta: ' + fechaFin;
+' diario ';
 '	  </div>'+
 '	  </div>'+
 '	  </div>'+
