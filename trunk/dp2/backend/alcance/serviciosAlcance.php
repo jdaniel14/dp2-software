@@ -4,9 +4,9 @@
 	include ('modelAlcance.php');
 	include_once '../backend/conexion.php';
 	require_once("../dompdf/dompdf_config.inc.php");
-	/*require_once ("../phpexcel/Classes/PHPExcel.php");
+	require_once ("../phpexcel/Classes/PHPExcel.php");
 	require_once ("../phpexcel/Classes/PHPExcel/IOFactory.php");
-	require_once ("../phpexcel/Classes/PHPExcel/Writer/Excel2007.php");*/
+	require_once ("../phpexcel/Classes/PHPExcel/Writer/Excel2007.php");
 
 	function getConexionLocal(){
 		$con=mysqli_connect("127.0.0.1:3307","usuario","usuario.2013.","dp2");
