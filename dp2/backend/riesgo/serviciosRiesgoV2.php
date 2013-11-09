@@ -235,9 +235,15 @@
             $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
             array_push($arregloLinea,$data);
             foreach($arregloNivel as $valorNivel){
-                $query = "SELECT id_riesgo_x_proyecto FROM RIESGO_X_PROYECTO WHERE id_proyecto=:idProyecto AND id_probabilidad_riesgo=:probabilidad AND id_nivel_impacto=:impacto";
+                $query = "SELECT a.id_riesgo_x_proyecto FROM RIESGO_X_PROYECTO a
+                    INNER JOIN PROBABILIDAD_RIESGO b ON b.id_proyecto = a.id_proyecto
+                    INNER JOIN NIVEL_IMPACTO c ON c.id_proyecto = a.id_proyecto
+                    WHERE b.id_probabilidad_riesgo = a.id_probabilidad_riesgo
+                    AND c.id_nivel_impacto = a.id_nivel_impacto
+                    AND a.id_proyecto = :idProyecto AND b.nivel = :probabilidad AND c.nivel = :impacto
+                    ORDER BY 1 ASC";
                 try{
-                    $arregloRiesgos= array();
+                    $arregloRiesgos = "";
                     $db=getConnection();
                     $stmt = $db->prepare($query);
                     $stmt->bindParam("idProyecto", $idProyecto);
@@ -245,8 +251,13 @@
                     $stmt->bindParam("impacto", $valorNivel['nivel']);
                     $stmt->execute();
                     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                        $data= array("idRiesgo" => $row['id_riesgo_x_proyecto']);
-                        array_push($arregloRiesgos,$data);
+                        $data= strval($row['id_riesgo_x_proyecto']);
+                        if ($arregloRiesgos == ""){
+                            $arregloRiesgos = $data;
+                        }
+                        else{
+                            $arregloRiesgos = $arregloRiesgos.", ".$data;
+                        }
                     }
                     $db = null;
                 } catch(PDOException $e){
