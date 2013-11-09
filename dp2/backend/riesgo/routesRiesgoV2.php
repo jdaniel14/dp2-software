@@ -13,7 +13,8 @@
 	$app->delete('/R_eliminarHeaderImpactoRiesgo/:id','R_deleteHeaderImpacto');
 
 	//CREACION MATRIZ
-	$app->get('/R_crearMatriz/:id','R_getGenerarMatriz');
+	$app->get('/R_crearMatrizPositivo/:id','R_getGenerarMatrizPositivo');
+	$app->get('/R_crearMatrizNegativo/:id','R_getGenerarMatrizNegativo');
 
 	//ESTRATEGIAS
 	$app->get('/R_listarEstrategiasPositivo/:id','R_getEstrategiasPositivo');
