@@ -59,6 +59,7 @@ function G_postRegistrarProyecto() {
         $stmt->bindParam("fi", $proj->fi);
         $stmt->bindParam("ff", $proj->ff);
         $stmt->bindParam("tp", $proj->tp);
+        
 //        $stmt->bindParam("est", "ACTIVO");
         $stmt->execute();
         $proj->id = $db->lastInsertId();
@@ -69,19 +70,22 @@ function G_postRegistrarProyecto() {
                                             fecha_salida,
                                             id_rol,
                                             id_profesion_actual,
-                                            estado)
+                                            estado,
+                                            costo_empleado)
                                      VALUES (:id_proy,
                                             :jp,
                                             :fi,
                                             :ff,
                                             2,
                                             1,
-                                            1)";
+                                            1,
+                                            :hh)";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $proj->id);
         $stmt->bindParam("jp", $proj->jp);
         $stmt->bindParam("fi", $proj->fi);
         $stmt->bindParam("ff", $proj->ff);
+        $stmt->bindParam("hh", $proj->hh);
         $stmt->execute();
         $db = null;
         echo json_encode(array("me" => "", "id" => $proj->id));

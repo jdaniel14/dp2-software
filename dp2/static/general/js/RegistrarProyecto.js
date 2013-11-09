@@ -18,10 +18,51 @@ function cargarComboJefeProyecto(){
 				opt.html(data[obj]["nom"]);
 				$("#jefeProyecto").append(opt);
 			}
+			cargarComboProfesionRecurso();
 		}
 	});
 }
-
+function cargarComboProfesionRecurso(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_listaProfesionRecurso',
+		dataType: "json",
+		async:true,
+		contentType: "application/json; charset=utf-8",
+		success:function(data){
+			var l_profesion = data["profesiones"];
+			for(obj in l_profesion){
+				var opt = $("<option></option>");
+				opt.val(l_profesion[obj]["id"]);
+				opt.html(l_profesion[obj]["nom"]);
+				$("#profesion").append(opt);
+			}
+		}
+	});
+}
+function selectProfesion(){
+	var colaborador = $("#jefeProyecto").val();
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_devuelveProfesion/'+ colaborador,
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success:muestraProfesion
+	});
+}
+function muestraProfesion(data){
+	if (data!=null){
+		idProfesion=data["idProfesion"];
+		profesiones=data["profesiones"];
+	}
+	for(obj in profesiones){
+		var opt = $("<option></option>");
+		opt.val(profesiones["id"]);
+		opt.html(profesiones["nom"]);
+		$("#profesion").append(opt);
+	}			
+	
+}
 function cargarComboTipoProyecto(){
 	$.ajax({
 		type: 'GET',
@@ -52,7 +93,8 @@ function registrarProyectos(){
 		jp  : $("#jefeProyecto").val(),
 		tp  : $("#tipoProyecto").val(),
 		fi  : $("#fechaInicio").val(),
-		ff  : $("#fechaFin").val()
+		ff  : $("#fechaFin").val(),
+		hh  : $("#costohh").val()
     };
 
     $.ajax({

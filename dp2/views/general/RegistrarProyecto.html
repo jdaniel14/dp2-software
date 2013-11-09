@@ -52,7 +52,7 @@
 			  <!-- Jefe de Proyecto -->
 			  <label class="col-lg-4 control-label" for="jefeProyecto">Jefe de Proyecto:</label>
 			  <div class="controls col-lg-6">
-				<select class="form-control" id="jefeProyecto" name="jefeProyecto" placeholder="" class="input-xlarge">
+				<select onchange="selectProfesion()" class="form-control" id="jefeProyecto" name="jefeProyecto" placeholder="" class="input-xlarge">
 					<!--	
 					<option value="1">Bonnie Carranza</option>
 					<option value="2">Alfonso Bedoya</option>
@@ -64,6 +64,18 @@
 				<!--<p class="help-block">Please provide your E-mail</p>-->
 			  </div>
 			</div>
+			
+			
+
+			<div class="form-group">
+			  	<!-- Costo HH del Jefe Proyecto -->
+			  	<label class="col-lg-4 control-label"  for="costohh">Costo por hora Jefe de Proyecto:</label>
+			  	<div class="controls col-lg-6">
+					<input class="form-control" type="text" id="costohh" name="costohh" placeholder="" class="input-xlarge">
+					<!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+			  	</div>
+			</div>
+			
 
 			<div class="form-group">
 			  <!-- Jefe de Proyecto -->
