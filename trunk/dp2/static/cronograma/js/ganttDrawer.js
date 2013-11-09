@@ -140,6 +140,8 @@ Ganttalendar.prototype.create = function(zoom, originalStartmillis, originalEndM
   }
 
   function createGantt(zoom, startPeriod, endPeriod) {
+      
+
     var tr1 = $("<tr>").addClass("ganttHead1");
     var tr2 = $("<tr>").addClass("ganttHead2");
     var trBody = $("<tr>").addClass("ganttBody");
