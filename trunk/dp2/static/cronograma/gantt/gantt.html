@@ -222,7 +222,7 @@
 	<div id="gantEditorTemplates" style="display:none;">	
 		<div class="__template__" type="GANTBUTTONS"><!--
 	  <div class="ganttButtonBar noprint">
-	    <h1 style="float:left">task tree/gantt</h1>
+	    <h1 style="float:left; font-family: tahoma; color:black; font-size: 30px; border:2px dotted;">Diagrama de Gantt</h1>
 	    <div class="buttons">
 	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="deshacer"><span class="teamworkIcon">&#39;</span></button>
 	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="rehacer"><span class="teamworkIcon">&middot;</span></button>
@@ -371,16 +371,16 @@
 		      <td>
 		        <table cellpadding="5">
 		          <tr>
-		            <td><label for="code">code/short name</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
+		            <td><label for="code">Codigo-Nombre Abreviado Actividad</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
 		          </tr>
 		          <tr>
-		            <td><label for="name">name</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
+		            <td><label for="name">Nombre Actividad</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
 		          </tr>
 		          <tr>
 		          	<td><label for = "wbsNodes">Paquetes EDT</label><br><select name = "wbsNodes" id = "wbsNodes"></select></td>
 		          </tr>
 		          <td>
-		          	<label for="description">description</label>
+		          	<label for="description">Descripción</label>
 		          	<br>
 		            <textarea rows="5" cols="30" id="description" name="description" class="formElements"></textarea>
 		          </td>
@@ -391,18 +391,18 @@
 		      <td valign="top">
 		        <table cellpadding="5">
 		          <tr>
-			          <td colspan="2"><label for="status">status</label><br><div id="status" class="taskStatus" status=""></div></td>
+			          <td colspan="2"><label for="status">Estado Actual</label><br><div id="status" class="taskStatus" status=""></div></td>
 			      </tr>
 			      <tr>
-			          <td colspan="1"><label for="progress">% tiempo</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
-			          <td colspan="1"><label for="progress_cost">% costo</label><br><input type="text" name="progress_cost" id="progress_cost" value="" size="3" class="formElements"></td>
+			          <td colspan="1"><label for="progress">Porcentaje Tiempo</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
+			          <td colspan="1"><label for="progress_cost">Porcentaje Costo</label><br><input type="text" name="progress_cost" id="progress_cost" value="" size="3" class="formElements"></td>
 		          </tr>
 		          <tr>
 			          <td><label for="start">Inicio Plan</label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone" style = "display:none;"></td>
 			          <td><label for="end">Fin Plan</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
 		          </tr>
 		          <tr>
-					<td class="graph"><label for="duration">duracion</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>   
+					<td class="graph"><label for="duration">Duracion</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>   
 		          </tr>
 		          <tr>
 			          <td><label for="realStart">Inicio Real</label><br><input type="text" name="realStart" id="realStart"  value="" class="date" size="10" class="formElements"></td>
@@ -413,7 +413,7 @@
 		    	</tr>
 		    </table>
 		
-		    <h2>assignments</h2>
+		    <h2>Recursos Asignados</h2>
 		  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
 		    <tr>
 		      <th style="width:50px;">Nombre</th>
