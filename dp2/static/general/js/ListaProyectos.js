@@ -4,6 +4,7 @@ var listaCostos = "../../api/G_devuelveCostoPorProyecto/";
 var establecerLineaBase = "../../api/G_establecerLineaBase/";
 var cerrarProyecto = "../../api/G_cerrarProyecto";
 var actualizarObjetivos = "../../api/G_actualizarCumpObjetivosPorProyecto";
+var verificaLineaBase = "../../api/G_verificaLineaBase/";
 var idRol=localStorage.getItem("idRol");
 
 if(idRol==1){
@@ -21,8 +22,6 @@ $(document).ready(function(){
 });
 
 function iniciaProyectos(){
-	
-        
 	$.ajax({
 		type: 'GET',
 		url: rootURL,
@@ -36,8 +35,7 @@ function iniciaProyectos(){
 				localStorage.setItem("idProyecto",idProyecto);
 				localStorage.setItem("nombreProyecto",nombreProyecto);
 				$(location).attr('href','MenuProyecto.html');
-			});
-			
+			});			
         }
 	});
 }
@@ -52,7 +50,7 @@ function agregaDataFila(data){
 	for (i=0; i<arreglo.length;i++){		
 		agregaFilaProyecto(arreglo[i],i);
 	}
-		$(".btn.btn-danger").click(function(){
+		$(".btn.btn-warning").click(function(){
 			var auxtd = $(this).closest("tr").find("td");
 			var idProyecto = auxtd[0].innerHTML;
 			var nombreProyecto = auxtd[1].innerHTML;
@@ -75,23 +73,34 @@ function agregaFilaProyecto(arreglo,i){
 		var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
 		'</td><td><button type="button" class="btn btn-default" disabled>No Administrable</button>' + 
 		'</td><td><button type="button" class="btn btn-default" disabled>No Administrable</button>' + 
-		'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cierre">CERRADO</a></td></tr>';
+		'</td><td><a class="btn btn-danger" data-toggle="popover" data-placement="top" title data-content="Proyecto cerrado el día 26-10-2013" data-original-title="Cierre">CERRADO</a></td></tr>';
 		$("#listaProyectos tbody").append(tbody);
 	} else {
 		if (arreglo["flag_lb"]==1) {
 			var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
 			'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
-			'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Linea Base cerrada el día "' + arreglo["fecha_lb"] + '" data-original-title="Cierre">Establecer Línea Base</button>' + 
-			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
+			'</td><td><a class="btn btn-danger" data-toggle="popover" data-placement="top" title data-content="Linea Base establecida el día "' + arreglo["fecha_lb"] + '" data-original-title="Cierre">Línea Base Establecida</button>' + 
+			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-warning" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
 			$("#listaProyectos tbody").append(tbody);
 		} else {
 			var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
 			'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
-			'</td><td><button type="button" class="btn btn-warning">Establecer Línea Base</button>' + 
-			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
+			'</td><td><button type="button" class="btn btn-warning" onclick="establecerLineaBaseP(' + arreglo["id"]+ ')">Establecer Línea Base</button>' + 
+			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-warning" onclick="cerrarP()">Cerrar Proyecto</button></td></tr>';
 			$("#listaProyectos tbody").append(tbody);
 		}				
 	}
+}
+
+function establecerLineaBaseP(idProyecto) {
+	$.ajax({
+        type: "GET",        
+        url: establecerLineaBase + idProyecto,
+        dataType: "json",
+        success: function (data) {
+            $(location).attr('href','ListaProyectos.html');
+        }
+    });
 }
 
 function cerrarP(){	
