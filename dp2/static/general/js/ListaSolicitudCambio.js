@@ -96,7 +96,7 @@ function verificaLineaBase() {
         success: function(data){
         	console.log(data);
 			$("#btnAprobar").click(function(){
-				if (data=="true") { //establecerLineaBase=TRUE
+				if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
 					if (confirm("¿Está seguro que desea aprobar la solicitud de cambio?")){
 						flag = 1;
 						apruebaSolicitud(flag);
@@ -105,7 +105,7 @@ function verificaLineaBase() {
 			});
 			
 			$("#btnRechazar").click(function(){
-				if (data=="true") { //establecerLineaBase=TRUE
+				if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
 					if (confirm("¿Está seguro que desea rechazar la solicitud de cambio?")){
 						flag = 0;
 						apruebaSolicitud(flag);
