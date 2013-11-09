@@ -130,13 +130,9 @@ function apruebaSolicitud(flag){
         contentType: "application/json; charset=utf-8",
         url: aprobarSolicitud,
         success: function (data) {
-        	if(data.me==""){
-        		if (flag==1) { alert("Solicitud de cambio APROBADA con éxito");	}
-        		if (flag==0) { alert("Solicitud de cambio RECHAZADA con éxito"); }
-        		$(location).attr('href','ListaSolicitudes.html');
-        	}else{
-        		alert(data.me);
-        	}            
+        	if (flag==1) { alert("Solicitud de cambio APROBADA con éxito");	}
+        	if (flag==0) { alert("Solicitud de cambio RECHAZADA con éxito"); }
+        	$(location).attr('href','ListaSolicitudes.html');          
         }
     });
 }
