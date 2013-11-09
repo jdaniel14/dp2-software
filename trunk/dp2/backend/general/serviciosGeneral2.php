@@ -366,8 +366,8 @@ function G_postListaTodosRecurso() {
         $empleado = array();
         $empleado["id_emp"] = $emp["id_empleado"];
         $id = $empleado["id_emp"];
-        $empleado["nom"] = $emp["NOMBRE_CORTO"];
-        $empleado["rol"] = $emp["ID_ROL"];
+        $empleado["nom"] = $emp["nombre_corto"];
+        $empleado["rol"] = 1/*$emp["ID_ROL"]*/;
         $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
         for ($i = 0; $i < $num_dias; $i++) {
             $empleado["detalle_dias"][$i] = 0;
