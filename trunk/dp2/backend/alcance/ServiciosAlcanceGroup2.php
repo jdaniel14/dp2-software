@@ -5,10 +5,28 @@
    
   //MOSTRAR EDT ===============================================================================================================
   
+function proyectoExiste($id){
+   try {
+   	$con = getConnection();
+   	$pstmt= $con->prepare("SELECT * FROM PROYECTO WHERE id_proyecto= ?");
+   	$pstmt->execute(array($id));
+   	$idPIni = $pstmt->fetch(PDO::FETCH_ASSOC)["id_proyecto"];
+   	if($idPIni=="") {echo "No existe proyecto"; return false;}
+   	else return true;
+   }
+   catch (PDOException $e) {
+   	echo '{"me" : "No existe el proyecto"}';
+   	echo json_encode(array("me" => $e->getMessage()));
+   }
+}
+  
 function getEdt(){
+	try{
        $request = \Slim\Slim::getInstance()->request(); //json parameters
        $edt = json_decode($request->getBody()); //object convert
        $idproyecto=$edt->{"idproyecto"};
+       
+       if(proyectoExiste($idproyecto)==false)return; 
        
        $con = getConnection();
        //$idproyecto = 1;
@@ -32,32 +50,62 @@ function getEdt(){
        $arbol = new EdtArbol($pIni["id_paquete_trabajo"], $pIni["nombre"],count($hijos) ,$pIni["dias"], $pIni["descripcion"], $hijos);
        $arbol->idedt = intval($idEDT);
        echo json_encode($arbol);
-    }
+	}
+	catch (PDOException $e) {
+		echo '{"me" : "No se puede mostrar"}';
+		echo json_encode(array("me" => $e->getMessage()));
+	}	
+ }
 
     function getHijos($idPadre){
+      try{	
         $con = getConnection();
-       //conseguir los hijos
-       $pstmt= $con->prepare("SELECT id_paquete_trabajo, nombre,descripcion,dias  FROM PAQUETE_TRABAJO WHERE id_componente_padre= ?");
-       $pstmt->execute(array($idPadre));
-       $result = array();
+        //conseguir los hijos
+        $pstmt= $con->prepare("SELECT id_paquete_trabajo, nombre,descripcion,dias  FROM PAQUETE_TRABAJO WHERE id_componente_padre= ?");
+        $pstmt->execute(array($idPadre));
+        $result = array();
        
-       while($hijo = $pstmt->fetch(PDO::FETCH_ASSOC)){
-        //conseguir los hijos de cada hijo
-        $hijos = getHijos($hijo["id_paquete_trabajo"]);
-        //armar objeto hijo
-        $arbolHijo = new EdtArbol($hijo["id_paquete_trabajo"], $hijo["nombre"],count($hijos) ,$hijo["dias"], $hijo["descripcion"], $hijos);
-        //añadir objeto a la lista 
-        array_push($result, $arbolHijo);
-       }
+        while($hijo = $pstmt->fetch(PDO::FETCH_ASSOC)){
+         //conseguir los hijos de cada hijo
+         $hijos = getHijos($hijo["id_paquete_trabajo"]);
+         //armar objeto hijo
+         $arbolHijo = new EdtArbol($hijo["id_paquete_trabajo"], $hijo["nombre"],count($hijos) ,$hijo["dias"], $hijo["descripcion"], $hijos);
+         //añadir objeto a la lista 
+         array_push($result, $arbolHijo);
+        }
 
-       return $result;
+        return $result;
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se puede mostrar al hijo"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }
     }
     
     //ELIMINAR===================================================================================================================
 
-    function eliminarEdt(){
+  function edtExiste($id){  
+   try {
+   	$con = getConnection();
+   	$pstmt= $con->prepare("SELECT * FROM EDT WHERE id_edt= ?");
+   	$pstmt->execute(array($id));
+   	$idPIni = $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo_inicial"];
+   	if($idPIni=="") {echo "No existe edt"; return false;}
+   	else return true;
+   }
+   catch (PDOException $e) {
+   	echo '{"me" : "No existe el edt"}';
+   	echo json_encode(array("me" => $e->getMessage()));
+   }
+  }
+    
+  function eliminarEdt(){
+     try{  	
       $request = \Slim\Slim::getInstance()->request();
       $idedt = json_decode($request->getBody())->idedt;
+      
+      if(edtExiste($idedt)==false)return;
+      
       $con = getConnection();
       $con->exec("set foreign_key_checks = false");
       //obtener id del paquete inicial
@@ -76,9 +124,16 @@ function getEdt(){
       $pstmt->execute(array($idedt));
 
       $con->exec("set foreign_key_checks = true");
+      echo '{"me" : "Elimino bien"}';   
+     }
+     catch (PDOException $e) {
+     	echo '{"me" : "Elimino mal"}';
+     	echo json_encode(array("me" => $e->getMessage()));
+     }
     }
 
     function eliminarHijos($idPadre){
+     try{	
       $con = getConnection();
       //conseguir los hijos
       $pstmt= $con->prepare("SELECT id_paquete_trabajo FROM PAQUETE_TRABAJO WHERE id_componente_padre =?");
@@ -90,6 +145,11 @@ function getEdt(){
       //borrar los hijos
       $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_componente_padre = ?");
       $pstmt->execute(array($idPadre));
+     }
+     catch (PDOException $e) {
+     	echo '{"me" : "No se pudo eliminar al hijo"}';
+     	echo json_encode(array("me" => $e->getMessage()));
+     }
     }
 
 
@@ -102,11 +162,13 @@ function getEdt(){
       $pstmt->execute(array($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias));
     }
     
-    function guardarEdt(){
-      //$edt=json_decode(dameEdt());//borrar
+  function guardarEdt(){
+      
+    try{		
       $request = \Slim\Slim::getInstance()->request();
       $edt = json_decode($request->getBody()); //object convert
       $idproyecto=$edt->{"idproyecto"};
+      if(proyectoExiste($idproyecto)==false)return;
       
       //$idproyecto = 1;
       $version=1.1;
@@ -119,11 +181,12 @@ function getEdt(){
       $idEstado = $pstmt->fetch(PDO::FETCH_ASSOC)["id_estado"];
        
       //obtengo los id_miembros
-      $pstmt= $con->prepare("SELECT * FROM MIEMBROS_EQUIPO WHERE id_proyecto=?");
-      $pstmt->execute(array($idproyecto));
-      $paquete= $pstmt->fetch(PDO::FETCH_ASSOC);
-      if (count($paquete)==0) $idMiembros='NULL';
-      else $idMiembros = $paquete["id_miembros_equipo"];
+      //$pstmt= $con->prepare("SELECT * FROM MIEMBROS_EQUIPO WHERE id_proyecto=?");
+      //$pstmt->execute(array($idproyecto));
+      //$paquete= $pstmt->fetch(PDO::FETCH_ASSOC);
+      //if (count($paquete)==0) $idMiembros='NULL';
+      //else $idMiembros = $paquete["id_miembros_equipo"];
+      $idMiembros=NULL;
       //echo $idMiembros;
       //Con los datos que obtengo ahora Guardo el edt
       $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
@@ -150,8 +213,13 @@ function getEdt(){
     
       //Ahora guardo los hijos
       guardarHijos($edt->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaqueteInicial);
-      echo '{"me" : ""}';
+      echo '{"me" : "Ingreso bien"}';
     }
+    catch (PDOException $e) {
+    	echo '{"me" : "Ingreso mal"}';
+    	echo json_encode(array("me" => $e->getMessage()));
+    }
+  }
     
     function obtenerIdPaquete($nombre,$descripcion,$idEstado,$idEdt,$idPadre,$version){
       $con = getConnection();
@@ -178,52 +246,97 @@ function getEdt(){
     
     //MODIFICAR EDT ===========================================================================================================
     
-    function obtenerPrimerPaquete($idProyecto){
+  function obtenerPrimerPaquete($idProyecto){
+    try{	
       //echo $idProyecto;
       $con = getConnection();
       $pstmt= $con->prepare("SELECT * FROM EDT where id_proyecto= ?");
       $pstmt->execute(array($idProyecto));
       return $pstmt->fetch(PDO::FETCH_ASSOC);
     }
+    catch (PDOException $e) {
+    	echo '{"me" : "No se pudo obtener el primer paquete"}';
+    	echo json_encode(array("me" => $e->getMessage()));
+    }
+  }
     
-    function eliminarPaqueteTrabajo($id){
+  function eliminarPaqueteTrabajo($id){
+    try{  	
       $con = getConnection();
       $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo= ?");
       $pstmt->execute(array($id));
     }
+    catch (PDOException $e) {
+    	echo '{"me" : "No se pudo eliminar el paquete trabajo"}';
+    	echo json_encode(array("me" => $e->getMessage()));
+    }
+  }
     
-    function eliminarHijos2($id,$idEdt){
-      $hijos = null;
+  function eliminarHijos2($id,$idEdt){
+  	try{
       $con = getConnection();
       $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_componente_padre= ? AND id_edt= ?");
-      $pstmt->execute(array($id,$idEdt));
-      $hijos = $pstmt->fetch(PDO::FETCH_ASSOC);
-      if(empty($hijos))return;
-      foreach ($hijos as $row){
-        eliminarHijos2($row["id_paquete_trabajo"],$idEdt);
-        eliminarPaquete($row["id_paquete_trabajo"]);
+      $pstmt->execute(array($id,$idEdt));	
+      	
+      while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
+      		eliminarHijos2($row["id_paquete_trabajo"],$idEdt);
+      		eliminarPaqueteTrabajo($row["id_paquete_trabajo"]);
       }
-       
+  	}
+  	catch (PDOException $e) {
+  		echo '{"me" : "No se pudo eliminar el hijo"}';
+  		echo json_encode(array("me" => $e->getMessage()));
+  	}
+  }
+    
+    function existePaquete($id){
+    	try {
+    		$con = getConnection();
+    		$pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo= ?");
+    		$pstmt->execute(array($id));
+    		$idPIni = $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo"];
+    		if($idPIni=="") {/*echo "No se borro al hijo porque no existe"*/;return false;}
+    		else return true;
+    	}
+    	catch (PDOException $e) {
+    		echo '{"me" : "No se puede acceder al paquete"}';
+    		echo json_encode(array("me" => $e->getMessage()));
+    	}
     }
     
-    function eliminarPaquete($lista,$idEdt){
+  function eliminarPaquete($lista,$idEdt){
+    try{  	
       foreach ($lista as $row){
         $con = getConnection();
+        if(existePaquete($row->{"id"})==false)break;
         eliminarHijos2($row->{"id"},$idEdt);
         eliminarPaqueteTrabajo($row->{"id"});
       }
     }
+    catch (PDOException $e) {
+    	echo '{"me" : "No se pudo eliminar el paquete"}';
+    	echo json_encode(array("me" => $e->getMessage()));
+    }
+  }
     
-    function modificarPaquete($id,$title,$dias,$desc){
+   function modificarPaquete($id,$title,$dias,$desc){
+     try{ 	
       $con = getConnection();
       $pstmt= $con->prepare("UPDATE PAQUETE_TRABAJO SET nombre=?, dias= ?, descripcion= ? WHERE id_paquete_trabajo= ?");
       $pstmt->execute(array($title,$dias,$desc,$id));
-    }
+     }
+     catch (PDOException $e) {
+     	echo '{"me" : "No se pudo modificar el edt"}';
+     	echo json_encode(array("me" => $e->getMessage()));
+     }
+   }
     
-    function modificarTodoEdt(){
-    $request = \Slim\Slim::getInstance()->request();
+  function modificarTodoEdt(){
+    try{  	
+      $request = \Slim\Slim::getInstance()->request();
       $data = json_decode($request->getBody()); //object convert
       $idproyecto=$data->{"idproyecto"};
+      if(proyectoExiste($idproyecto)==false)return;
       //$idproyecto=1;
       $version=1.1;
        
@@ -245,47 +358,23 @@ function getEdt(){
         guardarHijos($row->{"nodos"},$edt["id_estado"],$edt["id_miembros_equipo"],$edt["id_edt"],$version,$idPadre);
       }
        
-       echo '{"me":""}';
-      //cambiaVersion($edt["id_edt"],$version,$edt["id_paquete_trabajo_inicial"]);
+       echo '{"me":"Se modificaron los datos correctamente"}';
     }
-    
-    function cambiaVersion($idEdt,$version,$idPrimerPaquete){
-      $con = getConnection();
-      $pstmt= $con->prepare("UPDATE EDT SET version= ? WHERE id_edt= ?");
-      $pstmt->execute(array($version,$idEdt));
-      //echo $idPrimerPaquete;
-      cambiaPaquete($idPrimerPaquete,$version);
-      cambiaHijos($idPrimerPaquete,$version);
-       
+    catch (PDOException $e) {
+    	echo '{"me" : "No se pudo modificar el edt"}';
+    	echo json_encode(array("me" => $e->getMessage()));
     }
+ }
     
-    function cambiaPaquete($idPaquete,$version){
-      $con = getConnection();
-      $pstmt= $con->prepare("UPDATE PAQUETE_TRABAJO SET version= ? WHERE id_paquete_trabajo= ?");
-      $pstmt->execute(array($version,$idPaquete));
-    }
-    
-    function cambiaHijos($idPaquete,$version){
-      $con = getConnection();
-      //echo $idPaquete;
-      $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_componente_padre= ?");
-      $pstmt->execute(array($idPaquete));
-      $hijos = $pstmt->fetch(PDO::FETCH_ASSOC);
-      echo count($hijos);
-      foreach ($hijos as $row){
-        cambiaHijos($row["id_paquete_trabajo"],$version);
-        cambiaPaquete($row["id_paquete_trabajo"],$version);
-      }
-    }
-    
-    
+
     //MODIFICAR EDT ===========================================================================================================
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //SEGUNDO SPRINT ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    function crearAlcance(){
+  function crearAlcance(){
+    try{  	
       $request = \Slim\Slim::getInstance()->request(); //json parameters
       $edt = json_decode($request->getBody()); //object convert
       $idproyecto = $edt->{"idproyecto"};
@@ -296,8 +385,14 @@ function getEdt(){
       $pstmt->execute(array($idproyecto,$edt->{"descripcion"},$edt->{"alcance_producto"},$edt->{"version"},
       $edt->{"criterios_aceptacion"},$edt->{"entregables"},$edt->{"exclusiones"},$edt->{"restricciones"},$edt->{"supuestos"}));
     }
+    catch (PDOException $e) {
+    	echo '{"me" : "No se pudo crear el alcance"}';
+    	echo json_encode(array("me" => $e->getMessage()));
+    }
+  }
     
-    function mostrarAlcance(){
+  function mostrarAlcance(){
+   try{ 	
       $request = \Slim\Slim::getInstance()->request(); //json parameters
       $edt = json_decode($request->getBody()); //object convert
       $idProyecto=$edt->{"idproyecto"};
@@ -308,9 +403,15 @@ function getEdt(){
       $pstmt->execute(array($idProyecto));
       $alcance = $pstmt->fetch(PDO::FETCH_ASSOC);
       echo json_encode($alcance);
-    }
+   }
+   catch (PDOException $e) {
+     	echo '{"me" : "No se pudo mostar el alcance"}';
+     	echo json_encode(array("me" => $e->getMessage()));
+   }
+  }
     
-    function modificarAlcance(){
+  function modificarAlcance(){
+    try{ 	
       $request = \Slim\Slim::getInstance()->request(); //json parameters
       $edt = json_decode($request->getBody()); //object convert
     
@@ -328,8 +429,14 @@ function getEdt(){
       $pstmt->execute(array($edt->{"descripcion"},$edt->{"alcance_producto"},$edt->{"version"},
       $edt->{"criterios_aceptacion"},$edt->{"entregables"},$edt->{"exclusiones"},$edt->{"restricciones"},$edt->{"supuestos"},$edt->{"idproyecto"}));
     }
+    catch (PDOException $e) {
+    	echo '{"me" : "No se pudo modificar el alcance"}';
+    	echo json_encode(array("me" => $e->getMessage()));
+    }
+  }
     
-    function eliminarAlcance(){
+  function eliminarAlcance(){
+  	try{  	
       $request = \Slim\Slim::getInstance()->request(); //json parameters
       $edt = json_decode($request->getBody()); //object convert
       $idproyecto=$edt->{"idproyecto"};
@@ -337,7 +444,12 @@ function getEdt(){
       $con = getConnection();
       $pstmt= $con->prepare("DELETE FROM ALCANCE WHERE id_proyecto= ?");
       $pstmt->execute(array($idproyecto));
-    }
+  	}
+  	catch (PDOException $e) {
+  		echo '{"me" : "No se pudo eliminar el alcance"}';
+  		echo json_encode(array("me" => $e->getMessage()));
+  	}
+  }
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //TERCER SPRINT ==========================================================================================================
@@ -439,6 +551,7 @@ function getEdt(){
     	return $b;
       }
       catch (PDOException $e) {
+      	echo '{"me" : "No se pudo pasar el nombre"}';
         echo json_encode(array("me" => $e->getMessage()));
       }
     }
@@ -452,6 +565,7 @@ function getEdt(){
     	return $a;
       }
       catch (PDOException $e) {
+      	echo '{"me" : "No se pudo pasar el apellido"}';
       	echo json_encode(array("me" => $e->getMessage()));
       }      
     }
@@ -484,6 +598,8 @@ function getEdt(){
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idProyecto=$data->{"idproyecto"};
+    	if(proyectoExiste($idProyecto)==false)return;
+    	 
     	$con = getConnection();
     	
     	//Obtengo la lista de personas 
@@ -507,6 +623,7 @@ function getEdt(){
     	echo json_encode($lista);
       }
       catch (PDOException $e) {
+      	echo '{"me" : "No se buscar los miembros"}';
       	echo json_encode(array("me" => $e->getMessage()));
       }      
     }
@@ -514,18 +631,14 @@ function getEdt(){
     
     //MANTENIMIENTO DE FASES
     
-    //CREAR LAS FASES:
-    /*
-     * {
-     * "idproyecto":1,"listaFase":[{"descripcion":"Analisis","descripcion":"Desarrollo"}]
-     * }
-     */
-    
+    //CREAR LAS FASES:    
     function guardarFases (){
-    	
+      try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idproyecto=$data->{"idproyecto"};
+    	if(proyectoExiste($idproyecto)==false)return;
+    	 
     	$arrFase=$data->{"listaFase"}; 
     	
     	$con = getConnection();
@@ -535,7 +648,6 @@ function getEdt(){
     	}
     	
     	//Tambien creo los requisitos x fase en la tabla FASEXREQUISITO
-    	
     	//obtengo el id del ERS:
     	$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ?");
     	$pstmt->execute(array($idproyecto));
@@ -557,26 +669,30 @@ function getEdt(){
     	while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
     		array_push($listaIdFase,$row['id_fase']);
     	}
-    	//var_dump($listaIdFase);
-    	$espacio=" ";
+
     	//guardos los datos en la tabla FASEXREQUISITO
-    	$i=0;
     	foreach ($listaIdRequisitos as $row){
     		foreach ($listaIdFase as $fila){
     			$pstmt= $con->prepare("INSERT INTO FASE_X_REQUISITO(id_requisito,id_fase) VALUES (?,?)");
     			$pstmt->execute(array($row[$i],$fila));
     		}
     	}
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se pudieron guardar las fases"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      } 
     }
     
     
     //MOSTRAR LAS FASES:
     
     function mostrarFases(){
-    	
+      try{	
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idproyecto=$data->{"idproyecto"};
+    	if(proyectoExiste($idproyecto)==false)return;
     	
     	$con = getConnection(); // Accedo a los datos de las fases desde la BD
     	$pstmt= $con->prepare("SELECT id_fase,descripcion from FASE WHERE id_proyecto = ? ");
@@ -592,36 +708,43 @@ function getEdt(){
     	];
     	
     	echo json_encode($matriz);
-    	
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se puede mostrar las fases"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }	
     }
     
     //MODIFICAR LAS FASES
     function modificarFases (){
-    	
+      try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idproyecto=$data->{"idproyecto"};
+    	if(proyectoExiste($idproyecto)==false)return;
+    	 
     	$arrFase=$data->{"listaFase"};
     	 
     	$con = getConnection();
     	foreach ($arrFase as $row){ //Guardo los datos del front de las fases
     		$pstmt= $con->prepare("UPDATE FASE SET descripcion = ? WHERE id_fase = ? AND id_proyecto = ?");
     		$pstmt->execute(array($row->{"descripcion"},$row->{"id_fase"},$idproyecto));
-    	}    
+    	}
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se pueden modificar las fases"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }   
     }
     
     //ELIMINAR FASES:
     
     function eliminarFase($var){
-
+	  try{
     	$data = json_decode($var);
-    	//var_dump($var);
-    	//$request = \Slim\Slim::getInstance()->request(); //json parameters
-    	//$data = json_decode($request->getBody()); //object convert
     	$idproyecto=$data->idproyecto;
-    	echo $idproyecto;
-    	$idfase=$data->id_fase;    	
-    	echo $idfase;
+    	if(proyectoExiste($idproyecto)==false)return;
+    	$idfase=$data->id_fase;
     	
     	$con = getConnection();
     	 
@@ -634,6 +757,11 @@ function getEdt(){
     	//Borro la fase en la tabla FASE:
     	$pstmt= $con->prepare("DELETE FROM FASE WHERE id_fase= ? AND id_proyecto = ? ");
     	$pstmt->execute(array($idfase,$idproyecto));
+	  }
+	  catch (PDOException $e) {
+	  	echo '{"me" : "No se puede eliminar la fase"}';
+	  	echo json_encode(array("me" => $e->getMessage()));
+	  }
     }
     
     //MUESTRO LA MATRIZ: 
@@ -715,12 +843,13 @@ function getEdt(){
     		echo json_encode($matriz);
     	}
     	catch (PDOException $e) {
+    		echo '{"me" : "No se puede mostrar la matriz"}';
     		echo json_encode(array("me" => $e->getMessage()));
     	}
     }
     
     function modificarRequisitoM(){
-    
+      try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idRequisito=$data->{"id_requisito"};
@@ -732,10 +861,15 @@ function getEdt(){
     	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$idRequisito));
     
     	echo $request->getBody();
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se puede modificar la matriz"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }
     }
     
     function requisitoXFase(){
-    	
+      try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	$idRequisito=$data->{"id_requisito"};
@@ -771,16 +905,26 @@ function getEdt(){
     		   ];
     		
     	echo json_encode($lista);
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se puede mostrar"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }
     }
     
     function modificarRequisitoXFase(){
-    
+      try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
     	
     	$con = getConnection();
-    	$pstmt= $con->prepare("UPDATE FASE set entregable=?,fecha=? WHERE id_fase= ? AND id_requisito=? ");
+    	$pstmt= $con->prepare("UPDATE FASE_X_REQUISITO set entregable=?,fecha=? WHERE id_fase= ? AND id_requisito=? ");
     	$pstmt->execute(array($data->{"entregable"},$data->{"fecha"},$data->{"idFase"},$data->{"id_requisito"}));
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se pueden modificar los requisitos"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }
     }
     
     
