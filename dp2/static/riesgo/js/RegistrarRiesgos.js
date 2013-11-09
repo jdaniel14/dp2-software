@@ -170,7 +170,7 @@ function main(){
     		lista: arreglo,
     		idProyecto : idProyectoLocal
     	};
-    	console.log(data);
+    	// console.log(data);
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'POST',
@@ -192,21 +192,30 @@ function main(){
 
 //Funcion para confirmar los riesgos seleccionados con el checkbox
 
-	$("#confirmarRiesgo").click( function(){
+	$("#btnConfirmar").click( function(){
 		var arreglo = [];
-    	$('#tablaRiesgosGlobal input[type="checkbox"]:checked').each(function(){
-	        var $row = $(this).parents('tr');
-	         console.log($row);
-	        if ($row.find('td:eq(13) input').val()!=null)  {
-	        	arreglo.push($row.find('td:eq(13) input').val()); //cambiar aca si se editan las filas
-	        }
-    	});
+    	if ($("#checkearTodos").prop('checked')){
+    		$('#tablaRiesgosGlobal input[type="checkbox"]:checked').each(function(){
+		        var $row = $(this).parents('tr');
+		        if ($row.find('td:eq(12) input').val()!=null)  {
+		        	arreglo.push($row.find('td:eq(12) input').val()); //cambiar aca si se editan las filas
+		        }
+	    	});
+    	} else {
+    		$('#tablaRiesgos input[type="checkbox"]:checked').each(function(){
+		        var $row = $(this).parents('tr');
+		        if ($row.find('td:eq(12) input').val()!=null)  {
+		        	arreglo.push($row.find('td:eq(12) input').val()); //cambiar aca si se editan las filas
+		        }
+	    	});
+    	}
+    	
 
     	var data = {
     		lista: arreglo,
     		idProyecto : idProyectoLocal
     	};
-    	console.log(data);
+    	// console.log(data);
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'PUT',
@@ -248,20 +257,20 @@ function main(){
 		limpiarRegistrar();		
 	});
 
-	$("#btnConfirmar").click( function(){
-		var jsonData = JSON.stringify(idArray);
-		$.ajax({
-			type: 'PUT',
-			url: confirmRisk + '/' + idArray,
-			data: jsonData,
-			dataType: "json",
-			success: function(data){
-				alert("Se ha confirmado el riesgo");
-				listarRiesgos();
-			},
-			fail: codigoError
-		});
-	});
+	// $("#btnConfirmar").click( function(){
+	// 	var jsonData = JSON.stringify(idArray);
+	// 	$.ajax({
+	// 		type: 'PUT',
+	// 		url: confirmRisk + '/' + idArray,
+	// 		data: jsonData,
+	// 		dataType: "json",
+	// 		success: function(data){
+	// 			alert("Se ha confirmado el riesgo");
+	// 			listarRiesgos();
+	// 		},
+	// 		fail: codigoError
+	// 	});
+	// });
 
 	$("#btnEliminar").click(function(){
 		var data = {
@@ -438,6 +447,8 @@ function obtenerRiesgo(id){
 			if (item.idResponsable==null){
 				$('#equResM').val(0);
 			} else $('#equResM').val(item.idResponsable);
+
+			cargarProbabilidadModificacion(item.probabilidad);
 		},
 		fail: codigoError
 	});
@@ -513,6 +524,16 @@ function listarRiesgos(){
 			});
 
 			//Boton para confirmar un riesgo
+			$('#tablaRiesgos input[type="checkbox"]').change(function(){
+				var data = {
+					idRiesgo: $(this).closest("tr").attr("id")
+				}
+				
+
+			});
+				
+			
+
 			$(".glyphicon.glyphicon-ok").click( function(){
 				
 				var data = {
@@ -774,7 +795,28 @@ $('#proRiesgoM').change(
 
 //Calculo automatico del nivel de probabilidad - Fin
 
-
+function cargarProbabilidadModificacion(probabilidad){
+	var data = {
+	     		idProyecto:idProyectoLocal,
+	     		valor:probabilidad
+	     	}
+ 	var jsonData = JSON.stringify(data);
+	$.ajax({
+		type: 'GET',
+		url: getProbability +'/'+ jsonData,
+		success: function(data){
+			var obj = JSON.parse(data);
+			$('#descnivelProbabilidadRiesgoM').val(obj.descripcion);
+			$('#idnivelProbabilidadRiesgoM').val(obj.idProbabilidadRiesgo);
+			$('#nivelProbabilidadRiesgoM').val(obj.nivel);
+			if (($('#proRiesgoM').val() != 0) && ($('#impRiesgoM').val()!=0)){
+				// console.log("Proba:"+$('#nivelProbabilidadRiesgoM').val()+" Imp: "+$('#nivelImpactoRiesgoM').val());
+	         	$('#svrRiesgoM').val($('#nivelProbabilidadRiesgoM').val()*$('#nivelImpactoRiesgoM').val());
+	         }
+		},
+		fail: codigoError
+	});
+}
 
 //Calculo automatico del nivel de Impacto
 
