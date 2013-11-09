@@ -220,7 +220,7 @@
             $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
             array_push($arregloLinea,$data);
             foreach($arregloNivel as $valorNivel){
-                //$valorMult = $valorNivel['nivel']*$valorProb['nivel'];
+                $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
                 $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "valorMult" => $valorMult);
                 array_push($arregloLinea,$data);
             }
@@ -252,7 +252,8 @@
                 } catch(PDOException $e){
                     echo '{"error":{"text":'. $e->getMessage() .'}}';
                 }
-                $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "arrayRiesgos" => $arregloRiesgos);
+                $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
+                $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "arrayRiesgos" => $arregloRiesgos, "valorMult" => $valorMult);
                 array_push($arregloLinea,$data);
             }
             array_push($arregloMatriz, $arregloLinea);
