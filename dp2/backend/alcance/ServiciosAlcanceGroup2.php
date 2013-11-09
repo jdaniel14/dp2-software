@@ -743,25 +743,34 @@ function getEdt(){
     	$con = getConnection();
     	
     	//Obtengo informacion del requisito con respecto a la fase
-    	$pstmt= $con->prepare("SELECT id_fase,entregable,fecha FROM FASEXREQUISITO WHERE id_requisito= ?");
+    	$pstmt= $con->prepare("SELECT id_fase,entregable,fecha FROM FASE_X_REQUISITO WHERE id_requisito= ?");
     	$pstmt->execute(array($idRequisito));
-    	$listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC);
-    	
+    	$listaRequisito = array();
+    	while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$hijo=new FaseXRequisito($row['id_fase'],$row['entregable'],$row['fecha']);
+    		array_push($listaRequisito,$hijo);
+    	}
+    	//var_dump($listaRequisito);
     	//Guardo los datos en una lista para pasarla al front
-		$lista=array();
+    	$ar_Requisitos=array();
     	
     	foreach ($listaRequisito as $row){
-    		
     		$pstmt= $con->prepare("SELECT descripcion FROM FASE WHERE id_fase= ?");
-    		$pstmt->execute(array($row["id_fase"]));
+    		$pstmt->execute(array($row->id_fase));
     		$descripcion = $pstmt->fetch(PDO::FETCH_ASSOC)["descripcion"];
     		
-    		if ($row["entregable"]==null)$entregable="" ;else $entregable=$row["entregable"];
-    		if ($row["fecha"]==null)$fecha=date('Y-m-d', time());else $fecha=date("Y-m-d", $row["fecha"] / 1000);
+    		if ($row->entregable==null)$entregable="" ;else $entregable=$row->entregable;
+    		if ($row->fecha==null)$fecha=date('Y-m-d', time());else $fecha=date("Y-m-d", $row->fecha / 1000);
     		
-    		$hijo=new RequisitoXFase($idRequisito,$entregable,$fecha,$row["id_fase"],$descripcion);
+    		$hijo=new RequisitoXFase($idRequisito,$entregable,$fecha,$row->id_fase,$descripcion);
     		array_push($ar_Requisitos,$hijo);
     	}	
+    	
+    	$lista=[
+    			"arrRequisito" =>$ar_Requisitos
+    		   ];
+    		
+    	echo json_encode($lista);
     }
     
     function modificarRequisitoXFase(){
