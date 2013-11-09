@@ -175,12 +175,17 @@ function G_getLineaBase($id) {
 
 function G_setLineaBase($id) {
 
-    
+    $sysdate=new DateTime('NOW');
+    $fecha=$sysdate->format('c');
 
-    $sql = " UPDATE  PROYECTO SET FLAG_LINEA_BASE_EDITABLE=1 WHERE ID_PROYECTO=:id";
+    $sql = " UPDATE  PROYECTO 
+            SET FLAG_LINEA_BASE_EDITABLE=1, 
+            LINEA_BASE_FECHA_INICIO =:FECHA
+            WHERE ID_PROYECTO=:id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
+        $stmt->bindParam("FECHA", $fecha);
         $stmt->bindParam("id", $id);
         $stmt->execute();
             
