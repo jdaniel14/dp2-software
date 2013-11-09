@@ -146,5 +146,57 @@ function G_postDarbajaEmpleado() {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
+///////
+function G_getLineaBase($id) {
+    $sql = " SELECT  P.FLAG_LINEA_BASE_EDITABLE linea
+            from PROYECTO P
+            WHERE P.ID_PROYECTO=:id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
+
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $estado = $p["linea"];
+        $lineaBase='false';
+        if($estado==1){
+            $lineaBase="true";
+        }
+
+                
+        $db = null;
+        echo json_encode(array("estado_linea_base" => $lineaBase));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_setLineaBase($id) {
+    $sql = " SELECT  P.FLAG_LINEA_BASE_EDITABLE linea
+            from PROYECTO P
+            WHERE P.ID_PROYECTO=:id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
+
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        $estado = $p["linea"];
+        $lineaBase='false';
+        if($estado==1){
+            $lineaBase="true";
+        }
+
+                
+        $db = null;
+        echo json_encode(array("estado_linea_base" => $lineaBase));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
 ?>
