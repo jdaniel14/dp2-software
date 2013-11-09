@@ -531,7 +531,7 @@ function getEdt(){
     	$con = getConnection();
     	foreach ($arrFase as $row){ //Guardo los datos del front de las fases
     		$pstmt= $con->prepare("INSERT INTO FASE(id_proyecto,descripcion) values (?,?)");
-    		$pstmt->execute(array($idProyecto),$data->{"descripcion"});
+    		$pstmt->execute(array($idproyecto,$row->{"descripcion"}));
     	}
     	
     	//Tambien creo los requisitos x fase en la tabla FASEXREQUISITO
@@ -544,18 +544,27 @@ function getEdt(){
     	//obtengo los id de los requisitos
     	$pstmt= $con->prepare("SELECT id_requisito FROM REQUISITO WHERE id_especificacion_requisitos= ?");
     	$pstmt->execute(array($idER));
-    	$listaIdRequisitos = $pstmt->fetch(PDO::FETCH_ASSOC);
+    	$listaIdRequisitos = array();
+    	while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
+    		array_push($listaIdRequisitos,$row['id_requisito']);
+    	}    	
+		//var_dump($listaIdRequisitos);
     	
     	//odtengo los id de las fases
     	$pstmt= $con->prepare("SELECT id_fase FROM FASE WHERE id_proyecto= ?");
     	$pstmt->execute(array($idproyecto));
-    	$listaIdFase = $pstmt->fetch(PDO::FETCH_ASSOC);
-    	
+    	$listaIdFase=array();
+    	while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
+    		array_push($listaIdFase,$row['id_fase']);
+    	}
+    	//var_dump($listaIdFase);
+    	$espacio=" ";
     	//guardos los datos en la tabla FASEXREQUISITO
+    	$i=0;
     	foreach ($listaIdRequisitos as $row){
-    		foreach ($listaIdFase as $row2){
-    			$pstmt= $con->prepare("INSERT INTO FASEXREQUISITO(id_requisito,id_fase,) VALUES (?,?)");
-    			$pstmt->execute(array($row["id_requisito"],$row2["id_fase"]));
+    		foreach ($listaIdFase as $fila){
+    			$pstmt= $con->prepare("INSERT INTO FASE_X_REQUISITO(id_requisito,id_fase) VALUES (?,?)");
+    			$pstmt->execute(array($row[$i],$fila));
     		}
     	}
     }
@@ -563,18 +572,7 @@ function getEdt(){
     
     //MOSTRAR LAS FASES:
     
-    function mostrarFases (){
-    	/*ME DA:
-    	 * {
-    	* "idproyecto":1
-    	* }
-    	*/
-    	
-    	/* PASO AL FRONT:
-    	 * {
-    	* "idproyecto":1,"listaFase":[{"id_fase":1,"descripcion":"Analisis"},{"id_fase":2,"descripcion":"Desarrollo"}]
-    	* }
-    	*/
+    function mostrarFases(){
     	
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
@@ -583,20 +581,22 @@ function getEdt(){
     	$con = getConnection(); // Accedo a los datos de las fases desde la BD
     	$pstmt= $con->prepare("SELECT id_fase,descripcion from FASE WHERE id_proyecto = ? ");
     	$pstmt->execute(array($idproyecto));
-    	$arrFase = $pstmt->fetch(PDO::FETCH_ASSOC);
+    	$listaFase=array();
+    	while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$hijo=new Fase($row['id_fase'],$row['descripcion']);
+    		array_push($listaFase,$hijo);
+    	}
     	
-    	echo json_encode($arrFase);
+    	$matriz= [ "idproyecto"=> $idproyecto,
+    			   "listaFase"=> $listaFase
+    	];
+    	
+    	echo json_encode($matriz);
+    	
     }
     
     //MODIFICAR LAS FASES
-    /*ME PASA DEL FRONT:
-     * {
-    * "idproyecto":1,"listaFase":[{"id_fase":1,"descripcion":"Analisis"},{"id_fase":2,"descripcion":"Desarrollo"}]
-    * }
-    */
-    
     function modificarFases (){
-    	
     	
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
     	$data = json_decode($request->getBody()); //object convert
@@ -612,22 +612,23 @@ function getEdt(){
     
     //ELIMINAR FASES:
     
-    function eliminarFase(){
-    	/*
-    	 * {
-    	* "idproyecto":1,"id_fase":1
-    	* }
-    	*/
+    function eliminarFase($var){
+
+    	$data = json_decode($var);
+    	//var_dump($var);
+    	//$request = \Slim\Slim::getInstance()->request(); //json parameters
+    	//$data = json_decode($request->getBody()); //object convert
+    	$idproyecto=$data->idproyecto;
+    	echo $idproyecto;
+    	$idfase=$data->id_fase;    	
+    	echo $idfase;
     	
-    	$request = \Slim\Slim::getInstance()->request(); //json parameters
-    	$data = json_decode($request->getBody()); //object convert
-    	$idproyecto=$data->{"idproyecto"};
-    	$idfase=$data->{"id_fase"};
-    	
+    	$con = getConnection();
+    	 
     	//ELIMINAR DESDE LOS REQUISITOS:
     	
 		//Borro los requisitos que tienen esta fase
-    	$pstmt= $con->prepare("DELETE FROM FASEXREQUISITO WHERE id_fase= ?");
+    	$pstmt= $con->prepare("DELETE FROM FASE_X_REQUISITO WHERE id_fase= ?");
     	$pstmt->execute(array($idfase));
     	
     	//Borro la fase en la tabla FASE:
