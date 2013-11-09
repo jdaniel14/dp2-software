@@ -1,13 +1,14 @@
  var edtModificados = [];
  var idModificadosCurrent = [];
- 
- 
-function repaint(){
+ localStorage.setItem("idmodificadoCurrent", "0");
+
+function repaintEDIT(){
                 $("#chart").html("");
                 $("#org").jOrgChart({
                     chartElement : '#chart',
                     dragAndDrop  : false
                 });
+                console.log("sape");
         }
 
 
@@ -15,12 +16,14 @@ function repaint(){
  		
  		console.log("utilitarios editar");
 
+
  		$("#editarEdtNew").click(function(){
  				console.log("Proceso de edición");
  				$("#eventsEditNew").show("slow");
- 				$(".inputEdtTitle").removeAttr("readonly");
- 				$(".inputEdtDescripcion").removeAttr("readonly");
- 				$(".inputEdtDias").removeAttr("readonly");
+
+ 				//$(".inputEdtTitle").removeAttr("readonly");
+ 				//$(".inputEdtDescripcion").removeAttr("readonly");
+ 				//$(".inputEdtDias").removeAttr("readonly");
  				repaint_events();
  		});
 
@@ -140,7 +143,25 @@ function repaint_events(){
 	}
 
 	$(".inputEdtTitle").click(function(){
- 			console.log("click edttitle")
+ 			console.log("click edttitle");
+ 			$(".inputEdtTitle").removeAttr("readonly");
+			 $(".inputEdtDescripcion").removeAttr("readonly");
+			 $(".inputEdtDias").removeAttr("readonly");
+ 			//var p = $( '#'+$(this).id );
+ 			
+ 			var idnodo = '#' + $(this).attr('id');
+ 			console.log(idnodo);
+ 			var p = $(idnodo);
+ 			//console.log(p, $(this).id);
+ 			var position = p.position();
+ 			console.log("pos top", position.top);
+ 			
+ 			//$("#caja_flotante").css( "top": position );
+
+ 			//$("#caja_flotante").css("top", position.top);
+ 			
+ 			$("#caja_flotante").show("slow");
+ 			$("#controlesSpan").html($(this).val());
  			//$(this).removeAttr("readonly");
  			//$(this).attr('id').removeAttr("readonly");
  			//$("#descripcion-317").removeAttr("readonly");2
@@ -148,6 +169,9 @@ function repaint_events(){
  			//$(idcurrent).removeAttr("readonly");
 
  			var id = $(this).attr('id').split("-")[1];
+
+
+ 			localStorage.setItem("idmodificadoCurrent", id);
  			
  			//var iddes = "#descripcion-" + id;
  			//var idtime = "#tiempo-" + id;
@@ -155,7 +179,8 @@ function repaint_events(){
  			//$(idtime).removeAttr("readonly");
  			//console.log(iddes, idtime);
  			//console.log($(this).attr('id'));
- 			repaint();
+ 			//repaintEDIT();
+
  			guardarModificadoID(id);
  			console.log('objeto editado id: ', id);
  			console.log(idModificadosCurrent);
@@ -163,4 +188,65 @@ function repaint_events(){
 
  		});
 
+
+	 $("#imgAgregar").click(function(){
+	 		console.log("agregandoNodo");
+	 		$('#modalEditarNew').modal('show');
+
+	 });
+
+	 $("#imgEliminar").click(function(){
+	 		console.log("eliminandoNodo");
+	 		//modalEliminarNew
+	 		$('#modalEliminarNew').modal('show');
+	 });
+	 
+	 $("#imgEditar").click(function(){
+	 	//editarNodoNew
+	 	var idactual = localStorage.getItem("idmodificadoCurrent");
+	 	var title = "#title-"+idactual;
+	 	var descripcion ="#descripcion-" + idactual ;
+	 	var tiempo = "#tiempo-" + idactual ;
+
+	 	$('#editarNodoNew').modal('show');
+	 	$('#title-editar').val($(title).val());
+	 	$('#descripcion-editar').val($(descripcion).val());
+	 	$('#tiempo-editar').val($(tiempo).val());
+	 
+	 		console.log("editandoNodo");
+	 });
+
+	 $("#eliminarConfirmacionNew").click(function(){
+	 	var idactual = localStorage.getItem("idmodificadoCurrent");
+
+	 });
+
+	 $("#editarConfirmacionNew").click(function(){
+	 		var title = $("#title-editar").val();
+	 		var descripcion = $("#descripcion-editar").val();
+	 		var tiempo = $("#tiempo-editar").val();
+
+	 		var idactual = localStorage.getItem("idmodificadoCurrent");
+		 	
+		 	var title1 = "#title-"+idactual;
+		 	var descripcion1 ="#descripcion-" + idactual ;
+		 	var tiempo1 = "#tiempo-" + idactual ;
+
+		 		
+
+		 	$(title1).val(title);
+		 	$(descripcion1).val(descripcion);
+		 	$(tiempo1).val(tiempo);
+		 	
+		 	
+
+		 	 var json = armaJsonNodo(idactual, title, tiempo, descripcion);
+		 	 console.log(json);
+			 //repaintEDIT();
+
+	 		console.log(title,descripcion, tiempo);
+	 		$('#editarNodoNew').modal('hide');
+
+	 		return false;
+	 });
 }

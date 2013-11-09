@@ -89,6 +89,28 @@ body {
 		font-size: 10px;
 	}
 
+#caja_flotante{
+        position: absolute;
+        top:70%;
+        left: 10px;
+        border: 1px solid #CCC;
+        /*background-color: #F05D38;*/
+        background-color: white;
+        font-size: 20px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        z-index: 10000000;
+        -moz-border-radius: 10px; /* Firefox*/ 
+        -ms-border-radius: 10px; /* IE 8.*/ 
+        -webkit-border-radius: 10px; /* Safari,Chrome.*/ 
+        border-radius: 10px; /* El estándar.*/
+    }
 
-
+.imgutils{
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
 
