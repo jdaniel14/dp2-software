@@ -198,6 +198,21 @@
         } catch(PDOException $e){
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
+        /*//Obtener Riesgos
+        $query = "SELECT id_riesgo_x_proyecto, probabilidad, impacto FROM RIESGO_X_PROYECTO WHERE id_proyecto=".$idProyecto." ORDER BY 2, 3";
+        try{
+            $arregloRiesgos= array();
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $data= array("idRiesgo" => $row['id_riesgo_x_proyecto'], "probabilidad" => $row['probabilidad'], "impacto" => $row['impacto']);
+                array_push($arregloRiesgos,$data);
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
         //Matriz
         $arregloMatriz = array();
         foreach($arregloProbabilidad as $valorProb){
@@ -205,8 +220,39 @@
             $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
             array_push($arregloLinea,$data);
             foreach($arregloNivel as $valorNivel){
-                $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
+                //$valorMult = $valorNivel['nivel']*$valorProb['nivel'];
                 $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "valorMult" => $valorMult);
+                array_push($arregloLinea,$data);
+            }
+            array_push($arregloMatriz, $arregloLinea);
+        }
+        echo json_encode($arregloMatriz);*/
+
+        //Matriz
+        $arregloMatriz = array();
+        foreach($arregloProbabilidad as $valorProb){
+            $arregloLinea = array();
+            $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
+            array_push($arregloLinea,$data);
+            foreach($arregloNivel as $valorNivel){
+                $query = "SELECT id_riesgo_x_proyecto FROM RIESGO_X_PROYECTO WHERE id_proyecto=:idProyecto AND id_probabilidad_riesgo=:probabilidad AND id_nivel_impacto=:impacto";
+                try{
+                    $arregloRiesgos= array();
+                    $db=getConnection();
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("idProyecto", $idProyecto);
+                    $stmt->bindParam("probabilidad", $valorProb['nivel']);
+                    $stmt->bindParam("impacto", $valorNivel['nivel']);
+                    $stmt->execute();
+                    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                        $data= array("idRiesgo" => $row['id_riesgo_x_proyecto']);
+                        array_push($arregloRiesgos,$data);
+                    }
+                    $db = null;
+                } catch(PDOException $e){
+                    echo '{"error":{"text":'. $e->getMessage() .'}}';
+                }
+                $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "arrayRiesgos" => $arregloRiesgos);
                 array_push($arregloLinea,$data);
             }
             array_push($arregloMatriz, $arregloLinea);
