@@ -19,12 +19,20 @@ function repaintEDIT(){
 
  		$("#editarEdtNew").click(function(){
  				console.log("Proceso de edición");
- 				$("#eventsEditNew").show("slow");
 
+ 				localStorage.setItem("queueEstado", "editando");
+
+ 				$("#eventsEditNew").show("slow");
+ 				$("#org").html("");
+ 				$("#chart").html("");
+
+ 				$("#MostrarEdt").trigger('click');    
  				//$(".inputEdtTitle").removeAttr("readonly");
  				//$(".inputEdtDescripcion").removeAttr("readonly");
  				//$(".inputEdtDias").removeAttr("readonly");
- 				repaint_events();
+
+ 				console.log("editadndo con bolitas");
+ 				repaint_eventsEdtNew();
  		});
 
  		$("#GuardarCambiosNew").click(function(){
@@ -131,7 +139,7 @@ function armaJsonNodo(id, title, dias, descripcion){
 
 
 
-function repaint_events(){
+function repaint_eventsEdtNew(){
 
 
 	function guardarModificadoID( id ){
@@ -144,9 +152,9 @@ function repaint_events(){
 
 	$(".inputEdtTitle").click(function(){
  			console.log("click edttitle");
- 			$(".inputEdtTitle").removeAttr("readonly");
-			 $(".inputEdtDescripcion").removeAttr("readonly");
-			 $(".inputEdtDias").removeAttr("readonly");
+ 			 //$(".inputEdtTitle").removeAttr("readonly");
+			 //$(".inputEdtDescripcion").removeAttr("readonly");
+			 //$(".inputEdtDias").removeAttr("readonly");
  			//var p = $( '#'+$(this).id );
  			
  			var idnodo = '#' + $(this).attr('id');
