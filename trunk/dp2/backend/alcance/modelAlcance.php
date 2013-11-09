@@ -117,5 +117,23 @@ Precondicion -> EDTARBOL
 		}
 	}
 	
+	class Fase{
+		public $id_fase;
+		public $descripcion;
+		
+		function __construct($id,$desc){
+			$this->id_fase=$id;
+			$this->descripcion=$desc;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ?>
