@@ -128,11 +128,17 @@ Precondicion -> EDTARBOL
 	}
 	
 	
-	
-	
-	
-	
-	
+	class FaseXRequisito{
+		public $id_fase;
+		public $entregable;
+		public $fecha;
+		
+		function __construct($id,$en,$fe){
+			$this->id_fase=$id;
+			$this->entregable=$en;
+			$this->fecha=$fe;
+		}
+	}
 	
 	
 
