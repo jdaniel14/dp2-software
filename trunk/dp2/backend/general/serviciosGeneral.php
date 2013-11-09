@@ -10,10 +10,11 @@ include_once '../backend/conexion.php';
 function G_getListaJP() {
     $sql = "SELECT id_empleado,
                         E.NOMBRE_CORTO,
-			PR.DESCRIPCION
+						PR.DESCRIPCION
                         FROM EMPLEADO E,
                         PROFESION PR
-                        WHERE PR.ID_PROFESION=E.ID_PROFESION";
+                        WHERE PR.ID_PROFESION=E.ID_PROFESION 
+                        AND ID_EMPLEADO!=1";
     try {
         $db = getConnection();
         $stmt = $db->query($sql);
