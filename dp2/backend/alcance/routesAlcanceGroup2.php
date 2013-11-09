@@ -2,9 +2,9 @@
 	//PRIMER SPRINT
 	$app->post('/obtenerEdt','guardarEdt'); //inserta los datos de la creacion del edt
 	$app->post('/traerEdt', 'getEdt'); //mostrar el edt
-	$app->post('/modificaMostrar','getEdt');
-	$app->post('/modificar','modificarTodoEdt');
-	$app->post('/eliminarEdt',"eliminarEdt");
+	$app->post('/modificaMostrar','getEdt'); //solo muestra el edt
+	$app->post('/modificar','modificarTodoEdt'); //modifica el edt
+	$app->post('/eliminarEdt',"eliminarEdt"); //elimina todo el edt
 	
 	//SEGUNDO SPRINT
 	$app->post('/AL_crearAlcance','crearAlcance');
