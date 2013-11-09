@@ -167,7 +167,7 @@
 
    //--------------------------------------CREAR MATRIZ--------------------------------------
 
-    function R_getGenerarMatriPositivo($idProyecto){
+    function R_getGenerarMatrizPositivo($idProyecto){
         //Nivel Impacto
         $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
         try{
