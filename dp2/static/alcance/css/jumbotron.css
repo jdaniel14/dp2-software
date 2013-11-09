@@ -18,15 +18,32 @@
   padding               : 20px;
 }
 
+.jOrgChart .right {
+border-left: 2px solid rgb(54, 54, 54)!important;
+}
+.jOrgChart .top {
+border-top: 3px solid rgb(54, 54, 54)!important;
+}
+
+.jOrgChart .down {
+background-color: rgb(54, 54, 54)!important;
+margin: 0px auto;
+}
+
+
 /* Custom node styling */
+
+
 .jOrgChart .node {
 	font-size 			: 14px;
-	background-color 	: #35363B;
+	background-color 	: rgb(54, 54, 54)!important;
 	border-radius 		: 8px;
-	border 				: 5px solid white;
+	border 				: 5px solid rgb(54, 54, 54);
 	color 				: #F38630;
 	-moz-border-radius 	: 8px;
 }
+
+
 	.node p{
 		font-family 	: tahoma;
 		font-size 		: 10px;
@@ -53,26 +70,27 @@ body {
 
 .inputEdtDias{
 	border: none; 
-	background-color: #DBCBDF;;
+	background-color: #FFFFFF;
 	text-align: center;
 	width: 100%;
 }
 
 .inputEdtDescripcion{
 	border: none; 
-	background-color: #E3F0A1;;
+	background-color: #5383D0;
 	text-align: center;
 	width: 100%;
 }
 
 
-.inputEdtTitle{
-	border: none; 
-	background-color: black;
-	text-align: center;
-	color: white;
-	width: 100%;
+.inputEdtTitle {
+border: none;
+background-color: rgb(54, 54, 54);
+text-align: center;
+color: white;
+width: 100%;
 }
+
 
 .glosario{
 	padding-left: 100px;
