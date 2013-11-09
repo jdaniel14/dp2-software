@@ -21,8 +21,10 @@ function showIndicador(){
 			
 			var spi = auxInd.indicadores[0];
 			var sv = auxInd.indicadores[1];			
-			var arreglo = new Array();			
-			arreglo[0] = ['Fecha','SPI','SV'];
+			var arreglo = new Array();
+			var arreglo2 = new Array();	
+			arreglo[0] = ['Fecha','SPI'];
+			arreglo2[0] = ['Fecha','SV'];
 			if (spi.length == 0){
 				$("#chart_div").html("<p>No existe data histórica para los indicadores de tiempo</p>");				
 			}
@@ -30,11 +32,12 @@ function showIndicador(){
 
 				//$("#chart_div").clear();
 				for (var i=0; i < spi.length; i++){
-					arreglo[i+1] = [spi[i].fecha,parseFloat(spi[i].valor),parseFloat(sv[i].valor)];
+					arreglo[i+1] = [spi[i].fecha,parseFloat(spi[i].valor)];
+					arreglo2[i+1] = [sv[i].fecha,parseFloat(sv[i].valor)];
 				}
-				console.log(arreglo);
 				var chardata = google.visualization.arrayToDataTable(arreglo);
-				console.log(chardata);
+				var chardata2 = google.visualization.arrayToDataTable(arreglo2);
+
 				var options = {
 					areaOpacity:0.0,
 					lineWidth:3,
@@ -50,6 +53,9 @@ function showIndicador(){
 
 				var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
 				chart.draw(chardata, options);
+				console.log("Dibujo algo");
+				var chart2 = new google.visualization.AreaChart(document.getElementById('chart_div2'));
+				chart2.draw(chardata2, options);
 			}
 			
 		}
