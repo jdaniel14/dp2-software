@@ -519,7 +519,7 @@ function G_postAceptDenegSolicitud() {
         $stmt->execute();
 			
 				if($flag == 2)
-					$sql = "UPDATE PROYECTO SET flag_linea_base_editable = 1 WHERE id_proyecto = :id_proy";
+					$sql = "UPDATE PROYECTO SET flag_linea_base_editable = 0 WHERE id_proyecto = :id_proy";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $id_proy);
         $stmt->execute();
