@@ -167,7 +167,7 @@
 
    //--------------------------------------CREAR MATRIZ--------------------------------------
 
-    function R_getGenerarMatriz($idProyecto){
+    function R_getGenerarMatriPositivo($idProyecto){
         //Nivel Impacto
         $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
         try{
@@ -198,35 +198,6 @@
         } catch(PDOException $e){
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
-        /*//Obtener Riesgos
-        $query = "SELECT id_riesgo_x_proyecto, probabilidad, impacto FROM RIESGO_X_PROYECTO WHERE id_proyecto=".$idProyecto." ORDER BY 2, 3";
-        try{
-            $arregloRiesgos= array();
-            $db=getConnection();
-            $stmt = $db->query($query);
-            $stmt->bindParam("idProyecto", $idProyecto);
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $data= array("idRiesgo" => $row['id_riesgo_x_proyecto'], "probabilidad" => $row['probabilidad'], "impacto" => $row['impacto']);
-                array_push($arregloRiesgos,$data);
-            }
-            $db = null;
-        } catch(PDOException $e){
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-        //Matriz
-        $arregloMatriz = array();
-        foreach($arregloProbabilidad as $valorProb){
-            $arregloLinea = array();
-            $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
-            array_push($arregloLinea,$data);
-            foreach($arregloNivel as $valorNivel){
-                $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
-                $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "valorMult" => $valorMult);
-                array_push($arregloLinea,$data);
-            }
-            array_push($arregloMatriz, $arregloLinea);
-        }
-        echo json_encode($arregloMatriz);*/
 
         //Matriz
         $arregloMatriz = array();
@@ -241,6 +212,84 @@
                     WHERE b.id_probabilidad_riesgo = a.id_probabilidad_riesgo
                     AND c.id_nivel_impacto = a.id_nivel_impacto
                     AND a.id_proyecto = :idProyecto AND b.nivel = :probabilidad AND c.nivel = :impacto
+                    AND a.positivo_negativo = 1;
+                    ORDER BY 1 ASC";
+                try{
+                    $arregloRiesgos = "";
+                    $db=getConnection();
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("idProyecto", $idProyecto);
+                    $stmt->bindParam("probabilidad", $valorProb['nivel']);
+                    $stmt->bindParam("impacto", $valorNivel['nivel']);
+                    $stmt->execute();
+                    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                        $data= strval($row['id_riesgo_x_proyecto']);
+                        if ($arregloRiesgos == ""){
+                            $arregloRiesgos = $data;
+                        }
+                        else{
+                            $arregloRiesgos = $arregloRiesgos.", ".$data;
+                        }
+                    }
+                    $db = null;
+                } catch(PDOException $e){
+                    echo '{"error":{"text":'. $e->getMessage() .'}}';
+                }
+                $valorMult = $valorNivel['nivel']*$valorProb['nivel'];
+                $data = array("valorImpacto" => $valorNivel['nivel'], "descImpacto" => $valorNivel['descripcion'], "arrayRiesgos" => $arregloRiesgos, "valorMult" => $valorMult);
+                array_push($arregloLinea,$data);
+            }
+            array_push($arregloMatriz, $arregloLinea);
+        }
+        echo json_encode($arregloMatriz);
+    }
+
+    function R_getGenerarMatrizNegativo($idProyecto){
+        //Nivel Impacto
+        $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        try{
+            $arregloNivel= array();
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
+                array_push($arregloNivel,$data);
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+        //Probabilidad Riesgo
+        $query = "SELECT nivel, descripcion FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        try{
+            $arregloProbabilidad= array();
+            $db=getConnection();
+            $stmt = $db->query($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
+                array_push($arregloProbabilidad,$data);
+            }
+            $db = null;
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+        //Matriz
+        $arregloMatriz = array();
+        foreach($arregloProbabilidad as $valorProb){
+            $arregloLinea = array();
+            $data = array("valorProb" => ($valorProb['nivel']), "descProb" => ($valorProb['descripcion']));
+            array_push($arregloLinea,$data);
+            foreach($arregloNivel as $valorNivel){
+                $query = "SELECT a.id_riesgo_x_proyecto FROM RIESGO_X_PROYECTO a
+                    INNER JOIN PROBABILIDAD_RIESGO b ON b.id_proyecto = a.id_proyecto
+                    INNER JOIN NIVEL_IMPACTO c ON c.id_proyecto = a.id_proyecto
+                    WHERE b.id_probabilidad_riesgo = a.id_probabilidad_riesgo
+                    AND c.id_nivel_impacto = a.id_nivel_impacto
+                    AND a.id_proyecto = :idProyecto AND b.nivel = :probabilidad AND c.nivel = :impacto
+                    AND a.positivo_negativo = 0;
                     ORDER BY 1 ASC";
                 try{
                     $arregloRiesgos = "";
