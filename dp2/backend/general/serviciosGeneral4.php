@@ -196,4 +196,47 @@ function G_setLineaBase($id) {
     }
 }
 
+function G_getProfesion($id) { //Bonnie se la llevó facil :'(
+    $sql = "SELECT ID_PROFESION from EMPLEADO WHERE id_empleado = :idEmpleado";
+
+    $jsonRespuesta = new stdClass();
+    $jsonRespuesta->idProfesion = "";
+    $jsonRespuesta->profesiones = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("idEmpleado", $id);
+        $stmt->execute();
+        $db = null;
+        
+        
+        while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $jsonRespuesta->idProfesion = $p["ID_PROFESION"];
+            break;
+        }
+        
+        $sql = "SELECT id_profesion, descripcion FROM PROFESION";
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $db = null;
+        
+        
+
+        while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $profesion = new stdClass();
+            $profesion->id = $p["id_profesion"];
+            $profesion->nom = $p["descripcion"];
+            
+            array_push($jsonRespuesta->profesiones, $profesion);
+        }
+
+    } catch(PDOException $e) {
+        echo json_encode(array("me"=> $e->getMessage()));
+    }
+
+
+    echo json_encode($jsonRespuesta);
+}
+
 ?>
