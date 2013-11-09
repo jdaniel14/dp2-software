@@ -1,5 +1,6 @@
 var listarSolicitud ="../../api/G_listarSolicitudesCambio";
 var visualizarSolicitud ="../../api/G_visualizarSolicitudCambio/";
+var verificarLineaBase ="../../api/G_verificaLineaBase/";
 var aprobarSolicitud = "../../api/G_solicitudCambioAceptDeneg";
 
 $(document).ready(function(){
@@ -29,6 +30,7 @@ function listaSolicitud(){
 				localStorage.setItem("nombreProyecto",nombreProyecto);
 				
 				visualizaSolicitud();
+				verificaLineaBase();
 			});
         }
 	});
@@ -86,19 +88,33 @@ function visualizaSolicitud(){
 
 //Se acepta o rechaza la solicitud
 
-$("#btnAprobar").click(function(){
-	if (confirm("¿Está seguro que desea aprobar la solicitud de cambio?")){
-		flag = 1;
-		apruebaSolicitud(flag);
-	}
-});
-
-$("#btnRechazar").click(function(){
-	if (confirm("¿Está seguro que desea rechazar la solicitud de cambio?")){
-		flag = 0;
-		apruebaSolicitud(flag);
-	}
-});
+function verificaLineaBase() {
+	$.ajax({
+		type: 'GET',
+		url: verificarLineaBase + localStorage.getItem("idProyecto"),
+		dataType: "json", // data type of response
+        success: function(data){
+        	console.log(data);
+			$("#btnAprobar").click(function(){
+				if (data=="true") { //establecerLineaBase=TRUE
+					if (confirm("¿Está seguro que desea aprobar la solicitud de cambio?")){
+						flag = 1;
+						apruebaSolicitud(flag);
+					}
+				} else { alert("Es necesario establecer una línea Base para aprobar la solicitud de cambio"); }
+			});
+			
+			$("#btnRechazar").click(function(){
+				if (data=="true") { //establecerLineaBase=TRUE
+					if (confirm("¿Está seguro que desea rechazar la solicitud de cambio?")){
+						flag = 0;
+						apruebaSolicitud(flag);
+					}
+				} else { alert("Es necesario establecer una línea Base para rechazar la solicitud de cambio"); }
+			});
+		}
+	});
+}
 
 function apruebaSolicitud(flag){
 	var jsonCliente = {
