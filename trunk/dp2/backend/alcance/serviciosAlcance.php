@@ -413,7 +413,6 @@
 		$pstmt->execute(array($estado["idestado"],$id_edt));			
 	}
 
-
 	function getListaCambios(){//obtener los cambios de alcance dado un id_proyecto
 		$request = \Slim\Slim::getInstance()->request();
 		$val = $request->params();
@@ -484,11 +483,8 @@
 		return $html;
 	}
 
-
 	function generarExcel(){
-
 		//Se crea el Excel
-
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setTitle("Diccionario de datos")
                  					 ->setSubject("Diccionario de datos")
@@ -512,7 +508,6 @@
 			$id_edt=$result["id_edt"];	
 		}
 
-
 		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), P.ultima_actualizacion, E.descripcion as estado  ".
 			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
 			"WHERE E.id_estado = P.id_estado AND P.id_edt= ? 
@@ -527,7 +522,6 @@
 
 		$paquete = $pstmt->fetchall(PDO::FETCH_ASSOC);
 		
-		//print_r($paquete);
 
 		$objPHPExcel->getActiveSheet()
                     ->fromArray($paquete,NULL,'B3');
@@ -574,21 +568,15 @@
 	    $objPHPExcel->getActiveSheet()->getStyle('F3')->applyFromArray($styleArray);
 	    $objPHPExcel->getActiveSheet()->getStyle('G3')->applyFromArray($styleArray);
 
-
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
 	    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
-
         
-        //echo date('H:i:s') . " Se ha generado el documento en la carpeta files\n";
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('../files/archivoDiccionario.xlsx');
-		//setear el response como stream de bytes
-		\Slim\Slim::getInstance()->response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		return file_get_contents('../files/archivoDiccionario.xlsx');
+		echo 200;
 	}
-
 ?>

@@ -28,7 +28,22 @@ function cargaLista(data){
 }
 
 $(document).ready(function(){
-	$("#exportarAExcel").attr("href","../../api/AL_getExcel?id_proyecto="+id_proyecto);
+	$("#exportarAExcel").click(function(){
+		var obj={
+			id_proyecto : id_proyecto
+		}
+		$.ajax({
+			type: 'GET',
+			url : '../../api/AL_getExcel',
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			data : obj,
+			async: false,
+			success: function(data){
+				window.location.href="../../files/archivoDiccionario.xlsx";
+			}
+		});
+	});
 	
 	var obj={
 		id_proyecto : id_proyecto
