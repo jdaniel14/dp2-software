@@ -72,7 +72,7 @@
         function edtAlgorithm( data ){
             var titleParent = data.title;
             var hijos = parseInt(data.hijos);
-            var html = '<li>' +'<input class = "inputEdtTitle"  id = "title-' + data.idnodo+ '" type = "text" readonly = "readonly" value = "'+ titleParent + '"> ';
+            var html = '<li>' +'<input class = "inputEdtTitle"  id = "title-"' + data.idnodo+ '" type = "text" readonly = "readonly" value = "'+ titleParent + '"> ';
             if ( hijos == 0 ){
               //entonces no tiene hijos 
               html += '</li>';
