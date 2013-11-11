@@ -11,6 +11,11 @@
  * Dual licensed under the MIT and GPL licenses.
  *
  */
+if(! $.isFunction($.fn.curCSS)) {
+   $.curCSS = $.css; 
+   $.fn.curCSS = $.fn.css; 
+   var mouseY, lastY = 0; 
+}
 (function($) {
 
   $.fn.jOrgChart = function(options) {
@@ -38,14 +43,15 @@
             revert      : 'invalid',
             revertDuration : 100,
             snap        : 'div.node.expanded',
-            snapMode    : 'inner',
+            snapMode    : 'both',
             stack       : 'div.node'
         });
         
         $('div.node').droppable({
             accept      : '.node',          
             activeClass : 'drag-active',
-            hoverClass  : 'drop-hover'
+            hoverClass  : 'drop-hover',
+            tolerance : 'touch'
         });
         
       // Drag start event handler for nodes
@@ -68,7 +74,7 @@
     
       // Drop event handler for nodes
       $('div.node').bind("drop", function handleDropEvent( event, ui ) {    
-	  
+	       console.log("D-D-D-D-Drop the NODE!");
         var targetID = $(this).data("tree-node");
         var targetLi = $this.find("li").filter(function() { return $(this).data("tree-node") === targetID; } );
         var targetUl = targetLi.children('ul');
