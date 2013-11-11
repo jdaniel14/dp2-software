@@ -44,7 +44,8 @@
 /* jQuery drag 'n drop */
 
 .drag-active {
-  border-style			: dotted !important;
+  border-color : #000000 !important;
+  border-style			: solid dotted !important;
 }
 
 .drop-hover {
