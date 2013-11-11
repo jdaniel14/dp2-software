@@ -83,10 +83,14 @@ $(document).ready(function(){
 			contentType: "application/json; charset=utf-8"
 		});
 		deshabilitarCampos();
+		scrollTo();
 		logChange("Se modificó la declaración del alcance");
 	});
 
 	$("#editar").click(habilitarCampos);
 	deshabilitarCampos();
-	scrollTo();
+	comprobarLineaBase(function(){
+		$("#editar").hide();
+		$("modificarAlcance").hide();
+	});
 });
