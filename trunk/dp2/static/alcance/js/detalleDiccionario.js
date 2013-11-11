@@ -107,6 +107,14 @@ $(document).ready(function(){
 		contentType: "application/json; charset=utf-8",
 		success: cargaData
 	});
+	//chequear linea base
+	comprobarLineaBase(function(){
+		$(".form-control").attr("readonly","readonly");
+		$("#id_cambio_moneda").attr("disabled","disabled");
+		$("#id_estado").attr("disabled","disabled");
+		$("#id_empleado").attr("disabled","disabled");
+		$("#modificarPaquete").hide();
+	});
 });
 
 $("#modificarPaquete").click(function(){

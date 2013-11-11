@@ -256,4 +256,11 @@ $(document).ready(function(){
 
 	$("#subirArchivo").click(subirArchivo);
 
+	comprobarLineaBase(function(){
+		$("#agregar").hide();
+		$(".modificar-requisito").hide();
+		$(".eliminar-requisito").hide();
+		$("#subirArchivo").hide();
+	});
+
 });

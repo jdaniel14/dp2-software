@@ -141,6 +141,11 @@ $(document).ready(function(){
 	cargarComboEstadoEDT();
 	cargarComboEstadoAlcance();
 	cargarEstados();
-  cargarTabla();
+    cargarTabla();
 	$("#guardarCambios").click(guardarCambios);
+	comprobarLineaBase(function(){
+		$("id_estado_edt").attr("disabled","disabled");
+		$("id_estado_alcance").attr("disabled","disabled");
+		$("#guardarCambios").hide();
+	});
 });

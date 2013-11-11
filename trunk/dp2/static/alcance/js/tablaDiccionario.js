@@ -76,6 +76,9 @@ $(document).ready(function(){
 			$("#nombre_proyecto").html(data["nombre_proyecto"]);
 		}
 	});
+	comprobarLineaBase(function(){
+		$("span.glyphicon-edit").hide();
+	});
 });
 
 /*id_paquete_trabajo, nombre, descripcion,version, ultima_actualizacion,estado*/
