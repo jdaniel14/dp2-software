@@ -3,53 +3,109 @@
 define('CO_ROL_GERENTE_PORTAFOLIO', 1);
 define('CO_ROL_JEFE_PROYECTO', 2);
 define('CO_ROL_TEAM_MEMBER', 3);
+
 define('CO_ACCION_VER', 1);
 define('CO_ACCION_EDITAR', 2);
 define('CO_ACCION_GUARDAR', 3);
 
+define('CO_SERVICIO_1', 1);
+define('CO_SERVICIO_2', 2);
+define('CO_SERVICIO_3', 3);
+define('CO_SERVICIO_4', 4);
+define('CO_SERVICIO_5', 5);
+define('CO_SERVICIO_6', 6);
+define('CO_SERVICIO_7', 7);
+define('CO_SERVICIO_8', 8);
+define('CO_SERVICIO_9', 9);
+define('CO_SERVICIO_10', 10);
+define('CO_SERVICIO_11', 11);
+define('CO_SERVICIO_12', 12);
+define('CO_SERVICIO_13', 12);
+define('CO_SERVICIO_14', 13);
+define('CO_SERVICIO_15', 14);
+define('CO_SERVICIO_16', 15);
+define('CO_SERVICIO_17', 17);
+define('CO_SERVICIO_18', 18);
+define('CO_SERVICIO_19', 19);
+define('CO_SERVICIO_20', 20);
+define('CO_SERVICIO_21', 21);
+define('CO_SERVICIO_22', 22);
+define('CO_SERVICIO_23', 23);
 
 class CO_Constants {
-	private static $permisos = null;
+	private static $permisosVista = null;
+	private static $permisosServicio = null;
 
-	public static function getPermisos() {
-		if (self::$permisos == null) {
-			self::$permisos = array(
+	public static function getPermisosVista() {
+		if (self::$permisosVista == null) {
+			self::$permisosVista = array(
 				1 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(true, false, false)),
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(true, false, false)),
 				2 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false)),
 				3 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false)),
 				4 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false)),
 				5 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false)),
 				6 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(true, false, false)),
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(true, false, false)),
 				7 => array(
-					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
-					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false))
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false))
 			);
 		}
-        return self::$permisos;
+        return self::$permisosVista;
+    }
+
+    public static function getPermisosServicio() {
+    	if (self::$permisosServicio == null) {
+    		self::$permisosServicio = array(
+    			CO_SERVICIO_1 => new CO_PermisosServicio(true, true, true),
+    			CO_SERVICIO_2 => new CO_PermisosServicio(true, true, true),
+    			CO_SERVICIO_3 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_4 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_5 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_6 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_7 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_8 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_9 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_10 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_11 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_12 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_13 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_14 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_15 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_16 => new CO_PermisosServicio(true, true, true),
+    			CO_SERVICIO_17 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_18 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_19 => new CO_PermisosServicio(true, true, true),
+    			CO_SERVICIO_20 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_21 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_22 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_23 => new CO_PermisosServicio(false, true, false)
+    		);
+    	}
+    	return self::$permisosServicio;
     }
 }
 
-class CO_Permisos {
-	public $permiso;
+class CO_PermisosVista {
+	private $permiso;
 	
 	function __construct($ver, $editar, $guardar) {
 		$this->permiso = array(
@@ -73,6 +129,31 @@ class CO_Permisos {
 	}
 }
 
+class CO_PermisosServicio {
+	private $permiso;
+
+	function __construct($gerenteProy, $jefeProy, $teamMember) {
+		$this->permiso = array(
+						CO_ROL_GERENTE_PORTAFOLIO => $gerenteProy,
+						CO_ROL_JEFE_PROYECTO => $jefeProy,
+						CO_ROL_TEAM_MEMBER => $teamMember
+						);
+	}
+
+	public function getPermiso($idRol) {
+		switch ($idRol) {
+			case CO_ROL_GERENTE_PORTAFOLIO:
+			case CO_ROL_JEFE_PROYECTO:
+			case CO_ROL_TEAM_MEMBER:
+				return $this->permiso[$idRol];
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+}
+
 class CO_Proyecto {
 	public $idProyecto;
 	public $nombre;
@@ -80,6 +161,7 @@ class CO_Proyecto {
 	public $presupuesto;
 	public $indicadorCerrado;
 	public $indicadorLineaBase;
+	public $porcentajeContingencia;
 	
 	//constructor
 	function __construct($idProyecto, $nombre, $porcentajeReserva, $presupuesto) {
