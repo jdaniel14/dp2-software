@@ -211,7 +211,7 @@
 		echo json_encode($jsonRespuesta);
 	}
 
-	function CO_getHistorialIndicador($json) {
+	function CO_getHistorialIndicador($json) { //servicio18 //COMPLETO
 		$objeto = json_decode($json);
 
 		$jsonRespuesta = new stdClass();
@@ -220,8 +220,18 @@
 		echo json_encode($jsonRespuesta);
 	}
 
+	function CO_validarPermisos($json) { //servicio19
+		$objeto = json_decode($json);
+
+		$jsonRespuesta = new stdClass();
+		$jsonRespuesta->respuesta = CO_consultarPermisoVista($objeto);
+
+		echo json_encode($jsonRespuesta);
+	}
+
 	///////////FOR TESTING ONLY/////////////
 	function CO_testFunction() {
+		/*
 		echo "add me blood999\n";
 		echo "add me ANHUE blood999\n";
 		echo "add me ANG blood999\n";
@@ -230,7 +240,27 @@
 		echo "add me RYL blood999\n";
 		echo "add me OMG blood999\n";
 		echo "add me TSM blood999\n";
-		echo "add me C9 blood999\n";
+		echo "add me C9 blood999\n";*/
+		echo '<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+				<HTML>
+				   <HEAD>
+				      <TITLE>
+				         Add me blood999
+				      </TITLE>
+				   </HEAD>
+				<BODY>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_la-wea-hue-hue-hue.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_i-only-need-to-slap-your-shit-one-FOOL.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_maybe-you-brazil_HUE.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_modemkaiser.png"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/add_me_blood999.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/add_me_blood999_2.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/add_me_blood999_3.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_hue.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_how-to-hue.jpg"></div>
+				   <div><img src="http://200.16.7.112/movil/etc/morde_jungla.png"></div>
+				</BODY>
+				</HTML>';
 	}
 
 	function CO_testFunctionPOST() {
@@ -675,13 +705,18 @@
 		H.ID_PROYECTO,
 		IFNULL(H.NOMBRE_PROYECTO,'') NOMBRE_PROYECTO,
 		IFNULL(H.PORCENTAJE_RESERVA,0) PORCENTAJE_RESERVA,
-		SUM(IFNULL(H.PRESUP_SOLES,0)) PRESUP_SOLES
+		SUM(IFNULL(H.PRESUP_SOLES,0)) PRESUP_SOLES,
+		(
+		CASE
+		WHEN H.ESTADO='CERRADO' THEN 1 ELSE 0
+		END) IND_CERRADO
 		FROM
 		(
 		select
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
+		A.ESTADO,
 		SUM(IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))) PRESUP_SOLES
 		from 
 		PROYECTO A LEFT JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
@@ -699,12 +734,14 @@
 		GROUP BY
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
-		A.PORCENTAJE_RESERVA
+		A.PORCENTAJE_RESERVA,
+		A.ESTADO
 		UNION /*COSTO FIJO*/
 		SELECT
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
+		A.ESTADO,
 		SUM(B.COSTO_FIJO_DIARIO_ESTIMADO*(DATEDIFF(B.FECHA_PLAN_FIN_COSTO_FIJO,B.FECHA_PLAN_INICIO_COSTO_FIJO)+1)*X.CAMBIO_A_SOL) PRESUP_SOLES
 		FROM
 		PROYECTO A JOIN RECURSO B ON A.ID_PROYECTO=B.ID_PROYECTO
@@ -715,12 +752,17 @@
 		GROUP BY
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
-		A.PORCENTAJE_RESERVA
+		A.PORCENTAJE_RESERVA,
+		A.ESTADO
 		) H
 		GROUP BY
 		H.ID_PROYECTO,
 		H.NOMBRE_PROYECTO,
-		H.PORCENTAJE_RESERVA;";
+		H.PORCENTAJE_RESERVA,
+		(
+		CASE
+		WHEN H.ESTADO='CERRADO' THEN 1 ELSE 0
+		END);";
 
 		try {
 			$db = getConnection();
@@ -731,7 +773,7 @@
         	$proyecto = null; //new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
-					$proyecto->indicadorCerrado = "";
+					$proyecto->indicadorCerrado = $p["IND_CERRADO"];
 					$proyecto->indicadorLineaBase = "";
 					break;
 			}
@@ -1747,7 +1789,62 @@
 		return $lista;
 	}
 
-  //RESPUESTAS
+	function CO_consultarPermisoVista($obj) {
+
+		$sql = "SELECT
+		A.ID_PROYECTO,
+		A.ID_EMPLEADO,
+		A.ID_ROL
+		FROM
+		MIEMBROS_EQUIPO A
+		WHERE
+		A.ID_PROYECTO = :idProyecto AND A.ID_EMPLEADO = :idEmpleado AND A.ESTADO<>0;";
+
+		$rol = -1;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+        	$stmt->bindParam("idEmpleado", $obj->idEmpleado);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$rol = $p["ID_ROL"];
+    			break;
+			}
+		} catch(PDOException $e) {
+        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	echo json_encode(array("me"=> $e->getMessage()));
+		}
+
+		$respuesta = 0;
+		if ($rol != -1) {
+			switch ($obj->idVista) {
+			    case 1:
+			    case 2:
+			    case 3:
+			    case 4:
+			    case 5:
+			    case 6:
+			    case 7: 
+			    		switch ($rol) {
+						    case 1:
+						    case 2:
+						    case 3: 
+			    					if (CO_Constants::getPermisos()[$obj->idVista][$rol]->getAccion($obj->idAccion))
+			    						$respuesta = 1;
+			    					break;
+	    				}
+			    		break;
+			}
+		}
+
+		return $respuesta;
+	}
+
+	//RESPUESTAS
 	function CO_crearRespuesta($codRespuesta, $mensaje) {
 		$respuesta = new stdClass();
 		$respuesta->codRespuesta = $codRespuesta;

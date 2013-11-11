@@ -1,5 +1,78 @@
 <?php
 
+define('CO_ROL_GERENTE_PORTAFOLIO', 1);
+define('CO_ROL_JEFE_PROYECTO', 2);
+define('CO_ROL_TEAM_MEMBER', 3);
+define('CO_ACCION_VER', 1);
+define('CO_ACCION_EDITAR', 2);
+define('CO_ACCION_GUARDAR', 3);
+
+
+class CO_Constants {
+	private static $permisos = null;
+
+	public static function getPermisos() {
+		if (self::$permisos == null) {
+			self::$permisos = array(
+				1 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(true, false, false)),
+				2 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+				3 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+				4 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+				5 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false)),
+				6 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(true, false, false)),
+				7 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_Permisos(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_Permisos(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_Permisos(false, false, false))
+			);
+		}
+        return self::$permisos;
+    }
+}
+
+class CO_Permisos {
+	public $permiso;
+	
+	function __construct($ver, $editar, $guardar) {
+		$this->permiso = array(
+						CO_ACCION_VER => $ver,
+						CO_ACCION_EDITAR => $editar,
+						CO_ACCION_GUARDAR => $guardar
+						);
+	}
+
+	public function getAccion($idAccion) {
+		switch ($idAccion) {
+			case CO_ACCION_VER:
+			case CO_ACCION_EDITAR:
+			case CO_ACCION_GUARDAR:
+				return $this->permiso[$idAccion];
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+}
+
 class CO_Proyecto {
 	public $idProyecto;
 	public $nombre;
