@@ -23,58 +23,87 @@
   ///////////SPRINT 1/////////////
 	function CO_getInfoProyecto($json) { //servicio 1 //COMPLETO
 		$proy = json_decode($json);
-		$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
+
+		if (CO_verificaPermisoServicio(CO_SERVICIO_1, $proy->idUsuario, $proy->idProyecto)) {
+			$infoProyecto = CO_consultarInfoProyecto($proy->idProyecto);
 		
-		echo json_encode($infoProyecto);
+			echo json_encode($infoProyecto);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 	
 	function CO_getListaRecursos($json) { //servicio 2 //COMPLETO
 		$proy = json_decode($json);
-		$listaRecursos = CO_consultarListaRecursos($proy->idProyecto);
-		$jsonRespuesta = new stdClass();
-		$jsonRespuesta->lista = $listaRecursos;
+		if (CO_verificaPermisoServicio(CO_SERVICIO_2, $proy->idUsuario, $proy->idProyecto)) {
+			$listaRecursos = CO_consultarListaRecursos($proy->idProyecto);
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->lista = $listaRecursos;
 		
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 	
 	function CO_getListaActividades($json) { //servicio 3 //COMPLETO
 		$proy = json_decode($json);
-		$listaActividades = CO_consultarListaActividades($proy->idProyecto);
-		$jsonRespuesta = new stdClass();
-		$jsonRespuesta->lista = $listaActividades;
-		
-		echo json_encode($jsonRespuesta);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_3, $proy->idUsuario, $proy->idProyecto)) {
+				$listaActividades = CO_consultarListaActividades($proy->idProyecto);
+				$jsonRespuesta = new stdClass();
+				$jsonRespuesta->lista = $listaActividades;
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 	
 	function CO_getInfoActividad($json) { //servicio 4 //COMPLETO
 		$proy = json_decode($json);
-		$infoActividad = CO_consultarInfoActividad($proy->idProyecto, $proy->idActividad);
-		
-		echo json_encode($infoActividad);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_4, $proy->idUsuario, $proy->idProyecto)) {
+			$infoActividad = CO_consultarInfoActividad($proy->idProyecto, $proy->idActividad);
+			
+			echo json_encode($infoActividad);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 	
 	function CO_saveCURecursos() { //servicio 5 //COMPLETO
 		$request = \Slim\Slim::getInstance()->request();
     	$objeto = json_decode($request->getBody());
-		$jsonRespuesta = CO_guardarCUR($objeto);
+    	if (CO_verificaPermisoServicio(CO_SERVICIO_5, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = CO_guardarCUR($objeto);
 		
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 	
 	function CO_getListaPaquetes($json) { //servicio 6 //COMPLETO
 		$proy = json_decode($json);
-		$listaPaquetes = CO_consultarListaPaquetes($proy->idProyecto);
-		$jsonRespuesta = new stdClass();
-		$jsonRespuesta->lista = $listaPaquetes;
-		
-		echo json_encode($jsonRespuesta);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_6, $proy->idUsuario, $proy->idProyecto)) {
+			$listaPaquetes = CO_consultarListaPaquetes($proy->idProyecto);
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->lista = $listaPaquetes;
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 	
 	function CO_saveTipoCuenta($json) { //servicio 7 //COMPLETO
 		$objeto = json_decode($json);
-		$jsonRespuesta = CO_guardarTipoCuenta($objeto);
-		
-		echo json_encode($jsonRespuesta);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_7, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = CO_guardarTipoCuenta($objeto);
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_getListaMonedas() { //servicio 8 //COMPLETO
@@ -96,9 +125,13 @@
 	function CO_saveReserva() { //servicio 10 //COMPLETO
 		$request = \Slim\Slim::getInstance()->request();
     	$objeto = json_decode($request->getBody());
-		$jsonRespuesta = CO_guardarReserva($objeto);
-		
-		echo json_encode($jsonRespuesta);
+    	if (CO_verificaPermisoServicio(CO_SERVICIO_10, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = CO_guardarReserva($objeto);
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_getAsientosContables() { //servicio 11 //COMPLETO
@@ -112,121 +145,208 @@
 	///////////SPRINT 2/////////////
 	function CO_getIndicadores($json) { //servicio 12 //COMPLETO
 		$proy = json_decode($json);
-		$year = $proy->year;
-		$month = $proy->month;
-		$day = $proy->day;
+		if (CO_verificaPermisoServicio(CO_SERVICIO_12, $proy->idUsuario, $proy->idProyecto)) {
+			$year = $proy->year;
+			$month = $proy->month;
+			$day = $proy->day;
 
-		$fecha = $year . $month . $day;
+			$fecha = $year . $month . $day;
 
-		$indicadores = CO_consultarIndicadores($proy->idProyecto, $fecha);
+			$indicadores = CO_consultarIndicadores($proy->idProyecto, $fecha);
 
-		$jsonRespuesta = new stdClass();
-		$jsonRespuesta->lista = $indicadores;
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->lista = $indicadores;
 
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_saveIndicadores() { //servicio 13 //COMPLETO
 		$request = \Slim\Slim::getInstance()->request();
-    	$objeto = json_decode($request->getBody());
-		
-		$year = $objeto->year;
-		$month = $objeto->month;
-		$day = $objeto->day;
+		$objeto = json_decode($request->getBody());
+		if (CO_verificaPermisoServicio(CO_SERVICIO_13, $objeto->idUsuario, $objeto->idProyecto)) {
+			$year = $objeto->year;
+			$month = $objeto->month;
+			$day = $objeto->day;
 
-		/*
-		if ($objeto->month < 10) {
-			$month = '0' . $month;
+			/*
+			if ($objeto->month < 10) {
+				$month = '0' . $month;
+			}
+
+			if ($objeto->day < 10) {
+				$day = '0' . $day;
+			}*/
+
+			$fecha = $year . $month . $day;
+			
+			$jsonRespuesta = CO_guardarIndicadores($objeto, $fecha);
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
 		}
-
-		if ($objeto->day < 10) {
-			$day = '0' . $day;
-		}*/
-
-		$fecha = $year . $month . $day;
-		
-		$jsonRespuesta = CO_guardarIndicadores($objeto, $fecha);
-		
-		echo json_encode($jsonRespuesta);
 	}
 	
   
 	///////////SPRINT 3/////////////
 	function CO_getListaCuentasDesglozable($json) { //servicio 14 //COMPLETO
 		$proy = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_14, $proy->idUsuario, $proy->idProyecto)) {
+			$listaCuentas= CO_consultarCuentasDesglozable($proy->idProyecto);
 
-		$listaCuentas= CO_consultarCuentasDesglozable($proy->idProyecto);
+	    	$jsonRespuesta = new stdClass();
+			$jsonRespuesta->lista = $listaCuentas;
 
-    	$jsonRespuesta = new stdClass();
-		$jsonRespuesta->lista = $listaCuentas;
-
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_getCostoFijoPlaneado($json) { //servicio 15//COMPLETO
 		$proy = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_15, $proy->idUsuario, $proy->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+	    	$jsonRespuesta->lista = CO_consultarCostoFijoTotalPlaneado($proy->idProyecto);
+	    	$jsonRespuesta->costoFijoTotalPlaneado = 0;
+	    	if ($jsonRespuesta->lista != null && sizeof($jsonRespuesta->lista) > 0) {
+	    		foreach ($jsonRespuesta->lista as $recurso) {
+					$jsonRespuesta->costoFijoTotalPlaneado += $recurso->costoFijoTotal;
+				}
+	    	}
 
-		$jsonRespuesta = new stdClass();
-    	$jsonRespuesta->lista = CO_consultarCostoFijoTotalPlaneado($proy->idProyecto);
-    	$jsonRespuesta->costoFijoTotalPlaneado = 0;
-    	if ($jsonRespuesta->lista != null && sizeof($jsonRespuesta->lista) > 0) {
-    		foreach ($jsonRespuesta->lista as $recurso) {
-				$jsonRespuesta->costoFijoTotalPlaneado += $recurso->costoFijoTotal;
-			}
-    	}
-
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_getCostoFijoReal($json) { //servicio 16//COMPLETO
 		$proy = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_16, $proy->idUsuario, $proy->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+	    	$jsonRespuesta->lista = CO_consultarCostoFijoTotalReal($proy->idProyecto);
+	    	$jsonRespuesta->costoFijoTotalReal = 0;
+	    	if ($jsonRespuesta->lista != null && sizeof($jsonRespuesta->lista) > 0) {
+	    		foreach ($jsonRespuesta->lista as $recurso) {
+					$jsonRespuesta->costoFijoTotalReal += $recurso->costoFijoTotal;
+				}
+	    	}
 
-		$jsonRespuesta = new stdClass();
-    	$jsonRespuesta->lista = CO_consultarCostoFijoTotalReal($proy->idProyecto);
-    	$jsonRespuesta->costoFijoTotalReal = 0;
-    	if ($jsonRespuesta->lista != null && sizeof($jsonRespuesta->lista) > 0) {
-    		foreach ($jsonRespuesta->lista as $recurso) {
-				$jsonRespuesta->costoFijoTotalReal += $recurso->costoFijoTotal;
-			}
-    	}
-
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_saveCostoFijoRealProyecto($json) { //servicio 17 //COMPLETO
 		$objeto = json_decode($json);
-		
-		/*
-		if ($objeto->month < 10) {
-			$month = '0' . $month;
+		if (CO_verificaPermisoServicio(CO_SERVICIO_17, $objeto->idUsuario, $objeto->idProyecto)) {
+			/*
+			if ($objeto->month < 10) {
+				$month = '0' . $month;
+			}
+
+			if ($objeto->day < 10) {
+				$day = '0' . $day;
+			}*/
+
+			
+			$jsonRespuesta = CO_guardarCostoFijoReal($objeto);
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
 		}
-
-		if ($objeto->day < 10) {
-			$day = '0' . $day;
-		}*/
-
-		
-		$jsonRespuesta = CO_guardarCostoFijoReal($objeto);
-		
-		echo json_encode($jsonRespuesta);
 	}
 
 	function CO_getHistorialIndicador($json) { //servicio18 //COMPLETO
 		$objeto = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_18, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+	    	$jsonRespuesta->lista = CO_consultarHistorialIndicador($objeto);
 
-		$jsonRespuesta = new stdClass();
-    	$jsonRespuesta->lista = CO_consultarHistorialIndicador($objeto);
-
-		echo json_encode($jsonRespuesta);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
-	function CO_validarPermisos($json) { //servicio19
-		$objeto = json_decode($json);
+
+	///////////SPRINT 4/////////////
+	function CO_validarPermisos() { //servicio19  //COMPLETO
+		$request = \Slim\Slim::getInstance()->request();
+	    $objeto = json_decode($request->getBody());
 
 		$jsonRespuesta = new stdClass();
 		$jsonRespuesta->respuesta = CO_consultarPermisoVista($objeto);
 
 		echo json_encode($jsonRespuesta);
+	}
+
+	function CO_getCostosIndirectosEstimadosMes($json) { //servicio 20 //COMPLETO
+		$objeto = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_20, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->numMeses = CO_consultarNumeroMesesCostosIndirectosEstimados($objeto->idProyecto);
+			$jsonRespuesta->listaCostosIndirectos = CO_ConsultarCostosIndirectosEstimados($objeto->idProyecto);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
+	}
+
+	function CO_getCostosIndirectosRealesMes($json) { //servicio 21 //COMPLETO
+		$objeto = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_21, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->numMeses = CO_consultarNumeroMesesCostosIndirectosReales($objeto->idProyecto);
+			$jsonRespuesta->listaCostosIndirectos = CO_ConsultarCostosIndirectosReales($objeto->idProyecto);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
+	}
+
+	function CO_saveCostosIndirectosEstimados() { //servicio 22
+		$request = \Slim\Slim::getInstance()->request();
+		$objeto = json_decode($request->getBody());
+		if (CO_verificaPermisoServicio(CO_SERVICIO_22, $objeto->idUsuario, $objeto->idProyecto)) {
+			
+			/*
+			$year = $objeto->year;
+			$month = $objeto->month;
+			$day = $objeto->day;
+			if ($objeto->month < 10) {
+				$month = '0' . $month;
+			}
+
+			if ($objeto->day < 10) {
+				$day = '0' . $day;
+			}*/
+
+			//$fecha = $year . $month . $day;
+			
+			$jsonRespuesta = CO_guardarCostosIndirectosEstimados($objeto);
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
+	}
+
+	function CO_saveCostosIndirectosReales() { //servicio 23
+		$request = \Slim\Slim::getInstance()->request();
+		$objeto = json_decode($request->getBody());
+		if (CO_verificaPermisoServicio(CO_SERVICIO_23, $objeto->idUsuario, $objeto->idProyecto)) {		
+			$jsonRespuesta = CO_guardarCostosIndirectosReales($objeto);
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	///////////FOR TESTING ONLY/////////////
@@ -264,8 +384,8 @@
 	}
 
 	function CO_testFunctionPOST() {
-    $request = \Slim\Slim::getInstance()->request();
-    $acta = json_decode($request->getBody());
+	    $request = \Slim\Slim::getInstance()->request();
+	    $acta = json_decode($request->getBody());
    
     echo json_encode($acta);
 }
@@ -373,8 +493,8 @@
     			$valor = $p["VALOR_PLANEADO"];
 			}
 		} catch(PDOException $e) {
-        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	//echo json_encode(array("me"=> $e->getMessage()));
 		}
 
 		if ($valor == null)
@@ -446,8 +566,8 @@
     			$valor = $p["VALOR_GANADO"];
 			}
 		} catch(PDOException $e) {
-        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	//echo json_encode(array("me"=> $e->getMessage()));
 		}
 
 		if ($valor == null)
@@ -519,8 +639,8 @@
     			$valor = $p["VALOR_ACTUAL"];
 			}
 		} catch(PDOException $e) {
-        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	//echo json_encode(array("me"=> $e->getMessage()));
 		}
 
 		if ($valor == null)
@@ -588,8 +708,8 @@
     			$valor = $p["BAC_SOLES"];
 			}
 		} catch(PDOException $e) {
-        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	//echo json_encode(array("me"=> $e->getMessage()));
 		}
 
 		if ($valor == null)
@@ -652,6 +772,7 @@
 		$obj->year = 2015;
 	*/
 		
+		$respuesta = null;
 		if ($obj == null) {
 			$respuesta = CO_crearRespuesta(-1, 'No se recibió información.');
 			return $respuesta;
@@ -705,6 +826,7 @@
 		H.ID_PROYECTO,
 		IFNULL(H.NOMBRE_PROYECTO,'') NOMBRE_PROYECTO,
 		IFNULL(H.PORCENTAJE_RESERVA,0) PORCENTAJE_RESERVA,
+		IFNULL(H.PORCENTAJE_CONTINGENCIA,0) PORCENTAJE_CONTINGENCIA,
 		SUM(IFNULL(H.PRESUP_SOLES,0)) PRESUP_SOLES,
 		(
 		CASE
@@ -716,6 +838,7 @@
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
+		A.PORCENTAJE_CONTINGENCIA,
 		A.ESTADO,
 		SUM(IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))) PRESUP_SOLES
 		from 
@@ -741,6 +864,7 @@
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
+		A.PORCENTAJE_CONTINGENCIA,
 		A.ESTADO,
 		SUM(B.COSTO_FIJO_DIARIO_ESTIMADO*(DATEDIFF(B.FECHA_PLAN_FIN_COSTO_FIJO,B.FECHA_PLAN_INICIO_COSTO_FIJO)+1)*X.CAMBIO_A_SOL) PRESUP_SOLES
 		FROM
@@ -759,6 +883,7 @@
 		H.ID_PROYECTO,
 		H.NOMBRE_PROYECTO,
 		H.PORCENTAJE_RESERVA,
+		IFNULL(H.PORCENTAJE_CONTINGENCIA,0),
 		(
 		CASE
 		WHEN H.ESTADO='CERRADO' THEN 1 ELSE 0
@@ -774,14 +899,14 @@
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
 					$proyecto->indicadorCerrado = $p["IND_CERRADO"];
-					$proyecto->indicadorLineaBase = "";
+					$proyecto->indicadorLineaBase = G_getLineaBase($idProyecto);
+					$proyecto->porcentajeContingencia = $p["PORCENTAJE_CONTINGENCIA"];
 					break;
 			}
 			//echo json_encode($listaRecursos);
 
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	echo json_encode(array("me"=> $e->getMessage()));
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		
 
@@ -860,8 +985,7 @@
 			//echo json_encode($listaRecursos);
 
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	echo json_encode(array("me"=> $e->getMessage()));
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
 
@@ -913,8 +1037,7 @@
 			//echo json_encode($listaRecursos);
 
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	echo json_encode(array("me"=> $e->getMessage()));
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		
 		foreach ($listaActividades as $actividad) {
@@ -922,9 +1045,6 @@
 			$actividad->listaRecursos = $listaRecursos;
 		}
 		unset($actividad);
-		
-		//se llamara una funcion que devuelve data falsa por mientras.		
-		//$listaActividades = CO_obtenerListaActividadesFalsa();
 		
 		return $listaActividades;
 	}
@@ -975,7 +1095,7 @@
 				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["UNIDAD_MEDIDA"], $p["NOMBRE_RECURSO"], $p["ID_CAMBIO_MONEDA"], $p["MONEDA"], $p["CANTIDADESTIMADA"], $p["COSTO_UNIT_SOLES"], -1, -1, -1));
 			}
 		} catch(PDOException $e) {
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 	
 		return $listaRecursos;
@@ -1025,24 +1145,15 @@
 			}
 
 		} catch(PDOException $e) {
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		
 		return $actividad;
 	}
 	
-	function CO_guardarCUR($obj) { //CORREGIR QUERIES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//insertar en la bd...
-		/*
-		$obj->idProyecto;
-		$obj->listaRecursos;
-			$obj->listaRecursos[0];
-				$obj->listaRecursos[0]->idRecurso;
-				$obj->listaRecursos[0]->costoUnitario;
-				$obj->listaRecursos[0]->idMoneda;
-		$obj->porcReserva;
-		*/
+	function CO_guardarCUR($obj) { //COMPLETO
 		
+		$respuesta = null;
 		if ($obj == null) {
 			$respuesta = CO_crearRespuesta(-1, 'No se recibió información.');
 			return $respuesta;
@@ -1211,8 +1322,7 @@
 			}
 
 		} catch(PDOException $e) {
-			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-			$listaPaquetes = null;
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		//se llamara una funcion que devuelve data falsa por mientras.		
 		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
@@ -1267,7 +1377,7 @@
 			} catch(PDOException $e) {
 				$respuesta = CO_crearRespuesta(-1, $e->getMessage());
 				$listaPaquetes = null;
-				echo json_encode($respuesta);
+				//echo json_encode($respuesta);
 				return;
 			}
 
@@ -1292,6 +1402,7 @@
 			$obj->listaTipoCuenta[0];
 		*/
 		
+		$respuesta = null;
 		try {
         	//Para actualizar el tipo de cuenta
 			$sql = "
@@ -1349,8 +1460,7 @@
 					array_push($listaMonedas, new CO_Moneda($p["ID_CAMBIO_MONEDA"], $p["DESCRIPCION"], $p["CAMBIO_A_SOL"], $p["CAMBIO_DESDE_SOL"]));
 			}
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
 		//$listaMonedas = CO_obtenerListaMonedasFalsa();
@@ -1377,7 +1487,7 @@
 					array_push($listaUM, new CO_UnidadMedida($p["ID_UNIDAD_MEDIDA"], $p["DESCRIPCION"]));
 			}
 		} catch(PDOException $e) {
-        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
 		return $listaUM;
@@ -1385,16 +1495,19 @@
 
 	function CO_guardarReserva($obj) { //COMPLETO
 		//Para el porcentaje de reserva
+
+		$respuesta = null;
 		try {
 			$sql = "UPDATE PROYECTO
-			SET PORCENTAJE_RESERVA= :porcReserva
+			SET PORCENTAJE_RESERVA= :porcReserva, PORCENTAJE_CONTINGENCIA= :porcContingencia
 			WHERE
-			ID_PROYECTO= :idProyecto;";
+			ID_PROYECTO= :idProyecto";
 
 			$db = getConnection();
         	$stmt = $db->prepare($sql);
         	$stmt->bindParam("porcReserva", $obj->porcReserva);
         	$stmt->bindParam("idProyecto", $obj->idProyecto);
+        	$stmt->bindParam("porcContingencia", $obj->porcContingencia);
         	$stmt->execute();
         	$db = null;
 
@@ -1421,7 +1534,7 @@
 					array_push($listaUM, new CO_AsientoContable($p["ID_ASIENTO_CONTABLE"], $p["DESCRIPCION"]));
 			}
 		} catch(PDOException $e) {
-        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
 		return $listaUM;
@@ -1473,8 +1586,7 @@
 	    	}
       
 		} catch(PDOException $e) {
-			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-			$listaCuentas = null;
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		
     return $listaCuentas;
@@ -1512,7 +1624,7 @@
 				array_push($listaActividades, new CO_Actividad($p["ID_ACTIVIDAD"], $p["NOMBRE_ACTIVIDAD"], $idCuenta, $p["COSTO_SOLES_ACTIVIDAD"], null));
 			}
 		} catch(PDOException $e) {
-        	echo json_encode(array("me"=> $e->getMessage()));
+        	//echo json_encode(array("me"=> $e->getMessage()));
 		}
 	
 		return $listaActividades;
@@ -1547,8 +1659,7 @@
 				array_push($listaRecursos, new CO_Recurso($p["ID_RECURSO"], $p["ID_UNIDAD_MEDIDA"], $p["NOMBRE_UNIDAD_MEDIDA"], $p["DESCRIPCION"], $p["ID_CAMBIO_MONEDA"], $p["NOMBRE_MONEDA"], -1, -1, $p["COSTO_FIJO_DIARIO"], $p["COSTO_FIJO_TOTAL"], -1));
 			}
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	echo json_encode(array("me"=> $e->getMessage()));
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		
 		return $listaRecursos;
@@ -1590,8 +1701,7 @@
 				array_push($listaRecursos, $recurso);
 			}
 		} catch(PDOException $e) {
-//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
-        	echo json_encode(array("me"=> $e->getMessage()));
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 		
 		return $listaRecursos;
@@ -1607,6 +1717,7 @@
 			$obj->listaTipoCuenta[0];
 		*/
 		
+		$respuesta = null;
 		try {
 			$sql = "UPDATE RECURSO
 			SET
@@ -1693,7 +1804,7 @@
 		        		array_push($listaValores, $valorFecha);
 					}
 				} catch(PDOException $e) {
-		        	$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 				}
 
 				$indicador->historial = $listaValores;
@@ -1789,8 +1900,7 @@
 		return $lista;
 	}
 
-	function CO_consultarPermisoVista($obj) {
-
+	function CO_obtenerRol($idProyecto, $idEmpleado) {
 		$sql = "SELECT
 		A.ID_PROYECTO,
 		A.ID_EMPLEADO,
@@ -1805,8 +1915,8 @@
 		try {
 			$db = getConnection();
         	$stmt = $db->prepare($sql);
-        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-        	$stmt->bindParam("idEmpleado", $obj->idEmpleado);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->bindParam("idEmpleado", $idEmpleado);
         	$stmt->execute();
         	$db = null;
         	
@@ -1815,9 +1925,15 @@
     			break;
 			}
 		} catch(PDOException $e) {
-        	//$respuesta = CO_crearRespuesta(-1, $e->getMessage());
-        	echo json_encode(array("me"=> $e->getMessage()));
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
+
+		return $rol;
+	}
+
+	function CO_consultarPermisoVista($obj) {
+
+		$rol = CO_obtenerRol($obj->idProyecto, $obj->idEmpleado);
 
 		$respuesta = 0;
 		if ($rol != -1) {
@@ -1833,7 +1949,7 @@
 						    case 1:
 						    case 2:
 						    case 3: 
-			    					if (CO_Constants::getPermisos()[$obj->idVista][$rol]->getAccion($obj->idAccion))
+			    					if (CO_Constants::getPermisosVista()[$obj->idVista][$rol]->getAccion($obj->idAccion))
 			    						$respuesta = 1;
 			    					break;
 	    				}
@@ -1842,6 +1958,217 @@
 		}
 
 		return $respuesta;
+	}
+
+	function CO_verificaPermisoServicio($idServicio, $idUsuario, $idProyecto){
+		try {
+			$rol = CO_obtenerRol($idProyecto, $idUsuario);
+			return CO_Constants::getPermisosServicio()[$idServicio]->getPermiso($rol);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	function CO_consultarNumeroMesesCostosIndirectosEstimados($idProyecto) {
+		$sql = "SELECT
+		conv(date_format(min(FECHA_PLAN_INICIO),'%Y%m'),10,10) mes_ini,
+		conv(date_format(max(FECHA_PLAN_FIN),'%Y%m'),10,10) mes_fin
+		FROM ACTIVIDAD
+		WHERE
+		ID_PROYECTO= :idProyecto AND PROFUNDIDAD<>0 AND ELIMINADO<>1;";
+
+		$diferencia = 0;
+		$fechaIni = null;
+		$fechaFin = null;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$fechaIni = $p["mes_ini"];
+    			$fechaFin = $p["mes_fin"];
+    			break;
+			}
+
+			if ($fechaIni != null && $fechaFin != null) {
+				$aIni = ($fechaIni - ($fechaIni % 100)) / 100;
+				$aFin = ($fechaFin - ($fechaFin % 100)) / 100;
+				$mIni = $fechaIni % 100;
+				$mFin = $fechaFin % 100;
+				$diferencia = ($aFin - $aIni)*12 + $mFin - $mIni;
+			}
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		return $diferencia;
+	}
+
+	function CO_ConsultarCostosIndirectosEstimados($idProyecto) {
+		$sql = "SELECT
+		A.id_proyecto,
+		A.codmes,
+		A.ID_CAMBIO_MONEDA,
+		IFNULL(A.costo_estimado*B.CAMBIO_A_SOL,0) COSTO_INDIRECTO_ESTIMADO_SOLES
+		FROM 
+		COSTO_INDIRECTO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
+
+		$listaCI = array();
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        		$cInd = new stdClass();
+        		$cInd->codMes = $p["codmes"];
+    			$cInd->idMoneda =  $p["ID_CAMBIO_MONEDA"];
+    			$cInd->costoIndirecto =  $p["COSTO_INDIRECTO_ESTIMADO_SOLES"];
+    			array_push($listaCI, $cInd);
+			}
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		return $listaCI;
+	}
+
+	function CO_consultarNumeroMesesCostosIndirectosReales($idProyecto) {
+		$sql = "SELECT
+		conv(date_format(min(FECHA_ACTUAL_INICIO),'%Y%m'),10,10) mes_ini,
+		conv(date_format(max(FECHA_ACTUAL_FIN),'%Y%m'),10,10) mes_fin
+		FROM ACTIVIDAD
+		WHERE
+		ID_PROYECTO= :idProyecto AND PROFUNDIDAD<>0 AND ELIMINADO<>1;";
+
+		$diferencia = 0;
+		$fechaIni = null;
+		$fechaFin = null;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+    			$fechaIni = $p["mes_ini"];
+    			$fechaFin = $p["mes_fin"];
+    			break;
+			}
+
+			if ($fechaIni != null && $fechaFin != null) {
+				$aIni = ($fechaIni - ($fechaIni % 100)) / 100;
+				$aFin = ($fechaFin - ($fechaFin % 100)) / 100;
+				$mIni = $fechaIni % 100;
+				$mFin = $fechaFin % 100;
+				$diferencia = ($aFin - $aIni)*12 + $mFin - $mIni;
+			}
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		return $diferencia;
+	}
+
+	function CO_ConsultarCostosIndirectosReales($idProyecto) {
+		$sql = "SELECT
+		A.id_proyecto,
+		A.codmes,
+		A.ID_CAMBIO_MONEDA,
+		IFNULL(A.costo_REAL*B.CAMBIO_A_SOL,0) COSTO_INDIRECTO_REAL_SOLES
+		FROM 
+		COSTO_INDIRECTO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
+
+		$listaCI = array();
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        		$cInd = new stdClass();
+        		$cInd->codMes = $p["codmes"];
+    			$cInd->idMoneda =  $p["ID_CAMBIO_MONEDA"];
+    			$cInd->costoIndirecto =  $p["COSTO_INDIRECTO_REAL_SOLES"];
+    			array_push($listaCI, $cInd);
+			}
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		return $listaCI;
+	}
+
+	function CO_guardarCostosIndirectosEstimados($objeto) {
+		$respuesta = null;
+		try {
+			foreach ($objeto->listaCostosIndirectos as $elemento) {
+				CO_guardarCIE($elemento);
+			}
+			$respuesta = CO_crearRespuesta(0, "Ok");
+		} catch (PDOException $e) {
+			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		return $respuesta;
+	}
+
+	function CO_guardarCIE($elemento) {
+		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_estimado,id_cambio_moneda)
+		VALUES (:idProyecto, :codMes, :costoIndirecto, :idMoneda);
+		COMMIT;";
+
+		$db = getConnection();
+    	$stmt = $db->prepare($sql);
+    	$stmt->bindParam("idProyecto", $elemento->idProyecto);
+    	$stmt->bindParam("codMes", $elemento->codMes);
+    	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
+		$stmt->bindParam("idMoneda", $elemento->fecha);
+    	$stmt->execute();
+    	$db = null;
+	}
+
+	function CO_guardarCostosIndirectosReales($objeto) {
+		$respuesta = null;
+		try {
+			foreach ($objeto->listaCostosIndirectos as $elemento) {
+				CO_guardarCIR($elemento);
+			}
+			$respuesta = CO_crearRespuesta(0, "Ok");
+		} catch (PDOException $e) {
+			$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		return $respuesta;
+	}
+
+	function CO_guardarCIR($elemento) {
+		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_real,id_cambio_moneda)
+		VALUES (:idProyecto, :codmes, :costoIndirecto, :idMoneda);
+		COMMIT;";
+
+		$db = getConnection();
+    	$stmt = $db->prepare($sql);
+    	$stmt->bindParam("idProyecto", $elemento->idProyecto);
+    	$stmt->bindParam("codMes", $elemento->codMes);
+    	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
+		$stmt->bindParam("idMoneda", $elemento->fecha);
+    	$stmt->execute();
+    	$db = null;
 	}
 
 	//RESPUESTAS
