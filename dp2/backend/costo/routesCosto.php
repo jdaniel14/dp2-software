@@ -20,7 +20,7 @@
 	$app->get('/CO_enviarCostoFijoRealProyecto/:parametro', 'CO_saveCostoFijoRealProyecto'); //servicio17
 	$app->get('/CO_obtenerHistorialIndicador/:parametro', 'CO_getHistorialIndicador'); //servicio18
 	
-	$app->post('/CO_verificaPermisos/', 'CO_validarPermisos'); //servicio19
+	$app->post('/CO_verificaPermisosVista/', 'CO_validarPermisosVista'); //servicio19
 	$app->get('/CO_obtenerCostosIndirectosEstimadosMes/:parametro', 'CO_getCostosIndirectosEstimadosMes'); //servicio20
 	$app->get('/CO_obtenerCostosIndirectosRealesMes/:parametro', 'CO_getCostosIndirectosRealesMes'); //servicio21
 	$app->post('/CO_enviarCostosIndirectosEstimadosMes/', 'CO_saveCostosIndirectosEstimados'); //servicio22

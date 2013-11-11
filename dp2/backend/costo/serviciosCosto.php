@@ -277,7 +277,7 @@
 
 
 	///////////SPRINT 4/////////////
-	function CO_validarPermisos() { //servicio19  //COMPLETO
+	function CO_validarPermisosVista() { //servicio19  //COMPLETO
 		$request = \Slim\Slim::getInstance()->request();
 	    $objeto = json_decode($request->getBody());
 
