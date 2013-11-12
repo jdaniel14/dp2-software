@@ -79,3 +79,6 @@ function agregaFilaLeccionAprendida(arreglo,i){
 	$("#listaLeccionAprendida tbody").append(tbody);
 	$("#listaLeccionAprendida").trigger("update"); 
 }
+$("#btnAgregaLA").click(function(){
+	$(location).attr('href','RegistrarLeccionAprendida.html');
+});
