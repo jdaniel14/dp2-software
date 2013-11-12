@@ -474,7 +474,7 @@ function G_getListaRecursosEnProyecto($id) {
                 "costo" => $j["COSTO_EMPLEADO"],
                 "porc" => $j["PORCENTAJE"],
                 "prof_base" => $j["PROFESION_BASE"],
-                "prof_act" => $j["PROFESION_BASE"],
+                "prof_act" => $j["PROFESION_ACTUAL"],
                 "fechaini" => $j["FECHAINI"],
                 "fechafin" => $j["FECHAFIN"]
             );
