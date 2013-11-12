@@ -1,3 +1,16 @@
+function obtenerIdUsuario(){
+
+	id= localStorage.idUsuario;
+	
+	if (id==null){ 
+		alert ("El id es null");
+		id=1;
+	}
+	
+	return id;
+
+}
+
 function comparaMenorFecha(diaMenor,mesMenor, anioMenor,diaMayor,mesMayor, anioMayor){
 	
 	if (anioMayor>anioMenor){

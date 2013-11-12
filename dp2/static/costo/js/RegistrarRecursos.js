@@ -1,6 +1,7 @@
 var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=obtenerIdProyecto();
+var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
@@ -53,7 +54,8 @@ $(function(){
 function obtenProyecto(/*idProyecto*/){
 	
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	
@@ -75,7 +77,8 @@ function obtenProyecto(/*idProyecto*/){
 /*aca temrmina*/
 function obtenRecursos(/*idProyecto,*/tipo){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	
@@ -551,7 +554,8 @@ function grabarRecursos(){
 		idProyecto: idProyecto,
 		listaRecursosModificar: recursosModificar,
 		listaRecursosCrear: recursosGrabar,
-		listaRecursosEliminar: recursosEliminar
+		listaRecursosEliminar: recursosEliminar,
+		idUsuario  : idUsuario
 		
 		
 	}

@@ -1,6 +1,7 @@
 var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
+var idUsuario=obtenerIdUsuario();
 var nAct = 0;
 var asientosContables = [];
 
@@ -12,7 +13,8 @@ obtenAsientosContables()
 
 function obtenAsientosContables(){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -26,7 +28,8 @@ function obtenAsientosContables(){
 }
 function obtenActividades(){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -42,7 +45,8 @@ function obtenActividades(){
 function obtenProyecto(/*idProyecto*/){
 	
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -167,7 +171,8 @@ function grabarEstadoCuenta(){
 	}
 	var obj = {
 		idProyecto: idProyecto,
-		listaActividades : listaActividades
+		listaActividades : listaActividades,
+		idUsuario  : idUsuario
 	}
 	enviaDatos(obj);
 }

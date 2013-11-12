@@ -1,6 +1,7 @@
 var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=obtenerIdProyecto();
+var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
@@ -16,7 +17,8 @@ $(function(){
 
 function obtenProyecto(/*idProyecto*/){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	$.ajax({
 		type: 'GET',
@@ -30,7 +32,8 @@ function obtenProyecto(/*idProyecto*/){
 /*aca temrmina*/
 function obtenRecursos(/*idProyecto,*/tipo){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	$.ajax({
 		type: 'GET',
@@ -356,7 +359,8 @@ function grabarRecursos(){
 	}
 	var obj={
 		idProyecto: idProyecto,
-		listaRecursos: recursosModificar
+		listaRecursos: recursosModificar,
+		idUsuario  : idUsuario
 	}
 	enviaDatos(obj);
 //	alert("se grabó " + obj);

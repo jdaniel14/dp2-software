@@ -1,5 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
+var idUsuario=obtenerIdUsuario();
 var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
 iniciaProyecto();		
 iniciaPaquetes();
@@ -10,7 +11,8 @@ iniciaPaquetes();
 function obtenPaquetes(){
 	
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -29,7 +31,8 @@ function obtenPaquetes(){
 function obtenProyecto(){
 	
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({

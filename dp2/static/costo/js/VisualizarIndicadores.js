@@ -1,7 +1,7 @@
 var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=obtenerIdProyecto();
-
+var idUsuario=obtenerIdUsuario();
 var arregloIndicadores= new Array(
 									1,2,3,4,5,6,7
 								);
@@ -44,7 +44,8 @@ $("#btnGrabar").click(function (){
 function obtenProyecto(/*idProyecto*/){
 	
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	
@@ -70,7 +71,8 @@ function obtenIndicadores(/*idProyecto,*/dia, mes , anio){
 		idProyecto : idProyecto,
 		year: anio,
 		month: mes,
-		day: dia
+		day: dia,
+		idUsuario  : idUsuario
 	}
 	
 	
@@ -205,7 +207,8 @@ function grabarIndicadores(){
 		EAC: obtenerValorIndicador('EAC'),
 		ETC: obtenerValorIndicador('ETC'),
 		VAC: obtenerValorIndicador('VAC'),
-		TCPI: obtenerValorIndicador('TCPI')		
+		TCPI: obtenerValorIndicador('TCPI'),
+		idUsuario  : idUsuario		
 	}
 	
 	/*
