@@ -39,14 +39,15 @@
 	<ul class="nav nav-tabs nav-justified">
 	  <li class="active"><a href="#ig" data-toggle="tab">Informaci&oacute;n General </a></li>
 	  <li><a href="#dp1" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
+	  <li><a href="#perp" data-toggle="tab">Performance del Proyecto</a></li>
 	  <li><a href="#op" data-toggle="tab">Objetivos del Proyecto</a></li>
 	  <li><a href="#ap1" data-toggle="tab">Autoridad del Proyecto</a></li>
 	</ul>
 	<div id="myTabContent" class="tab-content">
-		<div class="tab-pane active in" id="ig">
-		<p>
-		<form class="form-horizontal" role="form" action='' method="POST">
-		  <fieldset>
+	    <div class="tab-pane active in" id="ig">
+		    <p>
+		    <form class="form-horizontal" role="form" action='' method="POST">
+		    <fieldset>
 			<div class="form-group">
 			  <!-- Id del Proyecto -->
 			  <label class="col-lg-4 control-label"  for="idProyecto">Id del Proyecto:</label>
@@ -124,8 +125,8 @@
 			  </div>
 			</div>
 		  </fieldset>
-		</form>
-		</p>
+		    </form>
+		    </p>
 		</div>
 		<div class="tab-pane pane" id="dp1">
 			<p>		
@@ -158,10 +159,10 @@
 			  </div>
 			</div>
 		  </fieldset>
-		</form>
-		</p>
+			</form>
+			</p>
 		</div>
-		<div class="tab-pane pane" id="op">
+		<div class="tab-pane pane" id="perp">
 			<p>		
 			<form class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
@@ -197,7 +198,7 @@
 				<table width="100%">			
 					<tr width="100%">
 						<td width="50%" align="right">
-							<button type="button" class="btn btn-primary" id="btnGrabarObjetivos">
+							<button type="button" class="btn btn-primary" id="btnGrabarPerformance">
 							Guardar
 							</button>
 						</td>
@@ -211,8 +212,55 @@
 			  </div>
 			</div>
 		  </fieldset>
-		</form>
-		</p>
+			</form>
+			</p>
+		</div>
+		<div class="tab-pane pane" id="op">
+			<p>		
+			<form class="form-horizontal" role="form" action='' method="POST">
+		  <fieldset>
+
+			<div class="table-responsive">
+			  <table id="Objetivos" class="table">
+			    <thead>
+			    	<tr>
+			    		<th>Descripción</th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+
+			    </tbody>
+			  </table>
+			</div>
+			
+
+			<div class="form-group">
+			  <!-- Button -->
+			  <div class="controls">
+				<table width="100%">			
+					<tr width="100%">
+						<td width="30%" align="right">
+							<button type="button" class="btn btn-success" id="btnAgregarObjetivo">
+							Agregar Objetivo
+							</button>
+						</td>
+						<td width="30%" align="center">
+							<button type="button" class="btn btn-primary" id="btnGrabarObjetivos">
+							Guardar
+							</button>
+						</td>
+						<td width="30%" align="left">
+							<button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
+							Cancelar
+							</button>
+						</td>
+					</tr>			
+				</table>
+			  </div>
+			</div>
+		  </fieldset>
+			</form>
+			</p>
 		</div>
 		<div class="tab-pane pane" id="ap1">
 			<p>		
@@ -265,8 +313,8 @@
 			  </div>
 			</div>
 		  </fieldset>
-		</form>
-		</p>
+			</form>
+			</p>
 		</div>
 	</div>
 	</div>
