@@ -32,14 +32,32 @@ function G_postRegistrarRecurso() {
         $sql = " INSERT INTO EMPLEADO (nombres, apellidos, email, nombre_corto, pago_mensual, id_profesion, estado) VALUES (:noms, :aps, :email, :nomcorto, :pm, :idprof, :estado) ";
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $nomcorto = (string) $proj->nr . (string) $proj->ar;
         $stmt->bindParam("noms", $proj->nr);
         $stmt->bindParam("aps", $proj->ar);
         $stmt->bindParam("email", $proj->cr);
-        $stmt->bindParam("nomcorto", $nomcorto);
-        $stmt->bindParam("estado", "ACTIVO");
+        $stmt->bindParam("nomcorto", $proj->usr);
+        $stmt->bindParam("estado", $proj->est);
         $stmt->bindParam("pm", $proj->pm);
         $stmt->bindParam("idprof", $proj->pr);
+        $stmt->execute();
+
+        $proj->id = $db->lastInsertId();
+
+        $sql = "INSERT INTO SEGURIDAD ( user,
+                                        password,
+                                        nivel_autorizacion,
+                                        fecha_creacion,
+                                        id_empleado)
+                               VALUES (:nomcorto,
+                                       :nomcorto,
+                                       1,
+                                       now(),
+                                       :id_empleado)";
+
+        $stmt = $db->prepare($sql);        
+        $stmt->bindParam("nomcorto", $proj->usr);
+        $stmt->bindParam("nomcorto", $proj->psw);
+        $stmt->bindParam("id_empleado", $proj->id);
         $stmt->execute();
 
         $db = null;

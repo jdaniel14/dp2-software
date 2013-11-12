@@ -29,12 +29,18 @@ $("#btnGrabar").click(function(){
 });
 
 function registrarRecurso(){
+	var nombre = $("#nombreRecurso").val();
+	var apellido = $("#apellidoRecurso").val();
+	var concat = nombre + "." + apellido;
 	var jsonRecurso = {
 		nr 	: $("#nombreRecurso").val(),
 		ar 	: $("#apellidoRecurso").val(),
 		pr  : $("#profesionRecurso").val(),
 		cr  : $("#correoRecurso").val(),
-		pm  : $("#pagoMensual").val()
+		pm  : $("#pagoMensual").val(),
+		est : "ACTIVO",
+		usr : concat,
+		psw : concat
     };
     alert(JSON.stringify(jsonRecurso));
     $.ajax({
