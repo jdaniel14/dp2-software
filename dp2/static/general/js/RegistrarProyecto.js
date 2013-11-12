@@ -46,6 +46,7 @@ function selectProfesion(){
 		type: 'GET',
 		url : '../../api/G_devuelveProfesion/'+ colaborador,
 		dataType: "json",
+		async:true,
 		contentType: "application/json; charset=utf-8",
 		success:muestraProfesion
 	});
@@ -55,12 +56,8 @@ function muestraProfesion(data){
 		idProfesion=data["idProfesion"];
 		profesiones=data["profesiones"];
 	}
-	for(obj in profesiones){
-		var opt = $("<option></option>");
-		opt.val(profesiones["id"]);
-		opt.html(profesiones["nom"]);
-		$("#profesion").append(opt);
-	}			
+		$("#profesion").val(idProfesion);
+		
 	
 }
 function cargarComboTipoProyecto(){
