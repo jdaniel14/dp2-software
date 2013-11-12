@@ -112,7 +112,3 @@ function cargaPxE(data){
 	}			
 }
 
-$("#btnAgregaLA").click(function(){
-	alert("ola");
-	$(location).attr('href','RegistrarLeccionAprendida.html');
-});
