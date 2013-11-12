@@ -17,6 +17,9 @@ $(document).ready(function(){
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
 			    	$("#seguridadMenu").html(menu);
+			    	if ($("#botonera")!= null){
+			    		$("#botonera").show();
+			    	}
 			  })
      }else{
          var jqxhr = $.getJSON( "http://www.json-generator.com/j/bOpjQIbsmW?indent=4", function() {
