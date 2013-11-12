@@ -201,7 +201,7 @@ function iniciaProyecto(){
 function agregarDataProyecto(data){
 
 	proy=data;
-	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva,proy.indicadorCerrado, proy.indicadorLineaBase);
+	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva,proy.porcentajeContingencia, proy.indicadorCerrado, proy.indicadorLineaBase);
 }
 
 function iniciaActividades(){
@@ -249,14 +249,20 @@ function agregaDataFilaResumen(datosActividad){
 	}	
 }
 
-function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva, indCerrado, indLineaBase){
+function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva, porcentajeContingencia ,indCerrado, indLineaBase){
 	$("#nombreProyecto").html(nombreProyecto);
 	$("#inputMontoSinReserva").val(montoSinReserva);
 	$("#inputReserva").val(porcentajeReserva);
+	$("#inputContingencia").val(porcentajeContingencia);		
 	var reseTotal= new Number(porcentajeReserva*0.01*montoSinReserva);
 	var reseForm=reseTotal.toFixed(2);
+	
+	var contiTotal= new Number(porcentajeContingencia*0.01*montoSinReserva);
+	var contiForm=contiTotal.toFixed(2);
+	
 	$("#reservaTotal").val(reseForm);
-	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	$("#contingenciaTotal").val(contiTotal);
+	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva + porcentajeContingencia*0.01*montoSinReserva);
 	
 	if (indCerrado=="1" || indLineaBase=="1"){
 	
@@ -401,11 +407,12 @@ $("#btnGrabar").click(function(){
 function grabarRecursos(){
 	
 	porcentajeReserva=$("#inputReserva").val();
-	
+	porcentajeContingencia=$("#inputContingencia").val();
 	
 	var obj={
 		idProyecto: idProyecto,	
 		porcReserva: porcentajeReserva,
+		porcContingencia: porcentajeContingencia,
 		idUsuario  : idUsuario
 		
 		
@@ -487,6 +494,7 @@ function actualizaCostos(){
 	$('#inputMontoSinReserva').val(valorSinReserva);
 	
 	reserva = $('#inputReserva').val();
+	contingencia = $('#inputContingencia').val();
 	
 	if (isNaN(reserva)){
 		
@@ -494,14 +502,23 @@ function actualizaCostos(){
 	
 	}
 	
+	if (isNaN(contingencia)){
+		
+		contingencia=0;	
+	
+	}
+	
 	montoReserva= reserva*valorSinReserva/100;
+	montoContingencia= contingencia*valorSinReserva/100;
 	
 	$('#reservaTotal').val(montoReserva);
+	$('#contingenciaTotal').val(montoContingencia);
 	
 	montoReserva++;
 	valorSinReserva++;
+	montoContingencia++;
 	
-	$('#inputMontoConReserva').val( montoReserva - 2 + valorSinReserva );
+	$('#inputMontoConReserva').val( montoReserva - 2 + valorSinReserva -1 + montoContingencia );
 
 }
 
