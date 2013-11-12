@@ -25,7 +25,10 @@
     <!-- Tablesorter: optional -->
     <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
     <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
-    
+    <style type="text/css">
+    #botonera {
+      padding:25px 50px}
+    </style>
   </head>
 
   <body>
@@ -41,7 +44,9 @@
         <h1>Lista de Lecciones Aprendidas</h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
-
+      <div id="botonera" style="display: none;">
+        <button id="agregaLA" type="button" class="btn btn-lg btn-success">Agregar leccion aprendida</button>
+      </div>
     <div class="" >
       <table align="center" id="listaLeccionAprendida" class="tablesorter - {bootstrap}" width="90%" >      
         <thead>
