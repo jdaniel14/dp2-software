@@ -148,6 +148,12 @@ function G_postDarbajaEmpleado() {
 }
 ///////
 function G_getLineaBase($id) {
+    $lineaBase = G_obtenerLineaBase($id);
+
+    echo json_encode($lineaBase);
+}
+
+function G_obtenerLineaBase($id) {
     $sql = " SELECT  P.FLAG_LINEA_BASE_EDITABLE linea
             from PROYECTO P
             WHERE P.ID_PROYECTO=:id";
@@ -167,9 +173,9 @@ function G_getLineaBase($id) {
 
                 
         $db = null;
-        echo json_encode(array("estado_linea_base" => $lineaBase));
+        return array("estado_linea_base" => $lineaBase);
     } catch (PDOException $e) {
-        echo json_encode(array("me" => $e->getMessage()));
+        return array("me" => $e->getMessage());
     }
 }
 
