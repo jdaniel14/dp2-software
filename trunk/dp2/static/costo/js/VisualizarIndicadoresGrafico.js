@@ -1,6 +1,7 @@
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(cargaChart);
 var idProyecto=obtenerIdProyecto();
+var idUsuario=obtenerIdUsuario();
 var rootURL = "../../api/";
 obtenProyecto();
 
@@ -45,7 +46,8 @@ function obtenDatosTabla(){
 	var obj ={
 		idProyecto : idProyecto,
 		indicador : $("#indicador").val(),
-		fecha : $("#fechaUnix").val()
+		fecha : $("#fechaUnix").val(),
+		idUsuario  : idUsuario
 	}
 	$.ajax({
 		type: 'GET',
@@ -59,7 +61,8 @@ function obtenDatosTabla(){
 
 function obtenProyecto(/*idProyecto*/){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	$.ajax({
 		type: 'GET',

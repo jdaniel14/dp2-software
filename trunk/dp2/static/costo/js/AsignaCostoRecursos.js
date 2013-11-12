@@ -1,6 +1,7 @@
 var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=obtenerIdProyecto();
+var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
 var comboMoneda='';
 var HashTipoCambio='';
@@ -61,7 +62,8 @@ iniciaRecursosFijos();
 //Obtener lista de actividades
 function obtenActividades(/*idProyecto*/){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -80,7 +82,8 @@ function obtenActividades(/*idProyecto*/){
 //Obtener proyectto y sus datos
 function obtenProyecto(/*idProyecto*/){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario		
 	}
 	
 	$.ajax({
@@ -97,7 +100,8 @@ function obtenProyecto(/*idProyecto*/){
 //Obtener lista de recursos
 function obtenRecursos(/*idProyecto,*/tipo){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -112,7 +116,8 @@ function obtenRecursos(/*idProyecto,*/tipo){
 //Obtener lista de recursos con costo fijo
 function obtenRecursosFijo(){
 	var obj ={
-		idProyecto : idProyecto
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
 	}
 	
 	$.ajax({
@@ -129,7 +134,8 @@ function obtenDatosActividad(idActividad){
 	
 	var obj ={
 		idProyecto : idProyecto,
-		idActividad : idActividad
+		idActividad : idActividad,
+		idUsuario  : idUsuario
 	}
 
 	
@@ -399,7 +405,8 @@ function grabarRecursos(){
 	
 	var obj={
 		idProyecto: idProyecto,	
-		porcReserva: porcentajeReserva
+		porcReserva: porcentajeReserva,
+		idUsuario  : idUsuario
 		
 		
 	}	
