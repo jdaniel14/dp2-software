@@ -42,7 +42,7 @@ function iniciarFlujo() {
             data: jsonData,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            url: "../../api/G_listaRecursoxProyecto",
+            url: "../../api/G_listaTodosRecurso",
             beforeSend: esperaDatos(),
             success: llegadaDatos
         });
