@@ -23,10 +23,12 @@ function filtrarOtraFecha() {
     $("#fechaFin").datepicker("option", "maxDate", new Date(year, (month - 1), ddd));
 
 }
+var fechaInicio = null;
+var fechaFinal = null;
 
 function iniciarFlujo() {
-    var fechaInicio = $("#fechaInicio").val();
-    var fechaFinal = $("#fechaFin").val();
+    fechaInicio = $("#fechaInicio").val();
+    fechaFinal = $("#fechaFin").val();
 
     if ((fechaInicio != "") && (fechaFinal != "")) {
 
@@ -79,9 +81,15 @@ function llegadaDatos(data) {
         result += '<table cellpadding = "0" cellspacing = "0" width = "100%">';
         result += '<thead><tr align = "center">';
         result += '<td align = "center">Nombre</td>';
-
+        alert(fechaInicio);
+        str = fechaInicio+"";
+        alert(str.substr(0,4));
+        alert(str.substr(5,2));
+        alert(str.substr(8,2));
+        var date = new Date(str.substr(0,4),str.substr(5,2), str.substr(8,2));
         for (j = 0; j < cantDias; j++){
-            result += '<td align = "center">Dia ' + j + '</td>';
+            result += '<td align = "center">' + date.getDate() + '</td>';
+            date.setDate(date.getDate() + 1);
         }
 
         result += '</tr></thead>';        
