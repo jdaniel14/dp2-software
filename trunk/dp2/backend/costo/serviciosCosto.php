@@ -2202,7 +2202,7 @@
 		$respuesta = null;
 		try {
 			foreach ($objeto->listaCostosIndirectos as $elemento) {
-				CO_guardarCIR($elemento);
+				CO_guardarCIR($elemento, $objeto->idProyecto);
 			}
 			$respuesta = CO_crearRespuesta(0, "Ok");
 		} catch (PDOException $e) {
@@ -2211,17 +2211,17 @@
 		return $respuesta;
 	}
 
-	function CO_guardarCIR($elemento) {
+	function CO_guardarCIR($elemento,idProyecto) {
 		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_real,id_cambio_moneda)
 		VALUES (:idProyecto, :codmes, :costoIndirecto, :idMoneda);
 		COMMIT;";
 
 		$db = getConnection();
     	$stmt = $db->prepare($sql);
-    	$stmt->bindParam("idProyecto", $elemento->idProyecto);
+    	$stmt->bindParam("idProyecto", idProyecto);
     	$stmt->bindParam("codMes", $elemento->codMes);
     	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
-		$stmt->bindParam("idMoneda", $elemento->fecha);
+		$stmt->bindParam("idMoneda", $elemento->idMoneda);
     	$stmt->execute();
     	$db = null;
 	}
