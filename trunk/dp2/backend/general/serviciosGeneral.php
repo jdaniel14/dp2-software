@@ -77,7 +77,7 @@ function G_postRegistrarProyecto() {
                                             :fi,
                                             :ff,
                                             2,
-                                            1,
+                                            :idprofact,
                                             1,
                                             :hh)";
         $stmt = $db->prepare($sql);
@@ -85,6 +85,7 @@ function G_postRegistrarProyecto() {
         $stmt->bindParam("jp", $proj->jp);
         $stmt->bindParam("fi", $proj->fi);
         $stmt->bindParam("ff", $proj->ff);
+        $stmt->bindParam("idprofact", $proj->idprofact);
         $stmt->bindParam("hh", $proj->hh);
         $stmt->execute();
         $db = null;
