@@ -2211,14 +2211,14 @@
 		return $respuesta;
 	}
 
-	function CO_guardarCIR($elemento,idProyecto) {
+	function CO_guardarCIR($elemento,$idProyecto) {
 		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_real,id_cambio_moneda)
 		VALUES (:idProyecto, :codmes, :costoIndirecto, :idMoneda);
 		COMMIT;";
 
 		$db = getConnection();
     	$stmt = $db->prepare($sql);
-    	$stmt->bindParam("idProyecto", idProyecto);
+    	$stmt->bindParam("idProyecto", $idProyecto);
     	$stmt->bindParam("codMes", $elemento->codMes);
     	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
 		$stmt->bindParam("idMoneda", $elemento->idMoneda);
