@@ -376,7 +376,7 @@ function G_postListaTodosRecurso() {
     $num_dias = $interval / (60 * 60 * 24);
     //echo $num_dias;
 //			echo $fecha_Inicio_IN." ".$fecha_Fin_IN. " ". $num_dias;
-    $sql_empleados = "SELECT * FROM EMPLEADO ORDER BY id_empleado";
+    $sql_empleados = "SELECT * FROM EMPLEADO where estado='ACTIVO' ORDER BY nombres ";
     $db = getConnection();
     $stmt = $db->query($sql_empleados);
 
@@ -387,7 +387,7 @@ function G_postListaTodosRecurso() {
         $id = $empleado["id_emp"];
         $empleado["nom"] = $emp["nombre_corto"];
         $empleado["rol"] = 1/*$emp["ID_ROL"]*/;
-        $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
+        $empleado["detalle_dias"] = new SplFixedArray($num_dias);
         for ($i = 0; $i < $num_dias; $i++) {
             $empleado["detalle_dias"][$i] = 0;
         }
@@ -400,24 +400,24 @@ function G_postListaTodosRecurso() {
 //	    	if (hayconexion(listaHab.ElementAt(k).idHabit, fechaIni, fechaFin)){
 
         $sql_proy_emp = "	SELECT A.ID_ACTIVIDAD,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
-														FROM 
-															MIEMBROS_EQUIPO M,
-															ACTIVIDAD A,
-															ACTIVIDAD_X_RECURSO AR,
-															RECURSO R,
-															EMPLEADO E
-														WHERE 
-																E.ID_EMPLEADO = :id_emp AND
-																E.ID_EMPLEADO = M.ID_EMPLEADO AND
-																M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO AND
-																AR.ID_RECURSO = R.ID_RECURSO AND 
-																AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
-																R.ID_PROYECTO = M.ID_PROYECTO AND 
-																R.ID_PROYECTO = A.ID_PROYECTO AND 
-																( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin OR
-																  A.FECHA_PLAN_FIN BETWEEN :fecha_ini AND :fecha_fin )
-														ORDER BY A.FECHA_PLAN_INICIO
-														";
+							FROM 
+								MIEMBROS_EQUIPO M,
+								ACTIVIDAD A,
+								ACTIVIDAD_X_RECURSO AR,
+								RECURSO R,
+								EMPLEADO E
+							WHERE 
+									E.ID_EMPLEADO = :id_emp AND
+									E.ID_EMPLEADO = M.ID_EMPLEADO AND
+									M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO AND
+									AR.ID_RECURSO = R.ID_RECURSO AND 
+									AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
+									R.ID_PROYECTO = M.ID_PROYECTO AND 
+									R.ID_PROYECTO = A.ID_PROYECTO AND 
+									( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin OR
+									  A.FECHA_PLAN_FIN BETWEEN :fecha_ini AND :fecha_fin )
+							ORDER BY A.FECHA_PLAN_INICIO
+							";
 
         $stmt = $db->prepare($sql_proy_emp);
         $stmt->bindParam("id_emp", $lista_empleados[$k]["id_emp"]);
@@ -500,7 +500,7 @@ function G_getListaRecursosEnProyecto($id) {
             array_push($l_recxpro, $rec);
         }
         $db = null;
-        echo json_encode(array("nom_proy" => $nom_proy, "l_recurso" => $l_recxpro));
+        echo json_encode(array(/*"nom_proy" => $nom_proy, */"l_recurso" => $l_recxpro));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
