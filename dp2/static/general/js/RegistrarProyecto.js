@@ -91,7 +91,8 @@ function registrarProyectos(){
 		tp  : $("#tipoProyecto").val(),
 		fi  : $("#fechaInicio").val(),
 		ff  : $("#fechaFin").val(),
-		hh  : $("#costohh").val()
+		hh  : $("#costohh").val(),
+		idprofact : $("#profesion").val()
     };
 
     $.ajax({
