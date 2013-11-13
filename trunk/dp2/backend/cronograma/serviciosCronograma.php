@@ -107,6 +107,85 @@ function CR_postActividades() {//servicio8
 	else 
 		echo json_encode($flag);
 }
+
+function CR_getListaActividad($json){
+
+	$proy = json_decode($json);
+	//echo json_encode($proy);
+	echo json_encode(CR_getListaSimpleActividad($proy->idProyecto));
+
+}
+
+function CR_updateActividad(){
+	$request = \Slim\Slim::getInstance()->request();
+    $actividad = json_decode($request->getBody());
+
+	echo json_encode(CR_modificar_actividad_BD($actividad));
+}
+
+function CR_modificar_actividad_BD($actividad){
+
+	$sql = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? where id_actividad=?;commit;";
+    //$lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($actividad->duration+0, $actividad->name, $actividad->id+0));
+
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$db=null;
+        return array("me" => "actualizar" . $e->getMessage());
+    }
+    return CR_obtenerRespuestaExito();
+
+
+}
+
+
+function CR_getListaSimpleActividad($idProyecto){
+
+	    
+    $sql = " select a.id_actividad,a.nombre_actividad,a.dias, a.id_paquete_trabajo"
+		  ." from dp2.ACTIVIDAD a "
+		  ." where  a.id_proyecto=? and a.eliminado=0 and a.profundidad>0; ";
+	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ;";
+	
+    $lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idProyecto));
+
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $detalle_paquete = "";
+
+            if ($p["id_paquete_trabajo"] != NULL) {
+                //echo "{ ". ($p["id_paquete_trabajo"]!=NULL) ."}";
+                $stmt2 = $db->prepare($sql2);
+                $stmt2->execute(array($p["id_paquete_trabajo"]));
+                if ($p2 = $stmt2->fetch(PDO::FETCH_ASSOC))
+                    $detalle_paquete = $p2["nombre"];
+            }
+            $actividad = array("id" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "idWbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "duration" => $p["dias"] + 0);
+            array_push($lista_actividad, $actividad);
+        }
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$db = null;
+        return json_encode(array("me" => $e->getMessage()));
+    }
+	
+	return array("tasks"=>$lista_actividad);
+
+}
+
 function CR_validarActividades($actividades){
 
 	$sql = "select count(*) as cantidad, id_miembros_equipo, descripcion from RECURSO where id_miembros_equipo is not null and id_proyecto=? and id_recurso=? ; ";
