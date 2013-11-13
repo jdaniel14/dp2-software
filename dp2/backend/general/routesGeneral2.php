@@ -14,6 +14,7 @@ $app->get('/G_devuelveLeccionesAprendidas', 'G_getLeccionesAprendidas'); //leer 
 $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
 
 $app->post('/G_asignarRecursoProyecto', 'G_postAsignarRecProy');//inserta los recursos a un proyecto
+$app->post('/G_eliminarRecursoProyecto', 'G_postBorrarMiembroDeProyecto');//elimina un recurso del proyecto
 
 //jose -- RRHH
 $app->post('/G_listarRecursoDisponible', 'G_getListarRecDisp');//devuelve la lista de recursos disponibles para asignar a un proyeco

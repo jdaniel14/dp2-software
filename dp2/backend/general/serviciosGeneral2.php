@@ -108,6 +108,8 @@ function G_postBorrarLeccionAprendida() {
     }
 }
 
+
+
 function G_postActualizarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
     $leccion = json_decode($request->getBody());
@@ -241,6 +243,23 @@ function G_postAsignarRecProy() {
                 $stmt->execute();
             }
         }
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
+function G_postBorrarMiembroDeProyecto() {
+    $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
+    $sql = " UPDATE MIEMBROS_EQUIPO SET estado=0
+	    WHERE id_miembros_equipo=:id ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $body->id);
+        $stmt->execute();
         $db = null;
         echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
