@@ -26,7 +26,7 @@
 	$app->post('/CO_enviarCostosIndirectosEstimadosMes/', 'CO_saveCostosIndirectosEstimados'); //servicio22
 	$app->post('/CO_enviarCostosIndirectosRealesMes/', 'CO_saveCostosIndirectosReales'); //servicio23
 
-	$app->get('/CO_test/', 'CO_testFunction');
+	$app->get('/CO_test/:p', 'CO_testFunction');
 	$app->post('/CO_yolo/', 'CO_testFunctionPOST');
 
 ?>
