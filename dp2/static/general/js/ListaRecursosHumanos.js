@@ -71,7 +71,7 @@ meses[7] = "Agosto";
 meses[8] = "Setiembre";
 meses[9] = "Octubre";
 meses[10] = "Noviembre";
-meses[11] = "Dciembre";
+meses[11] = "Diciembre";
 
 function llegadaDatos(data) {
 
@@ -156,8 +156,8 @@ function llegadaDatos(data) {
         				result += '<td align = "center" style="background-color:blue; ';
         			}
         			if(cont == indices[ind]){
-        				alert(cont);
-        				alert(ind);
+        				//alert(cont);
+        				//alert(ind);
         				cont = 0;
         				ind++;
         				result += ' border-right: 2px groove #733366; ';
