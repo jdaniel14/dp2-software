@@ -21,12 +21,15 @@ import com.dp2.gproyectos.costos.entities.Result;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
 import com.dp2.gproyectos.costos.model.GetListaHistorialIndicadoresResponse;
 import com.dp2.gproyectos.costos.model.GetListaIndicadoresResponse;
+import com.dp2.gproyectos.costos.model.GetMensaje;
+import com.dp2.gproyectos.general.controller.UsuarioController;
 import com.google.gson.Gson;
 
 public class IndicadoresController extends Controller {
 	public static IndicadoresController instance = null;
 	private static ArrayList<IndicadorBean> listaIndicadores = null;
 	private static ArrayList<HistorialIndicadorBean> listaHistorialIndicadores = null;
+	private static GetMensaje mensaje = null;
 	
 	public static IndicadoresController getInstance() {
 		if (instance == null) {
@@ -35,7 +38,12 @@ public class IndicadoresController extends Controller {
 		return instance;
 	}
 
-
+	public static GetMensaje getMensaje() {
+		GetMensaje temp = mensaje;
+		mensaje = null;
+		return temp;
+	}
+	
 	public ArrayList<IndicadorBean> getIndicadores(String idProyecto, int year, int month, int day) {
 		String path = ServerConstants.SERVER_URL + ServerConstants.COSTOS_CO_GETLISTAINDICADORES_URL + "/";
 //		String path = "http://localhost:8080/dp2/api/" + ServerConstants.COSTOS_CO_GETLISTAINDICADORES_URL + "/";
@@ -45,6 +53,7 @@ public class IndicadoresController extends Controller {
 		GetListaIndicadoresResponse objResponse = null;
 		
 		String json = "{\"idProyecto\":" + idProyecto + ",";
+		json = json + "\"idUsuario\":" + UsuarioController.getInstance().currentUser.id + ",";
 		json = json + "\"year\":" + year +",";
 		json = json + "\"month\":" + month +",";
 		json = json + "\"day\":" + day + "}";
@@ -59,6 +68,9 @@ public class IndicadoresController extends Controller {
 			try {
 				result = EntityUtils.toString(respuesta.getEntity());
 				objResponse = gs.fromJson(result, GetListaIndicadoresResponse.class);
+				if (objResponse.indicadores == null) {
+					mensaje = gs.fromJson(result, GetMensaje.class);
+				}
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -77,6 +89,7 @@ public class IndicadoresController extends Controller {
 			listaIndicadores = objResponse.indicadores;
 		} else {
 			listaIndicadores = null;
+			
 		}
 		return listaIndicadores;
 	}
@@ -126,6 +139,7 @@ public class IndicadoresController extends Controller {
 			json.put("idProyecto", idProyecto);
 			json.put("indicador", indicador);
 			json.put("fecha", strFecha);
+			json.put("idUsuario", UsuarioController.getInstance().currentUser.id);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
