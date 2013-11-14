@@ -54,6 +54,11 @@ var arregloMoneda= new Array(
 //Función de inicio de la pagina
 
 $(function(){
+	if (verificaPermisosGrabar(idVista)!='1'){
+		$("#btnGrabar").hide();	
+		$("#btnCancelar").hide();	
+	}
+	
 	if (verificaPermisosVer(idVista)=='1'){		
 		iniciaActividades();
 		iniciaProyecto();		
@@ -61,11 +66,7 @@ $(function(){
 		iniciaRecursosFijos();
 	}else
 		alert('No tiene permiso para realizar esta operación');
-	
-	if (verificaPermisosGrabar(idVista)!='1'){
-		$("#btnGrabar").hide();	
-		$("#btnCancelar").hide();	
-	}
+		
 });
 
 

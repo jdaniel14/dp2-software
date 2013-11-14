@@ -7,8 +7,22 @@ var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
 
-iniciaProyecto();		
-iniciarTabla()
+
+$(function(){
+	if (verificaPermisosGrabar(idVista)!='1'){
+		$("#btnGrabar").hide();	
+		$("#btnCancelar").hide();	
+	}
+	
+	if (verificaPermisosVer(idVista)=='1'){		
+		iniciaProyecto();		
+		iniciarTabla();
+	}else
+		alert('No tiene permiso para realizar esta operación');
+		
+});
+
+
 $(function(){
   $(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
 });
