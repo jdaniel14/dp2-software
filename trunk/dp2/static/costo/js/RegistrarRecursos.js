@@ -2,6 +2,7 @@ var rootURL = "../../api/";
 var codProyecto='1';
 var idProyecto=obtenerIdProyecto();
 var idUsuario=obtenerIdUsuario();
+var idVista=1;
 var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
@@ -41,9 +42,17 @@ var arregloMoneda= new Array(
 									)
 								);
 								
-								
-iniciaProyecto();		
-iniciaRecursos(0);
+			
+$(function(){
+	if (verificaPermisosVer(idVista)=='1'){
+		iniciaProyecto();		
+		iniciaRecursos(0);
+	}else
+		alert('Usted no tiene los permisos requeridos');
+	
+	if (verificaPermisosEditar(idVista)!='1')
+		$("#btnEditar").hide();	
+});
 $(function(){
   $(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
 });
@@ -89,12 +98,6 @@ function obtenRecursos(/*idProyecto,*/tipo){
 		async: true,
 		success:function(data){agregaDataFila(data,tipo);}
 	});
-	
-	
-	
-	//agregaDataFila(arregloRecursos,tipo);
-	
-	//return arregloRecursos;
 
 }
 
@@ -130,7 +133,7 @@ function obtenUnidadMedida(){
 
 }
 
-//<span class="glyphicon glyphicon-plus-sign"></span>
+
 
 //Fin funciones para obtener datos de AJAX
 
@@ -593,8 +596,15 @@ function enviaDatos(obj){
 //Funciones para el uso del sidebar
 
 function cambiaEditar(){
-	$("#btnEditar").hide();
-	$("#btnGrabar").show();
+
+	permiso=verificaPermisosGrabar(idVista);	
+	
+	if (permiso=='1')
+		$("#btnGrabar").show();
+	else
+		$("#btnGrabar").hide();
+		
+	$("#btnEditar").hide();	
 	$("#btnCancelar").show();
 	$("#tablaAgrega").show();
 	obtenUnidadMedida();
@@ -606,8 +616,14 @@ function cambiaEditar(){
 
 
 function cambiaConsultar(){
+
+	permiso=verificaPermisosEditar(idVista);	
 	
-	$("#btnEditar").show();
+	if (permiso=='1')
+		$("#btnEditar").show();
+	else
+		$("#btnEditar").hide();
+	
 	$("#btnGrabar").hide();
 	$("#btnCancelar").hide();
 	$("#tablaAgrega").hide();	
