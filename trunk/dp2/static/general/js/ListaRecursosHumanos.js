@@ -59,7 +59,19 @@ function iniciarFlujo() {
 
 function esperaDatos() {
 }
-
+var meses = new Array();
+meses[0] = "Enero";
+meses[1] = "Febrero";
+meses[2] = "Marzo";
+meses[3] = "Abril";
+meses[4] = "Mayo";
+meses[5] = "Junio";
+meses[6] = "Julio";
+meses[7] = "Agosto";
+meses[8] = "Setiembre";
+meses[9] = "Octubre";
+meses[10] = "Noviembre";
+meses[11] = "Dciembre";
 
 function llegadaDatos(data) {
 
@@ -81,21 +93,48 @@ function llegadaDatos(data) {
         result += '<table cellpadding = "0" cellspacing = "0" width = "100%">';
         result += '<thead><tr align = "center">';
         result += '<td align = "center">Nombre</td>';
-        alert(fechaInicio);
+        //alert(fechaInicio);
         str = fechaInicio+"";
-        alert(str.substr(0,4));
-        alert(str.substr(5,2));
-        alert(str.substr(8,2));
-        var date = new Date(str.substr(0,4),str.substr(5,2), str.substr(8,2));
+        
+        var year = parseInt(str.substr(0,4));
+        var month = parseInt(str.substr(5,2)) - 1;
+        var day = parseInt(str.substr(8,2));
+        var date = new Date(year, month, day);
+        var mes = 0;
+        var indices = new Array();
+        
+        numeros = '<td align = "center"></td>';
+        var ind = 0
+        var cont = 0;
+        var css_style = ' style="border-left: 2px groove #733366;" ';
+        var cad_style = "";
         for (j = 0; j < cantDias; j++){
-            result += '<td align = "center">' + date.getDate() + '</td>';
+        	if(date.getDate() == 1 && cont > 1) {
+        		 result += '<td align = "center" colspan = '+ cont +' style=" border-right: 2px groove #733366;">' + meses[mes] + '</td>';
+        		 //alert(date.getMonth());
+        		 indices[ind] = cont;
+        		 ind++;
+        		cont = 1;
+        		cad_style = css_style;
+        	}
+        	else{
+        		cont++;
+        		cad_style = "";
+        	}
+            numeros += '<td align = "center" '+ cad_style +'>' + date.getDate() + '</td>';
+            mes = parseInt(date.getMonth());
             date.setDate(date.getDate() + 1);
         }
-
-        result += '</tr></thead>';        
+        
+        result += '<td align = "center" colspan = '+ cont +' >' + meses[mes] + '</td>';
+        //alert(date.getMonth());
+        result += '</tr><tr>' + numeros + '</tr></thead>';        
         result += '<tbody>';
         
         prim = true;
+
+       // alert(indices[0]);
+       // alert(indices[1]);
         $.each(data, function (i, item) {
         	console.log("entra");
         	if(prim == true) prim = false;
@@ -105,14 +144,25 @@ function llegadaDatos(data) {
 
         		var fechas = item.detalle_dias;
 
+                ind = 0
+                cont = 0;
         		$.each(fechas, function (i, led) {
+        			cont++;
+        			
         			if (led != 0) {
-        				result += '<td align = "center" style="background-color:red" >';
+        				result += '<td align = "center" style="background-color:red; ';
         			}
         			else {
-        				result += '<td align = "center" style="background-color:blue" >';
+        				result += '<td align = "center" style="background-color:blue; ';
         			}
-        			result += '</td>';
+        			if(cont == indices[ind]){
+        				alert(cont);
+        				alert(ind);
+        				cont = 0;
+        				ind++;
+        				result += ' border-right: 2px groove #733366; ';
+        			}
+        			result += ' " ></td>';
         		});
         		result += '</tr>';
         	}
