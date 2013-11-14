@@ -6,8 +6,19 @@ var idUsuario=obtenerIdUsuario();
 var nAct = 0;
 var asientosContables = [];
 
-iniciaProyecto();	
-obtenAsientosContables()	
+
+$(function(){
+	if (verificaPermisosGrabar(idVista)!='1'){
+		$("#btnGrabar").hide();	
+		$("#btnCancelar").hide();	
+	}
+	
+	if (verificaPermisosVer(idVista)=='1'){
+		iniciaProyecto();	
+		obtenAsientosContables();
+	}else
+		alert('Usted no tiene los permisos requeridos');
+});
 
 
 //Funciones para obtener datos de AJAX

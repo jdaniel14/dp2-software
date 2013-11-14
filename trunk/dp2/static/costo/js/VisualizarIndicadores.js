@@ -11,28 +11,37 @@ var arregloIndicadores= new Array(
 
 
 
+$(function(){
+	if (verificaPermisosVer(idVista)=='1'){
+		obtenProyecto();
+	}else
+		alert('Usted no tiene los permisos requeridos');
 
-																
-obtenProyecto();
+});
+															
 $(function(){
   $("#fechaVisualizar").datepicker({ dateFormat: 'dd-mm-yy' });
 });
 
 $("#fechaVisualizar").change(function (){
-	
-	fecha=$("#fechaVisualizar").val();
-	//alert(fecha.substr(0,2)+" "+fecha.substr(3,2)+" "+fecha.substr(6,4));
-	
-	if (fecha!=null && fecha!="")
-		obtenIndicadores(fecha.substr(0,2),fecha.substr(3,2),fecha.substr(6,4));
-	else
-	alert("Ingrese una fecha válida");
+	if (verificaPermisosVer(idVista)=='1'){
+		fecha=$("#fechaVisualizar").val();
+		//alert(fecha.substr(0,2)+" "+fecha.substr(3,2)+" "+fecha.substr(6,4));
+		
+		if (fecha!=null && fecha!="")
+			obtenIndicadores(fecha.substr(0,2),fecha.substr(3,2),fecha.substr(6,4));
+		else
+		alert("Ingrese una fecha válida");
+	}else
+		alert('Usted no tiene los permisos requeridos');
 	
 });
 
 $("#btnGrabar").click(function (){
-	
-	grabarIndicadores();
+	if (verificaPermisosGrabar(idVista)=='1'){
+		grabarIndicadores();
+	}else
+		alert('Usted no tiene los permisos requeridos');
 });
 
 

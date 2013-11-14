@@ -3,8 +3,19 @@ var codProyecto='1';
 var idVista=7;
 var idUsuario=obtenerIdUsuario();
 var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
-iniciaProyecto();		
-iniciaPaquetes();
+
+
+
+
+
+$(function(){
+	if (verificaPermisosVer(idVista)=='1'){
+		iniciaProyecto();		
+		iniciaPaquetes();
+	}else
+		alert('Usted no tiene los permisos requeridos');
+
+});
 
 //Funciones para obtener datos de AJAX
 
