@@ -6,7 +6,7 @@ function comprobarLineaBase(callback){
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
 		success: function(data){
-			if(data["estado_linea_base"]){
+			if(data["estado_linea_base"]=="false"){
 				callback();
 			}
 		}
