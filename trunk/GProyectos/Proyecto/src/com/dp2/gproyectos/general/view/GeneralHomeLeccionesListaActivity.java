@@ -134,7 +134,7 @@ public class GeneralHomeLeccionesListaActivity extends
 						LeccionBean leccion = lecciones.get(position-1);
 						
 						PopupMensaje popup = new PopupMensaje();
-						popup.dialog(GeneralHomeLeccionesListaActivity.this, "Lecci�n :3", leccion);
+						popup.dialog(GeneralHomeLeccionesListaActivity.this, "Lección :3", leccion);
 					}
 				}
 			});

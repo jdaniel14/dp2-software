@@ -12,6 +12,7 @@ import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.costos.controller.IndicadoresController;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
+import com.dp2.gproyectos.costos.model.GetMensaje;
 import com.dp2.gproyectos.costos.view.adapter.IndicadorAdapter;
 
 import com.dp2.gproyectos.utils.MensajesUtility;
@@ -288,14 +289,22 @@ public class CostosIndicadoresActivity extends SherlockFragmentActivity implemen
 			if (indicadores == null) {
 				runOnUiThread(new Runnable() {
 				     public void run() {
-				    	 txtMensaje.setText("Hubo un error al procesar su solicitud.");
+				    	 GetMensaje mensaje = IndicadoresController.getMensaje();
+				    	 if (mensaje != null)
+				    		 txtMensaje.setText(mensaje.mensaje);
+				    	 else
+				    		 txtMensaje.setText("Hubo un error al procesar su solicitud.");
 				    }
 				});
 			}
 		} catch (Exception e) {
 			runOnUiThread(new Runnable() {
 			     public void run() {
-			    	 txtMensaje.setText("Hubo un error al procesar su solicitud.");
+			    	 GetMensaje mensaje = IndicadoresController.getMensaje();
+			    	 if (mensaje != null)
+			    		 txtMensaje.setText(mensaje.mensaje);
+			    	 else
+			    		 txtMensaje.setText("Hubo un error al procesar su solicitud.");
 			    }
 			});
 		}
