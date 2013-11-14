@@ -2,6 +2,7 @@ $(document).ready(function(){
 	//cargar Combos
 	cargarComboJefeProyecto();
 	cargarComboTipoProyecto();
+	validacion();
 });
 
 function cargarComboJefeProyecto(){
@@ -79,9 +80,11 @@ function cargarComboTipoProyecto(){
 }
 
 $("#btnGrabar").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		registrarProyectos();
-	}
+	if ($("#registrarProyecto").valid()) {
+		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+			registrarProyectos();
+		}
+	} else { return false; }
 });
 
 function registrarProyectos(){
@@ -106,3 +109,52 @@ function registrarProyectos(){
         }
     });
 }
+
+function validacion() {
+	$('#registrarProyecto').validate({
+	    rules: {
+	      nombreProyecto: { required: true },
+	      jefeProyecto: { required: true },
+	      profesion: { required: true },
+	      costohh: { required: true, number: true },
+	      tipoProyecto: { required: true },
+	      fechaInicio: { required: true },
+	      fechaFin: { required: true, greaterThan: "#fechaInicio" }
+	    },
+
+	    messages: {
+	      nombreProyecto: { required: 'Debe ingresar el nombre del proyecto' },
+	      jefeProyecto: { required: 'Debe ingresar el nombre del jefe de proyecto' },
+	      profesion: { required: 'Debe ingresar la profesión del jefe de proyecto' },
+	      costohh: { required: 'Debe ingresar el costo', number: 'Debe ingresar solo números' },
+	      tipoProyecto: { required: 'Seleccione un tipo de proyecto' },
+	      fechaInicio: { required: 'Debe ingresar la fecha inicial' },
+	      fechaFin: { required: 'Debe ingresar la fecha final', greaterThan: "La fecha final debe ser mayor a la fecha inicial" }
+	    },
+
+		highlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		
+		success: function(element) {
+			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+			/*
+			element
+			.text('OK!').addClass('valid')
+			.closest('.form-group').removeClass('has-error').addClass('has-success');
+			*/
+		}
+	  });
+}
+
+//Se implementa la regla "greaterThan" para validar que la fecha final sea mayor a la inicial
+jQuery.validator.addMethod("greaterThan", 
+function(value, element, params) {
+
+    if (!/Invalid|NaN/.test(new Date(value))) {
+        return new Date(value) > new Date($(params).val());
+    }
+
+    return isNaN(value) && isNaN($(params).val()) 
+        || (Number(value) > Number($(params).val())); 
+},'Must be greater than {0}.');
