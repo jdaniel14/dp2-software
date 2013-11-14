@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
         android:id="@+id/menuGeneralListaProyectos_opciones"
-        android:showAsAction="always|collapseActionView"
+        android:showAsAction="always|collapseActionView|withText"
         android:icon="@android:drawable/ic_menu_more"
-        android:title="Más opciones"
-        android:titleCondensed="Más opciones">
+        android:title="Opciones"
+        android:titleCondensed="Opciones">
         <menu>
 	        <item
 	            android:id="@+id/menuGeneralListaProyectos_VerLeccionesAprendidas"
