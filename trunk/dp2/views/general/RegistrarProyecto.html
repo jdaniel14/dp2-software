@@ -13,7 +13,8 @@
     <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+    <link href="../../static/general/css/general.css" rel="stylesheet">
+    <link href="../../static/general/css/validacion.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,7 +38,7 @@
 	<div id="myTabContent" class="tab-content">
 		<div class="tab-pane active in" id="registrar">
 		<p>
-		<form class="form-horizontal" role="form" action='' method="POST">
+		<form id="registrarProyecto" class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 			<div class="form-group">
 			  	<!-- Nombre del Proyecto -->
@@ -109,7 +110,7 @@
 
 			<div class="form-group">
 			  <!-- Fecha de Inicio -->
-			  <label class="col-lg-4 control-label"  for="fechaInicio">Fecha de Inicio</label>
+			  <label class="col-lg-4 control-label" for="fechaInicio">Fecha de Inicio</label>
 			  <div class="controls col-lg-6">
 				<input class="form-control"type="date" id="fechaInicio" name="fechaInicio" placeholder="" class="input-xlarge">
 				<!--<p class="help-block">Please confirm password</p>-->
@@ -158,6 +159,7 @@
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
   	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+  	<script src="../../static/general/js/jquery.validate.min.js"></script>
   	<script src="../../static/general/js/RegistrarProyecto.js"></script>
   	<script src="../../assets/js/headerGeneral.js"></script>
   </body>
