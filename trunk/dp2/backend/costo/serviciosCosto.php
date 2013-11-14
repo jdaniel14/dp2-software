@@ -291,8 +291,9 @@
 		$objeto = json_decode($json);
 		if (CO_verificaPermisoServicio(CO_SERVICIO_20, $objeto->idUsuario, $objeto->idProyecto)) {
 			$jsonRespuesta = new stdClass();
-			$jsonRespuesta->numMeses = CO_consultarNumeroMesesCostosIndirectosEstimados($objeto->idProyecto);
-			$jsonRespuesta->listaCostosIndirectos = CO_ConsultarCostosIndirectosEstimados($objeto->idProyecto);
+			$resultados = CO_consultarNumeroMesesCostosIndirectosEstimados($objeto->idProyecto);
+			$jsonRespuesta->numMeses = $resultados->diferencia;
+			$jsonRespuesta->listaCostosIndirectos = CO_ConsultarCostosIndirectosEstimados($objeto->idProyecto, $resultados);
 			echo json_encode($jsonRespuesta);
 		} else {
 			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
@@ -350,7 +351,7 @@
 	}
 
 	///////////FOR TESTING ONLY/////////////
-	function CO_testFunction() {
+	function CO_testFunction2() {
 		/*
 		echo "add me blood999\n";
 		echo "add me ANHUE blood999\n";
@@ -381,6 +382,10 @@
 				   <div><img src="http://200.16.7.112/movil/etc/morde_jungla.png"></div>
 				</BODY>
 				</HTML>';
+	}
+
+	function CO_testFunction($codMes) {
+		echo CO_obtenerSiguienteCodMes($codMes);
 	}
 
 	function CO_testFunctionPOST() {
@@ -2024,6 +2029,20 @@
 		}
 	}
 
+	function CO_obtenerSiguienteCodMes($codMes) {
+		$anio = ($codMes - ($codMes % 100)) / 100;
+		$mes = $codMes % 100;
+		if ($mes < 12) {
+			$mes++;
+			if ($mes < 10)
+				$mes = '0' . $mes;
+		} else {
+			$mes = '01';
+			$anio++;
+		}
+		return $anio . $mes;
+	}
+
 	function CO_consultarNumeroMesesCostosIndirectosEstimados($idProyecto) {
 		$sql = "SELECT
 		conv(date_format(min(FECHA_PLAN_INICIO),'%Y%m'),10,10) mes_ini,
@@ -2032,6 +2051,7 @@
 		WHERE
 		ID_PROYECTO= :idProyecto AND PROFUNDIDAD<>0 AND ELIMINADO<>1;";
 
+		$resultado = new stdClass();
 		$diferencia = 0;
 		$fechaIni = null;
 		$fechaFin = null;
@@ -2054,16 +2074,20 @@
 				$aFin = ($fechaFin - ($fechaFin % 100)) / 100;
 				$mIni = $fechaIni % 100;
 				$mFin = $fechaFin % 100;
-				$diferencia = ($aFin - $aIni)*12 + $mFin - $mIni;
+				$diferencia = ($aFin - $aIni)*12 + $mFin - $mIni + 1;
 			}
 		} catch(PDOException $e) {
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
-		return $diferencia;
+		$resultado->fechaIni = $fechaIni;
+		$resultado->fechaFin = $fechaFin;
+		$resultado->diferencia = $diferencia;
+
+		return $resultado;
 	}
 
-	function CO_ConsultarCostosIndirectosEstimados($idProyecto) {
+	function CO_ConsultarCostosIndirectosEstimados($idProyecto, $resultados) {
 		$sql = "SELECT
 		A.id_proyecto,
 		A.codmes,
@@ -2094,7 +2118,32 @@
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
-		return $listaCI;
+		$listaFinal = null;
+		if (sizeof($listaCI) != $resultados->diferencia) {
+			$listaFinal = array();
+			$j = 0;
+			for ($i = $resultados->fechaIni; $i <= $resultados->fechaFin; $i = CO_obtenerSiguienteCodMes($i)) {
+				if ($i < $listaCI[$j]->codMes) {
+					$cInd = new stdClass();
+	        		$cInd->codMes = $i;
+	    			$cInd->idMoneda =  1;
+	    			$cInd->costoIndirecto =  0;
+	    			array_push($listaFinal, $cInd);
+				} else {
+					/*
+					$cInd = new stdClass();
+	        		$cInd->codMes = $listaCI[$j]->codMes;
+	    			$cInd->idMoneda =  $listaCI[$j]->idMoneda;
+	    			$cInd->costoIndirecto =  $listaCI[$j]->costoIndirecto;*/
+	    			array_push($listaFinal, $listaCI[$j]);
+	    			$j++;
+				}
+			}
+		} else {
+			$listaFinal = $listaCI;
+		}
+
+		return $listaFinal;
 	}
 
 	function CO_consultarNumeroMesesCostosIndirectosReales($idProyecto) {
@@ -2127,7 +2176,7 @@
 				$aFin = ($fechaFin - ($fechaFin % 100)) / 100;
 				$mIni = $fechaIni % 100;
 				$mFin = $fechaFin % 100;
-				$diferencia = ($aFin - $aIni)*12 + $mFin - $mIni;
+				$diferencia = ($aFin - $aIni)*12 + $mFin - $mIni + 1;
 			}
 		} catch(PDOException $e) {
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
