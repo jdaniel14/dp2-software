@@ -1,5 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
+var idVista=6;
 var idProyecto=obtenerIdProyecto();
 var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
