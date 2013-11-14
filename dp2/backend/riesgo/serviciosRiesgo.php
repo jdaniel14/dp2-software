@@ -951,6 +951,30 @@
         }        
     }    
 
+    function R_getRiesgoMaterializado($idProyecto){
+        $query = "SELECT id_riesgo_x_proyecto, nombre_riesgo, fecha_materializacion,costo_potencial, demora_potencial
+                FROM RIESGO_X_PROYECTO  WHERE id_proyecto=:id_proyecto";
+        try {
+            $arreglo= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto",$idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
+                            "nombreRiesgo" => $row['nombre_riesgo'],
+                            "fechaMaterializacion" => $row['fecha_materializacion'],
+                            "costoPotencial" => $row['costo_potencial'],
+                            "demoraPotencial" => $row['demora_potencial']
+                            );
+                array_push($arreglo,$data);
+            }
+            $db = null;
+            echo json_encode($arreglo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
 
     function R_getProbabilidadRiesgoMaxima($idProyecto){
 
@@ -987,4 +1011,23 @@
     		echo '{"error":{"text":'. $e->getMessage() .'}}';
     	}     
     }
+
+    function R_getCantidadDiasAproximadoxPaquete($json){  
+        $var = json_decode($json);    
+        $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo";
+        try {
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $var->idProyecto);
+            $stmt->bindParam("id_paquete_trabajo", $var->idPaqueteTrabajo);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            //$data=array("promedio" => $row->promedio);
+            $db = null;
+            echo json_encode($row->promedio);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
 ?>
