@@ -1,5 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
+var idVista=2;
 var idProyecto=obtenerIdProyecto();
 var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
@@ -52,10 +53,21 @@ var arregloMoneda= new Array(
 
 //Función de inicio de la pagina
 
-iniciaActividades();
-iniciaProyecto();		
-iniciaRecursos();
-iniciaRecursosFijos();
+$(function(){
+	if (verificaPermisosVer(idVista)=='1'){		
+		iniciaActividades();
+		iniciaProyecto();		
+		iniciaRecursos();
+		iniciaRecursosFijos();
+	}else
+		alert('No tiene permiso para realizar esta operación');
+	
+	if (verificaPermisosGrabar(idVista)!='1'){
+		$("#btnGrabar").hide();	
+		$("#btnCancelar").hide();	
+	}
+});
+
 
 //Funciones para obtener datos de AJAX
 
@@ -192,16 +204,15 @@ function agregaDataFilaFijo(data){
 
 function iniciaProyecto(){
 			
-	obtenProyecto(/*idProyecto*/);
-	//var proy = JSON.parse(proyecto);
-	//agregaDatosProyecto( proy.nombre ,proy.presupuestoTotal ,proy.porcentajeReserva);
+	obtenProyecto();
 
 }
 
 function agregarDataProyecto(data){
 
 	proy=data;
-	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva,proy.porcentajeContingencia, proy.indicadorCerrado, proy.indicadorLineaBase);
+	indGrabar=verificaPermisosGrabar(idVista);
+	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva,proy.porcentajeContingencia, proy.indicadorCerrado, proy.indicadorLineaBase,indGrabar);
 }
 
 function iniciaActividades(){
@@ -249,7 +260,7 @@ function agregaDataFilaResumen(datosActividad){
 	}	
 }
 
-function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva, porcentajeContingencia ,indCerrado, indLineaBase){
+function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva, porcentajeContingencia ,indCerrado, indLineaBase, indGrabar){
 	$("#nombreProyecto").html(nombreProyecto);
 	$("#inputMontoSinReserva").val(montoSinReserva);
 	$("#inputReserva").val(porcentajeReserva);
@@ -264,7 +275,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva,
 	$("#contingenciaTotal").val(contiTotal);
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva + porcentajeContingencia*0.01*montoSinReserva);
 	
-	if (indCerrado=="1" || indLineaBase=="1"){
+	if (indCerrado=="1" || indLineaBase=="1" || indGrabar="0"){
 	
 		$("#inputReserva").attr('disabled', 'disabled');
 		$("#inputReserva").attr('readOnly', 'readOnly');

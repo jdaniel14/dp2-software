@@ -1,5 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
+var idVista=7;
 var idUsuario=obtenerIdUsuario();
 var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
 iniciaProyecto();		
