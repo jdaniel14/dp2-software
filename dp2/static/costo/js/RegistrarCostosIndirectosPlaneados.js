@@ -334,7 +334,7 @@ function grabarRecursos(){
 		if (costo!='' && !isNaN(costo) && new Number(costo)>=0){
 		
 			var costoIndirecto={
-				codmes: codmes,
+				codMes: codmes,
 				costoIndirecto: costo,
 				idMoneda: moneda
 			}
