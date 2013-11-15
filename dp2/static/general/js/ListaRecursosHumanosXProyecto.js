@@ -150,6 +150,12 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	$("#ListaRecursosHumanosXProyecto tbody").append(tbody);
 	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
 }
+//console.log($($("#ListaRecursosHumanosXProyecto").children("td")[0]).text());
+//console.log($($("#ListaRecursosHumanosXProyecto")[0]["children"]));
+//console.log($('#ListaRecursosHumanosXProyecto tr:nth-child(1)'));
+//$('.myclass tr:nth-child(2)')
+//console.log($("#ListaRecursosHumanosXProyecto"));
+//$($(el).children("td")[0]).text()
 $("#buscar").click(function(){
 	var envio = {fi : $("#fi").val(),
 				ff : $("#ff").val(),
