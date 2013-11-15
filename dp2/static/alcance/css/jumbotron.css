@@ -145,3 +145,28 @@ border: 1px solid transparent;
 border-radius: 4px;
 }
 
+#containerEdt{
+	
+}
+
+#utils_flotante{
+	width: 200px;
+	height: 200px;
+	padding: 10px;
+	background: #eee;
+	float: right;
+}
+
+#portamento_container {
+    float:right; 
+    position:relative;
+}
+ 
+#portamento_container #utils_flotante {
+    float:none; 
+    position:absolute;
+}
+ 
+#portamento_container #utils_flotante.fixed {
+    position:fixed;
+}
