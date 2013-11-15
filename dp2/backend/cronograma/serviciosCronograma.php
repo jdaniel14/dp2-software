@@ -1,6 +1,9 @@
 <?php
 
 include('routesCronograma.php');
+//include('../backend/riesgo/routesRiesgo.php');
+//include_once '../backend/riesgo/serviciosRiesgo.php';
+
 include('clasesCronograma.php');
 include_once '../backend/conexion.php';
 
@@ -130,7 +133,7 @@ function CR_modificar_actividad_BD($actividad){
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($actividad->duration+0, $actividad->name, $actividad->id+0));
+        $stmt->execute(array($actividad->name,$actividad->duration+0,$actividad->id+0));
 
 
         $db = null;
@@ -340,7 +343,10 @@ function CR_consultarPaqueteEDT($idProyecto) {
 
         while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-            $paquete = array("id" => $p["id_paquete_trabajo"] + 0, "name" => $p["nombre"], "id_padre" => $p["id_componente_padre"]);
+			echo "a punto";
+			$valor_colchon=0;
+			//$valor_colchon=R_obtenerCantidadDiasAproximadoxPaquete(array("idProyecto"=>$idProyecto,"idPaqueteTrabajo"=>$p["id_paquete_trabajo"] + 0));
+            $paquete = array("id" => $p["id_paquete_trabajo"] + 0, "name" => $p["nombre"], "id_padre" => $p["id_componente_padre"],"colchon"=>$valor_colchon);
 
             array_push($lista_paquete, $paquete);
         }
