@@ -354,7 +354,8 @@
 	function CO_getReservaContingencia($json) { //servicio 24 //COMPLETO
 		$objeto = json_decode($json);
 		if (CO_verificaPermisoServicio(CO_SERVICIO_24, $objeto->idUsuario, $objeto->idProyecto)) {
-			$jsonRespuesta = CO_consultarReservaContingencia($objeto->idProyecto);
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->reserva = CO_consultarReservaContingencia($objeto->idProyecto);
 			echo json_encode($jsonRespuesta);
 		} else {
 			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
