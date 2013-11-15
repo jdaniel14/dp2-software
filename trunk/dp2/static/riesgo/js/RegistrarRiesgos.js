@@ -18,7 +18,8 @@ var getDescImpactLevelType = "../../api/R_obtenerDescripcionNivelImpactoTipoImpa
 var confirmRisk = "../../api/R_confirmarRiesgo";
 var confirmAllRisks = "../../api/R_confirmarRiesgos";
 var getProjectName = "../../api/G_listaRecursoxProyecto";
-var setMaterializada= "../../api/R_registrarMaterializacion";
+var setMaterializada = "../../api/R_registrarMaterializacion";
+var getAllItemsMaterializados = "../../api/R_obtenerRiesgoMaterializado";
 
 
 $(document).ready(main);
@@ -46,6 +47,7 @@ function main() {
     listarRiesgos();
     listarRiesgosComunes();
     listarTiposImpacto();
+    listarRiesgosMaterializados();
     if (localStorage.getItem("idRiesgo") != null) {
         obtenerRiesgo(localStorage.getItem("idRiesgo"));
     }
@@ -318,17 +320,17 @@ function main() {
         var jsonData = JSON.stringify(data);
         console.log(jsonData);
         $.ajax({
-                type: 'PUT',
-                url: setMaterializada,
-                // dataType: "json",
-                 data: jsonData,
-                success: function() {
-                    alert("XD")
-                    //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
-        			window.location.replace("../riesgo/ActualizarGantt.html");
-                },
-                fail: codigoError
-            });
+            type: 'PUT',
+            url: setMaterializada,
+            // dataType: "json",
+            data: jsonData,
+            success: function() {
+                alert("XD")
+                //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
+                window.location.replace("../riesgo/ActualizarGantt.html");
+            },
+            fail: codigoError
+        });
 
     });
 
@@ -527,22 +529,22 @@ function listarRiesgos() {
                 var idRiesgoProyecto = $(this).closest("tr").attr("id");
                 idArray = idRiesgoProyecto;
                 var data = {
-			        id_riesgo_x_proyecto: idRiesgoProyecto
-			    };
-			    $.ajax({
-			        type: 'GET',
-			        url: getItem + '/' + data.id_riesgo_x_proyecto,
-			        data: jsonData,
-			        dataType: "json",
-			        success: function(data) {
-			            var item = data;
-			            if (item.paqueteTrabajo == null) {
-			                localStorage.setItem("idPaquete",0);
-			            } else {
-			                localStorage.setItem("idPaquete",item.idPaqueteTrabajo);
-			            }
-			        }
-			    });
+                    id_riesgo_x_proyecto: idRiesgoProyecto
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: getItem + '/' + data.id_riesgo_x_proyecto,
+                    data: jsonData,
+                    dataType: "json",
+                    success: function(data) {
+                        var item = data;
+                        if (item.paqueteTrabajo == null) {
+                            localStorage.setItem("idPaquete", 0);
+                        } else {
+                            localStorage.setItem("idPaquete", item.idPaqueteTrabajo);
+                        }
+                    }
+                });
             });
 
             $(".glyphicon.glyphicon-edit").click(function() {
@@ -655,6 +657,16 @@ function agregaDataFila(data) {
     }
 }
 
+function agregaDataFilaMat(data) {
+    arreglo = data;
+    if (arreglo != null) {
+        for (i = 0; i < arreglo.length; i++) {
+
+            agregaFilaRiesgoMat(arreglo[i], i);
+        }
+    }
+}
+
 function agregaDataComunFila(data) {
     if (data != null) {
         arreglo = data;
@@ -736,6 +748,20 @@ function agregaFilaRiesgo(arreglo, i) {
                 tipoCheckbox + "</td><td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>");
     }
 }
+
+
+function agregaFilaRiesgoMat(arreglo, i) {
+
+
+    $("#tablaRiesgosMat").append("<tr id=\"" + arreglo.idRiesgoProyecto +
+            "\"><td>" + arreglo.idRiesgoProyecto +
+            "</td><td>" + arreglo.nombreRiesgo +
+            "</td><td>" + arreglo.fechaMaterializacion +
+            "</td><td>" + arreglo.costoPotencial +
+            "</td><td>" + arreglo.demoraPotencial +
+            "</tr>");
+}
+
 
 
 function agregaFilaRiesgoComun(arreglo, i) {
@@ -1406,4 +1432,31 @@ function obtenerTitulo() {
             document.getElementsByTagName('h2')[0].innerHTML = data["nom_proy"];
         }
     });
+}
+
+
+function listarRiesgosMaterializados() {
+    $("#tablaRiesgosMat").empty();
+    var data = {
+        idProyecto: idProyectoLocal
+
+    };
+    var jsonData = JSON.stringify(data);
+    $.ajax({
+        type: 'GET',
+        url: getAllItemsMaterializados + '/' + idProyectoLocal,
+        dataType: "json",
+        success: function(data) {
+            var lista = data;
+        
+            // limpiarConfirmar();
+
+            agregaDataFilaMat(data);
+
+
+
+        },
+        fail: codigoError
+    });
+
 }
