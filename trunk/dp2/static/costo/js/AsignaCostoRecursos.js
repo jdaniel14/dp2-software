@@ -110,6 +110,24 @@ function obtenProyecto(/*idProyecto*/){
 	//return arregloProyecto;
 
 }
+
+function obtenContingencia(){
+	var obj ={
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario		
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerReservaContingencia/'+JSON.stringify(obj),
+		dataType: "json",
+		async: false,
+		success:agregarContingencia
+
+	});
+
+}
+
 //Obtener lista de recursos
 function obtenRecursos(/*idProyecto,*/tipo){
 	var obj ={
@@ -204,7 +222,7 @@ function agregaDataFilaFijo(data){
 }
 
 function iniciaProyecto(){
-			
+	obtenContingencia();
 	obtenProyecto();
 
 }
@@ -214,6 +232,12 @@ function agregarDataProyecto(data){
 	proy=data;
 	indGrabar=verificaPermisosGrabar(idVista);
 	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva, proy.indicadorCerrado, proy.indicadorLineaBase,indGrabar);
+}
+
+function agregarContingencia(contingencia){
+	if (isNaN(contingencia)) contingencia='0';
+	$('#inputContingencia').val(contingencia);
+
 }
 
 function iniciaActividades(){
@@ -414,12 +438,11 @@ $("#btnGrabar").click(function(){
 function grabarRecursos(){
 	
 	porcentajeReserva=$("#inputReserva").val();
-	porcentajeContingencia=$("#inputContingencia").val();
 	
 	var obj={
 		idProyecto: idProyecto,	
 		porcReserva: porcentajeReserva,
-		porcContingencia: porcentajeContingencia,
+		porcContingencia: '0',
 		idUsuario  : idUsuario
 		
 		
