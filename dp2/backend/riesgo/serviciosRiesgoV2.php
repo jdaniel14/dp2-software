@@ -58,7 +58,7 @@
 
 
     function R_deleteTipoImpactoRiesgo($idImpacto){
-
+       
         $sql = "DELETE FROM TIPO_IMPACTO WHERE id_tipo_impacto=:idImpacto";
         try {
             $db = getConnection();
@@ -317,7 +317,7 @@
                 array_push($arregloLinea,$data);
             }
             array_push($arregloMatriz, $arregloLinea);
-        }
+        } 
         echo json_encode($arregloMatriz);
     }
 
