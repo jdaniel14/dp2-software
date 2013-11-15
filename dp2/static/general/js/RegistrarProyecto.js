@@ -81,9 +81,26 @@ function cargarComboTipoProyecto(){
 
 $("#btnGrabar").click(function(){
 	if ($("#registrarProyecto").valid()) {
-		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-			registrarProyectos();
-		}
+		bootbox.dialog({
+		  message: "¿Estás seguro que deseas guardar los cambios realizados?",
+		  title: "Confirmación",
+		  buttons: {
+		    success: {
+		      label: "Sí",
+		      className: "btn-success",
+		      callback: function() {
+		        registrarProyectos();
+		      }
+		    },
+		    danger: {
+		      label: "No",
+		      className: "btn-danger",
+		      callback: function() {
+		         //no hace nada
+		      }
+		    },
+		  }
+		});
 	} else { return false; }
 });
 
