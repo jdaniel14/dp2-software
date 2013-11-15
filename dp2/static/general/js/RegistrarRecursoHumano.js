@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	//cargar Combos
 	cargarComboProfesionRecurso();
+	validacion();
 });
 
 function cargarComboProfesionRecurso(){
@@ -23,9 +24,28 @@ function cargarComboProfesionRecurso(){
 }
 
 $("#btnGrabar").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		registrarRecurso();
-	}
+	if ($("#aprobarSolicitud").valid()) {
+		bootbox.dialog({
+		  message: "¿Estás seguro que deseas guardar los cambios realizados?",
+		  title: "Confirmación",
+		  buttons: {
+		    success: {
+		      label: "Sí",
+		      className: "btn-success",
+		      callback: function() {
+		        registrarRecurso();
+		      }
+		    },
+		    danger: {
+		      label: "No",
+		      className: "btn-danger",
+		      callback: function() {
+		         //cierra el modal
+		      }
+		    },
+		  }
+		});
+	} else { return false; }
 });
 
 function registrarRecurso(){
@@ -53,4 +73,32 @@ function registrarRecurso(){
             $(location).attr('href','RegistrarRecursoHumano.html');
         }
     });
+}
+
+function validacion() {
+	$('#registrarRecurso').validate({
+	    rules: {
+	      nombreRecurso		: { required: true, lettersonly: true },
+	      apellidoRecurso	: { required: true, lettersonly: true },
+	      profesionRecurso 	: { required: true },
+	      correoRecurso		: { required: true, email: true },
+	      pagoMensual		: { required: true, number: true }
+	    },
+
+	    messages: {
+	      nombreRecurso		: { required: 'Debe ingresar el nombre del recurso', lettersonly: 'Debe ingresar solo letras' },
+	      apellidoRecurso	: { required: 'Debe ingresar el apellido del recurso', lettersonly: 'Debe ingresar solo letras' },
+	      profesionRecurso 	: { required: 'Debe elegir una profesión' },
+	      correoRecurso		: { required: 'Debe ingresar un correo electrónico' , email: 'Debe ingresar un correo electrónico válido' },
+	      pagoMensual		: { required: 'Debe ingresar un pago mensual' , number: 'Debe ingresar solo números' }
+	    },
+
+		highlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		
+		success: function(element) {
+			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+		}
+	  });
 }
