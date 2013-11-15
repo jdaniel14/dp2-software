@@ -305,6 +305,7 @@ function G_getListarRecDisp() {
                     AND A.FECHA_PLAN_FIN<=:FF
                     AND M.id_proyecto!=:IDPROYECTO
                     ";
+                    //AND M.ID_EMPLEADO=(SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = 66 AND ID_ROL=2);
 
         $db = getConnection();
         $stmt = $db->prepare($sql);
