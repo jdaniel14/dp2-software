@@ -52,6 +52,7 @@ function selectProfesion(){
 		success:muestraProfesion
 	});
 }
+
 function muestraProfesion(data){
 	if (data!=null){
 		idProfesion=data["idProfesion"];
@@ -96,7 +97,7 @@ $("#btnGrabar").click(function(){
 		      label: "No",
 		      className: "btn-danger",
 		      callback: function() {
-		         //no hace nada
+		         //cierra el modal
 		      }
 		    },
 		  }
@@ -130,23 +131,23 @@ function registrarProyectos(){
 function validacion() {
 	$('#registrarProyecto').validate({
 	    rules: {
-	      nombreProyecto: { required: true },
-	      jefeProyecto: { required: true },
-	      profesion: { required: true },
-	      costohh: { required: true, number: true },
-	      tipoProyecto: { required: true },
-	      fechaInicio: { required: true },
-	      fechaFin: { required: true, greaterThan: "#fechaInicio" }
+	      nombreProyecto : { required: true },
+	      jefeProyecto 	 : { required: true },
+	      profesion 	 : { required: true },
+	      costohh		 : { required: true, number: true },
+	      tipoProyecto 	 : { required: true },
+	      fechaInicio	 : { required: true },
+	      fechaFin 		 : { required: true, greaterThan: "#fechaInicio" }
 	    },
 
 	    messages: {
-	      nombreProyecto: { required: 'Debe ingresar el nombre del proyecto' },
-	      jefeProyecto: { required: 'Debe ingresar el nombre del jefe de proyecto' },
-	      profesion: { required: 'Debe ingresar la profesión del jefe de proyecto' },
-	      costohh: { required: 'Debe ingresar el costo', number: 'Debe ingresar solo números' },
-	      tipoProyecto: { required: 'Seleccione un tipo de proyecto' },
-	      fechaInicio: { required: 'Debe ingresar la fecha inicial' },
-	      fechaFin: { required: 'Debe ingresar la fecha final', greaterThan: "La fecha final debe ser mayor a la fecha inicial" }
+	      nombreProyecto : { required: 'Debe ingresar el nombre del proyecto' },
+	      jefeProyecto 	 : { required: 'Debe elegir un jefe de proyecto' },
+	      profesion 	 : { required: 'Debe elegir la profesión del jefe de proyecto' },
+	      costohh 		 : { required: 'Debe ingresar el costo', number: 'Debe ingresar solo números' },
+	      tipoProyecto 	 : { required: 'Debe elegir un tipo de proyecto' },
+	      fechaInicio 	 : { required: 'Debe ingresar la fecha inicial' },
+	      fechaFin 		 : { required: 'Debe ingresar la fecha final', greaterThan: "La fecha final debe ser mayor a la fecha inicial" }
 	    },
 
 		highlight: function(element) {
