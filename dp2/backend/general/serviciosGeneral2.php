@@ -402,8 +402,8 @@ function G_postListaTodosRecurso() {
     //echo $fecha_Inicio_IN->format('Y-m-d')." ".$fecha_Fin_IN->format('Y-m-d')."<br>";
 
     $interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
-    $num_dias = $interval / (60 * 60 * 24);
-    //echo $num_dias;
+    $num_dias = $interval / (60 * 60 * 24) ;
+    //echo "NUM DIAS : ".$num_dias."<br>";
 //			echo $fecha_Inicio_IN." ".$fecha_Fin_IN. " ". $num_dias;
     $sql_empleados = "SELECT * FROM EMPLEADO where estado='ACTIVO' ORDER BY nombres ";
     $db = getConnection();
@@ -416,8 +416,8 @@ function G_postListaTodosRecurso() {
         $id = $empleado["id_emp"];
         $empleado["nom"] = $emp["nombre_corto"];
         $empleado["rol"] = 1/*$emp["ID_ROL"]*/;
-        $empleado["detalle_dias"] = new SplFixedArray($num_dias);
-        for ($i = 0; $i < $num_dias; $i++) {
+        $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
+        for ($i = 0; $i <= $num_dias; $i++) {
             $empleado["detalle_dias"][$i] = 0;
         }
         $lista_empleados[$id] = $empleado;
@@ -458,21 +458,24 @@ function G_postListaTodosRecurso() {
             $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
             $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
             //echo $proy_emp["ID_ACTIVIDAD"]." ".$fecha_Inicio." ".$fecha_Final."<br>";
-            $interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24);
-//						echo "interval1 ".$interval."<br>";
+            $interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24) ;
+//			echo "interval1 ".$interval."<br>";
             $a = $interval;
 
 //	          $dife = $fecha_Inicio_IN - $fecha_Inicio;
 //	          $a = Math.Abs(dife.Days);
-            $interval = (strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24);
-//						echo "interval2 ".$interval."<br>";
-            $b = $interval + $a;
+            $interval = (strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24) ;
+//			echo "interval2 ".$interval."<br>";
+            $b = $interval + $a ;
 
 //	          $dife =  $fecha_Final - $fecha_Inicio;
 //	          $b = $dife.Days + a;
             if ($b > $num_dias)
                 $b = $num_dias;
+            //echo $a."<br>";
+            //echo $b."<br>";
             for ($j = $a; $j <= $b; $j++) {
+                //echo $proy_emp["ID_ACTIVIDAD"]."<br>";
                 $lista_empleados[$k]["detalle_dias"][$j] = $proy_emp["ID_ACTIVIDAD"];
             }//for
         }//while
