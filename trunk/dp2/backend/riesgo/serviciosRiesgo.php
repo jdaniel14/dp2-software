@@ -201,7 +201,12 @@
  
     function R_getListaPaquetesEDT($var){
         $idProyecto = json_decode($var);
-        $query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=".$idProyecto." ";
+        //$query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=".$idProyecto." ";
+        
+        $query ="SELECT a.* FROM PAQUETE_TRABAJO a, EDT b where  a.id_estado=1 and id_paquete_trabajo 
+         not in(select id_componente_padre from PAQUETE_TRABAJO where id_componente_padre is not null and 
+            id_estado=1) and a.id_edt=b.id_edt and b.id_estado=1 and b.id_proyecto=".$idProyecto." ";
+
         //$query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=:id_proyecto";
         
         try {
@@ -1016,7 +1021,8 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion
+        $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion,
+        estado=2
         WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
         var_dump($riesgo);
         try {
@@ -1036,7 +1042,8 @@
     
     function R_getCantidadDiasAproximadoxPaquete($json){  
         $var = json_decode($json);    
-        $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo";
+        $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo
+                AND positivo_negativo=0";
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
