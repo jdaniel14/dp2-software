@@ -1,10 +1,13 @@
 <?php
+	//NEW se agrego /AL_reconstruirEdt
 	//PRIMER SPRINT
 	$app->post('/obtenerEdt','guardarEdt'); //inserta los datos de la creacion del edt
 	$app->post('/traerEdt', 'getEdt'); //mostrar el edt
 	$app->post('/modificaMostrar','getEdt'); //solo muestra el edt
 	$app->post('/modificar','modificarTodoEdt'); //modifica el edt
 	$app->post('/eliminarEdt',"eliminarEdt"); //elimina todo el edt
+	//con esta se reconstruye el EDT
+	$app->post('/AL_recontruirEdt','reconstruirEdt');
 	
 	//SEGUNDO SPRINT
 	$app->post('/AL_crearAlcance','crearAlcance');
