@@ -11,7 +11,10 @@
 	$app->get('/CR_getIndicadoresFlujo/:parametro','CR_getIndicadoresFlujo'); //servicio 9 Obtener indicadores del proyecto
 	
 	$app->get('/CR_getListaActividad/:parametro', 'CR_getListaActividad');//servicio 10 obtener lista de actividades para riesgo
-	$app->post('/CR_updateActividad/', 'CR_updateActividad');//servicio 11 modificar actividad
+	$app->post('/CR_updateActividad/', 'CR_updateActividad');//servicio 11 modificar actividad nombre y duracion
+	$app->post('/CR_updateAvanceActividad/', 'CR_updateAvanceActividad');//servicio 12 modificar avance dias de actividad
+	
+	
 	$app->post('/CR_test/:parametro', 'hallar_fechainicio_fechafin_red');
 	
 	
