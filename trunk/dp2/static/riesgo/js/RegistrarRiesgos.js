@@ -320,10 +320,12 @@ function main() {
         $.ajax({
                 type: 'PUT',
                 url: setMaterializada,
-                dataType: "json",
+                // dataType: "json",
                  data: jsonData,
                 success: function() {
-                    
+                    alert("XD")
+                    //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
+        			window.location.replace("../riesgo/ActualizarGantt.html");
                 },
                 fail: codigoError
             });
@@ -524,8 +526,23 @@ function listarRiesgos() {
             $(".materializar").click(function() {
                 var idRiesgoProyecto = $(this).closest("tr").attr("id");
                 idArray = idRiesgoProyecto;
-
-
+                var data = {
+			        id_riesgo_x_proyecto: idRiesgoProyecto
+			    };
+			    $.ajax({
+			        type: 'GET',
+			        url: getItem + '/' + data.id_riesgo_x_proyecto,
+			        data: jsonData,
+			        dataType: "json",
+			        success: function(data) {
+			            var item = data;
+			            if (item.paqueteTrabajo == null) {
+			                localStorage.setItem("idPaquete",0);
+			            } else {
+			                localStorage.setItem("idPaquete",item.idPaqueteTrabajo);
+			            }
+			        }
+			    });
             });
 
             $(".glyphicon.glyphicon-edit").click(function() {
