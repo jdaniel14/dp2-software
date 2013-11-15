@@ -68,7 +68,19 @@ class CO_Constants {
 				7 => array(
 					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
 					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
-					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false))
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false)),
+				8 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(false, false, false)),
+				9 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(true, false, false)),
+				10 => array(
+					CO_ROL_GERENTE_PORTAFOLIO => new CO_PermisosVista(true, false, false),
+					CO_ROL_JEFE_PROYECTO => new CO_PermisosVista(true, true, true),
+					CO_ROL_TEAM_MEMBER => new CO_PermisosVista(true, false, false))
 			);
 		}
         return self::$permisosVista;

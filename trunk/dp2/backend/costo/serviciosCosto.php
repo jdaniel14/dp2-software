@@ -2391,7 +2391,7 @@
 
 	function CO_actualizarCIE($elemento, $idProyecto) {
 		$sql = "UPDATE COSTO_INDIRECTO
-		SET COSTO_ESTIMADO= :costoIndirecto
+		SET COSTO_ESTIMADO= :costoIndirecto, ID_CAMBIO_MONEDA = :idMoneda
 		WHERE
 		ID_PROYECTO= :idProyecto AND CODMES= :codMes;
 		COMMIT;";
@@ -2401,6 +2401,7 @@
     	$stmt->bindParam("idProyecto", $idProyecto);
     	$stmt->bindParam("codMes", $elemento->codMes);
     	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
+    	$stmt->bindParam("idMoneda", $elemento->idMoneda);
     	$stmt->execute();
     	$db = null;
 	}
@@ -2472,7 +2473,7 @@
 
 	function CO_actualizarCIR($elemento, $idProyecto) {
 		$sql = "UPDATE COSTO_INDIRECTO
-		SET COSTO_REAL= :costoIndirecto
+		SET COSTO_REAL= :costoIndirecto, ID_CAMBIO_MONEDA = :idMoneda
 		WHERE
 		ID_PROYECTO= :idProyecto AND CODMES= :codMes;
 		COMMIT;";
@@ -2482,6 +2483,7 @@
     	$stmt->bindParam("idProyecto", $idProyecto);
     	$stmt->bindParam("codMes", $elemento->codMes);
     	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
+    	$stmt->bindParam("idMoneda", $elemento->idMoneda);
     	$stmt->execute();
     	$db = null;
 	}
