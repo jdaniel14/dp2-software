@@ -1053,7 +1053,7 @@
             $row = $stmt->fetchObject();
             //$data=array("promedio" => $row->promedio);
             $db = null;
-            echo json_encode($row->promedio);
+            return json_encode($row->promedio);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        

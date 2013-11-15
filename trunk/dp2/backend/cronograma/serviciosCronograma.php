@@ -2,7 +2,7 @@
 
 include('routesCronograma.php');
 //include('../backend/riesgo/routesRiesgo.php');
-//include_once '../backend/riesgo/serviciosRiesgo.php';
+ '../backend/riesgo/serviciosRiesgo.php';
 
 include('clasesCronograma.php');
 include_once '../backend/conexion.php';
@@ -343,10 +343,12 @@ function CR_consultarPaqueteEDT($idProyecto) {
 
         while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-			echo "a punto";
+			//echo "a punto";
 			$valor_colchon=0;
-			//$valor_colchon=R_obtenerCantidadDiasAproximadoxPaquete(array("idProyecto"=>$idProyecto,"idPaqueteTrabajo"=>$p["id_paquete_trabajo"] + 0));
-            $paquete = array("id" => $p["id_paquete_trabajo"] + 0, "name" => $p["nombre"], "id_padre" => $p["id_componente_padre"],"colchon"=>$valor_colchon);
+			$valor_colchon=json_decode(R_getCantidadDiasAproximadoxPaquete(json_encode(array("idProyecto"=>$idProyecto,"idPaqueteTrabajo"=>$p["id_paquete_trabajo"] + 0))));
+			//echo $valor_colchon;
+			//if ($valor_colchon==null) echo "nul ps";
+            $paquete = array("id" => $p["id_paquete_trabajo"] + 0, "name" => $p["nombre"], "id_padre" => $p["id_componente_padre"],"colchon"=>(($valor_colchon==NULL)?0:$valor_colchon));
 
             array_push($lista_paquete, $paquete);
         }
