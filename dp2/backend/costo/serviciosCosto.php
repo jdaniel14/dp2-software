@@ -350,8 +350,14 @@
 		}
 	}
 
+	function CO_getReservaContingencia($json) {
+		$objeto = json_decode($json);
+			$jsonRespuesta = CO_consultarReservaContingencia($objeto->idProyecto);
+			echo json_encode($jsonRespuesta);
+	}
+
 	///////////FOR TESTING ONLY/////////////
-	function CO_testFunction2() {
+	function CO_testFunction() {
 		/*
 		echo "add me blood999\n";
 		echo "add me ANHUE blood999\n";
@@ -384,8 +390,12 @@
 				</HTML>';
 	}
 
-	function CO_testFunction($codMes) {
+	function CO_testFunction2($codMes) {
 		echo CO_obtenerSiguienteCodMes($codMes);
+	}
+
+	function CO_testFunctionPuntos() {
+		echo '{status: "OK",num_results: 10,results: [{id: "1", lat: "-12.071353", lng: "-77.078557", elevation: "2.5", title: "PUNTO 1", enlace: [{enlace:"<a href=\'http://www.aiesec.org/peru/universidadcatolica/\'>Aiesec</a>"},{enlace:"<a href=\'http://www.aiesec.org/peru/universidadcatolica/\'>Aiesec</a>"},{enlace:"<a href=\'http://www.aiesec.org/peru/universidadcatolica/\'>Aiesec</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/AIESEC.jpg"}], icono: "0", id_categoria: "38", id_punto_padre: "", desc_corta: "Association Internationale des \u00c9tudiants En Sciences \u00c9conomiques et Commerciales", descripcion: "Organizaci\u00f3n global, no pol\u00edtica, independiente, sin fines de lucro, dirigida por estudiantes y reci\u00e9n graduados de instituciones de educaci\u00f3n superior; sus miembros est\u00e1n interesados en la problem\u00e1tica mundial, liderazgo y gesti\u00f3n.", contacto: "Reservas y pagos: Arturo Cerr\u00f3n, anexo 3274 audi_derecho@pucp.edu.pe\\n\\nCoordinaciones log\u00edsticas: Fernando Rojas, anexo 3268  audi_derecho@pucp.edu.pe\\n\\nCoordinaciones t\u00e9cnicas: M\u00e1ximo Santa Cruz y Jorge Ch\u00e1vez, anexo 3270 msantac@pucp.edu.pe y gchavez@pucp.edu.pe", ubicacion: "Aquisito nom\u00e1s", estrellas: "0", encuestas: "0", piso: "1", pisos: "1", fecha: [{fecha:"L-M-V: 4pm-8pm"}], redes: [{red:"FB", url:"http://www.facebook.com/aiesec.en.peru"}], hijos:[]},{id: "2", lat: "-12.072921", lng: "-77.079716", elevation: "2.5", title: "PUNTO 2", enlace: [], url_images: [], icono: "0", id_categoria: "16", id_punto_padre: "", desc_corta: "\u00c1rea de mec\u00e1nica aplicada", descripcion: "", contacto: "", ubicacion: "", estrellas: "0", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [], hijos:[]},{id: "3", lat: "-12.065902", lng: "-77.079565", elevation: "2.5", title: "PUNTO 3", enlace: [{enlace:"<a href=\'http://deportes.pucp.edu.pe/\'>Enlace</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/deportesOCA.jpg"}], icono: "0", id_categoria: "10", id_punto_padre: "", desc_corta: "\u00c1rea de deportes", descripcion: "En la PUCP se practican distintas disciplinas, entre ellas: f\u00fatbol, v\u00f3ley, b\u00e1squet, karate, judo, kung fu, tenis de mesa, rugby, paleta de front\u00f3n, atletismo, tiro, etc.", contacto: "", ubicacion: "", estrellas: "1", encuestas: "1", piso: "1", pisos: "1", fecha: [], redes: [], hijos:[]},{id: "4", lat: "-12.068448", lng: "-77.079555", elevation: "2.5", title: "PUNTO 4", enlace: [{enlace:"<a href=\'http://aeg.pucp.edu.pe/\'>Enlace</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/ASOCIACION_DE_GRADUADOS.jpg"}], icono: "0", id_categoria: "2", id_punto_padre: "", desc_corta: "Asociaci\u00f3n de egresados y graduados", descripcion: "Instituci\u00f3n formada con el objetivo de coadyuvar al desarrollo del pa\u00eds con la participaci\u00f3n de los ex alumnos de la Pontificia Universidad Cat\u00f3lica del Per\u00fa.", contacto: "", ubicacion: "", estrellas: "1", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [{red:"FB", url:"http://www.facebook.com/AlumniPUCP"}], hijos:[]},{id: "5", lat: "-12.072705", lng: "-77.079993", elevation: "2.5", title: "PUNTO 5", enlace: [{enlace:"<a href=\'http://www.pucp.edu.pe/content/pagina45.php?pID=3111&pIDSeccionWeb=10&pIDContenedor=3115&pIDReferencial=&pBusqueda=&pIDMapa=\'>Enlace</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/AUDITORIO_CIENCIAS_E_INGENIERIA.jpg"}], icono: "0", id_categoria: "3", id_punto_padre: "", desc_corta: "Auditorio de Ciencias e Ingenier\u00eda", descripcion: "Amplio y elegante auditorio que cuenta con 98 butacas con atril incorporado, un moderno sistema de iluminaci\u00f3n, tratamiento ac\u00fastico y sistema multimedia.", contacto: "", ubicacion: "", estrellas: "1", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [{red:"FB", url:"http://www.facebook.com/pages/Auditorio-De-Ciencias-E-Ingenieria/277457485622339"}], hijos:[]},{id: "6", lat: "-12.069976", lng: "-77.081109", elevation: "2.5", title: "PUNTO 6", enlace: [{enlace:"<a href=\'http://auditorioderecho.pucp.edu.pe/\'>Enlace</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/auditorio_derecho.jpg"}], icono: "0", id_categoria: "25", id_punto_padre: "", desc_corta: "Auditorio de Derecho", descripcion: "Cuenta con amplias y confortables instalaciones que hacen posible la visita de 370 personas. Sus modernos asientos ofrecen mesa de apoyo. La sala abovedada ha sido dise\u00f1ada para una \u00f3ptima ac\u00fastica, la cual permite incluso presentaciones musicales de altos requerimientos. Adem\u00e1s, cuenta con un ambiente privado para los expositores.", contacto: "", ubicacion: "", estrellas: "1", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [{red:"FB", url:"http://www.facebook.com/pages/Auditorio-de-Derecho-PUCP/146712185395361"}], hijos:[]},{id: "7", lat: "-12.068314", lng: "-77.080095", elevation: "2.5", title: "PUNTO 7", enlace: [{enlace:"<a href=\'http://departamento.pucp.edu.pe/humanidades/auditorio-de-humanidades/\'>Enlace</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/AUDITORIO_HUMANIDADES.jpg"}], icono: "0", id_categoria: "8", id_punto_padre: "", desc_corta: "Auditorio de Humanidades", descripcion: "El Auditorio de Humanidades, el cual cuenta con una capacidad para 100 personas, brinda los servicios de alquiler de su acogedor sala para eventos tales como: coloquios, seminarios, talleres, presentaciones de libros, entre otras actividades acad\u00e9micas y/o culturales.", contacto: "", ubicacion: "", estrellas: "1", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [{red:"FB", url:"http://www.facebook.com/pages/Auditorio-De-Humanidades-PUCP/250992755023150"}], hijos:[]},{id: "8", lat: "-12.069808", lng: "-77.080271", elevation: "2.5", title: "PUNTO 8", enlace: [], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/AUDITORIO_JUAN_PABLO_II.jpg"}], icono: "0", id_categoria: "18", id_punto_padre: "", desc_corta: "Auditorio Juan Pablo II", descripcion: "Capacidad: 250 personas", contacto: "", ubicacion: "", estrellas: "1", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [], hijos:[]},{id: "9", lat: "-12.070433", lng: "-77.079041", elevation: "2.5", title: "PUNTO 9", enlace: [], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/TALLERES1.jpg"}], icono: "0", id_categoria: "23", id_punto_padre: "", desc_corta: "Aulas y talleres de la Facultad de Arte", descripcion: "La Facultad de Arte cuenta con una biblioteca, laboratorios de c\u00f3mputo, laboratorios de fotograf\u00eda, taller de grabado, taller de escultura, taller de dise\u00f1o gr\u00e1fico y un taller de dise\u00f1o industrial.", contacto: "", ubicacion: "", estrellas: "0", encuestas: "0", piso: "1", pisos: "1", fecha: [], redes: [], hijos:[]},{id: "10", lat: "-12.071757", lng: "-77.08045", elevation: "2.5", title: "PUNTO 10", enlace: [{enlace:"<a href=\'http://bancolibro.pucp.edu.pe/\'>Enlace</a>"}], url_images: [{url:"http://guiapucp.netau.net/guiaubicua/fotos/BANCO_DEL_LIBRO.jpg"}], icono: "0", id_categoria: "38", id_punto_padre: "", desc_corta: "Banco del libro", descripcion: "Servicio de uso semestral de libros para que los estudiantes PUCP planifiquen mejor sus estudios al disponer de los textos que necesitan a cualquier hora y en su propia casa. Se facilitan libros de idiomas, obras literarias y se remata libros usados.", contacto: "", ubicacion: "", estrellas: "1", encuestas: "1", piso: "1", pisos: "1", fecha: [], redes: [], hijos:[]}]}';
 	}
 
 	function CO_testFunctionPOST() {
@@ -2233,6 +2243,11 @@
 	}
 
 	function CO_guardarCIE($elemento,$idProyecto) {
+
+		
+	}
+
+	function CO_insertarCIE($elemento, $idProyecto) {
 		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_estimado,id_cambio_moneda)
 		VALUES (:idProyecto, :codMes, :costoIndirecto, :idMoneda);
 		COMMIT;";
@@ -2243,6 +2258,22 @@
     	$stmt->bindParam("codMes", $elemento->codMes);
     	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
 		$stmt->bindParam("idMoneda", $elemento->idMoneda);
+    	$stmt->execute();
+    	$db = null;
+	}
+
+	function CO_actualizarCIE($elemento, $idProyecto) {
+		$sql = "UPDATE COSTO_INDIRECTO
+		SET COSTO_ESTIMADO= :costoIndirecto
+		WHERE
+		ID_PROYECTO= :idProyecto AND CODMES= :codMes;
+		COMMIT;";
+
+		$db = getConnection();
+    	$stmt = $db->prepare($sql);
+    	$stmt->bindParam("idProyecto", $idProyecto);
+    	$stmt->bindParam("codMes", $elemento->codMes);
+    	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
     	$stmt->execute();
     	$db = null;
 	}
@@ -2273,6 +2304,33 @@
 		$stmt->bindParam("idMoneda", $elemento->idMoneda);
     	$stmt->execute();
     	$db = null;
+	}
+
+	function CO_consultarReservaContingencia($idProyecto) {
+		$sql = "SELECT
+		IFNULL(SUM(A.COSTO_POTENCIAL*B.PORCENTAJE_CONTINGENCIA/100),0) RESERVA_CONTINGENCIA
+		FROM
+		RIESGO_X_PROYECTO A JOIN
+		PAQUETE_TRABAJO B ON A.ID_PAQUETE_TRABAJO=B.ID_PAQUETE_TRABAJO
+		WHERE
+		A.ID_PROYECTO= :idProyecto AND B.ID_ESTADO=1;";
+
+		$reservaContingencia = 0;
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+					$reservaContingencia = $p["RESERVA_CONTINGENCIA"];
+					break;
+			}
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		
+		return $reservaContingencia;
 	}
 
 	//RESPUESTAS
