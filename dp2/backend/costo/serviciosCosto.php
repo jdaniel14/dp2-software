@@ -2226,7 +2226,32 @@
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
-		return $listaCI;
+		$listaFinal = null;
+		if (sizeof($listaCI) != $resultados->diferencia) {
+			$listaFinal = array();
+			$j = 0;
+			for ($i = $resultados->fechaIni; $i <= $resultados->fechaFin; $i = CO_obtenerSiguienteCodMes($i)) {
+				if ($i < $listaCI[$j]->codMes) {
+					$cInd = new stdClass();
+	        		$cInd->codMes = $i;
+	    			$cInd->idMoneda =  1;
+	    			$cInd->costoIndirecto =  0;
+	    			array_push($listaFinal, $cInd);
+				} else {
+					/*
+					$cInd = new stdClass();
+	        		$cInd->codMes = $listaCI[$j]->codMes;
+	    			$cInd->idMoneda =  $listaCI[$j]->idMoneda;
+	    			$cInd->costoIndirecto =  $listaCI[$j]->costoIndirecto;*/
+	    			array_push($listaFinal, $listaCI[$j]);
+	    			$j++;
+				}
+			}
+		} else {
+			$listaFinal = $listaCI;
+		}
+
+		return $listaFinal;
 	}
 
 	function CO_guardarCostosIndirectosEstimados($objeto) {
