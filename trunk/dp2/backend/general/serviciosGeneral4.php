@@ -212,7 +212,12 @@ function G_setLineaBase($id) {
         $stmt->bindParam("FECHA", $fecha);
         $stmt->bindParam("id", $id);
         $stmt->execute();
-            
+
+        $sql = "call P_GE_grabar_linea_base(:id)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
         $db = null;
         echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
