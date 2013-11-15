@@ -70,6 +70,8 @@ var currentDate = new Date();
 		  	var checkbox = $("input[name='rowTable']:checked");
 			checkbox.closest("tr").remove();
 		  });
+		  
+		  //$('#colchon').text('dmkfdf');
 		});
 		
 		

@@ -371,13 +371,36 @@
 		      <td>
 		        <table cellpadding="5">
 		          <tr>
-		            <td><label for="code">Codigo-Nombre Abreviado Actividad</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
+		            <td colspan="2"><label for="code">Codigo-Nombre Abreviado Actividad</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
 		          </tr>
 		          <tr>
-		            <td><label for="name">Nombre Actividad</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
+		            <td colspan="2"><label for="name">Nombre Actividad</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
 		          </tr>
 		          <tr>
-		          	<td><label for = "wbsNodes">Paquetes EDT</label><br><select name = "wbsNodes" id = "wbsNodes"></select></td>
+		          	<td colspan="1"><label for = "wbsNodes" >Paquetes EDT</label><br><select name = "wbsNodes" id = "wbsNodes" onchange="
+					
+					
+					var i;
+					var paquetes=ge.wbsNodes;
+					var select = $(this.parentNode.parentNode);
+					console.log(select.find('div'));
+					select = $(select).find('select').attr('value');
+					
+					console.log('select: ' + select);
+					for(i=0;i<paquetes.length;i++){
+						if (paquetes[i].id==select){
+							$($(this.parentNode.parentNode).find('div')).text(paquetes[i].colchon);
+							
+							break;
+						}
+					}
+					
+					
+					//console.log(paquetes[])
+					
+					
+					"></select></td>
+					<td colspan="1"><label >Duracion adicional</label><br><div name="colchon" id="colchon">0</div></td>	
 		          </tr>
 		          <td>
 		          	<label for="description">Descripción</label>
@@ -402,7 +425,8 @@
 			          <td><label for="end">Fin Plan</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
 		          </tr>
 		          <tr>
-					<td class="graph"><label for="duration">Duracion</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>   
+					<td class="graph"><label for="duration">Duracion</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td> 
+					
 		          </tr>
 		          <tr>
 			          <td><label for="realStart">Inicio Real</label><br><input type="text" name="realStart" id="realStart"  value="" class="date" size="10" class="formElements"></td>
