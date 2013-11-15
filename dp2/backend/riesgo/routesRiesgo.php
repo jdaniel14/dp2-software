@@ -51,7 +51,7 @@
 
 	//
 	$app->put('/R_registrarMaterializacion','R_updateMaterializacion');
-        $app->get('/R_obtenerRiesgoMaterializado/:id', 'R_getRiesgoMaterializado');
+    $app->get('/R_obtenerRiesgoMaterializado/:id', 'R_getRiesgoMaterializado');
 
 	//Integracion Cronograma
 	$app->get('/R_obtenerCantidadDiasAproximadoxPaquete/:var', 'R_getCantidadDiasAproximadoxPaquete');
