@@ -90,6 +90,7 @@
                             <th>Equipo Responsable</th>
                             <th colspan="2">Acciones</th>
                             <th> Confirmar Todos</br><input id="checkearTodos" type="checkbox" value=0></th>
+                             <th> </th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -154,6 +155,24 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-danger" data-dismiss="modal" id="btnEliminar">Eliminar</button>
+                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            
+                     <div class="modal" id="confirmMaterializar">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Confirmación de materialización </h3>
+                        </div>
+                        <div class="modal-body titulo-tabla">
+                            <label class="col-lg-12 control-label">¿Esta seguro que desea materializar este riesgo?</label>
+                              <div class="col-md-5"><input type="date" id="fechaMat"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" data-dismiss="modal" id="btnMaterializar">Materializar</button>
                             <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
