@@ -140,7 +140,7 @@ function llegadaDatos(data) {
         	if(prim == true) prim = false;
         	else {
         		result += '<tr>';
-        		result += '<td align = "center">' + item.nom + '</td>';
+        		result += '<td align = "center" style="border-top: 1px groove #733366;" >' + item.nom + '</td>';
 
         		var fechas = item.detalle_dias;
 
