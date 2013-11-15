@@ -443,7 +443,7 @@ function G_postListaTodosRecurso() {
 									AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
 									R.ID_PROYECTO = M.ID_PROYECTO AND 
 									R.ID_PROYECTO = A.ID_PROYECTO AND 
-									( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin OR
+									( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin AND
 									  A.FECHA_PLAN_FIN BETWEEN :fecha_ini AND :fecha_fin )
 							ORDER BY A.FECHA_PLAN_INICIO
 							";
@@ -482,6 +482,143 @@ function G_postListaTodosRecurso() {
 //        }//if
         $k++;
     }//while
+    echo json_encode($lista_empleados);
+}
+function G_postListaTodosRecurso_1(){
+
+    $request = \Slim\Slim::getInstance()->request();
+    $body = json_decode($request->getBody());
+
+    $str1 = $body->fechaIni;
+    $str2 = $body->fechaFin;
+
+    $fecha_Inicio_IN = strtotime($str1);
+    $fecha_Fin_IN = strtotime($str2);
+
+    $interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
+    $num_dias = $interval / (60 * 60 * 24) ;
+
+    $sql_empleados = "SELECT * FROM EMPLEADO where estado='ACTIVO' ORDER BY nombres ";
+    $db = getConnection();
+    $stmt = $db->query($sql_empleados);
+
+    $lista_empleados = array();
+    while ($emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $empleado = array();
+        $empleado["id_emp"] = $emp["id_empleado"];
+        $id = $empleado["id_emp"];
+        $empleado["nom"] = $emp["nombre_corto"];
+        $empleado["rol"] = 1/*$emp["ID_ROL"]*/;
+        $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
+        for ($i = 0; $i <= $num_dias; $i++) {
+            $empleado["detalle_dias"][$i] = 0;
+        }
+        $lista_empleados[$id] = $empleado;
+    }
+    //var_dump($lista_empleados[7]);
+    $sql = "SELECT * FROM
+
+                (SELECT A.ID_ACTIVIDAD,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO, M.ID_EMPLEADO
+                FROM 
+                    MIEMBROS_EQUIPO M,
+                    ACTIVIDAD A,
+                    ACTIVIDAD_X_RECURSO AR,
+                    RECURSO R,
+                    EMPLEADO E
+                WHERE 
+                    E.ID_EMPLEADO = M.ID_EMPLEADO AND
+                    M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO AND
+                    AR.ID_RECURSO = R.ID_RECURSO AND 
+                    AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
+                    R.ID_PROYECTO = M.ID_PROYECTO AND 
+                    R.ID_PROYECTO = A.ID_PROYECTO AND 
+                    ( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin AND
+                      A.FECHA_PLAN_FIN BETWEEN :fecha_ini AND :fecha_fin )
+
+                UNION
+
+                SELECT -1 AS ID_ACTIVIDAD , P.FECHA_INICIO_PLANIFICADA, P.FECHA_FIN_PLANIFICADA, P.ID_PROYECTO, M.ID_EMPLEADO
+                FROM PROYECTO P , MIEMBROS_EQUIPO M
+                WHERE 
+                    (P.FECHA_INICIO_PLANIFICADA BETWEEN :fecha_ini AND :fecha_fin AND 
+                    P.FECHA_FIN_PLANIFICADA BETWEEN :fecha_ini AND :fecha_fin) AND
+                    M.ID_PROYECTO = P.ID_PROYECTO AND
+                    M.ID_ROL = 2 AND P.ESTADO = 'ACTIVO') 
+            
+            NUEVA
+            ORDER BY ID_EMPLEADO, FECHA_PLAN_INICIO;"
+            ;
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("fecha_ini", $str1);
+    $stmt->bindParam("fecha_fin", $str2);
+    $stmt->execute();
+
+    while ($proy_emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $k = $proy_emp["ID_EMPLEADO"];
+        $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
+        $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
+        $interval = abs(strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24) ;
+        //echo "interval1 ".$interval."<br>";
+        $a = $interval;
+        $interval = abs(strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24) ;
+        //echo "interval2 ".$interval."<br>";
+        $b = $interval + $a ;
+        if ($b > $num_dias)
+            $b = $num_dias;
+        for ($j = $a; $j <= $b; $j++) {
+            $lista_empleados[$k]["detalle_dias"][$j] = $proy_emp["ID_ACTIVIDAD"];
+        }
+    }
+
+/*
+    $k = 0;
+    $size = count($lista_empleados);
+    while ($k < $size) {
+        $sql_proy_emp = "   SELECT A.ID_ACTIVIDAD,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+                            FROM 
+                                MIEMBROS_EQUIPO M,
+                                ACTIVIDAD A,
+                                ACTIVIDAD_X_RECURSO AR,
+                                RECURSO R,
+                                EMPLEADO E
+                            WHERE 
+                                    E.ID_EMPLEADO = :id_emp AND
+                                    E.ID_EMPLEADO = M.ID_EMPLEADO AND
+                                    M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO AND
+                                    AR.ID_RECURSO = R.ID_RECURSO AND 
+                                    AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
+                                    R.ID_PROYECTO = M.ID_PROYECTO AND 
+                                    R.ID_PROYECTO = A.ID_PROYECTO AND 
+                                    ( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin AND
+                                      A.FECHA_PLAN_FIN BETWEEN :fecha_ini AND :fecha_fin )
+                            ORDER BY A.FECHA_PLAN_INICIO
+                            ";
+
+        $stmt = $db->prepare($sql_proy_emp);
+        $stmt->bindParam("id_emp", $lista_empleados[$k]["id_emp"]);
+        $stmt->bindParam("fecha_ini", $str1);
+        $stmt->bindParam("fecha_fin", $str2);
+        $stmt->execute();
+
+        while ($proy_emp = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
+            $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
+            $interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24) ;
+            $a = $interval;
+            $interval = (strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24) ;
+            $b = $interval + $a ;
+            if ($b > $num_dias)
+                $b = $num_dias;
+            for ($j = $a; $j <= $b; $j++) {
+  
+                $lista_empleados[$k]["detalle_dias"][$j] = $proy_emp["ID_ACTIVIDAD"];
+            }//for
+        }//while
+//        }//if
+        $k++;
+    }//while
+    echo json_encode($lista_empleados);
+    */
     echo json_encode($lista_empleados);
 }
 
