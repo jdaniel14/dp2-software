@@ -31,6 +31,8 @@ define('CO_SERVICIO_20', 20);
 define('CO_SERVICIO_21', 21);
 define('CO_SERVICIO_22', 22);
 define('CO_SERVICIO_23', 23);
+define('CO_SERVICIO_24', 24);
+define('CO_SERVICIO_25', 25);
 
 class CO_Constants {
 	private static $permisosVista = null;
@@ -74,7 +76,7 @@ class CO_Constants {
 
     public static function getPermisosServicio() {
     	if (self::$permisosServicio == null) {
-    		self::$permisosServicio = array(
+    		self::$permisosServicio = array( //gerente portafolio, jefe proyecto, team member
     			CO_SERVICIO_1 => new CO_PermisosServicio(true, true, true),
     			CO_SERVICIO_2 => new CO_PermisosServicio(true, true, true),
     			CO_SERVICIO_3 => new CO_PermisosServicio(true, true, false),
@@ -97,7 +99,9 @@ class CO_Constants {
     			CO_SERVICIO_20 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_21 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_22 => new CO_PermisosServicio(false, true, false),
-    			CO_SERVICIO_23 => new CO_PermisosServicio(false, true, false)
+    			CO_SERVICIO_23 => new CO_PermisosServicio(false, true, false),
+    			CO_SERVICIO_24 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_25 => new CO_PermisosServicio(true, true, false)
     		);
     	}
     	return self::$permisosServicio;

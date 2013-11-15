@@ -304,8 +304,9 @@
 		$objeto = json_decode($json);
 		if (CO_verificaPermisoServicio(CO_SERVICIO_21, $objeto->idUsuario, $objeto->idProyecto)) {
 			$jsonRespuesta = new stdClass();
-			$jsonRespuesta->numMeses = CO_consultarNumeroMesesCostosIndirectosReales($objeto->idProyecto);
-			$jsonRespuesta->listaCostosIndirectos = CO_ConsultarCostosIndirectosReales($objeto->idProyecto);
+			$resultados = CO_consultarNumeroMesesCostosIndirectosReales($objeto->idProyecto);
+			$jsonRespuesta->numMeses = $resultados->diferencia;
+			$jsonRespuesta->listaCostosIndirectos = CO_ConsultarCostosIndirectosReales($objeto->idProyecto, $resultados);
 			echo json_encode($jsonRespuesta);
 		} else {
 			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
@@ -352,13 +353,17 @@
 
 	function CO_getReservaContingencia($json) { //servicio 24 //COMPLETO
 		$objeto = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_24, $objeto->idUsuario, $objeto->idProyecto)) {
 			$jsonRespuesta = CO_consultarReservaContingencia($objeto->idProyecto);
 			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	function CO_getListaPaquetesCostoReal($json) { //servicio 25 //COMPLETO
 		$proy = json_decode($json);
-		if (CO_verificaPermisoServicio(CO_SERVICIO_6, $proy->idUsuario, $proy->idProyecto)) {
+		if (CO_verificaPermisoServicio(CO_SERVICIO_25, $proy->idUsuario, $proy->idProyecto)) {
 			$listaPaquetes = CO_consultarListaPaquetesCostoReal($proy->idProyecto);
 			$jsonRespuesta = new stdClass();
 			$jsonRespuesta->lista = $listaPaquetes;
@@ -2250,7 +2255,7 @@
 		return $resultado;
 	}
 
-	function CO_ConsultarCostosIndirectosReales($idProyecto) {
+	function CO_ConsultarCostosIndirectosReales($idProyecto, $resultados) {
 		$sql = "SELECT
 		A.id_proyecto,
 		A.codmes,
