@@ -151,8 +151,12 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
 }
 $("#buscar").click(function(){
-	var envio = {fi : $("#fi").val(),ff : $("#ff").val()};
+	var envio = {fi : $("#fi").val(),
+				ff : $("#ff").val(),
+				idProyecto:id
+				};
    	//console.log(JSON.stringify(envio));
+	alert(JSON.stringify(envio));
    	$.ajax({
 		type: 'POST',
 		url: buscarRecursosProyectoFecha,
