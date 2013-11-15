@@ -213,7 +213,7 @@ function G_setLineaBase($id) {
         $stmt->bindParam("id", $id);
         $stmt->execute();
 
-        $sql = "call P_GE_grabar_linea_base(:id)";
+        $sql = "CALL P_GE_grabar_linea_base(:id)";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id);
         $stmt->execute();
