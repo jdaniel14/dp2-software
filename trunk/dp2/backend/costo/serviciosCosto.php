@@ -2164,6 +2164,7 @@
 		WHERE
 		ID_PROYECTO= :idProyecto AND PROFUNDIDAD<>0 AND ELIMINADO<>1;";
 
+		$resultado = new stdClass();
 		$diferencia = 0;
 		$fechaIni = null;
 		$fechaFin = null;
@@ -2192,7 +2193,11 @@
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
-		return $diferencia;
+		$resultado->fechaIni = $fechaIni;
+		$resultado->fechaFin = $fechaFin;
+		$resultado->diferencia = $diferencia;
+
+		return $resultado;
 	}
 
 	function CO_ConsultarCostosIndirectosReales($idProyecto) {
