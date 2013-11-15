@@ -392,7 +392,7 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
 GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
   var self=this;
-
+	//alert("11111");
   //task editor in popup
   var taskId = taskRow.attr("taskId");
   //console.debug(task);
@@ -421,6 +421,18 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   
   if(task.id_Wbs == null){
 	  selectwbs.val(1);
+	  taskEditor.find("#colchon").text('0');
+  }
+  else{
+	 var paquetes=ge.wbsNodes;
+	  for(var i=0;i<paquetes.length;i++){
+							if (paquetes[i].id==task.id_Wbs){
+								 taskEditor.find("#colchon").text(paquetes[i].colchon/*'ñacañaca'+task.id_Wbs*/);
+								
+							break;
+						}
+		}
+  
   }
     
   //console.log(selectwbs.val());
@@ -434,7 +446,16 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
   taskEditor.find("#progress_cost").val(task.progress_cost ? parseFloat(task.progress_cost) : 0);
   taskEditor.find("#status").attr("status", task.status);
-
+  //console.log(taskEditor.find("#colchon"));
+  //console.log("dddddd");
+  //console.log(ge);
+  //console.log("dddddd");
+  
+  //taskEditor.find("#colchon").text('0'+task.id_Wbs);
+  
+ 
+  
+  
   if (task.startIsMilestone)
     taskEditor.find("#startIsMilestone").attr("checked", true);
   if (task.endIsMilestone)

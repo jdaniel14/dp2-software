@@ -341,16 +341,16 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   //task editor in popup
   var taskId = taskRow.attr("taskId");
   //console.debug(task);
-
+   //alert("3333333");
   //make task editor
   var taskEditor = $.JST.createFromTemplate({}, "TASK_EDITOR");
-
+  console.log(ge);
   taskEditor.find("#name").val(task.name);
   taskEditor.find("#description").val(task.description);
   taskEditor.find("#code").val(task.code);
   taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
   taskEditor.find("#status").attr("status", task.status);
-
+  //taskEditor.find("#colchon").text("abcdni");
   if (task.startIsMilestone)
     taskEditor.find("#startIsMilestone").attr("checked", true);
   if (task.endIsMilestone)
