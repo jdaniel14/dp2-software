@@ -126,6 +126,38 @@ function CR_updateActividad(){
 	echo json_encode(CR_modificar_actividad_BD($actividad));
 }
 
+
+function CR_updateAvanceActividad(){
+	$request = \Slim\Slim::getInstance()->request();
+    $actividad = json_decode($request->getBody());
+
+    echo json_encode(CR_modificar_Avance_Actividad_BD($actividad));
+
+}
+
+function CR_modificar_Avance_Actividad_BD($actividad){
+
+	$sql = "update dp2.ACTIVIDAD set avance=? where id_actividad=?;commit;";
+    //$lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($actividad->avance+0.,$actividad->id+0));
+
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$db=null;
+        return array("me" => "actualizar" . $e->getMessage());
+    }
+    return CR_obtenerRespuestaExito();
+
+
+}
+
+
 function CR_modificar_actividad_BD($actividad){
 
 	$sql = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? where id_actividad=?;commit;";
