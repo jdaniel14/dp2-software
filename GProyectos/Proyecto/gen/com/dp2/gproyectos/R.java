@@ -986,51 +986,58 @@ containing a value of this type.
         public static final int abs__titleDivider=0x7f04001c;
         public static final int abs__up=0x7f04000b;
         public static final int btn=0x7f040033;
-        public static final int btnInicio=0x7f04004d;
+        public static final int btnInicio=0x7f04004e;
+        public static final int btnVerGantt=0x7f04004f;
         public static final int btnVerIndicadores=0x7f04003c;
         public static final int chart=0x7f040038;
+        public static final int cr_btnGuardarCambios=0x7f040050;
+        public static final int cr_webview=0x7f040043;
         public static final int disableHome=0x7f040009;
         public static final int edit_query=0x7f040027;
-        public static final int edtBuscar=0x7f040047;
+        public static final int edtBuscar=0x7f040048;
         public static final int edtDatePicker=0x7f04003b;
-        public static final int edtPassword=0x7f04004c;
-        public static final int edtUser=0x7f04004b;
+        public static final int edtPassword=0x7f04004d;
+        public static final int edtUser=0x7f04004c;
         public static final int historialIndicadoresLayout=0x7f040037;
         public static final int homeAsUp=0x7f040006;
         public static final int imgIcon=0x7f040034;
         public static final int imgLinea=0x7f040035;
         public static final int indicadoresLayout=0x7f040039;
         public static final int itemBackground=0x7f040040;
-        public static final int linContent=0x7f04004f;
+        public static final int linContent=0x7f040056;
         public static final int linearLayout=0x7f04003e;
+        public static final int listActs_act=0x7f040052;
+        public static final int listActs_dur=0x7f040054;
+        public static final int listActs_wbs=0x7f040053;
         public static final int listMode=0x7f040002;
+        public static final int lvActividades=0x7f040051;
         public static final int lvIndicadores=0x7f04003f;
-        public static final int lvProyectos=0x7f040048;
-        public static final int menuGeneralListaProyectos_Logout=0x7f040057;
-        public static final int menuGeneralListaProyectos_VerLeccionesAprendidas=0x7f040056;
-        public static final int menuGeneralListaProyectos_opciones=0x7f040055;
+        public static final int lvProyectos=0x7f040049;
+        public static final int menuGeneralListaProyectos_Logout=0x7f04005e;
+        public static final int menuGeneralListaProyectos_VerLeccionesAprendidas=0x7f04005d;
+        public static final int menuGeneralListaProyectos_opciones=0x7f04005c;
         public static final int normal=0x7f040001;
-        public static final int pull_to_refresh_header=0x7f040050;
-        public static final int pull_to_refresh_image=0x7f040052;
-        public static final int pull_to_refresh_progress=0x7f040051;
-        public static final int pull_to_refresh_text=0x7f040053;
-        public static final int pull_to_refresh_updated_at=0x7f040054;
+        public static final int pull_to_refresh_header=0x7f040057;
+        public static final int pull_to_refresh_image=0x7f040059;
+        public static final int pull_to_refresh_progress=0x7f040058;
+        public static final int pull_to_refresh_text=0x7f04005a;
+        public static final int pull_to_refresh_updated_at=0x7f04005b;
         public static final int showCustom=0x7f040008;
         public static final int showHome=0x7f040005;
         public static final int showTitle=0x7f040007;
-        public static final int spnBuscar=0x7f040046;
+        public static final int spnBuscar=0x7f040047;
         public static final int tabMode=0x7f040003;
-        public static final int txtCabecera=0x7f04004e;
-        public static final int txtCategoria=0x7f040045;
+        public static final int txtCabecera=0x7f040055;
+        public static final int txtCategoria=0x7f040046;
         public static final int txtCostosNombreIndicador=0x7f040041;
         public static final int txtCostosValorIndicador=0x7f040042;
-        public static final int txtEstado=0x7f04004a;
-        public static final int txtJp=0x7f040049;
+        public static final int txtEstado=0x7f04004b;
+        public static final int txtJp=0x7f04004a;
         public static final int txtMensaje=0x7f04003d;
-        public static final int txtNombre=0x7f040044;
+        public static final int txtNombre=0x7f040045;
         public static final int txtSelFecha=0x7f04003a;
         public static final int txtTexto=0x7f040036;
-        public static final int txtTitulo=0x7f040043;
+        public static final int txtTitulo=0x7f040044;
         public static final int useLogo=0x7f040004;
         public static final int wrap_content=0x7f040000;
     }
@@ -1066,19 +1073,22 @@ containing a value of this type.
         public static final int costos_indicadores_layout=0x7f030019;
         public static final int costos_indicadores_lista=0x7f03001a;
         public static final int costos_indicadores_lista_item=0x7f03001b;
-        public static final int general_home_layout=0x7f03001c;
-        public static final int general_home_lecciones_lista_item=0x7f03001d;
-        public static final int general_home_lecciones_lista_layout=0x7f03001e;
-        public static final int general_home_proyectos_lista_item=0x7f03001f;
-        public static final int general_home_proyectos_lista_layout=0x7f030020;
-        public static final int general_login_layout=0x7f030021;
-        public static final int general_splash_layout=0x7f030022;
-        public static final int mensaje_cuerpo_layout=0x7f030023;
-        public static final int pedidosespeciales_popup_barratitulo_layout=0x7f030024;
-        public static final int pull_to_refresh_header=0x7f030025;
-        public static final int sherlock_spinner_dropdown_item=0x7f030026;
-        public static final int sherlock_spinner_item=0x7f030027;
-        public static final int vertical_barratitulo_layout=0x7f030028;
+        public static final int cronograma_gantt=0x7f03001c;
+        public static final int general_home_layout=0x7f03001d;
+        public static final int general_home_lecciones_lista_item=0x7f03001e;
+        public static final int general_home_lecciones_lista_layout=0x7f03001f;
+        public static final int general_home_proyectos_lista_item=0x7f030020;
+        public static final int general_home_proyectos_lista_layout=0x7f030021;
+        public static final int general_login_layout=0x7f030022;
+        public static final int general_splash_layout=0x7f030023;
+        public static final int lista_actividades_x_proyecto=0x7f030024;
+        public static final int lista_actividades_x_proyecto_items=0x7f030025;
+        public static final int mensaje_cuerpo_layout=0x7f030026;
+        public static final int pedidosespeciales_popup_barratitulo_layout=0x7f030027;
+        public static final int pull_to_refresh_header=0x7f030028;
+        public static final int sherlock_spinner_dropdown_item=0x7f030029;
+        public static final int sherlock_spinner_item=0x7f03002a;
+        public static final int vertical_barratitulo_layout=0x7f03002b;
     }
     public static final class menu {
         public static final int menu_general_lista_proyectos=0x7f0c0000;
@@ -1130,6 +1140,9 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f090009;
         public static final int app_name=0x7f09000f;
+        public static final int cronograma_actividad=0x7f09002a;
+        public static final int cronograma_actividad_duration=0x7f09002c;
+        public static final int cronograma_wbs=0x7f09002b;
         public static final int general_home_titulo=0x7f090016;
         public static final int general_login_mayusculas=0x7f090013;
         public static final int general_login_password=0x7f090015;
@@ -2327,7 +2340,7 @@ containing a value of this type.
          */
         public static final int[] SherlockSpinner = {
             0x010100af, 0x01010175, 0x01010176, 0x0101017b,
-            0x01010262, 0x010102ac, 0x010102ad, 0x010103ef
+            0x01010262, 0x010102ac, 0x010102ad, 0x0101041f
         };
         /**
           <p>
