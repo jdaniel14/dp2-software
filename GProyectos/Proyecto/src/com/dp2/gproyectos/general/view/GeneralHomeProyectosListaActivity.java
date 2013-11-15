@@ -3,6 +3,8 @@ package com.dp2.gproyectos.general.view;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -32,6 +34,7 @@ import com.dp2.gproyectos.costos.entities.IndicadorBean;
 import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
 import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
 import com.dp2.gproyectos.costos.view.adapter.IndicadorAdapter;
+import com.dp2.gproyectos.cronograma.view.ListaActividadesXProyecto;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.controller.UsuarioController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
@@ -49,6 +52,7 @@ public class GeneralHomeProyectosListaActivity extends
 	Spinner spnBuscar;
 	EditText edtBuscar;
 	ArrayAdapter<String> busquedaAdapter;
+	int pos;
 	String[] items = new String[] { "Nombre", "Jefe de proyecto", "Estado" };
 	public static int tipoBusqueda;
 	public static boolean primeraCarga = true;
@@ -157,20 +161,57 @@ public class GeneralHomeProyectosListaActivity extends
 			adapter = new ProyectoAdapter(this,
 					R.layout.general_home_proyectos_lista_item, proyectos);
 			lvProyectos.setAdapter(adapter);
+			
+			
+			
 			lvProyectos.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> l, View v, int position,
 						long id) {
 					if (position > 0) {
-						ProyectoBean proyecto = proyectos.get(position-1);
-						Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
-						i.putExtra("idProyecto", proyecto.id);
-						i.putExtra("nombreProyecto", proyecto.nombre);
-						overridePendingTransition(0, 0);
-						startActivity(i);
-						overridePendingTransition(0, 0);
+						
+						/* Modificado por Pancho*/
+						
+						pos = position;
+						AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GeneralHomeProyectosListaActivity.this);
+						
+						dialogBuilder.setTitle("Opciones");
+						dialogBuilder.setMessage("Que desea hacer con esto?");
+						dialogBuilder.setPositiveButton("Indicadores", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								System.out.println("Indicadores");
+								ProyectoBean proyecto = proyectos.get(pos-1);
+								Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
+								i.putExtra("idProyecto", proyecto.id);
+								i.putExtra("nombreProyecto", proyecto.nombre);
+								overridePendingTransition(0, 0);
+								startActivity(i);
+								overridePendingTransition(0, 0);
+							}
+						});
+						
+						dialogBuilder.setNegativeButton("Actividades", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								System.out.println("Actividades");
+								ProyectoBean proyecto = proyectos.get(pos-1);
+								Intent i = new Intent(GeneralHomeProyectosListaActivity.this, ListaActividadesXProyecto.class);
+								i.putExtra("idProyecto", proyecto.id);
+								i.putExtra("nombreProyecto", proyecto.nombre);
+								startActivity(i);
+								
+							}
+						});
+						AlertDialog alertDialog = dialogBuilder.create();
+						alertDialog.show();						
+						
+						/*Fin modificado por Pancho*/
 					}
+					
 				}
 			});
 			
@@ -239,12 +280,15 @@ public class GeneralHomeProyectosListaActivity extends
     			adapter = new ProyectoAdapter(GeneralHomeProyectosListaActivity.this,
     					R.layout.general_home_proyectos_lista_item, proyectos);
     			lvProyectos.setAdapter(adapter);
+
     			lvProyectos.setOnItemClickListener(new OnItemClickListener() {
 
     				@Override
     				public void onItemClick(AdapterView<?> l, View v, int position,
     						long id) {
     					if (position > 0) {
+    						System.out.println("Holaaa 3");
+    						
 	    					ProyectoBean proyecto = proyectos.get(position-1);
 	    					
 	    					Intent i = new Intent(GeneralHomeProyectosListaActivity.this, CostosIndicadoresActivity.class);
@@ -253,7 +297,10 @@ public class GeneralHomeProyectosListaActivity extends
 	    					overridePendingTransition(0, 0);
 	    					startActivity(i);
 	    					overridePendingTransition(0, 0);
+	    					
+	    					System.out.println("Holaaa 4");
     					}
+
     				}
     			});
     		}
@@ -299,7 +346,6 @@ public class GeneralHomeProyectosListaActivity extends
 			break;
 		}
 		return false;
-	}
-	
+	}	
 
 }
