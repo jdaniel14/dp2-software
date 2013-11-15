@@ -22,11 +22,11 @@ $(function(){
 		
 });
 
-
-$(function(){
-  $(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
-});
-
+if (verificaPermisosGrabar(idVista)=='1'){
+	$(function(){
+	  $(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
+	});
+}
 //Funciones para obtener datos de AJAX
 
 
@@ -186,8 +186,9 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 }
 
 function inicializaFechas(a){
-	$('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'dd-mm-yy' });
-	
+	if (verificaPermisosGrabar(idVista)=='1'){
+		$('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'dd-mm-yy' });
+	}
 		
 
 }
@@ -420,8 +421,13 @@ function enviaDatos(obj){
 //Funciones para el uso del sidebar
 
 function iniciarTabla(){
-	$("#btnGrabar").show();
-	$("#btnCancelar").show();
+	if (verificaPermisosGrabar(idVista)=='1'){
+		$("#btnGrabar").show();
+		$("#btnCancelar").show();
+	}else{
+		$("#btnGrabar").hide();
+		$("#btnCancelar").hide();
+	}
 	obtenUnidadMedida();
 	obtenMoneda();
 	$("#numFilas").val(0);

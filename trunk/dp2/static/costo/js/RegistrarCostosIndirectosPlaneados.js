@@ -1,5 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
+var idVista=7;
 var idProyecto=obtenerIdProyecto();
 var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
@@ -41,10 +42,17 @@ var arregloMoneda= new Array(
 									)
 								);
 								
-								
-iniciaProyecto();		
-obtenCostosIndirectos(0);
+$(function(){								
+	if (verificaPermisosVer(idVista)=='1'){
+		iniciaProyecto();		
+		obtenCostosIndirectos(0);
+	}else
+		alert('Usted no tiene los permisos requeridos');
+	
+	if (verificaPermisosEditar(idVista)!='1')
+		$("#btnEditar").hide();
 
+});
 //Funciones para obtener datos de AJAX
 
 
@@ -127,7 +135,7 @@ function agregaDataFila(data, tipo){
 			fila=arreglo[i];
 			//tipo,i,costoIndirecto,idmoneda, nombreMoneda,codmes, nombreMes
 			nombreMes=obtenNombreMes(fila.codMes);
-			agregaFilaconRecursos(tipo,i,fila.costoIndirecto,fila.idMoneda,'Soles',fila.codMes, nombreMes);
+			agregaFilaconRecursos(tipo,i,fila.costoIndirecto,fila.idMoneda,fila.nombreMoneda,fila.codMes, nombreMes);
 			numRecursos=i;
 		}
 	}
@@ -311,10 +319,12 @@ function obtenMonedaSeleccionada(a,moneda){
 //Funciones para grabar
 
 $("#btnGrabar").click(function(){
-
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
-	}
+	if (verificaPermisosEditar(idGrabar)=='1'){
+		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+			grabarRecursos();
+		}
+	}else
+		alert('Usted no tiene los permisos requeridos');
 });
 
 function grabarRecursos(){
@@ -376,24 +386,26 @@ function enviaDatos(obj){
 //Funciones para el uso del sidebar
 
 function cambiaEditar(){
-	$("#btnEditar").hide();
-	$("#btnGrabar").show();
-	$("#btnCancelar").show();	
-	obtenMoneda();
-	limpiatablaIndirectos();
-	obtenCostosIndirectos(1);	
+	if (verificaPermisosEditar(idVista)=='1'){
+		$("#btnEditar").hide();
+		$("#btnGrabar").show();
+		$("#btnCancelar").show();	
+		obtenMoneda();
+		limpiatablaIndirectos();
+		obtenCostosIndirectos(1);	
+	}
 	
 }
 
 
 function cambiaConsultar(){
-	
-	$("#btnEditar").show();
-	$("#btnGrabar").hide();
-	$("#btnCancelar").hide();
-	limpiatablaIndirectos();	
-	 obtenCostosIndirectos(0);	
-
+	if (verificaPermisosVer(idVista)=='1'){
+		$("#btnEditar").show();
+		$("#btnGrabar").hide();
+		$("#btnCancelar").hide();
+		limpiatablaIndirectos();	
+		 obtenCostosIndirectos(0);	
+	}
 }
 
 //Fin de funciones para el uso del sidebar
