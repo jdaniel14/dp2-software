@@ -38,6 +38,11 @@
          <activity android:name="com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity">
         </activity>
         <!-- INICIO ACTIVIDADES MODULO COSTOS -->
+        
+        <!-- Inicio Actividades Modulo Cronograma -->
+        <activity android:name="com.dp2.gproyectos.cronograma.view.ListaActividadesXProyecto" />
+        <activity android:name="com.dp2.gproyectos.cronograma.view.Gantt" />
+        
     </application>
 
 </manifest>

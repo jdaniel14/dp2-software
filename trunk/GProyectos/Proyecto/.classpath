@@ -6,6 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/x64/Desktop/DP2-Android/Otros/android-support-v4.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/XAMPP/xamppfiles/htdocs/dp2/trunk/GProyectos/Otros/android-support-v4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
