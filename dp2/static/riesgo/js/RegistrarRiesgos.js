@@ -311,16 +311,17 @@ function main() {
     $("#btnMaterializar").click(function() {
 
         var data = {
-            idRiesgoProyecto: idArray,
+            idRiesgoProyecto: parseInt(idArray),
             fechaMat: $('#fechaMat').val()
         };
 
         var jsonData = JSON.stringify(data);
         console.log(jsonData);
         $.ajax({
-                type: 'UPDATE',
+                type: 'PUT',
                 url: setMaterializada,
-                dataType: "html",
+                dataType: "json",
+                 data: jsonData,
                 success: function() {
                     
                 },
