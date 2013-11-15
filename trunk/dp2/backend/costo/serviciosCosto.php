@@ -1577,8 +1577,6 @@
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
 
-		//$listaMonedas = CO_obtenerListaMonedasFalsa();
-		
 		return $listaMonedas;
 	}
 
