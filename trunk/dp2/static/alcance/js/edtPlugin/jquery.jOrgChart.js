@@ -62,6 +62,7 @@ if(! $.isFunction($.fn.curCSS)) {
                    .find('*')
                    .filter('.node')
                    .droppable('disable');
+
       });
 
       // Drag stop event handler for nodes
@@ -69,7 +70,8 @@ if(! $.isFunction($.fn.curCSS)) {
 
         /* reload the plugin */
         $(opts.chartElement).children().remove();
-        $this.jOrgChart(opts);      
+        $this.jOrgChart(opts);   
+        repaintUtils();   
       });
     
       // Drop event handler for nodes
