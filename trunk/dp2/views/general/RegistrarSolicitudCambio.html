@@ -13,7 +13,8 @@
     <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+    <link href="../../static/general/css/general.css" rel="stylesheet">
+    <link href="../../static/general/css/validacion.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -35,44 +36,40 @@
 	<div id="myTabContent" class="tab-content">
 		<div class="tab-pane active in" id="registrar">
 		<p>
-		<form class="form-horizontal" role="form" action='' method="POST">
+		<form id="registrarSolicitud" class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 		  	
 		  	<div class="form-group">
 				<label class="col-lg-6 control-label" for="alcance">Alcance:</label>
 				<div class="controls col-lg-6">
-					<input class="form-control" type="checkbox" id="alcance" name="modulo">
+					<input class="form-control checkbox-modulo" type="checkbox" id="alcance" name="modulo">
 				</div>
-			</div>
-
-			<div class="form-group">
+			
 				<label class="col-lg-6 control-label" for="cronograma">Cronograma:</label>
 				<div class="controls col-lg-6">
-					<input class="form-control" type="checkbox" id="cronograma" name="modulo">
+					<input class="form-control checkbox-modulo" type="checkbox" id="cronograma" name="modulo">
 				</div>
-			</div>
 			
-			<div class="form-group">
 				<label class="col-lg-6 control-label" for="costo">Costo:</label>
 				<div class="controls col-lg-6">
-					<input class="form-control" type="checkbox" id="costo" name="modulo">
+					<input class="form-control checkbox-modulo" type="checkbox" id="costo" name="modulo">
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-lg-6 control-label" for="motivo">Descripción:</label>
+				<label class="col-lg-6 control-label" for="descripcion">Descripción:</label>
 				<div class="controls col-lg-6">
 					<textarea rows="4" cols="50" id="descripcion" name="descripcion"></textarea>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-lg-6 control-label" for="motivo">Justificación:</label>
+				<label class="col-lg-6 control-label" for="justificacion">Justificación:</label>
 				<div class="controls col-lg-6">
 					<textarea rows="4" cols="50" id="justificacion" name="justificacion"></textarea>			
 				</div>
 			</div>
-
+			
 			<div class="form-group">
 			  <!-- Button -->
 			  <div class="controls">
@@ -105,7 +102,8 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-  	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+  	<script src="../../static/general/js/jquery.validate.min.js"></script>
+  	<script src="../../static/general/js/bootbox.min.js"></script>
   	<script src="../../static/general/js/RegistrarSolicitudCambio.js"></script>
   	<script src="../../assets/js/header.js"></script>
   </body>
