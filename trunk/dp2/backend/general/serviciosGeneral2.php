@@ -267,6 +267,22 @@ function G_postBorrarMiembroDeProyecto() {
     }
 }
 
+function get_jp( $idProyecto ) {
+	$sql = "SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = :ID AND ID_ROL = 2";
+	try{
+		$db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("ID", $idProyecto);
+        $stmt->execute();
+		if ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $id = $j["ID_EMPLEADO"];
+        }
+        return $id;
+	}catch (PDOException $e) {
+        return null;
+    }
+}
+
 function G_getListarRecDisp() {
 
 
@@ -281,7 +297,7 @@ function G_getListarRecDisp() {
 
         $fecha_Fin = new DateTime($str2);
         $f_fin = $fecha_Fin->format('Y-m-d');
-        $idProyecto=$body->idProyecto;
+        $idProyecto = $body->idProyecto;
 
         /* $sql = "SELECT M.id_empleado as id
           FROM MIEMBROS_EQUIPO M
@@ -289,29 +305,34 @@ function G_getListarRecDisp() {
           AND DATE(NOW()) <= fecha_salida )"; */
         
         //recursos ocupados en el rango de fechas
+		$jefe_proyecto = get_jp($idProyecto);
+
         $sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
                     ACTIVIDAD A,
                     ACTIVIDAD_X_RECURSO AR,
                     RECURSO R,
                     EMPLEADO E
-                    WHERE M.ID_MIEMBROS_EQUIPO=R.ID_MIEMBROS_EQUIPO
-                    AND AR.ID_RECURSO=R.ID_RECURSO
-                    AND AR.ID_ACTIVIDAD=A.ID_ACTIVIDAD
-                    AND R.ID_PROYECTO=M.ID_PROYECTO
-                    AND R.ID_PROYECTO=A.ID_PROYECTO
-                    AND E.ID_EMPLEADO=M.ID_EMPLEADO
-                    AND A.FECHA_PLAN_INICIO>=:FI
-                    AND A.FECHA_PLAN_FIN<=:FF
-                    AND M.id_proyecto!=:IDPROYECTO
+                    WHERE 
+                     M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO
+                    AND AR.ID_RECURSO = R.ID_RECURSO
+                    AND AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD
+                    AND R.ID_PROYECTO = M.ID_PROYECTO
+                    AND R.ID_PROYECTO = A.ID_PROYECTO
+                    AND E.ID_EMPLEADO = M.ID_EMPLEADO
+                    AND A.FECHA_PLAN_INICIO >= :FI
+                    AND A.FECHA_PLAN_FIN <= :FF
                     ";
+                    //E.ID_EMPLEADO !=  :JP
+                    //AND M.id_proyecto!=:IDPROYECTO
                     //AND M.ID_EMPLEADO=(SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = 66 AND ID_ROL=2);
 
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("FI", $f_ini);
         $stmt->bindParam("FF", $f_fin);
-        $stmt->bindParam("IDPROYECTO", $idProyecto);
+        //$stmt->bindParam("JP", $jefe_royecto);
+        //$stmt->bindParam("IDPROYECTO", $idProyecto);
         $stmt->execute();
 
 
@@ -330,7 +351,7 @@ function G_getListarRecDisp() {
 
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $j["id"];
-            if (!array_key_exists($id, $lista_falsa)) {
+            if (!array_key_exists($id, $lista_falsa) && $id != $jefe_proyecto) {
                 $lista[$id] = array("id" => $j["id"],
                     "nom" => $j["nom"],
                     "prof" => $j["prof"]
