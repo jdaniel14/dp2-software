@@ -269,7 +269,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva 
 	var reseForm=reseTotal.toFixed(2);
 	
 	$("#reservaTotal").val(reseForm);
-	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva + porcentajeContingencia*0.01*montoSinReserva);
+	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 	
 	if (indCerrado=="1" || indLineaBase=="1" || indGrabar="0"){
 	
