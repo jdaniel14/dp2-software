@@ -281,12 +281,14 @@ function G_getListarRecDisp() {
 
         $fecha_Fin = new DateTime($str2);
         $f_fin = $fecha_Fin->format('Y-m-d');
+        $idProyecto=$body->idProyecto;
 
         /* $sql = "SELECT M.id_empleado as id
           FROM MIEMBROS_EQUIPO M
           WHERE ( fecha_entrada <= DATE(NOW())
           AND DATE(NOW()) <= fecha_salida )"; */
-
+        
+        //recursos ocupados en el rango de fechas
         $sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
                     ACTIVIDAD A,
@@ -301,12 +303,14 @@ function G_getListarRecDisp() {
                     AND E.ID_EMPLEADO=M.ID_EMPLEADO
                     AND A.FECHA_PLAN_INICIO>=:FI
                     AND A.FECHA_PLAN_FIN<=:FF
+                    AND M.id_proyecto!=:IDPROYECTO
                     ";
 
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("FI", $f_ini);
         $stmt->bindParam("FF", $f_fin);
+        $stmt->bindParam("IDPROYECTO", $idProyecto);
         $stmt->execute();
 
 
@@ -316,6 +320,7 @@ function G_getListarRecDisp() {
             $lista_falsa[$id] = true;
         }
 
+        //todos los rrhh en el repositorio
         $sql = "SELECT E.id_empleado as id, E.nombre_corto as nom, PR.DESCRIPCION as prof
                     FROM EMPLEADO E, PROFESION PR
                     WHERE PR.ID_PROFESION = E.ID_PROFESION";
@@ -331,6 +336,8 @@ function G_getListarRecDisp() {
                 );
             }
         }
+
+        asort($lista);
 
 
         /* $sql="SELECT A.ID_EMPLEADO AS id,A.NOMBRE_CORTO as nom,A.NOMBRE_ROL as rol, 100-A.POR AS porc_libre FROM (
@@ -443,7 +450,7 @@ function G_postListaTodosRecurso() {
 //	          $b = $dife.Days + a;
             if ($b > $num_dias)
                 $b = $num_dias;
-            for ($j = $a; $j < $b; $j++) {
+            for ($j = $a; $j <= $b; $j++) {
                 $lista_empleados[$k]["detalle_dias"][$j] = $proy_emp["ID_ACTIVIDAD"];
             }//for
         }//while
