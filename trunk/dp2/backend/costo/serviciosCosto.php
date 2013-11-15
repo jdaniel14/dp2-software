@@ -312,7 +312,7 @@
 		}
 	}
 
-	function CO_saveCostosIndirectosEstimados() { //servicio 22
+	function CO_saveCostosIndirectosEstimados() { //servicio 22 //COMPLETO
 		$request = \Slim\Slim::getInstance()->request();
 		$objeto = json_decode($request->getBody());
 		if (CO_verificaPermisoServicio(CO_SERVICIO_22, $objeto->idUsuario, $objeto->idProyecto)) {
@@ -339,7 +339,7 @@
 		}
 	}
 
-	function CO_saveCostosIndirectosReales() { //servicio 23
+	function CO_saveCostosIndirectosReales() { //servicio 23 //COMPLETO
 		$request = \Slim\Slim::getInstance()->request();
 		$objeto = json_decode($request->getBody());
 		if (CO_verificaPermisoServicio(CO_SERVICIO_23, $objeto->idUsuario, $objeto->idProyecto)) {		
@@ -350,10 +350,23 @@
 		}
 	}
 
-	function CO_getReservaContingencia($json) {
+	function CO_getReservaContingencia($json) { //servicio 24 //COMPLETO
 		$objeto = json_decode($json);
 			$jsonRespuesta = CO_consultarReservaContingencia($objeto->idProyecto);
 			echo json_encode($jsonRespuesta);
+	}
+
+	function CO_getListaPaquetesCostoReal($json) { //servicio 25 //COMPLETO
+		$proy = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_6, $proy->idUsuario, $proy->idProyecto)) {
+			$listaPaquetes = CO_consultarListaPaquetesCostoReal($proy->idProyecto);
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->lista = $listaPaquetes;
+			
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
 	}
 
 	///////////FOR TESTING ONLY/////////////
@@ -910,20 +923,26 @@
 		A.PORCENTAJE_RESERVA,
 		A.PORCENTAJE_CONTINGENCIA,
 		A.ESTADO,
-		SUM(IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))) PRESUP_SOLES
+		SUM(
+		CASE
+		WHEN C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1 THEN
+		(IFNULL(C.CANTIDADESTIMADA,0)*(IFNULL(D.COSTO_UNITARIO_ESTIMADO,0)*IFNULL(X.CAMBIO_A_SOL,0))) 
+		ELSE 0
+		END
+		) PRESUP_SOLES
 		from 
 		PROYECTO A LEFT JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
 		LEFT JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
 		LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
-		JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+		LEFT JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		WHERE
 		((B.ID_PROYECTO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL
 		)
 		OR
 		(DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
-		AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1))
+		AND D.ESTADO<>'ELIMINADO' ))
 		AND
-		A.ID_PROYECTO= :idProyecto
+		A.ID_PROYECTO=:idProyecto
 		GROUP BY
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
@@ -941,13 +960,32 @@
 		PROYECTO A JOIN RECURSO B ON A.ID_PROYECTO=B.ID_PROYECTO
 		JOIN CAMBIO_HISTORICO X ON B.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 		WHERE
-		A.ID_PROYECTO= :idProyecto AND B.ESTADO='ACTIVO' AND B.COSTO_FIJO_DIARIO_ESTIMADO>0
+		A.ID_PROYECTO=:idProyecto AND B.ESTADO='ACTIVO' AND B.COSTO_FIJO_DIARIO_ESTIMADO>0
 		AND DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		GROUP BY
 		A.ID_PROYECTO,
 		A.NOMBRE_PROYECTO,
 		A.PORCENTAJE_RESERVA,
 		A.ESTADO
+		UNION /*COSTO INDIRECTO*/
+		SELECT
+		Z.ID_PROYECTO,
+		Z.NOMBRE_PROYECTO,
+		Z.PORCENTAJE_RESERVA,
+		Z.PORCENTAJE_CONTINGENCIA,
+		Z.ESTADO,
+		SUM(IFNULL(A.costo_ESTIMADO*B.CAMBIO_A_SOL,0)) PRESUP_SOLES
+		FROM
+		COSTO_INDIRECTO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		JOIN PROYECTO Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+		WHERE
+		A.ID_PROYECTO=:idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+		GROUP BY
+		Z.ID_PROYECTO,
+		Z.NOMBRE_PROYECTO,
+		Z.PORCENTAJE_RESERVA,
+		Z.PORCENTAJE_CONTINGENCIA,
+		Z.ESTADO
 		) H
 		GROUP BY
 		H.ID_PROYECTO,
@@ -1569,15 +1607,16 @@
 		$respuesta = null;
 		try {
 			$sql = "UPDATE PROYECTO
-			SET PORCENTAJE_RESERVA= :porcReserva, PORCENTAJE_CONTINGENCIA= :porcContingencia
+			SET PORCENTAJE_RESERVA=:porcReserva
 			WHERE
-			ID_PROYECTO= :idProyecto";
+			ID_PROYECTO=:idProyecto;
+			COMMIT;";
 
 			$db = getConnection();
         	$stmt = $db->prepare($sql);
         	$stmt->bindParam("porcReserva", $obj->porcReserva);
         	$stmt->bindParam("idProyecto", $obj->idProyecto);
-        	$stmt->bindParam("porcContingencia", $obj->porcContingencia);
+        	//$stmt->bindParam("porcContingencia", $obj->porcContingencia);
         	$stmt->execute();
         	$db = null;
 
@@ -2101,10 +2140,12 @@
 		$sql = "SELECT
 		A.id_proyecto,
 		A.codmes,
-		A.ID_CAMBIO_MONEDA,
+		C.ID_CAMBIO_MONEDA,
+		C.DESCRIPCION,
 		IFNULL(A.costo_estimado*B.CAMBIO_A_SOL,0) COSTO_INDIRECTO_ESTIMADO_SOLES
 		FROM 
 		COSTO_INDIRECTO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		JOIN CAMBIO_MONEDA C ON A.ID_CAMBIO_MONEDA=C.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
 
@@ -2122,6 +2163,7 @@
         		$cInd->codMes = $p["codmes"];
     			$cInd->idMoneda =  $p["ID_CAMBIO_MONEDA"];
     			$cInd->costoIndirecto =  $p["COSTO_INDIRECTO_ESTIMADO_SOLES"];
+    			$cInd->nombreMoneda = $p["DESCRIPCION"];
     			array_push($listaCI, $cInd);
 			}
 		} catch(PDOException $e) {
@@ -2212,10 +2254,12 @@
 		$sql = "SELECT
 		A.id_proyecto,
 		A.codmes,
-		A.ID_CAMBIO_MONEDA,
+		C.ID_CAMBIO_MONEDA,
+		C.DESCRIPCION,
 		IFNULL(A.costo_REAL*B.CAMBIO_A_SOL,0) COSTO_INDIRECTO_REAL_SOLES
 		FROM 
 		COSTO_INDIRECTO A JOIN CAMBIO_HISTORICO B ON A.ID_CAMBIO_MONEDA=B.ID_CAMBIO_MONEDA
+		JOIN CAMBIO_MONEDA C ON A.ID_CAMBIO_MONEDA=C.ID_CAMBIO_MONEDA
 		WHERE
 		A.ID_PROYECTO= :idProyecto AND DATE_FORMAT(B.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d');";
 
@@ -2233,6 +2277,7 @@
         		$cInd->codMes = $p["codmes"];
     			$cInd->idMoneda =  $p["ID_CAMBIO_MONEDA"];
     			$cInd->costoIndirecto =  $p["COSTO_INDIRECTO_REAL_SOLES"];
+    			$cInd->nombreMoneda = $p["DESCRIPCION"];
     			array_push($listaCI, $cInd);
 			}
 		} catch(PDOException $e) {
@@ -2462,6 +2507,119 @@
 		}
 		
 		return $reservaContingencia;
+	}
+
+	function CO_consultarListaPaquetesCostoReal($idProyecto) { //COMPLETO
+		//obtener paquete raíz
+		$sql = "SELECT
+		A.ID_PROYECTO,
+		Y.ID_PAQUETE_TRABAJO,
+		Y.NOMBRE NOMBRE_PAQUETE,
+		0 as COSTO_PAQUETE_SOLES
+		from 
+		PROYECTO A 
+		JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+		JOIN PAQUETE_TRABAJO Y ON Z.ID_EDT=Y.ID_EDT
+		WHERE
+		Y.ID_COMPONENTE_PADRE IS NULL 
+		AND
+		A.ID_PROYECTO= :idProyecto AND Z.ID_ESTADO<>4
+		GROUP BY
+		A.ID_PROYECTO,
+		Y.ID_PAQUETE_TRABAJO,
+		Y.NOMBRE;";
+
+		$paqueteRaiz = null;
+		$listaPaquetes = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+												//id paqute, nombre paquete, lista de paquetes hijo
+				$paqueteRaiz = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+			}
+
+			if ($paqueteRaiz != null) {
+				CO_obtenerPaquetesHijo($paqueteRaiz);
+				$jsonRespuesta = new stdClass();
+				$jsonRespuesta->raiz = $paqueteRaiz;
+				//echo 'aaaa';
+				$paqueteRaiz->sumarCostosPaquete();
+				array_push($listaPaquetes, $paqueteRaiz);
+			}
+
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		//se llamara una funcion que devuelve data falsa por mientras.		
+		//$listaPaquetes = CO_obtenerListaPaquetesFalsa();
+		
+		return $listaPaquetes;
+	}
+
+	function CO_obtenerPaquetesHijoCostoReal(&$paquete) {
+		if ($paquete != null) {
+
+			$sql = "SELECT
+			A.ID_PROYECTO,
+			Y.ID_PAQUETE_TRABAJO,
+			Y.NOMBRE NOMBRE_PAQUETE,
+			SUM(CASE
+			WHEN B.ID_PAQUETE_TRABAJO IS NULL OR C.ID_ACTIVIDAD IS NULL OR D.ID_RECURSO IS NULL OR X.ID_CAMBIO_MONEDA IS NULL THEN 0
+			WHEN B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1  AND Z.ID_ESTADO<>4 AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0
+				THEN IFNULL(C.CANTIDADREAL,0)*(IFNULL(C.COSTO_UNITARIO_REAL*CAMBIO_A_SOL,0))
+			ELSE 0	
+			END
+			) COSTO_PAQUETE_SOLES
+			from 
+			PROYECTO A 
+			JOIN EDT Z ON A.ID_PROYECTO=Z.ID_PROYECTO
+			JOIN PAQUETE_TRABAJO Y ON Z.ID_EDT=Y.ID_EDT
+			LEFT JOIN ACTIVIDAD B ON Y.ID_PAQUETE_TRABAJO=B.ID_PAQUETE_TRABAJO
+			LEFT JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+			LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+			LEFT JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+			WHERE
+			Y.ID_COMPONENTE_PADRE= :idProyecto AND (X.FECHA IS NULL OR DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d'))
+			GROUP BY
+			A.ID_PROYECTO,
+			Y.ID_PAQUETE_TRABAJO,
+			Y.NOMBRE;";
+
+			$listaPaquetesHijo = array();
+			try {
+				$db = getConnection();
+	        	$stmt = $db->prepare($sql);
+	        	$stmt->bindParam("idPaquete", $paquete->idPaquete);
+	        	$stmt->execute();
+	        	$db = null;
+	        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+													//id paqute, nombre paquete, lista de paquetes hijo
+					$paqueteHijo = new CO_Paquete($p["ID_PAQUETE_TRABAJO"], $p["NOMBRE_PAQUETE"], $p["COSTO_PAQUETE_SOLES"], null);
+					array_push($listaPaquetesHijo, $paqueteHijo);
+				}
+
+				$paquete->listaPaquetesHijo = $listaPaquetesHijo;
+
+			} catch(PDOException $e) {
+				$respuesta = CO_crearRespuesta(-1, $e->getMessage());
+				$listaPaquetes = null;
+				//echo json_encode($respuesta);
+				return;
+			}
+
+			//echo 'paquete <' . $paquete->idPaquete . '>';
+			//echo sizeof($paquete->listaPaquetesHijo);
+			foreach ($paquete->listaPaquetesHijo as $hijo) {
+				CO_obtenerPaquetesHijoCostoReal($hijo);
+			}
+
+			return;
+		}
+		return;
 	}
 
 	//RESPUESTAS
