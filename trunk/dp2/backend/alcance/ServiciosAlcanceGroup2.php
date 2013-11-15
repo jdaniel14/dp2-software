@@ -4,7 +4,52 @@
   include_once '../backend/conexion.php';
    
   //MOSTRAR EDT ===============================================================================================================
-  
+
+function reconstruirEdt(){
+  $request = \Slim\Slim::getInstance()->request();
+  $edt = json_decode($request->getBody());
+
+  //eliminar el edt anteiror
+   try{   
+      $con = getConnection();
+      $con->exec("set foreign_key_checks = false");
+      //obtener id del paquete inicial
+      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
+      $pstmt->execute(array($edt->{"idproyecto"}));
+      $res =$pstmt->fetch(PDO::FETCH_ASSOC);
+      $idPIni = $res["id_paquete_trabajo_inicial"];
+      $idEdt = $res["id_edt"];
+      $idEstado = $res["id_estado"];
+      //eliminar los hijos
+      eliminarHijos($idPIni);
+      //eliminar el primer nodo
+      $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo = ?");
+      $pstmt->execute(array($idPIni));
+
+       //insertar el nuevo edt
+      //insertar paquete padre
+      guardoPaquete($edt->{"title"},$edt->{"descripcion"},$idEstado,null,$idEdt,null,"1.0",$edt->{"dias"});
+
+      //obtener el id recien insertado
+      $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_estado= ? AND id_edt= ? AND
+          id_componente_padre is null");
+      $pstmt->execute(array($idEstado,$idEdt));
+      $idPaqueteInicial= $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo"];
+       
+      //Modifico el edt, pasando el id_paquete_trabajo_inicial
+      $pstmt= $con->prepare("UPDATE EDT SET id_paquete_trabajo_inicial= ? WHERE id_proyecto= ?");
+      $pstmt->execute(array($idPaqueteInicial,$edt->{"idproyecto"}));
+      guardarHijos($edt->{"nodos"},$idEstado,null,$idEdt,"1.0",$idPaqueteInicial);
+
+      $con->exec("set foreign_key_checks = true");
+      echo '{"me" : "Modifico bien"}';   
+     }
+     catch (PDOException $e) {
+      echo '{"me" : "Modifico mal"}';
+      echo json_encode(array("me" => $e->getMessage()));
+     }
+}
+
 function proyectoExiste($id){
    try {
    	$con = getConnection();
@@ -87,6 +132,7 @@ function getEdt(){
   function edtExiste($id){  
    try {
    	$con = getConnection();
+    $con->exec("set foreign_key_checks = false");
    	$pstmt= $con->prepare("SELECT * FROM EDT WHERE id_edt= ?");
    	$pstmt->execute(array($id));
    	$idPIni = $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo_inicial"];
