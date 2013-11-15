@@ -55,6 +55,7 @@ function validCampos1() {
         var significado = $($("input.significado1")[i]).val();
         var puntajeMax = $($("input.puntajeMax")[i]).val();
         var puntajeMin = $($("input.puntajeMin")[i]).val();
+
         if (prioridad === null || prioridad.length === 0 || significado === null || significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || puntajeMin === null || puntajeMin.length === 0) {
             //ALERTAR
             valor = "vacio";
@@ -66,7 +67,10 @@ function validCampos1() {
         i++;
 
     });
+  
     if (valor === "vacio")
+        return false;
+     if (valor === "menor")
         return false;
     else
         return true;
@@ -586,8 +590,8 @@ function leerNivelProbabilidad1(impactos) {
         idProyecto: idProyectoLocal
     };
     var jsonData = JSON.stringify(data);
-    var datos = leerMatriz();
-
+    var datos = leerMatrizPositivo();
+    
     var data = {
         idProyecto: idProyectoLocal
     };
@@ -595,7 +599,7 @@ function leerNivelProbabilidad1(impactos) {
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatriz' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizPositivo' + '/' + data.idProyecto,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(datos) {
@@ -615,7 +619,7 @@ function leerNivelProbabilidad1(impactos) {
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td align=\"center\" class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\"><b>" + datos[i][j]['valorMult'] + "</b></td>");
+                            fil = $("<td align=\"center\" class=\"matriz1\" id=\"pos" + i + datos[i][j]['valorMult'] + "\"><b>" + datos[i][j]['arrayRiesgos'] + "</b></td>");
                             $(fila).append(fil);
 
                         }
@@ -641,7 +645,7 @@ function leerNivelProbabilidad2(impactos) {
         idProyecto: idProyectoLocal
     };
     var jsonData = JSON.stringify(data);
-    var datos = leerMatriz();
+    var datos = leerMatrizNegativo();
 
     var data = {
         idProyecto: idProyectoLocal
@@ -650,7 +654,7 @@ function leerNivelProbabilidad2(impactos) {
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatriz' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizNegativo' + '/' + data.idProyecto,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(datos) {
@@ -670,7 +674,7 @@ function leerNivelProbabilidad2(impactos) {
                         $(fila).append(opt);
                         for (var j = 1; j < datos[i].length; j++) {
 
-                            fil = $("<td align=\"center\" class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\"><b>" + datos[i][j]['valorMult'] + "</b></td>");
+                            fil = $("<td align=\"center\" class=\"matriz2\" id=\"neg" + i + datos[i][j]['valorMult'] + "\"><b>" + datos[i][j]['arrayRiesgos'] + "</b></td>");
                             $(fila).append(fil);
 
                         }
@@ -905,7 +909,7 @@ function  leerEquipo() {
 
 }
 
-function leerMatriz() {
+function leerMatrizPositivo() {
 
     // var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}]]');
     //var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
@@ -914,14 +918,41 @@ function leerMatriz() {
         idProyecto: idProyectoLocal
     };
     var jsonData = JSON.stringify(data);
+    
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatriz' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizPositivo' + '/' + data.idProyecto,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
+           console.log(data);
+            return data;
+        }
+    });
 
+
+}
+
+
+function leerMatrizNegativo() {
+
+    // var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}]]');
+    //var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
+
+    var data = {
+        idProyecto: idProyectoLocal
+    };
+    var jsonData = JSON.stringify(data);
+    
+
+    $.ajax({
+        type: 'GET',
+        url: '../../api/R_crearMatrizNegativo' + '/' + data.idProyecto,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+           console.log(data);
             return data;
         }
     });
