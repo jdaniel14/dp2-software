@@ -1012,6 +1012,28 @@
     	}     
     }
 
+   function R_updateMaterializacion(){
+        
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion
+        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        var_dump($riesgo);
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoProyecto);
+            $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
+            $stmt->execute();
+            $db = null;
+            echo json_encode('Se materializo el riesgo');
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+                //'{"error":{"text":'. $e->getMessage() .'}}';
+        }
+
+    }
+    
     function R_getCantidadDiasAproximadoxPaquete($json){  
         $var = json_decode($json);    
         $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo";
