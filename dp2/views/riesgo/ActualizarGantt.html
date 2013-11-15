@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+    
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+        <title>Materializar el Riesgo</title>
+        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div id="header"></div>
+
+        <div class="container">
+            <div class="h1-title">
+                <h3>Actualizar Datos del Gantt</h3>
+                <h4>Paquete de EDT</h4>
+            </div>
+            <div class="form-horizontal">
+                <input type="hidden" class="form-control" id="idRiesgoM">
+                <div class="form-group col-lg-12">
+                    <div class="col-lg-6">
+                        <label class="col-lg-4 control-label">Nombre de la actividad</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" id="nuevoNombre" placeholder="Ingrese un nuevo nombre de la actividad" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="col-lg-4 control-label">Escoga una actividad del paquete</label>
+                        <div class="col-lg-8">
+                            <select class="form-control" id="listaActividades">
+                                <option value="0" disabled selected>Escoge una actividad</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12">
+                    <div class="col-lg-6">
+                        <label class="col-lg-4 control-label">Cantidad de dias de la actividad</label>
+                        <div class="col-lg-8">
+                            <input type="number" step="positive" class="form-control" id="diasActuales" disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="col-lg-4 control-label">Nueva cantidad de dias de la actividad</label>
+                        <div class="col-lg-8">
+                            <input type="number" step="positive" class="form-control" id="nuevosDias" placeholder="Ingrese la nueva duración de la actividad">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 pull-right">
+                <button class="btn btn-success" id="btnGuardar" data-toggle="modal" href="#confirmarCambios" >Guardar Cambios</button>
+            </div>
+            <!-- <div class="col-lg-2 pull-right">
+                <button class="btn btn-primary " id="btnAtras">Cerrar</button>
+            </div> -->
+
+            <div id="confirmarCambios" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Confirmación de Cambios</h4>
+                        </div>
+                        <div class="modal-body titulo-tabla">
+                            <label class="col-lg-12 control-label">¿Esta seguro que desea modificar esta actividad?</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="btnConfirmar">Confirmar</button>
+                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+
+        <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+        <script src="../../bootstrap/js/bootstrap.min.js"></script>
+        <script src="../../static/riesgo/js/modificarGantt.js"></script>
+        <script src="../../assets/js/header.js"></script>
+    </body>
+</html>
