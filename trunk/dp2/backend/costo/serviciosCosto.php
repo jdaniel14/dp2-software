@@ -2243,8 +2243,40 @@
 	}
 
 	function CO_guardarCIE($elemento,$idProyecto) {
+		$sql = "SELECT
+		ID_PROYECTO,
+		CODMES,
+		COSTO_ESTIMADO,
+		ID_CAMBIO_MONEDA
+		FROM
+		COSTO_INDIRECTO
+		WHERE
+		ID_PROYECTO= :idProyecto AND CODMES= :codMes;";
 
-		
+		$lista = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+    		$stmt->bindParam("codMes", $elemento->codMes);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        			$obj = new stdClass();
+        			$obj->codMes = $p["CODMES"];
+					array_push($lista, $obj);
+			}
+		} catch(PDOException $e) {
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		if (sizeof($lista) > 0) {
+			CO_actualizarCIE($elemento, $idProyecto);
+
+		} else {
+			CO_insertarCIE($elemento, $idProyecto);
+		}
 	}
 
 	function CO_insertarCIE($elemento, $idProyecto) {
@@ -2292,6 +2324,43 @@
 	}
 
 	function CO_guardarCIR($elemento,$idProyecto) {
+		$sql = "SELECT
+		ID_PROYECTO,
+		CODMES,
+		COSTO_REAL,
+		ID_CAMBIO_MONEDA
+		FROM
+		COSTO_INDIRECTO
+		WHERE
+		ID_PROYECTO= :idProyecto AND CODMES=:codMes;";
+
+		$lista = array();
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+    		$stmt->bindParam("codMes", $elemento->codMes);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+        			$obj = new stdClass();
+        			$obj->codMes = $p["CODMES"];
+					array_push($lista, $obj);
+			}
+		} catch(PDOException $e) {
+        	return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		if (sizeof($lista) > 0) {
+			CO_actualizarCIR($elemento, $idProyecto);
+
+		} else {
+			CO_insertarCIR($elemento, $idProyecto);
+		}
+	}
+
+	function CO_insertarCIR($elemento,$idProyecto) {
 		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_real,id_cambio_moneda)
 		VALUES (:idProyecto, :codmes, :costoIndirecto, :idMoneda);
 		COMMIT;";
@@ -2302,6 +2371,22 @@
     	$stmt->bindParam("codMes", $elemento->codMes);
     	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
 		$stmt->bindParam("idMoneda", $elemento->idMoneda);
+    	$stmt->execute();
+    	$db = null;
+	}
+
+	function CO_actualizarCIR($elemento, $idProyecto) {
+		$sql = "UPDATE COSTO_INDIRECTO
+		SET COSTO_REAL= :costoIndirecto
+		WHERE
+		ID_PROYECTO= :idProyecto AND CODMES= :codMes;
+		COMMIT;";
+
+		$db = getConnection();
+    	$stmt = $db->prepare($sql);
+    	$stmt->bindParam("idProyecto", $idProyecto);
+    	$stmt->bindParam("codMes", $elemento->codMes);
+    	$stmt->bindParam("costoIndirecto", $elemento->costoIndirecto);
     	$stmt->execute();
     	$db = null;
 	}
