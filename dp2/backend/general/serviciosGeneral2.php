@@ -45,29 +45,31 @@ function G_getUsuario() {
     }
 }
 
-function G_getRol($id) {
-    /*$request = \Slim\Slim::getInstance()->request();
-    $acta = json_decode($request->getBody());
-    $sql = "SELECT e.nombre_corto,e.id_empleado
-                        FROM SEGURIDAD s, EMPLEADO e 
-                        WHERE s.user=:p_user
-                        and s.password=:p_pass
-                        and s.id_empleado=e.id_empleado";
+function G_getRol() {
+    $request = \Slim\Slim::getInstance()->request();
+    $para = json_decode($request->getBody());
+
+    $sql = "SELECT M.ID_ROL
+            FROM MIEMBROS_EQUIPO M
+            WHERE M.ID_PROYECTO=:p_pro
+            AND M.ID_EMPLEADO=:p_user
+            limit 1";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("p_user", $acta->p_user);
-        $stmt->bindParam("p_pass", $acta->p_pass);
+        $stmt->bindParam("p_pro", $para->idProyecto);
+        $stmt->bindParam("p_user", $para->idUsuario);
         $stmt->execute();
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
-        $usuario = array("nom_user" => $p["nombre_corto"],
-            "id_user" => $p["id_empleado"]);
+
+        $rol = $p["ID_ROL"];
         $db = null;
-        echo json_encode(array("me" => $usuario));
+        echo json_encode(array("me" => $rol));
+
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
-    }*/
-    echo json_encode(array("me" => 2));
+    }
+    
 }
 
 function G_postRegistrarLeccionAprendida() {
