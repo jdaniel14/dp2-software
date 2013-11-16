@@ -34,10 +34,26 @@ function iniciaProyectos(){
 				var nombreProyecto = auxtd[1].innerHTML;		
 				localStorage.setItem("idProyecto",idProyecto);
 				localStorage.setItem("nombreProyecto",nombreProyecto);
+				seteaRol();
 				$(location).attr('href','MenuProyecto.html');
-			});			
+				
+			});		
         }
 	});
+}
+
+function seteaRol (){
+	alert(localStorage.getItem("idProyecto"));
+	var coso=localStorage.getItem("idProyecto");
+	$.ajax({
+		type: 'GET',
+		url: "../../api/G_obtenerRolProyecto/" + coso,
+		async: false,
+		dataType: "json", 
+		success: function(data){
+			localStorage.setItem("idRol",data.me);
+		}
+	});		
 }
 
 function agregaDataFila(data){
@@ -55,6 +71,7 @@ function agregaDataFila(data){
 			var idProyecto = auxtd[0].innerHTML;
 			var nombreProyecto = auxtd[1].innerHTML;
 			//alert(idProyecto + " ola k ase");
+
 			localStorage.setItem("idProyecto",idProyecto);
 			localStorage.setItem("nombreProyecto",nombreProyecto);
 		});
@@ -97,6 +114,7 @@ function establecerLineaBaseP(idProyecto) {
         type: "GET",        
         url: establecerLineaBase + idProyecto,
         dataType: "json",
+        async: true,
         success: function (data) {
             $(location).attr('href','ListaProyectos.html');
         }
