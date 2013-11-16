@@ -13,6 +13,9 @@ $(function(){
 	if (verificaPermisosGrabar(idVista)!='1'){
 		$("#btnGrabar").hide();	
 		$("#btnCancelar").hide();	
+	}else{
+		$("#btnGrabar").show();	
+		$("#btnCancelar").show();	
 	}
 	
 	if (verificaPermisosVer(idVista)=='1'){
@@ -95,7 +98,7 @@ function agregarDataProyecto(proyecto){
 		var porcentajeReserva = proyecto.porcentajeReserva;
 		indicadorCerrado = proyecto.indicadorCerrado;
 		indicadorLineaBase = proyecto.indicadorLineaBase
-		if (indicadorCerrado!="1" || indicadorLineaBase!="1"){
+		if (indicadorCerrado=="1" || indicadorLineaBase=="1"){
 			$("#btnGrabar").hide();	
 			$("#btnCancelar").hide();	
 		}
