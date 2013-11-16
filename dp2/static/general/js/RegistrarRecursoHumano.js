@@ -24,7 +24,7 @@ function cargarComboProfesionRecurso(){
 }
 
 $("#btnGrabar").click(function(){
-	if ($("#aprobarSolicitud").valid()) {
+	if ($("#registrarRecurso").valid()) {
 		bootbox.dialog({
 		  message: "¿Estás seguro que deseas guardar los cambios realizados?",
 		  title: "Confirmación",
@@ -102,3 +102,8 @@ function validacion() {
 		}
 	  });
 }
+
+//Se implementa la regla "lettersonly" para validar que se ingresen solo letras
+jQuery.validator.addMethod("lettersonly", function(value, element) {
+  return this.optional(element) || /^[a-z]+$/i.test(value);
+}, "Letters only please");
