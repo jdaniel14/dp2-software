@@ -295,7 +295,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva 
 	$("#reservaTotal").val(reseForm);
 	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 	
-	if (indCerrado=="1" || indLineaBase=="1" || indGrabar="0"){
+	if (indCerrado=="1" || indLineaBase=="1" || indGrabar=="0"){
 	
 		$("#inputReserva").attr('disabled', 'disabled');
 		$("#inputReserva").attr('readOnly', 'readOnly');

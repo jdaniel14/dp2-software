@@ -11,11 +11,35 @@ $(function(){
 		iniciaProyecto();		
 		iniciaPaquetes();
 		obtenRecursos();
+		obtenCostoIndirectoTotal();
 	}else
 		alert('Usted no tiene los permisos requeridos');
 
 });
 
+function obtenCostoIndirectoTotal(){
+	
+	var obj ={
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerCostoIndirectoTotalReal/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:ingresaCostoIndirectoTotal	
+
+	});	
+	
+
+}
+function ingresaCostoIndirectoTotal(data){
+	if (!data) return;
+	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Soles");
+	
+}
 
 //Funciones para obtener datos de AJAX
 
