@@ -855,6 +855,16 @@ function getEdt(){
     			array_push($ar_Estado,$hijo2);
     		}
     	
+    		//Obtener el arreglo de categoria
+    		$pstmt= $con->prepare("SELECT id_categoria_requisito,descripcion FROM CATEGORIA_REQUISITO");
+    		$pstmt->execute(array());
+    		$ar_Categoria=array();
+    		//creo el arreglo de estados para ensenar un combobox
+    		while ($ar3 = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    			$hijo3 = new Estado($ar3["id_categoria_requisito"],$ar3["descripcion"]);
+    			array_push($ar_Categoria,$hijo3);
+    		}
+    		
     		//Busco el id del ER
     		$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ? ");
     		$pstmt->execute(array($idProyecto));
@@ -862,7 +872,7 @@ function getEdt(){
     		 
     		//Busco todos los requisitos que existen con el id del ER obtenido antes
     		$pstmt= $con->prepare("SELECT a.id_requisito,a.descripcion,a.fecha_termino,a.solicitud,a.cargo,a.fundamento_incorporacion,
-    			a.id_prioridad_requisito,a.id_estado_requisito,a.entregable,a.criterio_aceptacion,a.id_miembros_equipo
+    			a.id_prioridad_requisito,a.id_estado_requisito,a.entregable,a.criterio_aceptacion,a.id_miembros_equipo,a.id_categoria_requisito
     			FROM REQUISITO a WHERE a.id_especificacion_requisitos= ? and a.id_estado_requisito!=2");
     		$pstmt->execute(array($idER));
     		$ar_Requisitos=array();
@@ -891,13 +901,14 @@ function getEdt(){
     			$hijo = new Requisito($listaRequisito["id_requisito"],$desc,
     					$sol,$car,$fun,$listaRequisito["id_prioridad_requisito"],
     					$listaRequisito["id_estado_requisito"],$cri,$listaRequisito["id_miembros_equipo"],
-    					$nombre,$apellido);
+    					$nombre,$apellido,$listaRequisito["id_categoria_requisito"]);
     			array_push($ar_Requisitos,$hijo);
     		}
     		 
     		//Formo lo que voy a pasar al front
     		$matriz= [ "ar_prioridad"=> $ar_Prioridad,
     		"ar_estado"=> $ar_Estado,
+    		"ar_categoria"=>$ar_Categoria,
     		"requisitos"=>$ar_Requisitos
     		];
     		 
@@ -917,9 +928,9 @@ function getEdt(){
     	$con = getConnection();
     
     	$pstmt= $con->prepare("UPDATE REQUISITO SET descripcion=?,solicitud=?,cargo=?,fundamento_incorporacion=?,
-    			id_prioridad_requisito=?,id_estado_requisito=?,criterio_aceptacion=?,id_miembros_equipo=? where id_requisito=?");
+    			id_prioridad_requisito=?,id_estado_requisito=?,criterio_aceptacion=?,id_miembros_equipo=?, id_categoria_requisito=? where id_requisito=?");
     	$pstmt->execute(array($data->{"descripcion"},$data->{"solicitado"},$data->{"cargo"},$data->{"fundamento"},
-    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$idRequisito));
+    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$data->{"idcategoriaR"},$idRequisito));
     
     	echo $request->getBody();
       }
