@@ -18,4 +18,5 @@ public class ServerConstants {
 	
 	//Cronograma
 	public static String CronogramaGetActividades = "CR_getListaActividad";
+	public static String CronogramaGuardarActividades = "CR_updateAvanceActividad";
 }
