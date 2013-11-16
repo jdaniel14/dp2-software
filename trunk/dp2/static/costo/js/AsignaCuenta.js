@@ -5,9 +5,11 @@ var idProyecto = obtenerIdProyecto();//localStorage.idProyecto;
 var idUsuario=obtenerIdUsuario();
 var nAct = 0;
 var asientosContables = [];
-
+var indicadorCerrado;
+var indicadorLineaBase;
 
 $(function(){
+	
 	if (verificaPermisosGrabar(idVista)!='1'){
 		$("#btnGrabar").hide();	
 		$("#btnCancelar").hide();	
@@ -91,6 +93,12 @@ function agregarDataProyecto(proyecto){
 		var nombreProyecto = proyecto.nombre;
 		var montoSinReserva = proyecto.presupuestoTotal;
 		var porcentajeReserva = proyecto.porcentajeReserva;
+		indicadorCerrado = proyecto.indicadorCerrado;
+		indicadorLineaBase = proyecto.indicadorLineaBase
+		if (indicadorCerrado!="1" || indicadorLineaBase!="1"){
+			$("#btnGrabar").hide();	
+			$("#btnCancelar").hide();	
+		}
 		$("#nombreProyecto").html(nombreProyecto);
 		$("#inputMontoSinReserva").val(montoSinReserva);
 		$("#inputReserva").val(porcentajeReserva);
