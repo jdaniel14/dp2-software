@@ -94,24 +94,13 @@ function verificaLineaBase() {
 		url: verificarLineaBase + localStorage.getItem("idProyecto"),
 		dataType: "json", // data type of response
         success: function(data){
-        	console.log(data);
-			$("#btnAprobar").click(function(){
-				if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
-					if (confirm("¿Está seguro que desea aprobar la solicitud de cambio?")){
-						flag = 1;
-						apruebaSolicitud(flag);
-					}
-				} else { alert("Es necesario establecer una línea Base para aprobar la solicitud de cambio"); }
-			});
-			
-			$("#btnRechazar").click(function(){
-				if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
-					if (confirm("¿Está seguro que desea rechazar la solicitud de cambio?")){
-						flag = 0;
-						apruebaSolicitud(flag);
-					}
-				} else { alert("Es necesario establecer una línea Base para rechazar la solicitud de cambio"); }
-			});
+        	if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
+        		$("#btnAprobar").removeClass('disabled');
+				$("#btnRechazar").removeClass('disabled');
+			} else {
+				$("#btnAprobar").addClass('disabled');
+				$("#btnRechazar").addClass('disabled');
+			}	
 		}
 	});
 }
@@ -136,3 +125,51 @@ function apruebaSolicitud(flag){
         }
     });
 }
+
+$("#btnAprobar").click(function(){
+	bootbox.dialog({
+      message: "¿Estás seguro que deseas aprobar la solicitud de cambio?",
+      title: "Confirmación",
+      buttons: {
+        success: {
+          label: "Sí",
+          className: "btn-success",
+          callback: function() {
+          	flag = 1;
+            apruebaSolicitud(flag);
+          }
+        },
+        danger: {
+          label: "No",
+          className: "btn-danger",
+          callback: function() {
+             //cierra el modal
+          }
+        },
+      }
+    });
+});
+
+$("#btnRechazar").click(function(){
+	bootbox.dialog({
+      message: "¿Estás seguro que deseas rechazar la solicitud de cambio?",
+      title: "Confirmación",
+      buttons: {
+        success: {
+          label: "Sí",
+          className: "btn-success",
+          callback: function() {
+          	flag = 0;
+            apruebaSolicitud(flag);
+          }
+        },
+        danger: {
+          label: "No",
+          className: "btn-danger",
+          callback: function() {
+             //cierra el modal
+          }
+        },
+      }
+    });
+});
