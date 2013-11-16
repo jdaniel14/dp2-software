@@ -165,7 +165,7 @@ $("#buscar").click(function(){
 				idProyecto:id
 				};
    	//console.log(JSON.stringify(envio));
-	alert(JSON.stringify(envio));
+	//alert(JSON.stringify(envio));
    	$.ajax({
 		type: 'POST',
 		url: buscarRecursosProyectoFecha,
