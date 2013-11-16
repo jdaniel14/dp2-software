@@ -53,6 +53,7 @@ function seteaRol (){
 		data: JSON.stringify(coso),
 		dataType: "json", 
 		success: function(data){
+			alert(data.me);
 			localStorage.setItem("idRol",data.me);
 		}
 	});		
