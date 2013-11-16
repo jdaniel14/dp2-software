@@ -11,6 +11,8 @@ $(function(){
 		iniciaProyecto();		
 		iniciaPaquetes();
 		obtenRecursos();
+		obtenContingencia();
+		obtenCostoIndirectoTotal();
 	}else
 		alert('Usted no tiene los permisos requeridos');
 
@@ -38,6 +40,53 @@ function obtenPaquetes(){
 	
 	//return arregloProyecto;
 
+}
+function obtenContingencia(){
+	
+	var obj ={
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerReservaContingencia/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:ingresaReservaContingencia	
+
+	});	
+	
+	//return arregloProyecto;
+}
+function obtenCostoIndirectoTotal(){
+	
+	var obj ={
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerCostoIndirectoTotalEstimado/'+JSON.stringify(obj),
+		dataType: "json",
+		async: true,
+		success:ingresaCostoIndirectoTotal	
+
+	});	
+	
+	//return arregloProyecto;
+
+}
+function ingresaReservaContingencia(data){
+	if (!data) return;
+	$("#reservaContingencia").html($("#reservaContingencia").html()+" " +data.reserva+" Soles");
+	
+}
+function ingresaCostoIndirectoTotal(data){
+	if (!data) return;
+	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Soles");
+	
 }
 
 function obtenProyecto(){
@@ -146,14 +195,16 @@ function iniciaProyecto(){
 function agregarDataProyecto(proyecto){
 	if (proyecto!=null){
 		var nombreProyecto = proyecto.nombre;
-		var montoSinReserva = proyecto.presupuestoTotal;
+		var montoSinReserva = proyecto.presupuesto;
 		var porcentajeReserva = proyecto.porcentajeReserva;
 		$("#nombreProyecto").html(nombreProyecto);
 		$("#inputMontoSinReserva").val(montoSinReserva);
 		$("#inputReserva").val(porcentajeReserva);
-		$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
+		$("#reservaTotal").html($("#reservaTotal").html() +" " + porcentajeReserva*0.01*montoSinReserva + " Soles");
 		$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	
 	}
+	
 }
 
 //Fin funciones para pasar los datos de ajax
