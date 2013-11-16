@@ -14,7 +14,7 @@ $(document).ready(function(){
     if(idRol==1){
     		
     		//menu para el GP 
-			var jqxhr = $.getJSON( "http://www.json-generator.com/j/cvKZvGhpRu?indent=4", function() {
+			var jqxhr = $.getJSON( "http://www.json-generator.com/j/ctJRcGmFhK?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
@@ -26,7 +26,7 @@ $(document).ready(function(){
      }else if(idRol==2){
      		
      		//menu para un JP
-         	var jqxhr = $.getJSON( "http://www.json-generator.com/j/bOPlzSahDS?indent=4", function() {
+         	var jqxhr = $.getJSON( "http://www.json-generator.com/j/caQMvlIIKq?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
@@ -40,7 +40,7 @@ $(document).ready(function(){
      }else if(idRol==3){
 
      	//menu para el TM
-     	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cbaxomKqDC?indent=4", function() {
+     	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cjStIrxwCW?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
