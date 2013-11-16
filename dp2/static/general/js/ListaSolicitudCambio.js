@@ -20,18 +20,18 @@ function listaSolicitud(){
             agregaDataFila(data);
 
             $(".btn.btn-primary").click(function(){
-				var auxtd = $(this).closest("tr").find("td");
-				var idSolicitud = auxtd[0].innerHTML;
-				var idProyecto = auxtd[1].innerHTML;
-				var nombreProyecto = auxtd[2].innerHTML;
-					
-				localStorage.setItem("idSolicitud",idSolicitud);
-				localStorage.setItem("idProyecto",idProyecto);
-				localStorage.setItem("nombreProyecto",nombreProyecto);
-				
-				visualizaSolicitud();
-				verificaLineaBase();
-			});
+      				var auxtd = $(this).closest("tr").find("td");
+      				var idSolicitud = auxtd[0].innerHTML;
+      				var idProyecto = auxtd[1].innerHTML;
+      				var nombreProyecto = auxtd[2].innerHTML;
+      					
+      				localStorage.setItem("idSolicitud",idSolicitud);
+      				localStorage.setItem("idProyecto",idProyecto);
+      				localStorage.setItem("nombreProyecto",nombreProyecto);
+      				
+      				visualizaSolicitud();
+      				verificaLineaBase();
+      			});
         }
 	});
 }
@@ -96,11 +96,11 @@ function verificaLineaBase() {
         success: function(data){
         	if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
         		$("#btnAprobar").removeClass('disabled');
-				$("#btnRechazar").removeClass('disabled');
-			} else {
-				$("#btnAprobar").addClass('disabled');
-				$("#btnRechazar").addClass('disabled');
-			}	
+				    $("#btnRechazar").removeClass('disabled');
+    			} else {
+    				$("#btnAprobar").addClass('disabled');
+    				$("#btnRechazar").addClass('disabled');
+    			}	
 		}
 	});
 }
@@ -109,7 +109,7 @@ function apruebaSolicitud(flag){
 	var jsonCliente = {
 		id_proy : localStorage.getItem("idProyecto"),
 		id_sol	: localStorage.getItem("idSolicitud"),
-		flag 	: flag
+		flag 	  : flag
     };
 
     $.ajax({
@@ -119,9 +119,9 @@ function apruebaSolicitud(flag){
         contentType: "application/json; charset=utf-8",
         url: aprobarSolicitud,
         success: function (data) {
-        	if (flag==1) { alert("Solicitud de cambio APROBADA con éxito");	}
-        	if (flag==0) { alert("Solicitud de cambio RECHAZADA con éxito"); }
-        	$(location).attr('href','ListaSolicitudes.html');          
+        	//if (flag==1) { alert("Solicitud de cambio APROBADA con éxito");	}
+        	//if (flag==0) { alert("Solicitud de cambio RECHAZADA con éxito"); }
+        	$(location).attr('href','ListaSolicitudes.html');   
         }
     });
 }
