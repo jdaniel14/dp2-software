@@ -2188,6 +2188,7 @@
 		        		$cInd->codMes = $i;
 		    			$cInd->idMoneda =  1;
 		    			$cInd->costoIndirecto =  0;
+		    			$cInd->nombreMoneda = "SOLES";
 		    			array_push($listaFinal, $cInd);
 					} else {
 						/*
@@ -2203,6 +2204,7 @@
 	        		$cInd->codMes = $i;
 	    			$cInd->idMoneda =  1;
 	    			$cInd->costoIndirecto =  0;
+	    			$cInd->nombreMoneda = "SOLES";
 	    			array_push($listaFinal, $cInd);
 				}
 			}
@@ -2302,6 +2304,7 @@
 		        		$cInd->codMes = $i;
 		    			$cInd->idMoneda =  1;
 		    			$cInd->costoIndirecto =  0;
+		    			$cInd->nombreMoneda = "SOLES";
 		    			array_push($listaFinal, $cInd);
 					} else {
 						/*
@@ -2317,6 +2320,7 @@
 	        		$cInd->codMes = $i;
 	    			$cInd->idMoneda =  1;
 	    			$cInd->costoIndirecto =  0;
+	    			$cInd->nombreMoneda = "SOLES";
 	    			array_push($listaFinal, $cInd);
 				}
 			}
