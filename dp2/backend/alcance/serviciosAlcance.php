@@ -51,7 +51,7 @@
 	function listaDiccionario($id_edt){
 
 		$con = getConnection();
-		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), P.ultima_actualizacion, E.descripcion as estado  ".
+		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), IFNULL(P.ultima_actualizacion,'No actualizado'), E.descripcion as estado  ".
 			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
 			"WHERE E.id_estado = P.id_estado AND P.id_edt= ? 
 			AND (SELECT count(*) FROM PAQUETE_TRABAJO WHERE id_componente_padre = P.id_paquete_trabajo) = 0");
@@ -157,7 +157,7 @@
 		$id_proyecto = $val["id_proyecto"];
 		$con=getConnection();
 
-		$pstmt = $con->prepare("SELECT id_edt FROM EDT WHERE id_proyecto =? ORDER BY id_edt DESC");
+		$pstmt = $con->prepare("SELECT id_edt FROM EDT WHERE id_proyecto =? ORDER BY id_edt ASC");
 		$pstmt->execute(array($id_proyecto));
 
 		if($result = $pstmt->fetch(PDO::FETCH_ASSOC)){
