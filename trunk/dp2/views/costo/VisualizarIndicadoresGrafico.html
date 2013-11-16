@@ -44,7 +44,7 @@
         <h1 id="nombreProyecto"></h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
-	  <form class="form-horizontal" name="formReserva" id="formReserva">
+	  <form class="form-horizontal" name="formReserva" id="formReserva" onload="cargaChart()">
 			
 			<div class="form-group">			
 				<label class="col-lg-2 control-label">Fecha límite:</label>
@@ -56,7 +56,7 @@
 			<div class="form-group">			
 				<label class="col-lg-2 control-label">Indicador:</label>
 				<div class="col-lg-4">
-				  <select class="form-control" id="comboIndicador">
+				  <select class="form-control" onchange="cargaChart()" id="comboIndicador">
 					<option value="ac">PV/EV/AC</option>
 					<option value="cv">CV</option>
 					<option value="cpi">CPI</option>
