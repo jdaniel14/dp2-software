@@ -49,6 +49,18 @@ $(document).ready(function(){
 
 
      }
+    var nombre=localStorage.getItem("nombre");
+     var menuPerfil = '<ul class="nav navbar-nav navbar-right">';
+         menuPerfil+= '<li id="logeado" class="dropdown">';
+         menuPerfil+= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+         menuPerfil+= '<span class="glyphicon glyphicon-user"></span>';
+         menuPerfil+= '      Bienvenido '+nombre+' <b class="caret"></b></a>';
+         menuPerfil+= '<ul class="dropdown-menu">';
+         menuPerfil+= '<li><a href="#">Preferencias</a></li>';
+         menuPerfil+= '<li class="divider"></li>';
+         menuPerfil+= '<li><a id="logout" href="/dp2"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>';
+         menuPerfil+= '</ul></li></ul>';
+     $("#perfilMenu").html(menuPerfil); 
 
 
 });
