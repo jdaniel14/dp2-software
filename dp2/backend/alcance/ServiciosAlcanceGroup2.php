@@ -39,10 +39,15 @@ function reconstruirEdt(){
       //Modifico el edt, pasando el id_paquete_trabajo_inicial
       $pstmt= $con->prepare("UPDATE EDT SET id_paquete_trabajo_inicial= ? WHERE id_proyecto= ?");
       $pstmt->execute(array($idPaqueteInicial,$edt->{"idproyecto"}));
-      guardarHijos($edt->{"nodos"},$idEstado,null,$idEdt,"1.0",$idPaqueteInicial);
+
+      $seGeneroNuevo = guardarHijos($edt->{"nodos"},$idEstado,null,$idEdt,"1.0",$idPaqueteInicial);
 
       $con->exec("set foreign_key_checks = true");
-      echo '{"me" : "Modifico bien"}';   
+      if($seGeneroNuevo){
+        echo '{"me" : "Se generaron nuevos nodos para generar un EDT válido"}';
+      }else{
+        echo '{"me" : "Modifico bien"}';
+      }
      }
      catch (PDOException $e) {
       echo '{"me" : "Modifico mal"}';
@@ -258,8 +263,12 @@ function getEdt(){
       $pstmt->execute(array($idPaqueteInicial,$idproyecto));
     
       //Ahora guardo los hijos
-      guardarHijos($edt->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaqueteInicial);
-      echo '{"me" : "Ingreso bien"}';
+      $seGeneroNuevo = guardarHijos($edt->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaqueteInicial);
+      if($seGeneroNuevo){
+        echo '{"me" : "Se generaron nuevos nodos para generar un EDT válido"}';
+      }else{
+        echo '{"me" : "Modifico bien"}';
+      }
     }
     catch (PDOException $e) {
     	echo '{"me" : "Ingreso mal"}';
@@ -278,14 +287,20 @@ function getEdt(){
     }
     
     function guardarHijos($listaHijos,$idEstado,$idMiembros,$idEdt,$version,$idPadre){
+      $seGeneroNuevo = false;
       if($listaHijos==NULL)return null;
       else if(count($listaHijos)==0)return null;
       else{
         foreach ($listaHijos as $row){
           guardoPaquete($row->{"title"},$row->{"descripcion"},$idEstado,$idMiembros,$idEdt,$idPadre,$version,$row->{"dias"});
           $idPaquete=obtenerIdPaquete($row->{"title"},$row->{"descripcion"},$idEstado,$idEdt,$idPadre,$version);
-          guardarHijos($row->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaquete);
+          $seGeneroNuevo = $seGeneroNuevo || guardarHijos($row->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaquete);
         }
+        if(count($listaHijos)==1){
+          guardoPaquete("Agregado","Autogenerado",$idEstado,$idMiembros,$idEdt,$idPadre,$version,0);
+          return true || $seGeneroNuevo;
+        }
+        return false || $seGeneroNuevo;
       }
     }
     
