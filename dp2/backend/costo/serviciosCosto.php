@@ -2559,7 +2559,7 @@
 			}
 
 			if ($paqueteRaiz != null) {
-				CO_obtenerPaquetesHijo($paqueteRaiz);
+				CO_obtenerPaquetesHijoCostoReal($paqueteRaiz);
 				$jsonRespuesta = new stdClass();
 				$jsonRespuesta->raiz = $paqueteRaiz;
 				//echo 'aaaa';
@@ -2599,7 +2599,7 @@
 			LEFT JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
 			LEFT JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
 			WHERE
-			Y.ID_COMPONENTE_PADRE= :idProyecto AND (X.FECHA IS NULL OR DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d'))
+			Y.ID_COMPONENTE_PADRE= :idPaquete AND (X.FECHA IS NULL OR DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d'))
 			GROUP BY
 			A.ID_PROYECTO,
 			Y.ID_PAQUETE_TRABAJO,
