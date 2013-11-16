@@ -71,7 +71,12 @@ if(! $.isFunction($.fn.curCSS)) {
         /* reload the plugin */
         $(opts.chartElement).children().remove();
         $this.jOrgChart(opts);   
-        repaintUtils();   
+        if (  localStorage.getItem("estado") == "creando" ){
+            repaint_events_crear();
+        }else{
+            repaintUtils();   
+        }
+        
       });
     
       // Drop event handler for nodes

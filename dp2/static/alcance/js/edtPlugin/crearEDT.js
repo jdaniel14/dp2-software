@@ -9,6 +9,9 @@ $('.bolitaEdt').droppable({
     drop: handleDropEvent
 });
 
+
+
+
 function handleDropEvent(event, ui) {
     //$(this).append($('#HeaderDrag'));
     console.log("sape");
@@ -38,6 +41,41 @@ function armaNodoHijoCrear ( id, title, descripcion, dias ){
 	return html;
 }
 
+function repaint_events_crear(){
+	$(".titleEDT").click(function(){
+    //creamos botonera.
+
+   	  var idnodo = '#' + $(this).attr('id');
+      console.log("idactual", idnodo);
+      localStorage.setItem("idnodoActualClick", idnodo);
+      var p = $(idnodo);
+      //console.log(p, $(this).id);
+      var offset = $( this ).offset();
+      console.log(offset);
+      var position = p.position();
+      //console.log("pos top", position.top);
+
+      console.log($(this).css("width"));
+      var cntWidth = $(this).css("height").split("p")[0];
+      console.log(cntWidth);
+
+      var topfin = offset.top;
+
+      var leftfin = offset.top + parseInt(cntWidth)*3;
+      console.log("leftFin",leftfin);
+      $( "#caja_flotante" ).offset({ top: leftfin, left: offset.left });
+     
+      $("#caja_flotante").show("slow");
+
+   });
+
+	$("#imgEliminar").click(function(){
+
+	});
+
+
+}
+
 
 function repaintCharts(){
                 $("#chart").html("");
@@ -45,6 +83,7 @@ function repaintCharts(){
                     chartElement : '#chart',
                     dragAndDrop  : true
                 });
+                repaint_events_crear();
                 //repaint eventos too
                 /*
                 $("#utilsChart").html();
@@ -63,6 +102,8 @@ function repaintCharts(){
    //events
    $("#CrearEDTCero").click(function(){
 
+   	localStorage.setItem("estado", "creando");
+
    	//creamos la edt
    	//Primero se crea un Padre y un nodo para arrastrar.
     $("#edtCrearLogError").hide("slow");
@@ -78,8 +119,9 @@ function repaintCharts(){
 
                 $("#org").html( html );
                 $("#containerEdt").show("slow"); 
-                repaintCharts();
                 $("#utils_flotante").portamento();
+                 repaintCharts();
+
    });
 
  });
