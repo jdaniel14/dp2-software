@@ -26,7 +26,9 @@
 	$app->post('/CO_enviarCostosIndirectosEstimadosMes/', 'CO_saveCostosIndirectosEstimados'); //servicio22
 	$app->post('/CO_enviarCostosIndirectosRealesMes/', 'CO_saveCostosIndirectosReales'); //servicio23
 	$app->get('/CO_obtenerReservaContingencia/:parametro', 'CO_getReservaContingencia'); //servicio24
-	$app->get('/CO_obtenerListaPaquetesCostoReal/:parametro', 'CO_getListaPaquetesCostoReal'); //servicio5
+	$app->get('/CO_obtenerListaPaquetesCostoReal/:parametro', 'CO_getListaPaquetesCostoReal'); //servicio25
+	$app->get('/CO_obtenerCostoIndirectoTotalEstimado/:parametro', 'CO_getCostoIndirectoTotalEstimado'); //servicio26
+	$app->get('/CO_obtenerCostoIndirectoTotalReal/:parametro', 'CO_getCostoIndirectoTotalReal'); //servicio27
 
 	$app->get('/CO_test/', 'CO_testFunction');
 	$app->get('/CO_test_puntos/', 'CO_testFunctionPuntos');
