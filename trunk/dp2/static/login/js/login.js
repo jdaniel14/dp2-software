@@ -17,6 +17,8 @@ $("#ingresarSistema").click(function(){
            if(data["me"]["nom_user"]!=null){
             var idUsuario = data["me"]["id_user"];
             localStorage.setItem("idUsuario",idUsuario);
+            var nombre = data["me"]["nom_user"];
+            localStorage.setItem("nombre",nombre);
             
             if(idUsuario==1){
                 localStorage.setItem("idRol",1);

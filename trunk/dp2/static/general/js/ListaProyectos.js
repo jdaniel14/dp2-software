@@ -43,12 +43,14 @@ function iniciaProyectos(){
 }
 
 function seteaRol (){
-	alert(localStorage.getItem("idProyecto"));
-	var coso=localStorage.getItem("idProyecto");
+	var idProyecto=localStorage.getItem("idProyecto");
+	var idUsuario=localStorage.getItem("idUsuario");
+	var coso = { ip:idProyecto , iu:idUsuario};	
 	$.ajax({
-		type: 'GET',
-		url: "../../api/G_obtenerRolProyecto/" + coso,
+		type: 'POST',
+		url: "../../api/G_obtenerRolProyecto",
 		async: false,
+		data: JSON.stringify(coso),
 		dataType: "json", 
 		success: function(data){
 			localStorage.setItem("idRol",data.me);
