@@ -2461,7 +2461,7 @@
 
 	function CO_insertarCIR($elemento,$idProyecto) {
 		$sql = "INSERT INTO COSTO_INDIRECTO (id_proyecto,codmes,costo_real,id_cambio_moneda)
-		VALUES (:idProyecto, :codmes, :costoIndirecto, :idMoneda);
+		VALUES (:idProyecto, :codMes, :costoIndirecto, :idMoneda);
 		COMMIT;";
 
 		$db = getConnection();
