@@ -70,7 +70,7 @@ Precondicion -> EDTARBOL
 		public $idcategoriaR;
 		
 		function __construct($id_requisito,$descripcion,$solicitud,$cargo,$fundamento_incorporacion,
-    			$id_prioridad_requisito,$id_estado_requisito,$criterio_aceptacion,$id_miembros_equipo,$nombre,$apellido,cate){
+    			$id_prioridad_requisito,$id_estado_requisito,$criterio_aceptacion,$id_miembros_equipo,$nombre,$apellido,$cate){
 			$this->idrequisito=$id_requisito;
 			$this->descripcion=$descripcion;
 			$this->solicitado=$solicitud;
