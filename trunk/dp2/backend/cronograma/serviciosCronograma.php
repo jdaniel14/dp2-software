@@ -854,7 +854,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
 
 function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodeado ATP
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.profundidad=2 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     //echo "pipipi";
     try {
         $db = getConnection();
@@ -909,7 +909,7 @@ function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodead
     $listaActividades_criticas = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=2 and a.eliminado=0 and a.profundidad=2 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1187,7 +1187,7 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
     $listasucesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.numero_fila from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
+    $sql = "select a.numero_fila from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 and a.profundidad=2 and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1236,7 +1236,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arregl
         $db = getConnection();
         
         
-        $sql2="select max(LENGTH(a.predecesores) - LENGTH(REPLACE(a.predecesores, ',', '')))+1 as 'Iteraciones' from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 ";
+        $sql2="select max(LENGTH(a.predecesores) - LENGTH(REPLACE(a.predecesores, ',', '')))+1 as 'Iteraciones' from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and  a.profundidad=2 and  a.eliminado=0 ";
         $stmt2 = $db->prepare($sql2);
         $stmt2->execute(array($idProyecto));
         
@@ -1245,14 +1245,14 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arregl
             $numero_iteraciones=$j2["Iteraciones"];
         }
         
-        $sql="select d.*,group_concat(d.id_predecesores) as 'predecesores_id_concatenado' from (select b.*,c.id_actividad as 'id_predecesores' from ((select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', 1), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', 0)) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) "; 
+        $sql="select d.*,group_concat(d.id_predecesores) as 'predecesores_id_concatenado' from (select b.*,c.id_actividad as 'id_predecesores' from ((select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', 1), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', 0)) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0 and a.profundidad=2  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) "; 
             
         for ($g=1; $g<$numero_iteraciones;$g++){
             $g_1=$g+1;
-        $sql=$sql."union (select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', ".$g_1."), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', ".$g.")) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) ";
+        $sql=$sql."union (select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', ".$g_1."), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', ".$g.")) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.profundidad=2 and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) ";
         }
         
-        $sql=$sql.") b left join (select  a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) c on c.numero_fila=b.numero_filas) d  where d.id_proyecto=? and d.eliminado=0  group by d.id_actividad order by d.fecha_plan_inicio asc,d.fecha_plan_fin desc";
+        $sql=$sql.") b left join (select  a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0 and a.profundidad=2  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) c on c.numero_fila=b.numero_filas) d  where d.id_proyecto=? and d.eliminado=0 and d.profundidad=2  group by d.id_actividad order by d.fecha_plan_inicio asc,d.fecha_plan_fin desc";
 
         
         
@@ -1322,7 +1322,7 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arregl
 					$listaMapeoNumeroFilas["".$j["numero_fila"]] = "".$j["id_actividad"];
                                         
                            
-                $rec = array("id_actividad" => $j["id_actividad"],"numero_fila" => $j["numero_fila"], "est" => $arreglo_actividades_final[$ind]->est,"lst" =>$arreglo_actividades_final[$ind]->lst,"eet" =>$arreglo_actividades_final[$ind]->eet,"let" =>$arreglo_actividades_final[$ind]->let,"nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores_id" => $j["predecesores"],/*"predecesores_id_real"*/ "predecesores"=> ($j["predecesores_id_concatenado"].""), "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
+                $rec = array("id_actividad" => $j["id_actividad"],"numero_fila" => $j["numero_fila"],"holgura_inicial"=>$arreglo_actividades_final[$ind]->lst-$arreglo_actividades_final[$ind]->est,"holgura_final"=>$arreglo_actividades_final[$ind]->let-$arreglo_actividades_final[$ind]->eet, "est" => $arreglo_actividades_final[$ind]->est,"lst" =>$arreglo_actividades_final[$ind]->lst,"eet" =>$arreglo_actividades_final[$ind]->eet,"let" =>$arreglo_actividades_final[$ind]->let,"nombre_actividad" => $j["nombre_actividad"], "marcado" => 0, "bloque" => $numbloque, "EsCritico" => $escritico, "numDias" => $j["dias"], "fecha_plan_inicio" => $listafechas[0], "fecha_plan_fin" => $listafechas[1], "fecha_actual_inicio" => $listafechas[2], "fecha_actual_fin" => $listafechas[3], "predecesores_id" => $j["predecesores"],/*"predecesores_id_real"*/ "predecesores"=> ($j["predecesores_id_concatenado"].""), "id_proyecto" => $j["id_proyecto"], "id_paquete_trabajo" => $j["id_paquete_trabajo"]); //id_paquete_trabajo
                 array_push($listaDependencias, $rec);
                 $ind++;
             }
