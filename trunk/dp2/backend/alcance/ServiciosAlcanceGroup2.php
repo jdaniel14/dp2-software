@@ -841,7 +841,7 @@ function getEdt(){
     		}
     	
     		//Busco el id del ER
-    		$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ? and id_estado_requisito=2");
+    		$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ? and id_estado_requisito!=2");
     		$pstmt->execute(array($idProyecto));
     		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
     		 
