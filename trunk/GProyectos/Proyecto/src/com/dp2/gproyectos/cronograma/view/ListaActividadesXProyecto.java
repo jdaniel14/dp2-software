@@ -23,6 +23,7 @@ import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.ActividadesAdapter;
+import com.dp2.gproyectos.cronograma.model.MensajeResponse;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity;
 import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
@@ -38,7 +39,14 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 	PullToRefreshListView listActs;
 	ActividadesAdapter adapter;
 	
-	int firstLoad = 1;
+	MensajeResponse mensaje;
+	
+	int avanceId = 666;
+	EditText lastInput;
+	EditText input;
+	
+	int posicionPasar;
+	
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -107,7 +115,41 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 			public void onItemClick(AdapterView<?> l, View v, int position,
 					long id) {
 				if(position > 0){					
-					new PedirHoras().execute(position + "");					
+					AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
+					
+					dialogBuilder.setTitle("Horas Reales");
+					dialogBuilder.setMessage("Puede registrar el % de avance:");	
+					
+					//System.out.println("11111");
+					
+					input = new EditText(ListaActividadesXProyecto.this);
+					input.setInputType(InputType.TYPE_CLASS_NUMBER);
+					//input.setId(avanceId);
+					
+					dialogBuilder.setView(input);
+					//System.out.println("22222");
+					
+					lastInput = input;
+					posicionPasar = position;
+					
+					dialogBuilder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							new GuardarHoras().execute(posicionPasar + "");
+						}
+					});
+					
+					dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+										
+						}
+					});
+					
+					AlertDialog alertDialog = dialogBuilder.create();
+					alertDialog.show();	
 				}
 			}			
 		});
@@ -121,6 +163,8 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 		cargarDatos();
 		
 		
+		
+		
 	}	
 	
 	public void cargarDatos(){
@@ -129,71 +173,12 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		nombreProyecto = getIntent().getExtras().getString("nombreProyecto");
 		
+		
+		
 		new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();		
 	}
 	
-	//AJAX para pedir las horas reales de una actividad
-	private class PedirHoras extends AsyncTask<String, Integer, Double>{
-		 
-		@Override
-		protected Double doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			postData(params[0]);
-			return null;
-		}
- 
-		protected void onPostExecute(Double result){
-			System.out.println("Ejecuta yei");
-			
-			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
-			
-			dialogBuilder.setTitle("Horas Reales");
-			dialogBuilder.setMessage("Puede ingresar las horas reales:");
-			
-			final EditText input = new EditText(ListaActividadesXProyecto.this);
-			input.setInputType(InputType.TYPE_CLASS_NUMBER);
-								
-			dialogBuilder.setView(input);
-			
-			dialogBuilder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-				}
-			});
-			
-			dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-								
-				}
-			});
-			
-			AlertDialog alertDialog = dialogBuilder.create();
-			alertDialog.show();	
-			
-		}
-		protected void onProgressUpdate(Integer... progress){
-			
-		}
- 
-		public void postData(String pos) {
-			System.out.println("Ejecutando ei");
-			System.out.println("Datos....");
-			System.out.println("Nombre: " + tasks.get(Integer.parseInt(pos) - 1).name);
-			try {
-				tasks = CronogramaController.getInstance().getActividades(idProyecto);
-				if (tasks == null) {
-					System.out.println("error");
-				}
-			} catch (Exception e) {
-				System.out.println(e.toString());
-			}
-		}
- 
-	}
+	
 	
 	
 	//AJAX para guardar las horas reales cambiadas de una actividad
@@ -214,12 +199,17 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 		}
  
 		public void postData(String pos) {
-			System.out.println("Ejecutando ei");
-			System.out.println("Datos....");
-			System.out.println("Posicion: " + tasks.get(Integer.parseInt(pos) - 1).name);
+			//EditText mEdit = (EditText) findViewById(avanceId);
+			//System.out.println("33333");
+			String valorAvance = lastInput.getText().toString();
+			//System.out.println("44444");
+			System.out.println("Avance ingresado: " + valorAvance);
+			System.out.println("Posicion pasada: " + pos);
+			//System.out.println("555555");
+			
 			try {
-				tasks = CronogramaController.getInstance().getActividades(idProyecto);
-				if (tasks == null) {
+				mensaje = CronogramaController.getInstance().guardarAvance(tasks.get(Integer.parseInt(pos) - 1).id, valorAvance);
+				if (mensaje == null) {
 					System.out.println("error");
 				}
 			} catch (Exception e) {
