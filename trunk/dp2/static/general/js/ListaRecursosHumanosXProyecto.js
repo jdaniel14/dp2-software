@@ -6,6 +6,7 @@ var verificarLineaBase ="../../api/G_verificaLineaBase/";
 $(document).ready(function(){
 	listarRRHHxProyecto();
 	verificaLineaBase();
+	//validacion();
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
         $(".seleccionado").each(function(){
@@ -243,10 +244,47 @@ function verificaLineaBase() {
 		dataType: "json", // data type of response
         success: function(data){
         	if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
-        		$("#btnAsignarRecursos").removeClass('disabled');
+        		$("#btnAsignarRecursos").addClass('disabled');
 			} else {
-				$("#btnAsignarRecursos").addClass('disabled');
+				$("#btnAsignarRecursos").removeClass('disabled');
 			}	
 		}
 	});
 }
+
+/*
+function validacion() {
+	$('#asignarRecurso').validate({
+	    rules: {
+	      fi : { required: true },
+	      ff : { required: true, greaterThan: "#fi" }
+	    },
+
+	    messages: {
+	      fi : { required: 'Debe ingresar la fecha inicial' },
+	      ff : { required: 'Debe ingresar la fecha final', greaterThan: "La fecha final debe ser mayor a la fecha inicial" }
+	    },
+
+		highlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		
+		success: function(element) {
+			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+		}
+	  });
+}
+
+
+//Se implementa la regla "greaterThan" para validar que la fecha final sea mayor a la inicial
+jQuery.validator.addMethod("greaterThan", 
+function(value, element, params) {
+
+    if (!/Invalid|NaN/.test(new Date(value))) {
+        return new Date(value) > new Date($(params).val());
+    }
+
+    return isNaN(value) && isNaN($(params).val()) 
+        || (Number(value) > Number($(params).val())); 
+},'Must be greater than {0}.');
+*/
