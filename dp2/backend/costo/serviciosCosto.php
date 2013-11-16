@@ -1013,7 +1013,10 @@
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
 					$proyecto->indicadorCerrado = $p["IND_CERRADO"];
-					$proyecto->indicadorLineaBase = (int)G_obtenerLineaBase($idProyecto)['estado_linea_base'];
+					if (strcmp(G_obtenerLineaBase($idProyecto)['estado_linea_base'], 'true') == 0)
+						$proyecto->indicadorLineaBase = 1;
+					else
+						$proyecto->indicadorLineaBase = 0;
 					$proyecto->porcentajeContingencia = $p["PORCENTAJE_CONTINGENCIA"];
 					break;
 			}
