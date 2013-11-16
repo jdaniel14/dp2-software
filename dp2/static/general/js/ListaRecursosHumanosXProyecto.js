@@ -1,9 +1,11 @@
 var buscarRecursosProyectoFecha = "../../api/G_listarRecursoDisponible";
 var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
+var verificarLineaBase ="../../api/G_verificaLineaBase/";
 //var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
 
 $(document).ready(function(){
 	listarRRHHxProyecto();
+	verificaLineaBase();
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
         $(".seleccionado").each(function(){
@@ -109,6 +111,8 @@ function limpiaRecursosHumanos(){
 /*Lista de RRHH por Proyecto*/
 
 var id=localStorage.getItem("idProyecto");
+var nombre=localStorage.getItem("nombreProyecto");
+document.getElementsByTagName('h1')[0].innerHTML=nombre;
 
 function listarRRHHxProyecto(){	
 	$.ajax({
@@ -117,7 +121,6 @@ function listarRRHHxProyecto(){
 		contentType: "application/json; charset=utf-8",
 		url: "../../api/G_listaRecursoxProyecto/" + id,
         success: function(data){
-        	document.getElementsByTagName('h1')[0].innerHTML=data["nom_proy"];
             agregaDataFila2(data);
         }
 	});
@@ -231,4 +234,19 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	$("#listaRecursosHumanos tbody").append(tbody);
 	
 	$(".fila"+(i+1)).click(clickRecurso);
+}
+
+function verificaLineaBase() {
+	$.ajax({
+		type: 'GET',
+		url: verificarLineaBase + localStorage.getItem("idProyecto"),
+		dataType: "json", // data type of response
+        success: function(data){
+        	if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
+        		$("#btnAsignarRecursos").removeClass('disabled');
+			} else {
+				$("#btnAsignarRecursos").addClass('disabled');
+			}	
+		}
+	});
 }
