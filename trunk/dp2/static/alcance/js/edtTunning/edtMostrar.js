@@ -1,10 +1,9 @@
-
-
-
+localStorage.setItem("idcontador", 10000);
 
 /* Repaint Chart */
   function repaint(){
   				console.log("re-pintando");
+  				$("#chart").html("");
                 $("#org").jOrgChart({
                     chartElement : '#chart',
                     dragAndDrop  : true
@@ -114,7 +113,7 @@ function nodoRecursivo( nodos , html ){
                   html = sape;
                   html += '</li>';
                 }else{
-                  html += '</li>';
+                  html += '<ul></ul></li>';
                 }
             }
              html += '</ul>';
@@ -305,28 +304,142 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
 	});
 
 
+//static
+function agregaNodo( id, title, descripcion, dias ){
+	var html = "";
+	html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
+	html += '<span class = "titleEDT" id = "';
+	html += 'title-'+ id + '" >';
+	html += title;
+	html += '</span> <br>' + '<span class = "descripcionEDT">';
+	html += descripcion + '</span> <br>' + '<span class = "diasEDT">';
+	html += dias + '</span>';
+}
+
+function funcionesCajaFlotante(){
+
+  $("#imgAgregar").click(function(){
+  		var title = "default";
+  		var descripcion = "default";
+  		var dias = 0;
+  		agregaNodo( title, descripcion, dias );
+  		repaint();
+  });
+
+  $("#imgEliminar").click(function(){
+  	console.log("eliminar");
+  	var idt = localStorage.getItem("idnodoActualClick");
+  	$(idt).parent().remove();
+    repaint();
+  })
+
+}
+
+$("#imgAgregar").click(function(){
+		var ident = parseInt(localStorage.getItem("idcontador"));
+		ident++;
+		localStorage.setItem("idcontador", ident);
+
+  		var id = localStorage.getItem("idnodoActualClick");
+  		      	
+  		//var idfinal = id + ' ul';
+  		//console.log(idfinal, agregarNodoHijoDefault( ident ));
+      	//$("#title-83").parent().find("ul");
+      	$(id).parent().find("ul:first").append(agregarNodoHijoDefault( ident ));
+        repaint();
+  });
+
+  $("#imgEliminar").click(function(){
+  	console.log("eliminar");
+  	var idt = localStorage.getItem("idnodoActualClick");
+  	$(idt).parent().remove();
+    repaint();
+  })
+
+
+function agregarNodoHijoDefault( id ){
+       var title = "default";
+       var desc = "default";
+       var tiempo = 0;
+       var html = "";  
+                    //html += '<ul>';
+                    html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
+					html += '<span class = "titleEDT" id = "';
+					html += 'title-'+ id + '" >';
+					html += title;
+					html += '</span> <br>' + '<span class = "descripcionEDT">';
+					html += desc + '</span> <br>' + '<span class = "diasEDT">';
+					html += tiempo + '</span>';
+                    html += '<ul>' + '</ul>';
+                    html += '</li>';
+                    //html += '</ul>';
+      return html;
+  }
+
+
+
+
+$("#editarEdtNew").click(function(){
+	console.log("a");
+	//$(".titleEDT").mask();
+	//$(".descripcionEDT").mask();
+});
+
 
 
 function repaintUtils () {
 	console.log("repintando eventos");
+
+
+		 $('span').live('click', function () {
+		 	
+		 	var id = $(this).attr("id");
+	        console.log(id);
+	        var input = $('<input />', {'type': 'text', 'id': 'idinput', 'value': $(this).html()});
+	        $(this).parent().append(input);
+	        $(this).remove();
+	        input.focus(); 
+
+	        var fin = "#"+id;
+	        localStorage.setItem("modificandoNodoActual", fin);
+	    });
+    
+
+	    $('input').live('blur', function () {
+	        $(this).parent().append($('<span />').html($(this).val()));
+	        var sape = localStorage.getItem("modificandoNodoActual");
+	        $(sape).html($(this).val());
+	        $(this).remove();
+	        repaint();
+	    });
+
 	$(".titleEDT").click( function(){
 		 /*
-		 var inp = '<input id = "inputCurrent" type="text"'+ 'value="'+ $(this).html() +'"/>';
-		 $(this).replaceWith( inp );
-		 $(this).keypress(function(e) {
-		    if(e.which == 13) {
-		        alert('You pressed enter!');
-		    }
-		});
+		 var id = $(this).attr("id");
+		 var idt = '#' + id;
+		 $(idt).parent().remove();
+		 console.log(id);
+		 repaint();
 		 */
-		/*
-		var input = $('<input />');
-                    input.width("100%"); 
-                    input.height("100%"); 
-                    input.attr('autocomplete','off');
-                    $(this).append(input);
-                    return(input);
-       */
+     
+
+
+      var idnodo = '#' + $(this).attr('id');
+      localStorage.setItem("idnodoActualClick", idnodo);
+      var p = $(idnodo);
+      var offset = $( this ).offset();
+      var position = p.position();
+      var cntWidth = $(this).css("height").split("p")[0];
+      var topfin = offset.top;
+      var leftfin = offset.top + parseInt(cntWidth)*3;
+      $( "#caja_flotante" ).offset({ top: leftfin, left: offset.left });
+      $("#caja_flotante").show("slow");
+      $("#controlesSpan").html($(this).val());
+
+      var id = $(this).attr('id').split("-")[1];
+      localStorage.setItem("idmodificadoCurrent", id);
+      //funcionesCajaFlotante();
+
 	});
 
 

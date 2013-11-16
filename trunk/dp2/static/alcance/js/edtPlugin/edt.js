@@ -12,6 +12,7 @@
 
 
         function repaint(){
+          $("#chart").html("");
                 $("#org").jOrgChart({
                     chartElement : '#chart',
                     dragAndDrop  : true
