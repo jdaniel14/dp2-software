@@ -7,7 +7,7 @@ var yIni = 100;
 
 //Factor que se mueve en el mismo bloque
 var factorXEnB = 150;
-var factorYEnB = 70;
+var factorYEnB = 120;
 
 //Factor que se mueve de bloque en bloque
 var factorX = 500;
@@ -32,7 +32,7 @@ var widthDiagram = 2000;
 var heightDiagram = 2000;
 
 //Parametros de dibujo de los cuadraditos
-var width = 130;
+var width = 160;
 var height = 70;
 var anchoPita = '3';
 var anchoPitaC = '6';
@@ -132,12 +132,12 @@ function crearTitulo(id_actividad,nombre_actividad, posX, posY, colorBorde, anch
 	}
 }
 
-function crearNodo(id_actividad,nombre_actividad, fecha_actual_inicio, fecha_actual_fin, posX, posY, colorBorde, anchoBorde, widthN, heightN){
+function crearNodo(id_actividad,nombre_actividad, fecha_actual_inicio, fecha_actual_fin,early_start,late_start, early_end, late_end, holgura_inicial, holgura_final, posX, posY, colorBorde, anchoBorde, widthN, heightN){
 	if(id_actividad != undefined){
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
-			'nodeContent': nombre_actividad + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin,
+			'nodeContent': nombre_actividad + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin + "<br>Inicio Temprano: " + early_start + "<br>Inicio Tarde: " + late_start + "<br>Fin Temprano: " + early_end + "<br>Fin Tarde: " + late_end + "<br>Holgura Inicial: " + holgura_inicial + "<br>Holgura Final: " + holgura_final,
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': widthN,
@@ -181,13 +181,13 @@ function imprimirHijos(padre,rX,rY){
 			
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
 				if(re.EsCritico == 0){
-					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,rX,rY,borderColor,borderWidth, width, height);
+					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,re.est,re.lst, re.eet, re.let,re.holgura_inicial, re.holgura_final, rX,rY,borderColor,borderWidth, width, height);
 					re.x = rX;
 					re.y = rY;
 					hY = rY + factorYEnB;
 				}
 				else{
-					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,rX,rY,borderColorC,borderWidthC, width, height);
+					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,re.est,re.lst, re.eet, re.let,re.holgura_inicial, re.holgura_final, rX,rY,borderColorC,borderWidthC, width, height);
 					re.x = rX;
 					re.y = rY;
 					hY = rY + factorYEnB;
@@ -276,7 +276,7 @@ function iniciarFiesta(){
 	crearArregloDeMeses();
 	modificacionesAlRed();
 	
-	//Inicializo los valores para el tama–o de cada bloque
+	//Inicializo los valores para el tamaï¿½o de cada bloque
 	factorX = widthDiagram / dataAJAX.cantBloques;
 	
 	console.log("Inicio de la impresion de diagrama de red...");
@@ -342,12 +342,12 @@ function iniciarFiesta(){
 			if(el.marcado == 0){
 				//imprimir el nodo
 				if(el.EsCritico == 0){					
-					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,x,y,borderColor,borderWidth, width, height);
+					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let, el.holgura_inicial, el.holgura_final,x,y,borderColor,borderWidth, width, height);
 					el.x = x;
 					el.y = y;				
 				}
 				else{
-					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,x,y,borderColorC,borderWidthC, width, height);
+					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let,el.holgura_inicial, el.holgura_final,x,y,borderColorC,borderWidthC, width, height);
 					el.x = x;
 					el.y = y;				
 				}
