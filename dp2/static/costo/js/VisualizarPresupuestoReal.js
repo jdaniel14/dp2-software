@@ -117,7 +117,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.costoRealTotalPaquete + ' SOLES ';
+				'Costo subtotal:'+ paquete.costoTotalPaquete + ' SOLES ';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
