@@ -41,25 +41,24 @@ function cargaLista(data){
 
 function guardarCambios(){
 	//eliminar
-	for(fase in eliminados){
+	for(var i =0; i < eliminados.length;i++){
 		$.ajax({
 			type: 'POST',
-			url : '/AL_eliminarFase',
+			url : '../../api/AL_eliminarFase/'+JSON.stringify(eliminados[i]),
 			dataType: "json",
-			data: JSON.stringify(fase),
 			contentType: "application/json; charset=utf-8"
 		});
 	}
 	eliminados =[];
 
 	//modificados
-	var modificados = [];
+	var modificados =[];
 	var mods = $('.modificado');
-	for(row in mods){
-		var cols = $(row).children();
+	for(var i=0; i < mods.length;i++){
+		var cols = $(mods[i]).children();
 		var fase={
-			"id_fase" : $(cols[0]).html(),
-			"descripcion": $(cols[1]).val()
+			"id_fase" : $(cols[0]).children().html(),
+			"descripcion": $(cols[1]).children().val()
 		};
 		modificados.push(fase);
 	}
@@ -75,13 +74,14 @@ function guardarCambios(){
 		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8"
 	});
+	var modificados = [];
 	//nuevos
 	var nuevos = [];
 	var filasNuevas = $('.nuevo');
-	for(row in filasNuevas){
-		var cols = $(row).children();
+	for(var i=0; i < filasNuevas.length; i++){
+		var cols = $(filasNuevas[i]).children();
 		var fase={
-			"descripcion": $(cols[1]).val()
+			"descripcion": $(cols[1]).children().val()
 		};
 		nuevos.push(fase);
 	}
@@ -97,6 +97,7 @@ function guardarCambios(){
 		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8"
 	});
+	var nuevos = [];
 }
 
 
