@@ -62,7 +62,7 @@ function registrarRecurso(){
 		usr : concat,
 		psw : concat
     };
-    alert(JSON.stringify(jsonRecurso));
+    //alert(JSON.stringify(jsonRecurso));
     $.ajax({
         type: "POST",
         data: JSON.stringify(jsonRecurso),
@@ -103,7 +103,7 @@ function validacion() {
 	  });
 }
 
-//Se implementa la regla "lettersonly" para validar que se ingresen solo letras
+//Se implementa la regla "lettersonly" para validar que se ingresen solo letras y espacios
 jQuery.validator.addMethod("lettersonly", function(value, element) {
-  return this.optional(element) || /^[a-z]+$/i.test(value);
+  return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
 }, "Letters only please");
