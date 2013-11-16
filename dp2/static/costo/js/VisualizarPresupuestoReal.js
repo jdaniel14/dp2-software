@@ -29,7 +29,7 @@ function obtenPaquetes(){
 	
 	$.ajax({
 		type: 'GET',
-		url: rootURL + 'CO_obtenerListaPaquetes/'+JSON.stringify(obj),
+		url: rootURL + 'CO_obtenerListaPaquetesCostoReal/'+JSON.stringify(obj),
 		dataType: "json",
 		async: true,
 		success:creaDesplegable	
@@ -117,7 +117,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.costoTotalPaquete + ' SOLES ';
+				'Costo subtotal:'+ paquete.costoRealTotalPaquete + ' SOLES ';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
