@@ -375,6 +375,30 @@
 		}
 	}
 
+	function CO_getCostoIndirectoTotalEstimado($json) { //servicio 26 //COMPLETO
+		$objeto = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_26, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->costoIndirectoTotal = CO_consultarCostoIndirectoTotalEstimado($objeto->idProyecto);
+
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
+	}
+
+	function CO_getCostoIndirectoTotalReal($json) { //servicio 27 //COMPLETO
+		$objeto = json_decode($json);
+		if (CO_verificaPermisoServicio(CO_SERVICIO_27, $objeto->idUsuario, $objeto->idProyecto)) {
+			$jsonRespuesta = new stdClass();
+			$jsonRespuesta->costoIndirectoTotal = CO_consultarCostoIndirectoTotalReal($objeto->idProyecto);
+
+			echo json_encode($jsonRespuesta);
+		} else {
+			echo json_encode(CO_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+		}
+	}
+
 	///////////FOR TESTING ONLY/////////////
 	function CO_testFunction() {
 		/*
@@ -2636,6 +2660,70 @@
 			return;
 		}
 		return;
+	}
+
+	function CO_consultarCostoIndirectoTotalEstimado($idProyecto) {
+		$sql = "SELECT 
+		SUM(COSTO_ESTIMADO) COSTO_INDIRECTO
+		FROM dp2.COSTO_INDIRECTO
+		WHERE
+		ID_PROYECTO= :idProyecto;";
+
+		$costoIndirectoTotal = 0;
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	$proyecto = null; 
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+					$costoIndirectoTotal = $p["COSTO_INDIRECTO"];
+					break;
+			}
+			//echo json_encode($listaRecursos);
+
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		
+
+		//se llamara una funcion que devuelve data falsa por mientras.	
+		//$proyecto = CO_obtenerInfoProyectoFalsa();
+		
+		return $costoIndirectoTotal;
+	}
+
+	function CO_consultarCostoIndirectoTotalReal($idProyecto) {
+		$sql = "SELECT 
+		SUM(COSTO_REAL) COSTO_INDIRECTO
+		FROM dp2.COSTO_INDIRECTO
+		WHERE
+		ID_PROYECTO= :idProyecto;";
+
+		$costoIndirectoTotal = 0;
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	$proyecto = null; 
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+					$costoIndirectoTotal = $p["COSTO_INDIRECTO"];
+					break;
+			}
+			//echo json_encode($listaRecursos);
+
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+		
+
+		//se llamara una funcion que devuelve data falsa por mientras.	
+		//$proyecto = CO_obtenerInfoProyectoFalsa();
+		
+		return $costoIndirectoTotal;
 	}
 
 	//RESPUESTAS
