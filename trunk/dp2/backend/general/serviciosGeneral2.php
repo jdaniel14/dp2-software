@@ -48,8 +48,9 @@ function G_getUsuario() {
 function G_getRol() {
     $request = \Slim\Slim::getInstance()->request();
     $para = json_decode($request->getBody());
-
-    $sql = "SELECT M.ID_ROL
+    //$request = "{ \"ip\": 71,\"iu\": 23 }";
+    //$para = json_decode($request);
+    $sql = "SELECT M.ID_ROL as ID_ROL
             FROM MIEMBROS_EQUIPO M
             WHERE M.ID_PROYECTO=:p_pro
             AND M.ID_EMPLEADO=:p_user
@@ -57,14 +58,14 @@ function G_getRol() {
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("p_pro", $para->idProyecto);
-        $stmt->bindParam("p_user", $para->idUsuario);
+        $stmt->bindParam("p_pro", $para->ip);
+        $stmt->bindParam("p_user", $para->iu);
         $stmt->execute();
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $rol = $p["ID_ROL"];
-        if($para->idUsuario == 1){$rol=1;}
-        var_dump($para->idUsuario);
+        if($para->iu == 1){$rol=1;}
+        //var_dump($para->iu);
         $db = null;
         echo json_encode(array("me" => $rol));
 
