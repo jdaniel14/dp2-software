@@ -325,7 +325,7 @@ function main() {
             // dataType: "json",
             data: jsonData,
             success: function() {
-                alert("XD")
+                
                 //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
                 window.location.replace("../riesgo/ActualizarGantt.html");
             },
