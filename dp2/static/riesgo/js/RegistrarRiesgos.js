@@ -746,6 +746,7 @@ function agregaFilaRiesgo(arreglo, i) {
                 "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" +
                 // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
                 tipoCheckbox + "</td><td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>");
+    $("#tablaRiesgosGlobal").trigger("update"); 
     }
 }
 
@@ -760,6 +761,8 @@ function agregaFilaRiesgoMat(arreglo, i) {
             "</td><td>" + arreglo.costoPotencial +
             "</td><td>" + arreglo.demoraPotencial +
             "</tr>");
+
+	$("#tablaRiesgosMaterializar").trigger("update"); 
 }
 
 
