@@ -12,7 +12,9 @@ $(document).ready(function(){
 
     var idRol=localStorage.getItem("idRol");
     if(idRol==1){
-	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cksXyvWexu?indent=4", function() {
+    		
+    		//menu para el GP 
+			var jqxhr = $.getJSON( "http://www.json-generator.com/j/cvKZvGhpRu?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
@@ -21,15 +23,31 @@ $(document).ready(function(){
 			    		$("#botonera").show();
 			    	}
 			  })
-     }else{
-         var jqxhr = $.getJSON( "http://www.json-generator.com/j/bSStvaVVxK?indent=4", function() {
+     }else if(idRol==2){
+     		
+     		//menu para un JP
+         	var jqxhr = $.getJSON( "http://www.json-generator.com/j/bOPlzSahDS?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
 			    	$("#seguridadMenu").html(menu);
-			  })
+			    	if ($("#botonera")!= null){
+			    		$("#botonera").show();
+			    	}
+			})
          
          
+     }else if(idRol==3){
+
+     	//menu para el TM
+     	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cbaxomKqDC?indent=4", function() {
+			}).done(function( data ) {
+			    	var menu = armaMenu( data );
+			    	//console.log(menu);
+			    	$("#seguridadMenu").html(menu);
+			})
+
+
      }
 
 
