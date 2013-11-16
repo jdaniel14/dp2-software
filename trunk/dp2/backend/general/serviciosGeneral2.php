@@ -63,6 +63,8 @@ function G_getRol() {
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $rol = $p["ID_ROL"];
+        if($para->idUsuario == 1){$rol=1;}
+        var_dump($para->idUsuario);
         $db = null;
         echo json_encode(array("me" => $rol));
 
