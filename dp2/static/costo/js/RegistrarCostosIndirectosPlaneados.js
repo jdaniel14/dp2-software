@@ -1,6 +1,6 @@
 var rootURL = "../../api/";
 var codProyecto='1';
-var idVista=7;
+var idVista=8;
 var idProyecto=obtenerIdProyecto();
 var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
@@ -319,7 +319,7 @@ function obtenMonedaSeleccionada(a,moneda){
 //Funciones para grabar
 
 $("#btnGrabar").click(function(){
-	if (verificaPermisosEditar(idGrabar)=='1'){
+	if (verificaPermisosEditar(idVista)=='1'){
 		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 			grabarRecursos();
 		}
