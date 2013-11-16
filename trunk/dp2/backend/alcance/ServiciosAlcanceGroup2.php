@@ -841,14 +841,14 @@ function getEdt(){
     		}
     	
     		//Busco el id del ER
-    		$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ? and id_estado_requisito!=2");
+    		$pstmt= $con->prepare("SELECT * FROM ESPECIFICACION_REQUISITOS WHERE id_proyecto= ? ");
     		$pstmt->execute(array($idProyecto));
     		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
     		 
     		//Busco todos los requisitos que existen con el id del ER obtenido antes
     		$pstmt= $con->prepare("SELECT a.id_requisito,a.descripcion,a.fecha_termino,a.solicitud,a.cargo,a.fundamento_incorporacion,
     			a.id_prioridad_requisito,a.id_estado_requisito,a.entregable,a.criterio_aceptacion,a.id_miembros_equipo
-    			FROM REQUISITO a WHERE a.id_especificacion_requisitos= ? ");
+    			FROM REQUISITO a WHERE a.id_especificacion_requisitos= ? and a.id_estado_requisito!=2");
     		$pstmt->execute(array($idER));
     		$ar_Requisitos=array();
     		 
