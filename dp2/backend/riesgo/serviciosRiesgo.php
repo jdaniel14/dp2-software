@@ -961,6 +961,7 @@
     function R_postRegistrarActividadContigencia(){
         $request = \Slim\Slim::getInstance()->request();
         $actividad = json_decode($request->getBody());
+        $costo=0;$tiempo=0;
         $query = "INSERT INTO ACCIONES_X_RIESGO (id_riesgo_x_proyecto,descripcion,costo,tiempo,estado) 
                 VALUES (:id_riesgo_x_proyecto,:descripcion,:costo,:tiempo,0)";
         try {
@@ -973,14 +974,33 @@
             $stmt->execute();
             $actividad->id_acciones_x_riesgo = $db->lastInsertId();
             $db = null;
-
-            echo json_encode(array("idRiesgo"=>$actividad->id_acciones_x_riesgo,"descripcion"=>$actividad->descripcion));
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
         }
+
+        //Calcular el nuevo costo y tiempo
+
+        $query = "SELECT SUM(costo)/COUNT(*) costo , SUM(tiempo)/COUNT(*) tiempo
+                FROM ACCIONES_X_RIESGO where
+                id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $actividad->idRiesgoXProyecto);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $costo=$row->costo;
+            $tiempo=$row->tiempo;
+            $db = null;
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+        }
+        echo json_encode(array("idRiesgo"=>$actividad->id_acciones_x_riesgo,"descripcion"=>$actividad->descripcion,
+            "costo"=>$costo,"tiempo"=>$tiempo));
+
     }
 
-    
+
 
 
     function R_getRiesgoMaterializado($idProyecto){
@@ -1062,7 +1082,6 @@
             echo json_encode('Se materializo el riesgo');
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
         }
 
     }

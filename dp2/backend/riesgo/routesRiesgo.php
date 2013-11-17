@@ -48,6 +48,7 @@
 
 	//Plan de contigencia
 	$app->post('/R_registrarActividadContigencia', 'R_postRegistrarActividadContigencia');
+	//$app->get('/R_listarActividadContigencia', 'R_getlistarActividadContigencia');
 
 	//Variado
 	$app->get('/R_obtenerProbabilidadRiesgoMaxima/:id', 'R_getProbabilidadRiesgoMaxima');
