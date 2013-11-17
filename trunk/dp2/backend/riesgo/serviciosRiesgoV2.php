@@ -527,20 +527,23 @@
 
     //--------------------------------------COSTO PROMEDIO--------------------------------------
 
-    function R_getCostoPromedio($json){
-        $var = json_decode($json); 
-        $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO 
-                WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo
-                AND positivo_negativo=0";
+    function R_postCostoContingencia(){
+        $request = \Slim\Slim::getInstance()->request();
+        $var = json_decode($request->getBody()); 
+        $query = "INSERT INTO PROYECTO (porcentaje_contingencia) VALUES 
+                (SELECT SUM(a.demora_potencial)*b.porcentaje_contingencia contingencia 
+                FROM A.RIESGO_X_PROYECTO, B.PAQUETE_TRABAJO
+                WHERE a.id_paquete_trabajo = b.id_paquete_trabajo AND a.id_proyecto = b.id_proyecto 
+                AND a.id_proyecto=:id_proyecto AND b.id_paquete_trabajo=:id_paquete_trabajo
+                AND positivo_negativo=0)";
         try {
             $db=getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto", $var->idProyecto);
             $stmt->bindParam("id_paquete_trabajo", $var->idPaqueteTrabajo);
             $stmt->execute();
-            $row = $stmt->fetchObject();
             $db = null;
-            return json_encode($row->promedio);
+            return json_encode('{Se registro correctamente}');
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         } 
