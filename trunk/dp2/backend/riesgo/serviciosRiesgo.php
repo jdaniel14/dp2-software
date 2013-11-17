@@ -956,6 +956,33 @@
         }        
     }    
 
+    //--------------------------------------Plan Contigencia--------------------------------------
+
+    function R_postRegistrarActividadContigencia(){
+        $request = \Slim\Slim::getInstance()->request();
+        $actividad = json_decode($request->getBody());
+        $query = "INSERT INTO ACCIONES_X_RIESGO (id_riesgo_x_proyecto,descripcion,costo,tiempo,estado) 
+                VALUES (:id_riesgo_x_proyecto,:descripcion,:costo,:tiempo,0)";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $actividad->idRiesgoXProyecto);
+            $stmt->bindParam("descripcion", $actividad->descripcion);
+            $stmt->bindParam("costo", $actividad->costo);
+            $stmt->bindParam("tiempo", $actividad->tiempo);
+            $stmt->execute();
+            $actividad->id_acciones_x_riesgo = $db->lastInsertId();
+            $db = null;
+
+            echo json_encode(array("idRiesgo"=>$actividad->id_acciones_x_riesgo,"descripcion"=>$actividad->descripcion));
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+        }
+    }
+
+    
+
+
     function R_getRiesgoMaterializado($idProyecto){
         $query = "SELECT id_riesgo_x_proyecto, nombre_riesgo, fecha_materializacion,costo_potencial, demora_potencial
                 FROM RIESGO_X_PROYECTO  WHERE id_proyecto=:id_proyecto";

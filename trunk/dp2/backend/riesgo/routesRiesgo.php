@@ -46,6 +46,9 @@
 	$app->get('/R_listarIntegrantesProyecto/:id', 'R_getListaIntegrantesProyecto');	
 	$app->get('/R_listarComiteRiesgo/:id', 'R_getComiteRiesgo');	
 
+	//Plan de contigencia
+	$app->post('/R_registrarActividadContigencia', 'R_postRegistrarActividadContigencia');
+
 	//Variado
 	$app->get('/R_obtenerProbabilidadRiesgoMaxima/:id', 'R_getProbabilidadRiesgoMaxima');
 
