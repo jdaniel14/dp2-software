@@ -425,9 +425,11 @@ $("#btnGrabar").click(function(){
 
 	if (isNaN(porcentajeReserva) || (!isNaN(porcentajeReserva) && new Number(porcentajeReserva)<0)){
 	
-		alert('El porcentaje de reserva debe ser un número mayor igual a 0 y menor a 100');
+		alert('El porcentaje de reserva debe ser un número mayor igual a 0');
+		lanzaAlerta("divReserva","labReserva","");
 		return;
-	}
+	}else
+		borraAlerta("divReserva","labReserva");
 
 
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
