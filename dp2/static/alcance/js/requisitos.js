@@ -25,6 +25,7 @@ function modificarRequisito(){
 				$('#'+key).val(data[key]);
 			}
 			$('#id_tipo_requisito').val(data["id_tipo_requisito"]);
+			$('#id_categoria_requisito').val(data["id_categoria_requisito"]);
 		}
 	});
 	$('#detalleRequisito').removeClass('insertar');
@@ -88,6 +89,24 @@ function cargarComboTipo(){
 	});
 }
 
+function cargarComboCategoria(){
+	$.ajax({
+		type: 'GET',
+		url : '../../api/AL_getCategoriasRequisito',
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		async:false,
+		success: function(data){
+			for(obj in data){
+				var opt = $("<option></option>");
+				opt.val(data[obj]["id_categoria_requisito"]);
+				opt.html(data[obj]["descripcion"]);
+				$("#id_categoria_requisito").append(opt);
+			}
+		}
+	});
+}
+
 function inserta(data){
 	var fila = "<tr>";
 	for(key in data){
@@ -109,9 +128,10 @@ function modifica(data){
 	$(campos[0]).html(data["id_requisito"]);
 	$(campos[1]).html(data["descripcion"]);
 	$(campos[2]).html(data["tipo"]);
-	$(campos[3]).html(data["observaciones"]);
-	$(campos[4]).html(data["unidad_medida"]);
-	$(campos[5]).html(data["valor"]);
+	$(campos[3]).html(data["categoria"]);
+	$(campos[4]).html(data["observaciones"]);
+	$(campos[5]).html(data["unidad_medida"]);
+	$(campos[6]).html(data["valor"]);
 	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
 }
@@ -147,6 +167,7 @@ function guardarCambios(){
 		ruta = "../../api/AL_modificaRequisito";
 		callback = modifica;
 		obj["tipo"] = $('#id_tipo_requisito option:selected').text();
+		obj["categoria"] = $('#id_categoria_requisito option:selected').text();
 	}
 	$.ajax({
 		type: 'POST',
@@ -230,6 +251,7 @@ function cargaTitulo(){
 
 $(document).ready(function(){
 	cargarComboTipo();
+	cargarComboCategoria();
 	cargaTitulo();
 	cargarPlanGestionRequisitos();
 	var obj = {

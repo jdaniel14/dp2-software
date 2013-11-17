@@ -735,7 +735,7 @@ function getEdt(){
     	foreach ($listaIdRequisitos as $row){
     		foreach ($listaIdFase as $fila){
     			$pstmt= $con->prepare("INSERT INTO FASE_X_REQUISITO(id_requisito,id_fase) VALUES (?,?)");
-    			$pstmt->execute(array($row[$i],$fila));
+    			$pstmt->execute(array($row,$fila));
     		}
     	}
       }
@@ -927,10 +927,10 @@ function getEdt(){
     	$idRequisito=$data->{"id_requisito"};
     	$con = getConnection();
     
-    	$pstmt= $con->prepare("UPDATE REQUISITO SET descripcion=?,solicitud=?,cargo=?,fundamento_incorporacion=?,
-    			id_prioridad_requisito=?,id_estado_requisito=?,criterio_aceptacion=?,id_miembros_equipo=?, id_categoria_requisito=? where id_requisito=?");
-    	$pstmt->execute(array($data->{"descripcion"},$data->{"solicitado"},$data->{"cargo"},$data->{"fundamento"},
-    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$data->{"idcategoriaR"},$idRequisito));
+    	$pstmt= $con->prepare("UPDATE REQUISITO SET solicitud=?,fundamento_incorporacion=?,
+    			id_prioridad_requisito=?,id_estado_requisito=?,criterio_aceptacion=?,id_miembros_equipo=? where id_requisito=?");
+    	$pstmt->execute(array($data->{"solicitado"},$data->{"fundamento"},
+    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$idRequisito));
     
     	echo $request->getBody();
       }
@@ -999,6 +999,17 @@ function getEdt(){
       }
     }
     
+    function getRequisitoMatriz(){
+      $request = \Slim\Slim::getInstance()->request();
+      $val = $request->params();
+      $idReq= $val["id_requisito"];
+      $con=getConnection();
+      //obtener requisito
+      $pstmt = $con->prepare("SELECT * FROM REQUISITO WHERE id_requisito =?");
+      $pstmt->execute(array($idReq));
+      $req = $pstmt->fetch(PDO::FETCH_ASSOC);
+      echo json_encode($req);
+    }
     
     
     
