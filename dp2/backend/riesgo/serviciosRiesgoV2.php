@@ -489,4 +489,39 @@
         echo json_encode(array("puntajeMin" => $minimorango, "puntajeMax" => $maximorango));
     }
 
+    //--------------------------------------COSTO REAL--------------------------------------
+
+    function R_getCostoReal($idProyecto, $idActividad){
+        $query = "SELECT A.ID_PROYECTO, B.ID_ACTIVIDAD, B.NOMBRE_ACTIVIDAD, IFNULL(Y.DESCRIPCION,'') ASIENTO_CONTABLE,
+                    SUM(C.CANTIDADREAL*(C.COSTO_UNITARIO_REAL*X.CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
+                        FROM 
+                    PROYECTO A JOIN ACTIVIDAD B ON A.ID_PROYECTO=B.ID_PROYECTO
+                    JOIN ACTIVIDAD_X_RECURSO C ON B.ID_ACTIVIDAD=C.ID_ACTIVIDAD
+                    JOIN RECURSO D ON C.ID_RECURSO=D.ID_RECURSO
+                    JOIN CAMBIO_HISTORICO X ON D.ID_CAMBIO_MONEDA=X.ID_CAMBIO_MONEDA
+                    LEFT JOIN ASIENTO_CONTABLE Y ON B.ID_ASIENTO_CONTABLE=Y.ID_ASIENTO_CONTABLE
+                    WHERE
+                    DATE_FORMAT(X.FECHA,'%Y%m%d')=DATE_FORMAT(SYSDATE(),'%Y%m%d')
+                    AND
+                    A.ID_PROYECTO=:idProyecto AND B.ID_ACTIVIDAD=:idActividad
+                    AND D.ESTADO<>'ELIMINADO' AND C.ESTADO<>0 AND B.PROFUNDIDAD<>0 AND B.ELIMINADO<>1
+                    GROUP BY A.ID_PROYECTO, B.ID_ACTIVIDAD, B.NOMBRE_ACTIVIDAD, IFNULL(Y.DESCRIPCION,'')";
+        try{
+            $arregloCostoReal= array();
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->bindParam("idActividad", $idActividad);
+            $stmt->execute();
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $data= array("idProyecto" => $row['ID_PROYECTO'], "idActividad" => $row['ID_ACTIVIDAD'],"nombreActividad" => $row['NOMBRE_ACTIVIDAD'],"asientoContable" => $row['ASIENTO_CONTABLE'],"costoActividadSoles" => $row['COSTO_ACTIVIDAD_SOLES']);
+                array_push($arregloCostoReal,$data);
+            }
+            $db = null;
+            echo json_encode($arregloCostoReal);
+        } catch(PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
+
 ?>
