@@ -27,5 +27,8 @@
 	$app->get('/R_obtenerPuntajes/:id','R_getPuntajes');
 
 	//COSTO REAL
-	$app->get('/R_obtenerCostoReal/:idProyecto/:idActividad','R_getCostoReal')
+	$app->get('/R_obtenerCostoReal/:var','R_getCostoReal');
+
+	//COSTO PROMEDIO
+	$app->get('/R_obtenerCostoPromedio/:var','R_getCostoPromedio');
 ?>

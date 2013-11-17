@@ -491,7 +491,8 @@
 
     //--------------------------------------COSTO REAL--------------------------------------
 
-    function R_getCostoReal($idProyecto, $idActividad){
+    function R_getCostoReal($json){
+        $var = json_decode($json);
         $query = "SELECT A.ID_PROYECTO, B.ID_ACTIVIDAD, B.NOMBRE_ACTIVIDAD, IFNULL(Y.DESCRIPCION,'') ASIENTO_CONTABLE,
                     SUM(C.CANTIDADREAL*(C.COSTO_UNITARIO_REAL*X.CAMBIO_A_SOL)) COSTO_ACTIVIDAD_SOLES
                         FROM 
@@ -510,8 +511,8 @@
             $arregloCostoReal= array();
             $db=getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("idProyecto", $idProyecto);
-            $stmt->bindParam("idActividad", $idActividad);
+            $stmt->bindParam("idProyecto", $var->idProyecto);
+            $stmt->bindParam("idActividad", $var->idActividad);
             $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("idProyecto" => $row['ID_PROYECTO'], "idActividad" => $row['ID_ACTIVIDAD'],"nombreActividad" => $row['NOMBRE_ACTIVIDAD'],"asientoContable" => $row['ASIENTO_CONTABLE'],"costoActividadSoles" => $row['COSTO_ACTIVIDAD_SOLES']);
@@ -524,4 +525,24 @@
         }
     }
 
+    //--------------------------------------COSTO PROMEDIO--------------------------------------
+
+    function R_getCostoPromedio($json){
+        $var = json_decode($json); 
+        $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO 
+                WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo
+                AND positivo_negativo=0";
+        try {
+            $db=getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto", $var->idProyecto);
+            $stmt->bindParam("id_paquete_trabajo", $var->idPaqueteTrabajo);
+            $stmt->execute();
+            $row = $stmt->fetchObject();
+            $db = null;
+            return json_encode($row->promedio);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        } 
+    }
 ?>
