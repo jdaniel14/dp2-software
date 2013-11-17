@@ -119,3 +119,28 @@ function verificaPermisosGrabar(idPantalla){
 	
 	return indPermiso;
 }
+
+function lanzaAlerta(idDiv,idLab ,mensaje){
+	
+	div="#" + idDiv;
+	lab="#" + idLab;
+	if (mensaje!=null && mensaje!=""){
+		
+		
+		$(lab).html(mensaje);
+		
+	}
+	
+	$(div).attr("class","form-group has-error");
+	if (idLab!=null && idLab!="")
+		$(lab).css("display","inline");
+}
+
+function borraAlerta(idDiv,idLab){
+	
+	div="#" + idDiv;
+	lab="#" + idLab;
+	
+	$(div).attr("class","form-group");
+	$(lab).css("display","none");
+}

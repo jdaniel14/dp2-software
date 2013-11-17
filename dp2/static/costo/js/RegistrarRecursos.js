@@ -191,14 +191,14 @@ function agregaFilaRecurso(){
 	a=$("#numFilas").val();
 	a++;
 	
-	inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
+	inputRecurso= '<div id="divRecurso'+a+'" class="form-group"><input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')"></div>';
 	inputMoneda= creaInputMoneda(a,"0");
 	inputUnidadMedida= creaInputUnidadMedida(a,"0");
-	inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')">';
-	inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')">';
+	inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')"></div>';
+	inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')"></div>';
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
-	inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
-	inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+	inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
+	inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
 	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
 								+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
@@ -222,10 +222,10 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		inputUnidadMedida= creaInputUnidadMedida(a,indRecursoHumano);
 		
 		if (indRecursoHumano=='0'){
-			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')">';
-			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')">';
-			inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
-			inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
+			inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')"></div>';
+			inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')"></div>';
+			inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
+			inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 			
 		}else{
@@ -399,9 +399,7 @@ function obtenUnidadMedidaSeleccionada(a,medida){
 
 $("#btnGrabar").click(function(){
 
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
-	}
+	grabarRecursos();
 });
 
 function grabarRecursos(){
@@ -410,6 +408,7 @@ function grabarRecursos(){
 	var recursosEliminar=new Array();
 		
 	num=$("#numFilas").val();
+	grabar=true;
 	
 	for (i=1; i<=num;i++){
 		recH= "#indRecursoH"+i;
@@ -454,7 +453,11 @@ function grabarRecursos(){
 				if (nomRecurso==''){
 						
 					alert('El recurso de la fila ' + i +' debe tener un nombre');
-					return;
+					lanzaAlerta("divErrorNombre","labErrorNombre","");
+					lanzaAlerta("divRecurso"+i,"","");
+					//"divRecurso'+a+'"
+					grabar=false;
+					
 				}
 				
 				
@@ -464,7 +467,10 @@ function grabarRecursos(){
 				}else{
 				
 					alert('El costo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
-					return;
+					lanzaAlerta("divErrorCostoUnitario","labErrorCostoUnitario","");
+					lanzaAlerta("divCostoUnitario"+i,"","");
+					//"divCostoUnitario'+a+'"
+					grabar=false;
 				}
 				
 				if (costoF!='' && !isNaN(costoF) && new Number(costoF)>=0){
@@ -473,7 +479,10 @@ function grabarRecursos(){
 				}else{
 				
 					alert('El costo fijo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
-					return;
+					lanzaAlerta("divCostoFijo","labCostoFijo","");
+					lanzaAlerta("divCostoFijo"+i,"","");
+					//"divCostoFijo'+a+'"
+					grabar=false;
 				}
 				
 				if (fechaI!=""){
@@ -485,7 +494,10 @@ function grabarRecursos(){
 				}else{
 					
 					alert('La fecha inicio del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
-					return;
+					lanzaAlerta("divErrorFechaI","labErrorFechaI","");
+					lanzaAlerta("divFechaInicio"+i,"","");
+					//"divFechaInicio'+a+'"
+					grabar=false;
 				
 				}
 				
@@ -498,13 +510,18 @@ function grabarRecursos(){
 				}else{
 					
 					alert('La fecha fin del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
-					return;
+					lanzaAlerta("divFechaFin"+i,"","");
+					//"divFechaFin'+a+'"
+					grabar=false;
 				
 				}
 				
 				if (!comparaMenorFecha(diaI,mesI, anioI,diaF,mesF, anioF)){
 					alert('La fecha de inicio debe ser menor a la fecha de fin');
-					return;
+					lanzaAlerta("divErrorFecha","labErrorFecha","");
+					lanzaAlerta("divFechaInicio"+i,"","");
+					lanzaAlerta("divFechaFin"+i,"","");
+					grabar=false;
 				}
 			
 				if (crear=='1'){
@@ -552,19 +569,21 @@ function grabarRecursos(){
 		
 	}
 	
-		
-	var obj={
-		idProyecto: idProyecto,
-		listaRecursosModificar: recursosModificar,
-		listaRecursosCrear: recursosGrabar,
-		listaRecursosEliminar: recursosEliminar,
-		idUsuario  : idUsuario
-		
-		
+	if (grabar){
+		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+			var obj={
+				idProyecto: idProyecto,
+				listaRecursosModificar: recursosModificar,
+				listaRecursosCrear: recursosGrabar,
+				listaRecursosEliminar: recursosEliminar,
+				idUsuario  : idUsuario
+				
+				
+			}
+			
+			enviaDatos(obj);
+		}
 	}
-	
-	enviaDatos(obj);
-
 	
 }
 
