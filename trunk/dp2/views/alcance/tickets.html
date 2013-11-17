@@ -32,92 +32,132 @@
        <table class="table table-bordered">
         <thead>
           <tr>
-            <th>cod</th>
+            <th>Cod</th>
             <th>Descripción</th>
-            <th>Fecha</th>
             <th>Solicitado por</th>
+            <th>Cargo</th>
             <th>Objetivo</th>
             <th>Prioridad</th>
             <th>Estado</th>
-            <th>Entregable</th>
+            <th>Categoria</th>
             <th>Criterio de Aceptación</th>
             <th width = 1 >Responsable</th>
-
+            <th colspan =2>Acciones</th>
           </tr>
         </thead>
-        <tbody id = "dataTickets" >
-       
-         <div id = "progressTickets" class="progress progress-striped active">
-            <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-            ... Cargando ...
-            </div>
-          </div>
-  
+        <tbody id = "dataTickets" >  
         </tbody>
       </table>
 
-      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title" id="myModalLabel">Buscar Miembro</h4>
-          </div>
-          <div class="modal-body">
-              <form class="form-inline" role="form">
-                <div class="form-group">
-                  <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                  <input type="text" class="form-control" id="inputNombreModal" placeholder="Nombre responsable">
-                </div>
-                <div class="form-group">
-                  <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                  <input type="text" class="form-control" id="inputApeModal" placeholder="Apellido responsable">
-                </div>
-                <button id = "buscarModal" class="btn btn-default">buscar</button>
-              </form>
-
-              <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Chk</th>
-            
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Telefono</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody id = "dataUsersModal" >
-       
-         <div id = "progressUsers" class="progress progress-striped active" style = "display:none">
-            
-            <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-            ... Cargando ...
+      <div class="modal fade" id="detalleRequisito" role="dialog" aria-labelledby="detalleRequisito" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 id="tituloModal"class="modal-title">Modificar</h4>
             </div>
+            <div class="modal-body">
+              <div class="container">
+                <form action="" id="form-requisito">
+                  <input type="hidden" id="id_requisito" class="form-control" />
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="descripcion" class="control-label">Descripción</label>
+                      <p id="descripcion" name="despcripcion" class="form-control-static"></p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="solicitado" class="control-label">Solicitado por</label>
+                      <select id="solicitado" name="solicitado" placeholder="solicitado" class="form-control">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="objetivo" class="control-label">Objetivos</label>
+                      <input type="text" id="objetivo" name="objetivo" placeholder="Objetivo" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="idprioridadR" class="control-label">Prioridad</label>
+                      <select id="idprioridadR" name="idprioridadR" placeholder="prioridad" class="form-control">
+                      </select>
+                    </div>
+                  </div>
 
-          </div>
-  
-        </tbody>
-      </table>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="criterio" class="control-label">Estado</label>
+                      <select id="idestadoR" name="idestadoR" placeholder="Estado" class="form-control">
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="criterio" class="control-label">Criterio de aceptación</label>
+                      <input type="text" id="criterio" name="criterio" placeholder="Criterio de aceptación" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="idmiembros" class="control-label">Responsable</label>
+                      <select id="idmiembros" name="idmiembros" placeholder="Responsable" class="form-control">
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="button" id="guardar" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
-          </div>
-
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" id = "guardarModal" class="btn btn-primary">Guardar</button>
-          </div>
-
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div>
+      <div class="modal fade" id="tablaEntregables" role="dialog" aria-labelledby="tablaEntregables" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 id="tituloModal"class="modal-title">Actualizar entregables</h4>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form action="" id="form-entregables">
+                   <input type="hidden" id="id_requisito_fases" class="form-control" />
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Fase</th>
+                        <th>Fecha</th>
+                        <th>Entregable</th>
+                      </tr>
+                    </thead>
+                    <tbody id = "dataEntregables" >
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="button" id="guardarEntregables" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
       </div>  
     </div>
     <script src="../../assets/js/jquery-1.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../static/alcance/js/rastreabilidad.js"></script>
+    <script src="../../static/alcance/js/matriz.js"></script>
     <script src="../../assets/js/header.js"></script>
   </body>
 </html>

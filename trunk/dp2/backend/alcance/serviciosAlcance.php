@@ -180,9 +180,9 @@
 		$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
 		
 		//obtener lista de requisitos del idER que se obtuvo antes
-		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo , R.observaciones, R.unidad_medida, R.valor 
-			FROM REQUISITO R, TIPO_REQUISITO T 
-			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND R.id_estado_requisito <> 2 AND R.id_especificacion_requisitos =?");
+		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo, C.descripcion as categoria , R.observaciones, R.unidad_medida, R.valor 
+			FROM REQUISITO R, TIPO_REQUISITO T, CATEGORIA_REQUISITO C
+			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND R.id_categoria_requisito = C.id_categoria_requisito AND R.id_estado_requisito <> 2 AND R.id_especificacion_requisitos =?");
 		$pstmt->execute(array($idER));
 		$lista = array();
     //sacar uno por uno y agregarlos a la lista
@@ -191,6 +191,17 @@
 		}
 		echo json_encode($lista);
 	}
+
+  function getCategoriasRequisito(){
+  		$con=getConnection();
+		$pstmt = $con->prepare("SELECT * FROM CATEGORIA_REQUISITO");
+		$pstmt->execute();
+		$listaCategorias = array();
+		while($cat = $pstmt->fetch(PDO::FETCH_ASSOC)){
+			$listaCategorias[] = $cat;
+		}
+		echo json_encode($listaCategorias);
+  }
 
   function getTiposRequisito(){//obtener todos los tipos de requisito
 		$con=getConnection();
@@ -221,13 +232,14 @@
 		}
      //ahora que esta asegurado que exista la ER insertamos el requisito
 		$pstmt = $con->prepare("INSERT INTO REQUISITO 
-								(id_especificacion_requisitos,descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito,id_prioridad_requisito) 	
-					   			VALUES (?,?,?,?,?,?,?,?)");
+								(id_especificacion_requisitos,descripcion, id_tipo_requisito, id_categoria_requisito ,observaciones, unidad_medida, valor,id_estado_requisito,id_prioridad_requisito) 	
+					   			VALUES (?,?,?,?,?,?,?,?,?)");
 		$pstmt->execute(
 			array(
 				$idER,
 				$req["descripcion"],
 				$req["id_tipo_requisito"],
+				$req["id_categoria_requisito"],
 				$req["observaciones"],
 				$req["unidad_medida"],
 				$req["valor"],
@@ -235,9 +247,9 @@
 				1
 				)
 		);
-		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo , R.observaciones, R.unidad_medida, R.valor 
-			FROM REQUISITO R, TIPO_REQUISITO T 
-			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND R.id_requisito =?");
+		$pstmt = $con->prepare("SELECT R.id_requisito, R.descripcion, T.descripcion as tipo , C.descripcion as categoria ,R.observaciones, R.unidad_medida, R.valor 
+			FROM REQUISITO R, TIPO_REQUISITO T , CATEGORIA_REQUISITO C
+			WHERE R.id_tipo_requisito = T.id_tipo_requisito AND C.id_categoria_requisito = R.id_categoria_requisito AND R.id_requisito =?");
 		$pstmt->execute(array($con->lastInsertId()));
 		$req = $pstmt->fetch(PDO::FETCH_ASSOC);
 		echo json_encode($req);
@@ -247,9 +259,9 @@
 		$request = \Slim\Slim::getInstance()->request();
 		$req = json_decode($request->getBody(),TRUE);
 		$con=getConnection();
-		$pstmt = $con->prepare("UPDATE REQUISITO SET descripcion =?, id_tipo_requisito =?, observaciones =?, unidad_medida =?, valor =?,id_estado_requisito =?
+		$pstmt = $con->prepare("UPDATE REQUISITO SET descripcion =?, id_tipo_requisito =?,id_categoria_requisito =? ,observaciones =?, unidad_medida =?, valor =?,id_estado_requisito =?
 								WHERE id_requisito = ?");
-		$pstmt->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["observaciones"],$req["unidad_medida"],
+		$pstmt->execute(array($req["descripcion"],$req["id_tipo_requisito"],$req["id_categoria_requisito"],$req["observaciones"],$req["unidad_medida"],
 									$req["valor"],1, $req["id_requisito"]));
 		echo $request->getBody();
 	}
@@ -260,7 +272,7 @@
 		$idReq= $val["id_requisito"];
 		$con=getConnection();
 		//obtener requisito
-		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, observaciones, unidad_medida, valor,id_estado_requisito FROM REQUISITO WHERE id_requisito =?");
+		$pstmt = $con->prepare("SELECT id_requisito, descripcion, id_tipo_requisito, id_categoria_requisito ,observaciones, unidad_medida, valor,id_estado_requisito FROM REQUISITO WHERE id_requisito =?");
 		$pstmt->execute(array($idReq));
 		$req = $pstmt->fetch(PDO::FETCH_ASSOC);
 		echo json_encode($req);

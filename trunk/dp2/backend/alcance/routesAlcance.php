@@ -17,6 +17,7 @@
 	$app->post('/AL_modificaRequisito','modificaRequisito');
 	$app->get('/AL_getRequisito','getRequisito');
 	$app->post('/AL_eliminaRequisito','eliminaRequisito');
+	$app->get('/AL_getCategoriasRequisito','getCategoriasRequisito');
 	
 	//Documento de gestion de alcance
 	$app->post('/AL_subirArchivo','subirArchivo');
