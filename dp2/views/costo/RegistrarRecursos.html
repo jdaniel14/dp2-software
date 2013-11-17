@@ -52,6 +52,26 @@
 		
 		<input type="hidden" name="numFilas" id="numFilas" value="0">
 		
+		
+		<div id="divErrorNombre" class="form-group">			
+			<label id="labErrorNombre" class="control-label" style="display:none">El nombre del recurso no puede ser vacío</label>
+		</div>
+		<div id="divErrorCostoUnitario" class="form-group">			
+			<label id="labErrorCostoUnitario" class="control-label"  style="display:none">El costo unitario deben ser un número mayor a 0</label>
+		</div>
+		<div id="divCostoFijo" class="form-group">			
+			<label id="labCostoFijo" class="control-label" style="display:none">EL costo fijo deben ser un número mayor a 0</label>
+		</div>
+		<div id="divErrorFechaI" class="form-group">			
+			<label id="labErrorFechaI" class="control-label" style="display:none">La fecha de inicio debe ser distinta de vacía</label>
+		</div>
+		<div id="divErrorFechaF" class="form-group">			
+			<label id="labErrorFechaF" class="control-label" style="display:none">La fecha de fin debe ser distinta de vacía</label>
+		</div>		
+		<div id="divErrorFecha" class="form-group">			
+			<label id="labErrorFecha" class="control-label" style="display:none">La fecha de inicio debe ser menor a la fecha de fin</label>
+		</div>
+		
 		<table class="table-striped table-bordered" width="90%" id="tablaRecursos">
 		
 			<tr>
