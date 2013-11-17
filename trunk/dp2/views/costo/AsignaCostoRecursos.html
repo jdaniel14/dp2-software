@@ -63,15 +63,16 @@
 			
 			
 			
-			<div class="form-group">
+			<div id="divReserva" class="form-group">
 			
-				<label class="col-lg-2 control-label">% reserva gestión</label>
+				<label class="col-lg-2" align='right' >% reserva gestión</label>
 				<div class="col-lg-4">
+				  <label class="control-label" id="labReserva" align="left" style="display:none">El % debe ser un número mayor a 0</label>
 				  <input type="text" class="form-control" id="inputReserva" placeholder="% reserva" onChange="actualizaCostos();">
 				</div>				
-				<label class="col-lg-2 control-label">Monto de reserva de Gestión (Soles)</label>
+				<label class="col-lg-2">Monto de reserva de Gestión (Soles)</label>
 				<div class="col-lg-4">
-				  <input type="text" class="form-control" id="reservaTotal" placeholder="Reserva Total" readOnly="readOnly" disabled>
+				  <input type="text" class="" id="reservaTotal" placeholder="Reserva Total" readOnly="readOnly" disabled>
 				</div>
 			</div>
 			
