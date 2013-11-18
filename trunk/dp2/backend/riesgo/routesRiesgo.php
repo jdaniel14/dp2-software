@@ -47,7 +47,10 @@
 	$app->get('/R_listarComiteRiesgo/:id', 'R_getComiteRiesgo');	
 
 	//Plan de contigencia
-	$app->post('/R_registrarActividadContigencia', 'R_postRegistrarActividadContigencia');
+	$app->post('/R_registrarActividadContingencia', 'R_postRegistrarActividadContingencia');
+	$app->put('/R_actualizarCostoTiempoRiesgo','R_updateCostoTiempoRiesgo');
+	$app->get('/R_obtenerPlanContingenciaRiesgo/:id', 'R_getPlanContingenciaRiesgo');
+
 	//$app->get('/R_listarActividadContigencia', 'R_getlistarActividadContigencia');
 
 	//Variado
