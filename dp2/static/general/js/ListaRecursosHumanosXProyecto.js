@@ -63,9 +63,28 @@ $(document).ready(function(){
     })
 });
 
-function asd(www){
-	www.removeClass("noMostrar");
-	www.remove();
+function asd(www,id){
+	
+	if (id!=null){
+		var envio = {id_rrhhxpr : id};
+		$.ajax({
+			type: 'POST',
+			dataType: "json", // data type of response
+			data: JSON.stringify(envio),
+			contentType: "application/json; charset=utf-8",
+			url: "../../api/G_eliminarRecursoProyecto",
+	        success: function(data){
+	            alert("Recurso eliminado");
+	            $(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
+	        }
+		});	
+	}
+	else{
+		www.removeClass("noMostrar");
+		www.remove();
+	} 
+	
+		
 }
 
 function enviarDataSJ(){
@@ -85,6 +104,7 @@ function grabarRecursos(envio){
         success: function(data){
         	//alert(data.me);
             alert("Ya se inserto");
+            $(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
         }
 	});
 
@@ -143,13 +163,13 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
+	var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
 
 		'</td><td>'+ arreglo["prof_act"] +
 		'</td><td>' + arreglo["costo"] +
 		'</td><td>' + arreglo["fechaini"] +
 		'</td><td>' + arreglo["fechafin"] +
-		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent());>Eliminar</button></td></tr>';
+		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';
 
 	$("#ListaRecursosHumanosXProyecto tbody").append(tbody);
 	$("#ListaRecursosHumanosXProyecto").trigger("update"); 

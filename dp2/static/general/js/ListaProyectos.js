@@ -53,7 +53,6 @@ function seteaRol (){
 		data: JSON.stringify(coso),
 		dataType: "json", 
 		success: function(data){
-			alert(data.me);
 			localStorage.setItem("idRol",data.me);
 		}
 	});		
@@ -245,7 +244,6 @@ var l_objetivos=[];
 		l_objetivos.push(aux);
 	}
 	obj["l_objetivos"]=l_objetivos;
-	        alert(JSON.stringify(obj));
 
 		$.ajax({
 			type: 'POST',
@@ -264,7 +262,6 @@ var l_objetivos=[];
 			data: JSON.stringify(envio),
 			async: true,
 	        success: function(data){
-	            alert("Ya se cerro pe causha");
 	             $(location).attr('href','ListaProyectos.html');
 	        }
 		});      
