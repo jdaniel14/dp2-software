@@ -956,9 +956,9 @@
         }        
     }    
 
-    //--------------------------------------Plan Contigencia--------------------------------------
+    //--------------------------------------Plan Contingencia--------------------------------------
 
-    function R_postRegistrarActividadContigencia(){
+    function R_postRegistrarActividadContingencia(){
         $request = \Slim\Slim::getInstance()->request();
         $actividad = json_decode($request->getBody());
         $costo=0;$tiempo=0;
@@ -997,9 +997,52 @@
         }
         echo json_encode(array("idRiesgo"=>$actividad->id_acciones_x_riesgo,"descripcion"=>$actividad->descripcion,
             "costo"=>$costo,"tiempo"=>$tiempo));
+    }
+
+   function R_updateCostoTiempoRiesgo(){
+        //$request = \Slim\Slim::getInstance()->request();
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        //$riesgo = json_decode($var);
+        $query = "UPDATE RIESGO_X_PROYECTO SET costo_potencial=:costo_potencial, demora_potencial=:demora_potencial 
+        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+            $stmt->bindParam("costo_potencial", $riesgo->costo);
+            $stmt->bindParam("demora_potencial", $riesgo->tiempo);
+            $stmt->execute();
+            $db = null;
+            echo json_encode("Se actualizo costo y tiempo");
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+        }
 
     }
 
+    function R_getPlanContingenciaRiesgo($idRiesgoXProyecto){
+        $query = "SELECT *
+                FROM ACCIONES_X_RIESGO  WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        try {
+            $arreglo= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_riesgo_x_proyecto",$idRiesgoXProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("descripcion" => $row['descripcion'], 
+                            "costo" => $row['costo'],
+                            "tiempo" => $row['tiempo']
+                            );
+                array_push($arreglo,$data);
+            }
+            $db = null;
+            echo json_encode($arreglo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
 
 
 
