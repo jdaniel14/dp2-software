@@ -91,6 +91,7 @@ function CR_getPaquetesEDT($json) {//Servicio 7
 }
 
 function CR_postActividades() {//servicio8
+	date_default_timezone_set('America/Lima');
     $request = \Slim\Slim::getInstance()->request();
     $actividades = json_decode($request->getBody());
 	$flag=CR_validarActividades($actividades);
@@ -111,7 +112,7 @@ function CR_postActividades() {//servicio8
 		echo json_encode($flag);
 }
 
-function CR_getListaActividad($json){
+function CR_getListaActividad($json){//servicio 9
 
 	$proy = json_decode($json);
 	//echo json_encode($proy);
@@ -119,7 +120,7 @@ function CR_getListaActividad($json){
 
 }
 
-function CR_updateActividad(){
+function CR_updateActividad(){//servicio 10
 	$request = \Slim\Slim::getInstance()->request();
     $actividad = json_decode($request->getBody());
 
@@ -160,12 +161,15 @@ function CR_modificar_Avance_Actividad_BD($actividad){
 
 function CR_modificar_actividad_BD($actividad){
 
-	$sql = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? where id_actividad=?;commit;";
+	date_default_timezone_set('America/Lima');
+	$sql = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where id_actividad=?;commit;";
     //$lista_actividad = array();
+	
+	
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($actividad->name,$actividad->duration+0,$actividad->id+0));
+        $stmt->execute(array($actividad->name,$actividad->duration+0,$actividad->fecha_inicio,$actividad->fecha_inicio,1000 * strtotime($actividad->fecha_inicio),1000 * strtotime($actividad->fecha_inicio),$actividad->id+0));
 
 
         $db = null;
@@ -182,9 +186,10 @@ function CR_modificar_actividad_BD($actividad){
 
 
 function CR_getListaSimpleActividad($idProyecto){
-
-	    
-    $sql = " select a.id_actividad,a.nombre_actividad,a.dias, a.id_paquete_trabajo"
+	//	date_default_timezone_set('America/Lima');
+	 //$milliseconds = 1000 * strtotime('25-11-2009');
+	// echo json_encode($milliseconds);
+    $sql = " select a.id_actividad,a.nombre_actividad,a.dias, a.id_paquete_trabajo,a.fecha_plan_inicio,a.fecha_plan_fin"
 		  ." from dp2.ACTIVIDAD a "
 		  ." where  a.id_proyecto=? and a.eliminado=0 and a.profundidad>0; ";
 	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ;";
@@ -205,7 +210,7 @@ function CR_getListaSimpleActividad($idProyecto){
                 if ($p2 = $stmt2->fetch(PDO::FETCH_ASSOC))
                     $detalle_paquete = $p2["nombre"];
             }
-            $actividad = array("id" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "idWbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "duration" => $p["dias"] + 0);
+            $actividad = array("id" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "idWbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "duration" => $p["dias"] + 0,"fecha_inicio"=>$p["fecha_plan_inicio"],"fecha_fin"=>$p["fecha_plan_fin"]);
             array_push($lista_actividad, $actividad);
         }
 
