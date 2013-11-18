@@ -39,4 +39,8 @@
 	$app->get('/AL_getPDF','generarPDF');
 	$app->get('/AL_getExcel','generarExcel');
 
+//Sprint 5!
+	$app->post('/AL_mostrarPlanGestionRequisitos','mostrarPlanGestionRequisitos');
+	$app->post('/AL_crearPlanGestionRequisitos','crearPlanGestionRequisitos');
+	$app->post('/AL_modificarPlanGestionRequisitos','modificarPlanGestionRequisitos');
 ?>
