@@ -288,7 +288,7 @@ function G_postBorrarMiembroDeProyecto() {
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("id", $body->id);
+        $stmt->bindParam("id", $body->id_rrhhxpr);
         $stmt->execute();
         $db = null;
         echo json_encode(array("me" => ""));
@@ -662,7 +662,8 @@ function G_getListaRecursosEnProyecto($id) {
 		P.nombre_proyecto,
 		M.PORCENTAJE,
 		M.fecha_entrada FECHAINI,
-		M.fecha_salida	FECHAFIN
+		M.fecha_salida	FECHAFIN,
+        M.id_miembros_equipo IDMXE
 		          FROM MIEMBROS_EQUIPO  M,
 		          EMPLEADO E,
 		          ROL_EMPLEADO RE, 
@@ -674,6 +675,7 @@ function G_getListaRecursosEnProyecto($id) {
 						  AND M.ID_PROFESION_ACTUAL=PR.ID_PROFESION
 						  AND M.ID_ROL=RE.ID_ROL
 						  AND M.ID_PROYECTO=P.id_proyecto
+                          AND M.ESTADO=1
 						  AND PR1.ID_PROFESION=E.ID_PROFESION";
     try {
         $db = getConnection();
@@ -694,7 +696,8 @@ function G_getListaRecursosEnProyecto($id) {
                 "prof_base" => $j["PROFESION_BASE"],
                 "prof_act" => $j["PROFESION_ACTUAL"],
                 "fechaini" => $j["FECHAINI"],
-                "fechafin" => $j["FECHAFIN"]
+                "fechafin" => $j["FECHAFIN"],
+                "idmxe" => $j["IDMXE"]
             );
             array_push($l_recxpro, $rec);
         }
