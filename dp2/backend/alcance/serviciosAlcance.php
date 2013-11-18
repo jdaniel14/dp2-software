@@ -496,6 +496,8 @@
 	}
 
 	function generarExcel(){
+
+	try{
 		//Se crea el Excel
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setTitle("Diccionario de datos")
@@ -590,5 +592,116 @@
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('../files/archivoDiccionario.xlsx');
 		echo 200;
+
 	}
+	catch (PDOException $e) {
+     	echo '{"me" : "No se puede mostrar el plan de gestión de requisitos"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+    }   
+
+	}
+
+	//QUINTO SPRINT
+
+	function mostrarPlanGestionRequisitos(){
+
+	try{
+    	$request = \Slim\Slim::getInstance()->request();
+		$val = json_decode($request->getBody());
+		$idproyecto = $edt->{"idproyecto"};
+		$con=getConnection();
+
+		//Se obtienen los campos a pasar a front que no son un arreglo
+		$pstmt= $con->prepare("SELECT documentacion,seguimiento,acciones,priorizacion FROM PLAN_GESTION_REQUISITOS WHERE idproyecto = ?");
+    	$pstmt->execute(array($idproyecto));
+    	$arr=$pstmt->fetch(PDO::FETCH_ASSOC);
+
+
+		// Se obtener el arreglo de responsables
+    	$pstmt= $con->prepare("SELECT responsable FROM PLAN_GESTION_REQUISITOS WHERE idproyecto = ?");
+    	$pstmt->execute(array($idproyecto));
+    	$ar_Reponsables=array();
+    	
+    	// Se creo el arreglo para enseñar una lista
+    	while ($ar = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		$dataresp = new Responsabledata($ar["id_responsable"]/*,$ar["nombre"]*/);
+   			array_push($ar_Reponsables,$dataresp);
+   		}
+    	
+		//Se pasa a front
+    	$matriz= [ "doc"=> $arr["documentacion"],
+   		"segu"=> $arr["seguimiento"],
+   		"responsables" => $ar_Reponsables
+   		"acc"=>$arr["acciones"],
+   		"prio"=>$arr["priorizacion"]
+   		];
+    		 
+   		echo json_encode($matriz);
+
+	}
+	catch (PDOException $e) {
+      	echo '{"me" : "No se puede mostrar el plan de gestión de requisitos"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+    }
+
+	}
+
+
+
+	function crearPlanGestionRequisitos(){
+	
+	try{
+
+		$request = \Slim\Slim::getInstance()->request();
+		$plan = json_decode($request->getBody());	
+	
+		$con = getConnection();
+		$pstmt= $con->prepare("INSERT INTO PLAN_GESTION_REQUISITOS(id_proyecto,documentacion,seguimiento,responsable,acciones, 
+		priorizacion) values (?,?,?,?,?,?)");
+		$pstmt->execute(array($plan->{"id_proyecto"},
+			$plan->{"documentacion"},
+			$plan->{"seguimiento"},
+			$plan->{"responsable"},
+			$plan->{"acciones"},
+			$plan->{"priorizacion"}));   
+	}	
+	catch (PDOException $e) {
+      	echo '{"me" : "No se puede crear el plan de gestión de requisitos"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+    }	
+	}		
+
+
+	function modificarPlanGestionRequisitos(){
+	
+	try{
+
+		$request = \Slim\Slim::getInstance()->request();
+		$plan = json_decode($request->getBody());	
+
+		$con = getConnection();
+		$pstmt= $con->prepare("UPDATE PLAN_GESTION_REQUISITOS SET
+          documentacion= ?,
+          seguimiento= ?,
+          responsable= ?,
+          acciones= ?,
+          priorizacion= ?
+          WHERE id_proyecto= ?");
+
+		$pstmt->execute(array(
+			$plan->{"documentacion"},
+			$plan->{"seguimiento"},
+			$plan->{"responsable"},
+			$plan->{"acciones"},
+			$plan->{"priorizacion"},
+			$plan->{"id_proyecto"})
+		);
+    
+	}	
+	catch (PDOException $e) {
+      	echo '{"me" : "No se puede modificar el plan de gestión de requisitos"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+    }	
+	}	
+
 ?>
