@@ -189,14 +189,16 @@ function agregaIndicador(indicador, val, comparaNegativo, comparaPositivo){
 }
 
 function grabarIndicadores(){
-	
+	borraAlerta("divFecha","labFechaError");
 	fecha=$("#fechaVisualizar").val();
+	
 	if (fecha!=null && fecha!=""){
 		dia=fecha.substr(0,2); 
 		mes=fecha.substr(3,2); 
 		anio=fecha.substr(6,4);
 		
 	}else{
+		lanzaAlerta("divFecha","labFechaError","");
 		alert("Ingrese una fecha válida");
 		return;
 	}
