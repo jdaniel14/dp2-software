@@ -51,7 +51,7 @@ function cargaTablaResponsable(){
 	});
 }
 
-var noPlan;
+var noPlan = false;
 $(document).ready(function(){
 	cargaTitulo();
 	cargaTablaResponsable();
@@ -64,7 +64,6 @@ $(document).ready(function(){
 		dataType: "json",
 		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8",
-		async : false,
 		success: function(data){
 			if(data == false){
 				noPlan = true;
@@ -76,8 +75,8 @@ $(document).ready(function(){
 					var filas = $("#listaResponsables").children();
 					for(var i=0; i < filas.length;i++){
 						var id = $($(filas[i]).children()[0]).html();
-						if(data.indexOf(id)>= -1){
-							$($(filas[i]).children()[2]).prop("checked",true);
+						if(lista.indexOf(id)>= -1){
+							$($($(filas[i]).children()[2]).children()[0]).prop("checked",true);
 						}
 					}
 				}
@@ -107,7 +106,7 @@ $(document).ready(function(){
 			obj[data[i]["id"]]=data[i]["value"];
 			obj["responsable"]=getResponsables();
 		}
-		obj["idproyecto"] = id_proyecto;
+		obj["id_proyecto"] = id_proyecto;
 		var ruta;
 		if(noPlan){
 			ruta = '../../api/AL_crearPlanGestionRequisitos';
