@@ -608,30 +608,34 @@
 	try{
     	$request = \Slim\Slim::getInstance()->request();
 		$val = json_decode($request->getBody());
-		$idproyecto = $edt->{"idproyecto"};
+		$idproyecto = $val->{"idproyecto"};
 		$con=getConnection();
 
 		//Se obtienen los campos a pasar a front que no son un arreglo
-		$pstmt= $con->prepare("SELECT documentacion,seguimiento,acciones,priorizacion FROM PLAN_GESTION_REQUISITOS WHERE idproyecto = ?");
+		$pstmt= $con->prepare("SELECT * FROM PLAN_GESTION_REQUISITOS WHERE id_proyecto = ?");
     	$pstmt->execute(array($idproyecto));
     	$arr=$pstmt->fetch(PDO::FETCH_ASSOC);
-
-
+    	if ($arr == NULL){
+    		echo "false";
+    		return;
+    	}
+    	/*
 		// Se obtener el arreglo de responsables
-    	$pstmt= $con->prepare("SELECT responsable FROM PLAN_GESTION_REQUISITOS WHERE idproyecto = ?");
+    	$pstmt= $con->prepare("SELECT responsable FROM PLAN_GESTION_REQUISITOS WHERE id_proyecto = ?");
     	$pstmt->execute(array($idproyecto));
     	$ar_Reponsables=array();
     	
     	// Se creo el arreglo para enseñar una lista
     	while ($ar = $pstmt->fetch(PDO::FETCH_ASSOC)){
-    		$dataresp = new Responsabledata($ar["id_responsable"]/*,$ar["nombre"]*/);
+    		$dataresp = new Responsabledata($ar["id_responsable"]);
    			array_push($ar_Reponsables,$dataresp);
    		}
+		*/
     	
 		//Se pasa a front
     	$matriz= [ "doc"=> $arr["documentacion"],
    		"segu"=> $arr["seguimiento"],
-   		"responsables" => $ar_Reponsables
+   		"responsable" => array_map("intval",explode(",",$arr["responsable"])),
    		"acc"=>$arr["acciones"],
    		"prio"=>$arr["priorizacion"]
    		];
@@ -661,7 +665,7 @@
 		$pstmt->execute(array($plan->{"id_proyecto"},
 			$plan->{"documentacion"},
 			$plan->{"seguimiento"},
-			$plan->{"responsable"},
+			implode(",",$plan->{"responsable"}),
 			$plan->{"acciones"},
 			$plan->{"priorizacion"}));   
 	}	
@@ -691,7 +695,7 @@
 		$pstmt->execute(array(
 			$plan->{"documentacion"},
 			$plan->{"seguimiento"},
-			$plan->{"responsable"},
+			implode(",",$plan->{"responsable"}),
 			$plan->{"acciones"},
 			$plan->{"priorizacion"},
 			$plan->{"id_proyecto"})
