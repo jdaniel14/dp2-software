@@ -16,6 +16,11 @@
         android:theme="@style/AppTheme" >
          
          <!-- INICIO ACTIVIDADES MODULO GENERAL -->
+         <activity
+            android:name="com.dp2.gproyectos.general.view.PruebaMenus"
+            android:label="@string/app_name" >
+            
+        </activity>
         <activity android:name="com.dp2.gproyectos.general.view.SplashActivity" >
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
