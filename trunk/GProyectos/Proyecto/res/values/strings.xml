@@ -35,4 +35,6 @@
     <string name="cronograma_actividad">Actividad</string>
     <string name="cronograma_wbs">Wbs</string>
     <string name="cronograma_actividad_duration">Duración</string>
+    
+    <string name="action_contact">Contact</string>
 </resources>
