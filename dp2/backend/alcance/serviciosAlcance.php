@@ -633,11 +633,11 @@
 		*/
     	
 		//Se pasa a front
-    	$matriz= [ "doc"=> $arr["documentacion"],
-   		"segu"=> $arr["seguimiento"],
+    	$matriz= [ "documentacion"=> $arr["documentacion"],
+   		"seguimiento"=> $arr["seguimiento"],
    		"responsable" => array_map("intval",explode(",",$arr["responsable"])),
-   		"acc"=>$arr["acciones"],
-   		"prio"=>$arr["priorizacion"]
+   		"acciones"=>$arr["acciones"],
+   		"priorizacion"=>$arr["priorizacion"]
    		];
     		 
    		echo json_encode($matriz);
