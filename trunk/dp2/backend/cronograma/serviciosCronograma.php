@@ -112,7 +112,7 @@ function CR_postActividades() {//servicio8
 		echo json_encode($flag);
 }
 
-function CR_getListaActividad($json){//servicio 9
+function CR_getListaActividad($json){//servicio 10
 
 	$proy = json_decode($json);
 	//echo json_encode($proy);
@@ -120,7 +120,7 @@ function CR_getListaActividad($json){//servicio 9
 
 }
 
-function CR_updateActividad(){//servicio 10
+function CR_updateActividad(){//servicio 11
 	$request = \Slim\Slim::getInstance()->request();
     $actividad = json_decode($request->getBody());
 
@@ -128,11 +128,187 @@ function CR_updateActividad(){//servicio 10
 }
 
 
-function CR_updateAvanceActividad(){
+function CR_updateAvanceActividad(){//servicio 12
 	$request = \Slim\Slim::getInstance()->request();
     $actividad = json_decode($request->getBody());
 
     echo json_encode(CR_modificar_Avance_Actividad_BD($actividad));
+
+}
+
+function CR_getDetalleActividad($json){//servicio 13
+
+	$actividad = json_decode($json);
+	//echo json_encode($proy);
+	echo json_encode(CR_obtenerDetalleActividad($actividad->id));
+
+}
+function CR_getRecursosActividad($json){//servicio 14
+
+
+	$actividad = json_decode($json);
+	//echo json_encode($proy);
+	echo json_encode(CR_obtenerRecursosActividad($actividad->id));
+
+}
+function CR_getDetalleRecurso($json){//servicio 15
+
+	$recursoAsignado = json_decode($json);
+	//echo json_encode($proy);
+	echo json_encode(CR_obtenerDetalleRecurso($recursoAsignado->idActividad,$recursoAsignado->idRecurso));
+
+}
+
+
+function CR_updateAvanceRecurso(){//servicio 16
+
+	$request = \Slim\Slim::getInstance()->request();
+    $recursoAsignado = json_decode($request->getBody());
+
+    echo json_encode(CR_guardarAvanceRecurso($recursoAsignado));
+
+
+
+}
+
+
+function CR_guardarAvanceRecurso($recursoAsignado){
+
+	$sql = "update dp2.ACTIVIDAD_X_RECURSO set costo_unitario_real=?,cantidadReal=? where id_actividad=? and id_recurso=?; commit;";
+    //$lista_actividad = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($recursoAsignado->costoReal+0.,$recursoAsignado->cantidadReal+0.,$recursoAsignado->idActividad+0,$recursoAsignado->idRecurso+0));
+
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$db=null;
+        return array("me" => "actualizar" . $e->getMessage());
+    }
+    return CR_obtenerRespuestaExito();
+
+}
+
+
+
+
+function CR_obtenerDetalleRecurso($idActividad,$idRecurso){
+
+    $rec = null;
+    //$listaIds=array();
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and f.id_recurso=? and e.estado=1";
+    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idActividad,$idRecurso));
+        //$stmt = $db->query($sql);
+        //$lista_jp = array();
+        $contador = 1;
+        //echo "mira" . json_encode($listaMapeoRecursos);
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            //echo $j["id_recurso"]. "gg";
+            //$idRecurso=$listaMapeoRecursos["1"];
+            //echo $idRecurso;
+            //$idRecurso = $listaMapeoRecursos["" . $j["id_recurso"]];
+
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, /*"resourceId" => $idRecurso*/ "idunidadmedida" => $j["id_unidad_medida"], "idTipoCosto" => $j["id_tipo_costo"], "descripcion_recurso" => $j["descripcion"], "costRate" => $j["costo_unitario_estimado"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"], "descripcion_tipocosto" => $j["descripcion_tipocosto"]);
+            //array_push($listaRecursos, $rec);
+
+            $contador++;
+        }
+
+        $db = null;
+        //echo json_encode($listaRecursos);
+        return $rec;//array("recursos"=>$listaRecursos);
+    } catch (PDOException $e) {
+        return (array("me" => $e->getMessage()));
+    }
+
+
+
+}
+
+
+function CR_obtenerRecursosActividad($idActividad){
+
+    $listaRecursos = array();
+    //$listaIds=array();
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
+    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idActividad));
+        //$stmt = $db->query($sql);
+        //$lista_jp = array();
+        $contador = 1;
+        //echo "mira" . json_encode($listaMapeoRecursos);
+        while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {//queda por ver mienbros de equipo y el campo esta aceptado
+            //echo $j["id_recurso"]. "gg";
+            //$idRecurso=$listaMapeoRecursos["1"];
+            //echo $idRecurso;
+            //$idRecurso = $listaMapeoRecursos["" . $j["id_recurso"]];
+
+            $rec = array("idrecurso" => $j["id_recurso"], "id" => "tmp_" . $contador, /*"resourceId" => $idRecurso*/ "idunidadmedida" => $j["id_unidad_medida"], "idTipoCosto" => $j["id_tipo_costo"], "descripcion_recurso" => $j["descripcion"], "costRate" => $j["costo_unitario_estimado"] + 0, "simbolo_unidad" => $j["simbolo_unidad"], "typeCost" => $j["descripcion_unidad"], "descripcion_moneda" => $j["descripcion_moneda"], "descripcion_rubropresupuestal" => $j["descripcion_rubropresupuestal"], "value" => $j["cantidadEstimada"] + 0, "valueReal" => $j["cantidadReal"], "costRateReal" => $j["costo_unitario_real"], "descripcion_tipocosto" => $j["descripcion_tipocosto"]);
+            array_push($listaRecursos, $rec);
+
+            $contador++;
+        }
+
+        $db = null;
+        //echo json_encode($listaRecursos);
+        return array("recursos"=>$listaRecursos);
+    } catch (PDOException $e) {
+        return (array("me" => $e->getMessage()));
+    }
+
+
+
+
+}
+
+function CR_obtenerDetalleActividad($idActividad){
+
+	//	date_default_timezone_set('America/Lima');
+	 //$milliseconds = 1000 * strtotime('25-11-2009');
+	// echo json_encode($milliseconds);
+    $sql = " select  id_actividad,nombre_actividad,id_paquete_trabajo,fecha_plan_inicio,fecha_plan_fin,dias,avance from dp2.ACTIVIDAD where id_actividad=?;";
+	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
+	
+    $actividad = null;
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($idActividad));
+
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $detalle_paquete = "";
+
+            if ($p["id_paquete_trabajo"] != NULL) {
+                //echo "{ ". ($p["id_paquete_trabajo"]!=NULL) ."}";
+                $stmt2 = $db->prepare($sql2);
+                $stmt2->execute(array($p["id_paquete_trabajo"]));
+                if ($p2 = $stmt2->fetch(PDO::FETCH_ASSOC))
+                    $detalle_paquete = $p2["nombre"];
+            }
+            $actividad = array("id" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "idWbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "duration" => $p["dias"] + 0,"fecha_inicio"=>$p["fecha_plan_inicio"],"fecha_fin"=>$p["fecha_plan_fin"],"avance"=>$p["avance"]);
+            
+        }
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$db = null;
+        return array("me" => $e->getMessage());
+    }
+	
+	return $actividad;
 
 }
 
@@ -189,10 +365,10 @@ function CR_getListaSimpleActividad($idProyecto){
 	//	date_default_timezone_set('America/Lima');
 	 //$milliseconds = 1000 * strtotime('25-11-2009');
 	// echo json_encode($milliseconds);
-    $sql = " select a.id_actividad,a.nombre_actividad,a.dias, a.id_paquete_trabajo,a.fecha_plan_inicio,a.fecha_plan_fin"
+    $sql = " select a.id_actividad,a.nombre_actividad,a.dias, a.id_paquete_trabajo,a.fecha_plan_inicio,a.fecha_plan_fin,predecesores,(numero_fila-1) as numero_fila"
 		  ." from dp2.ACTIVIDAD a "
-		  ." where  a.id_proyecto=? and a.eliminado=0 and a.profundidad>0; ";
-	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ;";
+		  ." where  a.id_proyecto=? and a.eliminado=0 and a.profundidad>0 order by numero_fila;";
+	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
 	
     $lista_actividad = array();
     try {
@@ -210,7 +386,7 @@ function CR_getListaSimpleActividad($idProyecto){
                 if ($p2 = $stmt2->fetch(PDO::FETCH_ASSOC))
                     $detalle_paquete = $p2["nombre"];
             }
-            $actividad = array("id" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "idWbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "duration" => $p["dias"] + 0,"fecha_inicio"=>$p["fecha_plan_inicio"],"fecha_fin"=>$p["fecha_plan_fin"]);
+            $actividad = array("id" => $p["id_actividad"] + 0, "name" => $p["nombre_actividad"], "idWbs" => $p["id_paquete_trabajo"], "wbsNode" => $detalle_paquete, "duration" => $p["dias"] + 0,"fecha_inicio"=>$p["fecha_plan_inicio"],"fecha_fin"=>$p["fecha_plan_fin"],"predecesores"=>$p["predecesores"],"numero_fila"=>$p["numero_fila"]);
             array_push($lista_actividad, $actividad);
         }
 
@@ -219,7 +395,7 @@ function CR_getListaSimpleActividad($idProyecto){
     } catch (PDOException $e) {
 //			      echo '{"error":{"text":'. $e->getMessage() .'}}';
 		$db = null;
-        return json_encode(array("me" => $e->getMessage()));
+        return array("me" => $e->getMessage());
     }
 	
 	return array("tasks"=>$lista_actividad);
