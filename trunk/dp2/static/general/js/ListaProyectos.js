@@ -26,18 +26,25 @@ function iniciaProyectos(){
 		type: 'GET',
 		url: rootURL,
 		dataType: "json", // data type of response
-        success: function(data){                    
-            agregaDataFila(data);
-            $(".btn.btn-primary").click(function(){
-				var auxtd = $(this).closest("tr").find("td");
-				var idProyecto = auxtd[0].innerHTML;
-				var nombreProyecto = auxtd[1].innerHTML;		
-				localStorage.setItem("idProyecto",idProyecto);
-				localStorage.setItem("nombreProyecto",nombreProyecto);
-				seteaRol();
-				$(location).attr('href','MenuProyecto.html');
-				
-			});		
+        success: function(data){  
+        	if (data["prs"]!=""){
+        		$("#listaProyectos").show();
+        		agregaDataFila(data);
+	            $(".btn.btn-primary").click(function(){
+					var auxtd = $(this).closest("tr").find("td");
+					var idProyecto = auxtd[0].innerHTML;
+					var nombreProyecto = auxtd[1].innerHTML;		
+					localStorage.setItem("idProyecto",idProyecto);
+					localStorage.setItem("nombreProyecto",nombreProyecto);
+					seteaRol();
+					$(location).attr('href','MenuProyecto.html');
+					
+				});	
+        	}
+        	else{
+        		$("#alertNoProyectos").show();
+        	}
+            		
         }
 	});
 }
