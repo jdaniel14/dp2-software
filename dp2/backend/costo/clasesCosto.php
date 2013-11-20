@@ -35,6 +35,7 @@ define('CO_SERVICIO_24', 24);
 define('CO_SERVICIO_25', 25);
 define('CO_SERVICIO_26', 26);
 define('CO_SERVICIO_27', 27);
+define('CO_SERVICIO_28', 28);
 
 class CO_Constants {
 	private static $permisosVista = null;
@@ -117,6 +118,7 @@ class CO_Constants {
     			CO_SERVICIO_24 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_25 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_26 => new CO_PermisosServicio(true, true, false),
+    			CO_SERVICIO_27 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_27 => new CO_PermisosServicio(true, true, false)
     		);
     	}
@@ -245,6 +247,7 @@ class CO_Actividad {
 }
 
 class CO_Paquete {
+	public $idProyecto;
 	public $idPaquete;
 	public $nombre;
 	public $costoPaquete;
