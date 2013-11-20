@@ -41,10 +41,10 @@ function G_getListaJP() {
 }
 
 function G_postRegistrarProyecto() {
-    //$request = \Slim\Slim::getInstance()->request();
-    //$proj = json_decode($request->getBody());
-    $request = "{ \"nom\": \"Proyecto nuevo sprint 6\", \"fi\": \"2013-10-10\",\"ff\": \"2014-11-10\",\"tp\": 1, \"jp\": 1, \"idprofact\": 1, \"hh\": \"200\" }";
-    $proj = json_decode($request);
+    $request = \Slim\Slim::getInstance()->request();
+    $proj = json_decode($request->getBody());
+    //$request = "{ \"nom\": \"Proyecto nuevo sprint 6\", \"fi\": \"2013-10-10\",\"ff\": \"2014-11-10\",\"tp\": 1, \"jp\": 1, \"idprofact\": 1, \"hh\": \"200\" }";
+    //$proj = json_decode($request);
     
     try {
         $sql = "INSERT INTO PROYECTO (nombre_proyecto, 
