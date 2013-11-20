@@ -10,11 +10,14 @@
 	$app->post('/CR_postActividades/', 'CR_postActividades'); //servicio8: guardar las actividades del proyecto
 	$app->get('/CR_getIndicadoresFlujo/:parametro','CR_getIndicadoresFlujo'); //servicio 9 Obtener indicadores del proyecto
 	
-	$app->get('/CR_getListaActividad/:parametro', 'CR_getListaActividad');//servicio 10 obtener lista de actividades para riesgo
-	$app->post('/CR_updateActividad/', 'CR_updateActividad');//servicio 11 modificar actividad nombre y duracion
+	//PARA MOVILES
+	$app->get('/CR_getListaActividad/:parametro', 'CR_getListaActividad');//servicio 10 obtener lista de actividades para riesgo	
+	$app->post('/CR_updateActividad/', 'CR_updateActividad');//servicio 11 modificar actividad nombre y duracion Y Fecha INICIO
 	$app->post('/CR_updateAvanceActividad/', 'CR_updateAvanceActividad');//servicio 12 modificar avance dias de actividad
-	
-	
+	$app->get('/CR_getDetalleActividad/:parametro','CR_getDetalleActividad');//servicio 13 obtener detalle de la actividad
+	$app->get('/CR_getRecursosActividad/:parametro','CR_getRecursosActividad');//servicio 14 listar los recursos asignados a una actividad
+	$app->get('/CR_getDetalleRecurso/:parametro','CR_getDetalleRecurso');//servicio 15 obtener detalle de un recurso
+	$app->post('/CR_updateAvanceRecurso/', 'CR_updateAvanceRecurso');//servicio 16 guardar datos reales de un recurso
 	$app->post('/CR_test/:parametro', 'hallar_fechainicio_fechafin_red');
 	
 	
