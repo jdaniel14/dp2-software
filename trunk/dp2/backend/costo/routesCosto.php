@@ -30,6 +30,8 @@
 	$app->get('/CO_obtenerCostoIndirectoTotalEstimado/:parametro', 'CO_getCostoIndirectoTotalEstimado'); //servicio26
 	$app->get('/CO_obtenerCostoIndirectoTotalReal/:parametro', 'CO_getCostoIndirectoTotalReal'); //servicio27
 
+	$app->get('/CO_obtenerMontoContingencia/:parametro', 'CO_getMontoContingencia'); //servicio28
+
 	$app->get('/CO_test/', 'CO_testFunction');
 	$app->get('/CO_test_puntos/', 'CO_testFunctionPuntos');
 	$app->post('/CO_yolo/', 'CO_testFunctionPOST');
