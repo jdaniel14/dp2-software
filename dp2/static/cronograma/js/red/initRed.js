@@ -7,7 +7,7 @@ var yIni = 75;
 
 //Factor que se mueve en el mismo bloque
 var factorXEnB = 100;
-var factorYEnB = 145;
+var factorYEnB = 150;
 
 //Factor que se mueve de bloque en bloque
 var factorX = 500;
@@ -95,7 +95,7 @@ function crearTitulo(id_actividad,nombre_actividad, posX, posY, colorBorde, anch
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
-			'nodeContent': nombre_actividad,
+			'nodeContent': nombre_actividad,//aquiiii apiiii hay que poner label y también al título del diagrama
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': widthN,
@@ -132,12 +132,12 @@ function crearTitulo(id_actividad,nombre_actividad, posX, posY, colorBorde, anch
 	}
 }
 
-function crearNodo(id_actividad,nombre_actividad, fecha_actual_inicio, fecha_actual_fin,early_start,late_start, early_end, late_end, holgura_inicial, holgura_final, posX, posY, colorBorde, anchoBorde, widthN, heightN){
+function crearNodo(id_actividad,nombre_actividad, fecha_actual_inicio, fecha_actual_fin,duracion,early_start,late_start, early_end, late_end, holgura_inicial, holgura_final, posX, posY, colorBorde, anchoBorde, widthN, heightN){//
 	if(id_actividad != undefined){
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
-			'nodeContent': nombre_actividad + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin + "<br>Inicio Temprano: " + early_start + "<br>Inicio Tarde: " + late_start + "<br>Fin Temprano: " + early_end + "<br>Fin Tarde: " + late_end + "<br>Holgura Inicial: " + holgura_inicial + "<br>Holgura Final: " + holgura_final,
+			'nodeContent': '<label style="font-weight:bold; text-align: center; font-size:12px; float:left; border-bottom: 4px solid #B32323;  border-right: 4px solid #B32323; padding: 6px;">'+early_start +"</label>"+ '<label style="font-weight:bold; text-align: center; font-size:12px; float:right; border-bottom: 4px solid #B32323; border-left: 4px solid #B32323;padding: 6px;">'+early_end +'</label>' + "<br><br>"+ '<label style="font-size:11px; font-weight:bold; border-bottom: 1px solid;">'+nombre_actividad+'</label>' + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin +"<br>Duración: " + duracion + " días" + "<br>Holgura: " + holgura_inicial + "<br>"+'<label style="font-weight:bold; text-align: center; font-size:12px; float:left; border-top: 4px solid #B32323;  border-right: 4px solid #B32323; padding: 6px;">'+late_start +"</label>"+ '<label style="font-weight:bold; text-align: center; font-size:12px; float:right; border-top: 4px solid #B32323; border-left: 4px solid #B32323;padding: 6px;">'+late_end,
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': widthN,
@@ -181,13 +181,13 @@ function imprimirHijos(padre,rX,rY){
 			
 			if ($.inArray(padre,arrPapis) != -1){//si es que es su hijo...
 				if(re.EsCritico == 0){
-					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,re.est,re.lst, re.eet, re.let,re.holgura_inicial, re.holgura_final, rX,rY,borderColor,borderWidth, width, height);
+					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,re.numDias,re.est,re.lst, re.eet, re.let,re.holgura_inicial, re.holgura_final, rX,rY,borderColor,borderWidth, width, height);
 					re.x = rX;
 					re.y = rY;
 					hY = rY + factorYEnB;
 				}
 				else{
-					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,re.est,re.lst, re.eet, re.let,re.holgura_inicial, re.holgura_final, rX,rY,borderColorC,borderWidthC, width, height);
+					crearNodo(re.id_actividad,re.nombre_actividad, re.fecha_plan_inicio, re.fecha_plan_fin,re.numDias,re.est,re.lst, re.eet, re.let,re.holgura_inicial, re.holgura_final, rX,rY,borderColorC,borderWidthC, width, height);
 					re.x = rX;
 					re.y = rY;
 					hY = rY + factorYEnB;
@@ -207,7 +207,7 @@ function imprimirTituloDelBloque(bloque, rX, rY){
 }
 
 function imprimirDuracionCritica(bloque, rX, rY){
-	crearTitulo('-1',"Duración Total de la Ruta Crítica: " + bloque +"días",rX,rY,borderColorT,borderWidthT, factorX, height);
+	crearTitulo('-1',"Duración Total de la Ruta Crítica: " + bloque +" días",rX,rY,borderColorT,borderWidthT, factorX, height);
 }
 
 function cantidadDeActividadesEnElBloque(actividadesEnBloque){
@@ -349,12 +349,12 @@ function iniciarFiesta(){
 			if(el.marcado == 0){
 				//imprimir el nodo
 				if(el.EsCritico == 0){					
-					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let, el.holgura_inicial, el.holgura_final,x,y+55,borderColor,borderWidth, width, height);
+					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,el.numDias,el.est,el.lst, el.eet, el.let, el.holgura_inicial, el.holgura_final,x,y+55,borderColor,borderWidth, width, height);
 					el.x = x;
 					el.y = y;				
 				}
 				else{
-					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let,el.holgura_inicial, el.holgura_final,x,y+55,borderColorC,borderWidthC, width, height);
+					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,el.numDias,el.est,el.lst, el.eet, el.let,el.holgura_inicial, el.holgura_final,x,y+55,borderColorC,borderWidthC, width, height);
 					el.x = x;
 					el.y = y;				
 				}
