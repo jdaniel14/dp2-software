@@ -1,8 +1,5 @@
 package com.dp2.gproyectos.cronograma.controller;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -22,15 +19,12 @@ import android.graphics.BitmapFactory;
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
-import com.dp2.gproyectos.costos.controller.IndicadoresController;
-import com.dp2.gproyectos.costos.entities.IndicadorBean;
-import com.dp2.gproyectos.costos.model.GetListaHistorialIndicadoresResponse;
-import com.dp2.gproyectos.costos.model.GetListaIndicadoresResponse;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.GetListaActividadesResponse;
+import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
+import com.dp2.gproyectos.cronograma.model.RecursoBean;
 import com.dp2.gproyectos.general.controller.UsuarioController;
-import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.google.gson.Gson;
 
 public class CronogramaController extends Controller{
@@ -127,6 +121,45 @@ public class CronogramaController extends Controller{
 		mensaje = objResponse;
 		
 		return mensaje;
+	}
+	
+	public ArrayList<RecursoBean> getRecursos(int idActividad) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.CronogramaGetRecursosPorActividad +"/";
+		ArrayList<RecursoBean> listaRecursos = null;
+		
+		Gson gs = new Gson();
+		String strResponse = "";
+		GetListaRecursosResponse objResponse = null;
+		
+		JSONObject parametros = new JSONObject();
+		try {
+			parametros.put("id", idActividad);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, parametros.toString());
+		String result;
+		if (respuesta != null) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		objResponse = gs.fromJson(result, GetListaRecursosResponse.class);
+		if (objResponse!=null){
+			listaRecursos  = objResponse.recursos;
+		}
+		return listaRecursos ;
 	}
 	
 	
