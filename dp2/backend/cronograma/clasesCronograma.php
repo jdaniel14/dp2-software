@@ -60,12 +60,13 @@ class CR_DependenciasJSON{
     
         public $listaRed = array();
         public $cantBloques;
+        public $duracioncritica;
 
     //constructor
-    function __construct($listaRed,$cantBloques) {
+    function __construct($listaRed,$cantBloques,$duracioncritica) {
         $this->listaRed = $listaRed;
         $this->cantBloques=$cantBloques;
-
+        $this->duracioncritica=$duracioncritica;
     }
 }
 

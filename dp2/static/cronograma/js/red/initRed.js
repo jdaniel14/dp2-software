@@ -3,15 +3,15 @@ var listaRed;
 var dataAJAX;
 
 var xIni = 1;
-var yIni = 100;
+var yIni = 75;
 
 //Factor que se mueve en el mismo bloque
-var factorXEnB = 150;
-var factorYEnB = 120;
+var factorXEnB = 100;
+var factorYEnB = 145;
 
 //Factor que se mueve de bloque en bloque
 var factorX = 500;
-var factorY = 70;
+var factorY = 750;
 
 //Posicion actual -> Va variando
 var x = 1;
@@ -28,12 +28,12 @@ var borderColorT = '#63449A';
 var borderWidthT = 3;
 
 //Parametros del diagrama
-var widthDiagram = 2000;
-var heightDiagram = 2000;
+var widthDiagram = 1700;
+var heightDiagram = 1200;
 
 //Parametros de dibujo de los cuadraditos
-var width = 160;
-var height = 70;
+var width = 350;
+var height = 130;
 var anchoPita = '3';
 var anchoPitaC = '6';
 var borderColor = '#AAAAAA';
@@ -75,8 +75,8 @@ function cargarDatos(){
 		url: rootURL,
 		dataType: "json", 
         success: function(data){
-        	console.log("Data Recibida: ");
-        	console.log(data);
+        	//console.log("Data Recibida: ");
+        	//console.log(data);
         	dataAJAX = data;
         	listaRed = data.listaRed;
         	iniciarFiesta();
@@ -206,6 +206,10 @@ function imprimirTituloDelBloque(bloque, rX, rY){
 	crearTitulo('-1',"Mes: " + bloque,rX,rY,borderColorT,borderWidthT, factorX, height);
 }
 
+function imprimirDuracionCritica(bloque, rX, rY){
+	crearTitulo('-1',"Duración Total de la Ruta Crítica: " + bloque +"días",rX,rY,borderColorT,borderWidthT, factorX, height);
+}
+
 function cantidadDeActividadesEnElBloque(actividadesEnBloque){
 	//console.log("Hallando los niveles");
 	//console.log(actividadesEnBloque);
@@ -277,16 +281,16 @@ function iniciarFiesta(){
 	modificacionesAlRed();
 	
 	//Inicializo los valores para el tama�o de cada bloque
-	factorX = widthDiagram / dataAJAX.cantBloques;
+	factorX = widthDiagram /( dataAJAX.cantBloques+1);
 	
-	console.log("Inicio de la impresion de diagrama de red...");
-	console.log(listaRed);
+	//console.log("Inicio de la impresion de diagrama de red...");
+	//console.log(listaRed);
 	
 	y = yIni;
 	
 	var mesAnterior;//Para controlar bloques que no tienen nada
 	//Recorro todos los bloques y dibujo todas las actividades
-	for(var b = 0; b < dataAJAX.cantBloques; b++){ //hasta listaRed.cantBloques
+	for(var b = 0; b <= dataAJAX.cantBloques; b++){ //hasta listaRed.cantBloques
 		//console.log("Bloque actual: " + b);
 				
 		//Obtener las actividades del bloque
@@ -301,13 +305,13 @@ function iniciarFiesta(){
 		});
 		//Fin obtener actividades del bloque
 		
-		console.log("Actividades por el bloque: " + b);
-		console.log(actXBloque);
+		//console.log("Actividades por el bloque: " + b);
+		//console.log(actXBloque);
 		
 		//Inicializo el factor de movimiento en este bloque
 		//Calculo cantActXBloque (niveles en el bloque)
-		cantidadDeActividadesEnElBloque(actXBloque);
-		console.log("Cantidad de niveles en el bloque = " + cantActXBloque);
+		if (b!=dataAJAX.cantBloques) cantidadDeActividadesEnElBloque(actXBloque); else cantActXBloque=1;
+		//console.log("Cantidad de niveles en el bloque = " + cantActXBloque);
 		
 		factorXEnB = factorX / cantActXBloque;
 		//Fin Inicializar el factor de movimiento en este bloque
@@ -320,6 +324,8 @@ function iniciarFiesta(){
 		//Inicializar la posicion del titulo del bloque
 		xTitulo = x;
 		yTitulo = yIni - 70;
+                
+                                    if (b!=dataAJAX.cantBloques){
 		
 		var fechita = actXBloque[0].fecha_plan_inicio.split("-");
 		var mes;
@@ -331,23 +337,24 @@ function iniciarFiesta(){
 			mes = meses[parseInt(mesAnterior) + 1];
 		}
 		
-		imprimirTituloDelBloque(mes, xTitulo, yTitulo);
+		 imprimirTituloDelBloque(mes, xTitulo, yTitulo);} else imprimirDuracionCritica(dataAJAX.duracioncritica, xTitulo, yTitulo);
 		//Fin inicializar la posicion del titulo del bloque
 		
 		//Recorro la lista de las actividades que pertenecen al bloque en el que estoy
 		//actXBloque
+                                    if (b!=dataAJAX.cantBloques){
 		$.each(actXBloque,function(e,el){
 			
 			//Dibujar si es que aun no se ha dibujado (marcado == 0)
 			if(el.marcado == 0){
 				//imprimir el nodo
 				if(el.EsCritico == 0){					
-					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let, el.holgura_inicial, el.holgura_final,x,y,borderColor,borderWidth, width, height);
+					crearNodo(el.id_actividad, el.nombre_actividad, el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let, el.holgura_inicial, el.holgura_final,x,y+55,borderColor,borderWidth, width, height);
 					el.x = x;
 					el.y = y;				
 				}
 				else{
-					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let,el.holgura_inicial, el.holgura_final,x,y,borderColorC,borderWidthC, width, height);
+					crearNodo(el.id_actividad, el.nombre_actividad , el.fecha_plan_inicio, el.fecha_plan_fin,el.est,el.lst, el.eet, el.let,el.holgura_inicial, el.holgura_final,x,y+55,borderColorC,borderWidthC, width, height);
 					el.x = x;
 					el.y = y;				
 				}
@@ -362,6 +369,7 @@ function iniciarFiesta(){
 				y = y;				
 			}			
 		});
+                                    }
 		//Fin recorro la lista		
 	}
 	//Fin recorro todos los bloques
