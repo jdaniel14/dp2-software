@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
@@ -30,11 +31,11 @@ import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.markupartist.android.widget.PullToRefreshListView;
 
-public class ListaActividadesXProyecto extends Activity implements Loadingable{
+public class ListaActividadesXProyecto extends SherlockFragmentActivity implements Loadingable{
 
 	private static ArrayList<ActividadBean> tasks;
 	String idProyecto;
-	String nombreProyecto;
+	String nombreProyecto = "";
 	
 	PullToRefreshListView listActs;
 	ActividadesAdapter adapter;
@@ -159,7 +160,10 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.lista_actividades_x_proyecto);
-				
+		
+		getSherlock().getActionBar().setTitle(nombreProyecto);
+		getSherlock().getActionBar().setLogo(R.drawable.maleta);
+		
 		cargarDatos();
 		
 		
@@ -172,7 +176,7 @@ public class ListaActividadesXProyecto extends Activity implements Loadingable{
 		System.out.println("Iniciando carga de datos");
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		nombreProyecto = getIntent().getExtras().getString("nombreProyecto");
-		
+		getSherlock().getActionBar().setTitle(nombreProyecto);
 		
 		
 		new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();		
