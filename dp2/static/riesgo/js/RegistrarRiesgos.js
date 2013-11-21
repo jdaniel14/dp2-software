@@ -334,6 +334,30 @@ function main() {
 
     });
 
+    $("#btnAcciones").click(function() {
+
+        var data = {
+            idRiesgoProyecto: parseInt(idArray),
+            fechaMat: $('#fechaMat').val()
+        };
+
+        var jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        $.ajax({
+            type: 'PUT',
+            url: setMaterializada,
+            // dataType: "json",
+            data: jsonData,
+            success: function() {
+                
+                //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
+                window.location.replace("../riesgo/ActualizarGantt.html");
+            },
+            fail: codigoError
+        });
+
+    });
+
 
 }
 
@@ -525,26 +549,10 @@ function listarRiesgos() {
             // limpiarConfirmar();
             $('#checkearTodos').attr('checked', false);
             agregaDataFila(data);
-            $(".materializar").click(function() {
+            $(".acciones").click(function() {
+                alert("xD");
                 var idRiesgoProyecto = $(this).closest("tr").attr("id");
-                idArray = idRiesgoProyecto;
-                var data = {
-                    id_riesgo_x_proyecto: idRiesgoProyecto
-                };
-                $.ajax({
-                    type: 'GET',
-                    url: getItem + '/' + data.id_riesgo_x_proyecto,
-                    data: jsonData,
-                    dataType: "json",
-                    success: function(data) {
-                        var item = data;
-                        if (item.paqueteTrabajo == null) {
-                            localStorage.setItem("idPaquete", 0);
-                        } else {
-                            localStorage.setItem("idPaquete", item.idPaqueteTrabajo);
-                        }
-                    }
-                });
+                localStorage.setItem("idRiesgo", idRiesgoProyecto);
             });
 
             $(".glyphicon.glyphicon-edit").click(function() {
@@ -745,7 +753,8 @@ function agregaFilaRiesgo(arreglo, i) {
                 "</td><td><a href=\"#\"><span class=\"glyphicon glyphicon-edit\"></span></a>" +
                 "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" +
                 // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
-                tipoCheckbox + "</td><td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>");
+                tipoCheckbox + "</td><td><a href=\"../riesgo/AccionesRiesgos.html\" id=\"btnAcciones\" class='btn btn-primary acciones'>Acciones</a></td>"+
+                "</td><td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>");
     $("#tablaRiesgosGlobal").trigger("update"); 
     }
 }

@@ -31,12 +31,6 @@
                 <input type="hidden" class="form-control" id="idRiesgoM">
                 <div class="form-group col-lg-12">
                     <div class="col-lg-6">
-                        <label class="col-lg-4 control-label">Nombre de la actividad</label>
-                        <div class="col-lg-8">
-                            <input type="text" class="form-control" id="nuevoNombre" placeholder="Ingrese un nuevo nombre de la actividad" maxlength="20">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
                         <label class="col-lg-4 control-label">Escoga una actividad del paquete</label>
                         <div class="col-lg-8">
                             <select class="form-control" id="listaActividades">
@@ -44,26 +38,72 @@
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group col-lg-12">
                     <div class="col-lg-6">
-                        <label class="col-lg-4 control-label">Cantidad de dias de la actividad</label>
+                        <label class="col-lg-4 control-label">Ingrese un nuevo nombre a la actividad</label>
                         <div class="col-lg-8">
-                            <input type="number" step="positive" class="form-control" id="diasActuales" disabled="true">
+                            <input type="text" class="form-control" id="nuevoNombre" placeholder="Ingrese un nuevo nombre de la actividad" maxlength="20">
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <label class="col-lg-4 control-label">Nueva cantidad de dias de la actividad</label>
-                        <div class="col-lg-8">
-                            <input type="number" step="positive" class="form-control" id="nuevosDias" placeholder="Ingrese la nueva duración de la actividad">
+                </div>
+                </br>
+                <div class="well">
+                    <h5><b>Información original de la actividad</b></h5></br>
+                    <div class="form-group col-lg-12">
+                        <div class="col-lg-6">
+                            <label class="col-lg-4 control-label">Fecha de inicio de la actividad</label>
+                            <div class="col-lg-8">
+                                <input type="date" class="form-control" id="fechaInicioActual1" readonly="readonly">
+                            </div>
                         </div>
+                        <div class="col-lg-6">
+                            <label class="col-lg-4 control-label">Duración en dias de la actividad</label>
+                            <div class="col-lg-8">
+                                <input type="number" step="positive" class="form-control" id="diasActuales" disabled="true">
+                            </div>
+                        </div>
+
+                        
+                        <!-- <div class="col-lg-6">
+                            <label class="col-lg-4 control-label">Fecha fin de la actividad</label>
+                            <div class="col-lg-8">
+                                <input type="date" class="form-control" id="fechaFinActual" readonly="readonly">
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                </br>
+                <div class="well">
+                    <h5><b>Nuevos datos de la actividad</b></h5></br>
+                    <div class="form-group col-lg-12">
+                        <div class="col-lg-6">
+                            <label class="col-lg-4 control-label">Fecha de inicio de la actividad</label>
+                            <div class="col-lg-8">
+                                <input type="date" class="form-control" id="fechaInicioActual2" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="col-lg-4 control-label">Ingrese la nueva duración en dias de la actividad</label>
+                            <div class="col-lg-8">
+                                <input type="number" step="positive" class="form-control" id="nuevosDias">
+                            </div>
+                        </div>
+
+                        
+                        <!-- <div class="col-lg-6">
+                            <label class="col-lg-4 control-label">Ingrese la nueva fecha final de la actividad</label>
+                            <div class="col-lg-8">
+                                <input type="date" class="form-control" id="nuevaFechaFin">
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 pull-right">
                 <button class="btn btn-success" id="btnGuardar" data-toggle="modal" href="#confirmarCambios" >Guardar Cambios</button>
+                </br></br></br></br>
             </div>
+
             <!-- <div class="col-lg-2 pull-right">
                 <button class="btn btn-primary " id="btnAtras">Cerrar</button>
             </div> -->
