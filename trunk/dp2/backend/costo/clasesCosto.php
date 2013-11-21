@@ -119,7 +119,7 @@ class CO_Constants {
     			CO_SERVICIO_25 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_26 => new CO_PermisosServicio(true, true, false),
     			CO_SERVICIO_27 => new CO_PermisosServicio(true, true, false),
-    			CO_SERVICIO_27 => new CO_PermisosServicio(true, true, false)
+    			CO_SERVICIO_28 => new CO_PermisosServicio(true, true, false)
     		);
     	}
     	return self::$permisosServicio;
