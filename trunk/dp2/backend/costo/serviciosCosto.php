@@ -953,7 +953,11 @@
 		H.ID_PROYECTO,
 		IFNULL(H.NOMBRE_PROYECTO,'') NOMBRE_PROYECTO,
 		IFNULL(H.PORCENTAJE_RESERVA,0) PORCENTAJE_RESERVA,
-		IFNULL(H.PORCENTAJE_CONTINGENCIA,0) PORCENTAJE_CONTINGENCIA
+		IFNULL(H.PORCENTAJE_CONTINGENCIA,0) PORCENTAJE_CONTINGENCIA,
+		(
+		CASE
+		WHEN H.ESTADO='CERRADO' THEN 1 ELSE 0
+		END) IND_CERRADO
 		FROM
 		PROYECTO H
 		WHERE
@@ -970,7 +974,7 @@
         	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
 					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], 0);
-					//$proyecto->indicadorCerrado = $p["IND_CERRADO"];
+					$proyecto->indicadorCerrado = $p["IND_CERRADO"];
 					if (strcmp(G_obtenerLineaBase($idProyecto)['estado_linea_base'], 'true') == 0)
 						$proyecto->indicadorLineaBase = 1;
 					else
@@ -985,7 +989,7 @@
 
 		
 		$sql = "SELECT
-		SUM(f_aplica_inflacion(H.PRESUP_SOLES,f_halla_min_dia(:idProyecto),H.FECFIN)) PRESUP_SOLES /*CON INFLACION*/
+		IFNULL(SUM(f_aplica_inflacion(H.PRESUP_SOLES,f_halla_min_dia(:idProyecto),H.FECFIN)),0) PRESUP_SOLES /*CON INFLACION*/
 		FROM
 		(
 		select
@@ -1043,7 +1047,6 @@
         	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
         			$proyecto->presupuesto = $p["PRESUP_SOLES"];
-					//$proyecto->indicadorCerrado = $p["IND_CERRADO"];
 					break;
 			}
 			//echo json_encode($listaRecursos);
