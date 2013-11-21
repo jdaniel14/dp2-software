@@ -62,8 +62,9 @@ $(function(){
 	if (verificaPermisosVer(idVista)=='1'){		
 		iniciaActividades();
 		iniciaProyecto();		
+		obtenMontoContingencia();
 		iniciaRecursos();
-		iniciaRecursosFijos();
+		iniciaRecursosFijos();		
 	}else
 		alert('No tiene permiso para realizar esta operación');
 		
@@ -178,6 +179,29 @@ function obtenDatosActividad(idActividad){
 	});
 
 }
+
+//Funcion para obtener el monto contingencia actual
+function obtenMontoContingencia(){
+	
+	var obj ={
+		idProyecto : idProyecto,
+		idUsuario  : idUsuario
+	}
+
+	
+	$.ajax({
+		type: 'GET',
+		url: rootURL + 'CO_obtenerMontoContingencia/' + JSON.stringify(obj),
+		dataType: "json", // data type of response
+		success: agregaDataMontoContingencia
+	});
+
+}
+
+
+
+
+
 //Iniciar la obtencion y creacion del combo para las monedas
 function obtenMoneda(){
 		
@@ -231,7 +255,13 @@ function agregarDataProyecto(data){
 
 	proy=data;
 	indGrabar=verificaPermisosGrabar(idVista);
-	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva, proy.indicadorCerrado, proy.indicadorLineaBase,indGrabar);
+	if (proy!=null) agregaDatosProyecto( proy.nombre ,proy.presupuesto ,proy.porcentajeReserva, proy.porcentajeContingencia ,proy.indicadorCerrado, proy.indicadorLineaBase,indGrabar);
+}
+
+function agregaDataMontoContingencia(data){
+
+	$("#inputContingencia").val(data.montoContingencia);
+
 }
 
 function agregarContingencia(contingencia){
@@ -285,10 +315,12 @@ function agregaDataFilaResumen(datosActividad){
 	}	
 }
 
-function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva ,indCerrado, indLineaBase, indGrabar){
+function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva , porcentajeContingencia ,indCerrado, indLineaBase, indGrabar){
 	$("#nombreProyecto").html(nombreProyecto);
 	$("#inputMontoSinReserva").val(montoSinReserva);
 	$("#inputReserva").val(porcentajeReserva);
+	$("#inputPorcentajeContingencia").val(porcentajeContingencia);
+	
 	var reseTotal= new Number(porcentajeReserva*0.01*montoSinReserva);
 	var reseForm=reseTotal.toFixed(2);
 	
