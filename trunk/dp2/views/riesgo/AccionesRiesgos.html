@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+    
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+        <title>Definir Acciones de Mitigación</title>
+        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div id="header"></div>
+
+        <div class="container">
+            <div class="h1-title">
+                <h3>Definir las acciones de mitigación</h3>
+            </div>
+            <input  id="suma" type="text" style="display:none" value=1>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form  name="form1">
+                        <table class="table-striped" width="100%" id="tablaAcuerdos">
+                            <tr>
+                                <td width="40%"><b>Acción</b></td>
+                                <td width="30%"><b>Costo</b></td>
+                                <td width="30%"><b>Tiempo</b></td>
+                                <td width="30%"><b>Eliminar</b></td>
+                                 
+                            </tr>
+
+                            <tbody class="cuerpo-tabla" id="tablaRiesgos">
+                                <!--Contenido Tipos de Riesgos-->
+                                <tr>
+                                    <td><input name="accion1" id="accion1" type="text" class="tipoRiesgo input-riesgos" ></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <!-- <td><select class="numero" id="formas1"><option value="1">Número</option>
+                                                <option value="2">Texto</option></select></td> -->
+                                    <td><input name="costo1" id="costo1" type="text" class="tipoRiesgo input-sm" ></td>
+                                    <td><input name="tiempo1" id="tiempo1" type="text" class="tipoRiesgo input-sm" ></td>
+                                    <td><a data-toggle="modal" href="#confirmDelete" > <span class="glyphicon glyphicon-remove iconito" id="1"></span></a></td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <button class="btn-info" id="agregar">Agregar Item</button>
+                        <div  class="col-md-12" style="text-align:center">
+                            <button type="button" data-toggle="modal" class="btn btn-primary" id="guardar" href="#confirmSave">Guardar</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+
+            <div class="modal" id="confirmDelete">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Confirmación de eliminación </h3>
+                        </div>
+                        <div class="modal-body titulo-tabla">
+                            <label class="col-lg-12 control-label">Esta seguro que desea eliminar esta acción</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" id="btnEliminar">Eliminar</button>
+                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="modal" id="confirmSave">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Confirmación de guardado </h3>
+                        </div>
+                        <div class="modal-body titulo-tabla">
+                            <label class="col-lg-12 control-label">Esta seguro que desea guardar estas acciones</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="btnGuardar">Guardar</button>
+                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+        </div>
+
+    <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/riesgo/js/accionesRiesgos.js"></script>
+    <script src="../../assets/js/header.js"></script>
+    </body>
+
+
+</html>
