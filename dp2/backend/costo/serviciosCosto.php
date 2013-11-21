@@ -402,6 +402,7 @@
 
 	///////////SPRINT 5/////////////
 	function CO_getMontoContingencia($json) { //servicio 28
+		$objeto = json_decode($json);
 		if (CO_verificaPermisoServicio(CO_SERVICIO_28, $objeto->idUsuario, $objeto->idProyecto)) {
 			$jsonRespuesta = new stdClass();
 			$jsonRespuesta->montoContingencia = CO_consultarMontoContingencia($objeto);
@@ -956,9 +957,34 @@
 		FROM
 		PROYECTO H
 		WHERE
-		H.ID_PROYECTO=:idProyecto;
+		H.ID_PROYECTO=:idProyecto;";
 
-		SELECT
+		$proyecto = null;
+
+		try {
+			$db = getConnection();
+        	$stmt = $db->prepare($sql);
+        	$stmt->bindParam("idProyecto", $idProyecto);
+        	$stmt->execute();
+        	$db = null;
+        	
+        	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], 0);
+					//$proyecto->indicadorCerrado = $p["IND_CERRADO"];
+					if (strcmp(G_obtenerLineaBase($idProyecto)['estado_linea_base'], 'true') == 0)
+						$proyecto->indicadorLineaBase = 1;
+					else
+						$proyecto->indicadorLineaBase = 0;
+					$proyecto->porcentajeContingencia = $p["PORCENTAJE_CONTINGENCIA"];
+					break;
+			}
+
+		} catch(PDOException $e) {
+			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
+		}
+
+		
+		$sql = "SELECT
 		SUM(f_aplica_inflacion(H.PRESUP_SOLES,f_halla_min_dia(:idProyecto),H.FECFIN)) PRESUP_SOLES /*CON INFLACION*/
 		FROM
 		(
@@ -1014,15 +1040,10 @@
         	$stmt->bindParam("idProyecto", $idProyecto);
         	$stmt->execute();
         	$db = null;
-        	$proyecto = null; //new CO_Proyecto(1, 'El proyecto de Carlitox', 999.0, 0.2, 999.99);
+        	
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$proyecto = new CO_Proyecto($p["ID_PROYECTO"], $p["NOMBRE_PROYECTO"], $p["PORCENTAJE_RESERVA"], $p["PRESUP_SOLES"]);
-					$proyecto->indicadorCerrado = $p["IND_CERRADO"];
-					if (strcmp(G_obtenerLineaBase($idProyecto)['estado_linea_base'], 'true') == 0)
-						$proyecto->indicadorLineaBase = 1;
-					else
-						$proyecto->indicadorLineaBase = 0;
-					$proyecto->porcentajeContingencia = $p["PORCENTAJE_CONTINGENCIA"];
+        			$proyecto->presupuesto = $p["PRESUP_SOLES"];
+					//$proyecto->indicadorCerrado = $p["IND_CERRADO"];
 					break;
 			}
 			//echo json_encode($listaRecursos);
@@ -1030,10 +1051,6 @@
 		} catch(PDOException $e) {
 			return $respuesta = CO_crearRespuesta(-1, $e->getMessage());
 		}
-		
-
-		//se llamara una funcion que devuelve data falsa por mientras.	
-		//$proyecto = CO_obtenerInfoProyectoFalsa();
 		
 		return $proyecto;
 	}
@@ -2717,7 +2734,13 @@
 	}
 
 	function CO_consultarMontoContingencia($objeto) {
-		$sql = "";
+		$sql = "SELECT
+		IFNULL(SUM(A.COSTO_POTENCIAL*:porcContingencia/100),0) RESERVA_CONTINGENCIA
+		FROM
+		RIESGO_X_PROYECTO A JOIN
+		PAQUETE_TRABAJO B ON A.ID_PAQUETE_TRABAJO=B.ID_PAQUETE_TRABAJO
+		WHERE
+		A.ID_PROYECTO=:idProyecto AND B.ID_ESTADO=1 AND A.positivo_negativo=0;";
 
 		$montoContingencia = 0;
 		try {
@@ -2729,7 +2752,7 @@
         	$db = null;
         	$proyecto = null; 
         	while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$montoContingencia = $p["MONTO_CONTINGENCIA"];
+					$montoContingencia = $p["RESERVA_CONTINGENCIA"];
 					break;
 			}
 			//echo json_encode($listaRecursos);
