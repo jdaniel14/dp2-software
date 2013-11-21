@@ -10,7 +10,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 
@@ -21,6 +23,7 @@ import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.costos.controller.IndicadoresController;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
 import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
+import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.ActividadesAdapter;
@@ -47,7 +50,6 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 	EditText input;
 	
 	int posicionPasar;
-	
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -161,14 +163,9 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.lista_actividades_x_proyecto);
 		
-		getSherlock().getActionBar().setTitle(nombreProyecto);
 		getSherlock().getActionBar().setLogo(R.drawable.maleta);
-		
 		cargarDatos();
-		
-		
-		
-		
+		getSherlock().getActionBar().setTitle(nombreProyecto);
 	}	
 	
 	public void cargarDatos(){
@@ -176,7 +173,6 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		System.out.println("Iniciando carga de datos");
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		nombreProyecto = getIntent().getExtras().getString("nombreProyecto");
-		getSherlock().getActionBar().setTitle(nombreProyecto);
 		
 		
 		new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();		

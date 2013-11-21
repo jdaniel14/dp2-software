@@ -1,17 +1,30 @@
 package com.dp2.gproyectos.cronograma.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
 import com.dp2.gproyectos.costos.controller.IndicadoresController;
 import com.dp2.gproyectos.costos.entities.IndicadorBean;
+import com.dp2.gproyectos.costos.model.GetListaHistorialIndicadoresResponse;
 import com.dp2.gproyectos.costos.model.GetListaIndicadoresResponse;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.GetListaActividadesResponse;
@@ -24,6 +37,7 @@ public class CronogramaController extends Controller{
 	public static CronogramaController instance = null;
 	private static ArrayList<ActividadBean> listaActividades = null;
 	public static MensajeResponse mensaje = null;
+	private static final int IO_BUFFER_SIZE = 4 * 1024;
 	
 	public static CronogramaController getInstance() {
 		if (instance == null) {
@@ -115,4 +129,108 @@ public class CronogramaController extends Controller{
 		return mensaje;
 	}
 	
+	
+	public String getGanttHtml() {
+		String strRespuesta = "";
+		String path = ServerConstants.SERVER_URL + ServerConstants.COSTOS_CO_YOLO_URL + "/";
+		
+		JSONObject json = new JSONObject();
+		try {
+//			json.put("idProyecto", idProyecto);
+//			json.put("indicador", indicador);
+//			json.put("fecha", strFecha);
+			json.put("idUsuario", UsuarioController.getInstance().currentUser.id);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
+		
+		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
+			try {
+				strRespuesta = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			strRespuesta = "";
+		}
+		
+		return strRespuesta;
+	}
+	
+//	public Bitmap getGanttImage() {
+//		Bitmap bitmap = null;
+//	    InputStream in = null;
+//	    BufferedOutputStream out = null;
+//	    String url = ServerConstants.COSTOS_TEST_IMAGE;
+//
+//	    try {
+//	        in = new BufferedInputStream(new URL(url).openStream(), IO_BUFFER_SIZE);
+//
+//	        final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+//	        out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
+//	        copy(in, out);
+//	        out.flush();
+//
+//	        final byte[] data = dataStream.toByteArray();
+//	        BitmapFactory.Options options = new BitmapFactory.Options();
+//	        //options.inSampleSize = 1;
+//
+//	        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+//	    } catch (IOException e) {
+//	        //Log.e(TAG, "Could not load Bitmap from: " + url);
+//	    } finally {
+//	        closeStream(in);
+//	        closeStream(out);
+//	    }
+//
+//	    return bitmap;
+//	}
+	
+	public Bitmap getGanttImage() {
+		BitmapFactory.Options bmOptions;
+	    bmOptions = new BitmapFactory.Options();
+	    bmOptions.inSampleSize = 1;
+		Bitmap bm = LoadImage(ServerConstants.COSTOS_TEST_IMAGE, bmOptions);
+		
+		return bm;
+	}
+
+	private Bitmap LoadImage(String URL, BitmapFactory.Options options)
+	{       
+		Bitmap bitmap = null;
+		InputStream in = null;       
+		try {
+			in = OpenHttpConnection(URL);
+			bitmap = BitmapFactory.decodeStream(in, null, options);
+			in.close();
+		} catch (IOException e1) {
+		}
+		return bitmap;               
+	}
+
+	private InputStream OpenHttpConnection(String strURL) throws IOException{
+		InputStream inputStream = null;
+		URL url = new URL(strURL);
+		URLConnection conn = url.openConnection();
+
+		try{
+			HttpURLConnection httpConn = (HttpURLConnection)conn;
+			httpConn.setRequestMethod("GET");
+			httpConn.connect();
+
+			if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				inputStream = httpConn.getInputStream();
+			}
+		}
+		catch (Exception ex)
+		{
+		}
+		return inputStream;
+	}
 }

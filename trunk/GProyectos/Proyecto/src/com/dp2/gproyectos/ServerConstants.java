@@ -15,6 +15,8 @@ public class ServerConstants {
 	//COSTOS
 	public static String COSTOS_CO_GETLISTAINDICADORES_URL = "CO_obtenerIndicadores";
 	public static String COSTOS_CO_GETHISTORIALINDICADOR_URL = "CO_obtenerHistorialIndicador";
+	public static String COSTOS_CO_YOLO_URL = "CO_test";
+	public static String COSTOS_TEST_IMAGE = "http://200.16.7.112/movil/etc/morde_jungla.png";
 	
 	//Cronograma
 	public static String CronogramaGetActividades = "CR_getListaActividad";
