@@ -26,7 +26,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>            
         </activity>
         <activity android:name="com.dp2.gproyectos.general.view.GeneralLoginActivity" >
         </activity>
@@ -47,7 +47,9 @@
         <!-- Inicio Actividades Modulo Cronograma -->
         <activity android:name="com.dp2.gproyectos.cronograma.view.ListaActividadesXProyecto" />
         <activity android:name="com.dp2.gproyectos.cronograma.view.Gantt" />
-        
+        <activity android:name="com.dp2.gproyectos.cronograma.view.ListaRecursoXActividad" >
+
+            </activity>
     </application>
 
 </manifest>

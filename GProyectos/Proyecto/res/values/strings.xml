@@ -32,9 +32,12 @@
     <string name="pull_to_refresh_refreshing_label">Loading...</string>
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
     <string name="indicadores_chartTitle">TITULO</string>
+    
     <string name="cronograma_actividad">Actividad</string>
     <string name="cronograma_wbs">Wbs</string>
     <string name="cronograma_actividad_duration">Duración</string>
+    <string name="cronograma_actividad_recursos_nombre">Nombre</string>
+    <string name="menu_recursos">Recursos</string>
     
     <string name="action_contact">Contact</string>
 </resources>
