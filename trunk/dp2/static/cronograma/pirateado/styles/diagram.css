@@ -1,8 +1,8 @@
 	.node 
 		{
 		position: absolute;
-		z-index: 100;
-		background: url(images/transparent.gif) repeat;
+		z-index: -1;
+		/*background: url(images/transparent.gif) repeat;*/
 		}
 	.node .ui-resizable-se{background:url(../images/se.png) no-repeat;cursor: se-resize; width: 12px; height: 12px; right: 6px; bottom: 6px; }
 	.node .ui-resizable-sw{background:url(../images/sw.png) no-repeat;cursor: sw-resize; width: 12px; height: 12px; left: 5px; bottom: 5px;}

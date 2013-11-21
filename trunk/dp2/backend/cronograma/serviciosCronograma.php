@@ -1514,8 +1514,8 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arregl
         return (array("me" => $e->getMessage()));
     }
     //echo "mira". json_encode($listaDependencias[sizeof($listaDependencias) - 1]["bloque"]);
-    if (sizeof($listaDependencias)!=0) {$listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, ($listaDependencias[sizeof($listaDependencias) - 1]["bloque"]) + 1);}
-    else{$listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, 0); }
+    if (sizeof($listaDependencias)!=0) {$listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, ($listaDependencias[sizeof($listaDependencias) - 1]["bloque"]) + 1,($arreglo_actividades_final[sizeof($arreglo_actividades_final) - 1]->eet)+0);}
+    else{$listafinaljsondependencias = new CR_DependenciasJSON($listaDependencias, 0,0); }
     return $listafinaljsondependencias;
 }
 
