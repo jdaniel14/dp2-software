@@ -1045,6 +1045,32 @@
     }
 
 
+    function R_getAccionesParaAprobar($idProyecto){
+        $query = "SELECT AXR.descripcion, AXR.costo,AXR.tiempo,flag_aceptado_rechazado 
+                FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP
+                WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
+                    RXP.id_proyecto=:id_proyecto;";
+        try {
+            $arreglo= array();
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_proyecto",$idProyecto);
+            $stmt->execute();
+            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                $data = array("descripcion" => $row['descripcion'], 
+                            "costo" => $row['costo'],
+                            "tiempo" => $row['tiempo'],
+                            "flagAceptadoRechazado" => $row['flag_aceptado_rechazado']
+                            );
+                array_push($arreglo,$data);
+            }
+            $db = null;
+            echo json_encode($arreglo);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }        
+    }
+
 
     function R_getRiesgoMaterializado($idProyecto){
         $query = "SELECT id_riesgo_x_proyecto, nombre_riesgo, fecha_materializacion,costo_potencial, demora_potencial
@@ -1142,7 +1168,7 @@
             $row = $stmt->fetchObject();
             //$data=array("promedio" => $row->promedio);
             $db = null;
-            return json_encode($row->promedio);
+            return json_encode(ceil($row->promedio));
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
