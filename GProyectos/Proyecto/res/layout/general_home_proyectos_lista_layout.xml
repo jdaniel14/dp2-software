@@ -80,7 +80,7 @@
             android:textColor="@color/blanco" />
     </LinearLayout>
 
-    <com.dp2.framework.view.PullToRefreshListView
+    <com.markupartist.android.widget.PullToRefreshListView
         android:id="@+id/lvProyectos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
