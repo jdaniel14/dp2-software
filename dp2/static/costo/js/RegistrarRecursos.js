@@ -214,24 +214,28 @@ function agregaFilaRecurso(){
 function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, indRecursoHumano, fechaInicio, fechaFin){
 	a=i;
 	a++;
+	
+	if (fechaInicio=='00-00-0000') fechaInicio='';
+	if (fechaFin=='00-00-0000') fechaFin='';
+	
 	if 	(tipo==0)
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td><td>'+fechaInicio+'</td><td>'+fechaFin+'</td></tr>');
+		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+nombreMoneda+'</td><td>'+formateaNumero(costoFijo,2)+'</td><td>'+fechaInicio+'</td><td>'+fechaFin+'</td></tr>');
 	else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
 		inputMoneda= creaInputMoneda(a,indRecursoHumano);
 		inputUnidadMedida= creaInputUnidadMedida(a,indRecursoHumano);
 		
 		if (indRecursoHumano=='0'){
-			inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')"></div>';
-			inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')"></div>';
+			inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+formateaNumero(costoUnitario,2)+'" onClick="modifica('+a+')"></div>';
+			inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+formateaNumero(costoFijo,2)+'" onClick="modifica('+a+')"></div>';
 			inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
 			inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 			
 		}else{
 		
-			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')" disabled readOnly>';
-			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputCosto='<input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+formateaNumero(costoUnitario,2)+'" onClick="modifica('+a+')" disabled readOnly>';
+			inputCostoFijo='<input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+formateaNumero(costoFijo,2)+'" onClick="modifica('+a+')" disabled readOnly>';
 			inputFechaInicio='<input type="text" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
 			inputFechaFin='<input type="text" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" disabled readOnly>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'" disabled readOnly>';
@@ -490,11 +494,7 @@ function grabarRecursos(){
 					
 				}else{
 				
-					//alert('El costo fijo del recurso ' + nomRecurso +' debe ser un valor númerico mayor o igual que 0');
-					lanzaAlerta("divCostoFijo","labCostoFijo","");
-					lanzaAlerta("divCostoFijo"+i,"","");
-					//"divCostoFijo'+a+'"
-					grabar=false;
+					costoF=0;
 				}
 				
 				if (fechaI!=""){
@@ -506,11 +506,9 @@ function grabarRecursos(){
 					
 				}else{
 					
-					//alert('La fecha inicio del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
-					lanzaAlerta("divErrorFechaI","labErrorFechaI","");
-					lanzaAlerta("divFechaInicio"+i,"","");
-					//"divFechaInicio'+a+'"
-					grabar=false;
+					diaI='00';
+					mesI='00';
+					anioI='0000';
 				
 				}
 				
@@ -523,20 +521,20 @@ function grabarRecursos(){
 					
 				}else{
 					
-					//alert('La fecha fin del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
-					lanzaAlerta("divErrorFechaF","labErrorFechaF","");
-					lanzaAlerta("divFechaFin"+i,"","");
-					//"divFechaFin'+a+'"
-					grabar=false;
+					diaF='00';
+					mesF='00';
+					anioF='0000';
 				
 				}
 				
-				if (!comparaMenorFecha(diaI,mesI, anioI,diaF,mesF, anioF)){
-					//alert('La fecha de inicio debe ser menor a la fecha de fin');
-					lanzaAlerta("divErrorFecha","labErrorFecha","");
-					lanzaAlerta("divFechaInicio"+i,"","");
-					lanzaAlerta("divFechaFin"+i,"","");
-					grabar=false;
+				if (fechaF!="" && fechaI!=""){				
+					if ( (fechaF=="" && fechaI!="") ||(fechaF!="" && fechaI=="") || !comparaMenorFecha(diaI,mesI, anioI,diaF,mesF, anioF)){
+						//alert('La fecha de inicio debe ser menor a la fecha de fin');
+						lanzaAlerta("divErrorFecha","labErrorFecha","");
+						lanzaAlerta("divFechaInicio"+i,"","");
+						lanzaAlerta("divFechaFin"+i,"","");
+						grabar=false;
+					}
 				}
 			
 				if (crear=='1'){
