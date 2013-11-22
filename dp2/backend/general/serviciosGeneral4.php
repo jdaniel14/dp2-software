@@ -268,4 +268,92 @@ function G_getProfesion($id) { //Bonnie se la llevó facil :'(
     echo json_encode($jsonRespuesta);
 }
 
+function G_getListaLineaBase($id) { 
+    $sql = "SELECT num_linea_base FROM dp2_lineabase.PROYECTO WHERE ID_PROYECTO=:ID";
+
+    $jsonRespuesta = new stdClass();
+    $jsonRespuesta->linea_base = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("ID", $id);
+        $stmt->execute();
+        $db = null;
+        
+        while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $linea = $p["num_linea_base"];
+            array_push($jsonRespuesta->linea_base, $linea);
+        }
+        
+
+    } catch(PDOException $e) {
+        echo json_encode(array("me"=> $e->getMessage()));
+    }
+
+    echo json_encode($jsonRespuesta);
+}
+
+function G_getListaRecursoProyecto($id) { 
+    //echo "here"; return;
+    /*
+SELECT A.ID_ACTIVIDAD,E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+FROM 
+    ACTIVIDAD A, 
+    ACTIVIDAD_X_RECURSO AR,
+    RECURSO R,
+    MIEMBROS_EQUIPO M,
+    EMPLEADO E
+WHERE
+    A.ID_PROYECTO = 1 AND
+    AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND
+    R.ID_RECURSO = AR.ID_RECURSO AND
+    M.ID_PROYECTO = R.ID_PROYECTO AND
+    E.ID_EMPLEADO = M.ID_EMPLEADO
+;
+
+    */
+    $sql = "SELECT ID_PROFESION from EMPLEADO WHERE id_empleado = :idEmpleado";
+
+    $jsonRespuesta = new stdClass();
+    $jsonRespuesta->idProfesion = "";
+    $jsonRespuesta->profesiones = array();
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("idEmpleado", $id);
+        $stmt->execute();
+        $db = null;
+        
+        
+        while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $jsonRespuesta->idProfesion = $p["ID_PROFESION"];
+            break;
+        }
+        
+        $sql = "SELECT id_profesion, descripcion FROM PROFESION";
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $db = null;
+        
+        
+
+        while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $profesion = new stdClass();
+            $profesion->id = $p["id_profesion"];
+            $profesion->nom = $p["descripcion"];
+            
+            array_push($jsonRespuesta->profesiones, $profesion);
+        }
+
+    } catch(PDOException $e) {
+        echo json_encode(array("me"=> $e->getMessage()));
+    }
+
+
+    echo json_encode($jsonRespuesta);
+}
+
+
+
 ?>
