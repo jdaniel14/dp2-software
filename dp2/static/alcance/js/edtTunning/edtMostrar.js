@@ -1,4 +1,16 @@
-localStorage.setItem("idcontador", 10000);
+
+/*
+$(window).bind('beforeunload',function(){
+
+     //save info somewhere
+    
+    return 'No ha guardado los cambios está seguro que quiere refrescar?';
+
+});
+*/
+
+var idnodoParam = 10000;
+localStorage.setItem("idcontador", idnodoParam);
 
 /* Repaint Chart */
   function repaint(){
@@ -57,6 +69,8 @@ function ajaxMostrar ( jsonCliente ){
                               $("#progressEdt").hide("slow");
                               $("#edtCrearLogError").show("slow");
                               $("#CrearEDTCero").show("slow");
+                              //pintarOneNodoEDT( idnodoParam );
+
                             }else{
 
                                 pintarEDT( data );
@@ -68,6 +82,39 @@ function ajaxMostrar ( jsonCliente ){
                             
                       }
                   });
+}
+
+
+$("#CrearEDTCero").click(function(){
+                console.log("EDT DESDE EL edtMostrar");
+                $("#edtCrearLogError").hide("slow");
+                var titleParent = "Nombre Proyecto";
+                var html = pintarOneNodoEDT( titleParent, idnodoParam );
+                $("#org").html( html );
+                repaint();
+              return false;
+});
+
+
+function pintarOneNodoEDT( title, id  ){
+   console.log("Pintando AL PADRE  ");
+       var html = "";  
+                    //html += '<ul>';
+                    /*
+                      html += '<input class = "inputEdtTitle"  id = "title-' 
+    html += idnodo
+    html += '" type = "text" value = "'
+    html += title
+    html += '"> ';
+                    */
+          html +=  '<li>';
+          html += '<span class = "titleEDT" id = "';
+          html += 'title-'+ id + '" >';
+          html += title;
+          html += '</span>'
+          html += '<ul>' + '</ul>';
+          html += '</li>';
+        return html;
 }
 
 function pintarEDT ( data ){
@@ -233,7 +280,10 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      // $("#botonerasEditar").hide("slow");
      //$("#botonerasEditarControl").hide("slow");
      //$("#progressEdtGuardarEdt").show("slow");
-     
+     $("#guardarCambios").hide();
+     $("#guardarEDTLoading").show("slow");
+
+     console.log("guardando Cambios");
      var arbol = $("#org").html();
      console.log(arbol);
      var idproyecto = localStorage.getItem("idProyecto");
@@ -241,10 +291,13 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      /*
 		Datos Padre
      */
-     var inp = $("#org li input")[0];
-     var titleparent = inp.value;
+     var inp = $("#org li span")[0];
+     //console.log(inp);
+     //return 0;
+     var titleparent = inp.innerHTML;
+     //console.log(titleparent);
      /* Fin datos de padre */
-
+     //return 0;
       var numHijos = $("#org ul:first > li").length;
       var idnodo = "";
       var hijos = [];
@@ -262,7 +315,12 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
                       url: "../../api/AL_recontruirEdt",
                       success: function (data) {
                           console.log(data);
+                          $("#guardarEDTLoading").hide("slow");
                           location.reload();
+
+                      },
+                      failure: function ( data ){
+                          console.log("failure");
                       }
         });
 	  
@@ -318,19 +376,21 @@ function agregaNodo( id, title, descripcion, dias ){
 
 function funcionesCajaFlotante(){
 
-  $("#imgAgregar").click(function(){
+  $("#imgAgregar1").click(function(){
   		var title = "default";
   		var descripcion = "default";
   		var dias = 0;
   		agregaNodo( title, descripcion, dias );
   		repaint();
+      $("#cont_caja_flotante").hide("slow");
   });
 
-  $("#imgEliminar").click(function(){
+  $("#imgEliminar1").click(function(){
   	console.log("eliminar");
   	var idt = localStorage.getItem("idnodoActualClick");
   	$(idt).parent().remove();
     repaint();
+    $("#cont_caja_flotante").hide("slow");
   })
 
 }
@@ -347,6 +407,7 @@ $("#imgAgregar").click(function(){
       	//$("#title-83").parent().find("ul");
       	$(id).parent().find("ul:first").append(agregarNodoHijoDefault( ident ));
         repaint();
+        $("#caja_flotante").hide("slow");
   });
 
   $("#imgEliminar").click(function(){
@@ -354,6 +415,7 @@ $("#imgAgregar").click(function(){
   	var idt = localStorage.getItem("idnodoActualClick");
   	$(idt).parent().remove();
     repaint();
+    $("#caja_flotante").hide("slow");
   })
 
 
@@ -363,16 +425,19 @@ function agregarNodoHijoDefault( id ){
        var tiempo = 0;
        var html = "";  
                     //html += '<ul>';
-                    html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
+          html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
 					html += '<span class = "titleEDT" id = "';
 					html += 'title-'+ id + '" >';
-					html += title;
-					html += '</span> <br>' + '<span class = "descripcionEDT">';
-					html += desc + '</span> <br>' + '<span class = "diasEDT">';
+          html += title;
+
+					html += '</span> <br>' + '<span class = "descripcionEDT" id = "';
+          html += 'descripcion-'+ id + '" >';
+					html += desc + '</span> <br>' + '<span class = "diasEDT" id = "';
+          html += 'dias-'+ id + '" >';
 					html += tiempo + '</span>';
-                    html += '<ul>' + '</ul>';
-                    html += '</li>';
-                    //html += '</ul>';
+          html += '<ul>' + '</ul>';
+          html += '</li>';
+          //html += '</ul>';
       return html;
   }
 
@@ -387,43 +452,36 @@ $("#editarEdtNew").click(function(){
 
 
 
-function repaintUtils () {
-	console.log("repintando eventos");
 
+     $('span').live('dblclick', function () {
+         $("#caja_flotante").hide();
+          var id = $(this).attr("id");
+          console.log(id);
+          var input = $('<input />', {'type': 'text', 'id': 'idinput', 'value': $(this).html()});
+          $(this).parent().append(input);
+          $(this).remove();
+          input.focus(); 
 
-		 $('span').live('click', function () {
-		 	
-		 	var id = $(this).attr("id");
-	        console.log(id);
-	        var input = $('<input />', {'type': 'text', 'id': 'idinput', 'value': $(this).html()});
-	        $(this).parent().append(input);
-	        $(this).remove();
-	        input.focus(); 
-
-	        var fin = "#"+id;
-	        localStorage.setItem("modificandoNodoActual", fin);
-	    });
+          var fin = "#"+id;
+          localStorage.setItem("modificandoNodoActual", fin);
+      });
     
 
-	    $('input').live('blur', function () {
-	        $(this).parent().append($('<span />').html($(this).val()));
-	        var sape = localStorage.getItem("modificandoNodoActual");
-	        $(sape).html($(this).val());
-	        $(this).remove();
-	        repaint();
-	    });
+      $('input').live('blur', function () {
+          //$("#caja_flotante").hide("slow")
+          $(this).parent().append($('<span />').html($(this).val()));
+          var sape = localStorage.getItem("modificandoNodoActual");
+          $(sape).html($(this).val());
+          $(this).remove();
+          console.log("blur");
+          repaint();
 
-	$(".titleEDT").click( function(){
-		 /*
-		 var id = $(this).attr("id");
-		 var idt = '#' + id;
-		 $(idt).parent().remove();
-		 console.log(id);
-		 repaint();
-		 */
-     
+      });
 
 
+/*
+$(".titleEDT").hover( function(){
+      console.log("click title normal");
       var idnodo = '#' + $(this).attr('id');
       localStorage.setItem("idnodoActualClick", idnodo);
       var p = $(idnodo);
@@ -435,7 +493,31 @@ function repaintUtils () {
       $( "#caja_flotante" ).offset({ top: leftfin, left: offset.left });
       $("#caja_flotante").show("slow");
       $("#controlesSpan").html($(this).val());
+      var id = $(this).attr('id').split("-")[1];
+      localStorage.setItem("idmodificadoCurrent", id);
+      //funcionesCajaFlotante();
 
+  });
+
+*/
+
+function repaintUtils () {
+	console.log("repintando eventos");
+
+
+	$(".titleEDT").hover( function(){
+      console.log("click title repaint");
+      var idnodo = '#' + $(this).attr('id');
+      localStorage.setItem("idnodoActualClick", idnodo);
+      var p = $(idnodo);
+      var offset = $( this ).offset();
+      var position = p.position();
+      var cntWidth = $(this).css("height").split("p")[0];
+      var topfin = offset.top + 30;
+      var leftfin = offset.top + parseInt(cntWidth)*4;
+      $( "#caja_flotante" ).offset({ top: leftfin, left: offset.left });
+      $("#caja_flotante").show("slow");
+      $("#controlesSpan").html($(this).val());
       var id = $(this).attr('id').split("-")[1];
       localStorage.setItem("idmodificadoCurrent", id);
       //funcionesCajaFlotante();
