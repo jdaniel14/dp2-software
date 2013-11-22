@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -17,10 +19,13 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
+import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
+import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.ActividadesAdapter;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
+import com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.InterfazPopupMenus;
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -83,11 +88,40 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		System.out.println("Datos Cargados");
 		
 		if (tasks.size() != 0){
-			findViewById(R.id.btnVerGantt).setEnabled(true);
+//			findViewById(R.id.btnVerGantt).setEnabled(true);
+			findViewById(R.id.btnVerIndicadores).setEnabled(true);
 			findViewById(R.id.cr_btnGuardarCambios).setEnabled(true);
 			
 			//Agregar evento a un nuevo Activity donde se muestre el gantt
 		}
+		
+		findViewById(R.id.btnVerIndicadores).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				Intent i = new Intent(ListaActividadesXProyecto.this, CronogramaIndicadoresChartActivity.class);
+				
+				i.putExtra("idProyecto", idProyecto);
+				i.putExtra("nombreProyecto", nombreProyecto);
+				
+				overridePendingTransition(0, 0);
+				startActivity(i);
+				overridePendingTransition(0, 0);
+				
+//				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
+//				
+//				dialogBuilder.setTitle("Opciones");
+//				dialogBuilder.setView(LayoutInflater.from(ListaActividadesXProyecto.this).inflate(R.layout.cronograma_indicadores_lista_dialog_layout, null));
+//				
+//				
+//				
+//				AlertDialog alertDialog = dialogBuilder.create();
+//				alertDialog.show();
+
+			}
+		});
 		
 		findViewById(R.id.btnVerGantt).setOnClickListener(new View.OnClickListener() {
 			
@@ -114,7 +148,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 				if(position > 0){	
 					rpta = "";
 					PopupOpciones popup = new PopupOpciones();
-					popup.dialog(ListaActividadesXProyecto.this, "Menú", opciones, rpta);
+					popup.dialog(ListaActividadesXProyecto.this, "Menï¿½", opciones, rpta);
 			
 				}
 			}			
@@ -126,6 +160,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.lista_actividades_x_proyecto);
 		
+		findViewById(R.id.btnVerGantt).setVisibility(View.GONE);
 
 		opciones = new ArrayList<String>();
 		opciones.add(MENUACT_OP_REGISTRARHORASREALES);

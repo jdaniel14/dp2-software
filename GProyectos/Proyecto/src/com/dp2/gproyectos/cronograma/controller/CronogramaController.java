@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -19,8 +21,12 @@ import android.graphics.BitmapFactory;
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
+import com.dp2.gproyectos.costos.entities.HistorialIndicadorBean;
+import com.dp2.gproyectos.costos.model.GetListaHistorialIndicadoresResponse;
+import com.dp2.gproyectos.cronograma.entities.IndicadorCronogramaBean;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.GetListaActividadesResponse;
+import com.dp2.gproyectos.cronograma.model.GetListaIndicadoresCronogramaResponse;
 import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
@@ -34,6 +40,8 @@ public class CronogramaController extends Controller{
 	private static ArrayList<ActividadBean> listaActividades = null;
 	public static MensajeResponse mensaje = null;
 	private static final int IO_BUFFER_SIZE = 4 * 1024;
+	
+	private static ArrayList<ArrayList<IndicadorCronogramaBean>> listaHistorialIndicadores = null;
 	
 	public static CronogramaController getInstance() {
 		if (instance == null) {
@@ -307,5 +315,48 @@ public class CronogramaController extends Controller{
 			strResponse = "";
 		}
 		return strResponse;
+	}
+	
+	public ArrayList<ArrayList<IndicadorCronogramaBean>> getHistorialIndicadores(String idProyecto) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.CronogramaGetIndicadoresFlujo + "/";
+		
+		Gson gs = new Gson();
+		String strResponse = "";
+		GetListaIndicadoresCronogramaResponse objResponse = null;
+		
+		JSONObject json = new JSONObject();
+		try {
+			json.put("idProyecto", idProyecto);
+			//json.put("idUsuario", UsuarioController.getInstance().currentUser.id);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, json.toString());
+		String result;
+		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+				objResponse = gs.fromJson(result, GetListaIndicadoresCronogramaResponse.class);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		//objResponse = gs.fromJson(result, GetListaIndicadoresResponse.class); //temporalmente para pruebas, luego se debe borrar esta linea.
+		if (objResponse!=null){
+			listaHistorialIndicadores = objResponse.indicadores;
+		} else {
+			listaHistorialIndicadores = null;
+		}
+		return listaHistorialIndicadores;
 	}
 }

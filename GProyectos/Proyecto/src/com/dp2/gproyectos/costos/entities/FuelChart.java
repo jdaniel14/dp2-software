@@ -47,19 +47,27 @@ public class FuelChart {
 	public GraphicalView getView(final Context context, ArrayList<HistorialIndicadorBean> results) {
 		
 		String title;
-		double min, max;
+		double min, max, tempMin, tempMax;
 		long fechaMin, fechaMax;
 
 		if (results.size() > 0) {
 			title = desripcion;
-			max = HistorialIndicadorBean.getMaxValue(results);
-			min = HistorialIndicadorBean.getMinValue(results, max);
+			tempMax = HistorialIndicadorBean.getMaxValue(results);
+			tempMin = HistorialIndicadorBean.getMinValue(results, tempMax);
 			fechaMin = HistorialIndicadorBean.getMinDate(results);
 			fechaMax = HistorialIndicadorBean.getMaxDate(results);
+			
+			if (tempMax == 0 && tempMin == 0) {
+				max = 0.5;
+				min = -0.5;
+			} else {
+				max = tempMax + 0.5*(Math.abs(tempMax) + Math.abs(tempMin));
+				min = tempMin - 0.5*(Math.abs(tempMax) + Math.abs(tempMin));
+			}
 		} else {
 			Calendar calendar = Calendar.getInstance(); 
 			title = "";
-			max = 10;
+			max = 1;
 			min = 0;
 			fechaMin = calendar.getTimeInMillis();
 			calendar.add(Calendar.MONTH, 1);

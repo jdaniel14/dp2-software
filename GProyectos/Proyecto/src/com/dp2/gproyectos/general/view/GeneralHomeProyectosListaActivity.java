@@ -178,7 +178,7 @@ public class GeneralHomeProyectosListaActivity extends
 						
 						dialogBuilder.setTitle("Opciones");
 						dialogBuilder.setMessage("Que desea hacer con esto?");
-						dialogBuilder.setPositiveButton("Indicadores", new DialogInterface.OnClickListener() {
+						dialogBuilder.setPositiveButton("Indicadores de costos", new DialogInterface.OnClickListener() {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
@@ -193,7 +193,7 @@ public class GeneralHomeProyectosListaActivity extends
 							}
 						});
 						
-						dialogBuilder.setNegativeButton("Actividades", new DialogInterface.OnClickListener() {
+						dialogBuilder.setNegativeButton("Cronograma", new DialogInterface.OnClickListener() {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
