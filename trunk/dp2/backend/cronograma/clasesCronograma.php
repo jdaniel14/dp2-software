@@ -29,8 +29,9 @@ class CR_ProyectoJSON {//$actividades, 0, array(), true, true, $roles, $recursos
     public $wbsNodes=array();
 	public $calendarBase;
 	public $tipoCostos=array();
+	public $lineaBase;
     //constructor
-    function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent, $roles, $resources,$wbsNodes,$calendarBase,$tipoCostos) {
+    function __construct($tasks, $selectedRow, $deletedTaskIds, $canWrite, $canWriteOnParent, $roles, $resources,$wbsNodes,$calendarBase,$tipoCostos,$lineaBase) {
         $this->tasks = $tasks;
         $this->selectedRow = $selectedRow;
         $this->deletedTaskIds = $deletedTaskIds;
@@ -41,6 +42,7 @@ class CR_ProyectoJSON {//$actividades, 0, array(), true, true, $roles, $recursos
         $this->wbsNodes = $wbsNodes;
 		$this->calendarBase = $calendarBase;
 		$this->tipoCostos=$tipoCostos;
+		$this->lineaBase=$lineaBase;
     }
 
 }
