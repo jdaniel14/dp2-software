@@ -990,7 +990,7 @@
             $stmt->execute();
             $row = $stmt->fetchObject();
             $costo=$row->costo;
-            $tiempo=$row->tiempo;
+            $tiempo=ceil($row->tiempo);
             $db = null;
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
