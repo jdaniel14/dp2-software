@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/general/css/general.css" rel="stylesheet">
+   
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+    <style>
+
+    </style>
+  </head>
+
+  <body>
+	
+    <div id="headerGeneral">
+
+    </div>
+    
+    <div class="container">
+
+      <div class="starter-template">
+	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
+        <h1>Lista de Lineas Bases</h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+    <div id="botonera">
+    
+    </div>
+	  <div class="" >
+			<table align="center" id="listaLineaBase" style="display: none;">			
+				<thead>
+          <tr>
+  					<th><b>#</b></th>
+            <!--
+  					<th><b>Proyecto</b></th>
+  					<th><b>Jefe de Proyecto</b></th>
+  					<th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Tipo de Proyecto</b></th>
+            -->
+  					<th><b>Fecha de Inicio</b></th>
+  					<!--
+            <th><b>Fecha de Fin</b></th>
+            <th><b>Administrar</b></th>
+            <th><b>Establecer Línea Base</b></th>
+            <th><b>Cerrar</b></th>
+            -->
+  				</tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>#</th>
+            <!--
+            <th>Proyecto</th>
+            <th>Jefe de Proyecto</th>
+            <th>Tipo de Proyecto</th>
+            -->
+            <th>Fecha de Inicio</th>
+            <!--
+            <th>Fecha de Fin</th>            
+            <th>Administrar</th>
+            <th>Establecer Línea Base</th>
+            <th>Cerrar</th>
+            -->
+          </tr>
+          <tr>
+            <th colspan="9" class="pager form-horizontal">
+              <button type="button" class="btn first"><i class="glyphicon glyphicon-fast-backward"></i></button>
+              <button type="button" class="btn prev"><i class="glyphicon glyphicon-backward"></i></button>
+              <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+              <button type="button" class="btn next"><i class="glyphicon glyphicon-forward"></i></button>
+              <button type="button" class="btn last"><i class="glyphicon glyphicon-fast-forward"></i></button>
+              <select class="pagesize input-mini" title="Select page size">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <select class="pagenum input-mini" title="Select page number"></select>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+			</table>
+
+	  </div>	 
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ==================lang================================ -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+  	<script src="../../static/general/js/ListaLineaBaseXProyecto.js"></script>
+        <script src="../../assets/js/header.js"></script>
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
+  </body>
+</html>
