@@ -75,12 +75,14 @@ function visualizaSolicitud(){
           	var rubros = '';
 
           	if (cad.charAt(0)=='1') { rubros+="Alcance - "; }
-        	if (cad.charAt(1)=='1') { rubros+="Cronograma - "; }
-        	if (cad.charAt(2)=='1') { rubros+="Costo - "; }
+        	  if (cad.charAt(1)=='1') { rubros+="Cronograma - "; }
+        	  if (cad.charAt(2)=='1') { rubros+="Costo - "; }
 
         	$("#rubroCambio").val(rubros.substring(0,rubros.length-2));
         	$("#descripcion").html(data["descripcion"]);
-        	$("#justificacion").html(data["justificacion"]);            
+        	$("#justificacion").html(data["justificacion"]);
+          $("#impacto").html(data["impacto"]);
+          //$("#fecha").html(data["fecha"]);
         }
 	});
 }
