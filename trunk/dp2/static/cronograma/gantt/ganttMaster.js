@@ -302,6 +302,8 @@ GanttMaster.prototype.addTask = function(task, row) {
  * @param project
  */
 GanttMaster.prototype.loadProject = function(project) {
+    
+ 
   this.beginTransaction();
   this.resources = project.resources;
   this.roles = project.roles;
@@ -312,6 +314,8 @@ GanttMaster.prototype.loadProject = function(project) {
   this.calendarBase = project.calendarBase;
   this.canWrite = project.canWrite;
   this.canWriteOnParent = project.canWriteOnParent;
+  this.lineabase=project.lineaBase.estado_linea_base;
+  
 
   if (project.minEditableDate)
     this.minEditableDate = computeStart(project.minEditableDate);
