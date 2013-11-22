@@ -2,7 +2,6 @@ package com.dp2.gproyectos.cronograma.view;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,9 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 
@@ -20,26 +17,20 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
-import com.dp2.gproyectos.costos.controller.IndicadoresController;
-import com.dp2.gproyectos.costos.entities.IndicadorBean;
-import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
-import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.ActividadesAdapter;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
-import com.dp2.gproyectos.general.entities.ProyectoBean;
-import com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity;
-import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
+import com.dp2.gproyectos.view.InterfazPopupMenus;
 import com.markupartist.android.widget.PullToRefreshListView;
 
-public class ListaActividadesXProyecto extends SherlockFragmentActivity implements Loadingable{
-
+public class ListaActividadesXProyecto extends SherlockFragmentActivity implements Loadingable, InterfazPopupMenus {
+	ArrayList<String> opciones;
 	private static ArrayList<ActividadBean> tasks;
 	String idProyecto;
 	String nombreProyecto = "";
-	
+	String rpta;
 	PullToRefreshListView listActs;
 	ActividadesAdapter adapter;
 	
@@ -50,6 +41,8 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 	EditText input;
 	
 	int posicionPasar;
+	private static final String MENUACT_OP_REGISTRARHORASREALES = "Registrar horas reales";
+	private static final String MENUACT_OP_LISTARRECURSOS = "Listar recursos";
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -117,42 +110,12 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position,
 					long id) {
-				if(position > 0){					
-					AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
-					
-					dialogBuilder.setTitle("Horas Reales");
-					dialogBuilder.setMessage("Puede registrar el % de avance:");	
-					
-					//System.out.println("11111");
-					
-					input = new EditText(ListaActividadesXProyecto.this);
-					input.setInputType(InputType.TYPE_CLASS_NUMBER);
-					//input.setId(avanceId);
-					
-					dialogBuilder.setView(input);
-					//System.out.println("22222");
-					
-					lastInput = input;
-					posicionPasar = position;
-					
-					dialogBuilder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							new GuardarHoras().execute(posicionPasar + "");
-						}
-					});
-					
-					dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-										
-						}
-					});
-					
-					AlertDialog alertDialog = dialogBuilder.create();
-					alertDialog.show();	
+				posicionPasar = position;
+				if(position > 0){	
+					rpta = "";
+					PopupOpciones popup = new PopupOpciones();
+					popup.dialog(ListaActividadesXProyecto.this, "Menú", opciones, rpta);
+			
 				}
 			}			
 		});
@@ -162,6 +125,11 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.lista_actividades_x_proyecto);
+		
+
+		opciones = new ArrayList<String>();
+		opciones.add(MENUACT_OP_REGISTRARHORASREALES);
+		opciones.add(MENUACT_OP_LISTARRECURSOS);
 		
 		getSherlock().getActionBar().setLogo(R.drawable.maleta);
 		cargarDatos();
@@ -217,6 +185,53 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 			}
 		}
  
+	}
+	
+	public void accionSeleccionOpcion(String rspta){
+		
+		if (rspta.equals(MENUACT_OP_REGISTRARHORASREALES)){
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
+			
+			dialogBuilder.setTitle("Horas Reales");
+			dialogBuilder.setMessage("Puede registrar el % de avance:");	
+			
+			//System.out.println("11111");
+			
+			input = new EditText(ListaActividadesXProyecto.this);
+			input.setInputType(InputType.TYPE_CLASS_NUMBER);
+			//input.setId(avanceId);
+			
+			dialogBuilder.setView(input);
+			//System.out.println("22222");
+			
+			lastInput = input;
+			//posicionPasar = position;
+			
+			dialogBuilder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					new GuardarHoras().execute(posicionPasar + "");
+				}
+			});
+			
+			dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+								
+				}
+			});
+			
+			AlertDialog alertDialog = dialogBuilder.create();
+			alertDialog.show();
+		}
+		else if (rspta.equals(MENUACT_OP_LISTARRECURSOS)){
+			Intent intent = new Intent(ListaActividadesXProyecto.this, ListaRecursoXActividad.class);
+			intent.putExtra("actividad", (ActividadBean) listActs.getItemAtPosition(posicionPasar));
+			startActivityForResult(intent,1);
+			
+		}
 	}
 	
 }

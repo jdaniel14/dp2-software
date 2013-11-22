@@ -3,8 +3,11 @@ package com.dp2.gproyectos.cronograma.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dp2.gproyectos.R;
+import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
 
 public class PopupRegistrarCosto {
@@ -24,10 +28,16 @@ public class PopupRegistrarCosto {
 	TextView txtCabecera;
 	EditText edtCantidad;
 	EditText edtCosto;
-
+	ActividadBean estaActividad;
+	RecursoBean esteRecurso;
+	Button btnGrabar;
+	Button btnCancelar;
 	
-	public void dialog(Context _context, String cabecera, RecursoBean recurso) {
+	public void dialog(Context _context, String cabecera, ActividadBean actividad, RecursoBean recurso) {
 		context = _context;
+		estaActividad = actividad;
+		esteRecurso = recurso;
+		
 		dialog = new Dialog(_context);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.pedidosespeciales_popup_barratitulo_layout);
@@ -49,6 +59,27 @@ public class PopupRegistrarCosto {
 		txtCabecera.setText(recurso.name);*/
 		edtCantidad = (EditText) linContent.findViewById(R.id.edtCantidaad);
 		edtCosto = (EditText) linContent.findViewById(R.id.edtCosto);
+		btnGrabar = (Button) linContent.findViewById(R.id.btnGrabar);
+		btnCancelar = (Button) linContent.findViewById(R.id.btnCancelar);
+		
+		btnGrabar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				((ListaRecursoXActividad)context).registrarCantidadCosto(estaActividad, esteRecurso, edtCantidad.getText().toString(), edtCosto.getText().toString());
+				dialog.dismiss();
+				
+			}
+		});
+		
+		btnCancelar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
 		dialog.show();		
 
 		return;
