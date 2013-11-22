@@ -217,11 +217,12 @@ function agregaDatosProyecto(nombreProyecto){
 function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codmes, nombreMes){
 	a=i;
 	a++;
+	
 	if 	(tipo==0)
-		$("#tablaIndirectos").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+costoIndirecto+'</td><td align="center">'+nombreMoneda+'</td></tr>');
+		$("#tablaIndirectos").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+formateaNumero(costoIndirecto,2)+'</td><td align="center">'+nombreMoneda+'</td></tr>');
 	else{
 		inputMoneda= creaInputMoneda(a);		
-		inputCostoIndirecto='<input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+costoIndirecto+'">';
+		inputCostoIndirecto='<input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+costo+'">';
 	
 		
 		$("#tablaIndirectos").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+inputCostoIndirecto+'</td><td align="center">'+inputMoneda+'</td></tr>'

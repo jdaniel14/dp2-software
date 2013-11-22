@@ -65,6 +65,7 @@ $(function(){
 		obtenMontoContingencia();
 		iniciaRecursos();
 		iniciaRecursosFijos();		
+		actualizaCostos();
 	}else
 		alert('No tiene permiso para realizar esta operación');
 		
@@ -311,7 +312,7 @@ function agregaDataFilaResumen(datosActividad){
 		}
 		
 		$("#tituloActividad").html(nombreActividad);
-		$("#tablaTotalActividad").html('<tr width="100%"><td width="40%"><b>Total</b></td><td width="20%"><b>'+subTotalActividad+'</b></td><td width="40%">'+moneda+'</td></tr>');
+		$("#tablaTotalActividad").html('<tr width="100%"><td width="40%"><b>Total</b></td><td width="20%"><b>'+formateaNumero(subTotalActividad,2)+'</b></td><td width="40%">'+moneda+'</td></tr>');
 	}	
 }
 
@@ -345,7 +346,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva 
 function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
 	a=i;
 	a++;	
-	$("#tablaResumen").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+costoUnitario+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
+	$("#tablaResumen").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
 	
 
 }
@@ -395,7 +396,7 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 	
 	//Si es para confirmar			
 	inputHidden='<input type="hidden" id="tipoCambio'+(a)+'" value="">';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+costoUnitario
+	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)
 								+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">'+inputHidden);
 	if (tipo==1) desabilitaMoneda(a);
@@ -407,8 +408,8 @@ function agregaFilaRecursoFijo(i,idRecurso,unidadMedida, nombreRecurso, costoFij
 	a++;
 	
 	//Si es para confirmar				
-	$("#tablaResumenCostoFijo").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+costoFijoDiario
-								+'</td><td>'+moneda+'</td><td>'+costoFijoTotal+'</td></tr><input type="hidden" id="idRecurso'
+	$("#tablaResumenCostoFijo").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoFijoDiario,2)
+								+'</td><td>'+moneda+'</td><td>'+formateaNumero(costoFijoTotal,2)+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">');
 	
 }
@@ -456,8 +457,7 @@ $("#btnGrabar").click(function(){
 	porcentajeReserva=$("#inputReserva").val();
 
 	if (isNaN(porcentajeReserva) || (!isNaN(porcentajeReserva) && new Number(porcentajeReserva)<0)){
-	
-		alert('El porcentaje de reserva debe ser un número mayor igual a 0');
+		
 		lanzaAlerta("divReserva","labReserva","");
 		return;
 	}else
@@ -471,12 +471,13 @@ $("#btnGrabar").click(function(){
 
 function grabarRecursos(){
 	
-	porcentajeReserva=$("#inputReserva").val();
+	var porcentajeReserva=$("#inputReserva").val();
+	var porcentajeContingencia=$("#inputPorcentajeContingencia").val();
 	
 	var obj={
 		idProyecto: idProyecto,	
 		porcReserva: porcentajeReserva,
-		porcContingencia: '0',
+		porcContingencia: porcentajeContingencia,
 		idUsuario  : idUsuario
 		
 		

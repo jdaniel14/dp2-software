@@ -197,8 +197,8 @@ function agregaFilaRecurso(){
 	inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="recurso'+a+'" value="" onClick="modifica('+a+')"></div>';
 	inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="" onClick="modifica('+a+')"></div>';
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
-	inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
-	inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
+	inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
+	inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
 	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
 								+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
@@ -224,8 +224,8 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		if (indRecursoHumano=='0'){
 			inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+costoUnitario+'" onClick="modifica('+a+')"></div>';
 			inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+costoFijo+'" onClick="modifica('+a+')"></div>';
-			inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
-			inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" readOnly></div>';
+			inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
+			inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 			
 		}else{
