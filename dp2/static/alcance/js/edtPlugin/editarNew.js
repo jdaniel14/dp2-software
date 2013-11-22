@@ -18,6 +18,9 @@ function repaintEDIT(){
 
 
  		$("#editarEdtNew").click(function(){
+ 			var url = 'edt.html';
+			window.location.href = url;
+ 				/*
  				console.log("Proceso de edición");
 
  				localStorage.setItem("queueEstado", "editando");
@@ -33,6 +36,7 @@ function repaintEDIT(){
 
  				console.log("editadndo con bolitas");
  				repaint_eventsEdtNew();
+ 				*/
  		});
 
  		$("#GuardarCambiosNew").click(function(){

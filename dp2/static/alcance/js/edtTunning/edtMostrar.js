@@ -77,6 +77,7 @@ function ajaxMostrar ( jsonCliente ){
                                $("#progressEdt").hide("slow");
                                $("#containerEdt").show("slow"); 
                                $("#controllerButton").show("slow");
+                               $("#guardarCambios").show();
 
                             }
                             
@@ -178,6 +179,7 @@ function armaNodoHijo ( id, title, descripcion, dias ){
 	html += id + '" type = "text" value = "'
 	html += dias + '"> ' + '</span>';
 	*/
+  /*
 	
 	html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
 	html += '<span class = "titleEDT" id = "';
@@ -186,19 +188,39 @@ function armaNodoHijo ( id, title, descripcion, dias ){
 	html += '</span> <br>' + '<span class = "descripcionEDT">';
 	html += descripcion + '</span> <br>' + '<span class = "diasEDT">';
 	html += dias + '</span>';
-	
+*/
+   var html = "";  
+                    //html += '<ul>';
+          html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
+          html += '<span class = "titleEDT" id = "';
+          html += 'title-'+ id + '" >';
+          html += title;
 
+          html += '</span> <br>' + '<span class = "descripcionEDT" id = "';
+          html += 'descripcion-'+ id + '" >';
+          html += descripcion + '</span> <br>' + '<span class = "diasEDT" id = "';
+          html += 'dias-'+ id + '" >';
+          html += dias + '</span>';
 	return html;
 }
 
 function armaNodoEdt ( title, descripcion, hijos , idnodo, flag ){
   var html = '<li>'
 
+/*
 	  html += '<input class = "inputEdtTitle"  id = "title-' 
 	  html += idnodo
 	  html += '" type = "text" value = "'
 	  html += title
 	  html += '"> ';
+
+    */
+
+     //html +=  '<li>';
+          html += '<span class = "titleEDT" id = "';
+          html += 'titlePadre-'+ idnodo + '" >';
+          html += title;
+          html += '</span>';
 
 	return html;          
 }
