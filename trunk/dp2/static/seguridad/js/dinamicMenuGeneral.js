@@ -11,12 +11,11 @@
 $(document).ready(function(){
 
     var idRol=localStorage.getItem("idRol");
-    var idProyecto=localStorage.getItem("idProyecto");
     var idUsuario=localStorage.getItem("idUsuario");
     
 
-    if(idRol == null || idProyecto==null || idUsuario==null){
-    	
+    if(idRol == null || idUsuario==null){
+    	alert('1');
         $(location).attr('href','../../index.html');
     }
 

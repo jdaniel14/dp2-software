@@ -16,7 +16,7 @@ $(document).ready(function(){
     
 
     if(idRol == null || idProyecto==null || idUsuario==null){
-    	
+    	alert('2');
         $(location).attr('href','../../index.html');
     }
 
