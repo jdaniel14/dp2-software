@@ -15,7 +15,7 @@ $(document).ready(function(){
     
 
     if(idRol == null || idUsuario==null){
-    	alert('1');
+    	
         $(location).attr('href','../../index.html');
     }
 
