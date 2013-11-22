@@ -67,7 +67,7 @@ $(document).ready(function(){
          menuPerfil+= '<ul class="dropdown-menu">';
          menuPerfil+= '<li><a href="#">Preferencias</a></li>';
          menuPerfil+= '<li class="divider"></li>';
-         menuPerfil+= '<li><a id="logout" href="/dp2"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>';
+         menuPerfil+= '<li><a id="logout" href="../../index.html"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>';
          menuPerfil+= '</ul></li></ul>';
      $("#perfilMenu").html(menuPerfil); 
 
