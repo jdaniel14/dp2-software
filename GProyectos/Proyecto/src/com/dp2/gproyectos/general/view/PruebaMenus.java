@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
+//import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 
@@ -26,7 +26,7 @@ public class PruebaMenus extends FragmentActivity {
 
 	private final Handler handler = new Handler();
 
-	private PagerSlidingTabStrip tabs;
+//	private PagerSlidingTabStrip tabs;
 	private ViewPager pager;
 	private MyPagerAdapter adapter;
 
@@ -38,7 +38,7 @@ public class PruebaMenus extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.general_home_proyectos_menu);
 
-		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+//		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		pager = (ViewPager) findViewById(R.id.pager);
 		adapter = new MyPagerAdapter(getSupportFragmentManager());
 
@@ -48,7 +48,7 @@ public class PruebaMenus extends FragmentActivity {
 				.getDisplayMetrics());
 		pager.setPageMargin(pageMargin);
 
-		tabs.setViewPager(pager);
+//		tabs.setViewPager(pager);
 
 		//changeColor(currentColor);
 	}
@@ -161,7 +161,7 @@ public class PruebaMenus extends FragmentActivity {
 
 	public class MyPagerAdapter extends FragmentPagerAdapter {
 
-		private final String[] TITLES = { "Información", "Indicadores", "Costos"};
+		private final String[] TITLES = { "Informaciï¿½n", "Indicadores", "Costos"};
 
 		public MyPagerAdapter(FragmentManager fm) {
 			super(fm);
