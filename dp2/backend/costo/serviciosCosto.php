@@ -2079,6 +2079,10 @@
 
 	function CO_consultarPermisoVista($obj) {
 
+		if ($obj->idEmpleado == 1) {
+			return 1;
+		}
+		
 		$rol = CO_obtenerRol($obj->idProyecto, $obj->idEmpleado);
 
 		$respuesta = 0;
