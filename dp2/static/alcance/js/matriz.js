@@ -1,3 +1,8 @@
+function inicializaFechas(){
+        $('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'dd-mm-yy' });
+
+}
+
 function modificarRequisito(){
 	$("#selected").removeClass("selected");
 	$(this).parent().parent().addClass("selected");
@@ -47,8 +52,8 @@ function listarFases(){
 				var fila = $('<tr></tr>');
 				fila.append('<td>'+arr[i].idFase+'</td>');
 				fila.append('<td>'+arr[i].descFase+'</td>');
-				fila.append('<td>'+arr[i].fecha+'</td>');
-				fila.append('<td><input class="form-control" value="'+arr[i].entregable+'" / ></td>');
+				fila.append('<td><input type="text" class="form-control calendar" value="'+arr[i].fecha+'" readOnly / ></td>');
+				fila.append('<td><input class="form-control"  value="'+arr[i].entregable+'" / ></td>');
 				tabla.append(fila);
 			}
 		}
@@ -143,7 +148,7 @@ function guardarEntregables(){
 		var obj={};
 		obj["id_requisito"]= $("#id_requisito_fases").val();
 		obj["idFase"]= $($(entregables[i]).children()[0]).html();
-		obj["fecha"]= $($(entregables[i]).children()[2]).html();
+		obj["fecha"]= $($($(entregables[i]).children()[2]).children()[0]).val();
 		obj["entregable"]= $($($(entregables[i]).children()[3]).children()[0]).val();
 		$.ajax({
 			type: 'POST',
@@ -199,4 +204,5 @@ $(document).ready(function(){
           llena_requisitos( requisitos , dataestado );
       }
  	});
+ 	$(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
 });
