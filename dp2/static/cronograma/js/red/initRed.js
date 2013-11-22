@@ -1,4 +1,5 @@
 //Variables globales
+// 
 var listaRed;
 var dataAJAX;
 
@@ -95,7 +96,7 @@ function crearTitulo(id_actividad,nombre_actividad, posX, posY, colorBorde, anch
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
-			'nodeContent': nombre_actividad,//aquiiii apiiii hay que poner label y también al título del diagrama
+			'nodeContent': '<label style="font-size:12px; font-weight:bold; border-bottom: 1px dotted; text-transform: uppercase;">'+nombre_actividad+'</label>',//aquiiii apiiii hay que poner label y también al título del diagrama
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': widthN,
@@ -137,7 +138,7 @@ function crearNodo(id_actividad,nombre_actividad, fecha_actual_inicio, fecha_act
 		diagram.addNode(new Node({
 			'nodeId': id_actividad,
 			'nodeType':'NODE',
-			'nodeContent': '<label style="font-weight:bold; text-align: center; font-size:12px; float:left; border-bottom: 4px solid #B32323;  border-right: 4px solid #B32323; padding: 6px;">'+early_start +"</label>"+ '<label style="font-weight:bold; text-align: center; font-size:12px; float:right; border-bottom: 4px solid #B32323; border-left: 4px solid #B32323;padding: 6px;">'+early_end +'</label>' + "<br><br>"+ '<label style="font-size:11px; font-weight:bold; border-bottom: 1px solid;">'+nombre_actividad+'</label>' + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin +"<br>Duración: " + duracion + " días" + "<br>Holgura: " + holgura_inicial + "<br>"+'<label style="font-weight:bold; text-align: center; font-size:12px; float:left; border-top: 4px solid #B32323;  border-right: 4px solid #B32323; padding: 6px;">'+late_start +"</label>"+ '<label style="font-weight:bold; text-align: center; font-size:12px; float:right; border-top: 4px solid #B32323; border-left: 4px solid #B32323;padding: 6px;">'+late_end,
+			'nodeContent': '<label style="font-weight:bold; text-align: center; font-size:12px; float:left; border-bottom: 4px solid #B32323;  border-right: 4px solid #B32323; padding: 6px;">'+early_start +"</label>"+ '<label style="font-weight:bold; text-align: center; font-size:12px; float:right; border-bottom: 4px solid #B32323; border-left: 4px solid #B32323;padding: 6px;">'+early_end +'</label>' + "<br><br>"+ '<label style="font-size:10px; font-weight:bold; border-bottom: 1px solid; text-transform: uppercase;">'+nombre_actividad+'</label>' + "<br>Inicio: " + fecha_actual_inicio + "<br>Fin: " + fecha_actual_fin +"<br>Duración: " + duracion + " días" + "<br>Holgura: " + holgura_inicial + " días"+ "<br>"+'<label style="font-weight:bold; text-align: center; font-size:12px; float:left; border-top: 4px solid #B32323;  border-right: 4px solid #B32323; padding: 6px;">'+late_start +"</label>"+ '<label style="font-weight:bold; text-align: center; font-size:12px; float:right; border-top: 4px solid #B32323; border-left: 4px solid #B32323;padding: 6px;">'+late_end,
 			'xPosition':posX,
 			'yPosition':posY,
 			'width': widthN,
@@ -207,7 +208,7 @@ function imprimirTituloDelBloque(bloque, rX, rY){
 }
 
 function imprimirDuracionCritica(bloque, rX, rY){
-	crearTitulo('-1',"Duración Total de la Ruta Crítica: " + bloque +" días",rX,rY,borderColorT,borderWidthT, factorX, height);
+	crearTitulo('-1',"Duración Total Ruta Crítica: " + bloque +" días",rX,rY,borderColorT,borderWidthT, factorX, height);
 }
 
 function cantidadDeActividadesEnElBloque(actividadesEnBloque){
