@@ -144,3 +144,11 @@ function borraAlerta(idDiv,idLab){
 	$(div).attr("class","form-group");
 	$(lab).css("display","none");
 }
+
+
+function formateaNumero(numero, numDecimales){
+	var numFormateado=0;
+	
+	if (!isNaN(numero) && !isNaN(numDecimales) && numDecimales>=0)numFormateado=new Number(numero).toFixed(numDecimales);
+	return numFormateado;
+}
