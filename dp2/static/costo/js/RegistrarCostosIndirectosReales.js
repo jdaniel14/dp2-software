@@ -421,7 +421,7 @@ function cambiaConsultar(){
 
 function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
-	if (indicadorCerrado=="1" || indicadorLineaBase=="1"){
+	if (indicadorCerrado=="1" || indicadorLineaBase=="0"){
 	
 		$("#btnEditar").hide();
 		$("#btnGrabar").hide();

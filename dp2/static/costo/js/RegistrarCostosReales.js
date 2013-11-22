@@ -6,7 +6,7 @@ var idUsuario=obtenerIdUsuario();
 var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
-
+var editable = false;
 
 $(function(){
 	if (verificaPermisosGrabar(idVista)!='1'){
@@ -116,13 +116,15 @@ function agregarDataProyecto(data){
 	if (data!=null){
 		proy=data;
 		agregaDatosProyecto( proy.nombre);
+		editable = verificaEditable(proy.indicadorCerrado, proy.indicadorLineaBase);
+		
 	}
 }
 
 
 function agregaDatosProyecto(nombreProyecto){
 	$("#nombreProyecto").html(nombreProyecto);
-		
+	
 }
 
 function agregaFilaRecurso(){
@@ -421,19 +423,31 @@ function enviaDatos(obj){
 //Funciones para el uso del sidebar
 
 function iniciarTabla(){
-	if (verificaPermisosGrabar(idVista)=='1'){
+	if (verificaPermisosGrabar(idVista)=='1' && editable){
 		$("#btnGrabar").show();
 		$("#btnCancelar").show();
 	}else{
 		$("#btnGrabar").hide();
 		$("#btnCancelar").hide();
 	}
+	
 	obtenUnidadMedida();
 	obtenMoneda();
 	$("#numFilas").val(0);
 	iniciaRecursos(1);	
 }
 
+//Funcion para saber si se edita o no
+
+function verificaEditable(indicadorCerrado, indicadorLineaBase){
+
+	if (indicadorCerrado=="1" || indicadorLineaBase=="0"){
+	
+		$("#btnEditar").hide();
+		$("#btnGrabar").hide();
+	}
+	return !(indicadorCerrado=="1" || indicadorLineaBase=="0");
+}
 
 //Fin de funciones para el uso del sidebar
 
