@@ -37,7 +37,7 @@ function obtenCostoIndirectoTotal(){
 }
 function ingresaCostoIndirectoTotal(data){
 	if (!data) return;
-	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Soles");
+	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Nuevos soles");
 	
 }
 
@@ -141,7 +141,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.costoTotalPaquete + ' SOLES ';
+				'Costo subtotal:'+ paquete.costoTotalPaquete + ' Nuevos soles ';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)

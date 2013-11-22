@@ -13,10 +13,10 @@ var arregloProyecto= new Array(
 								);
 
 var arregloRecursos= new Array(
-							new Array('1','Unidad','Ladrillo', '2','Soles','85'),
-							new Array('2','Unidad','Bote de pintura', '8','Soles','12'),
-							new Array('3','Litro','Cemento', '','Soles','10'),
-							new Array('4','Kilo','Fierro', '10','Soles','30')
+							new Array('1','Unidad','Ladrillo', '2','Nuevos soles','85'),
+							new Array('2','Unidad','Bote de pintura', '8','Nuevos soles','12'),
+							new Array('3','Litro','Cemento', '','Nuevos soles','10'),
+							new Array('4','Kilo','Fierro', '10','Nuevos soles','30')
 								);
 
 var arregloActividades= new Array(
@@ -26,18 +26,18 @@ var arregloActividades= new Array(
 							);
 
 var arregloActividad1= new Array(
-									'Actividad 1','106','Soles',new Array(
-									new Array('Unidad','Ladrillo', '2','Soles', '5'),
-									new Array('Unidad','Bote de pintura', '8','Soles','12')
+									'Actividad 1','106','Nuevos soles',new Array(
+									new Array('Unidad','Ladrillo', '2','Nuevos soles', '5'),
+									new Array('Unidad','Bote de pintura', '8','Nuevos soles','12')
 									)
 								);
 								
 
 var arregloActividad2= new Array(
-									'Actividad 2', '460','Soles',new Array(
-									new Array('Unidad','Ladrillo', '2','Soles','80'),
-									new Array('Litro','Cemento', '','Soles','10'),
-									new Array('Kilo','Fierro', '10','Soles','30')
+									'Actividad 2', '460','Nuevos soles',new Array(
+									new Array('Unidad','Ladrillo', '2','Nuevos soles','80'),
+									new Array('Litro','Cemento', '','Nuevos soles','10'),
+									new Array('Kilo','Fierro', '10','Nuevos soles','30')
 									)
 								);
 								
@@ -297,7 +297,7 @@ function agregaDataFilaResumen(datosActividad){
 	
 		nombreActividad= datosActividad.nombre;
 		subTotalActividad= datosActividad.costoSubtotal;	
-		moneda= "Soles"; // Arreglar
+		moneda= "Nuevos soles"; // Arreglar
 		arreglo= datosActividad.listaRecursos;
 		
 		if (arreglo==null){

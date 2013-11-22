@@ -80,12 +80,12 @@ function obtenCostoIndirectoTotal(){
 }
 function ingresaReservaContingencia(data){
 	if (!data) return;
-	$("#reservaContingencia").html($("#reservaContingencia").html()+" " +data.reserva+" Soles");
+	$("#reservaContingencia").html($("#reservaContingencia").html()+" " +data.reserva+" Nuevos soles");
 	
 }
 function ingresaCostoIndirectoTotal(data){
 	if (!data) return;
-	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Soles");
+	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Nuevos soles");
 	
 }
 
@@ -166,7 +166,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.costoTotalPaquete + ' SOLES ';
+				'Costo subtotal:'+ paquete.costoTotalPaquete + ' Nuevos soles ';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
@@ -200,7 +200,7 @@ function agregarDataProyecto(proyecto){
 		$("#nombreProyecto").html(nombreProyecto);
 		$("#inputMontoSinReserva").val(montoSinReserva);
 		$("#inputReserva").val(porcentajeReserva);
-		$("#reservaTotal").html($("#reservaTotal").html() +" " + porcentajeReserva*0.01*montoSinReserva + " Soles");
+		$("#reservaTotal").html($("#reservaTotal").html() +" " + porcentajeReserva*0.01*montoSinReserva + " Nuevos soles");
 		$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
 	
 	}
