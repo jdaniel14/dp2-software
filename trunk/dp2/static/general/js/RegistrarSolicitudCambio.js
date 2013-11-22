@@ -12,6 +12,7 @@ $("#btnEnviar").click(function(){
               label: "Sí",
               className: "btn-success",
               callback: function() {
+                //alert('ala');
                 registrarSolicitud();
               }
             },
@@ -40,7 +41,8 @@ function registrarSolicitud(){
         id_proy       : id,
 		    flag_cambio   : cad,
 		    descripcion   : $("#descripcion").val(),
-        justificacion : $("#justificacion").val()
+        justificacion : $("#justificacion").val(),
+        impacto       : $('#impacto').val()
     };
 
     $.ajax({
@@ -60,13 +62,15 @@ function validacion() {
         rules: {
           modulo        : { required: true },
           descripcion   : { required: true },
-          justificacion : { required: true }
+          justificacion : { required: true },
+          impacto       : { required: true }
         },
 
         messages: {
           modulo        : { required: 'Debe elegir al menos una opción' },
           descripcion   : { required: 'Debe ingresar la descripción de la solicitud de cambio' },
-          justificacion : { required: 'Debe ingresar la justificación de la solicitud de cambio' }
+          justificacion : { required: 'Debe ingresar la justificación de la solicitud de cambio' },
+          impacto       : { required: 'Debe ingresar el impacto de la solicitud de cambio' }
         },
 
         //posicionar el mensaje de error despues del ultimo checkbox
