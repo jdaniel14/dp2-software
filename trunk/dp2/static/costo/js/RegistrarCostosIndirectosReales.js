@@ -12,8 +12,8 @@ var arregloProyecto= new Array(
 								);
 
 var arregloRecursos= new Array(
-							new Array('1','Unidad','Ladrillo', '2','Soles','85','4','1'),
-							new Array('2','Unidad','Bote de pintura', '8','Soles','12','4','1'),
+							new Array('1','Unidad','Ladrillo', '2','Nuevos soles','85','4','1'),
+							new Array('2','Unidad','Bote de pintura', '8','Nuevos soles','12','4','1'),
 							new Array('3','Litro','Cemento', '','Dolar','10','1','2'),
 							new Array('4','Kilo','Fierro', '10','Dolar','30','2','2')
 								);
@@ -28,9 +28,9 @@ var arregloUnidadMedida= new Array(
 							);
 
 var arregloRecursosHumanos= new Array(
-									'Actividad 1','106','Soles',new Array(
-									new Array('Unidad','Ladrillo', '2','Soles', '5'),
-									new Array('Unidad','Bote de pintura', '8','Soles','12')
+									'Actividad 1','106','Nuevos soles',new Array(
+									new Array('Unidad','Ladrillo', '2','Nuevos soles', '5'),
+									new Array('Unidad','Bote de pintura', '8','Nuevos soles','12')
 									)
 								);
 

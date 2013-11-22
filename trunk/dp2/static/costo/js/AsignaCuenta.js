@@ -121,7 +121,7 @@ function agregaDataFila(data){
 		nAct = arreglo.length;
 		for (i=0; i<arreglo.length;i++){
 			var filaAct=arreglo[i];
-			agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Soles",filaAct.idActividad);
+			agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Nuevos soles",filaAct.idActividad);
 			totalCuenta += filaAct.costoSubtotal*1;
 		}
 		$("#totalCuentas").html(totalCuenta + "");

@@ -456,7 +456,7 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiaTablaRecursos(){
 	$("#tablaRecursos").html('');
-	$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Costo fijo diario (Soles)</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td></tr>');
+	$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Costo fijo diario (Nuevos soles)</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td></tr>');
 }
 
 $("#btnCancelar").click(function(){
