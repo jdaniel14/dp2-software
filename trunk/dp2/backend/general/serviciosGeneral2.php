@@ -586,7 +586,7 @@ function G_postListaTodosRecurso_1(){
                     AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
                     R.ID_PROYECTO = M.ID_PROYECTO AND 
                     R.ID_PROYECTO = A.ID_PROYECTO AND 
-                    ( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin AND
+                    ( A.FECHA_PLAN_INICIO BETWEEN :fecha_ini AND :fecha_fin OR
                       A.FECHA_PLAN_FIN BETWEEN :fecha_ini AND :fecha_fin )
 
                 UNION
@@ -594,7 +594,7 @@ function G_postListaTodosRecurso_1(){
                 SELECT -1 AS ID_ACTIVIDAD , P.FECHA_INICIO_PLANIFICADA, P.FECHA_FIN_PLANIFICADA, P.ID_PROYECTO, M.ID_EMPLEADO
                 FROM PROYECTO P , MIEMBROS_EQUIPO M
                 WHERE 
-                    (P.FECHA_INICIO_PLANIFICADA BETWEEN :fecha_ini AND :fecha_fin AND 
+                    (P.FECHA_INICIO_PLANIFICADA BETWEEN :fecha_ini AND :fecha_fin OR 
                     P.FECHA_FIN_PLANIFICADA BETWEEN :fecha_ini AND :fecha_fin) AND
                     M.ID_PROYECTO = P.ID_PROYECTO AND
                     M.ID_ROL = 2 AND P.ESTADO = 'ACTIVO') 
