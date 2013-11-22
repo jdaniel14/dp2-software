@@ -25,6 +25,8 @@ import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
 import com.dp2.gproyectos.general.controller.UsuarioController;
+import com.dp2.gproyectos.general.entities.UsuarioBean;
+import com.dp2.gproyectos.general.model.ValidarLoginResponse;
 import com.google.gson.Gson;
 
 public class CronogramaController extends Controller{
@@ -265,5 +267,45 @@ public class CronogramaController extends Controller{
 		{
 		}
 		return inputStream;
+	}
+	
+
+	public String registrarCantidadCosto (ActividadBean estaActividad, RecursoBean esteRecurso, String cantidad, String costo)  {
+		
+		String path = ServerConstants.SERVER_URL + ServerConstants.CronogramaPostUpdateAvanceRecurso;
+		
+		Gson gs = new Gson();
+		String strResponse;
+	
+		JSONObject parametros = new JSONObject();
+		try{
+			parametros.put("idActividad",estaActividad.id);
+			parametros.put("idRecurso",esteRecurso.id);
+			parametros.put("costoReal",costo);
+			parametros.put("cantidadReal",cantidad);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		HttpResponse respuesta = HttpConnector.makeRequest(path, parametros.toString());
+		
+		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
+			try {
+				strResponse = EntityUtils.toString(respuesta.getEntity());
+				//objResponse = gs.fromJson(strResponse, ValidarLoginResponse.class);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				strResponse = "";
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				strResponse = "";
+			}
+		} else {
+			strResponse = "";
+		}
+		return strResponse;
 	}
 }
