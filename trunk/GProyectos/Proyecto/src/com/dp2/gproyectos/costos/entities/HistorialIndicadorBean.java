@@ -85,6 +85,12 @@ public class HistorialIndicadorBean implements Serializable{
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					try {
+						sdf = new SimpleDateFormat("yyyy-MM-dd");
+						calendar.setTime(sdf.parse(strFrecha));
+					} catch (Exception e2) {
+						e.printStackTrace();
+					}
 				}
 				min = calendar.getTimeInMillis();
 			}
@@ -140,6 +146,12 @@ public static long getMaxDate(ArrayList<HistorialIndicadorBean> valores) {
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					try {
+						sdf = new SimpleDateFormat("yyyy-MM-dd");
+						calendar.setTime(sdf.parse(strFrecha));
+					} catch (Exception e2) {
+						e.printStackTrace();
+					}
 				}
 				max = calendar.getTimeInMillis();
 			}

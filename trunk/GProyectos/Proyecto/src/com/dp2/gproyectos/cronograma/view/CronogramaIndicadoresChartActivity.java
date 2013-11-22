@@ -11,6 +11,9 @@ import org.achartengine.GraphicalView;
 import org.achartengine.model.SeriesSelection;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
@@ -19,10 +22,18 @@ import com.dp2.gproyectos.costos.entities.FuelChart;
 import com.dp2.gproyectos.costos.entities.HIndicador;
 import com.dp2.gproyectos.costos.entities.HistorialIndicadorBean;
 import com.dp2.gproyectos.costos.entities.Result;
+import com.dp2.gproyectos.cronograma.controller.CronogramaController;
+import com.dp2.gproyectos.cronograma.entities.IndicadorCronogramaBean;
+import com.dp2.gproyectos.cronograma.entities.MultiplesIndicadores;
+import com.dp2.gproyectos.general.controller.UsuarioController;
+import com.dp2.gproyectos.general.view.GeneralHomeLeccionesListaActivity;
+import com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity;
 import com.dp2.gproyectos.utils.MensajesUtility;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -31,37 +42,36 @@ import android.widget.Toast;
 public class CronogramaIndicadoresChartActivity extends SherlockActivity implements Loadingable {
 	private static FuelChart chart;
 	
-	private String nombreIndicador = "";
 	private String titulo = "";
 	private String idProyecto = "";
-	private String fecha = "";
-	private String descripcion = "";
+//	private String fecha = "";
+//	private String descripcion = "";
 	//private List<Result> valores;
-	private ArrayList<HistorialIndicadorBean> historial;
-	private ArrayList<HIndicador> historial2;
+	private ArrayList<ArrayList<IndicadorCronogramaBean>> historial;
+	private MultiplesIndicadores indicadores;
+	private static int indicadorSeleccionado = 0;
 	
 	private static GraphicalView graphicalView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		nombreIndicador = getIntent().getExtras().getString("nombreIndicador");
-		titulo = getIntent().getExtras().getString("titulo");
-		fecha = getIntent().getExtras().getString("fecha");
+
+		titulo = getIntent().getExtras().getString("nombreProyecto");
+//		fecha = getIntent().getExtras().getString("fecha");
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		
-		descripcion = getIntent().getExtras().getString("descripcion");
+//		descripcion = getIntent().getExtras().getString("descripcion");
 		
 		getSherlock().getActionBar().setTitle(titulo);
 		getSherlock().getActionBar().setIcon(R.drawable.maleta);
-		getSherlock().getActionBar().setSubtitle(descripcion);
+//		getSherlock().getActionBar().setSubtitle(descripcion);
 		
 		setContentView(R.layout.costos_historial_indicadores_layout);
 		findViewById(R.id.historialIndicadoresLayout).setBackgroundColor(Color.WHITE);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
 		
-		chart = new FuelChart(titulo, fecha, "Valores hasta la fecha " + fecha);
+		chart = new FuelChart(titulo, "", "");
 		
 		graphicalView = chart.getView(this, new ArrayList<HistorialIndicadorBean>());
 		graphicalView.setBackgroundColor(Color.WHITE);
@@ -94,15 +104,6 @@ public class CronogramaIndicadoresChartActivity extends SherlockActivity impleme
 		}
 	}
 
-	private List<Result> getResults() {
-		List<Result> results = new ArrayList<Result>();
-		results.add(new Result(new Date(108, 9, 1), 8.8));
-		results.add(new Result(new Date(108, 9, 8), 9.0));
-		results.add(new Result(new Date(108, 9, 15), 10.0));
-		results.add(new Result(new Date(108, 9, 22), 9.5));
-		return results;
-	}
-
 	@Override
 	public void beforeLoadingData() {
 		// TODO Auto-generated method stub
@@ -113,49 +114,114 @@ public class CronogramaIndicadoresChartActivity extends SherlockActivity impleme
 	public void loadingData() {
 		// TODO Auto-generated method stub
 		//valores = getResults();
-		historial2 = new ArrayList<HIndicador>();
 		
-		historial = IndicadoresController.getInstance().getHistorialIndicadores(idProyecto, nombreIndicador, fecha);
+		historial = CronogramaController.getInstance().getHistorialIndicadores(idProyecto);
+		indicadores = new MultiplesIndicadores(historial);
 		
-		if (historial != null && !historial.isEmpty()) {
-			for (HistorialIndicadorBean elemento : historial) {
-				HIndicador ind = new HIndicador(elemento.nombre, elemento.historial);
-				historial2.add(ind);
-			}
-		}
+		runOnUiThread(new Runnable() {
+		     public void run() {
+		    	 invalidateOptionsMenu();
+		    }
+		});
+		
 	}
 
 	@Override
 	public void afterLoadingData() {
 		// TODO Auto-generated method stub
-		if (historial != null && chart != null) {
-			runOnUiThread(new Runnable() {
-			     public void run() {
-			    	 //chart.getView(CostosIndicadoresChartActivity.this, valores).refreshDrawableState();
-			    	 graphicalView = chart.getView(CronogramaIndicadoresChartActivity.this, historial);
-			    	 
-			    	 graphicalView.setOnClickListener(new View.OnClickListener() {
-			 	        public void onClick(View v) {
-			 	            // handle the click event on the chart
-			 	            SeriesSelection seriesSelection = graphicalView.getCurrentSeriesAndPoint();
-			 	            if (seriesSelection == null) {
-			 	            	//Toast.makeText(CostosIndicadoresChartActivity.this, "No chart element", Toast.LENGTH_SHORT).show();
-			 	            } else {
-			 	              // display information of the clicked point
-			 	            	Toast.makeText(
-			 	            			CronogramaIndicadoresChartActivity.this,
-			 	            		 //nombres.get(seriesSelection.getSeriesIndex()) +
-			 	            		historial.get(seriesSelection.getSeriesIndex()).nombre +
-			 	            		 ". Fecha: " + historial.get(seriesSelection.getSeriesIndex()).historial.get(seriesSelection.getPointIndex()).fecha +
-			 	            		 ". Valor: " + historial.get(seriesSelection.getSeriesIndex()).historial.get(seriesSelection.getPointIndex()).valor, Toast.LENGTH_SHORT).show();
-			 	            }
-			 	          }
-			 	        });
-			    	 
-			    	 setContentView(graphicalView);
-			    }
-			});
+		if (indicadores != null && chart != null && indicadores.listaIndicadores != null && !indicadores.listaIndicadores.isEmpty()) {
+			repintar();
 		}
 	}
+	
+	public void repintar() {
+		runOnUiThread(new Runnable() {
+		     public void run() {
+		    	 //chart.getView(CostosIndicadoresChartActivity.this, valores).refreshDrawableState();
+		    	 final ArrayList<HistorialIndicadorBean> temp = new ArrayList<HistorialIndicadorBean>();
+		    	 int indice = (indicadorSeleccionado < indicadores.listaIndicadores.size()) ? indicadorSeleccionado : 0;
+		    	 temp.add(indicadores.listaIndicadores.get(indice));
+		    	 
+		    	 graphicalView = chart.getView(CronogramaIndicadoresChartActivity.this, temp);
+		    	 
+		    	 graphicalView.setOnClickListener(new View.OnClickListener() {
+		 	        public void onClick(View v) {
+		 	            // handle the click event on the chart
+		 	            SeriesSelection seriesSelection = graphicalView.getCurrentSeriesAndPoint();
+		 	            if (seriesSelection == null) {
+		 	            	//Toast.makeText(CostosIndicadoresChartActivity.this, "No chart element", Toast.LENGTH_SHORT).show();
+		 	            } else {
+		 	              // display information of the clicked point
+		 	            	Toast.makeText(
+		 	            			CronogramaIndicadoresChartActivity.this,
+		 	            		 //nombres.get(seriesSelection.getSeriesIndex()) +
+		 	            			temp.get(seriesSelection.getSeriesIndex()).nombre + 
+		 	            		 ". Fecha: " + temp.get(seriesSelection.getSeriesIndex()).historial.get(seriesSelection.getPointIndex()).fecha +
+		 	            		 ". Valor: " + temp.get(seriesSelection.getSeriesIndex()).historial.get(seriesSelection.getPointIndex()).valor, Toast.LENGTH_SHORT).show();
+		 	            }
+		 	          }
+		 	        });
+		    	 
+		    	 setContentView(graphicalView);
+		    }
+		});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+//		MenuInflater inflater = getSupportMenuInflater();
+//		inflater.inflate(R.menu.menu_general_lista_proyectos, menu);
+		
+//		menu.add(0, CONST_MENU_VERLECCIONES, 0,
+//				"Ver lecciones").setIcon(
+//				R.drawable.maleta);
+//		menu.add(1, CONST_MENU_LOGOUT, 1,
+//				"Logout").setIcon(
+//				R.drawable.maleta);
+		
+//		if (getSupportActionBar().getSelectedNavigationIndex() == 1) {
+//            menu.add("Share")
+//            .setIcon(android.R.drawable.ic_menu_share)
+//            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+//        }
+//        if (getSupportActionBar().getSelectedNavigationIndex() == 0) {
+//            menu.add("Settings")
+//        .setIcon(android.R.drawable.ic_menu_manage)
+//            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);      
+//        }
 
+		int i = 0;
+		if (indicadores != null && indicadores.listaIndicadores != null && !indicadores.listaIndicadores.isEmpty()) {
+			for (HistorialIndicadorBean indicador : indicadores.listaIndicadores) {
+				menu.add(i, indicadores.listaIndicadores.indexOf(indicador), i, "Ver " + indicador.nombre)
+	            .setIcon(android.R.drawable.ic_menu_share)
+	            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+				
+				i++;
+			}
+		}
+		
+        return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		case R.id.menuGeneralListaProyectos_VerLeccionesAprendidas:
+//
+//			break;
+//		case R.id.menuGeneralListaProyectos_Logout:
+//
+//
+//			break;
+//		}
+		
+		if (indicadores != null && indicadores.listaIndicadores != null && item.getItemId() < indicadores.listaIndicadores.size()) {
+//			Toast.makeText(CronogramaIndicadoresChartActivity.this, "id: <" + item.getItemId() + ">", Toast.LENGTH_SHORT).show();
+			indicadorSeleccionado = item.getItemId();
+			repintar();
+		}
+		return false;
+	}	
 }
