@@ -2,8 +2,10 @@ var buscarRecursosProyectoFecha = "../../api/G_listarRecursoDisponible";
 var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
 var verificarLineaBase ="../../api/G_verificaLineaBase/";
 //var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
+var profesion = "";
 
 $(document).ready(function(){
+	llenar_profesion();
 	listarRRHHxProyecto();
 	verificaLineaBase();
 	//validacion();
@@ -63,6 +65,28 @@ $(document).ready(function(){
     })
 });
 
+function llenar_profesion(){
+	
+	$.ajax({
+		type: 'GET',
+		url:  "../../api/G_listaProfesionRecurso",
+		dataType: "json", // data type of response
+		async: false,
+        success: function(data){
+        	//console.log(data);
+        	data = data["profesiones"];
+        	//console.log(data["p"]);
+        	profesion = "<select class='form-control input-sm'>";
+        	for (i=0; i<data.length;i++){		
+        		profesion += "<option value=\'" + data[i]["id"] +"\'>" + data[i]["nom"] + "</option>";
+        		//console.log(profesion);
+        	}
+        	profesion += "</select>";
+        }
+	});
+	
+}
+
 function asd(www,id){
 	
 	if (id!=null){
@@ -102,9 +126,12 @@ function grabarRecursos(envio){
 		data: JSON.stringify(envio),
 		async: true,
         success: function(data){
-        	//alert(data.me);
-            alert("Ya se inserto");
-            $(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
+        	if(data.me==""){
+        		alert("Ya se inserto");
+            	$(location).attr('href','ListaRecursosHumanosXProyecto.html');
+        	} else {
+        		alert(data.me);
+        	}
         }
 	});
 
@@ -235,12 +262,12 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	
-	var profesion = "<select class='form-control input-sm'>"+
-					 "<option value='1'>Analista 1</option>"+
-					 "<option value='2'>Analista 2</option>"+
-					 "<option value='3'>Desarrollador 1</option>"+
-					 "<option value='4'>Desarrollador 2</option>"+
+	//G_listaProfesionRecurso
+//	var profesion = "<select class='form-control input-sm'>"+
+					 "<option value='6'>Analista 1</option>"+
+					 "<option value='7'>Analista 2</option>"+
+					 "<option value='8'>Desarrollador 1</option>"+
+					 "<option value='9'>Desarrollador 2</option>"+
 					"</select>";
 	
 	var fechaini="<input class='form-control input-sm' type='date' name='fechaini'>";
