@@ -11,6 +11,15 @@
 $(document).ready(function(){
 
     var idRol=localStorage.getItem("idRol");
+    var idProyecto=localStorage.getItem("idProyecto");
+    var idUsuario=localStorage.getItem("idUsuario");
+    
+
+    if(idRol == null || idProyecto==null || idUsuario==null){
+    	
+        $(location).attr('href','../../index.html');
+    }
+
     if(idRol==1){
     		
     		//menu para el GP 
