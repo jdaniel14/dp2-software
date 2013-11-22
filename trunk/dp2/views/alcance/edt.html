@@ -25,9 +25,27 @@
 
   <div class="container">
    <h1>Alcance</h1>
-        <p>En esta sección se podrá crear/modificar/eliminar el EDT</p>
-         
+        <p>Herramienta para editar la EDT previamentre creada.
+        </p>
+        <b> Funciones: </b>
+        <li> Al Pasar el mouse sobre el titulo de un nodo (:hover:) podrá acceder a las herramientas</li>
+        <li> Herramienta @Agregar : agrega un hijo al nodo actual </li>
+        <li> Herramienta @Eliminar: elimina un hijo(y todos sus hijos) al nodo actual</li>  
+        <li> Drag and drop, podrá modificar las conexiones arrastrando y soltando </li> 
+        <li> Al dar Doble Click sobre el titulo/descripcion/tiempo del nodo podrá editar el nodo, para guardar el cambio dar click afuera del nodo.</li>
+        <li> Dar click al botón @GUARDAR cuando haya terminado la edición </li> 
+
+
+        <button id = "guardarCambios" style="display:none" class="btn btn-primary btn-lg" > Guardar </button>
+         <div id = "guardarEDTLoading" class="progress progress-striped active" style = "display:none">
+                    <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    ... Cargando ...
+                    </div>
+               </div>
+        
+
         <p><a id ="CrearEDTCero" style = "display:none" class="btn btn-primary btn-lg">Crear EDT &raquo;</a></p>
+
         
 
          <div id = "progressEdt" class="progress progress-striped active" style = "display:none">
@@ -42,12 +60,14 @@
 
         <div id = "controllerButton" style = "display:none">
          
+            <!--
              <h6> Utilitarios del EDT:   </h6>   
             
             
                <a id ="editarEdtNew" class="btn btn-success">Editar &raquo;</a>
             
                <a id = "eliminarEdt" class="btn btn-danger">Eliminar</a>
+            -->
           </div>
 
     </div>
@@ -88,12 +108,7 @@
         -->
 
 
-        <button id = "guardarCambios" > Guardar </button>
-         <div id = "guardarEDTLoading" class="progress progress-striped active" style = "display:none">
-                    <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                    ... Cargando ...
-                    </div>
-               </div>
+        
 
       </div>
     

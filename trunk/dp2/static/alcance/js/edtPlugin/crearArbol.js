@@ -1,5 +1,5 @@
 
- 
+ $('.inputEdtTitle').attr('readonly', true);
 function repaint(){
                 $("#chart").html("");
                 $("#org").jOrgChart({
@@ -14,6 +14,7 @@ function repaint(){
                     console.log("key A");
                     $( "#inputAgregarHijo" ).trigger( "click" );
                 });
+                
         }
 
 //crearEdtPlugin();
@@ -438,6 +439,7 @@ $("#guardarCambios").click(function(){
 
   
 function repaintEdit(){
+  /*
 
 $(".inputEdtTitle").click(function(){
                        console.log("click ");
@@ -460,6 +462,7 @@ $(".inputEdtTitle").click(function(){
                       return false;
                   });
 }
+*/
 
 }
 
