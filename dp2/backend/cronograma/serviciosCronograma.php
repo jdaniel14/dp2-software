@@ -3,6 +3,7 @@
 include('routesCronograma.php');
 //include('../backend/riesgo/routesRiesgo.php');
  '../backend/riesgo/serviciosRiesgo.php';
+ '../backend/riesgo/serviciosGeneral4.php';
 
 include('clasesCronograma.php');
 include_once '../backend/conexion.php';
@@ -650,9 +651,10 @@ function CR_consultarInfoActividades($idProyecto) {
     $roles = CR_obtenerRolesTotalFalsa();
     $calendario = CR_consultarCalendarioBase($idProyecto);
     $tipoCostos = CR_consultarTipoCostos();
+	$lineaBase= G_obtenerLineaBase($idProyecto);
     //$recursos = CR_obtenerRecursosTotalFalsa();
 
-    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT, $calendario, $tipoCostos);
+    $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT, $calendario, $tipoCostos,$lineaBase);
     return $proyecto;
 }
 
