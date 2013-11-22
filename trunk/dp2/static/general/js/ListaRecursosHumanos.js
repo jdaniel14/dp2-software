@@ -150,7 +150,10 @@ function llegadaDatos(data) {
         			cont++;
         			
         			if (led != 0) {
-        				result += '<td align = "center" style="background-color:red; border-top: 1px groove #733366; ';
+        				if(led == -1)
+        					result += '<td align = "center" style="background-color:green; border-top: 1px groove #733366; ';
+        				else
+        					result += '<td align = "center" style="background-color:red; border-top: 1px groove #733366; ';
         			}
         			else {
         				result += '<td align = "center" style="background-color:blue; border-top: 1px groove #733366; ';
