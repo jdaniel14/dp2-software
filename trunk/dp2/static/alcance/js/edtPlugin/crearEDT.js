@@ -100,7 +100,7 @@ function repaintCharts(){
    console.log( "CrearEDT its loaded ");
 
    //events
-   $("#CrearEDTCero").click(function(){
+   $("#CrearEDTCero1").click(function(){
 
    	localStorage.setItem("estado", "creando");
 

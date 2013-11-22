@@ -46,7 +46,7 @@ function repaint(){
             }
 
 
-$("#CrearEDTCero").click(function(){
+$("#CrearEDTCero1").click(function(){
                console.log("creando edt");
                 $("#edtCrearLogError").hide("slow");
                 $("#glosarioEDT").show("slow");
