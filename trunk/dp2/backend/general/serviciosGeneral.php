@@ -102,7 +102,7 @@ function G_postRegistrarProyecto() {
 function G_getListaProyecto($id) {
 
 
-    $sql = "SELECT P.id_proyecto, 
+    /*$sql = "SELECT P.id_proyecto, 
                         P.nombre_proyecto, 
                         CONCAT(E.nombres, ' ', E.apellidos) as nombres, 
                         T.nombre_tipo_proyecto, 
@@ -118,7 +118,32 @@ function G_getListaProyecto($id) {
                 and r.id_rol=2
                 AND P.id_tipo_proyecto = T.id_tipo_proyecto 
                 AND M.ID_EMPLEADO=:id
+                ORDER BY P.id_proyecto";*/
+        $sql = "SELECT P.id_proyecto, 
+                        P.nombre_proyecto, 
+                        CONCAT(E.nombres, ' ', E.apellidos) as nombres, 
+                        T.nombre_tipo_proyecto, 
+                        DATE(P.fecha_inicio_planificada) as fi, 
+                        DATE(P.fecha_fin_planificada) as ff,
+                        P.estado as es ,
+                        P.flag_linea_base_editable as flag_lb,
+                        P.linea_base_fecha_inicio as fecha_lb,
+                        r.id_rol
+                FROM PROYECTO P, MIEMBROS_EQUIPO M, MIEMBROS_EQUIPO MJ, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
+                WHERE P.id_proyecto = M.id_proyecto 
+                AND P.id_tipo_proyecto = T.id_tipo_proyecto
+                AND M.ID_EMPLEADO=:id
+
+                AND MJ.id_proyecto = P.id_proyecto
+                AND MJ.id_rol=r.id_rol
+                
+                and r.id_rol=2
+                
+                AND E.id_empleado = MJ.id_empleado
+                
                 ORDER BY P.id_proyecto";
+                
+
 		try {
                         $db = getConnection();
 			$stmt = $db->prepare($sql);
