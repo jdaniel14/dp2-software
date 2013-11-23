@@ -33,13 +33,12 @@ margin: 0px auto;
 
 /* Custom node styling */
 
-
 .jOrgChart .node {
 	font-size 			: 14px;
 	background-color 	: rgb(54, 54, 54)!important;
 	border-radius 		: 8px;
 	border 				: 5px solid rgb(54, 54, 54);
-	color 				: #F38630;
+	color 				: #FFFFFF;
 	-moz-border-radius 	: 8px;
 }
 
@@ -56,12 +55,12 @@ body {
   padding-bottom: 20px;
 }
 
-.titleEDT{
-	color : rgb(248, 220, 220);
+.titleEDT {
+	color: rgb(255, 255, 255);
 }
 
-.descripcionEDT{
-	color: white;
+.descripcionEDT {
+	color: #5383D0;
 }
 
 .diasEDT{
@@ -74,6 +73,7 @@ body {
 	text-align: center;
 	width: 100%;
 }
+
 
 .inputEdtDescripcion{
 	border: none; 
