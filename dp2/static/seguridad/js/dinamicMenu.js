@@ -23,7 +23,7 @@ $(document).ready(function(){
     if(idRol==1){
     		
     		//menu para el GP 
-			var jqxhr = $.getJSON( "http://www.json-generator.com/j/cgjBmBppMy?indent=4", function() {
+			var jqxhr = $.getJSON( "http://www.json-generator.com/j/cfTvDpytFe?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
