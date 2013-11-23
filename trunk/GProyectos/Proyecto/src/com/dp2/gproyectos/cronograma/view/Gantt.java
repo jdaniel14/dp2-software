@@ -38,7 +38,7 @@ public class Gantt extends SherlockFragmentActivity implements Loadingable{
 	public void loadingData() {
 		// TODO Auto-generated method stub
 		try {
-			html = CronogramaController.getInstance().getGanttHtml();
+			html = CronogramaController.getInstance().getGanttHtml(idProyecto);
 //			bMapGantt = CronogramaController.getInstance().getGanttImage();
 		} catch (Exception e) {
 			e.printStackTrace();
