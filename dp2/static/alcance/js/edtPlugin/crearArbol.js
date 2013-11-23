@@ -1,5 +1,3 @@
-
- $('.inputEdtTitle').attr('readonly', true);
 function repaint(){
                 $("#chart").html("");
                 $("#org").jOrgChart({
@@ -68,6 +66,7 @@ $("#CrearEDTCero1").click(function(){
               return false;
 });
 
+/*
 
 function crearEdtPlugin(){
 
@@ -256,6 +255,7 @@ $("#inputModificar").click(function(){
   repaintEdit();
 });
 
+*/
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
