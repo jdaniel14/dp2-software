@@ -25,11 +25,13 @@ import com.dp2.gproyectos.costos.entities.HistorialIndicadorBean;
 import com.dp2.gproyectos.costos.model.GetListaHistorialIndicadoresResponse;
 import com.dp2.gproyectos.cronograma.entities.IndicadorCronogramaBean;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
+import com.dp2.gproyectos.cronograma.model.ActividadDetalleBean;
 import com.dp2.gproyectos.cronograma.model.GetListaActividadesResponse;
 import com.dp2.gproyectos.cronograma.model.GetListaIndicadoresCronogramaResponse;
 import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
+import com.dp2.gproyectos.cronograma.view.DetalleActividad;
 import com.dp2.gproyectos.general.controller.UsuarioController;
 import com.dp2.gproyectos.general.entities.UsuarioBean;
 import com.dp2.gproyectos.general.model.ValidarLoginResponse;
@@ -39,6 +41,7 @@ public class CronogramaController extends Controller{
 	public static CronogramaController instance = null;
 	private static ArrayList<ActividadBean> listaActividades = null;
 	public static MensajeResponse mensaje = null;
+	public static ActividadDetalleBean detalleActividad = null;
 	private static final int IO_BUFFER_SIZE = 4 * 1024;
 	
 	private static ArrayList<ArrayList<IndicadorCronogramaBean>> listaHistorialIndicadores = null;
@@ -48,6 +51,45 @@ public class CronogramaController extends Controller{
 			instance = new CronogramaController();
 		}
 		return instance;
+	}
+	
+	public ActividadDetalleBean getDetalleActividad(String idTask){
+		
+		String path = ServerConstants.SERVER_URL + ServerConstants.CronogramaGetDetalleActividad + "/";
+		
+		Gson gs = new Gson();
+		String strResponse = "";
+		ActividadDetalleBean objResponse = null;
+		
+		String json = "{\"id\":" + idTask + "}";
+				
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, json);
+		String result;
+		
+		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+				objResponse = gs.fromJson(result, ActividadDetalleBean.class);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		if (objResponse!=null){
+			detalleActividad = objResponse;
+		} else {
+			detalleActividad = null;
+		}
+		
+		return detalleActividad;
 	}
 	
 	public ArrayList<ActividadBean> getActividades(String idProyecto) {
@@ -171,6 +213,8 @@ public class CronogramaController extends Controller{
 		}
 		return listaRecursos ;
 	}
+	
+	
 	
 	
 	public String getGanttHtml() {
