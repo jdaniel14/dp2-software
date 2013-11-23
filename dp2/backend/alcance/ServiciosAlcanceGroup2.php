@@ -825,6 +825,31 @@ function getEdt(){
 	  }
     }
     
+    
+    function damePrioridad($id){
+    	$con = getConnection();
+    	$pstmt= $con->prepare("SELECT descripcion FROM PRIORIDAD_REQUISITO where id_prioridad_requisito=?");
+    	$pstmt->execute(array($id));
+    	$res =$pstmt->fetch(PDO::FETCH_ASSOC);
+    	return $res["descripcion"];
+    }
+    
+    function dameEstado($id){
+    	$con = getConnection();
+    	$pstmt= $con->prepare("SELECT descripcion FROM ESTADO_REQUISITO where id_estado_requisito=?");
+    	$pstmt->execute(array($id));
+    	$res =$pstmt->fetch(PDO::FETCH_ASSOC);
+    	return $res["descripcion"];
+    }
+    
+    function dameCategoria($id){
+    	$con = getConnection();
+    	$pstmt= $con->prepare("SELECT descripcion FROM CATEGORIA_REQUISITO where id_categoria_requisito=?");
+    	$pstmt->execute(array($id));
+    	$res =$pstmt->fetch(PDO::FETCH_ASSOC);
+    	return $res["descripcion"];
+    }
+    
     //MUESTRO LA MATRIZ: 
 
     function mostrarMatriz(){
@@ -897,11 +922,16 @@ function getEdt(){
     			if($listaRequisito["cargo"]==null)$car="";else $car=$listaRequisito["cargo"];
     			if($listaRequisito["fundamento_incorporacion"]==null)$fun="";else $fun=$listaRequisito["fundamento_incorporacion"];
     			if($listaRequisito["criterio_aceptacion"]==null)$cri="";else $cri=$listaRequisito["criterio_aceptacion"];
-    	
+    			
+    			$nomPrioridad=damePrioridad($listaRequisito["id_prioridad_requisito"]);
+    			$nomEstado=dameEstado($listaRequisito["id_estado_requisito"]);
+    			$nomCategoria=dameCategoria($listaRequisito["id_categoria_requisito"]);
+    			$nombre2=$nombre." ".$apellido;
+    			
     			$hijo = new Requisito($listaRequisito["id_requisito"],$desc,
     					$sol,$car,$fun,$listaRequisito["id_prioridad_requisito"],
     					$listaRequisito["id_estado_requisito"],$cri,$listaRequisito["id_miembros_equipo"],
-    					$nombre,$apellido,$listaRequisito["id_categoria_requisito"]);
+    					$nombre2,$listaRequisito["id_categoria_requisito"],$nomPrioridad,$nomEstado,$nomCategoria);
     			array_push($ar_Requisitos,$hijo);
     		}
     		 
