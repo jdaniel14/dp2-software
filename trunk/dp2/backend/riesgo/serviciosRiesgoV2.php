@@ -4,12 +4,13 @@
     //--------------------------------------TIPO IMPACTO--------------------------------------
 
     function R_getListaTipoImpactoRiesgo($idProyecto){
-        $query = "SELECT * FROM TIPO_IMPACTO WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM TIPO_IMPACTO WHERE id_proyecto=:idProyecto";
         try{
 			$arregloListaTipoImpacto= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("idTipo" => $row['id_tipo_impacto'], "tipoRi" => $row['descripcion'],"formas" => $row['tipo']);
                 array_push($arregloListaTipoImpacto,$data);
@@ -76,12 +77,13 @@
     //--------------------------------------ACUERDOS Y MODIFICACIONES--------------------------------------
 
     function R_getListaAcuerdos($idProyecto){
-        $query = "SELECT * FROM ACUERDOS WHERE estado = 1 AND id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM ACUERDOS WHERE estado = 1 AND id_proyecto=:idProyecto";
         try{
             $arregloListaTipoImpacto= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("idAcuerdo" => $row['id_acuerdos'],"fecha" => $row['fecha'], "hora" => $row['hora'],"acuerdo" => $row['acuerdos']);
                 array_push($arregloListaTipoImpacto,$data);
@@ -169,12 +171,13 @@
 
     function R_getGenerarMatrizPositivo($idProyecto){
         //Nivel Impacto
-        $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=:idProyecto ORDER BY 1 ASC";
         try{
             $arregloNivel= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
                 array_push($arregloNivel,$data);
@@ -184,12 +187,13 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
         //Probabilidad Riesgo
-        $query = "SELECT nivel, descripcion FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        $query = "SELECT nivel, descripcion FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:idProyecto ORDER BY 1 ASC";
         try{
             $arregloProbabilidad= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
                 array_push($arregloProbabilidad,$data);
@@ -246,12 +250,13 @@
 
     function R_getGenerarMatrizNegativo($idProyecto){
         //Nivel Impacto
-        $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        $query = "SELECT nivel, descripcion FROM NIVEL_IMPACTO WHERE id_proyecto=:idProyecto ORDER BY 1 ASC";
         try{
             $arregloNivel= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
                 array_push($arregloNivel,$data);
@@ -261,12 +266,13 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
         //Probabilidad Riesgo
-        $query = "SELECT nivel, descripcion FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto." ORDER BY 1 ASC";
+        $query = "SELECT nivel, descripcion FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:idProyecto ORDER BY 1 ASC";
         try{
             $arregloProbabilidad= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("nivel" => $row['nivel'], "descripcion" => $row['descripcion']);
                 array_push($arregloProbabilidad,$data);
@@ -325,12 +331,13 @@
 
 
     function R_getEstrategiasPositivo($idProyecto){
-        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 1 AND id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 1 AND id_proyecto=:idProyecto";
         try{
             $arregloListaEstrategias= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("idEstrategia" => $row['id_categorizacion_estrategias'],"puntajeMin" => $row['puntaje_limite_bajo'], "puntajeMax" => $row['puntaje_limite_alto'],
                     "prioridad" => $row['prioridad'], "estrategia" => $row['estrategia'], "significado" => $row['significado']);
@@ -344,12 +351,13 @@
     }
 
     function R_getEstrategiasNegativo($idProyecto){
-        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 2 AND id_proyecto=".$idProyecto;
+        $query = "SELECT * FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 2 AND id_proyecto=:idProyecto";
         try{
             $arregloListaEstrategias= array();
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $data= array("idEstrategia" => $row['id_categorizacion_estrategias'],"puntajeMin" => $row['puntaje_limite_bajo'], "puntajeMax" => $row['puntaje_limite_alto'],
                     "prioridad" => $row['prioridad'], "estrategia" => $row['estrategia'], "significado" => $row['significado']);
@@ -429,11 +437,12 @@
     function R_getPuntajes($idProyecto){
 
         //Minimo
-        $query = "SELECT MIN(nivel) AS minimonivel FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT MIN(nivel) AS minimonivel FROM NIVEL_IMPACTO WHERE id_proyecto=:idProyecto";
         try{
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $minimonivel = $row['minimonivel'];
             }
@@ -442,11 +451,12 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 
-        $query = "SELECT MIN(nivel) AS minimoprob FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT MIN(nivel) AS minimoprob FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:idProyecto";
         try{
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $minimoprob =  $row['minimoprob'];
             }
@@ -458,11 +468,12 @@
         $minimorango = $minimonivel * $minimoprob;
 
         //Maximo
-        $query = "SELECT MAX(nivel) AS maximonivel FROM NIVEL_IMPACTO WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT MAX(nivel) AS maximonivel FROM NIVEL_IMPACTO WHERE id_proyecto=:idProyecto";
         try{
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $maximonivel = $row['maximonivel'];
             }
@@ -471,11 +482,12 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 
-        $query = "SELECT MAX(nivel) AS maximoprob FROM PROBABILIDAD_RIESGO WHERE id_proyecto=".$idProyecto;
+        $query = "SELECT MAX(nivel) AS maximoprob FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:idProyecto";
         try{
             $db=getConnection();
-            $stmt = $db->query($query);
+            $stmt = $db->prepare($query);
             $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $maximoprob = $row['maximoprob'];
             }
