@@ -12,7 +12,6 @@ $("#btnEnviar").click(function(){
               label: "Sí",
               className: "btn-success",
               callback: function() {
-                //alert('ala');
                 registrarSolicitud();
               }
             },
@@ -31,9 +30,9 @@ $("#btnEnviar").click(function(){
 function registrarSolicitud(){
     var cad='';
 
-    if ($("#alcance").attr("checked") == "checked")    { cad+='1'; } else { cad+='0'; }
-    if ($("#cronograma").attr("checked") == "checked") { cad+='1'; } else { cad+='0'; }
-    if ($("#costo").attr("checked") == "checked")      { cad+='1'; } else { cad+='0'; }
+    if ($("#alcance").is(":checked"))    { cad+='1'; } else { cad+='0'; }
+    if ($("#cronograma").is(":checked")) { cad+='1'; } else { cad+='0'; }
+    if ($("#costo").is(":checked"))      { cad+='1'; } else { cad+='0'; }
 
     var id=localStorage.getItem("idProyecto");
 
