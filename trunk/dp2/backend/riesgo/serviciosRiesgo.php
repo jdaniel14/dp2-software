@@ -1047,7 +1047,9 @@
             $stmt->bindParam("id_riesgo_x_proyecto",$idRiesgoXProyecto);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("descripcion" => $row['descripcion'], 
+                $data = array(
+                            "idAccionesRiesgo" => $row['id_acciones_x_riesgo'],
+                            "descripcion" => $row['descripcion'], 
                             "costo" => $row['costo'],
                             "tiempo" => $row['tiempo']
                             );
@@ -1153,6 +1155,8 @@
         
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
+
+        //Se materializo en Riesgo x proyecto
         $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion,
         estado=2
         WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
@@ -1164,10 +1168,27 @@
             $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
             $stmt->execute();
             $db = null;
+            //echo json_encode('Se materializo el riesgo');
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+        }
+
+        //Se selecciona la accion
+        $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_materializacion=:fecha_materializacion, estado=1
+        WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+        var_dump($riesgo);
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
+            $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
+            $stmt->execute();
+            $db = null;
             echo json_encode('Se materializo el riesgo');
         } catch(PDOException $e) {
             echo json_encode(array("me"=> $e->getMessage()));
         }
+
 
     }
     
