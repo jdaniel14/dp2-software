@@ -19,6 +19,6 @@
 	$app->get('/CR_getDetalleRecurso/:parametro','CR_getDetalleRecurso');//servicio 15 obtener detalle de un recurso
 	$app->post('/CR_updateAvanceRecurso/', 'CR_updateAvanceRecurso');//servicio 16 guardar datos reales de un recurso
 	$app->post('/CR_test/:parametro', 'hallar_fechainicio_fechafin_red');
-	
+	$app->post('/CR_getActividadesMovil/','CR_getActividadesMovil');//servicio 17
 	
 ?>
