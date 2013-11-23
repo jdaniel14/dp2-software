@@ -326,7 +326,8 @@ function main() {
             // dataType: "json",
             data: jsonData,
             success: function() {
-                
+                localStorage.setItem("idAccion", $('#accionEscogida').val());
+                localStorage.setItem("idRiesgo", idArray);
                 //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
                 window.location.replace("../riesgo/ActualizarGantt.html");
             },
@@ -334,32 +335,6 @@ function main() {
         });
 
     });
-
-    $("#btnAcciones").click(function() {
-
-        var data = {
-            idRiesgoProyecto: parseInt(idArray),
-            fechaMat: $('#fechaMat').val()
-        };
-
-        var jsonData = JSON.stringify(data);
-        console.log(jsonData);
-        $.ajax({
-            type: 'PUT',
-            url: setMaterializada,
-            // dataType: "json",
-            data: jsonData,
-            success: function() {
-                
-                //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
-                window.location.replace("../riesgo/ActualizarGantt.html");
-            },
-            fail: codigoError
-        });
-
-    });
-
-
 }
 
 function limpiarRegistrar() {
