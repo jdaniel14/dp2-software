@@ -7,6 +7,8 @@ $app->post('/G_actualizarRecurso', 'G_postActualizarRecurso');
 $app->get('/G_devuelveListaEmpleados', 'G_getListaEmpleados');
 $app->post('/G_darbajaEmpleado', 'G_postDarbajaEmpleado');
 $app->get('/G_devuelveProfesion/:id', 'G_getProfesion');
+$app->get('/G_devuelveListaEmpleadosFull', 'G_getListaEmpleadosFull');
+
 
 //alfonso
 $app->get('/G_verificaLineaBase/:id', 'G_getLineaBase');
