@@ -268,6 +268,44 @@ function G_getProfesion($id) { //Bonnie se la llevó facil :'(
     echo json_encode($jsonRespuesta);
 }
 
+
+function G_getListaEmpleadosFull() {
+    $sql = " select E.id_empleado, E.nombres, E.apellidos, E.telefono, E.email, E.nombre_corto, E.pago_mensual, P.id_profesion, P.descripcion as prof_desc, S.user from EMPLEADO as E, PROFESION as P, SEGURIDAD as S  where estado = 'ACTIVO' and P.id_profesion = E.id_profesion and S.id_empleado = E.id_empleado ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        $lista = array();
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $tel = $p["telefono"];
+            $email = $p["email"];
+            if ($tel == null) {
+                $tel = "";
+            }
+            if ($email == null) {
+                $email = "";
+            }
+            $item = array("id_emp" => $p["id_empleado"],
+                "noms" => $p["nombres"],
+                "aps" => $p["apellidos"],
+                "tel" => $tel,
+                "em" => $email,
+                "nc" => $p["nombre_corto"],
+                "pm" => $p["pago_mensual"],
+                "idpr" => $p["id_profesion"],
+                "descpr" => $p["prof_desc"],
+                "user" => $p["user"]
+            );
+            array_push($lista, $item);
+        }
+        $db = null;
+        echo json_encode(array("lista" => $lista));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
 function G_getListaLineaBase($id) { 
     $sql = "SELECT num_linea_base, linea_base_fecha_inicio, linea_base_fecha_fin FROM dp2_lineabase.PROYECTO WHERE ID_PROYECTO=:ID";
 
@@ -413,6 +451,7 @@ function G_getListaRecursoProyecto($id) {
 
     echo json_encode(array("fecha_inicio"=>$f_i, "fecha_fin"=>$f_f, "lista_empleados"=>$lista_empleados));
 }
+
 
 
 
