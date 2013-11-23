@@ -19,7 +19,15 @@ function reconstruirEdt(){
       $res =$pstmt->fetch(PDO::FETCH_ASSOC);
       $idPIni = $res["id_paquete_trabajo_inicial"];
       $idEdt = $res["id_edt"];
-      $idEdt =1;
+      if($idEdt == null){
+        $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
+        $pstmt->execute(array($version,$idEstado,$idMiembros,$idproyecto));
+      }
+      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
+      $pstmt->execute(array($edt->{"idproyecto"}));
+      $res =$pstmt->fetch(PDO::FETCH_ASSOC);
+      $idPIni = $res["id_paquete_trabajo_inicial"];
+      $idEdt = $res["id_edt"];
       //$idEstado = $res["id_estado"];
       $idEstado =1;
       //eliminar los hijos
