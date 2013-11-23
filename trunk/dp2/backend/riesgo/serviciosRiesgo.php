@@ -1088,6 +1088,33 @@
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }        
     }
+	
+   function R_updateEnviarCambio(){
+        
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+
+        //Se selecciona la accion
+        $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_inicio=:fecha_inicio, tiempo_real=:tiempo_real , id_actividad=:id_actividad , descripcion=:descripcion
+        WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+        var_dump($riesgo);
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
+			$stmt->bindParam("fecha_inicio", $riesgo->fechaInicio);
+			$stmt->bindParam("tiempo_real", $riesgo->tiempoReal);
+			$stmt->bindParam("id_actividad", $riesgo->idActividad);
+			$stmt->bindParam("descripcion", $riesgo->descripcion);
+            $stmt->execute();
+            $db = null;
+            echo json_encode('Se materializo el riesgo');
+        } catch(PDOException $e) {
+            echo json_encode(array("me"=> $e->getMessage()));
+        }
+
+
+    }
 
 
     function R_getRiesgoMaterializado($idProyecto){

@@ -52,6 +52,7 @@
 	$app->put('/R_actualizarCostoTiempoRiesgo','R_updateCostoTiempoRiesgo');
 	$app->get('/R_obtenerPlanContingenciaRiesgo/:id', 'R_getPlanContingenciaRiesgo');
 	$app->get('/R_obtenerAccionesParaAprobar/:id', 'R_getAccionesParaAprobar');
+	$app->put('/R_actualizarEnviarCambio','R_updateEnviarCambio');
 
 
 	//$app->get('/R_listarActividadContigencia', 'R_getlistarActividadContigencia');
