@@ -47,7 +47,9 @@
         <!-- Inicio Actividades Modulo Cronograma -->
         <activity android:name="com.dp2.gproyectos.cronograma.view.ListaActividadesXProyecto" />
         <activity android:name="com.dp2.gproyectos.cronograma.view.Gantt" />
+        <activity android:name="com.dp2.gproyectos.cronograma.view.DetalleActividad" />
         <activity android:name="com.dp2.gproyectos.cronograma.view.ListaRecursoXActividad" >
+         
 
             </activity>
         <activity android:name="com.dp2.gproyectos.cronograma.view.CronogramaIndicadoresChartActivity" />
