@@ -430,13 +430,14 @@ function G_getListaRecursoProyecto($id) {
             if ($b > $num_dias)
                 $b = $num_dias;
             for ($j = $a; $j <= $b; $j++) {
-                $lista_empleados[$k]["detalle_dias"][$j] = $act["act"];
+                if($lista_empleados[$k]["rol"] == 2) $lista_empleados[$k]["detalle_dias"][$j] = -1;
+                else $lista_empleados[$k]["detalle_dias"][$j] = $act["act"];
             }
         }
         //JEFE DE PROYECTO
-        for ($j = 0; $j <= $num_dias; $j++) {
+        /*for ($j = 0; $j <= $num_dias; $j++) {
                 $lista_empleados[$jefe_proyecto]["detalle_dias"][$j] = -1;
-        }
+        }*/
 
         $f_i = Date('Y/m/d', $fecha_inicio);
         $f_f = Date('Y/m/d', $fecha_fin);
