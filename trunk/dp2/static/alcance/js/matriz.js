@@ -1,5 +1,5 @@
 function inicializaFechas(){
-        $('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'dd-mm-yy' });
+        $('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
 }
 
@@ -56,9 +56,11 @@ function listarFases(){
 				fila.append('<td><input class="form-control"  value="'+arr[i].entregable+'" / ></td>');
 				tabla.append(fila);
 			}
+			inicializaFechas();
 		}
 	});
 	$('#tablaEntregables').modal('show');
+
 }
 
 function llena_requisitos(requisitos){
@@ -204,5 +206,5 @@ $(document).ready(function(){
           llena_requisitos( requisitos , dataestado );
       }
  	});
- 	$(".calendar").datepicker({ dateFormat: 'dd-mm-yy' });
+ 	$(".calendar").datepicker({ dateFormat: 'yy-mm-dd' });
 });

@@ -876,11 +876,11 @@ function getEdt(){
     			FROM REQUISITO a WHERE a.id_especificacion_requisitos= ? and a.id_estado_requisito!=2");
     		$pstmt->execute(array($idER));
     		$ar_Requisitos=array();
+
     		 
     		//CREO LOS REQUISITOS
     		 
     		while ($listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC)){
-    	
     			//obtengo el nombre y apellido del empleado con id=$listaRequisito['id_miembros_equipo']
     			if($listaRequisito["id_miembros_equipo"]==0) {//debido a que la primera vez no se han ingresado datos, el id_miembros es =0
     				$nombre="";
