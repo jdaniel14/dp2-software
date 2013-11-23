@@ -950,6 +950,9 @@ function getEdt(){
     	}
     }
     
+    
+    //MODIFICAR EL REQUISITO DE LA MATRIZ
+    
     function modificarRequisitoM(){
       try{
     	$request = \Slim\Slim::getInstance()->request(); //json parameters
@@ -962,7 +965,49 @@ function getEdt(){
     	$pstmt->execute(array($data->{"solicitado"},$data->{"fundamento"},
     	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$idRequisito));
     
-    	echo $request->getBody();
+    	//Devuelvo esto:
+    	
+    	$pstmt= $con->prepare("SELECT a.id_requisito,a.descripcion,a.fecha_termino,a.solicitud,a.cargo,a.fundamento_incorporacion,
+    			a.id_prioridad_requisito,a.id_estado_requisito,a.entregable,a.criterio_aceptacion,a.id_miembros_equipo,a.id_categoria_requisito
+    			FROM REQUISITO a WHERE a.id_requisito= ? and a.id_estado_requisito!=2");
+    	$pstmt->execute(array($idRequisito));
+    	$ar_Requisitos=array();
+    	
+    	 
+    	//CREO LOS REQUISITOS
+    	 
+    	while ($listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC)){
+    		//obtengo el nombre y apellido del empleado con id=$listaRequisito['id_miembros_equipo']
+    		if($listaRequisito["id_miembros_equipo"]==0) {//debido a que la primera vez no se han ingresado datos, el id_miembros es =0
+    			$nombre="";
+    			$apellido="";
+    		}
+    		else {
+    			$nombre=dameNombre($listaRequisito["id_miembros_equipo"]);//obtengo el nombre de la persona
+    			$apellido=dameApellido($listaRequisito["id_miembros_equipo"]);//obtengo el apellido de la persona
+    		}
+    		 
+    		//debido a que al principio no tienen valores, elimino los null poniendo en cada uno ""
+    		if($listaRequisito["descripcion"]==null)$desc="";else $desc=$listaRequisito["descripcion"];
+    		if($listaRequisito["solicitud"]==null)$sol="";else $sol=$listaRequisito["solicitud"];
+    		if($listaRequisito["cargo"]==null)$car="";else $car=$listaRequisito["cargo"];
+    		if($listaRequisito["fundamento_incorporacion"]==null)$fun="";else $fun=$listaRequisito["fundamento_incorporacion"];
+    		if($listaRequisito["criterio_aceptacion"]==null)$cri="";else $cri=$listaRequisito["criterio_aceptacion"];
+    		 
+    		$nomPrioridad=damePrioridad($listaRequisito["id_prioridad_requisito"]);
+    		$nomEstado=dameEstado($listaRequisito["id_estado_requisito"]);
+    		$nomCategoria=dameCategoria($listaRequisito["id_categoria_requisito"]);
+    		$nombre2=$nombre." ".$apellido;
+    		 
+    		$hijo = new Requisito($listaRequisito["id_requisito"],$desc,
+    				$sol,$car,$fun,$listaRequisito["id_prioridad_requisito"],
+    				$listaRequisito["id_estado_requisito"],$cri,$listaRequisito["id_miembros_equipo"],
+    				$nombre2,$listaRequisito["id_categoria_requisito"],$nomPrioridad,$nomEstado,$nomCategoria);
+    		array_push($ar_Requisitos,$hijo);
+    	}
+
+    	echo json_encode($ar_Requisitos);
+    	//echo $ar_Requisitos;
       }
       catch (PDOException $e) {
       	echo '{"me" : "No se puede modificar la matriz"}';
