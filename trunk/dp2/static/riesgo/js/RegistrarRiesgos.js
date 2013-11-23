@@ -35,6 +35,7 @@ var listaEquipo = [];
 // 	idCategoriaRiesgo:idCategoriaRiesgo,
 // }
 var estadoLogico;
+var idRiesgo2;
 var idArray;
 var listaPaquetes;
 var idProyectoLocal = localStorage.getItem("idProyecto");
@@ -327,7 +328,7 @@ function main() {
             data: jsonData,
             success: function() {
                 localStorage.setItem("idAccion", $('#accionEscogida').val());
-                localStorage.setItem("idRiesgo", idArray);
+                localStorage.setItem("idRiesgo", idRiesgo2);
                 //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
                 window.location.replace("../riesgo/ActualizarGantt.html");
             },
@@ -559,7 +560,7 @@ function listarRiesgos() {
                 listarRiesgos();
             });
             $(".materializar").click(function() {
-                
+                idRiesgo2=$(this).closest("tr").attr("id");
                 listaAcciones($(this).closest("tr").attr("id"));
             });
 
