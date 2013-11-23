@@ -61,8 +61,7 @@ $(function(){
 	
 	if (verificaPermisosVer(idVista)=='1'){		
 		iniciaActividades();
-		iniciaProyecto();		
-		obtenMontoContingencia();
+		iniciaProyecto();				
 		iniciaRecursos();
 		iniciaRecursosFijos();		
 		actualizaCostos();
@@ -113,10 +112,12 @@ function obtenProyecto(/*idProyecto*/){
 
 }
 
-function obtenContingencia(){
+function obtenContingencia(porcCont){
 	var obj ={
 		idProyecto : idProyecto,
-		idUsuario  : idUsuario		
+		idUsuario  : idUsuario,
+		porcContingencia : porcCont
+		
 	}
 	
 	$.ajax({
@@ -182,11 +183,13 @@ function obtenDatosActividad(idActividad){
 }
 
 //Funcion para obtener el monto contingencia actual
-function obtenMontoContingencia(){
+function obtenMontoContingencia(porcCont){
 	
 	var obj ={
 		idProyecto : idProyecto,
-		idUsuario  : idUsuario
+		idUsuario  : idUsuario,
+		porcContingencia : porcCont
+		
 	}
 
 	
@@ -247,7 +250,6 @@ function agregaDataFilaFijo(data){
 }
 
 function iniciaProyecto(){
-	obtenContingencia();
 	obtenProyecto();
 
 }
@@ -261,7 +263,7 @@ function agregarDataProyecto(data){
 
 function agregaDataMontoContingencia(data){
 
-	$("#inputContingencia").val(data.montoContingencia);
+	$("#inputContingencia").val(formateaNumero(data.montoContingencia,2));
 
 }
 
@@ -318,25 +320,31 @@ function agregaDataFilaResumen(datosActividad){
 
 function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva , porcentajeContingencia ,indCerrado, indLineaBase, indGrabar){
 	$("#nombreProyecto").html(nombreProyecto);
-	$("#inputMontoSinReserva").val(montoSinReserva);
-	$("#inputReserva").val(porcentajeReserva);
-	$("#inputPorcentajeContingencia").val(porcentajeContingencia);
+	$("#inputMontoSinReserva").val(formateaNumero(montoSinReserva,2));
+	$("#inputReserva").val(formateaNumero(porcentajeReserva,2));
+	$("#inputPorcentajeContingencia").val(formateaNumero(porcentajeContingencia,2));
+	
+	obtenMontoContingencia(porcentajeContingencia);
 	
 	var reseTotal= new Number(porcentajeReserva*0.01*montoSinReserva);
 	var reseForm=reseTotal.toFixed(2);
 	
 	$("#reservaTotal").val(reseForm);
-	$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+	$("#inputMontoConReserva").val(formateaNumero(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva,2));
 	
 	if (indCerrado=="1" || indLineaBase=="1" || indGrabar=="0"){
 	
 		$("#inputReserva").attr('disabled', 'disabled');
 		$("#inputReserva").attr('readOnly', 'readOnly');
+		$("#inputPorcentajeContingencia").attr('disabled', 'disabled');
+		$("#inputPorcentajeContingencia").attr('readOnly', 'readOnly');
 		$("#btnGrabar").hide();
 		$("#btnCancelar").hide();
 	}else{
 		$("#inputReserva").removeAttr('disabled');
 		$("#inputReserva").removeAttr('readOnly');
+		$("#inputPorcentajeContingencia").removeAttr('disabled');
+		$("#inputPorcentajeContingencia").removeAttr('readOnly');
 		$("#btnGrabar").show();
 		$("#btnCancelar").show();
 	}
@@ -455,17 +463,27 @@ function obtenMonedaSeleccionada(a,moneda){
 $("#btnGrabar").click(function(){
 
 	porcentajeReserva=$("#inputReserva").val();
+	porcentajeContingencia=$("#inputPorcentajeContingencia").val();
+	var grabar=true;
 
 	if (isNaN(porcentajeReserva) || (!isNaN(porcentajeReserva) && new Number(porcentajeReserva)<0)){
 		
 		lanzaAlerta("divReserva","labReserva","");
-		return;
+		grabar=false;
 	}else
 		borraAlerta("divReserva","labReserva");
+		
+	if (isNaN(porcentajeContingencia) || (!isNaN(porcentajeContingencia) && new Number(porcentajeContingencia)<0)){
+		
+		lanzaAlerta("divContingencia","labContingencia","");
+		grabar=false;
+	}else
+		borraAlerta("divContingencia","labContingencia");
 
-
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
+	if (grabar){
+		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
+			grabarRecursos();
+		}
 	}
 });
 
@@ -581,7 +599,7 @@ function actualizaCostos(){
 	valorSinReserva++;
 	contingencia++;
 	
-	$('#inputMontoConReserva').val( montoReserva - 2 + valorSinReserva-1+contingencia);
+	$('#inputMontoConReserva').val(formateaNumero( montoReserva - 2 + valorSinReserva-1+contingencia,2));
 
 }
 
