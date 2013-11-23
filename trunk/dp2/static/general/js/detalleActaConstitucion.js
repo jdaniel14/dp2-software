@@ -108,20 +108,17 @@ $("#btnGrabarInformacion").click(function(){
 });
 $("#btnGrabarDescripcion").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-              //  alert('ahora hector q dices');
 		grabarDescripcionActa();
 	}
 });
 $("#btnGrabarPerformance").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-                //alert('ona vez mas, ahora :(  hector q dices');
 		grabarPerformanceActa();
 	}
 });
 $("#btnGrabarObjetivos").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-                //alert('ona vez mas, ahora :(  hector q dices');
-		grabarObjetivosActa();
+		grabarObjetivosActa(); 
 	}
 });
 $("#btnGrabarAutoridad").click(function(){
@@ -170,9 +167,10 @@ function grabarInformacionActa(){
 		dataType: "json", // data type of response	
 		data: JSON.stringify(obj),
 		fail: codigoError,
-                success: function(data){
-                    
-                    alert("Se grbaron los datos wuju!");
+                success: function(data){                    
+                    $('[data-toggle="tab"][href="#ig"]').hide();
+					$('[data-toggle="tab"][href="#dp1"]').show();
+					$('[data-toggle="tab"][href="#dp1"]').tab('show'); 
                 }
 	});
 }
@@ -189,8 +187,9 @@ function grabarDescripcionActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    
-                    alert("Se grabaron los datos wuju!");
+                    $('[data-toggle="tab"][href="#dp1"]').hide();
+					$('[data-toggle="tab"][href="#perp"]').show();
+					$('[data-toggle="tab"][href="#perp"]').tab('show'); 
                 }
 	});
 }
@@ -209,9 +208,10 @@ function grabarPerformanceActa(){
 		dataType: "json", // data type of response	
 		data: JSON.stringify(obj),
 		fail: codigoError,
-                success: function(data){
-                    
-            		alert("Se grabaron los datos wuju!");
+                success: function(data){                    
+					$('[data-toggle="tab"][href="#perp"]').hide();
+					$('[data-toggle="tab"][href="#op"]').show();
+					$('[data-toggle="tab"][href="#op"]').tab('show'); 
                 }
 	});
 }
@@ -239,8 +239,9 @@ function grabarObjetivosActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    
-            		alert("Se grabaron los datos wuju!");
+                    $('[data-toggle="tab"][href="#op"]').hide();
+					$('[data-toggle="tab"][href="#ap1"]').show();
+					$('[data-toggle="tab"][href="#ap1"]').tab('show');
                 }
 	});
 }
@@ -262,8 +263,7 @@ function grabarAutoridadActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    
-                    alert("Se grabaron los datos wuju!");
+                    $(location).attr('href','MenuProyecto.html');
                 }
 	});
 }
