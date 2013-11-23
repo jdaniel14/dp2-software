@@ -170,3 +170,8 @@ border-radius: 4px;
 #portamento_container #utils_flotante.fixed {
     position:fixed;
 }
+
+
+.glosarioEDT{
+	font-size: 13px;
+}
