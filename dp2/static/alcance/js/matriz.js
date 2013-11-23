@@ -72,11 +72,11 @@ function llena_requisitos(requisitos){
 		fila.append("<td>"+requisitos[i].solicitado+"</td>");
 		fila.append("<td>"+requisitos[i].cargo+"</td>");
 		fila.append("<td>"+requisitos[i].fundamento+"</td>");
-		fila.append("<td>"+requisitos[i].idprioridadR+"</td>");
-		fila.append("<td>"+requisitos[i].idestadoR+"</td>");
-		fila.append("<td>"+requisitos[i].idcategoriaR+"</td>");
+		fila.append("<td>"+requisitos[i].nomPrioridad+"</td>");
+		fila.append("<td>"+requisitos[i].nomEstado+"</td>");
+		fila.append("<td>"+requisitos[i].nomCategoria+"</td>");
 		fila.append("<td>"+requisitos[i].criterioAceptacion+"</td>");
-		fila.append("<td>"+requisitos[i].idmiembros+"</td>");
+		fila.append("<td>"+requisitos[i].nombre+"</td>");
 		fila.append(
 			'<td><a class="modificar-requisito" idRequisito="'+requisitos[i].idrequisito+'"><span class="glyphicon glyphicon-edit"></a></td>'+
 			'<td><a class="listar-fases" idRequisito="'+requisitos[i].idrequisito+'"><span class="glyphicon glyphicon-list"></a>'+'</td>'
@@ -133,10 +133,11 @@ function modifica(data){
 	var campos = $(fila).children();
 	$(campos[2]).html(data["solicitado"]);
 	$(campos[4]).html(data["fundamento"]);
-	$(campos[5]).html(data["idprioridadR"]);
-	$(campos[6]).html(data["idestadoR"]);
+	$(campos[5]).html(data["nomPrioridad"]);
+	$(campos[6]).html(data["nomEstado"]);
+	$(campos[7]).html(data["nomCategoria"]);
 	$(campos[8]).html(data["criterioAceptacion"]);
-	$(campos[9]).html(data["idmiembros"]);
+	$(campos[9]).html(data["nombre"]);
 	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
 }
