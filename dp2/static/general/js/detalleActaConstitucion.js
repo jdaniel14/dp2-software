@@ -102,34 +102,59 @@ $("#btnGrabar").click(function(){
 	}
 });
 $("#btnGrabarInformacion").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarInformacionActa();
-	}
+	if ($("#registrarActa1").valid()) {
+       grabarInformacionActa();
+    }
 });
+
 $("#btnGrabarDescripcion").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarDescripcionActa();
-	}
+	if ($("#registrarActa2").valid()) {
+       grabarDescripcionActa()
+    }
 });
+
 $("#btnGrabarPerformance").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarPerformanceActa();
-	}
+	if ($("#registrarActa3").valid()) {
+       grabarPerformanceActa();
+    }
 });
+
 $("#btnGrabarObjetivos").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarObjetivosActa(); 
-	}
+	if ($("#registrarActa4").valid()) {
+       grabarObjetivosActa();
+    }
 });
+
 $("#btnGrabarAutoridad").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarAutoridadActa();
-	}
+	if ($("#registrarActa5").valid()) {
+        bootbox.dialog({
+          message: "¿Estás seguro que deseas guardar los cambios realizados?",
+          title: "Confirmación",
+          buttons: {
+            success: {
+              label: "Sí",
+              className: "btn-success",
+              callback: function() {
+                grabarAutoridadActa();
+              }
+            },
+            danger: {
+              label: "No",
+              className: "btn-danger",
+              callback: function() {
+                 //cierra el modal
+              }
+            },
+          }
+        });
+    } else { return false; }
 });
+
 $("#btnAgregarObjetivo").click(function(){
 var objetivo = "<tr><td><textarea class='form-control obj' placeholder='Ingrese la descripcion del Objetivo'></textarea></td></tr>";
 	$("#Objetivos tbody").append(objetivo);
 });
+
 function cargaObjetivos(data){
 	if (data!=null){
 		arreglo=data["l_objetivos"];
@@ -231,7 +256,7 @@ function grabarObjetivosActa(){
 		l_objetivos.push(aux);
 	}
 	obj["l_objetivos"]=l_objetivos;
-	        alert(JSON.stringify(obj));
+	        //alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarObjetivosActa,
@@ -419,3 +444,15 @@ function validacion() {
 jQuery.validator.addMethod("lettersonly", function(value, element) {
   return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
 }, "Letters only please");
+
+//Se implementa la regla "greaterThan" para validar que la fecha final sea mayor a la inicial
+jQuery.validator.addMethod("greaterThan", 
+function(value, element, params) {
+
+    if (!/Invalid|NaN/.test(new Date(value))) {
+        return new Date(value) > new Date($(params).val());
+    }
+
+    return isNaN(value) && isNaN($(params).val()) 
+        || (Number(value) > Number($(params).val())); 
+},'Must be greater than {0}.');
