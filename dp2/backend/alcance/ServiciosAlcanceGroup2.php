@@ -21,7 +21,7 @@ function reconstruirEdt(){
       $idEdt = $res["id_edt"];
       if($idEdt == null){
         $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
-        $pstmt->execute(array(1,$idEstado,$idMiembros,$idproyecto));
+        $pstmt->execute(array(1,1,null,$idproyecto));
       }
       $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
       $pstmt->execute(array($edt->{"idproyecto"}));
