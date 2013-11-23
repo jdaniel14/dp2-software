@@ -7,15 +7,18 @@ var nAct = 0;
 var asientosContables = [];
 var indicadorCerrado;
 var indicadorLineaBase;
+var deshabilitado = false;
 
 $(function(){
 	
 	if (verificaPermisosGrabar(idVista)!='1'){
 		$("#btnGrabar").hide();	
 		$("#btnCancelar").hide();	
+		desabilitado = true;
 	}else{
 		$("#btnGrabar").show();	
-		$("#btnCancelar").show();	
+		$("#btnCancelar").show();
+		desabilitado = false;
 	}
 	
 	if (verificaPermisosVer(idVista)=='1'){
@@ -156,7 +159,7 @@ function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda
 		options += '<option value='+asientosContables[k].id+''+(idAsiento==asientosContables[k].descripcion?' selected ':'')+'>'+asientosContables[k].descripcion+'</option>';		
 		if (idAsiento==asientosContables[k].descripcion) cuenta= asientosContables[k].id;
 	}
-	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select class="form-control" id="tipoCuenta'+(a)+'">'+options+'</select>';
+	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select class="form-control" '+(deshabilitado?" readonly disabled":"")+' id="tipoCuenta'+(a)+'">'+options+'</select>';
 	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
 	obtenCuentaSeleccionada(a,cuenta)
 }
