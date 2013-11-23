@@ -22,7 +22,7 @@ Date.$VERSION = 1.02;
 // Utility function to append a 0 to single-digit numbers
 Date.LZ = function(x) {return(x<0||x>9?"":"0")+x};
 // Full month names. Change this for local month names
-Date.monthNames = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diiembre");
+Date.monthNames = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
 // Month abbreviations. Change this for local month names
 Date.monthAbbreviations = new Array("Ene","Feb","Mar","Abr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 // Full day names. Change this for local month names
