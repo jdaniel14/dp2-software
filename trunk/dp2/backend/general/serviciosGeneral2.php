@@ -600,7 +600,7 @@ function G_postListaTodosRecurso_1(){
                     M.ID_ROL = 2 AND P.ESTADO = 'ACTIVO') 
             
             NUEVA
-            ORDER BY ID_EMPLEADO, FECHA_PLAN_INICIO;"
+            ORDER BY ID_EMPLEADO, FECHA_PLAN_INICIO"
             ;
     $stmt = $db->prepare($sql);
     $stmt->bindParam("fecha_ini", $str1);
