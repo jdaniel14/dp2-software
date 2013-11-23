@@ -28,7 +28,7 @@ function reconstruirEdt(){
 
        //insertar el nuevo edt
       //insertar paquete padre
-      guardoPaquete($edt->{"title"},$edt->{"descripcion"},$idEstado,null,$idEdt,null,"1.0",$edt->{"dias"});
+      guardoPaquete($edt->{"title"},$edt->{"descripcion"},1,null,$idEdt,null,"1.0",$edt->{"dias"});
 
       //obtener el id recien insertado
       $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_estado= ? AND id_edt= ? AND
@@ -210,7 +210,7 @@ function getEdt(){
       $con = getConnection();
       $pstmt= $con->prepare("INSERT INTO PAQUETE_TRABAJO(nombre,descripcion,id_estado,id_miembros_equipo,
           id_edt,id_componente_padre,version,dias) values (?,?,?,?,?,?,?,?)");
-      $pstmt->execute(array($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias));
+      $pstmt->execute(array($nombre,$descripcion,1,$idMiembros,$idEdt,$idPadre,$version,$dias));
     }
     
   function guardarEdt(){
