@@ -143,12 +143,12 @@ function llegadaDatos(data) {
         			
         			if (led != 0) {
         				if(led == -1)
-        					result += '<td align = "center" style="background-color:green; border-top: 1px groove #733366; ';
+        					result += '<td align = "center" style="background-color:LightGreen ; border-top: 1px groove #733366; ';
         				else
-        					result += '<td align = "center" style="background-color:red; border-top: 1px groove #733366; ';
+        					result += '<td align = "center" style="background-color:lavender; border-top: 1px groove #733366; ';
         			}
         			else {
-        				result += '<td align = "center" style="background-color:blue; border-top: 1px groove #733366; ';
+        				result += '<td align = "center" style="background-color:white; border-top: 1px groove #733366; ';
         			}
         			if(cont == indices[ind]){
         				//alert(cont);
