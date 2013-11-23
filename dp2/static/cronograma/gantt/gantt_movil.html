@@ -1,0 +1,529 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<!-- 
+
+	Sacar el "rol" de la ventana de editar los tasks.
+	Cambiar el sgte por esfuerzo
+	
+	Separar por tipo de recurso
+	
+ -->
+
+  <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  
+  <title>Teamwork</title>
+
+<!-- Styles -->	
+  <link rel=stylesheet href="platform.css" type="text/css">
+  <link rel=stylesheet href="libs/dateField/jquery.dateField.css" type="text/css">
+  <link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet"> 
+  <link rel=stylesheet href="gantt.css" type="text/css">
+  <link rel=stylesheet href="print.css" type="text/css" media="print">
+<!-- Fin Styles -->
+
+<!-- jQuery -->
+  <!-- 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	-->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>	
+  <script src = "../../../assets/js/jquery-1.7.1.min.js"></script>
+  <script src = "../../../assets/js/jquery-ui-1.8.16.js"></script>
+	
+  <script src="libs/jquery.livequery.min.js"></script>
+  <script src="libs/jquery.timers.js"></script>
+  <script src="libs/platform.js"></script>
+  <script src="libs/date.js"></script>
+  <script src="libs/i18nJs.js"></script>
+  <script src="libs/dateField/jquery.dateField.js"></script>
+  <script src="libs/JST/jquery.JST.js"></script>
+<!-- Fin jQuery -->
+
+<!--  Gantt -->
+  <script src="ganttUtilities.js"></script>
+  <script src="ganttTask.js"></script>
+  <script src="ganttDrawer.js"></script>
+  <script src="ganttGridEditor.js"></script>
+  <script src="ganttMaster.js"></script>
+<!-- Fin Gantt -->
+
+</head>
+
+
+<body style="background-color: #fff;">
+
+	<div id="myModal" class="modal fade modal-creator" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Editar Tiempo de Trabajo</h4>
+            </div>
+            <div class="modal-body">
+            	<div class='form-horizontal' role='form'>
+            		<div class='form-group'>
+            			<label class='col-lg-2 control-label'>Nombre</label>
+            			<div class='col-lg-4'>
+            				<input type='text' class='form-control' id='NombreWT'>
+            			</div>
+            		</div>
+            		<div class='form-group'>
+            			<label class='col-lg-2 control-label'>Fecha</label>
+            			<div class='col-lg-4'>
+            				<input type='date' class='form-control' id='FechaWT'>
+            			</div>
+            		</div>
+            	</div>
+            	<div class='row'>
+            		<div class='tabbable'>
+            			<ul class='nav nav-tabs'>
+            				<li class='active'>
+            					<a href='#pane1' data-toggle='tab'>Day overrides</a>
+            				</li>
+            				<!--<li>
+            					<a href='#pane2' data-toggle='tab'>Week overrides</a>
+            				</li>-->
+            			</ul>
+	           			<button type='button' class='btn btn-default btn-lg' onclick='addWorkingTimeDay();'>
+	           				<span class='glyphicon glyphicon-plus-sign'></span> Agregar</button>
+	           			<!--<button type='button' data-toggle='modal' href='#editDate' class='btn btn-default btn-lg' onclick='editWorkingTimeDay();'>
+	           				<span class='glyphicon glyphicon-pencil'></span> Editar</button>-->
+	           			<button type='button' class='btn btn-default btn-lg' id="btnEliminarFecha">
+	           				<span class='glyphicon glyphicon-minus-sign'></span> Eliminar</button>
+	           			<div class='tab-content'>
+	           				<div id='pane1' class='tab-pane active' style="max-height: 420px; overflow-y: auto;">
+	           					<table class='table table-stripped'>
+	           						<thead>
+	           							<th></th>
+	           							<!--<th>  Nombre</th>-->
+	           							<th>  Fecha (yyyy/mm/dd)</th>
+	           						</thead>
+	           						<tbody id='tableHolidayDay'>	           							
+	           						</tbody>
+	           					</table>
+	           				</div>
+	           				<div id='pane2' class='tab-pane'>
+	           					<table class='table table-stripped'>
+	           						<thead>
+	           							<th>  Nombre</th>
+	           							<th>Fecha Inicio</th>
+	           							<th>Fecha Fin</th></thead>
+	           						<tbody></tbody>
+	           					</table>
+	           				</div>
+	           			</div>
+	           		</div>
+	           	</div>		        
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-danger" data-dismiss="modal" id="btnGuardar">Guardar</button>
+              <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+
+      <div id="myModalIndicador" class="modal fade modal-creator" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Indicadores de Tiempo</h4>
+            </div>
+            <div class="modal-body">
+            	<h5>Indice de Rendimiento del Cronograma </h5>
+            	<div id="chart_div">
+            		
+            	</div>
+            	<h5>Varianza del Cronograma</h5>
+            	<div id="chart_div2">
+            		
+            	</div>
+            </div>
+            <!--<div class="modal-footer">
+            	<button class="btn btn-danger" data-dismiss="modal" id="btnGuardar">Guardar</button>
+              	<button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+            </div>-->
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+	
+	<!-- ######********** Modal Indicadores *************###### -->
+	
+	<div id="modalIndicadores" class="modal fade modal-creator" aria-hidden="true">
+       	<div class="modal-dialog">
+          	<div class="modal-content">
+            	<div class="modal-header">
+		             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		             <h3 class="modal-title" align = "center">Indicadores: <span id = "taskIndicando">Error</span></h3>
+            	</div>
+            <div class="modal-body" align = "center">
+            	
+            	<!-- Barritas de progreso-->
+            	
+            	<span id = "textCost">Indicador de Costo</span>
+            	<br>
+            	
+            	<div class="progress progress-striped active" id = "progIndCost">
+  					<div id = "indCosto" class="progress-bar" style="width: 0%;">
+    					
+  					</div>
+				</div>
+				
+				<span id = "textFech">Indicador de Fecha</span>
+				<br>
+				
+				<div class="progress progress-striped active" id = "progIndFecha">
+  					<div id = "indFecha" class="progress-bar progress-bar-success" style="width: 0%;">
+  					    					
+  					</div>
+				</div>
+				<!-- Fin de barritas de progreso -->
+            </div>
+            <div class="modal-footer">	              
+	              <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+	
+	<!-- *** Fin modal Indicadores *** -->
+	
+	
+	
+	
+	
+	
+	<div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px">
+	</div>
+
+	<div id="taZone" style="display:none;" class="noprint">
+  		<textarea rows="8" cols="150" id="ta">
+		    
+  		</textarea>
+  		<!--  <script src = "resources/js/loadData.js"></script> -->
+  	
+  	
+	</div>
+
+	<link rel=stylesheet href="resources/css/estiloWork.css" type="text/css">
+
+	<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank">
+		<input type="hidden" name="prj" id="gimBaPrj">
+	</form>
+
+	<script type="text/javascript" src = "resources/js/initGantt_movil.js"></script>
+	<script type="text/javascript" src = "resources/js/indicadores.js"></script>
+	<!-- **** Inicio Templates del Gantt **** -->
+	
+	<div id="gantEditorTemplates" style="display:none;">	
+		<div class="__template__" type="GANTBUTTONS"><!--
+	  <div class="ganttButtonBar noprint">
+	    <h1 style="float:left; font-family: tahoma; color:black; font-size: 30px; border:2px dotted;">Diagrama de Gantt</h1>
+	    <div class="buttons">
+	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="deshacer"><span class="teamworkIcon">&#39;</span></button>
+	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="rehacer"><span class="teamworkIcon">&middot;</span></button>
+	    <span class="ganttButtonSeparator"></span>
+	    <button onclick="$('#workSpace').trigger('addAboveCurrentTask.gantt');" class="button textual" title="insertar arriba"><span class="teamworkIcon">l</span></button>
+	    <button onclick="$('#workSpace').trigger('addBelowCurrentTask.gantt');" class="button textual" title="insertar abajo"><span class="teamworkIcon">X</span></button>
+	    <span class="ganttButtonSeparator"></span>
+	    <button onclick="$('#workSpace').trigger('indentCurrentTask.gantt');" class="button textual" title="indentar actividad"><span class="teamworkIcon">.</span></button>
+	    <button onclick="$('#workSpace').trigger('outdentCurrentTask.gantt');" class="button textual" title="no indentar actividad"><span class="teamworkIcon">:</span></button>
+	    <span class="ganttButtonSeparator"></span>
+	    <button onclick="$('#workSpace').trigger('moveUpCurrentTask.gantt');" class="button textual" title="subir"><span class="teamworkIcon">k</span></button>
+	    <button onclick="$('#workSpace').trigger('moveDownCurrentTask.gantt');" class="button textual" title="bajar"><span class="teamworkIcon">j</span></button>
+	    <span class="ganttButtonSeparator"></span>
+	    <button onclick="$('#workSpace').trigger('zoomMinus.gantt');" class="button textual" title="alejar"><span class="teamworkIcon">)</span></button>
+	    <button onclick="$('#workSpace').trigger('zoomPlus.gantt');" class="button textual" title="acercar"><span class="teamworkIcon">(</span></button>
+	    <span class="ganttButtonSeparator"></span>
+	    <button onclick="$('#workSpace').trigger('deleteCurrentTask.gantt');" class="button textual" title="eliminar"><span class="teamworkIcon">&cent;</span></button>
+	    <button class="button textual" title="ReadOnly"><span id = "readOnly" class="teamworkIcon">R</span></button>
+	      &nbsp; &nbsp; &nbsp; &nbsp;
+	      <button onclick="saveGanttOnServer();" class="button first big" title="save">Guardar</button>
+	    </div></div>
+	  --></div>
+	
+	  <div class="__template__" type="TASKSEDITHEAD"><!--
+	  <table class="gdfTable" cellspacing="0" cellpadding="0">
+	    <thead>
+	    <tr style="height:40px">
+	      <th class="gdfColHeader" style="width:35px;"></th>
+	      <th class="gdfColHeader" style="width:25px;"></th>
+	      <th class="gdfColHeader gdfResizable" style="width:30px;">Código</th>
+	      <th class="gdfColHeader gdfResizable" style="width:10px;"></th>
+	      <th class="gdfColHeader gdfResizable" style="width:200px;">Nombre</th>
+	      <th class="gdfColHeader gdfResizable" style="width:80px;">Inicio</th>
+	      <th class="gdfColHeader gdfResizable" style="width:80px;">Fin</th>
+	      <th class="gdfColHeader gdfResizable" style="width:50px;">Duración</th>
+	      <th class="gdfColHeader gdfResizable" style="width:50px;">Dependencias</th>
+	      <th class="gdfColHeader gdfResizable" style="width:200px;">Recursos</th>
+		  
+		  <th class="gdfColHeader gdfResizable" style="width:70px;">Paquete de trabajo</th>
+		  <th class="gdfColHeader gdfResizable" style="width:50px;">Indicadores</th>
+	    </tr>
+	    </thead>
+	  </table>
+	  --></div>
+	
+	  <div class="__template__" type="TASKROW"><!--
+	  <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)">
+	    <th class="gdfCell edit" align="right" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> <span class="teamworkIcon" style="font-size:12px;" >e</span></th>
+	    <td class="gdfCell" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
+	    <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)"></td>
+	    <td class="gdfCell"><span>-</span></td>
+	
+	    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;"><input type="text" name="name" value="(#=obj.name#)" style="(#=obj.level>0?'border-left:2px dotted orange':''#)"></td>
+	
+	    <td class="gdfCell"><input type="text" name="start"  value="" class="date"></td>
+	    <td class="gdfCell"><input type="text" name="end" value="" class="date"></td>
+	    <td class="gdfCell"><input type="text" name="duration" value="(#=obj.duration#)"></td>
+	    <td class="gdfCell"><input type="text" name="depends" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#)></td>
+	    <td class="gdfCell taskAssigs">(#=obj.getAssigsString()#)</td>
+		
+		
+		
+		<td class="gdfCell"  ><input  type="text" name="wbsNode"  value="(#=obj.wbsNode#)" readonly></td>
+		<td class="gdfCell" align = "center"><button data-toggle = "modal" href = "#modalIndicadores" style="(#=obj.level>0?'':'display:none;'#)" name = "(#=obj.id_task#)" class = "btn btn-info btn-xs" onclick = "
+		
+		var tarea = $(this).attr('name');
+		
+		$.each(ge.tasks,function(e,el){
+			if(el.id_task == tarea){
+			
+			
+			
+				console.log('Mostrando el indicador de la siguiente tarea:');
+				console.log(el);
+								
+				$('#taskIndicando').text(el.name);
+				
+				var indicaCosto = el.indicador_costo;
+				var indicaFecha = el.indicador_fecha;
+				console.log(indicaCosto + '-' + indicaFecha);
+				
+				$('#textCost').text('Indicador de Costo: ' + indicaCosto);
+				
+					
+				var chris = (recomputeDuration(el.realStart,el.realEnd) + 1) / el.duration * 100;
+				
+				console.log(recomputeDuration(el.realStart,el.realEnd) + 1);
+				console.log(el.duration);
+				
+				$('#textFech').text('Indicador de Fecha: ' + chris);
+								
+				$('#indCosto').css('width',indicaCosto+ '%');
+							
+				$('#indFecha').css('width',chris + '%');
+				
+				
+			
+			}
+		});
+		
+		">Ver</button></td>
+	  </tr>
+	  --></div>
+	
+	  <div class="__template__" type="TASKEMPTYROW"><!--
+	  <tr class="taskEditRow emptyRow" >
+	    <th class="gdfCell" align="right"></th>
+	    <td class="gdfCell" align="center"></td>
+	    <td class="gdfCell"></td>
+	    <td class="gdfCell"></td>
+	    <td class="gdfCell"></td>
+	    <td class="gdfCell"></td>
+	    <td class="gdfCell"></td>
+	    <td class="gdfCell"></td>
+	    <td class="gdfCell"></td>
+	  </tr>
+	  --></div>
+	
+	  <div class="__template__" type="TASKBAR"><!--
+	  <div class="taskBox" taskId="(#=obj.id#)" >
+	    <div class="layout (#=obj.hasExternalDep?'extDep':''#)">
+	      <div class="taskStatus" status="(#=obj.status#)"></div>
+	      <div class="taskProgress" style="width:(#=obj.progress>100?100:obj.progress#)%; background-color:(#=obj.progress>100?'red':'rgb(153,255,51);'#);"></div>
+	      <div class="milestone (#=obj.startIsMilestone?'active':''#)" ></div>
+	
+	      <div class="taskLabel"></div>
+	      <div class="milestone end (#=obj.endIsMilestone?'active':''#)" ></div>
+	    </div>
+	  </div>
+	  --></div>
+	
+	
+	  <div class="__template__" type="CHANGE_STATUS"><!--
+	    <div class="taskStatusBox">
+	      <div class="taskStatus cvcColorSquare" status="STATUS_ACTIVE" title="activo"></div>
+	      <div class="taskStatus cvcColorSquare" status="STATUS_DONE" title="completado"></div>
+	      <div class="taskStatus cvcColorSquare" status="STATUS_SUSPENDED" title="suspendido"></div>
+	    </div>
+	  --></div>
+	 
+	  <div class="__template__" type="TASK_EDITOR"><!--
+	  
+	  <div class="ganttTaskEditor">
+		  <table width="100%">
+		    <tr>
+		      <td>
+		        <table cellpadding="5">
+		          <tr>
+		            <td colspan="2"><label for="code">Codigo-Nombre Abreviado Actividad</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
+		          </tr>
+		          <tr>
+		            <td colspan="2"><label for="name">Nombre Actividad</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
+		          </tr>
+		          <tr>
+		          	<td colspan="1"><label for = "wbsNodes" >Paquetes EDT</label><br><select name = "wbsNodes" id = "wbsNodes" onchange="
+					
+					
+					var i;
+					var paquetes=ge.wbsNodes;
+					var select = $(this.parentNode.parentNode);
+					console.log(select.find('div'));
+					select = $(select).find('select').attr('value');
+					
+					console.log('select: ' + select);
+					for(i=0;i<paquetes.length;i++){
+						if (paquetes[i].id==select){
+							$($(this.parentNode.parentNode).find('div')).text(paquetes[i].colchon);
+							
+							break;
+						}
+					}
+					
+					
+					//console.log(paquetes[])
+					
+					
+					"></select></td>
+					<td colspan="1"><label >Duracion adicional</label><br><div name="colchon" id="colchon">0</div></td>	
+		          </tr>
+		          <td>
+		          	<label for="description">Descripción</label>
+		          	<br>
+		            <textarea rows="5" cols="30" id="description" name="description" class="formElements"></textarea>
+		          </td>
+		    		</tr>
+		        	</table>
+		      	</td>
+		      
+		      <td valign="top">
+		        <table cellpadding="5">
+		          <tr>
+			          <td colspan="2"><label for="status">Estado Actual</label><br><div id="status" class="taskStatus" status=""></div></td>
+			      </tr>
+			      <tr>
+			          <td colspan="1"><label for="progress">Porcentaje Tiempo</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
+			          <td colspan="1"><label for="progress_cost">Porcentaje Costo</label><br><input type="text" name="progress_cost" id="progress_cost" value="" size="3" class="formElements"></td>
+		          </tr>
+		          <tr>
+			          <td><label for="start">Inicio Plan</label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone" style = "display:none;"></td>
+			          <td><label for="end">Fin Plan</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
+		          </tr>
+		          <tr>
+					<td class="graph"><label for="duration">Duracion</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td> 
+					
+		          </tr>
+		          <tr>
+			          <td><label for="realStart">Inicio Real</label><br><input type="text" name="realStart" id="realStart"  value="" class="date" size="10" class="formElements"></td>
+			          <td><label for="realEnd">Fin Real</label><br><input type="text" name="realEnd" id="realEnd"  value="" class="date" size="10" class="formElements"></td>		  
+		          </tr>
+		        </table>
+		      </td>
+		    	</tr>
+		    </table>
+		
+		    <h2>Recursos Asignados</h2>
+		  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
+		    <tr>
+		      <th style="width:50px;">Nombre</th>
+		      <th style="width:70px;display:none">Rol</th>
+		      <th style="width:80px;">Unidad de Medida</th>
+		      <th style="width:50px;">Costo Estimado</th>
+		      <th style="width:30px">Costo Real</th>
+		      <th style="width:30px;">Cantidad Estimada</th>
+		      		      
+		      <th style="width:70px;display:none">ID</th>
+		      
+		      <th style ="width:30px">Cantidad Real</th>
+		      
+		      <th style = "width:30px">Tipo Costo</th>
+		      
+		      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
+		    </tr>
+		  </table>
+		
+		  <div style="text-align: right; padding-top: 20px">
+		  	<button id="saveButton" class="button big">Guardar</button>
+		  </div>
+		  </div>
+
+	-->
+	  </div>
+	<!-- !!! En este modigique el 2do th (role project) -->
+	
+	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
+	  <tr taskId="(#=obj#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
+	    <td ><select onchange = "
+	    /***** onchange del SELECT de recurso******/
+	    
+	    var select = $(this.parentNode.parentNode).children('td')[0];
+	    select = $(select).find('select').attr('value');
+	    console.log('select: ' + select);
+		
+		var td1 = $(this.parentNode.parentNode).children('td')[2];
+		$(td1).text(select);
+		
+		var td2 = $(this.parentNode.parentNode).children('td')[3];
+		$(td2).text(select);
+		
+		var td6 = $(this.parentNode.parentNode).children('td')[7];
+		console.log(td6);
+		
+		var recurso = ge.resources;
+		
+		$.each(recurso, function(index,element){
+			if(select == element.id){
+				console.log('Recurso');
+				console.log(element);
+				$(td1).text(element.typeCost);
+				$(td2).text(element.costRate);
+				$(td6).text(element.idrecurso);
+			}
+		});
+	    
+	    /***** Fin onchange *****/
+	    " name="resourceId" class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
+	    <td style ="display:none;"><select type="select" name="roleId"  class="formElements"></select></td>
+	    <td name="typeCost" >(#=obj.assig.typeCost#)</td>
+		<td name="costRate">(#=obj.assig.costRate#)</td>
+		<td><input name = "costRateReal" id = "costRateReal" value = (#=obj.assig.costRateReal#)></td>
+		<td><input type="text" name="value" id = "value" value="(#=obj.assig.value#)" size="5" class="formElements"></td>		
+	    <td style ="display:none;"><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
+	    
+	    <td style ="display:none;" name = "idrecurso">error</td>
+	    
+	    <td><input type="text" name = "valueReal" id = "valueReal" value="(#=obj.assig.valueReal#)" size="5" class="formElements"></td>
+	    
+	    <td><select type="select" name="tipoCosto" id = "tipoCosto" class="formElements"></select></td>
+	    
+	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
+	        
+	  </tr>
+	  --></div>
+	  
+	  
+	 
+	  
+	</div>
+	
+	<script type="text/javascript" src = "resources/js/decorator.js"></script>
+	<script src="../../../bootstrap/js/bootstrap.min.js"></script>
+	<!-- *** Fin Templates del gantt *** -->
+
+</body>
+</html>
