@@ -5,64 +5,68 @@
    
   //MOSTRAR EDT ===============================================================================================================
 
+function deleteEDT($idProyecto){
+  $con = getConnection();
+  $con->exec("set foreign_key_checks = false");
+  //obtenemos el idedt dado el id proyecto
+  $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
+  $pstmt->execute(array($idProyecto));
+  $res =$pstmt->fetch(PDO::FETCH_ASSOC);
+  $idEdt = $res["id_edt"];
+  //si existe una fila en la tabla EDT significa que el EDT existe y hay que borrar todo
+  if($idEdt != null){
+    //obtengo el paquete de trabajo inicial
+    $idPIni = $res["id_paquete_trabajo_inicial"];
+    //eliminamos los hijos del paquete inicial
+    eliminarHijos($idPIni);
+    //eliminamos el paquete de trabajo inicial
+    $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo = ?");
+    $pstmt->execute(array($idPIni));
+    //eliminamos la fila del EDT
+    $pstmt= $con->prepare("DELETE FROM EDT WHERE id_edt = ?");
+    $pstmt->execute(array($idEdt));
+  }
+}
+
+function insertarFilaEDT($idProyecto){
+  $con = getConnection();
+  $con->exec("set foreign_key_checks = false");
+  $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
+  $pstmt->execute(array(1,2,null,$idProyecto));
+  //obtenemos el idEDT recien creado
+  $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
+  $pstmt->execute(array($idProyecto));
+  $idEdt =$pstmt->fetch(PDO::FETCH_ASSOC)["id_edt"];
+  return $idEdt;
+}
+
 function reconstruirEdt(){
   $request = \Slim\Slim::getInstance()->request();
-  $edt = json_decode($request->getBody());
+  $edt = json_decode($request->getBody(),TRUE);
+  $con = getConnection();
+  $con->exec("set foreign_key_checks = false");
+  $idProyecto = $edt["idproyecto"];
 
-  //eliminar el edt anteiror
-   try{   
-      $con = getConnection();
-      $con->exec("set foreign_key_checks = false");
-      //obtener id del paquete inicial
-      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
-      $pstmt->execute(array($edt->{"idproyecto"}));
-      $res =$pstmt->fetch(PDO::FETCH_ASSOC);
-      $idPIni = $res["id_paquete_trabajo_inicial"];
-      $idEdt = $res["id_edt"];
-      if($idEdt == null){
-        $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
-        $pstmt->execute(array(1,1,null,$edt->{"idproyecto"}));
-      }
-      $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
-      $pstmt->execute(array($edt->{"idproyecto"}));
-      $res =$pstmt->fetch(PDO::FETCH_ASSOC);
-      $idPIni = $res["id_paquete_trabajo_inicial"];
-      $idEdt = $res["id_edt"];
-      //$idEstado = $res["id_estado"];
-      $idEstado =1;
-      //eliminar los hijos
-      eliminarHijos($idPIni);
-      //eliminar el primer nodo
-      $pstmt= $con->prepare("DELETE FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo = ?");
-      $pstmt->execute(array($idPIni));
+  deleteEDT($idProyecto);
+  //Llegado este punto, no existen datos sobre el EDT en la BD y se procede a crear
 
-       //insertar el nuevo edt
-      //insertar paquete padre
-      guardoPaquete($edt->{"title"},$edt->{"descripcion"},1,null,$idEdt,null,"1.0",$edt->{"dias"});
+  //creamos la fila en la tabla EDT
+  $idEdt = insertarFilaEDT($idProyecto);
 
-      //obtener el id recien insertado
-      $pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_estado= ? AND id_edt= ? AND
-          id_componente_padre is null");
-      $pstmt->execute(array($idEstado,$idEdt));
-      $idPaqueteInicial= $pstmt->fetch(PDO::FETCH_ASSOC)["id_paquete_trabajo"];
-       
-      //Modifico el edt, pasando el id_paquete_trabajo_inicial
-      $pstmt= $con->prepare("UPDATE EDT SET id_paquete_trabajo_inicial= ? WHERE id_proyecto= ?");
-      $pstmt->execute(array($idPaqueteInicial,$edt->{"idproyecto"}));
+  //insertamos el paquete inicial
+  $idPaqueteInicial= guardoPaquete($edt["title"],$edt["descripcion"],2,null,$idEdt,null,"1.0",$edt["dias"]);
 
-      $seGeneroNuevo = guardarHijos($edt->{"nodos"},1,null,$idEdt,"1.0",$idPaqueteInicial);
+  //Modifico el edt, pasando el id_paquete_trabajo_inicial
+  $pstmt= $con->prepare("UPDATE EDT SET id_paquete_trabajo_inicial= ? WHERE id_edt= ?");
+  $pstmt->execute(array($idPaqueteInicial,$idEdt));
 
-      $con->exec("set foreign_key_checks = true");
-      if($seGeneroNuevo){
-        echo '{"me" : "Se generaron nuevos nodos para generar un EDT válido"}';
-      }else{
-        echo '{"me" : "Modifico bien"}';
-      }
-     }
-     catch (PDOException $e) {
-      echo '{"me" : "Modifico mal"}';
-      echo json_encode(array("me" => $e->getMessage()));
-     }
+  //inserto los hijos
+  $seGeneroNuevo = guardarHijos($edt["nodos"],2,null,$idEdt,"1.0",$idPaqueteInicial);
+
+  $con->exec("set foreign_key_checks = true");
+
+  if($seGeneroNuevo) echo '{"me" : "Se generaron nuevos nodos para generar un EDT válido"}';
+  else echo '{"me" : "Modifico bien"}';
 }
 
 function proyectoExiste($id){
@@ -218,9 +222,14 @@ function getEdt(){
     
     function guardoPaquete($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias){
       $con = getConnection();
+      $con->beginTransaction();
       $pstmt= $con->prepare("INSERT INTO PAQUETE_TRABAJO(nombre,descripcion,id_estado,id_miembros_equipo,
           id_edt,id_componente_padre,version,dias) values (?,?,?,?,?,?,?,?)");
-      $pstmt->execute(array($nombre,$descripcion,1,$idMiembros,$idEdt,$idPadre,$version,$dias));
+      $pstmt->execute(array($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias));
+      //obtengo el id recien insertado
+      $idPaquete = $con->lastInsertId();
+      $con->commit();
+      return $idPaquete;
     }
     
   function guardarEdt(){
@@ -302,12 +311,11 @@ function getEdt(){
       else if(count($listaHijos)==0)return null;
       else{
         foreach ($listaHijos as $row){
-          guardoPaquete($row->{"title"},$row->{"descripcion"},$idEstado,$idMiembros,$idEdt,$idPadre,$version,$row->{"dias"});
-          $idPaquete=obtenerIdPaquete($row->{"title"},$row->{"descripcion"},$idEstado,$idEdt,$idPadre,$version);
-          $seGeneroNuevo = $seGeneroNuevo || guardarHijos($row->{"nodos"},1,$idMiembros,$idEdt,$version,$idPaquete);
+          $idPaquete=guardoPaquete($row["title"],$row["descripcion"],$idEstado,$idMiembros,$idEdt,$idPadre,$version,$row["dias"]);
+          $seGeneroNuevo = $seGeneroNuevo || guardarHijos($row["nodos"],1,$idMiembros,$idEdt,$version,$idPaquete);
         }
         if(count($listaHijos)==1){
-          guardoPaquete("Agregado","Autogenerado",$idEstado,$idMiembros,$idEdt,$idPadre,$version,0);
+          $idPaquete = guardoPaquete("Agregado","Autogenerado",$idEstado,$idMiembros,$idEdt,$idPadre,$version,0);
           return true || $seGeneroNuevo;
         }
         return false || $seGeneroNuevo;
