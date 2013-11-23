@@ -555,7 +555,7 @@ function G_getVisualizarSolicitud($id){
             $impacto = $j["impacto"];
         }
         $db = null;
-        echo json_encode(array("id_proyecto" => $id, "flag_cambio" => $flag_cambio, "descripcion" => $descripcion, "justificacion" =>$justificacion, "impacto"->$impacto));
+        echo json_encode(array("id_proyecto" => $id, "flag_cambio" => $flag_cambio, "descripcion" => $descripcion, "justificacion" =>$justificacion, "impacto"=>$impacto));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }    
