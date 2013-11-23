@@ -999,6 +999,22 @@
             "costo"=>$costo,"tiempo"=>$tiempo));
     }
 
+    function R_deleteActividadContingencia($idAccionesRiesgo){
+    
+        $query = "DELETE FROM ACCIONES_X_RIESGO WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($query);
+            $stmt->bindParam("id_acciones_x_riesgo", $idAccionesRiesgo);
+            $stmt->execute();
+            $db = null;
+            echo "Se elimino la accion";
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    
+    }
+
    function R_updateCostoTiempoRiesgo(){
         //$request = \Slim\Slim::getInstance()->request();
         $request = \Slim\Slim::getInstance()->request();
