@@ -231,7 +231,7 @@ public class CronogramaController extends Controller{
 			e.printStackTrace();
 		}
 		
-		HttpResponse respuesta = HttpConnector.makeRequest(path, "");
+		HttpResponse respuesta = HttpConnector.makeRequest(path, json.toString());
 		
 		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
 			try {
