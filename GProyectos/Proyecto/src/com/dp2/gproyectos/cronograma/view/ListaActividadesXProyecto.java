@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -88,7 +89,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		System.out.println("Datos Cargados");
 		
 		if (tasks.size() != 0){
-//			findViewById(R.id.btnVerGantt).setEnabled(true);
+			findViewById(R.id.btnVerGantt).setEnabled(true);
 			findViewById(R.id.btnVerIndicadores).setEnabled(true);
 			
 			
@@ -160,8 +161,8 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.lista_actividades_x_proyecto);
 		
-		findViewById(R.id.btnVerGantt).setVisibility(View.GONE);
-
+		//findViewById(R.id.btnVerGantt).setVisibility(View.GONE);
+		
 		opciones = new ArrayList<String>();
 		opciones.add(MENUACT_OP_DETALLEACTIVIDAD);
 		opciones.add(MENUACT_OP_LISTARRECURSOS);

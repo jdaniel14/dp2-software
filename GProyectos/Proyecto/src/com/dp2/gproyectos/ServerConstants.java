@@ -25,5 +25,6 @@ public class ServerConstants {
 	public static String CronogramaGetRecursosPorActividad = "CR_getRecursosActividad";
 	public static String CronogramaPostUpdateAvanceRecurso = "CR_updateAvanceRecurso";
 	public static String CronogramaGetIndicadoresFlujo = "CR_getIndicadoresFlujo";
+	public static String CronogramaGetGanttHtml = "CR_getActividadesMovil";
 
 }

@@ -217,13 +217,13 @@ public class CronogramaController extends Controller{
 	
 	
 	
-	public String getGanttHtml() {
+	public String getGanttHtml(String idProyecto) {
 		String strRespuesta = "";
 		String path = ServerConstants.SERVER_URL + ServerConstants.COSTOS_CO_YOLO_URL + "/";
 		
 		JSONObject json = new JSONObject();
 		try {
-//			json.put("idProyecto", idProyecto);
+			json.put("idProyecto", Integer.valueOf(idProyecto));
 //			json.put("indicador", indicador);
 //			json.put("fecha", strFecha);
 			json.put("idUsuario", UsuarioController.getInstance().currentUser.id);
@@ -231,7 +231,7 @@ public class CronogramaController extends Controller{
 			e.printStackTrace();
 		}
 		
-		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
+		HttpResponse respuesta = HttpConnector.makeRequest(path, "");
 		
 		if ((respuesta != null) && respuesta.getStatusLine().getStatusCode() == 200) {
 			try {
