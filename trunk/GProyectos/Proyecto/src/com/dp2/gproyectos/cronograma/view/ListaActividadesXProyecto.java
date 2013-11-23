@@ -46,7 +46,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 	EditText input;
 	
 	int posicionPasar;
-	private static final String MENUACT_OP_REGISTRARHORASREALES = "Registrar horas reales";
+	private static final String MENUACT_OP_DETALLEACTIVIDAD = "Detalles Actividad";
 	private static final String MENUACT_OP_LISTARRECURSOS = "Listar recursos";
 	
 	@Override
@@ -90,7 +90,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		if (tasks.size() != 0){
 //			findViewById(R.id.btnVerGantt).setEnabled(true);
 			findViewById(R.id.btnVerIndicadores).setEnabled(true);
-			findViewById(R.id.cr_btnGuardarCambios).setEnabled(true);
+			
 			
 			//Agregar evento a un nuevo Activity donde se muestre el gantt
 		}
@@ -163,7 +163,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		findViewById(R.id.btnVerGantt).setVisibility(View.GONE);
 
 		opciones = new ArrayList<String>();
-		opciones.add(MENUACT_OP_REGISTRARHORASREALES);
+		opciones.add(MENUACT_OP_DETALLEACTIVIDAD);
 		opciones.add(MENUACT_OP_LISTARRECURSOS);
 		
 		getSherlock().getActionBar().setLogo(R.drawable.maleta);
@@ -224,7 +224,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 	
 	public void accionSeleccionOpcion(String rspta){
 		
-		if (rspta.equals(MENUACT_OP_REGISTRARHORASREALES)){
+		if (rspta.equals(MENUACT_OP_DETALLEACTIVIDAD)){
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
 			
 			dialogBuilder.setTitle("Horas Reales");
@@ -259,7 +259,17 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 			});
 			
 			AlertDialog alertDialog = dialogBuilder.create();
-			alertDialog.show();
+			//alertDialog.show();
+			
+			//Nueva Funcionalidad, la anterior ya no se utiliza
+			System.out.println("Actividad selecionada: " + tasks.get(posicionPasar - 1).name);
+			Intent i = new Intent(ListaActividadesXProyecto.this, DetalleActividad.class);
+			i.putExtra("id_actividad",tasks.get(posicionPasar - 1).id);
+			i.putExtra("nombre_actividad", tasks.get(posicionPasar - 1).name);
+			i.putExtra("idProyecto", idProyecto);
+			i.putExtra("nombreProyecto", nombreProyecto);
+			startActivity(i);			
+			
 		}
 		else if (rspta.equals(MENUACT_OP_LISTARRECURSOS)){
 			Intent intent = new Intent(ListaActividadesXProyecto.this, ListaRecursoXActividad.class);
