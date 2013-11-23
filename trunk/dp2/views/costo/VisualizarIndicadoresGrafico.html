@@ -43,14 +43,14 @@
 	  <!-- Reemplazar ese mi proyecto por una variable con el nombre del proyecto  -->
         <h1 id="nombreProyecto"></h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
-		<h2 style="text-align:left">Visualizar curvas de indicadores</h1>
+		<h3 style="text-align:left">Visualizar curvas de indicadores</h1>
       </div>
 	  <form class="form-horizontal" name="formReserva" id="formReserva" onload="cargaChart()">
 			
 			<div class="form-group">			
 				<label class="col-lg-2 control-label">Fecha límite:</label>
 				<div class="col-lg-4">
-				  <input type="text" readonly="readonly" class="form-control calendar" id="fechaLimite" >
+				  <input type="text" readonly="readonly" class="form-control calendar" id="fechaLimite" onchange="cargaChart()" >
 				  <input type="hidden" id="fechaUnix">
 				</div>
 			</div>
