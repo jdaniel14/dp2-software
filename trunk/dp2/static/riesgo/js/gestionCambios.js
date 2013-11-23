@@ -40,8 +40,8 @@ function listarCambiosGantt(){
                 
           $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + 1 + "\" ></div>");
 
-	cadena = "<div class=\"well\">\n\
-                <label>Se materializó el riesgo "+idActividadCronograma  +" : "+ nombreActividadCronograma+" </label></br>"+
+	cadena = "<div class=\"well\"><input id='id' type='text' style='display:none;' value='"+idActividadCronograma+"'>\n\
+                <label >Se materializó el riesgo "+idActividadCronograma  +" : "+ nombreActividadCronograma+" </label></br>"+
                 "<label>Se desea cambiar la actividad:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\"> \n\
                  <div class=\"col-lg-4 control-label\"> <input type=\"text\" id=\"antiguoNombre\" value=\""+nombreActividadCronograma+"\"></div>" +
@@ -71,7 +71,7 @@ function guardar_cambios(){
     
 
         var data = {
-            id:1,
+            id:$("#id").val(),
             name: $("#nuevoNombre").val(),
             duration:$("#nuevoDuracion").val(),
             fecha_inicio:$("#nuevoFechaInicio").val()
