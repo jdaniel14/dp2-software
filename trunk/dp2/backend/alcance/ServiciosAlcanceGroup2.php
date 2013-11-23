@@ -294,7 +294,7 @@ function getEdt(){
         foreach ($listaHijos as $row){
           guardoPaquete($row->{"title"},$row->{"descripcion"},$idEstado,$idMiembros,$idEdt,$idPadre,$version,$row->{"dias"});
           $idPaquete=obtenerIdPaquete($row->{"title"},$row->{"descripcion"},$idEstado,$idEdt,$idPadre,$version);
-          $seGeneroNuevo = $seGeneroNuevo || guardarHijos($row->{"nodos"},$idEstado,$idMiembros,$idEdt,$version,$idPaquete);
+          $seGeneroNuevo = $seGeneroNuevo || guardarHijos($row->{"nodos"},1,$idMiembros,$idEdt,$version,$idPaquete);
         }
         if(count($listaHijos)==1){
           guardoPaquete("Agregado","Autogenerado",$idEstado,$idMiembros,$idEdt,$idPadre,$version,0);
