@@ -173,6 +173,31 @@ function CR_updateAvanceRecurso(){//servicio 16
 }
 
 
+function CR_getActividadesMovil(){
+	$request = \Slim\Slim::getInstance()->request();
+    $id = json_decode($request->getBody())->idProyecto;
+	//$app->redirect('/dp2/trunk');
+	
+	//$app->urlFor('../../dp2');
+	//$app->redirect();
+	//echo '<meta http-equiv="refresh" content="0; url=http;//google.com"';
+	
+	echo '<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+				<HTML>
+				   <HEAD>
+			<meta http-equiv="refresh" content="0; url=../static/cronograma/gantt/gantt_movil.html?idProyecto=' . $id . '"/>
+				      <TITLE>
+				         HECTOR YOLO JUEGA MID
+				      </TITLE>
+				   </HEAD>
+				<BODY>
+				   
+				</BODY>
+				</HTML>';
+}
+
+
+
 function CR_guardarAvanceRecurso($recursoAsignado){
 
 	$sql = "update dp2.ACTIVIDAD_X_RECURSO set costo_unitario_real=?,cantidadReal=? where id_actividad=? and id_recurso=?; commit;";
