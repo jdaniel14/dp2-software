@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/gproyectos_background"
+	    android:orientation="vertical"
+	    android:paddingBottom="10dp"
+	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp"
+	    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        
+        <Button
+            android:id="@+id/buttonAtras"
+            android:text="Atrás"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        
+    </LinearLayout>
+    
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:paddingBottom="20dp"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:paddingTop="20dp" >
+		
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:paddingTop="20dp">
+
+			<TextView
+			    android:id="@+id/paqueteEDT"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Paquete EDT"
+			    android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+			<TextView
+			    android:id="@+id/txtPaqueteEDT"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="right"
+			    android:text="TextView" />
+		</LinearLayout>
+		
+	     <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:paddingTop="20dp">
+
+			<TextView
+			    android:id="@+id/duracionEstimada"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Duración Estimada"
+			    android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+			<TextView
+			    android:id="@+id/txtDuracionEstimada"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="right"
+			    android:text="TextView" />
+		</LinearLayout>
+		
+	     <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:paddingTop="20dp">
+
+			<TextView
+			    android:id="@+id/inicioPlan"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Inicio Plan"
+			    android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+			<TextView
+			    android:id="@+id/txtInicioPlan"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="right"
+			    android:text="TextView" />
+		</LinearLayout>
+		
+	     <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:paddingTop="20dp">
+
+			<TextView
+			    android:id="@+id/finPlan"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Fin Plan"
+			    android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+			<TextView
+			    android:id="@+id/txtFinPlan"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="right"
+			    android:text="TextView" />
+		</LinearLayout>
+		
+	     <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:paddingTop="20dp">
+
+			<TextView
+			    android:id="@+id/porcentajeAvance"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Porcentaje Avance"
+			    android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+			<EditText
+			    android:id="@+id/txtPorcentajeAvance"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="right"
+			    android:inputType="number"
+			    android:text="TextView" />
+		</LinearLayout>
+		
+	     <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:paddingTop="20dp">
+			
+	         <Button
+	             android:id="@+id/buttonGuardarDetalle"
+	             android:layout_width="match_parent"
+	             android:layout_height="match_parent"
+	             android:text="Guardar" />
+			
+		</LinearLayout>
+	    
+	</LinearLayout>
+	
+</LinearLayout>
