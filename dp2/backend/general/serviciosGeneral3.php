@@ -456,15 +456,15 @@ function G_postRegistraSolicitud() {
         $flag_cambio = $solicitud->flag_cambio;
         $justificacion = $solicitud->justificacion;
         $descripcion = $solicitud->descripcion;
-        //$impacto = $solicitud->impacto;
+        $impacto = $solicitud->impacto;
         /*FALTA AGREGAR EL IMPACTO*/
-        $sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, estado, justificacion, descripcion) VALUES (:id_proy, :flag_cambio, 1, :justificacion, :descripcion)";
+        $sql = "INSERT INTO SOLICITUD_CAMBIO(id_proyecto, flag_cambio, estado, justificacion, descripcion, impacto) VALUES (:id_proy, :flag_cambio, 1, :justificacion, :descripcion, :impacto)";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id_proy", $id_proy);
         $stmt->bindParam("flag_cambio", $flag_cambio);
         $stmt->bindParam("justificacion", $justificacion);
         $stmt->bindParam("descripcion", $descripcion);
-        //$stmt->bindParam("impacto", $impacto);
+        $stmt->bindParam("impacto", $impacto);
         $stmt->execute();
 
         $db = null;
@@ -535,7 +535,7 @@ function G_postAceptDenegSolicitud() {
 }
 
 function G_getVisualizarSolicitud($id){
-    $sql = " SELECT id_proyecto, flag_cambio, justificacion, descripcion FROM SOLICITUD_CAMBIO WHERE id_proyecto=:id_proy";
+    $sql = " SELECT id_proyecto, flag_cambio, justificacion, descripcion, impacto FROM SOLICITUD_CAMBIO WHERE id_proyecto=:id_proy";
     /*FALTA AGREGAR EL IMPACTO*/
     try {
         $db = getConnection();
@@ -552,10 +552,10 @@ function G_getVisualizarSolicitud($id){
             $flag_cambio = $j["flag_cambio"];
             $descripcion = $j["descripcion"];
             $justificacion = $j["justificacion"];
-            //$impacto = $j["impacto"];
+            $impacto = $j["impacto"];
         }
         $db = null;
-        echo json_encode(array("id_proyecto" => $id, "flag_cambio" => $flag_cambio, "descripcion" => $descripcion, "justificacion" =>$justificacion/*, "impacto"->$impacto*/));
+        echo json_encode(array("id_proyecto" => $id, "flag_cambio" => $flag_cambio, "descripcion" => $descripcion, "justificacion" =>$justificacion, "impacto"->$impacto));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }    
