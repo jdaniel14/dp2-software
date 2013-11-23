@@ -78,38 +78,38 @@ GridEditor.prototype.addTask = function(task, row) {
 
   var taskRow = $.JST.createFromTemplate(task, "TASKROW");
   //save row element on task
-  
+
   //Termina la creacion de cada fila que ingresa a la tabla al lado del Gantt
-  
+
   // Bloqueo de la primera fila
-  
+
   if(taskRow.attr("taskid") == -1){
-	  
+
 	  console.log(taskRow);
 	  console.log("Task ID: " + taskRow[0].attributes.taskid.value);
-	  
+
 	  $.each(taskRow.children('th'),function(e,el){
-		  $(el).removeClass("gdfCell edit");		  
+		  $(el).removeClass("gdfCell edit");
 	  });
-	  
+
 	  $.each(taskRow.children('td'),function(e,el){
-		  
+
 		  $.each($(el).children('div'),function(e1,el1){
 			  if($(el1).attr("class") == "taskStatus cvcColorSquare"){
 				  $(this).hide();
-			  }	 
+			  }
 		  });
-		  
+
 		  $.each($(el).children('input'),function(e1,el1){
-			 if (el1.name!="end")el1.readOnly = true; 
+			 if (el1.name!="end")el1.readOnly = true;
 		  });
-		   
+
 	  });
-	  
+
   }
-  
+
   //Fin de bloqueo de la primera fila
-  
+
   task.rowElement = taskRow;
 
   this.bindRowEvents(task, taskRow);
@@ -135,6 +135,17 @@ GridEditor.prototype.addTask = function(task, row) {
   //prof.stop();
     $("td[name='typeCost']").attr('disabled',true);
 
+    if (ge.lineabase == "true"){
+        $("input[name='name']").attr('disabled',true);
+        $("input[name='start']").attr('disabled',true);
+        $("input[name='end']").attr('disabled',true);
+        $("input[name='duration']").attr('disabled',true);
+        $("input[name='depends']").attr('disabled',true);
+    }
+    else{
+
+    }
+
   return taskRow;
 };
 
@@ -153,13 +164,13 @@ GridEditor.prototype.refreshTaskRow = function(task) {
   row.find("[name=duration]").val(task.duration);
   row.find("[name=start]").val(new Date(task.start).format()).updateOldValue(); // called on dates only because for other field is called on focus event
   row.find("[name=end]").val(new Date(task.end).format()).updateOldValue();
-  
+
   row.find("[name=realStart]").val(new Date(task.start).format()).updateOldValue(); // called on dates only because for other field is called on focus event
   row.find("[name=realEnd]").val(new Date(task.end).format()).updateOldValue();
-  
+
   row.find("[name=depends]").val(task.depends);
   row.find(".taskAssigs").html(task.getAssigsString());
-  
+
   row.find("[name=wbsNode]").val(task.wbsNode);
 
   //profiler.stop();
@@ -289,9 +300,9 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
         }
 
       } else if (field == "duration") {
-    	  
+
         var dur = task.duration;
-        
+
         if(parseInt(el.val()) == 0){
         	console.log("Entroooo histeando");
         	task.startIsMilestone = true;
@@ -301,14 +312,14 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
         	task.startIsMilestone = false;
         	task.endIsMilestone = false;
         }
-        
+
         dur = parseInt(el.val()) || 1;
-        
+
         console.log(task.startIsMilestone);
         if(task.startIsMilestone == true){
         	dur = 0;
         }
-        
+
         el.val(dur);
         var newEnd = computeEndByDuration(task.start, dur);
         self.master.changeTaskDates(task, task.start, newEnd);
@@ -402,13 +413,13 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   var taskEditor = $.JST.createFromTemplate({}, "TASK_EDITOR");
 
   taskEditor.find("#name").val(task.name);
-  
+
   /**** Asignar wbsNodes *****/
   var selectwbs = taskEditor.find("#wbsNodes");
-  
+
 
   //console.log(selectwbs);
-  
+
   $.each(ge.wbsNodes,function(e,el){
 	  var escritor = "";
 	  escritor += '<option value ="' + el.id + '">';
@@ -416,12 +427,12 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 	  escritor += '</option>';
 	  selectwbs.append(escritor);
   });
-  
+
   //console.log(task);
-  
+
   selectwbs.val(task.id_Wbs);
-  
-  
+
+
   if(task.id_Wbs == null){
 	  selectwbs.val(1);
 	  taskEditor.find("#colchon").text('0');
@@ -431,21 +442,21 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 	  for(var i=0;i<paquetes.length;i++){
 							if (paquetes[i].id==task.id_Wbs){
 								 taskEditor.find("#colchon").text(paquetes[i].colchon/*'ñacañaca'+task.id_Wbs*/);
-								
+
 							break;
 						}
 		}
-  
+
   }
-    
+
 
   //console.log(selectwbs.val());
   /**** Fin Asignar wbsNodes *****/
-  
 
-  
-  
-  taskEditor.find("#description").val(task.description);  
+
+
+
+  taskEditor.find("#description").val(task.description);
   taskEditor.find("#code").val(task.code);
   taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
   taskEditor.find("#progress_cost").val(task.progress_cost ? parseFloat(task.progress_cost) : 0);
@@ -454,10 +465,10 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   //console.log("dddddd");
   //console.log(ge);
   //console.log("dddddd");
-  
+
   //taskEditor.find("#colchon").text('0'+task.id_Wbs);
-  if (ge.lineabase) {
-     
+  if (ge.lineabase == "true") {
+
        taskEditor.find("#code").attr("disabled", true);
         taskEditor.find("#name").attr("disabled", true);
          taskEditor.find("#wbsNodes").attr("disabled", true);
@@ -465,68 +476,68 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
            taskEditor.find("#start").attr("disabled", true);
             taskEditor.find("#end").attr("disabled", true);
              taskEditor.find("#duration").attr("disabled", true);
-             
+
              //taskEditor.find("#duration").attr("disabled", true);
             //  taskEditor.find("#tipoCosto").attr("disabled", true);
-             
-      
+
+
   } else {
-      
+
            taskEditor.find("#progress").attr("disabled", true);
         taskEditor.find("#progress_cost").attr("disabled", true);
          taskEditor.find("#realStart").attr("disabled", true);
           taskEditor.find("#realEnd").attr("disabled", true);
-      
+
   }
- 
-  
-  
+
+
+
   if (task.startIsMilestone)
     taskEditor.find("#startIsMilestone").attr("checked", true);
   if (task.endIsMilestone)
     taskEditor.find("#endIsMilestone").attr("checked", true);
 
   taskEditor.find("#duration").val(task.duration);
-    
+
   taskEditor.find("#start").val(new Date(task.start).format());
   taskEditor.find("#end").val(new Date(task.end).format());
-    
+
   if((task.realStart == undefined)){
 	  //Caso del lapisito de un task nuevo
-	  
+
 	  var today = new Date();
 	  var dd = today.getDate();
 	  var mm = today.getMonth()+1; //January is 0!
 
 	  var yyyy = today.getFullYear();
 	  if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = dd+'/'+mm+'/'+yyyy;
-	  
+
 	  taskEditor.find("#realStart").val(today);
 	  taskEditor.find("#realEnd").val(today);
   }
   else{
-	  
+
 	  var arreglo = task.realStart.split('-');
-	  
+
 	  var anhoS = arreglo[0];
 	  var mesS = arreglo[1] ;
 	  var diaS = arreglo[2];
-	  
+
 	  var rS = new Date(anhoS,mesS - 1,diaS);
-	  
+
 	  var arreglo2 = task.realEnd.split('-');
-	  
+
 	  var anhoE = arreglo2[0];
 	  var mesE = arreglo2[1] ;
 	  var diaE = arreglo2[2];
-	  
+
 	  var rE = new Date(anhoE,mesE - 1, diaE);
-	  
+
 	  taskEditor.find("#realStart").val(rS.format());
 	  taskEditor.find("#realEnd").val(rE.format());
 
   }
-  
+
   //taskEditor.find("[name=depends]").val(task.depends);
 
   //make assignments table
@@ -537,7 +548,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     var assig = task.assigs[i];
     var assigRow = $.JST.createFromTemplate({task:task, assig:assig}, "ASSIGNMENT_ROW");
     //console.log(assigRow);
-    
+
     //Carga de recursos que ya estaban asignados!!!!!!!!!!!!!!!! ***
     var addelemento= $(assigRow).children('td')[0];
     var addtd1 = $(assigRow).children('td')[2];
@@ -546,22 +557,22 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     //var addCostReal = $(assigRow).find("#costRateReal");
     //var addValue = $(assigRow).find("#value");
     //var addValueReal = $(assigRow).find("#valueReal");
-    
+
     addelemento = $(addelemento).find('select').attr('value');
-          
+
     //console.log(addelemento);
-    
-    
-    
+
+
+
     /**** Asignar Tipo Costo ******/
-    
+
     //console.log("Task Editor");
     //console.log(assigRow);
-    
+
     var selectTCosto = assigRow.find("#tipoCosto");
     console.log("Selecttttt");
     console.log(selectTCosto);
-    
+
     $.each(ge.tipoCostos,function(e,el){
   	  escritor = "";
   	  escritor += '<option value ="' + el.id + '">';
@@ -569,11 +580,11 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   	  escritor += '</option>';
   	  selectTCosto.append(escritor);
     });
-    
+
     //console.log(task);
-    
+
     //selectTCosto.val(task.);
-    
+
     console.log("Valorrrrr: " + assig.idTipoCosto);
 	  selectTCosto.val(assig.idTipoCosto);
 	  if(assig.idTipoCosto == null){
@@ -582,12 +593,12 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     //if(task.id_Wbs == null){
   	//  selectwbs.val(1);
    // }
-    
-    
+
+
     /***** Fin asignar Tipo Costo ****/
-    
+
     var recurso = ge.resources;
-	
+
     $.each(recurso, function(index,element){
   	  if(addelemento == element.id){
   		  console.log(element);
@@ -596,7 +607,22 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   		  $(addtd6).text(element.idrecurso);
   	  }
     });
-    
+
+     if (ge.lineabase == "true"){
+            assigRow.find("[name=value]").attr('disabled',true);
+            assigRow.find("[name=resourceId]").attr('disabled',true);
+            assigRow.find("[name=tipoCosto]").attr('disabled',true);
+            assigRow.find("[name=costRateReal]").attr('disabled',false);
+            assigRow.find("[name=valueReal]").attr('disabled',false);
+        }
+        else {
+            assigRow.find("[name=costRateReal]").attr('disabled',true);
+            assigRow.find("[name=valueReal]").attr('disabled',true);
+            assigRow.find("[name=value]").attr('disabled',false);
+            assigRow.find("[name=resourceId]").attr('disabled',false);
+            assigRow.find("[name=tipoCosto]").attr('disabled',false);
+        }
+
     assigsTable.append(assigRow);
   }
 
@@ -610,13 +636,13 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 	        inputField:$(this)
 	      });
 	    });
-	  
+
 	  taskEditor.find("#realEnd").click(function () {
 	      $(this).dateField({
 	        inputField:$(this)
 	      });
 	    });
-            
+
 
     //bind dateField on dates
     taskEditor.find("#start").click(function () {
@@ -628,7 +654,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           taskEditor.find("#end").val(new Date(computeEndByDuration(date.getTime(), dur)).format());
         }
       });
-       
+
     });
 
     //bind dateField on dates
@@ -636,10 +662,10 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       $(this).dateField({
         inputField:$(this),
         callback:  function (end) {
-        	
+
           taskEditor.find("#endIsMilestone").removeAttr("checked");
           taskEditor.find("#startIsMilestone").removeAttr("checked");
-          
+
           var start = Date.parseString(taskEditor.find("#start").val());
           end.setHours(23, 59, 59, 999);
 
@@ -650,24 +676,24 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           } else {
             taskEditor.find("#duration").val(recomputeDuration(start.getTime(), end.getTime()));
           }
-          
-          
-          
+
+
+
         }
       });
     });
 
-    
+
     taskEditor.find("#endIsMilestone").click(function(){
     	if ($(this).is(':checked')){
    			$(this).parent().parent().find('#startIsMilestone').attr('checked','checked');
-   			
+
    			var start = Date.parseString(taskEditor.find("#start").val());
    			var el = taskEditor.find("#duration");
    			var dur = parseInt(el.val());
    			dur = dur <= 0 ? 1 : dur;
    			if (taskEditor.find("#startIsMilestone").is(":checked")){
-   	    	  dur = 0;    	  
+   	    	  dur = 0;
    			}
    			el.val(dur);
    			taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
@@ -679,56 +705,56 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
    			var dur = parseInt(el.val());
    			dur = dur <= 0 ? 1 : dur;
    			if (taskEditor.find("#startIsMilestone").is(":checked")){
-   	    	  dur = 0;    	  
+   	    	  dur = 0;
    			}
    			el.val(dur);
    			taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
-   		}		
+   		}
     });
-    
+
     //bind blur on duration
     taskEditor.find("#duration").change(function () {
-      
+
       var start = Date.parseString(taskEditor.find("#start").val());
       var el = $(this);
       var dur = parseInt(el.val());
-      
+
       if(dur == 0){
     	  taskEditor.find("#startIsMilestone").attr("checked","checked");
     	  taskEditor.find("#endIsMilestone").attr("checked","checked");
-    	  
+
     	  var start = Date.parseString(taskEditor.find("#start").val());
  		  var el2 = taskEditor.find("#duration");
  		  var dur = parseInt(el2.val());
  		  dur = dur <= 0 ? 1 : dur;
  		  if (taskEditor.find("#startIsMilestone").is(":checked")){
- 	        dur = 0;    	  
+ 	        dur = 0;
  		  }
  		  el2.val(dur);
  		  taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
-    	  
+
       }
       else{
     	  taskEditor.find("#startIsMilestone").removeAttr("checked");
     	  taskEditor.find("#endIsMilestone").removeAttr("checked");
-    	  
+
     	  var start = Date.parseString(taskEditor.find("#start").val());
  		  var el2 = taskEditor.find("#duration");
  		  var dur = parseInt(el2.val());
  		  dur = dur <= 0 ? 1 : dur;
  		  if (taskEditor.find("#startIsMilestone").is(":checked")){
- 	        dur = 0;    	  
+ 	        dur = 0;
  		  }
  		  el2.val(dur);
  		  taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
       }
-      
+
       dur = dur <= 0 ? 1 : dur;
-      
+
       if (taskEditor.find("#startIsMilestone").is(":checked")){
-    	  dur = 0;    	  
+    	  dur = 0;
       }
-      
+
       el.val(dur);
       taskEditor.find("#end").val(new Date(computeEndByDuration(start.getTime(), dur)).format());
     });
@@ -736,13 +762,13 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     //bind add assignment
     taskEditor.find("#addAssig").click(function () {
       console.log(task);
-      
-      
+
+
       if (task.status == "STATUS_DONE"){
         alert("No se puede agregar recursos a una actividad completada");
       }
-      
-      
+
+
       else {
         var assigsTable = taskEditor.find("#assigsTable");
         var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
@@ -751,11 +777,11 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         var addtd1 = $(assigRow).children('td')[2];
         var addtd2 = $(assigRow).children('td')[3];
         var addtd6 = $(assigRow).children('td')[7];
-        
+
         addelemento = $(addelemento).find('select').attr('value');
-              
+
         var recurso = ge.resources;
-      
+
         $.each(recurso, function(index,element){
           if(addelemento == element.id){
             //console.log(element);
@@ -765,16 +791,16 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           }
         });
         //Fin inicializacion del primer recurso
-        
+
         /**** Asignar Tipo Costo ******/
-        
+
         //console.log("Task Editor");
         //console.log(assigRow);
-        
+
         var selectTCosto = assigRow.find("#tipoCosto");
         console.log("Selecttttt");
         console.log(selectTCosto);
-        
+
         $.each(ge.tipoCostos,function(e,el){
       	  escritor = "";
       	  escritor += '<option value ="' + el.id + '">';
@@ -782,20 +808,20 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       	  escritor += '</option>';
       	  selectTCosto.append(escritor);
         });
-        
+
         //console.log(task);
-        
+
         //selectTCosto.val(task.);
-        
+
           //console.log("Valorrrrr: " + assig.idTipoCosto);
     	  //console.log(assig);
-    	  
+
     	 selectTCosto.val(1);
-    	  
-        
-        
+
+
+
         /***** Fin asignar Tipo Costo ****/
-        if (ge.lineabase){
+        if (ge.lineabase == "true"){
             assigRow.find("[name=value]").attr('disabled',true);
             assigRow.find("[name=resourceId]").attr('disabled',true);
             assigRow.find("[name=tipoCosto]").attr('disabled',true);
@@ -808,7 +834,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
 
 
-      }      
+      }
     });
 
     taskEditor.find("#status").click(function () {
@@ -832,22 +858,22 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     taskEditor.find("#saveButton").click(function () {
       var task = self.master.getTask(taskId); // get task again because in case of rollback old task is lost
       var wbsNodes = ge.wbsNodes;
-      
+
       //console.log("WBS NODES");
       //console.log(wbsNodes);
-      
+
       self.master.beginTransaction();
       task.name = taskEditor.find("#name").val();
-      
+
       task.id_Wbs = taskEditor.find("#wbsNodes").val();
-      
+
       $.each(wbsNodes,function(e,el){
     	  if(el.id == task.id_Wbs){
-    		  task.wbsNode = el.name; 
+    		  task.wbsNode = el.name;
     	  }
-      });      
-      
-      
+      });
+
+
       task.description = taskEditor.find("#description").val();
       task.code = taskEditor.find("#code").val();
       task.progress = parseFloat(taskEditor.find("#progress").val());
@@ -855,31 +881,31 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       task.duration = parseInt(taskEditor.find("#duration").val());
       task.startIsMilestone = taskEditor.find("#startIsMilestone").is(":checked");
       task.endIsMilestone = taskEditor.find("#endIsMilestone").is(":checked");
-      
+
       var a11 = taskEditor.find("#realStart").val();
       var a22 = taskEditor.find("#realEnd").val();
-      
+
       var auxA1 = a11.split('/');
-      
+
       var an1 = auxA1[2];
       var me1 = auxA1[1];
       var di1 = auxA1[0];
-      
+
       var auxA2 = a22.split('/');
-      
+
       var an2 = auxA2[2];
       var me2 = auxA2[1];
       var di2 = auxA2[0];
-      
+
       task.realStart = an1 + "-" + me1 + "-" + di1;
       task.realEnd = an2 + "-" + me2 + "-" + di2;
-      
+
       //task.realStart = taskEditor.find("#realStart").val();
-      //task.realEnd = taskEditor.find("#realEnd").val(); 
-      
+      //task.realEnd = taskEditor.find("#realEnd").val();
+
       console.log(task.realStart);
       console.log(task.realEnd);
-      
+
       //set assignments
       taskEditor.find("tr[assigId]").each(function () {
     	//console.log($(this));
@@ -890,21 +916,21 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         var effort = millisFromString(trAss.find("[name=effort]").val());
         var typeCost = trAss.find("[name=typeCost]").text();
         //Arreglar que no cogue porque el name esta en el td
-        
+
         var costRate = trAss.find("[name=costRate]").text();
         var value = trAss.find("[name=value]").attr("value");
         var idrecurso = trAss.find("[name=idrecurso]").text();
         var costRateReal = trAss.find("[name=costRateReal]").attr("value");
         var valueReal = trAss.find("[name=valueReal]").attr("value");
         var idTipoCosto = trAss.find("[name=tipoCosto]").val();
-        
+
         console.log("IDTIPOCOSTO: " + idTipoCosto);
-        
+
         //check if an existing assig has been deleted and re-created with the same values
         var found = false;
         for (var i = 0; i < task.assigs.length; i++) {
           var ass = task.assigs[i];
-          
+
           if (assId == ass.id) {
             ass.effort = effort;
             ass.roleId = roleId;
@@ -945,7 +971,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         }
 
       });
-  
+
 
       //remove untouched assigs
       task.assigs = task.assigs.filter(function (ass) {
@@ -954,12 +980,12 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         return ret;
       });
 
-      
+
 
       //change dates
       task.setPeriod(Date.parseString(taskEditor.find("#start").val()).getTime(), Date.parseString(taskEditor.find("#end").val()).getTime() + (3600000 * 24));
       //task.setPeriod(Date.parseString(taskEditor.find("#realStart").val()).getTime(), Date.parseString(taskEditor.find("#realEnd").val()).getTime() + (3600000 * 24));
-      
+
       //change status
       task.changeStatus(taskEditor.find("#status").attr("status"));
       var gg;
@@ -970,14 +996,14 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
             return false;
           }
           for (var j = 0; j < ge.tasks.length; j++){
-        	
+
             var tsk = ge.tasks[j];
             if (task.id == tsk.id){
         		gg = tsk.id
         	}
 			var date_start_1 = new Date(task.start);
 			var date_end_1 = new Date(task.end);
-			
+
 			var date_start_2 = new Date(tsk.start);
 			var date_end_2 = new Date(tsk.end);
 			if((date_start_1>=date_start_2  && date_start_1<=date_end_2)||(date_end_1>=date_start_2  && date_start_1<=date_end_2)){
@@ -1001,7 +1027,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       if (self.master.endTransaction()) {
         $("#__blackpopup__").trigger("close");
       }
-      
+
 
     });
   }
