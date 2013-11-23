@@ -35,7 +35,7 @@ $(document).ready(function(){
      }else if(idRol==2){
      		
      		//menu para un JP
-         	var jqxhr = $.getJSON( "http://www.json-generator.com/j/caQMvlIIKq?indent=4", function() {
+         	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cfhoFbuuHm?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
@@ -49,7 +49,7 @@ $(document).ready(function(){
      }else if(idRol==3){
 
      	//menu para el TM
-     	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cjStIrxwCW?indent=4", function() {
+     	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cgzMgTgFua?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
 			    	//console.log(menu);
