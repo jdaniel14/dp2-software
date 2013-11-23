@@ -9,6 +9,8 @@ $(window).bind('beforeunload',function(){
 });
 */
 
+var arrNombres = [];
+
 var idnodoParam = 10000;
 localStorage.setItem("idcontador", idnodoParam);
 
@@ -69,7 +71,7 @@ function ajaxMostrar ( jsonCliente ){
                               $("#progressEdt").hide("slow");
                               $("#edtCrearLogError").show("slow");
                               $("#CrearEDTCero").show("slow");
-                              pintarOneNodoEDT( idnodoParam );
+                              //pintarOneNodoEDT( idnodoParam );
                               //$("#guardarCambios").show();
                               //console.log("sape");
                               //window.location.href = 'edt.html';
@@ -120,6 +122,7 @@ function pintarOneNodoEDT( title, id  ){
           html += '<ul>' + '</ul>';
           html += '</li>';
           console.log(html);
+          arrNombres.push(title);
         return html;
 }
 
@@ -130,7 +133,7 @@ function pintarEDT ( data ){
 	var descripcionParent = data.descripcion;
 	var diasParent = data.dias;
     /* Fin Padre */        
-
+  arrNombres.push(titleParent);
             var hijos = parseInt(data.hijos);
             var html = armaNodoEdt( titleParent, descripcionParent, diasParent, data.idnodo , 0)
             if ( hijos == 0 ){
@@ -206,6 +209,7 @@ function armaNodoHijo ( id, title, descripcion, dias ){
           html += descripcion + '</span> <br>' + '<span class = "diasEDT" id = "';
           html += 'dias-'+ id + '" >';
           html += dias + '</span>';
+          arrNombres.push(title);
 	return html;
 }
 
@@ -453,10 +457,11 @@ function agregarNodoHijoDefault( id ){
        var tiempo = 0;
        var html = "";  
                     //html += '<ul>';
+          var titlefin = title +  parseInt(localStorage.getItem("idcontador"));
           html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
 					html += '<span class = "titleEDT" id = "';
 					html += 'title-'+ id + '" >';
-          html += title;
+          html +=  titlefin;
 
 					html += '</span> <br>' + '<span class = "descripcionEDT" id = "';
           html += 'descripcion-'+ id + '" >';
@@ -466,6 +471,7 @@ function agregarNodoHijoDefault( id ){
           html += '<ul>' + '</ul>';
           html += '</li>';
           //html += '</ul>';
+          arrNombres.push(titlefin);
       return html;
   }
 
@@ -479,10 +485,19 @@ $("#editarEdtNew").click(function(){
 });
 
 
-
+  function validaNombre( nombre ){
+    for ( i = 0; i < arrNombres.length; i++ ){
+        if ( arrNombres[i] == nombre ){
+          return false;
+        }
+    }
+    return true;
+  }
 
      $('span').live('dblclick', function () {
          $("#caja_flotante").hide();
+          console.log($(this).html());
+          localStorage.setItem("nombreActualEDT", $(this).html());
           var id = $(this).attr("id");
           console.log(id);
           var input = $('<input />', {'type': 'text', 'id': 'idinput', 'value': $(this).html()});
@@ -499,12 +514,25 @@ $("#editarEdtNew").click(function(){
           //$("#caja_flotante").hide("slow")
           var inputValidar = $(this).val();
 
-          $(this).parent().append($('<span />').html($(this).val()));
-          var sape = localStorage.getItem("modificandoNodoActual");
-          $(sape).html($(this).val());
-          $(this).remove();
-          console.log("blur");
-          repaint();
+          var flag = validaNombre( inputValidar );
+          if ( flag ){
+              $(this).parent().append($('<span />').html($(this).val()));
+              var sape = localStorage.getItem("modificandoNodoActual");
+              $(sape).html($(this).val());
+              $(this).remove();
+              arrNombres.push($(this).val());
+              console.log("blur");
+              repaint();
+          }else{
+            //nombreActualEDT
+            alert ("nombre repetido");
+            //$(this).parent().append($('<span />').html($(this).val()));
+            //var sape = localStorage.getItem("modificandoNodoActual");
+            //$(sape).html(localStorage.getItem("modificandoNodoActual"));
+            //$(this).remove();
+            repaint();
+          }
+          
 
       });
 
