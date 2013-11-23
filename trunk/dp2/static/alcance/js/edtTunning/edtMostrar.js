@@ -493,12 +493,17 @@ $("#editarEdtNew").click(function(){
     }
     return true;
   }
+  function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
      $('span').live('dblclick', function () {
          $("#caja_flotante").hide();
           console.log($(this).html());
           localStorage.setItem("nombreActualEDT", $(this).html());
           var id = $(this).attr("id");
+          var tipospan = id.split("-")[0];
+          localStorage.setItem("tipospan", tipospan);
           console.log(id);
           var input = $('<input />', {'type': 'text', 'id': 'idinput', 'value': $(this).html()});
           $(this).parent().append(input);
@@ -512,7 +517,25 @@ $("#editarEdtNew").click(function(){
 
       $('input').live('blur', function () {
           //$("#caja_flotante").hide("slow")
+          flagnum = 0;
           var inputValidar = $(this).val();
+          if ( localStorage.getItem("tipospan") == "dias" ){
+            console.log("numero");
+            if ( isNumber( parseInt(inputValidar) ) ){
+              if ( parseInt(inputValidar) > 0 ) {
+                  flagnum = 1;
+              }else{
+                alert("Ingrese un numero");
+                repaint()
+                return;
+              }
+            }
+            else{
+                alert("Ingrese un numero");
+                repaint()
+                return;
+            }
+          }
 
           var flag = validaNombre( inputValidar );
           if ( flag ){
