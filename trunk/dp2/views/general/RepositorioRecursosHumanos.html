@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
+   
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+    <style type="text/css">
+    #botonera {
+      padding:25px 50px}
+    </style>
+  </head>
+
+  <body>
+  
+    <div id="headerGeneral">
+
+    </div>
+    
+    <div class="container">
+
+      <div class="starter-template">
+    
+        <h1>Repositorio de recursos </h1>
+        <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
+      </div>
+      <div id="botonera" style="display: none;">
+        <button id="btnAgregaLA" type="button" class="btn btn-lg btn-success">Agregar leccion aprendida</button>
+      </div>
+    <div class="" >
+      <table align="center" id="listaLeccionAprendida" class="tablesorter - {bootstrap}" width="90%" >      
+        <thead>
+          <tr>
+            <th  id="noMostrar" style="display:none">#</th>
+            <th><b>Nombre</b></th>
+            <th><b>Descripcion</b></th>
+            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Proyecto</b></th>
+            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Categoria</b></th>
+            <th><b>Modificar</b></th>
+            <th><b>Eliminar</b></th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th style="display:none">#</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Proyecto</th>
+            <th>Categoria</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+          </tr>
+          <tr>
+            <th colspan="7" class="pager form-horizontal">
+              <button type="button" class="btn first"><i class="glyphicon glyphicon-fast-backward"></i></button>
+              <button type="button" class="btn prev"><i class="glyphicon glyphicon-backward"></i></button>
+              <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+              <button type="button" class="btn next"><i class="glyphicon glyphicon-forward"></i></button>
+              <button type="button" class="btn last"><i class="glyphicon glyphicon-fast-forward"></i></button>
+              <select class="pagesize input-mini" title="Select page size">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <select class="pagenum input-mini" title="Select page number"></select>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+      </table>
+
+    </div>   
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ==================lang================================ -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/general/js/ListaLeccionesAprendidas.js"></script>
+    <script src="../../assets/js/headerGeneral.js"></script>
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
+  </body>
+</html>
