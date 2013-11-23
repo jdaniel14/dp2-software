@@ -404,6 +404,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   
   /**** Asignar wbsNodes *****/
   var selectwbs = taskEditor.find("#wbsNodes");
+  
+
   //console.log(selectwbs);
   
   $.each(ge.wbsNodes,function(e,el){
@@ -435,6 +437,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   
   }
     
+
   //console.log(selectwbs.val());
   /**** Fin Asignar wbsNodes *****/
   
@@ -452,7 +455,28 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   //console.log("dddddd");
   
   //taskEditor.find("#colchon").text('0'+task.id_Wbs);
-  
+  if (ge.lineabase) {
+     
+       taskEditor.find("#code").attr("disabled", true);
+        taskEditor.find("#name").attr("disabled", true);
+         taskEditor.find("#wbsNodes").attr("disabled", true);
+          taskEditor.find("#description").attr("disabled", true);
+           taskEditor.find("#start").attr("disabled", true);
+            taskEditor.find("#end").attr("disabled", true);
+             taskEditor.find("#duration").attr("disabled", true);
+             
+             //taskEditor.find("#duration").attr("disabled", true);
+            //  taskEditor.find("#tipoCosto").attr("disabled", true);
+             
+      
+  } else {
+      
+           taskEditor.find("#progress").attr("disabled", true);
+        taskEditor.find("#progress_cost").attr("disabled", true);
+         taskEditor.find("#realStart").attr("disabled", true);
+          taskEditor.find("#realEnd").attr("disabled", true);
+      
+  }
  
   
   
@@ -591,8 +615,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 	        inputField:$(this)
 	      });
 	    });
-	  
-	  
+            
+
     //bind dateField on dates
     taskEditor.find("#start").click(function () {
       $(this).dateField({
@@ -603,6 +627,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
           taskEditor.find("#end").val(new Date(computeEndByDuration(date.getTime(), dur)).format());
         }
       });
+       
     });
 
     //bind dateField on dates
