@@ -1,11 +1,13 @@
 var getActivities = "../../api/CR_getListaActividad";
 var updateActivity = "../../api/CR_updateActividad";
+var getAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
 
 $(document).ready(main);
 
 
 var idPaqueteTrabajo;
-$("#fechaInicioActual2").val("2013-11-01");
+var idAccion;
+var acciones;
 
 if (localStorage.getItem("idPaquete") != null) {
 	idPaqueteTrabajo=localStorage.getItem("idPaquete");
@@ -14,6 +16,12 @@ if (localStorage.getItem("idPaquete") != null) {
 	idPaqueteTrabajo=0;
 }
 
+idAccion = localStorage.getItem("idAccion");
+localStorage.getItem("idAccion");
+
+idRiesgo = localStorage.getItem("idRiesgo");
+localStorage.getItem("idRiesgo");
+
 var flag=0;
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var listaActividades=[];
@@ -21,6 +29,7 @@ var listaActividades=[];
 function main(){
 
 	// obtenerTitulo();
+	listarAciones();
 	listarActividades();
 	$("#listaActividades").change(function() {
 		$.each(listaActividades, function(i, value) {
@@ -86,10 +95,8 @@ function main(){
     $("#btnConfirmar").click(function() {
         var data = {
     		id: $("#listaActividades").val(),
-			name: $("#nuevoNombre").val(),
 			duration: $("#nuevosDias").val(),
 			fecha_inicio: $("#fechaInicioActual2").val(),
-			fecha_fin:$("#nuevaFechaFin").val()
         }
         var jsonData = JSON.stringify(data);
   //       $.ajax({					UPDATE A ACCIONXRIESGO
@@ -134,4 +141,24 @@ function listarActividades(){
 		},
 		 
 	});
+}
+
+function listarAciones(){
+	var data = {
+        idRiesgoXProyecto:  idRiesgo
+    };
+    var jsonData = JSON.stringify(data);
+    $.ajax({
+        type: 'GET',
+        url:  getAccions + '/' + data.idRiesgoXProyecto,
+        success: function(data) {
+            obj = JSON.parse(data);
+            console.log(obj);
+
+            $.each(obj, function(index) {
+                console.log();
+                $('#accionEscogida').append("<option value=" + this.idAccionesRiesgo + ">" + this.descripcion + "</option>");
+            });
+        }
+    });
 }
