@@ -277,9 +277,9 @@ function agregaOpcionMoneda(idMoneda, nombre){
 function creaInputMoneda(num, deshabilitado){
 	
 	if (deshabilitado=='1')
-		combo='<select id="comboMoneda'+num+'"  readOnly disabled >'+ comboMoneda + '</select>';
+		combo='<select id="comboMoneda'+num+'" class="form-control"  readOnly disabled >'+ comboMoneda + '</select>';
 	else
-		combo='<select id="comboMoneda'+num+'" >'+ comboMoneda + '</select>';
+		combo='<select id="comboMoneda'+num+'" class="form-control" >'+ comboMoneda + '</select>';
 	return combo;
 	
 }
