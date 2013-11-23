@@ -69,12 +69,19 @@ function llegadaDatos(data) {
         /*console.log("aqui");
         console.log(data[1]["detalle_dias"]);
         console.log("sale");*/
-        //data = data["lista_empleados"];
-        $.each(data["lista_empleados"][33].detalle_dias, function (i, item) {
+        data = data["lista_empleados"];
+        console.log(data);
+        var aux = null;
+        $.each(data, function (i, item) {
+            aux = item;  
+            return;
+        });
+        console.log(aux);
+        $.each(/*data["lista_empleados"][33].detalle_dias*/aux.detalle_dias, function (i, item) {
             cantDias++;            
         });
         console.log(cantDias);
-        data = data["lista_empleados"];
+        //data = data["lista_empleados"];
         result += '<table cellpadding = "0" cellspacing = "0" width = "100%">';
         result += '<thead><tr align = "center">';
         result += '<td align = "center">Nombre</td>';
