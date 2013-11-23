@@ -127,10 +127,11 @@ function llegadaDatos(data) {
 
        // alert(indices[0]);
        // alert(indices[1]);
+        console.log(data);
         $.each(data, function (i, item) {
         	console.log("entra");
-        	if(prim == true) prim = false;
-        	else {
+        	//if(prim == true) prim = false;
+        	//else {
         		result += '<tr>';
         		result += '<td align = "center" style="border-top: 1px groove #733366;" >' + item.nom + '</td>';
 
@@ -160,7 +161,7 @@ function llegadaDatos(data) {
         			result += ' " ></td>';
         		});
         		result += '</tr>';
-        	}
+        	//}
         });
 
         result += '</tbody>';
