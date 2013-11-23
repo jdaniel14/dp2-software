@@ -97,7 +97,7 @@ $(document).ready(function() {
 
   //override date format i18n
   
-  Date.monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diiembre"];
+  Date.monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"];
   // Month abbreviations. Change this for local month names
   Date.monthAbbreviations = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   // Full day names. Change this for local month names
