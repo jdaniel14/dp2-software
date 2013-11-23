@@ -68,7 +68,7 @@ function visualizaSolicitud(){
 
 	$.ajax({
 		type: 'GET',
-		url: visualizarSolicitud + localStorage.getItem("idProyecto"),
+		url: visualizarSolicitud + localStorage.getItem("idSolicitud"),
 		dataType: "json", // data type of response
         success: function(data){            
           	var cad = data["flag_cambio"].toString();
