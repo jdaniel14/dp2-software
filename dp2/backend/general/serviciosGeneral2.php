@@ -284,10 +284,10 @@ function G_postBorrarMiembroDeProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
     
-    //$request = "{ \"id\": 40}";
+    //$request = "{ \"id_rrhhxpr\": 40}";
     //$body = json_decode($request);
     
-    $id_miembro = $body->id;
+    $id_miembro = $body->id_rrhhxpr;
     $sql = " select count(*) as cant from ACTIVIDAD as A, ACTIVIDAD_X_EMPLEADO as AXE, (SELECT id_proyecto as idp FROM MIEMBROS_EQUIPO where id_miembros_equipo = :id ) as H where A.id_proyecto = H.idp and A.id_actividad = AXE.id_actividad and AXE.id_miembros_equipo = :id ";
     try {
         $db = getConnection();
