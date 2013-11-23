@@ -76,6 +76,7 @@ GanttMaster.prototype.init = function(place) {
   var splitter = $.splittify.init(place, this.editor.element, this.gantt.element, 70);
   splitter.secondBox.css("overflow-y", "auto").scroll(function() {
     splitter.firstBox.scrollTop(splitter.secondBox.scrollTop());
+    	
   });
 
 

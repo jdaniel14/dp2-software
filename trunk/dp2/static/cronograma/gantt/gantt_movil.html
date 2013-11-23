@@ -221,9 +221,9 @@
 	
 	<div id="gantEditorTemplates" style="display:none;">	
 		<div class="__template__" type="GANTBUTTONS"><!--
-	  <div class="ganttButtonBar noprint">
+	  <div class="ganttButtonBar noprint  ">
 	    <h1 style="float:left; font-family: tahoma; color:black; font-size: 30px; border:2px dotted;">Diagrama de Gantt</h1>
-	    <div class="buttons">
+	    <div class="buttons" style="display:none;">
 	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="deshacer"><span class="teamworkIcon">&#39;</span></button>
 	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="rehacer"><span class="teamworkIcon">&middot;</span></button>
 	    <span class="ganttButtonSeparator"></span>
@@ -250,29 +250,20 @@
 	  <table class="gdfTable" cellspacing="0" cellpadding="0">
 	    <thead>
 	    <tr style="height:40px">
-	      <th class="gdfColHeader" style="width:35px;"></th>
-	      <th class="gdfColHeader" style="width:25px;"></th>
-	      <th class="gdfColHeader gdfResizable" style="width:30px;">Código</th>
+	      
 	      <th class="gdfColHeader gdfResizable" style="width:10px;"></th>
 	      <th class="gdfColHeader gdfResizable" style="width:200px;">Nombre</th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;">Inicio</th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;">Fin</th>
 	      <th class="gdfColHeader gdfResizable" style="width:50px;">Duración</th>
 	      <th class="gdfColHeader gdfResizable" style="width:50px;">Dependencias</th>
-	      <th class="gdfColHeader gdfResizable" style="width:200px;">Recursos</th>
-		  
-		  <th class="gdfColHeader gdfResizable" style="width:70px;">Paquete de trabajo</th>
-		  <th class="gdfColHeader gdfResizable" style="width:50px;">Indicadores</th>
-	    </tr>
+	      </tr>
 	    </thead>
 	  </table>
 	  --></div>
 	
 	  <div class="__template__" type="TASKROW"><!--
-	  <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)">
-	    <th class="gdfCell edit" align="right" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> <span class="teamworkIcon" style="font-size:12px;" >e</span></th>
-	    <td class="gdfCell" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
-	    <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)"></td>
+	  <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)" >
 	    <td class="gdfCell"><span>-</span></td>
 	
 	    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;"><input type="text" name="name" value="(#=obj.name#)" style="(#=obj.level>0?'border-left:2px dotted orange':''#)"></td>
@@ -281,13 +272,7 @@
 	    <td class="gdfCell"><input type="text" name="end" value="" class="date"></td>
 	    <td class="gdfCell"><input type="text" name="duration" value="(#=obj.duration#)"></td>
 	    <td class="gdfCell"><input type="text" name="depends" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#)></td>
-	    <td class="gdfCell taskAssigs">(#=obj.getAssigsString()#)</td>
-		
-		
-		
-		<td class="gdfCell"  ><input  type="text" name="wbsNode"  value="(#=obj.wbsNode#)" readonly></td>
-		<td class="gdfCell" align = "center"><button data-toggle = "modal" href = "#modalIndicadores" style="(#=obj.level>0?'':'display:none;'#)" name = "(#=obj.id_task#)" class = "btn btn-info btn-xs" onclick = "
-		
+	   
 		var tarea = $(this).attr('name');
 		
 		$.each(ge.tasks,function(e,el){
