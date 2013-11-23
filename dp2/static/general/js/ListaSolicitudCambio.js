@@ -72,7 +72,7 @@ function visualizaSolicitud(){
 		dataType: "json", // data type of response
         success: function(data){            
           	var cad = data["flag_cambio"].toString();
-          	var rubros = '';
+            var rubros = '';
 
           	if (cad.charAt(0)=='1') { rubros+="Alcance - "; }
         	  if (cad.charAt(1)=='1') { rubros+="Cronograma - "; }
