@@ -20,7 +20,7 @@ var confirmAllRisks = "../../api/R_confirmarRiesgos";
 var getProjectName = "../../api/G_listaRecursoxProyecto";
 var setMaterializada = "../../api/R_registrarMaterializacion";
 var getAllItemsMaterializados = "../../api/R_obtenerRiesgoMaterializado";
-
+var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo"; 
 
 $(document).ready(main);
 
@@ -314,7 +314,8 @@ function main() {
 
         var data = {
             idRiesgoProyecto: parseInt(idArray),
-            fechaMat: $('#fechaMat').val()
+            fechaMat: $('#fechaMat').val(),
+            idAccionesRiesgo: $('#accionEscogida').val()
         };
 
         var jsonData = JSON.stringify(data);
@@ -581,6 +582,10 @@ function listarRiesgos() {
             });
             $("#btnBuscar").click(function() {
                 listarRiesgos();
+            });
+            $(".materializar").click(function() {
+                
+                listaAcciones($(this).closest("tr").attr("id"));
             });
 
             //Boton para confirmar un riesgo
@@ -1471,4 +1476,24 @@ function listarRiesgosMaterializados() {
         fail: codigoError
     });
 
+}
+
+function listaAcciones(idARiesgos){
+    var data = {
+        idRiesgoXProyecto:  idARiesgos
+    };
+    var jsonData = JSON.stringify(data);
+    $.ajax({
+        type: 'GET',
+        url:  listAccions + '/' + data.idRiesgoXProyecto,
+        success: function(data) {
+            obj = JSON.parse(data);
+            console.log(obj);
+
+            $.each(obj, function(index) {
+                console.log();
+                $('#accionEscogida').append("<option value=" + this.idAccionesRiesgo + ">" + this.descripcion + "</option>");
+            });
+        }
+    });
 }
