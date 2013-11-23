@@ -1,12 +1,14 @@
 var getActivities = "../../api/CR_getListaActividad";
 var updateActivity = "../../api/CR_updateActividad";
 var getAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
+var updatePrueba = "../../api/R_actualizarEnviarCambio";	 //CAMBIO NOMBRE!!!!!!
 
 $(document).ready(main);
 
 
 var idPaqueteTrabajo;
 var idAccion;
+var nombreAccion;
 var acciones;
 
 if (localStorage.getItem("idPaquete") != null) {
@@ -94,24 +96,26 @@ function main(){
 
     $("#btnConfirmar").click(function() {
         var data = {
-    		id: $("#listaActividades").val(),
-			duration: $("#nuevosDias").val(),
-			fecha_inicio: $("#fechaInicioActual2").val(),
+    		idActividad: $("#listaActividades").val(),
+			tiempoReal: $("#nuevosDias").val(),
+			fechaInicio: $("#fechaInicioActual2").val(),
+			idAccionesRiesgo: idAccion,
+			descripcion: nombreAccion
         }
         var jsonData = JSON.stringify(data);
-  //       $.ajax({					UPDATE A ACCIONXRIESGO
-		// 	type: 'POST',
-		// 	url: updateActivity,
-		// 	data: jsonData,
-		// 	success: function(data){
-		// 		console.log("Se actualizó");
-		// 		// obtenerCostoRealActual(costoNuevo);
-		// 		//guardar en BD
-		// 		localStorage.removeItem("idPaquete");
-		// 		window.location.replace("../riesgo/MostrarRiesgos.html");
-		// 	},
+        $.ajax({			
+			type: 'PUT',
+			url: updatePrueba,
+			data: jsonData,
+			success: function(data){
+				alert("Se actualizó");
+				// obtenerCostoRealActual(costoNuevo);
+				//guardar en BD
+				localStorage.removeItem("idPaquete");
+				window.location.replace("../riesgo/MostrarRiesgos.html");
+			},
 		 
-		// });
+		});
     });
 }
 
@@ -154,10 +158,11 @@ function listarAciones(){
         success: function(data) {
             obj = JSON.parse(data);
             console.log(obj);
-
             $.each(obj, function(index) {
-                console.log();
-                $('#accionEscogida').append("<option value=" + this.idAccionesRiesgo + ">" + this.descripcion + "</option>");
+            	if (this.idAccionesRiesgo==idAccion){
+            		nombreAccion= this.descripcion;
+            		console.log(nombreAccion);
+            	}
             });
         }
     });
