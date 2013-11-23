@@ -38,7 +38,6 @@ function iniciaProyectos(){
 					localStorage.setItem("nombreProyecto",nombreProyecto);
 					seteaRol();
 					$(location).attr('href','MenuProyecto.html');
-					
 				});	
         	}
         	else{
