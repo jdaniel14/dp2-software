@@ -252,18 +252,18 @@ function agregaOpcionUnidadMedida(idUnidad, nombre){
 function creaInputMoneda(num, deshabilitado){
 	
 	if (deshabilitado=='1')
-		combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')"  readOnly disabled >'+ comboMoneda + '</select>';
+		combo='<select id="comboMoneda'+num+'" class="form-control" onChange="modifica('+num+')"  readOnly disabled >'+ comboMoneda + '</select>';
 	else
-		combo='<select id="comboMoneda'+num+'" onChange="modifica('+num+')" >'+ comboMoneda + '</select>';
+		combo='<select id="comboMoneda'+num+'" class="form-control" onChange="modifica('+num+')" >'+ comboMoneda + '</select>';
 	return combo;
 }
 
 
 function creaInputUnidadMedida(num, deshabilitado){
 	if (deshabilitado=='1')
-		combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" readOnly disabled >'+ comboUnidadMedida + '</select>';
+		combo='<select class="form-control" id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" readOnly disabled >'+ comboUnidadMedida + '</select>';
 	else
-		combo='<select id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" >'+ comboUnidadMedida + '</select>';
+		combo='<select class="form-control" id="comboUnidadMedida'+num+'" onChange="modifica('+num+')" >'+ comboUnidadMedida + '</select>';
 	return combo;
 }
 
