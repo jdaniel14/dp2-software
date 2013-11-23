@@ -133,6 +133,7 @@ GridEditor.prototype.addTask = function(task, row) {
     $(el).html(i + 1);
   });
   //prof.stop();
+    $("td[name='typeCost']").attr('disabled',true);
 
   return taskRow;
 };
@@ -794,9 +795,19 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
         
         
         /***** Fin asignar Tipo Costo ****/
-        
-        
+        if (ge.lineabase){
+            assigRow.find("[name=value]").attr('disabled',true);
+            assigRow.find("[name=resourceId]").attr('disabled',true);
+            assigRow.find("[name=tipoCosto]").attr('disabled',true);
+        }
+        else {
+            assigRow.find("[name=costRateReal]").attr('disabled',true);
+            assigRow.find("[name=valueReal]").attr('disabled',true);
+        }
         assigsTable.append(assigRow);
+
+
+
       }      
     });
 
@@ -974,12 +985,12 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
               for (var k = 0; k < tsk.assigs.length; k++){
                 var asg = tsk.assigs[k];
                 if (asg.idrecurso == ass.idrecurso && ass.typeCost == "HORAS HOMBRE" && tsk.id != task.id){
-                	
+
                   console.log(asg.idrecurso);
                   console.log(ass.idrecurso);
                   console.log(ass.typeCost);
-				  alert('En la fila '+(j+1)+', la actividad '+tsk.name +' ya tiene asignado al recurso '+((asg.descripcion_recurso==null)?k+1:asg.descripcion_recurso)+' en fechas que comparten algunos dias de trabajo')
-                  //alert("Existe un recurso que ha sido asignado en mas de una actividad al mismo tiempo");
+				  alert('En la fila '+(j+1)+', la actividad '+tsk.name +' ya tiene asignado al recurso '+((asg.descripcion_recurso==null)?k+1:asg.descripcion_recurso)+' en fechas que comparten algunos dias de trabajo');
+
                   return false;
                 }
               }
