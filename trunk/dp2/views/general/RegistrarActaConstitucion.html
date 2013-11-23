@@ -12,6 +12,7 @@
     <!-- Bootstrap core CSS -->
     <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="../../static/general/css/general.css" rel="stylesheet">
+	<link href="../../static/general/css/validacion.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../../assets/js/html5shiv.js"></script>
@@ -43,7 +44,7 @@
 	<div id="myTabContent" class="tab-content">
 		<div class="tab-pane active in" id="ig">
 			<p>
-			<form class="form-horizontal" role="form" action='' method="POST">
+			<form id="registrarActa1" class="form-horizontal" role="form" action='' method="POST">
 			  <fieldset>
 				<div class="form-group">
 				  <!-- Id del Proyecto -->
@@ -127,7 +128,7 @@
 		</div>
 		<div class="tab-pane pane" id="dp1">
 			<p>		
-			<form class="form-horizontal" role="form" action='' method="POST">
+			<form id="registrarActa2" class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 			<div class="form-group">
 			  <!-- Descripcion del Proyecto -->
@@ -161,7 +162,7 @@
 		</div>
 		<div class="tab-pane pane" id="perp">
 			<p>		
-			<form class="form-horizontal" role="form" action='' method="POST">
+			<form id="registrarActa3" class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 			<div class="form-group">
 			  <!-- Costo -->
@@ -214,7 +215,7 @@
 		</div>
 		<div class="tab-pane pane" id="op">
 			<p>		
-			<form class="form-horizontal" role="form" action='' method="POST">
+			<form id="registrarActa4" class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 
 			<div class="table-responsive">
@@ -261,7 +262,7 @@
 		</div>
 		<div class="tab-pane pane" id="ap1">
 			<p>		
-			<form class="form-horizontal" role="form" action='' method="POST">
+			<form id="registrarActa5" class="form-horizontal" role="form" action='' method="POST">
 		  <fieldset>
 
 			<div class="form-group">
@@ -279,7 +280,7 @@
 			  <!-- Comite  de Seguimiento -->
 			  <label class="col-lg-4 control-label"  for="jcp">Jefe de Comite de Seguimiento:</label>
 			  <div class="controls col-lg-6">
-				  <input id="jcp" name="jcp" class="form-control" placeholder="" />
+				  <input class="form-control" type="text" id="jcp" name="jcp" placeholder="" class="input-xlarge">
 			  </div>
 			</div>
 			<div class="form-group">
@@ -321,8 +322,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
-    <script src="../../bootstrap/js/bootstrap.min.js"></script>
-	<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>    
+  	<script src="../../static/general/js/jquery.validate.min.js"></script>
+  	<script src="../../static/general/js/bootbox.min.js"></script>
 	<script src="../../static/general/js/detalleActaConstitucion.js"></script>
 	<script src="../../assets/js/header.js"></script>
   </body>
