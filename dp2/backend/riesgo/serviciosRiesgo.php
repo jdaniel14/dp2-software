@@ -1064,9 +1064,10 @@
 
 
     function R_getAccionesParaAprobar($idProyecto){
-        $query = "SELECT AXR.descripcion, AXR.costo,AXR.tiempo,flag_aceptado_rechazado 
-                FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP
+        $query = "SELECT dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo,flag_aceptado_rechazado 
+                FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
                 WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
+                    A.id_actividad=AXR.id_actividad and
                     RXP.id_proyecto=:id_proyecto;";
         try {
             $arreglo= array();
@@ -1075,8 +1076,13 @@
             $stmt->bindParam("id_proyecto",$idProyecto);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("descripcion" => $row['descripcion'], 
-                            "costo" => $row['costo'],
+                $data = array(
+                            "idActividadCronograma"=> $row['id_actividad'],
+                            "nombreActividadCronograma"=> $row['nombre_actividad'],
+                            "fechaInicioActividadCronograma"=> $row['fecha_plan_inicio'],
+                            "duracionActividadCronograma"=> $row['dias'],
+                            "nombreAccionRiesgo" => $row['descripcion'], 
+                            "fechaInicioAccionRiesgo" => $row['fecha_inicio'],
                             "tiempo" => $row['tiempo'],
                             "flagAceptadoRechazado" => $row['flag_aceptado_rechazado']
                             );
@@ -1118,21 +1124,26 @@
 
 
     function R_getRiesgoMaterializado($idProyecto){
+        
+        
         $query = "SELECT id_riesgo_x_proyecto, nombre_riesgo, fecha_materializacion,costo_potencial, demora_potencial
-                FROM RIESGO_X_PROYECTO  WHERE id_proyecto=:id_proyecto";
+                FROM RIESGO_X_PROYECTO  WHERE id_proyecto=:id_proyecto and estado=2";
         try {
             $arreglo= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
             $stmt->bindParam("id_proyecto",$idProyecto);
             $stmt->execute();
+          
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                
                 $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
                             "nombreRiesgo" => $row['nombre_riesgo'],
                             "fechaMaterializacion" => $row['fecha_materializacion'],
                             "costoPotencial" => $row['costo_potencial'],
                             "demoraPotencial" => $row['demora_potencial']
                             );
+               
                 array_push($arreglo,$data);
             }
             $db = null;
