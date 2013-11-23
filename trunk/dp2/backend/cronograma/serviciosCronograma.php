@@ -181,13 +181,12 @@ function CR_getActividadesMovil(){
 	//$app->urlFor('../../dp2');
 	//$app->redirect();
 	//echo '<meta http-equiv="refresh" content="0; url=http;//google.com"';
-	
 	echo '<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
 				<HTML>
 				   <HEAD>
-			<meta http-equiv="refresh" content="0; url=../static/cronograma/gantt/gantt_movil.html?idProyecto=' . $id . '"/>
+			<meta http-equiv="refresh" content="0; url=200.16.7.112/trunk/dp2/static/cronograma/gantt/gantt_movil.html?idProyecto=' . $id . '"/>
 				      <TITLE>
-				         HECTOR YOLO JUEGA MID
+				         HECTOR YOLO JUEGA MID y no avisa
 				      </TITLE>
 				   </HEAD>
 				<BODY>
