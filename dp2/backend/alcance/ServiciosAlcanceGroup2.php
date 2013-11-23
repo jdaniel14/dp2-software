@@ -19,7 +19,8 @@ function reconstruirEdt(){
       $res =$pstmt->fetch(PDO::FETCH_ASSOC);
       $idPIni = $res["id_paquete_trabajo_inicial"];
       $idEdt = $res["id_edt"];
-      $idEstado = $res["id_estado"];
+      $idEdt =1;
+      //$idEstado = $res["id_estado"];
       $idEstado =1;
       //eliminar los hijos
       eliminarHijos($idPIni);
