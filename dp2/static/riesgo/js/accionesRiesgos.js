@@ -1,5 +1,6 @@
 var addAccion = "../../api/R_registrarActividadContingencia";
 var updateCostTime = "../../api/R_actualizarCostoTiempoRiesgo";
+var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
 
 $(document).ready(main);
 var maxId;
@@ -35,6 +36,7 @@ function validar() {
 
 function main(){
 	var cantidad = $("#suma").val();
+    listaAcciones();
 	$("#agregar").click(function()
     {
 
@@ -54,6 +56,9 @@ function main(){
         $('#accion' + maxId).val("");
         $('#tiempo' + maxId).val("");
         $('#costo' + maxId).val("");
+        $('#accion' + ultimo).prop('disabled', false);
+        $('#costo' + ultimo).prop('disabled', false);
+        $('#tiempo' + ultimo).prop('disabled', false);
         return false;
     });
 
@@ -99,8 +104,7 @@ function main(){
                     console.log(costoPromedio);
                     tiempoPromedio=obj.tiempo;
                     console.log(tiempoPromedio);
-                    $("#tablaAcuerdos").html("");
-                    // listaTipoImpactos();
+                    
                 },
                 fail: function(data) {
                     alert(data.me);
@@ -117,11 +121,14 @@ function main(){
                 var jsonData = JSON.stringify(data);
 
                 $.ajax({
+                    async: false,
                     type: 'PUT',
                     url: updateCostTime,
                     data: jsonData,
                     success: function(data) {
-                        alert(data.me);
+                        console.log(data);
+                        $("#tablaAcuerdos").html("");
+                        listaAcciones();
                     },
                     fail: function(data) {
                         alert(data.me);
@@ -162,4 +169,66 @@ function addTableRow()
 
     // append the new row to the table
     $("#tablaAcuerdos").find("tbody tr:last").after($tr);
+}
+
+function listaAcciones() {
+    var data = {
+        idRiesgoXProyecto: idRiesgo
+    };
+    var jsonData = JSON.stringify(data);
+    $.ajax({
+        type: 'GET',
+        url:  listAccions + '/' + data.idRiesgoXProyecto,
+        success: function(data) {
+            obj = JSON.parse(data);
+            console.log(obj);
+
+            $.each(obj, function(index) {
+                    console.log(this.costo);
+
+                    var costo =this.costo;
+                    var descripcion = this.descripcion;
+                    var tiempo = this.tiempo;
+                    
+                    $("#tablaAcuerdos").append("<tr>"+
+                        "<td><input class=\"tipoRiesgo input-riesgos\" name=\"accion" + index + "\" id=\"accion" + index + "\" type=\"text\" value=\"" + descripcion + "\" disabled></td>"+
+                        "<td><input class=\"tipoRiesgo input-sm\" name=\"costo" + index + "\" id=\"costo" + index + "\" type=\"text\" value=\"" + costo + "\" disabled></td>"+
+                        "<td><input class=\"tipoRiesgo input-sm\" name=\"tiempo" + index + "\" id=\"tiempo" + index + "\" type=\"text\" value=\"" + tiempo + "\" disabled></td>"+
+                        "<td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + index+ "\" ></span></a></td></tr>");
+
+                });
+
+            //     var fecha = new Date();
+            //     var tipoRi = data[obj]["tipoRi"];
+            //     var formas = data[obj]["formas"];
+            //     var idTipo = data[obj]["idTipo"];
+
+            //     var tipo;
+            //     if (formas == 1) {
+                    
+            //         tipo = 'Numero';
+            //         $("#tablaTiposRiesgos").append("<tr><td><input disabled class=\"tipoRiesgo\" name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\" disabled></td><td><select class=\"numero\" disabled selected id=\"formas" + idTipo + "\"><option value=\"" + 1 + "\">" + tipo + "</option></select></td> <td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + idTipo+ "\" ></span></a></td></tr>");
+            //     }
+            //     else {
+            //         if(formas==2){
+            //         tipo = 'Texto';
+            //         $("#tablaTiposRiesgos").append("<tr><td><input disabled class=\"tipoRiesgo\" name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select class=\"numero\"  disabled selected id=\"formas" + idTipo + "\"><option value=\"" + 2 + "\">" + tipo +  "</option></select></td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + idTipo+ "\"></span></a></td> </tr>");
+            //         }
+            //     }
+
+
+            
+
+            // $(".iconito").click( function(){
+            //                 var  idTipoRi= $(this).closest("span").attr("id");
+            //                 eliminarRiesgo(idTipoRi);
+
+            //  });
+ 
+            // if ($("#tablaTiposRiesgos tr").length > 1)
+            //     $("#my_row_101").remove();
+
+
+        }
+    });
 }
