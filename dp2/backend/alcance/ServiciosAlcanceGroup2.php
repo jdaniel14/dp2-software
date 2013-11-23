@@ -40,7 +40,7 @@ function reconstruirEdt(){
       $pstmt= $con->prepare("UPDATE EDT SET id_paquete_trabajo_inicial= ? WHERE id_proyecto= ?");
       $pstmt->execute(array($idPaqueteInicial,$edt->{"idproyecto"}));
 
-      $seGeneroNuevo = guardarHijos($edt->{"nodos"},$idEstado,null,$idEdt,"1.0",$idPaqueteInicial);
+      $seGeneroNuevo = guardarHijos($edt->{"nodos"},1,null,$idEdt,"1.0",$idPaqueteInicial);
 
       $con->exec("set foreign_key_checks = true");
       if($seGeneroNuevo){
