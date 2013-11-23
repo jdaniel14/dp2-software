@@ -219,7 +219,7 @@ public class CronogramaController extends Controller{
 	
 	public String getGanttHtml(String idProyecto) {
 		String strRespuesta = "";
-		String path = ServerConstants.SERVER_URL + ServerConstants.COSTOS_CO_YOLO_URL + "/";
+		String path = ServerConstants.SERVER_URL + ServerConstants.CronogramaGetGanttHtml + "/";
 		
 		JSONObject json = new JSONObject();
 		try {
