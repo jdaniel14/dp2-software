@@ -30,7 +30,10 @@
 
 
 
-          
+          $("#CrearEDTCero").click(function(){
+            
+            window.location.href = 'edt.html';
+          });
 
 
         /* FIN CREAR EDT */
@@ -236,6 +239,8 @@
                               $("#progressEdt").hide("slow");
                               $("#edtCrearLogError").show("slow");
                               $("#CrearEDTCero").show("slow");
+                              //window.location.href = 'edt.html';
+                              return;
                             }else{
                               console.log("not null", data.idnodo );
                               localStorage.setItem( "idedt", data.idedt );

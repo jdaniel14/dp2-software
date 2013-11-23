@@ -69,7 +69,10 @@ function ajaxMostrar ( jsonCliente ){
                               $("#progressEdt").hide("slow");
                               $("#edtCrearLogError").show("slow");
                               $("#CrearEDTCero").show("slow");
-                              //pintarOneNodoEDT( idnodoParam );
+                              pintarOneNodoEDT( idnodoParam );
+                              //$("#guardarCambios").show();
+                              //console.log("sape");
+                              //window.location.href = 'edt.html';
 
                             }else{
 
@@ -88,6 +91,7 @@ function ajaxMostrar ( jsonCliente ){
 
 $("#CrearEDTCero").click(function(){
                 console.log("EDT DESDE EL edtMostrar");
+                $("#guardarCambios").show("slow");
                 $("#edtCrearLogError").hide("slow");
                 var titleParent = "Nombre Proyecto";
                 var html = pintarOneNodoEDT( titleParent, idnodoParam );
@@ -98,7 +102,7 @@ $("#CrearEDTCero").click(function(){
 
 
 function pintarOneNodoEDT( title, id  ){
-   console.log("Pintando AL PADRE  ");
+   console.log("Pintando AL PADRE  ", title, id);
        var html = "";  
                     //html += '<ul>';
                     /*
@@ -115,6 +119,7 @@ function pintarOneNodoEDT( title, id  ){
           html += '</span>'
           html += '<ul>' + '</ul>';
           html += '</li>';
+          console.log(html);
         return html;
 }
 
@@ -338,7 +343,8 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
                       success: function (data) {
                           console.log(data);
                           $("#guardarEDTLoading").hide("slow");
-                          location.reload();
+                          //location.reload();
+                          window.location.href = 'index.html';
 
                       },
                       failure: function ( data ){
@@ -491,6 +497,8 @@ $("#editarEdtNew").click(function(){
 
       $('input').live('blur', function () {
           //$("#caja_flotante").hide("slow")
+          var inputValidar = $(this).val();
+
           $(this).parent().append($('<span />').html($(this).val()));
           var sape = localStorage.getItem("modificandoNodoActual");
           $(sape).html($(this).val());

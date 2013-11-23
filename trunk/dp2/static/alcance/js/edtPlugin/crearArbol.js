@@ -14,7 +14,7 @@ function repaint(){
                     console.log("key A");
                     $( "#inputAgregarHijo" ).trigger( "click" );
                 });
-                
+
         }
 
 //crearEdtPlugin();
@@ -391,6 +391,7 @@ $("#guardarCambios").click(function(){
                           //alert("#Edt creada");
                           //$("#progressEdtGuardarEdt").hide("slow");
                           location.reload();
+                          //window.location.href = 'index.html';
                           
                       }
         });
