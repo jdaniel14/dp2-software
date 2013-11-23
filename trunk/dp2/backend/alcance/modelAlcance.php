@@ -66,11 +66,13 @@ Precondicion -> EDTARBOL
 		public $criterioAceptacion;
 		public $idmiembros;
 		public $nombre;
-		public $apellido;
 		public $idcategoriaR;
+		public $nomPrioridad;
+		public $nomEstado;
+		public $nomCategoria;
 		
 		function __construct($id_requisito,$descripcion,$solicitud,$cargo,$fundamento_incorporacion,
-    			$id_prioridad_requisito,$id_estado_requisito,$criterio_aceptacion,$id_miembros_equipo,$nombre,$apellido,$cate){
+    			$id_prioridad_requisito,$id_estado_requisito,$criterio_aceptacion,$id_miembros_equipo,$nombre,$cate,$a,$b,$c){
 			$this->idrequisito=$id_requisito;
 			$this->descripcion=$descripcion;
 			$this->solicitado=$solicitud;
@@ -81,8 +83,11 @@ Precondicion -> EDTARBOL
 			$this->criterioAceptacion=$criterio_aceptacion;
 			$this->idmiembros=$id_miembros_equipo;
 			$this->nombre=$nombre;
-			$this->apellido=$apellido;
 			$this->idcategoriaR=$cate;
+			$this->nomPrioridad=$a;
+			$this->nomEstado=$b;
+			$this->nomCategoria=$c;
+					
 		}
 	}
 		
