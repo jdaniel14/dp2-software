@@ -14,9 +14,12 @@
 
 
         function showMessage( msg ){
-
-          alert ( msg );
-
+          var html =   '<div class="alert alert-warning alert-dismissable">';
+          html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+          html += '<strong>Warning!&nbsp;</strong>';
+          html += msg;
+          html += '</div>';
+          $(".consoleLog").append(html);
         }
 
         function repaint(){
