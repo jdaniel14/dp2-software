@@ -10,6 +10,7 @@ $(window).bind('beforeunload',function(){
 */
 
 var arrNombres = [];
+var autoGenerados = [];
 
 var idnodoParam = 10000;
 localStorage.setItem("idcontador", idnodoParam);
@@ -116,7 +117,7 @@ function pintarOneNodoEDT( title, id  ){
                     */
           html +=  '<li>';
           html += '<span class = "titleEDT" id = "';
-          html += 'title-'+ id + '" >';
+          html += 'titlePadre-'+ id + '" >';
           html += title;
           html += '</span>'
           html += '<ul>' + '</ul>';
@@ -139,7 +140,7 @@ function pintarEDT ( data ){
             if ( hijos == 0 ){
               html += '</li>';
             }else{
-               var hfinal = nodoRecursivo ( data.nodos , html);
+               var hfinal = nodoRecursivo (titleParent, data.nodos , html);
             }
             html = hfinal;
             html += '</li>';
@@ -149,7 +150,7 @@ function pintarEDT ( data ){
             repaint();
 }
 
-function nodoRecursivo( nodos , html ){
+function nodoRecursivo( padre, nodos , html ){
            var i = 0;
            
            html += '<ul>';
@@ -157,6 +158,8 @@ function nodoRecursivo( nodos , html ){
                 console.log(nodos[i].idnodo);
                 if (localStorage.getItem("queueEstado") == "mostrando"){
                   //html +=  '<li>' + '<span class = "titleEDT">' +'<input id = "title-'+ nodos[i].idnodo +'" class = "inputEdtTitle" type = "text" value = "'+ nodos[i].title + '"> ' + '</span> <br>' + '<span class = "descripcionEDT">'  + '<input class = "inputEdtDescripcion" id = "descripcion-'+ nodos[i].idnodo + '" type = "text" value = "'+ nodos[i].descripcion + '"> ' + '</span> <br>' + '<span class = "diasEDT">'  + '<input class = "inputEdtDias" id = "tiempo-'+ nodos[i].idnodo + '" type = "text" value = "'+ nodos[i].dias + '"> ' + '</span>';
+                  
+                  if ( nodos[i].descripcion == "Autogenerado" ) autoGenerados.push(padre);
                   html += armaNodoHijo( nodos[i].idnodo, nodos[i].title , nodos[i].descripcion, nodos[i].dias );
                 
                 }else if (localStorage.getItem("queueEstado") == "editando"){
@@ -165,7 +168,7 @@ function nodoRecursivo( nodos , html ){
                 }
                 var hijos = parseInt( nodos[i].hijos );
                 if ( hijos > 0 ){
-                  var sape = nodoRecursivo( nodos[i].nodos, html );
+                  var sape = nodoRecursivo(nodos[i].title, nodos[i].nodos, html );
                   html = sape;
                   html += '</li>';
                 }else{
@@ -406,6 +409,10 @@ function agregaNodo( id, title, descripcion, dias ){
 	html += dias + '</span>';
 }
 
+function showMessage( msg ){
+  alert(msg);
+}
+
 function funcionesCajaFlotante(){
 
   $("#imgAgregar1").click(function(){
@@ -420,12 +427,23 @@ function funcionesCajaFlotante(){
   $("#imgEliminar1").click(function(){
   	console.log("eliminar");
   	var idt = localStorage.getItem("idnodoActualClick");
-  	$(idt).parent().remove();
-    repaint();
-    $("#cont_caja_flotante").hide("slow");
+    var  idtsplit = idt.split("-")[0];
+
+    if ( idtsplit == "#titlePadre"){
+      console.log("quieres eliminar al padre? bitch please");
+      showMessage( " No puedes eliminar el paquete principal ");
+      return;
+    }else{
+      $(idt).parent().remove();
+      repaint();
+      $("#cont_caja_flotante").hide("slow");
+    }
+  	
   })
 
 }
+
+
 
 $("#imgAgregar").click(function(){
 		var ident = parseInt(localStorage.getItem("idcontador"));
@@ -445,9 +463,19 @@ $("#imgAgregar").click(function(){
   $("#imgEliminar").click(function(){
   	console.log("eliminar");
   	var idt = localStorage.getItem("idnodoActualClick");
-  	$(idt).parent().remove();
-    repaint();
-    $("#caja_flotante").hide("slow");
+    var  idtsplit = idt.split("-")[0];
+
+    if ( idtsplit == "#titlePadre"){
+      console.log("quieres eliminar al padre? bitch please");
+      showMessage( " No puedes eliminar el paquete principal ");
+      return;
+    }else{
+     $(idt).parent().remove();
+      repaint();
+     $("#caja_flotante").hide("slow");
+    }
+
+
   })
 
 
@@ -457,7 +485,7 @@ function agregarNodoHijoDefault( id ){
        var tiempo = 0;
        var html = "";  
                     //html += '<ul>';
-          var titlefin = title +  parseInt(localStorage.getItem("idcontador"));
+          var titlefin = title +  ( parseInt(localStorage.getItem("idcontador")) - idnodoParam );
           html +=  '<li> <div class = "bolitaEdt"> <img style = "width:16px; height: 16px;" src = "../../static/alcance/img/icon_bola.png" /> </div>';
 					html += '<span class = "titleEDT" id = "';
 					html += 'title-'+ id + '" >';
