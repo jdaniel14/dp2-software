@@ -377,6 +377,7 @@
 		$con=getConnection();
 		$pstmt = $con->prepare("UPDATE ALCANCE SET id_estado_alcance = ? WHERE id_proyecto = ?");
 		$pstmt->execute(array($estado["idestado"],$estado["idproyecto"]));
+		echo "true";
 	}
 
 
@@ -422,7 +423,8 @@
 		$id_edt = $result["id_edt"];
 
 		$pstmt = $con->prepare("UPDATE PAQUETE_TRABAJO SET id_estado = ? WHERE id_edt = ?");
-		$pstmt->execute(array($estado["idestado"],$id_edt));			
+		$pstmt->execute(array($estado["idestado"],$id_edt));
+		echo "true";		
 	}
 
 	function getListaCambios(){//obtener los cambios de alcance dado un id_proyecto
@@ -706,6 +708,20 @@
       	echo '{"me" : "No se puede modificar el plan de gestión de requisitos"}';
       	echo json_encode(array("me" => $e->getMessage()));
     }	
+	}
+
+	function edtAprobado($id_proyecto){
+		$con=getConnection();
+		$pstmt = $con->prepare("SELECT id_edt , id_estado FROM EDT WHERE id_proyecto =? ORDER BY id_edt ASC");
+		$pstmt->execute(array($id_proyecto));
+		$res = $pstmt->fetch(PDO::FETCH_ASSOC);
+		$id_edt = $res["id_edt"];
+		$id_estado = $res["id_estado"];
+		if($id_estado == 1){
+			echo json_encode(true);
+			return;
+		}
+		echo json_encode(false);
 	}	
 
 ?>

@@ -43,4 +43,5 @@
 	$app->post('/AL_mostrarPlanGestionRequisitos','mostrarPlanGestionRequisitos');
 	$app->post('/AL_crearPlanGestionRequisitos','crearPlanGestionRequisitos');
 	$app->post('/AL_modificarPlanGestionRequisitos','modificarPlanGestionRequisitos');
+	$app->get('/AL_EdtAprobado/:id_proyecto', 'edtAprobado');
 ?>

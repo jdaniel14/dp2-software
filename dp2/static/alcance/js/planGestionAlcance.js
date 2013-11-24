@@ -34,6 +34,9 @@ function guardarCambios(){
 		data: JSON.stringify(objAlcance),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+		success:function(){
+			showAlert("form-plan",true,"Se guardaron los cambios en el alcance","Hay errores en el formulario");
+		}
 	});
 	var objEDT = {
 		"idproyecto" : id_proyecto,
@@ -45,8 +48,10 @@ function guardarCambios(){
 		data: JSON.stringify(objEDT),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+		success: function(){
+			showAlert("form-plan",true,"Se guardaron los cambios en el EDT","Hay errores en el formulario");
+		}
 	});
-	showAlert("form-plan",true,"Se guardaron los cambios","Hay errores en el formulario");
 }
 
 function cargarComboEstadoEDT(){
@@ -95,6 +100,7 @@ function cargarEstados(){
     data: obj,
 		success:function(data){
 			$("#id_estado_alcance").val(data["id_estado_alcance"]);
+			if(data["id_estado_alcance"]) $("#id_estado_alcance").removeAttr("disabled");
 		}
 	});
 	$.ajax({
@@ -105,6 +111,7 @@ function cargarEstados(){
     data : obj,
     success:function(data){
 			$("#id_estado_edt").val(data["id_estado"]);
+			if(data["id_estado"]) $("#id_estado_edt").removeAttr("disabled");
 		}
 	});
 

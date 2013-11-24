@@ -18,7 +18,7 @@ function modificarRequisito(){
 		contentType: "application/json; charset=utf-8",
 		success: function(data){
 			$("#id_requisito").val(data["id_requisito"]);
-			$("#descripcion").val(data["descripcion"]);
+			$("#descripcion").html(data["descripcion"]);
 			$("#solicitado").val(data["solicitud"]);
 			$("#objetivo").val(data["fundamento_incorporacion"]);
 			$("#idprioridadR").val(data["id_prioridad_requisito"]);
@@ -70,7 +70,6 @@ function llena_requisitos(requisitos){
 		fila.append("<td>"+requisitos[i].idrequisito+"</td>");
 		fila.append("<td>"+requisitos[i].descripcion+"</td>");
 		fila.append("<td>"+requisitos[i].solicitado+"</td>");
-		fila.append("<td>"+requisitos[i].cargo+"</td>");
 		fila.append("<td>"+requisitos[i].fundamento+"</td>");
 		fila.append("<td>"+requisitos[i].nomPrioridad+"</td>");
 		fila.append("<td>"+requisitos[i].nomEstado+"</td>");
@@ -131,13 +130,13 @@ function cargaMiembros(){
 function modifica(data){
 	var fila = $(".selected")[0];
 	var campos = $(fila).children();
-	$(campos[2]).html(data["solicitado"]);
-	$(campos[4]).html(data["fundamento"]);
-	$(campos[5]).html(data["nomPrioridad"]);
-	$(campos[6]).html(data["nomEstado"]);
-	$(campos[7]).html(data["nomCategoria"]);
-	$(campos[8]).html(data["criterioAceptacion"]);
-	$(campos[9]).html(data["nombre"]);
+	$(campos[2]).html(data[0]["solicitado"]);
+	$(campos[3]).html(data[0]["fundamento"]);
+	$(campos[4]).html(data[0]["nomPrioridad"]);
+	$(campos[5]).html(data[0]["nomEstado"]);
+	$(campos[6]).html(data[0]["nomCategoria"]);
+	$(campos[7]).html(data[0]["criterioAceptacion"]);
+	$(campos[8]).html(data[0]["nombre"]);
 	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
 }
@@ -188,6 +187,11 @@ function guardarCambios(){
 $(document).ready(function(){
 	$("#guardar").click(guardarCambios);
 	$("#guardarEntregables").click(guardarEntregables);
+	comprobarLineaBase(function(){
+		$(".modificar-requisito").hide();
+		$(".form-control").attr("disabled","disabled");
+		$("#guardarEntregables").hide();
+	});
 	var jsonCliente = {
         idproyecto : localStorage.getItem("idProyecto")                
     };
