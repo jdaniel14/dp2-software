@@ -1,4 +1,5 @@
  localStorage.setItem("queueEstado", "mostrando");
+ autoGenerados = [];
  jQuery(document).ready(function() {
 
         //localStorage.removeItem("mostrarEdt");
@@ -10,6 +11,13 @@
           return size;
       };
 
+
+
+        function showMessage( msg ){
+
+          alert ( msg );
+
+        }
 
         function repaint(){
           $("#chart").html("");
@@ -48,7 +56,7 @@
             }else{
                //html += '<ul>';
                console.log('nodo R');
-               var hfinal = nodoRecursivo ( data.nodos , html);
+               var hfinal = nodoRecursivo ( titleParent, data.nodos , html);
                //html += '</ul>';
             }
             html = hfinal;
@@ -59,7 +67,7 @@
         }
 
 
-        function nodoRecursivo( nodos , html ){
+        function nodoRecursivo( padre, nodos , html ){
            var i = 0;
            //console.log( html );
            //console.log("tam nodos: " + nodos.length );
@@ -69,6 +77,7 @@
                //por cada hijo
                 console.log(nodos[i].idnodo);
                 if (localStorage.getItem("queueEstado") == "mostrando"){
+                  if ( nodos[i].descripcion == "Autogenerado" ) autoGenerados.push(padre);
                   html +=  '<li>' + '<span class = "titleEDT">' +'<input id = "title-'+ nodos[i].idnodo +'" class = "inputEdtTitle" type = "text" value = "'+ nodos[i].title + '"> ' + '</span> <br>' + '<span class = "descripcionEDT">'  + '<input class = "inputEdtDescripcion" id = "descripcion-'+ nodos[i].idnodo + '" type = "text" value = "'+ nodos[i].descripcion + '"> ' + '</span> <br>' + '<span class = "diasEDT">'  + '<input class = "inputEdtDias" id = "tiempo-'+ nodos[i].idnodo + '" type = "text" value = "'+ nodos[i].dias + '"> ' + '</span>';
                 
                 }else if (localStorage.getItem("queueEstado") == "editando"){
@@ -80,7 +89,7 @@
                 if ( hijos > 0 ){
                   //console.log("recursivo caso");
                   //console.log("html antes: ", html);
-                  var sape = nodoRecursivo( nodos[i].nodos, html );
+                  var sape = nodoRecursivo( nodos[i].title,nodos[i].nodos, html );
                   html = sape;
                   html += '</li>';
                   //console.log("html despues: ", sape );
@@ -262,6 +271,12 @@
                                $("#containerEdt").show("slow"); 
                                $("#controllerButton").show("slow");
                                repaint_eventsEdtNew();
+                               var it = 0;
+                               console.log("cantidad de autogenerados " + autoGenerados.length);
+                               for ( it = 0; it < autoGenerados.length; it++ ){
+                                   var autog = autoGenerados[it];
+                                   showMessage( "Se autogenero 1 nodo del padre: " + autog );
+                               }
                             }
                             
                       }
