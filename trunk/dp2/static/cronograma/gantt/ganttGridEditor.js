@@ -34,6 +34,7 @@ GridEditor.prototype.fillEmptyLines = function() {
   var rowsToAdd = 30 - this.element.find(".taskEditRow").size();
 
   //fill with empty lines
+  
   for (var i = 0; i < rowsToAdd; i++) {
     var emptyRow = $.JST.createFromTemplate({}, "TASKEMPTYROW");
     //click on empty row create a task and fill above
@@ -66,6 +67,7 @@ GridEditor.prototype.fillEmptyLines = function() {
     });
     this.element.append(emptyRow);
   }
+  
 };
 
 

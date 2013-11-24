@@ -20,6 +20,7 @@ var QueryString = function () {
       query_string[pair[0]].push(pair[1]);
     }
   } 
+  
     return query_string;
 } ();
 
@@ -54,12 +55,12 @@ var currentDate = new Date();
 		  
 		  //Borrado : .append("<button onclick='clearGantt();' class='button'>Limpiar</button>")
 		  
-		  $(".ganttButtonBar div")
+		  /*$(".ganttButtonBar div")
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
 		          .append("<button onclick='openResourceEditor();' class='button'>Editar Recursos</button>")
 				  .append("<button  class='button'>Exportar</button>")
 				  .append("<button data-toggle='modal' href='#myModal' class='button' onclick='getCalendar();'>Tiempo de Trabajo</button>")
-				  .append("<button data-toggle='modal' href='#myModalIndicador' class='button' id='btnIndicador'>Indicadores</button>");
+				  .append("<button data-toggle='modal' href='#myModalIndicador' class='button' id='btnIndicador'>Indicadores</button>");*/
 		          //.append("<button onclick='getFile();' class='button'>Exportar</button>");
 		 // $(".ganttButtonBar h1").html("<img src='twGanttSmall.png'>");
 		  $(".ganttButtonBar div").addClass('buttons');
@@ -125,7 +126,8 @@ var currentDate = new Date();
 			var objProy ={
 				idProyecto : idProyecto
 			}
-			
+			$(".gdfTable").css("width","700px");
+			//$(".splitElement splitBox1").css("width","700px");
 			var rootURL = "../../../api/CR_getActividades/"+JSON.stringify(objProy);
 			$.ajax({
 				type: 'GET',
@@ -144,11 +146,13 @@ var currentDate = new Date();
 //            var offset=new Date().getTime()-ret.tasks[0].start;
 //		    for (var i=0;i<ret.tasks.length;i++)
 //		      ret.tasks[i].start=ret.tasks[i].start+offset;
-		
+			
 		    ge.loadProject(ret);
 		    ge.checkpoint(); //empty the undo stack
 		    console.log("Variable Global ge:");
 		    console.log(ge);
+			//$(".splitElement splitBox1").width(700);
+			//$(".gdfTable").css("width","100px");
 		    
 		}
 
