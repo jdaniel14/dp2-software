@@ -326,7 +326,8 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      // $("#botonerasEditar").hide("slow");
      //$("#botonerasEditarControl").hide("slow");
      //$("#progressEdtGuardarEdt").show("slow");
-     if ( cambios == true ){
+     cambios = localStorage.getItem("cambios");
+     if ( cambios == "true" ){
       $("#guardarCambios").hide();
      $("#guardarEDTLoading").show("slow");
 
@@ -363,6 +364,7 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
                       success: function (data) {
                           console.log(data);
                           $("#guardarEDTLoading").hide("slow");
+                          localStorage.setItem("cambios", false);
                           //location.reload();
                           window.location.href = 'index.html';
 
