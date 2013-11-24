@@ -12,6 +12,18 @@ $(window).bind('beforeunload',function(){
 var arrNombres = [];
 var autoGenerados = [];
 
+localStorage.setItem("cambios", false);
+
+$(window).bind('beforeunload',function(){
+
+     //save info somewhere
+    cambios = localStorage.getItem("cambios" );
+    if ( cambios == "true" )
+    return 'No ha guardado los cambios está seguro que quiere refrescar?';
+    else return;
+});
+
+
 var idnodoParam = 10000;
 localStorage.setItem("idcontador", idnodoParam);
 
@@ -314,7 +326,8 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      // $("#botonerasEditar").hide("slow");
      //$("#botonerasEditarControl").hide("slow");
      //$("#progressEdtGuardarEdt").show("slow");
-     $("#guardarCambios").hide();
+     if ( cambios == true ){
+      $("#guardarCambios").hide();
      $("#guardarEDTLoading").show("slow");
 
      console.log("guardando Cambios");
@@ -323,7 +336,7 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      var idproyecto = localStorage.getItem("idProyecto");
 
      /*
-		Datos Padre
+    Datos Padre
      */
      var inp = $("#org li span")[0];
      //console.log(inp);
@@ -358,42 +371,12 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
                           console.log("failure");
                       }
         });
-	  
-/*
-
-     console.log("guardando EDT");
-     var arbol = $("#org").html();
-     //console.log(arbol);
-     var contador = 1;
-     var idProyecto = localStorage.getItem("idProyecto");
-     var title = "#title-"+contador;
-     var desc = "#descripcion-"+contador;
-     var tiem = "#tiempo-"+contador;
-     var numHijos = $("#ul-1 > li").length;
-     var idnodo = "";
-
-     var hijos = [];
-     var selector = "#ul-1 > li";
-     var nodos = [];
-     hijos = dameHijosEDT(selector, numHijos , nodos );
-     var jsonResult = agregarPadreJson( idProyecto, $(title).html() , numHijos, "", "", hijos  );
-     console.log( jsonResult );
-     */
-     /*
-     $.ajax({
-                      type: "POST",
-                      data: JSON.stringify(jsonResult),
-                      dataType: "json",
-                      contentType: "application/json; charset=utf-8",
-                      url: "../../api/AL_recontruirEdt",
-                      success: function (data) {
-                          console.log(data);
-                          location.reload();
-                      }
-        });
-	*/
-    
-    //console.log(jsonResult);
+     }else{
+        console.log("no se guarda pq no hubo cambios");
+       //window.location.href = 'index.html';
+     }
+     
+	 
 	});
 
 
@@ -446,6 +429,7 @@ function funcionesCajaFlotante(){
 
 
 $("#imgAgregar").click(function(){
+    localStorage.setItem("cambios", true);
 		var ident = parseInt(localStorage.getItem("idcontador"));
 		ident++;
 		localStorage.setItem("idcontador", ident);
@@ -461,6 +445,7 @@ $("#imgAgregar").click(function(){
   });
 
   $("#imgEliminar").click(function(){
+    localStorage.setItem("cambios", true);
   	console.log("eliminar");
   	var idt = localStorage.getItem("idnodoActualClick");
     var  idtsplit = idt.split("-")[0];
@@ -550,7 +535,7 @@ $("#editarEdtNew").click(function(){
           if ( localStorage.getItem("tipospan") == "dias" ){
             console.log("numero");
             if ( isNumber( parseInt(inputValidar) ) ){
-              if ( parseInt(inputValidar) > 0 ) {
+              if ( parseInt(inputValidar) >= 0 ) {
                   flagnum = 1;
               }else{
                 alert("Ingrese un numero");
@@ -565,26 +550,38 @@ $("#editarEdtNew").click(function(){
             }
           }
 
-          var flag = validaNombre( inputValidar );
-          if ( flag ){
-              $(this).parent().append($('<span />').html($(this).val()));
-              var sape = localStorage.getItem("modificandoNodoActual");
-              $(sape).html($(this).val());
-              $(this).remove();
-              arrNombres.push($(this).val());
-              console.log("blur");
-              repaint();
-          }else{
-            //nombreActualEDT
-            alert ("nombre repetido");
-            //$(this).parent().append($('<span />').html($(this).val()));
-            //var sape = localStorage.getItem("modificandoNodoActual");
-            //$(sape).html(localStorage.getItem("modificandoNodoActual"));
-            //$(this).remove();
-            repaint();
+          if ( localStorage.getItem("tipospan") == "title" ){
+              console.log("cosas para dias");
+              var flag = validaNombre( inputValidar );
+                if ( flag ){
+                    $(this).parent().append($('<span />').html($(this).val()));
+                    var sape = localStorage.getItem("modificandoNodoActual");
+                    $(sape).html($(this).val());
+                    $(this).remove();
+                    localStorage.setItem("cambios", true);
+                    arrNombres.push($(this).val());
+                    console.log("blur");
+                    repaint();
+                }else{
+                  //nombreActualEDT
+                  alert ("nombre repetido");
+                  //$(this).parent().append($('<span />').html($(this).val()));
+                  //var sape = localStorage.getItem("modificandoNodoActual");
+                  //$(sape).html(localStorage.getItem("modificandoNodoActual"));
+                  //$(this).remove();
+                  repaint();
+                }
+                return;
           }
-          
 
+            //other whise
+                    $(this).parent().append($('<span />').html($(this).val()));
+                    var sape = localStorage.getItem("modificandoNodoActual");
+                    $(sape).html($(this).val());
+                    $(this).remove();
+                    localStorage.setItem("cambios", true);
+                    repaint();
+  
       });
 
 
