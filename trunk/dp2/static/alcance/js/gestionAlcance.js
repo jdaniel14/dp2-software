@@ -91,6 +91,6 @@ $(document).ready(function(){
 	deshabilitarCampos();
 	comprobarLineaBase(function(){
 		$("#editar").hide();
-		$("modificarAlcance").hide();
+		$("#modificarAlcance").hide();
 	});
 });

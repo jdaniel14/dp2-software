@@ -123,6 +123,12 @@ $(document).ready(function(){
 	var obj = {
 		"idproyecto":id_proyecto
 	};
+	comprobarLineaBase(function(){
+		$(".form-control").attr("readonly","readonly");
+		$("#guardarCambios").hide();
+		$(".eliminar-fase").hide();
+		$("#agregar").hide();
+	});
 	$.ajax({
 		type: 'POST',
 		url : '../../api/AL_mostrarFases',

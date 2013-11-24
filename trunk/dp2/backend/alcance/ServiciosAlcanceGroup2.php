@@ -624,7 +624,7 @@ function getEdt(){
     function dameNombre($v){
       try{	
     	$con = getConnection();
-    	$pstmt= $con->prepare("SELECT a.nombres, a.apellidos FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE b.id_miembros_equipo= ?  AND a.id_empleado=b.id_empleado ");
+    	$pstmt= $con->prepare("SELECT nombres, apellidos FROM EMPLEADO WHERE id_empleado=?");
     	$pstmt->execute(array($v));
     	$b=$pstmt->fetch(PDO::FETCH_ASSOC)["nombres"];
     	return $b;
@@ -638,7 +638,7 @@ function getEdt(){
     function dameApellido($v){
       try{
     	$con = getConnection();
-    	$pstmt= $con->prepare("SELECT a.nombres, a.apellidos FROM EMPLEADO a, MIEMBROS_EQUIPO b WHERE b.id_miembros_equipo= ?  AND a.id_empleado=b.id_empleado ");
+    	$pstmt= $con->prepare("SELECT nombres, apellidos FROM EMPLEADO WHERE id_empleado=?");
     	$pstmt->execute(array($v));
     	$a=$pstmt->fetch(PDO::FETCH_ASSOC)["apellidos"];
     	return $a;
@@ -997,13 +997,11 @@ function getEdt(){
     	while ($listaRequisito = $pstmt->fetch(PDO::FETCH_ASSOC)){
     		//obtengo el nombre y apellido del empleado con id=$listaRequisito['id_miembros_equipo']
     		if($listaRequisito["id_miembros_equipo"]==0) {//debido a que la primera vez no se han ingresado datos, el id_miembros es =0
-    			$nombre="";
-    			$apellido="";
     		}
     		else {
     			$nombre=dameNombre($listaRequisito["id_miembros_equipo"]);//obtengo el nombre de la persona
     			$apellido=dameApellido($listaRequisito["id_miembros_equipo"]);//obtengo el apellido de la persona
-    		}
+        }
     		 
     		//debido a que al principio no tienen valores, elimino los null poniendo en cada uno ""
     		if($listaRequisito["descripcion"]==null)$desc="";else $desc=$listaRequisito["descripcion"];
