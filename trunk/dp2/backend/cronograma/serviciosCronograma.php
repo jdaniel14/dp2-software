@@ -363,16 +363,22 @@ function CR_modificar_Avance_Actividad_BD($actividad){
 function CR_modificar_actividad_BD($actividad){
 
 	date_default_timezone_set('America/Lima');
-	$sql = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where id_actividad=?;commit;";
+	$sql= "select nombre_actividad from dp2.ACTIVIDAD where id_actividad=?;";
+	//$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where id_actividad=?;commit;";
+	$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where nombre_actividad=? and eliminado=0;commit;";
     //$lista_actividad = array();
 	
 	
     try {
         $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->execute(array($actividad->name,$actividad->duration+0,$actividad->fecha_inicio,$actividad->fecha_inicio,1000 * strtotime($actividad->fecha_inicio),1000 * strtotime($actividad->fecha_inicio),$actividad->id+0));
+		
+		$stmt = $db->prepare($sql);
+        $stmt->execute(array($actividad->id));
+		if ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$stmt2 = $db->prepare($sql2);
+			$stmt2->execute(array($actividad->name,$actividad->duration+0,$actividad->fecha_inicio,$actividad->fecha_inicio,1000 * strtotime($actividad->fecha_inicio),1000 * strtotime($actividad->fecha_inicio),$p["nombre_actividad"]));
 
-
+		}
         $db = null;
         ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
     } catch (PDOException $e) {
@@ -381,6 +387,41 @@ function CR_modificar_actividad_BD($actividad){
         return array("me" => "actualizar" . $e->getMessage());
     }
     return CR_obtenerRespuestaExito();
+
+
+}
+
+function CR_actualizaTest($json){
+
+	date_default_timezone_set('America/Lima');
+	$sql= "select nombre_actividad from dp2.ACTIVIDAD where id_actividad=?;";
+	$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? where nombre_actividad=? and eliminado=0;commit;";
+	
+    //$lista_actividad = array();
+	
+	
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array(107));
+		if ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		
+			$stmt2 = $db->prepare($sql2);
+			$stmt2->execute(array('act8',$p["nombre_actividad"]));
+		}
+        
+
+
+
+        $db = null;
+        ////////echo json_encode(array("tasks"=>$lista_actividad)) ;
+    } catch (PDOException $e) {
+//			      echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$db=null;
+        return json_encode(array("me" => "actualizar" . $e->getMessage()) )  ;
+    }
+    return json_encode(CR_obtenerRespuestaExito());
+
 
 
 }
