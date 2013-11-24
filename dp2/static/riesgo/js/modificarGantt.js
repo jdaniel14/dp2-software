@@ -1,7 +1,7 @@
 var getActivities = "../../api/CR_getListaActividad";
 var updateActivity = "../../api/CR_updateActividad";
 var getAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
-var updatePrueba = "../../api/R_actualizarEnviarCambio";	 //CAMBIO NOMBRE!!!!!!
+var updateChanges = "../../api/R_actualizarEnviarCambio";	 //CAMBIO NOMBRE!!!!!!
 
 $(document).ready(main);
 
@@ -19,10 +19,8 @@ if (localStorage.getItem("idPaquete") != null) {
 }
 
 idAccion = localStorage.getItem("idAccion");
-localStorage.getItem("idAccion");
-
 idRiesgo = localStorage.getItem("idRiesgo");
-localStorage.getItem("idRiesgo");
+fechaMat= localStorage.getItem("fechaMaterializacion");
 
 var flag=0;
 var idProyectoLocal = localStorage.getItem("idProyecto");
@@ -40,19 +38,27 @@ function main(){
 				$("#nuevoNombre").val(value.name);
 				$("#fechaInicioActual1").val(value.fecha_inicio);
 				$("#fechaInicioActual2").val(value.fecha_inicio);
+				$("#fechaInicioActual2").prop("readonly",true);
+
+				fecha1 = new Date(value.fecha_inicio);
+	            fecha2 = new Date(fechaMat);
+				
+				diferencia = ((((fecha2-fecha1)/1000)/60)/60)/24;
+				console.log(diferencia);
+				if (diferencia >= 0) { //La actividad escogida ya se inició
+					//LINEA BASE?
+					$("#nuevoNombre").prop("readonly",true);
+					//MOSTRAR LABEL QUE HAYA INICIADO La ACTIVIDAD
+
+				} else { //La actividad escogida aún no se inicia
+					//LINEA BASE?
+					$("#nuevoNombre").prop("readonly",true);
+					$("#nuevoNombre").val(nombreAccion);
+					$("#fechaInicioActual2").prop("readonly",false);
+				}
+
 				fecha = new Date(value.fecha_inicio);
 				fecha.setDate(fecha.getDate()+1+(value.duration)*1);
-				var anio=fecha.getFullYear();
-				var mes= fecha.getMonth()+1;
-				var dia= fecha.getDate()+1;
-
-				if(mes.toString().length < 2){
-			    	mes="0".concat(mes);        
-			  	}
-			  	if(dia.toString().length < 2){
-			    	dia="0".concat(dia);        
-			  	}  
-			  	$("#fechaFinActual").val(anio+"-"+mes+"-"+dia);
 			}
 		});
     });
@@ -79,20 +85,6 @@ function main(){
         	}
         });
 
-    $("#nuevaFechaFin").change(
-        function() {
-        	if (flag==0){
-        		flag=2;
-        		fecha1 = new Date($("#fechaInicioActual2").val());
-	            fecha2 = new Date($("#nuevaFechaFin").val());
-				
-				diferencia = ((((fecha2-fecha1)/1000)/60)/60)/24;
-				diferencia++;
-			  	$("#nuevosDias").val(diferencia);
-			  	flag=0;
-        	}
-	            
-        });
 
     $("#btnConfirmar").click(function() {
         var data = {
@@ -105,7 +97,7 @@ function main(){
         var jsonData = JSON.stringify(data);
         $.ajax({			
 			type: 'PUT',
-			url: updatePrueba,
+			url: updateChanges,
 			data: jsonData,
 			success: function(data){
 				alert("Se actualizó");

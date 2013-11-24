@@ -329,6 +329,7 @@ function main() {
             success: function() {
                 localStorage.setItem("idAccion", $('#accionEscogida').val());
                 localStorage.setItem("idRiesgo", idRiesgo2);
+                localStorage.setItem("fechaMaterializacion",$('#fechaMat').val());
                 //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
                 window.location.replace("../riesgo/ActualizarGantt.html");
             },
