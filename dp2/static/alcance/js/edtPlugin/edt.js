@@ -271,6 +271,9 @@
                                $("#containerEdt").show("slow"); 
                                $("#controllerButton").show("slow");
                                repaint_eventsEdtNew();
+                               $('.inputEdtTitle').attr('readonly', true);
+                               $('.inputEdtDescripcion').attr('readonly', true);
+                               $('.inputEdtDias').attr('readonly', true);
                                var it = 0;
                                console.log("cantidad de autogenerados " + autoGenerados.length);
                                for ( it = 0; it < autoGenerados.length; it++ ){

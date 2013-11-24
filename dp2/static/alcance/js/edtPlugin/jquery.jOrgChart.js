@@ -76,7 +76,7 @@ if(! $.isFunction($.fn.curCSS)) {
         }else{
             repaintUtils();   
         }
-        
+        localStorage.setItem("cambios", true);   
       });
     
       // Drop event handler for nodes
