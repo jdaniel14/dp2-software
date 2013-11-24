@@ -105,7 +105,7 @@ $.splittify = {
   init: function(where, first, second,perc) {
 
     perc=perc || 50;
-    //perc=37;
+    //perc=38;
     var splitter = $("<div>").addClass("splitterContainer");
 
     var firstBox = $("<div>").addClass("splitElement splitBox1");

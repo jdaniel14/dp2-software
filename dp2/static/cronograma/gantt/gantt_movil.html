@@ -43,10 +43,10 @@
 <!-- Fin jQuery -->
 
 <!--  Gantt -->
-  <script src="ganttUtilities.js"></script>
+  <script src="ganttUtilities_movil.js"></script>
   <script src="ganttTask.js"></script>
   <script src="ganttDrawer.js"></script>
-  <script src="ganttGridEditor.js"></script>
+  <script src="ganttGridEditor_movil.js"></script>
   <script src="ganttMaster.js"></script>
 <!-- Fin Gantt -->
 
@@ -243,19 +243,24 @@
 	    <button class="button textual" title="ReadOnly"><span id = "readOnly" class="teamworkIcon">R</span></button>
 	      &nbsp; &nbsp; &nbsp; &nbsp;
 	      <button onclick="saveGanttOnServer();" class="button first big" title="save">Guardar</button>
-	    </div></div>
+	    </div>
+		<div class="fffff">
+		<button onclick="$('#workSpace').trigger('zoomMinus.gantt');" class="button textual" title="alejar"><span class="teamworkIcon">)</span></button>
+	    <button onclick="$('#workSpace').trigger('zoomPlus.gantt');" class="button textual" title="acercar"><span class="teamworkIcon">(</span></button>
+		</div>
+		
+		</div>
 	  --></div>
 	
 	  <div class="__template__" type="TASKSEDITHEAD"><!--
-	  <table class="gdfTable" cellspacing="0" cellpadding="0">
+	  <table class="gdfTable"  cellspacing="0" cellpadding="0" >
 	    <thead>
-	    <tr style="height:40px">
-	      
-	      <th class="gdfColHeader gdfResizable" style="width:10px;"></th>
-	      <th class="gdfColHeader gdfResizable" style="width:200px;">Nombre</th>
-	      <th class="gdfColHeader gdfResizable" style="width:80px;">Inicio</th>
-	      <th class="gdfColHeader gdfResizable" style="width:80px;">Fin</th>
-	      <th class="gdfColHeader gdfResizable" style="width:50px;">Duración</th>
+	    <tr style="height:40px;" >
+	      <th class="gdfColHeader" style="width:10px;"></th>
+	      <th class="gdfColHeader gdfResizable" style="width:100px;">Nombre</th>
+	      <th class="gdfColHeader gdfResizable" style="width:30px;">Inicio</th>
+	      <th class="gdfColHeader gdfResizable" style="width:30px;">Fin</th>
+	      <th class="gdfColHeader gdfResizable" style="width:30px;">Duración</th>
 	      <th class="gdfColHeader gdfResizable" style="width:50px;">Dependencias</th>
 	      </tr>
 	    </thead>
@@ -264,14 +269,14 @@
 	
 	  <div class="__template__" type="TASKROW"><!--
 	  <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)" >
-	    <td class="gdfCell"><span>-</span></td>
+	    <th class="gdfCell " align="right" disabled="disabled"><span >(#=obj.getRow()+1#)</span> </th>
 	
-	    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;"><input type="text" name="name" value="(#=obj.name#)" style="(#=obj.level>0?'border-left:2px dotted orange':''#)"></td>
+	    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;"  ><input type="text" name="name" value="(#=obj.name#)" style="(#=obj.level>0?'border-left:2px dotted orange':''#)" readonly></td>
 	
-	    <td class="gdfCell"><input type="text" name="start"  value="" class="date"></td>
-	    <td class="gdfCell"><input type="text" name="end" value="" class="date"></td>
-	    <td class="gdfCell"><input type="text" name="duration" value="(#=obj.duration#)"></td>
-	    <td class="gdfCell"><input type="text" name="depends" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#)></td>
+	    <td class="gdfCell"><input type="text" name="start"  value="" class="date" readonly></td>
+	    <td class="gdfCell"><input type="text" name="end" value="" class="date" readonly></td>
+	    <td class="gdfCell"><input type="text" name="duration" value="(#=obj.duration#)" readonly></td>
+	    <td class="gdfCell"><input type="text" name="depends" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#) readonly></td>
 	   
 		var tarea = $(this).attr('name');
 		
@@ -319,10 +324,7 @@
 	    <td class="gdfCell"></td>
 	    <td class="gdfCell"></td>
 	    <td class="gdfCell"></td>
-	    <td class="gdfCell"></td>
-	    <td class="gdfCell"></td>
-	    <td class="gdfCell"></td>
-	    <td class="gdfCell"></td>
+	    <td class="gdfCell">/td>
 	  </tr>
 	  --></div>
 	

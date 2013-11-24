@@ -43,7 +43,7 @@ Ganttalendar.prototype.zoomGantt = function(isPlus) {
   if (isPlus) {
     newPos = pos <= 0 ? 0 : pos - 1;
   } else {
-    newPos = pos >= this.zoomLevels.length - 1 ? this.zoomLevels.length - 1 : pos + 1;
+    newPos = pos >= this.zoomLevels.length - 3/*-1*/ ? this.zoomLevels.length - 3 /*-1*/: pos + 1;
   }
   if (newPos != pos) {
     curLevel = this.zoomLevels[newPos];
