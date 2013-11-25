@@ -51,6 +51,17 @@ function cargaTablaResponsable(){
 	});
 }
 
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "3" :
+		case "1" :
+		    $("#editar").hide();
+			$("modificarPlan").hide();
+		    break;
+	}
+}
+
 var noPlan = false;
 $(document).ready(function(){
 	cargaTitulo();
@@ -134,4 +145,5 @@ $(document).ready(function(){
 		$("#editar").hide();
 		$("modificarPlan").hide();
 	});
+	checkearPermisos();
 });

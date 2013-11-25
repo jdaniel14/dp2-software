@@ -55,6 +55,18 @@ function eliminarRequisito(){
 	});
 }
 
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "1" :
+		    $(".eliminar-requisito").hide();
+		case "3" :
+			$("#agregar").hide();
+		    $(".modificar-requisito").hide();
+			break;
+	}
+}
+
 function cargaLista(data){
 
 	for(var i=0; i < data.length;i++){
@@ -69,6 +81,7 @@ function cargaLista(data){
 	}
 	$(".modificar-requisito").click(modificarRequisito);
 	$(".eliminar-requisito").click(eliminarRequisito);
+	checkearPermisos();
 }
 
 function cargarComboTipo(){

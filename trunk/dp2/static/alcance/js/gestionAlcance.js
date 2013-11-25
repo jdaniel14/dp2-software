@@ -31,6 +31,15 @@ function cargaTitulo(){
 
 }
 
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "1" :
+		    $("#editar").hide();
+		    break;
+	}
+}
+
 var noAlcance;
 $(document).ready(function(){
 	cargaTitulo();
@@ -93,4 +102,5 @@ $(document).ready(function(){
 		$("#editar").hide();
 		$("#modificarAlcance").hide();
 	});
+	checkearPermisos();
 });

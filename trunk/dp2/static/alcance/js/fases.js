@@ -37,6 +37,25 @@ function cargaLista(data){
 		$(this).parent().parent().addClass("modificado");
 	});
 	$(".eliminar-fase").click(eliminarFase);
+	comprobarLineaBase(function(){
+		$(".form-control").attr("readonly","readonly");
+		$("#guardarCambios").hide();
+		$(".eliminar-fase").hide();
+		$("#agregar").hide();
+	});
+	checkearPermisos();
+}
+
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "3" :
+		    $(".form-control").attr("readonly","readonly");
+			$("#guardarCambios").hide();
+			$(".eliminar-fase").hide();
+			$("#agregar").hide();
+		    break;
+	}
 }
 
 function guardarCambios(){
@@ -123,12 +142,6 @@ $(document).ready(function(){
 	var obj = {
 		"idproyecto":id_proyecto
 	};
-	comprobarLineaBase(function(){
-		$(".form-control").attr("readonly","readonly");
-		$("#guardarCambios").hide();
-		$(".eliminar-fase").hide();
-		$("#agregar").hide();
-	});
 	$.ajax({
 		type: 'POST',
 		url : '../../api/AL_mostrarFases',
