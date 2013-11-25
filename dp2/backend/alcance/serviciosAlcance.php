@@ -437,8 +437,8 @@
 		$idproyecto = $val["id_proyecto"];
     	$con=getConnection();
 		$pstmt = $con->prepare("SELECT C.id_cambios_alcance as id_cambio , C.id_proyecto, C.descripcion, C.fecha,EA.descripcion as estado, E.nombre_corto as responsable
-			FROM CAMBIOS_ALCANCE C , ESTADO_ALCANCE EA, EMPLEADO E
-			WHERE id_proyecto = ? AND EA.id_estado_alcance = C.id_estado_alcance AND E.id_empleado = C.id_miembros_equipo");
+			FROM CAMBIOS_ALCANCE C , ESTADO_ALCANCE EA, EMPLEADO E, MIEMBROS_EQUIPO M
+			WHERE C.id_proyecto = ? AND EA.id_estado_alcance = C.id_estado_alcance AND E.id_empleado = M.id_empleado AND M.id_miembros_equipo = C.id_miembros_equipo");
     	$pstmt->execute(array($idproyecto));
     	$cambios= array();
  		while($cambio = $pstmt->fetch(PDO::FETCH_ASSOC)){
@@ -450,10 +450,15 @@
 		$con=getConnection();
 		$request = \Slim\Slim::getInstance()->request();
 		$cambio = json_decode($request->getBody(),TRUE);
+
+		$psmt= $con->prepare("SELECT id_miembros_equipo from MIEMBROS_EQUIPO where id_empleado =?");
+		$psmt->execute(array($cambio["id_miembros_equipo"]));
+		$miembros_equipo = $psmt->fetch(PDO::FETCH_ASSOC)["id_miembros_equipo"];
+
 		$pstmt = $con->prepare("INSERT INTO CAMBIOS_ALCANCE
 								(id_proyecto, descripcion, fecha, id_estado_alcance,id_miembros_equipo) 	
 					   			VALUES (?,?,?,?,?)");
-		$pstmt->execute(array($cambio["idproyecto"],$cambio["descripcion"],date('Y-m-d H:i:s'),$cambio["id_estado"],$cambio["id_miembros_equipo"]));
+		$pstmt->execute(array($cambio["idproyecto"],$cambio["descripcion"],date('Y-m-d H:i:s'),$cambio["id_estado"],$miembros_equipo));
 	}
 
 	//CUARTO SPRINT

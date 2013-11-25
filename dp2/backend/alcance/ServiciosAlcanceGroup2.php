@@ -460,9 +460,9 @@ function getEdt(){
       
       $con = getConnection();
       $pstmt= $con->prepare("INSERT INTO ALCANCE(id_proyecto,descripcion,alcance_producto,version,criterios_aceptacion,
-      entregables,exclusiones,restricciones,supuestos) values (?,?,?,?,?,?,?,?,?)");
+      entregables,exclusiones,restricciones,supuestos,id_estado_alcance) values (?,?,?,?,?,?,?,?,?,?)");
       $pstmt->execute(array($idproyecto,$edt->{"descripcion"},$edt->{"alcance_producto"},$edt->{"version"},
-      $edt->{"criterios_aceptacion"},$edt->{"entregables"},$edt->{"exclusiones"},$edt->{"restricciones"},$edt->{"supuestos"}));
+      $edt->{"criterios_aceptacion"},$edt->{"entregables"},$edt->{"exclusiones"},$edt->{"restricciones"},$edt->{"supuestos"},1));
     }
     catch (PDOException $e) {
     	echo '{"me" : "No se pudo crear el alcance"}';
@@ -503,10 +503,11 @@ function getEdt(){
           entregables= ?,
           exclusiones= ?,
           restricciones= ?,
-          supuestos=?
+          supuestos=?,
+          id_estado_alcance=?
           WHERE id_proyecto= ?");
       $pstmt->execute(array($edt->{"descripcion"},$edt->{"alcance_producto"},$edt->{"version"},
-      $edt->{"criterios_aceptacion"},$edt->{"entregables"},$edt->{"exclusiones"},$edt->{"restricciones"},$edt->{"supuestos"},$edt->{"idproyecto"}));
+      $edt->{"criterios_aceptacion"},$edt->{"entregables"},$edt->{"exclusiones"},$edt->{"restricciones"},$edt->{"supuestos"},1,$edt->{"idproyecto"}));
     }
     catch (PDOException $e) {
     	echo '{"me" : "No se pudo modificar el alcance"}';
