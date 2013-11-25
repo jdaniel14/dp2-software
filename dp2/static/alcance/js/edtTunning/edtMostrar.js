@@ -375,7 +375,7 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
         });
      }else{
         console.log("no se guarda pq no hubo cambios");
-       //window.location.href = 'index.html';
+        window.location.href = 'index.html';
      }
      
 	 
@@ -395,7 +395,15 @@ function agregaNodo( id, title, descripcion, dias ){
 }
 
 function showMessage( msg ){
-  alert(msg);
+  //alert(msg);
+   var html =    '<div class="alert alert-danger alert-dismissable">';
+          html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+          html += '<strong>Warning!&nbsp;</strong>';
+          html += msg;
+          html += '</div>';
+          $(".consoleLog").html(html);
+          $(".consoleLog").fadeIn(5000);
+          $(".consoleLog").fadeOut(5000);
 }
 
 function funcionesCajaFlotante(){
@@ -540,13 +548,14 @@ $("#editarEdtNew").click(function(){
               if ( parseInt(inputValidar) >= 0 ) {
                   flagnum = 1;
               }else{
-                alert("Ingrese un numero");
+                //alert("Ingrese un numero");
+                showMessage("Ingrese un número válido >= 0");
                 repaint()
                 return;
               }
             }
             else{
-                alert("Ingrese un numero");
+                showMessage("Ingrese un número válido >= 0");
                 repaint()
                 return;
             }
@@ -566,7 +575,8 @@ $("#editarEdtNew").click(function(){
                     repaint();
                 }else{
                   //nombreActualEDT
-                  alert ("nombre repetido");
+                  //alert ("nombre repetido");
+                  showMessage("El nombre que ingresó está repetido");
                   //$(this).parent().append($('<span />').html($(this).val()));
                   //var sape = localStorage.getItem("modificandoNodoActual");
                   //$(sape).html(localStorage.getItem("modificandoNodoActual"));
