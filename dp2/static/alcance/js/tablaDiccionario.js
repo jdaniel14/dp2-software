@@ -25,6 +25,17 @@ function cargaLista(data){
 		fila += "</tr>";
 		$('#diccionario').append(fila);
 	}
+	checkearPermisos();
+}
+
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "1" :
+		case "3" :
+			$(".glyphicon-edit").hide();
+			break;
+	}
 }
 
 $(document).ready(function(){

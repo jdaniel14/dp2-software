@@ -143,6 +143,19 @@ function cargarTabla(){
 	});	
 }
 
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "3" :
+			$(".table-resonsive").hide();
+		case "1" :
+		    $("#id_estado_edt").attr("disabled","disabled");
+		    $("#id_estado_alcance").attr("disabled","disabled");
+		    $("#guardarCambios").hide();
+		    break;
+	}
+}
+
 $(document).ready(function(){
 	cargaTitulo();
 	cargarComboEstadoEDT();
@@ -155,4 +168,5 @@ $(document).ready(function(){
 		$("id_estado_alcance").attr("disabled","disabled");
 		$("#guardarCambios").hide();
 	});
+	checkearPermisos();
 });

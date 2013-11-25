@@ -84,6 +84,12 @@ function llena_requisitos(requisitos){
 	}
 	$(".modificar-requisito").click(modificarRequisito);
 	$(".listar-fases").click(listarFases);
+	comprobarLineaBase(function(){
+		$(".modificar-requisito").hide();
+		$(".form-control").attr("disabled","disabled");
+		$("#guardarEntregables").hide();
+	});
+	checkearPermisos();
 }
 
 function cargaEstados(data){
@@ -184,14 +190,21 @@ function guardarCambios(){
 	});
 }
 
+function checkearPermisos(){
+	var rol = localStorage.idRol;
+	switch(rol){
+		case "1" :
+		    $(".modificar-requisito").hide();
+			$(".form-control").attr("disabled","disabled");
+			$("#guardarEntregables").hide();
+		    break;
+	}
+}
+
 $(document).ready(function(){
 	$("#guardar").click(guardarCambios);
 	$("#guardarEntregables").click(guardarEntregables);
-	comprobarLineaBase(function(){
-		$(".modificar-requisito").hide();
-		$(".form-control").attr("disabled","disabled");
-		$("#guardarEntregables").hide();
-	});
+	
 	var jsonCliente = {
         idproyecto : localStorage.getItem("idProyecto")                
     };
@@ -212,4 +225,5 @@ $(document).ready(function(){
       }
  	});
  	$(".calendar").datepicker({ dateFormat: 'yy-mm-dd' });
+ 	checkearPermisos();
 });
