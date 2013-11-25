@@ -71,6 +71,10 @@
 		//i integer
 		//d double
 		$con= getConnection();
+		$psmt= $con->prepare("SELECT id_miembros_equipo from MIEMBROS_EQUIPO where id_empleado =?");
+		$psmt->execute(array($val["id_empleado"]));
+		$miembros_equipo = $psmt->fetch(PDO::FETCH_ASSOC)["id_miembros_equipo"];
+
 		$pstmt = $con->prepare("UPDATE PAQUETE_TRABAJO SET 
 			id_miembros_equipo=?,
 			descripcion=?,
@@ -88,7 +92,7 @@
 			ultima_actualizacion=?
 			WHERE id_paquete_trabajo=?");
 		$pstmt->execute(array(
-			$val["id_empleado"],
+			$miembros_equipo,
 			$val["descripcion"],
 			$val["criterios_aceptacion"],
 			$val["entregables"],
