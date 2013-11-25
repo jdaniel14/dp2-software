@@ -11,6 +11,7 @@ $(window).bind('beforeunload',function(){
 
 var arrNombres = [];
 var autoGenerados = [];
+var errorSuma = false;
 
 function Nodo ( dias, padre, actual, valoranterior) {
    this.dias = dias;
@@ -168,7 +169,8 @@ function pintarEDT ( data ){
     /* Fin Padre */        
   arrNombres.push(titleParent);
             var hijos = parseInt(data.hijos);
-            var html = armaNodoEdt( titleParent, descripcionParent, diasParent, data.idnodo , 0)
+            var html = armaNodoEdt( titleParent, descripcionParent, diasParent, data.idnodo , 0);
+            console.log("armaNodoEdt", html);
             if ( hijos == 0 ){
               html += '</li>';
             }else{
@@ -178,7 +180,7 @@ function pintarEDT ( data ){
             html += '</li>';
             //console.log(html);
             $("#org").html( html );
-            console.log(html);
+            //console.log(html);
             repaint();
 }
 
@@ -248,7 +250,7 @@ function armaNodoHijo ( id, title, descripcion, dias ){
 	return html;
 }
 
-function armaNodoEdt ( title, descripcion, hijos , idnodo, flag ){
+function armaNodoEdt ( title, descripcion, dias , idnodo, flag ){
   var html = '<li>'
 
 /*
@@ -264,7 +266,11 @@ function armaNodoEdt ( title, descripcion, hijos , idnodo, flag ){
           html += '<span class = "titleEDT" id = "';
           html += 'titlePadre-'+ idnodo + '" >';
           html += title;
-          html += '</span>';
+          html += '</span><br/>';
+          html +='<span class = "diasEDT" id = "';
+          html += 'dias-'+ idnodo + '" >';
+          html += dias + '</span>';
+          console.log("armaNodoEdt", html);
 
 	return html;          
 }
@@ -308,35 +314,52 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
             }
 
 
-  function dameHijosEDT( selector, numHijos , nodos ){
+  function dameHijosEDT( diasp, title, selector, numHijos , nodos){
     
     var hijos = $(selector);
     console.log( hijos[0] );
     var i = 0;
+    diasp = parseInt(diasp);
 
    $(selector).each(function (i) {
         //console.log($(this)); 
         var title = $(this).find('.titleEDT').html();
         var desc = $(this).find('.descripcionEDT').html();
         var time = $(this).find('.diasEDT').html();
-        console.log(title, desc, time);
+        diasp -= parseInt(time);
+        //console.log("diasp:",diasp)
+        //console.log(title, desc, time);
         var arrayLI = [];
         //console.log($(this))
-        console.log("idactual", $(this).id);
+        //console.log("idactual", $(this).id);
         var selec = $(this).find("ul:first >li").get();
 
         var numHijitos = $(this).find("ul:first > li").length;
         var idnodo = "";
         var nds = [];
         if ( numHijitos == 0 ){
-        	  console.log("hijo agregado caso directo");
+        	    //console.log("hijo agregado caso directo");
               nodos.push( agregarHijoJson( idnodo, title, desc, numHijitos, time, nds ) );
            }else{
            	//caso recursivo
-           	nds = dameHijosEDT( selec, numHijitos , nds );
+           	nds = dameHijosEDT( time, title, selec, numHijitos , nds );
             nodos.push( agregarHijoJson( idnodo, title, desc, numHijitos, time, nds ) );
            }
     });
+     if ( diasp != 0 ){
+        //suma bien
+        console.log("error de suma", diasp, title);
+        if ( diasp > 0 ){
+            //excedente
+            var msg = "Error en la suma del padre: " + title + " hay un faltante de: " + diasp;
+            errorSuma = true;
+            showMessage1(msg);
+        }else if ( diasp < 0 ){
+            var msg = "Error en la suma del padre: " + title + " hay un exceso de: " + diasp;
+            errorSuma = true;
+            showMessage1(msg);
+        }
+     }
     return nodos;
   }
 
@@ -345,6 +368,7 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      //$("#botonerasEditarControl").hide("slow");
      //$("#progressEdtGuardarEdt").show("slow");
      cambios = localStorage.getItem("cambios");
+     $(".consoleLog").html("");
 
      if ( cambios == "true" ){
       $("#guardarCambios").hide();
@@ -359,9 +383,11 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
     Datos Padre
      */
      var inp = $("#org li span")[0];
+     var diasp = $("#org li span")[1];
      //console.log(inp);
      //return 0;
      var titleparent = inp.innerHTML;
+     var diasparent = diasp.innerHTML;
      //console.log(titleparent);
      /* Fin datos de padre */
      //return 0;
@@ -370,11 +396,20 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
       var hijos = [];
       var selector = "#org ul:first > li";
       var nodos = [];
-      hijos = dameHijosEDT(selector, numHijos , nodos );
-      var jsonResult = agregarPadreJson( idproyecto, titleparent , numHijos, "", "", hijos  );
-      console.log( jsonResult );
+      errorSuma = false;
+      hijos = dameHijosEDT(diasparent, titleparent, selector, numHijos , nodos);
+      var jsonResult = agregarPadreJson( idproyecto, titleparent , numHijos, diasparent, "", hijos  );
+      //console.log( jsonResult );
+     
+      //console.log("HijosPadre",diasparent );
       
-      $.ajax({
+      //console.log("error", error);
+      if ( errorSuma == true ){
+        $("#guardarCambios").show();
+        $("#guardarEDTLoading").hide("slow");
+      }else if ( errorSuma == false) {
+          console.log("listo para guardar sin problemas :p");
+        $.ajax({
                       type: "POST",
                       data: JSON.stringify(jsonResult),
                       dataType: "json",
@@ -392,11 +427,12 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
                           console.log("failure");
                       }
         });
+      }
      }else{
         console.log("no se guarda pq no hubo cambios");
-        window.location.href = 'index.html';
+        //window.location.href = 'index.html';
      }
-     
+    
 	 
 	});
 
@@ -423,6 +459,20 @@ function showMessage( msg ){
           $(".consoleLog").html(html);
           $(".consoleLog").fadeIn(5000);
           $(".consoleLog").fadeOut(5000);
+}
+
+function showMessage1( msg ){
+  //alert(msg);
+  //$(".consoleLog").html("");
+          
+   var html =    '<div class="alert alert-danger alert-dismissable">';
+          html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+          html += '<strong>Warning!&nbsp;</strong>';
+          html += msg;
+          html += '</div>';
+          $(".consoleLog").append(html);
+          $(".consoleLog").fadeIn(5000);
+          //$(".consoleLog").fadeOut(5000);
 }
 
 function funcionesCajaFlotante(){
@@ -622,7 +672,7 @@ $("#editarEdtNew").click(function(){
               if ( parseInt(inputValidar) >= 0 ) {
                   flagnum = 1;
                   console.log("modificando nodo");
-                  modificarNodo( localStorage.getItem("modificandoNodoActual").split("-")[1], inputValidar );
+                  //modificarNodo( localStorage.getItem("modificandoNodoActual").split("-")[1], inputValidar );
               }else{
                 //alert("Ingrese un numero");
                 showMessage("Ingrese un número válido >= 0");
