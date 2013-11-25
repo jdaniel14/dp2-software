@@ -327,6 +327,7 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
      //$("#botonerasEditarControl").hide("slow");
      //$("#progressEdtGuardarEdt").show("slow");
      cambios = localStorage.getItem("cambios");
+     
      if ( cambios == "true" ){
       $("#guardarCambios").hide();
      $("#guardarEDTLoading").show("slow");
