@@ -12,6 +12,15 @@ $(window).bind('beforeunload',function(){
 var arrNombres = [];
 var autoGenerados = [];
 
+function Nodo ( dias, padre, actual, valoranterior) {
+   this.dias = dias;
+   this.valoranterior = valoranterior;
+   this.padre = padre;
+   this.actual = actual;
+}
+
+var edtValidator = [];
+
 localStorage.setItem("cambios", false);
 
 $(window).bind('beforeunload',function(){
@@ -109,14 +118,14 @@ $("#CrearEDTCero").click(function(){
                 $("#guardarCambios").show("slow");
                 $("#edtCrearLogError").hide("slow");
                 var titleParent = "Nombre Proyecto";
-                var html = pintarOneNodoEDT( titleParent, idnodoParam );
+                var html = pintarOneNodoEDT( titleParent, idnodoParam , 0, 0);
                 $("#org").html( html );
                 repaint();
               return false;
 });
 
 
-function pintarOneNodoEDT( title, id  ){
+function pintarOneNodoEDT( title, id, dias  ){
    console.log("Pintando AL PADRE  ", title, id);
        var html = "";  
                     //html += '<ul>';
@@ -127,14 +136,25 @@ function pintarOneNodoEDT( title, id  ){
     html += title
     html += '"> ';
                     */
+          var idfin = '#titlePadre-' + id;
           html +=  '<li>';
           html += '<span class = "titleEDT" id = "';
           html += 'titlePadre-'+ id + '" >';
           html += title;
-          html += '</span>'
+          html += '</span><br/>';
+          
+          html +='<span class = "diasEDT" id = "';
+          html += 'dias-'+ id + '" >';
+          html += dias + '</span>';
+
           html += '<ul>' + '</ul>';
           html += '</li>';
           console.log(html);
+          
+          var n = new Nodo(dias, id, id, dias);
+
+          edtValidator.push( n );
+          
           arrNombres.push(title);
         return html;
 }
@@ -320,14 +340,12 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
     return nodos;
   }
 
-
-
 	$("#guardarCambios").click(function(){
      // $("#botonerasEditar").hide("slow");
      //$("#botonerasEditarControl").hide("slow");
      //$("#progressEdtGuardarEdt").show("slow");
      cambios = localStorage.getItem("cambios");
-     
+
      if ( cambios == "true" ){
       $("#guardarCambios").hide();
      $("#guardarEDTLoading").show("slow");
@@ -446,11 +464,11 @@ $("#imgAgregar").click(function(){
 		localStorage.setItem("idcontador", ident);
 
   		var id = localStorage.getItem("idnodoActualClick");
-  		      	
+  		var idp = id.split("-")[1];     	
   		//var idfinal = id + ' ul';
   		//console.log(idfinal, agregarNodoHijoDefault( ident ));
       	//$("#title-83").parent().find("ul");
-      	$(id).parent().find("ul:first").append(agregarNodoHijoDefault( ident ));
+      	$(id).parent().find("ul:first").append(agregarNodoHijoDefault( idp, ident ));
         repaint();
         $("#caja_flotante").hide("slow");
   });
@@ -475,7 +493,7 @@ $("#imgAgregar").click(function(){
   })
 
 
-function agregarNodoHijoDefault( id ){
+function agregarNodoHijoDefault( padre, id ){
        var title = "default";
        var desc = "default";
        var tiempo = 0;
@@ -495,7 +513,9 @@ function agregarNodoHijoDefault( id ){
           html += '<ul>' + '</ul>';
           html += '</li>';
           //html += '</ul>';
+          var idfin = '#title-'+id;
           arrNombres.push(titlefin);
+          edtValidator.push(new Nodo( 0, padre,  id, 0));
       return html;
   }
 
@@ -517,6 +537,59 @@ $("#editarEdtNew").click(function(){
     }
     return true;
   }
+
+
+  function actualizaNodosSuma(hijo, padre, dias, valant ){
+      hijo = parseInt( hijo );
+      padre = parseInt( padre );
+      dias = parseInt( dias );
+      valant = parseInt( valant );
+      console.log( hijo , padre , dias ,valant);
+      var i = 0;
+      var flag = 1;
+      nuevoPadre = padre;
+      while ( flag != 0){
+        flag = 0;
+        for ( i = 0; i < edtValidator.length ; i++ ){
+           if ( edtValidator[i].actual == nuevoPadre ){
+                //si es el padre, entonces resto y sumo
+                edtValidator[i].dias = parseInt(edtValidator[i].dias) -  valant + dias;
+                nuevoPadre = parseInt(edtValidator[i].padre);
+                console.log("nuevoPadre",nuevoPadre);
+                flag = 1;
+                if (  edtValidator[i].actual ==  edtValidator[i].padre ){
+                  //es el padre
+                  flag = 0;
+                }
+                var idd = "#dias-"+nuevoPadre;
+                console.log(idd);
+                $(idd).html(edtValidator[i].dias);
+           }
+        }
+      }
+      
+      //$(sape).html();
+    repaint();
+  }
+
+  function modificarNodo( nodoactual, value ){
+    console.log( nodoactual, value );
+    var padre = 0
+    var valant = 0
+      var i = 0;
+      for ( i = 0; i < edtValidator.length; i++ ){
+        if ( edtValidator[i].actual == nodoactual ){
+              padre = edtValidator[i].padre;
+              edtValidator[i].valoranterior = edtValidator[i].dias;
+              edtValidator[i].dias = value;
+              valant = edtValidator[i].valoranterior;
+              break;
+        }
+      }
+      //una vez hecho esto, se verifica la suma del padre -> padre -> padre....oh my
+      actualizaNodosSuma( nodoactual, padre , value, valant);
+  }
+
   function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -548,6 +621,8 @@ $("#editarEdtNew").click(function(){
             if ( isNumber( parseInt(inputValidar) ) ){
               if ( parseInt(inputValidar) >= 0 ) {
                   flagnum = 1;
+                  console.log("modificando nodo");
+                  modificarNodo( localStorage.getItem("modificandoNodoActual").split("-")[1], inputValidar );
               }else{
                 //alert("Ingrese un numero");
                 showMessage("Ingrese un número válido >= 0");
@@ -586,7 +661,6 @@ $("#editarEdtNew").click(function(){
                 }
                 return;
           }
-
             //other whise
                     $(this).parent().append($('<span />').html($(this).val()));
                     var sape = localStorage.getItem("modificandoNodoActual");
