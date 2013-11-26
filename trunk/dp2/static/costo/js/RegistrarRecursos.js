@@ -682,10 +682,13 @@ function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos > tbody").html('');
 	$("#tablaRecursos > thead").html('');
 	
-	if (esEdicion==0)
-		$("#tablaRecursos > thead").append('<tr class="tablesorter-headerRow" width="100%"><td data-column="0" width="2%"><b>#</b></td><td data-column="1" width="25%"><b>Recurso</b></td><td data-column="2" width="10%"><b>Unidad de Medida</b></td><td data-column="3" width="10%"><b>Costo Unitario Variable</b></td><td data-column="4" width="15%"><b>Moneda</b></td><td data-column="5" width="10%"><b>Costo fijo diario</b></td><td data-column="6" width="14%"><b>Fecha Inicio</b></td><td data-column="7" width="14%"><b>Fecha Fin</b></td></tr>');
-	else
-		$("#tablaRecursos > thead").append('<tr class="tablesorter-headerRow" width="100%"><td data-column="0" width="2%"><b>#</b></td><td data-column="1" width="25%"><b>Recurso</b></td><td data-column="2" width="10%"><b>Unidad de Medida</b></td><td data-column="3" width="10%"><b>Costo Unitario Variable</b></td><td data-column="4" width="12%"><b>Moneda</b></td><td data-column="5" width="10%"><b>Costo fijo diario</b></td><td data-column="6" width="13%"><b>Fecha Inicio</b></td><td data-column="7" width="13%"><b>Fecha Fin</b></td><td data-column="8" width="5%"><b>Eliminar</b></td></tr>');
+	if (esEdicion==0){
+		$("#tableHeaderEdicion").show();
+		$("#tableHeaderNoEdicion").hide();
+	}else{
+		$("#tableHeaderEdicion").hide();
+		$("#tableHeaderNoEdicion").show();
+	}
 }
 
 
