@@ -199,7 +199,7 @@ function agregaFilaRecurso(){
 	check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 	inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
 	inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
+	$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 								+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
 								+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
 								+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
@@ -219,7 +219,7 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 	if (fechaFin=='00-00-0000') fechaFin='';
 	
 	if 	(tipo==0)
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+nombreMoneda+'</td><td>'+formateaNumero(costoFijo,2)+'</td><td>'+fechaInicio+'</td><td>'+fechaFin+'</td></tr>');
+		$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+nombreMoneda+'</td><td>'+formateaNumero(costoFijo,2)+'</td><td>'+fechaInicio+'</td><td>'+fechaFin+'</td></tr>');
 	else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
 		inputMoneda= creaInputMoneda(a,indRecursoHumano);
@@ -242,7 +242,7 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 				
 		}
 		
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
+		$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputUnidadMedida+'</td><td>'
 									+inputCosto+'</td><td align="center" >'+inputMoneda+'</td><td align="center" >'+inputCostoFijo
 									+'<td align="center">'+inputFechaInicio+'</td>'+'<td align="center">'+inputFechaFin+'</td><td align="center">'+check+'</td></tr>'
 									+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
@@ -679,12 +679,13 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 //Limpia la tabla
 
 function limpiaTablaRecursos(esEdicion){
-	$("#tablaRecursos").html('');
+	$("#tablaRecursos > tbody").html('');
+	$("#tablaRecursos > thead").html('');
 	
 	if (esEdicion==0)
-		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="15%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diario</b></td><td width="14%"><b>Fecha Inicio</b></td><td width="14%"><b>Fecha Fin</b></td></tr>');
+		$("#tablaRecursos > thead").append('<tr class="tablesorter-headerRow" width="100%"><td data-column="0" width="2%"><b>#</b></td><td data-column="1" width="25%"><b>Recurso</b></td><td data-column="2" width="10%"><b>Unidad de Medida</b></td><td data-column="3" width="10%"><b>Costo Unitario Variable</b></td><td data-column="4" width="15%"><b>Moneda</b></td><td data-column="5" width="10%"><b>Costo fijo diario</b></td><td data-column="6" width="14%"><b>Fecha Inicio</b></td><td data-column="7" width="14%"><b>Fecha Fin</b></td></tr>');
 	else
-		$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Unidad de Medida</b></td><td width="10%"><b>Costo Unitario Variable</b></td><td width="12%"><b>Moneda</b></td><td width="10%"><b>Costo fijo diario</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td><td width="5%"><b>Eliminar</b></td></tr>');
+		$("#tablaRecursos > thead").append('<tr class="tablesorter-headerRow" width="100%"><td data-column="0" width="2%"><b>#</b></td><td data-column="1" width="25%"><b>Recurso</b></td><td data-column="2" width="10%"><b>Unidad de Medida</b></td><td data-column="3" width="10%"><b>Costo Unitario Variable</b></td><td data-column="4" width="12%"><b>Moneda</b></td><td data-column="5" width="10%"><b>Costo fijo diario</b></td><td data-column="6" width="13%"><b>Fecha Inicio</b></td><td data-column="7" width="13%"><b>Fecha Fin</b></td><td data-column="8" width="5%"><b>Eliminar</b></td></tr>');
 }
 
 
