@@ -7,6 +7,10 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
@@ -73,15 +77,12 @@
 			<label id="labErrorFecha" class="control-label" style="display:none">La fecha de inicio debe ser menor a la fecha de fin</label>
 		</div>
 		
-		<table class="tablesorter table table-bordered hasFilters tablesorter-bootstrap" width="90%" id="tablaRecursos">
-		
-			<tr>
-				<td width="10%"><b>#</b></td>
-				<td width="40%"><b>Recurso</b></td>
-				<td width="20%"><b>Tipo</b></td>
-				<td width="30%"><b>Unidad de Medida</b></td>				
-			</tr>
+		<table class="tablesorter table table-bordered tablesorter-bootstrap" width="90%" id="tablaRecursos">
+		<thead>
 			
+		</thead>
+		<tbody>
+		</tbody>
 		</table >
 		<table width="90%" id="tablaAgrega" style="display:none;"> <tr><td align='left'> <span onClick='agregaFilaRecurso();' class='glyphicon glyphicon-plus-sign'>Agregar</span></td></tr> </table>
 		<table><tr>&nbsp;
@@ -117,6 +118,20 @@
 	<script src="../../static/costo/js/Utils.js"></script>
 	<script src="../../static/costo/js/RegistrarRecursos.js"></script>
 	
+	 
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
+
 	
   </body>
 </html>
