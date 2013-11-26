@@ -354,7 +354,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva 
 function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cantidad, costoUnitario){
 	a=i;
 	a++;	
-	$("#tablaResumen").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
+	$("#tablaResumen > tbody").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
 	
 
 }
@@ -404,7 +404,7 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 	
 	//Si es para confirmar			
 	inputHidden='<input type="hidden" id="tipoCambio'+(a)+'" value="">';
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)
+	$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)
 								+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">'+inputHidden);
 	if (tipo==1) desabilitaMoneda(a);
@@ -547,22 +547,19 @@ function cambiaCostoUnitario(){
 
 //Limpia la tabla
 function limpiaTablaResumen(){
-	$("#tablaResumen").html('');
-	$("#tablaResumen").append('<tr><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>');
+	$("#tablaResumen > tbody").html('');
 		
 
 }
 
 function limpiaTablaRecursosFijo(){
 	$("#tablaResumenCostoFijo").html('');
-	$("#tablaResumenCostoFijo").append('<tr><td width="10%"><b>#</b></td><td width="30%"><b>Recurso</b></td><td width="20%"><b>Costo Fijo Diario</b></td><td width="20%"><b>Moneda</b></td><td width="20%"><b>Costo Fijo Total</b></td></tr>');
 		
 
 }
 
 function limpiaTablaRecursos(){
-	$("#tablaRecursos").html('');
-	$("#tablaRecursos").append('<tr><td width="10%"><b>#</b></td><td width="30%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Moneda</b></td><td width="20%"><b>Cantidad Total</b></td></tr>');
+	$("#tablaRecursos > tbody").html('');
 	
 
 }

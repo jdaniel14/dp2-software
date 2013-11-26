@@ -139,7 +139,7 @@ function agregaFilaRecurso(){
 	inputFechaInicio='<input type="text" class="calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
 	inputFechaFin='<input type="text" class="calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" style="width:100%" onChange="modifica('+a+')" readOnly>';
 	
-	$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
+	$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td>'+'</td><td>'+inputCostoFijo+'</td><td align="center">'+inputFechaInicio+'</td>'
 	+'<td align="center">'+inputFechaFin+'</td></tr>'
 	+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="1" >'
 	+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
@@ -152,7 +152,7 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 	a=i;
 	a++;
 	if 	(tipo==0)
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td></tr>');
+		$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+costoUnitario+'</td><td>'+nombreMoneda+'</td><td>'+costoFijo+'</td></tr>');
 	else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
 		inputMoneda= creaInputMoneda(a,true);
@@ -175,7 +175,7 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 				
 		}
 		
-		$("#tablaRecursos").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputCostoFijo
+		$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+inputRecurso+'</td><td align="center" >'+inputCostoFijo
 		+'<td align="center">'+inputFechaInicio+'</td>'+'<td align="center">'+inputFechaFin+'</td></tr>'
 		+'<input type="hidden" name="creado'+a+'"  id="creado'+a+'" value="0" >'
 		+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
@@ -455,8 +455,7 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 //Limpia la tabla
 
 function limpiaTablaRecursos(){
-	$("#tablaRecursos").html('');
-	$("#tablaRecursos").append('<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Costo fijo diario (Nuevos soles)</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td></tr>');
+	$("#tablaRecursos > tbody").html('');
 }
 
 $("#btnCancelar").click(function(){

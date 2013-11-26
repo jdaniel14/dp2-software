@@ -160,7 +160,7 @@ function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda
 		if (idAsiento==asientosContables[k].descripcion) cuenta= asientosContables[k].id;
 	}
 	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select class="form-control" '+(deshabilitado?" readonly disabled":"")+' id="tipoCuenta'+(a)+'">'+options+'</select>';
-	$("#tablaCuentaxActividad").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
+	$("#tablaCuentaxActividad > tbody").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
 	obtenCuentaSeleccionada(a,cuenta)
 }
 
@@ -205,8 +205,7 @@ function grabarEstadoCuenta(){
 //Fin funciones para grabar
 
 function limpiaTablaCuentaxActividad(){
-	$("#tablaCuentaxActividad").html('');
-	$("#tablaCuentaxActividad").append('<tr><td width="10%"><b>#</b></td><td width="40%"><b>Actividad</b></td><td width="20%"><b>Tipo cuenta</b></td><td width="30%"><b>Costo subtotal</b></td></tr>');
+	$("#tablaCuentaxActividad > tbody").html('');
 			
 
 }

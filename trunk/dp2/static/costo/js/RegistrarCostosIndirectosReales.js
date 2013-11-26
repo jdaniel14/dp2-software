@@ -223,13 +223,13 @@ function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codm
 	a=i;
 	a++;
 	if 	(tipo==0)
-		$("#tablaIndirectos").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+costoIndirecto+'</td><td align="center">'+nombreMoneda+'</td></tr>');
+		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+costoIndirecto+'</td><td align="center">'+nombreMoneda+'</td></tr>');
 	else{
 		inputMoneda= creaInputMoneda(a);		
 		inputCostoIndirecto='<input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+costoIndirecto+'">';
 	
 		
-		$("#tablaIndirectos").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+inputCostoIndirecto+'</td><td align="center">'+inputMoneda+'</td></tr>'
+		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+inputCostoIndirecto+'</td><td align="center">'+inputMoneda+'</td></tr>'
 									+'<input type="hidden" name="codmes'+a+'" id="codmes'+a+'" value="'+codmes+'">'
 									);
 		obtenMonedaSeleccionada(a,idmoneda);
@@ -431,9 +431,8 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 //Limpia la tabla
 
 function limpiatablaIndirectos(){
-	$("#tablaIndirectos").html('');
+	$("#tablaIndirectos > tbody").html('');
 	
-	$("#tablaIndirectos").append('<tr width="100%"><td width="40%" align="center"><b>Mes</b></td><td width="35%" align="center"><b>Costo Indirecto</b></td><td width="25%" align="center"><b>Moneda</b></td></tr>');
 }
 
 
