@@ -528,7 +528,6 @@ function listarRiesgos() {
             $('#checkearTodos').attr('checked', false);
             agregaDataFila(data);
             $(".acciones").click(function() {
-                alert("xD");
                 var idRiesgoProyecto = $(this).closest("tr").attr("id");
                 localStorage.setItem("idRiesgo", idRiesgoProyecto);
             });

@@ -72,7 +72,6 @@ function main(){
         maxId = parseInt(maxId) + 1;
         $('#accion' + maxId).val("");
         if (!lineaBase){
-            alert("xd");
             $('#tiempo' + maxId).val("");
             $('#costo' + maxId).val("");
             $('#costo' + ultimo).prop('disabled', false);
