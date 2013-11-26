@@ -79,12 +79,16 @@
 		
 		<table class="tablesorter table table-bordered tablesorter-bootstrap" width="90%" id="tablaRecursos">
 		<thead>
-			
+		<tr id="tableHeaderNoEdicion" class="tablesorter-headerRow" width="100%"><td data-column="0" width="2%"><b>#</b></td><td data-column="1" width="25%"><b>Recurso</b></td><td data-column="2" width="10%"><b>Unidad de Medida</b></td><td data-column="3" width="10%"><b>Costo Unitario Variable</b></td><td data-column="4" width="15%"><b>Moneda</b></td><td data-column="5" width="10%"><b>Costo fijo diario</b></td><td data-column="6" width="14%"><b>Fecha Inicio</b></td><td data-column="7" width="14%"><b>Fecha Fin</b></td></tr>
+		
+		<tr id="tableHeaderEdicion" class="tablesorter-headerRow" width="100%"><td data-column="0" width="2%"><b>#</b></td><td data-column="1" width="25%"><b>Recurso</b></td><td data-column="2" width="10%"><b>Unidad de Medida</b></td><td data-column="3" width="10%"><b>Costo Unitario Variable</b></td><td data-column="4" width="12%"><b>Moneda</b></td><td data-column="5" width="10%"><b>Costo fijo diario</b></td><td data-column="6" width="13%"><b>Fecha Inicio</b></td><td data-column="7" width="13%"><b>Fecha Fin</b></td><td data-column="8" width="5%"><b>Eliminar</b></td></tr>
 		</thead>
-		<tbody>
-		</tbody>
 		</table >
-		<table width="90%" id="tablaAgrega" style="display:none;"> <tr><td align='left'> <span onClick='agregaFilaRecurso();' class='glyphicon glyphicon-plus-sign'>Agregar</span></td></tr> </table>
+		<table width="90%" id="tablaAgrega" style="display:none;"> 
+		<tbody>
+		<tr><td align='left'> <span onClick='agregaFilaRecurso();' class='glyphicon glyphicon-plus-sign'>Agregar</span></td></tr> 
+		<tbody>
+		</table>
 		<table><tr>&nbsp;
 		</tr>
 		<tr>&nbsp;
