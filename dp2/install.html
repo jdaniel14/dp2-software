@@ -107,7 +107,7 @@
             </div>
             <div class="col-md-4 col-sm-4">
               <p class="help-block">
-                  Se creará un esquema con este nombre en caso no exista, si existe, se borrará toda la data que contiene.
+                  El esquema debe existir,si ya contiene data se borrará toda la data que contiene. Los permisos del usuario son sobre este esquema. Debe existir un esquema adicional con el patrón [esquema]_lineabase.
               </p>
             </div>
           </div>
@@ -118,7 +118,13 @@
               <button id="probarConexion" type="button" class="btn btn-primary">Probar conexión</button>
             </div>
 
-        </form>     
+        </form> 
+        <div id="errores" class="alert alert-danger alert-dismissable" style="display:none;">
+          <div id="hayError" style="display:none;">true</div>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <p id="listaErrores">
+          </p>
+        </div>   
       </div>
       <div class="h3-title col-md-offset-1">
         <h3>Permisos de archivos y carpetas</h3>
@@ -138,13 +144,16 @@
         </table>
       </div>
     </div>
+    <div id="erroresTotales" class="alert alert-danger alert-dismissable" style="display:none;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    </div> 
     <div id="instalando" class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2" style="display:none;margin-top:2%">
       <div class="progress progress-striped active">
         <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
           <span class="sr-only">100% complete</span>
         </div>
       </div>
-      <p id="mensaje">Creando esquemas...</p>
+      <p id="mensaje">Restaurando base de datos...</p>
     </div>
     <div class="col-md-2 col-sm-2 col-md-offset-9 col-sm-offset-9" style="margin-bottom:3%;margin-top:2%">
       <button id="instalar" type="button" class="btn btn-lg btn-primary">Instalar</button>
