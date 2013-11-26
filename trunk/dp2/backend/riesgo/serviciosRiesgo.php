@@ -1064,7 +1064,7 @@
 
 
     function R_getAccionesParaAprobar($idProyecto){
-        $query = "SELECT dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo,flag_aceptado_rechazado 
+        $query = "SELECT dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo_real,flag_aceptado_rechazado 
                 FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
                 WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
                     A.id_actividad=AXR.id_actividad and
@@ -1083,7 +1083,7 @@
                             "duracionActividadCronograma"=> $row['dias'],
                             "nombreAccionRiesgo" => $row['descripcion'], 
                             "fechaInicioAccionRiesgo" => $row['fecha_inicio'],
-                            "tiempo" => $row['tiempo'],
+                            "tiempo" => $row['tiempo_real'],
                             "flagAceptadoRechazado" => $row['flag_aceptado_rechazado']
                             );
                 array_push($arreglo,$data);
