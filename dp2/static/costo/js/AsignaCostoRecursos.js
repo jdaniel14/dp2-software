@@ -416,7 +416,7 @@ function agregaFilaRecursoFijo(i,idRecurso,unidadMedida, nombreRecurso, costoFij
 	a++;
 	
 	//Si es para confirmar				
-	$("#tablaResumenCostoFijo").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoFijoDiario,2)
+	$("#tablaResumenCostoFijo > tbody").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoFijoDiario,2)
 								+'</td><td>'+moneda+'</td><td>'+formateaNumero(costoFijoTotal,2)+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">');
 	
@@ -553,7 +553,7 @@ function limpiaTablaResumen(){
 }
 
 function limpiaTablaRecursosFijo(){
-	$("#tablaResumenCostoFijo").html('');
+	$("#tablaResumenCostoFijo > tbody").html('');
 		
 
 }
