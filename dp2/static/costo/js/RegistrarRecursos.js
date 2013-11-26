@@ -682,11 +682,11 @@ function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos > tbody").html('');
 	
 	if (esEdicion==0){
-		$("#tableHeaderEdicion").show();
-		$("#tableHeaderNoEdicion").hide();
-	}else{
 		$("#tableHeaderEdicion").hide();
 		$("#tableHeaderNoEdicion").show();
+	}else{
+		$("#tableHeaderEdicion").show();
+		$("#tableHeaderNoEdicion").hide();
 	}
 }
 
