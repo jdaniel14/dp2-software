@@ -680,7 +680,6 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos > tbody").html('');
-	$("#tablaRecursos > thead").html('');
 	
 	if (esEdicion==0){
 		$("#tableHeaderEdicion").show();
