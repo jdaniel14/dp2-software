@@ -197,7 +197,7 @@ function agregarDataProyecto(proyecto){
 		var nombreProyecto = proyecto.nombre;
 		var montoSinReserva = proyecto.presupuesto;
 		var porcentajeReserva = proyecto.porcentajeReserva;
-		$("#nombreProyecto").html(formateaNumero(nombreProyecto));
+		$("#nombreProyecto").html(nombreProyecto);
 		$("#inputMontoSinReserva").val(formateaNumero(montoSinReserva));
 		$("#inputReserva").val(formateaNumero(porcentajeReserva));
 		$("#reservaTotal").html($("#reservaTotal").html() +" " + formateaNumero(porcentajeReserva*0.01*montoSinReserva) + " Nuevos soles");
