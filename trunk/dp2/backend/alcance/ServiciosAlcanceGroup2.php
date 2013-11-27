@@ -734,7 +734,7 @@ function getEdt(){
     	$idER = $pstmt->fetch(PDO::FETCH_ASSOC)["id_especificacion_requisitos"];
     	
     	//obtengo los id de los requisitos
-    	$pstmt= $con->prepare("SELECT id_requisito FROM REQUISITO WHERE id_especificacion_requisitos= ?");
+    	$pstmt= $con->prepare("SELECT id_requisito FROM REQUISITO WHERE id_especificacion_requisitos= ? AND id_estado_requisito!=2");
     	$pstmt->execute(array($idER));
     	$listaIdRequisitos = array();
     	while ($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
@@ -757,6 +757,8 @@ function getEdt(){
     			$pstmt->execute(array($row,$fila));
     		}
     	}
+    	
+    	echo '{"me" : "Se guardaron las fases"}';
       }
       catch (PDOException $e) {
       	echo '{"me" : "No se pudieron guardar las fases"}';
