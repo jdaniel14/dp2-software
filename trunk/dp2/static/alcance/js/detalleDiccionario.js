@@ -134,6 +134,9 @@ $("#modificarPaquete").click(function(){
 		data: JSON.stringify(obj),
 		dataType: "json",
 		contentType: "application/json; charset=utf-8",
+		success: function(data){
+			window.location.href = "diccionario.html"
+		}
 	});
 	logChange("Se modificó el paquete de trabajo "+id_paquete);
 	scrollTo();

@@ -112,19 +112,19 @@
             </div>
           </div>
 
+          <div id="errores" class="alert alert-danger" style="display:none;">
+            <div id="hayError" style="display:none;">true</div>
+            <div id="listaErrores">
+            </div>
+          </div>
+
           <!--Submit-->
 
             <div class="col-md-1" id="submit">
               <button id="probarConexion" type="button" class="btn btn-primary">Probar conexión</button>
             </div>
 
-        </form> 
-        <div id="errores" class="alert alert-danger alert-dismissable" style="display:none;">
-          <div id="hayError" style="display:none;">true</div>
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <p id="listaErrores">
-          </p>
-        </div>   
+        </form>    
       </div>
       <div class="h3-title col-md-offset-1">
         <h3>Permisos de archivos y carpetas</h3>
@@ -144,8 +144,7 @@
         </table>
       </div>
     </div>
-    <div id="erroresTotales" class="alert alert-danger alert-dismissable" style="display:none;">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <div id="erroresTotales" class="alert alert-danger" style="display:none;">
     </div> 
     <div id="instalando" class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2" style="display:none;margin-top:2%">
       <div class="progress progress-striped active">
