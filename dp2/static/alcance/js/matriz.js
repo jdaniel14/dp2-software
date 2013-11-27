@@ -5,6 +5,7 @@ function inicializaFechas(){
 
 function modificarRequisito(){
 	$("#selected").removeClass("selected");
+	$(".alert").remove();
 	$(this).parent().parent().addClass("selected");
 	var obj = {
 		"id_requisito": this.getAttribute("idrequisito")
@@ -168,10 +169,9 @@ function guardarEntregables(){
 	}
 }
 
-function guardarCambios(){
-	/*if(!validarRequisito()){
+function guardarCambios(){	
+	if(!validarRequisito()){
 		return;
-	}*/ //validacioneeeeees!!
 	var obj = {};
 	obj["id_requisito"]= $("#id_requisito").val();
 	obj["solicitado"]= $('#solicitado').val();
@@ -200,6 +200,16 @@ function checkearPermisos(){
 		    break;
 	}
 }
+
+function validarRequisito(){
+	clearErrors(); //limpiar los errores anteriores
+	var camposValidos = true;//comenzar a validar campos 
+	//la variable camposValidos siempre debe ir al final para evitar lazy evaluation
+	camposValidos = validateMandatory("solicitado","el campo es obligatorio") && camposValidos;
+	showAlert("form-requisito",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
+	return camposValidos;
+}
+
 
 $(document).ready(function(){
 	$("#guardar").click(guardarCambios);

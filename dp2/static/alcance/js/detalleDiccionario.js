@@ -92,6 +92,10 @@ function cargarComboMoneda(){
 	});
 }
 
+$("#cancelar").click(function(){
+	window.location.href="diccionario.html";
+});
+
 
 
 $(document).ready(function(){
