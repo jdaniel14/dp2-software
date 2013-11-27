@@ -129,10 +129,14 @@ function inserta(data){
 	fila+= '<td><a class="eliminar-requisito" idRequisito="'+data["id_requisito"]+'"><span class="glyphicon glyphicon-remove"></a></td>';
 	fila += "</tr>";
 	$('#listaRequisitos').append(fila);
-	$("#form-requisito")[0].reset();
+	resetForm();
 	$('#detalleRequisito').modal('hide');
 	$(".modificar-requisito").click(modificarRequisito);
 	$(".eliminar-requisito").click(eliminarRequisito);
+}
+function resetForm(){
+	$("input.form-control").val("");
+	$(".alert").remove();
 }
 
 function modifica(data){
@@ -145,8 +149,8 @@ function modifica(data){
 	$(campos[4]).html(data["observaciones"]);
 	$(campos[5]).html(data["unidad_medida"]);
 	$(campos[6]).html(data["valor"]);
-	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
+	resetForm();
 }
 
 function validarRequisito(){
@@ -154,6 +158,9 @@ function validarRequisito(){
 	var camposValidos = true;//comenzar a validar campos 
 	//la variable camposValidos siempre debe ir al final para evitar lazy evaluation
 	camposValidos = validateMandatory("descripcion","el campo es obligatorio") && camposValidos;
+	//camposValidos = validateMandatory("id_categoria_requisito","el campo es obligatorio") && camposValidos;
+	//camposValidos = validateMandatory("id_tipo_requisito","el campo es obligatorio") && camposValidos;
+	camposValidos = validateMandatory("valor","el campo es obligatorio") && camposValidos;
 	showAlert("form-requisito",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
 	return camposValidos;
 }

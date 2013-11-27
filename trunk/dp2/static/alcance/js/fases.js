@@ -90,8 +90,12 @@ function guardarCambios(){
 		type: 'POST',
 		url : '../../api/AL_modificarFases',
 		dataType: "json",
+		async :false,
 		data: JSON.stringify(obj),
-		contentType: "application/json; charset=utf-8"
+		contentType: "application/json; charset=utf-8",
+		success: function(){
+			$('.modificado').removeClass('modificado');
+		}
 	});
 	var modificados = [];
 	//nuevos
@@ -113,10 +117,15 @@ function guardarCambios(){
 		type: 'POST',
 		url : '../../api/AL_guardarFases',
 		dataType: "json",
+		async: false,
 		data: JSON.stringify(obj),
-		contentType: "application/json; charset=utf-8"
+		contentType: "application/json; charset=utf-8",
+		success: function(){
+			$('.nuevo').removeClass('nuevo');
+		}
 	});
 	var nuevos = [];
+	window.location.href="fases.html";
 }
 
 
