@@ -23,8 +23,8 @@ $('#probarConexion').click(function(){
 			}
 			else{
 				$("#errores").removeClass("alert-danger");
-				$("#errores").addClass("alert-sucess");
-				$("#listaErrores").append("Conexión exitosa");
+				$("#errores").addClass("alert-success");
+				$("#listaErrores").html("Conexión exitosa");
 				$("#errores").show();
 			}
 			

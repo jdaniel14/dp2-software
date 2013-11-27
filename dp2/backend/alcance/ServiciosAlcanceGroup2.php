@@ -224,8 +224,8 @@ function getEdt(){
       $con = getConnection();
       $con->beginTransaction();
       $pstmt= $con->prepare("INSERT INTO PAQUETE_TRABAJO(nombre,descripcion,id_estado,id_miembros_equipo,
-          id_edt,id_componente_padre,version,dias) values (?,?,?,?,?,?,?,?)");
-      $pstmt->execute(array($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias));
+          id_edt,id_componente_padre,version,dias,ultima_actualizacion) values (?,?,?,?,?,?,?,?,?)");
+      $pstmt->execute(array($nombre,$descripcion,$idEstado,$idMiembros,$idEdt,$idPadre,$version,$dias,date('Y-m-d H:i:s')));
       //obtengo el id recien insertado
       $idPaquete = $con->lastInsertId();
       $con->commit();
