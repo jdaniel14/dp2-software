@@ -11,9 +11,12 @@ body {
   padding-bottom: 20px;
 }
 
-#submit {
+#submit #cancelar {
 	margin-bottom: 40px;
 	margin-top: 20px;
+}
+#cancelar{
+	margin-left: 10px;
 }
 
 #form-paquete{
