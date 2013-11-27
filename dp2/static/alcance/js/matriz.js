@@ -172,6 +172,7 @@ function guardarEntregables(){
 function guardarCambios(){	
 	if(!validarRequisito()){
 		return;
+	}
 	var obj = {};
 	obj["id_requisito"]= $("#id_requisito").val();
 	obj["solicitado"]= $('#solicitado').val();
