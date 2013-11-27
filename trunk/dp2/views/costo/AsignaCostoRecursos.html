@@ -7,6 +7,10 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
@@ -103,7 +107,7 @@
 					
 			<table class="tablesorter table table-bordered tablesorter-bootstrap"  width="90%" id="tablaRecursos">
 			<thead>
-				<th><td width="10%"><b>#</b></td><td width="30%"><b>Recurso</b></td><td width="20%"><b>Costo Fijo Diario</b></td><td width="20%"><b>Moneda</b></td><td width="20%"><b>Costo Fijo Total</b></td></tr>
+				<tr class="tablesorter-headerRow"><td width="10%"><b>#</b></td><td width="30%"><b>Recurso</b></td><td width="20%"><b>Costo Fijo Diario</b></td><td width="20%"><b>Moneda</b></td><td width="20%"><b>Costo Fijo Total</b></td></tr>
 			</thead>
 			<tbody>
 			</tbody>
@@ -117,7 +121,7 @@
 			
 			<table class="table-striped table-bordered" width="90%" id="tablaResumenCostoFijo">
 			<thead>
-			<th><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>
+			<tr class="tablesorter-headerRow"><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>
 			</thead>
 			<tbody>
 			</tbody>
@@ -190,6 +194,19 @@
 	<script src="../../static/costo/js/Utils.js"></script>
 	<script src="../../static/costo/js/AsignaCostoRecursos.js"></script>
 	
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
+
 	
   </body>
 </html>

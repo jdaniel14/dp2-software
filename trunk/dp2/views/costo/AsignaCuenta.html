@@ -7,6 +7,10 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
+    <!-- Tablesorter: optional -->
+    <link rel="stylesheet" href="../../tablesorter/css/jquery.tablesorter.pager.css">
+    <link rel="stylesheet" href="../../tablesorter/css/theme.bootstrap.css">
+
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
@@ -54,7 +58,7 @@
             </div>
 			<table class="tablesorter table table-bordered tablesorter-bootstrap"  width="90%" id="tablaCuentaxActividad">
 			<thead>
-				<th><td width="10%"><b>#</b></td><td width="40%"><b>Actividad</b></td><td width="20%"><b>Tipo cuenta</b></td><td width="30%"><b>Costo subtotal</b></td></tr>
+				<tr><td width="10%"><b>#</b></td><td width="40%"><b>Actividad</b></td><td width="20%"><b>Tipo cuenta</b></td><td width="30%"><b>Costo subtotal</b></td></tr>
 			</thead>
 			<tbody>
 			</tbody>
@@ -100,6 +104,19 @@
 	<script src="../../static/costo/js/Utils.js"></script>
 	<script src="../../static/costo/js/AsignaCuenta.js"></script>
 	
+    <!-- Tablesorter: required for bootstrap -->
+    <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+    <!-- Tablesorter: optional -->
+    <script src="../../tablesorter/js/jquery.tablesorter.pager.js"></script>
+
+    <!-- Tablesorter: Config bootstrap -->
+    <script src="../../tablesorter/js/config.js"></script>
+    
+    <!-- Tablesorter: Config filtros -->
+    <script src="../../tablesorter/js/filtros.js"></script>
+
 	
   </body>
 </html>
