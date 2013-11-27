@@ -27,6 +27,46 @@ function GridEditor(master) {
     this.element = gridEditor;
 }
 
+
+function permite(obj, elEvento, permitidos, allowDecimal) {
+    var numeros = "0123456789";
+    var caracteres = " abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúü";
+    var numerosCaracteres = " 0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúü@!=+*-¿?¡-_%$.,()" + String.fromCharCode(47) + String.fromCharCode(34) + String.fromCharCode(9) + String.fromCharCode(13);
+    var numeroscomas="0123456789,";
+ //+ String.fromCharCode(34) + String.fromCharCode(39) + String.fromCharCode(47);
+    //var teclasEspeciales = [8, 37, 39, 46];
+    switch (permitidos) {
+        case 'num':
+            permitidos = numeros;
+            break;
+        case 'car':
+            permitidos = caracteres;
+            break;
+        case 'numCar':
+            permitidos = numerosCaracteres;
+            break;
+        case 'dependencias':
+            permitidos = numeroscomas;
+            break;
+    }
+    if (window.event) {
+        key = elEvento.keyCode;
+
+    }
+    else if (elEvento.which) {
+        key = elEvento.which;
+    }
+
+    var evento = elEvento || window.event;
+    var codigoCaracter = evento.charCode || evento.keyCode;
+    var caracter = String.fromCharCode(codigoCaracter);
+    var isFirstD = allowDecimal ? String.fromCharCode(key) == '.' && obj.value.indexOf('.') == -1 : false;
+
+    return (permitidos.indexOf(caracter) != -1) || isFirstD;
+//asi se llama onkeypress="return permite(this,event, 'num',true)
+}
+
+
 GridEditor.prototype.fillEmptyLines = function() {
     var factory = new TaskFactory();
 
@@ -128,43 +168,6 @@ GridEditor.prototype.addTask = function(task, row) {
 
 //on key press ////////////////////////////////////////////////////////////
 
-function permite(obj, elEvento, permitidos, allowDecimal) {
-    var numeros = "0123456789";
-    var caracteres = " abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúü";
-    var numerosCaracteres = " 0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúü@!=+*-¿?¡-_%$.,()" + String.fromCharCode(47) + String.fromCharCode(34) + String.fromCharCode(9) + String.fromCharCode(13);
-    var numeroscomas="0123456789,";
- //+ String.fromCharCode(34) + String.fromCharCode(39) + String.fromCharCode(47);
-    //var teclasEspeciales = [8, 37, 39, 46];
-    switch (permitidos) {
-        case 'num':
-            permitidos = numeros;
-            break;
-        case 'car':
-            permitidos = caracteres;
-            break;
-        case 'numCar':
-            permitidos = numerosCaracteres;
-            break;
-        case 'dependencias':
-            permitidos = numeroscomas;
-            break;
-    }
-    if (window.event) {
-        key = elEvento.keyCode;
-
-    }
-    else if (elEvento.which) {
-        key = elEvento.which;
-    }
-
-    var evento = elEvento || window.event;
-    var codigoCaracter = evento.charCode || evento.keyCode;
-    var caracter = String.fromCharCode(codigoCaracter);
-    var isFirstD = allowDecimal ? String.fromCharCode(key) == '.' && obj.value.indexOf('.') == -1 : false;
-
-    return (permitidos.indexOf(caracter) != -1) || isFirstD;
-//asi se llama onkeypress="return permite(this,event, 'num',true)
-}
 
 
     $.each(taskRow.children('td'), function(e, el) {
@@ -564,6 +567,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
     //console.log("dddddd");
 
     //taskEditor.find("#colchon").text('0'+task.id_Wbs);
+    //nadal
     if (ge.lineabase == "true") {
 
         taskEditor.find("#code").attr("disabled", true);
@@ -710,7 +714,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
                 $(addtd6).text(element.idrecurso);
             }
         });
-
+        //nadal
         if (ge.lineabase == "true") {
             assigRow.find("[name=value]").attr('disabled', true);
             assigRow.find("[name=resourceId]").attr('disabled', true);
@@ -924,6 +928,8 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
 
 
                 /***** Fin asignar Tipo Costo ****/
+                //nadal
+                
                 if (ge.lineabase == "true") {
                     assigRow.find("[name=value]").attr('disabled', true);
                     assigRow.find("[name=resourceId]").attr('disabled', true);
