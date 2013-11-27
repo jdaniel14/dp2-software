@@ -148,6 +148,7 @@ function main(){
                         alert("Se registró con exito");
                         $("#tablaAcuerdos").html("");
                         listaAcciones();
+                        $('#confirmSave').modal('hide');
                     },
                     fail: function(data) {
                         alert(data.me);
