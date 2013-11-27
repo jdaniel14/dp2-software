@@ -116,7 +116,7 @@ var newdiv = '<div class="panel panel-default">'+
 '	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#padreCostoFijo"+ href="#nodoCostoFijo'+i+'">'+descripcion+'</a> </h4></div>'+
 '	  <div id="nodoCostoFijo'+i+'" class="panel-collapse in" style="height: auto;">'+
 '	  <div class="panel-body"> '+
-'	  <div class="panel panel-default">'+ 'Costo fijo total: '+costoFijoTotal+' ' + moneda+'<br>' + costoFijoDiario + ' ' + moneda +
+'	  <div class="panel panel-default">'+ 'Costo fijo total: '+formateaNumero(costoFijoTotal)+' ' + moneda+'<br>' + formateaNumero(costoFijoDiario) + ' ' + moneda +
 ' diario ';
 '	  </div>'+
 '	  </div>'+
@@ -141,7 +141,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.costoTotalPaquete + ' Nuevos soles ';
+				'Costo subtotal:'+ formateaNumero(paquete.costoTotalPaquete) + ' Nuevos soles ';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
@@ -173,10 +173,10 @@ function agregarDataProyecto(proyecto){
 		var montoSinReserva = proyecto.presupuestoTotal;
 		var porcentajeReserva = proyecto.porcentajeReserva;
 		$("#nombreProyecto").html(nombreProyecto);
-		$("#inputMontoSinReserva").val(montoSinReserva);
-		$("#inputReserva").val(porcentajeReserva);
-		$("#reservaTotal").val(porcentajeReserva*0.01*montoSinReserva);
-		$("#inputMontoConReserva").val(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva);
+		$("#inputMontoSinReserva").val(formateaNumero(montoSinReserva));
+		$("#inputReserva").val(formateaNumero(porcentajeReserva));
+		$("#reservaTotal").val(formateaNumero((porcentajeReserva*0.01*montoSinReserva));
+		$("#inputMontoConReserva").val(formateaNumero(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva));
 	}
 }
 
@@ -184,9 +184,7 @@ function agregarDataProyecto(proyecto){
 //Funciones para grabar
 
 $("#btnGrabar").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
-	}
+	confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
 });
 
 function grabarRecursos(){

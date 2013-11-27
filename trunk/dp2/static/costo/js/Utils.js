@@ -147,8 +147,32 @@ function borraAlerta(idDiv,idLab){
 
 
 function formateaNumero(numero, numDecimales){
+	if (!numDecimales && numDecimales!=0) numDecimales=2;
 	var numFormateado=0;
 	
 	if (!isNaN(numero) && !isNaN(numDecimales) && numDecimales>=0)numFormateado=new Number(numero).toFixed(numDecimales);
 	return numFormateado;
+}
+
+function confirmar(mensaje,delegadoTrue){
+
+bootbox.dialog({
+    message: mensaje,
+    title: "Confirmación",
+    buttons: {
+		success: {
+            label: "Sí",
+            className: "btn-success",
+            callback: delegadoTrue
+        },
+        danger: {
+            label: "No",
+            className: "btn-danger",
+            callback: function() {
+                 //cierra el modal
+            }
+        },
+        }
+    });
+
 }

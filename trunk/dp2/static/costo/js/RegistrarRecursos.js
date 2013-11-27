@@ -6,6 +6,7 @@ var idVista=1;
 var numRecursos= 0;
 var comboMoneda='';
 var comboUnidadMedida='';
+var obj;
 
 var arregloProyecto= new Array(
 							'Proyecto de Charlitox', '566', '1.5'
@@ -62,7 +63,7 @@ $(function(){
 
 function obtenProyecto(/*idProyecto*/){
 	
-	var obj ={
+	obj ={
 		idProyecto : idProyecto,
 		idUsuario  : idUsuario
 	}
@@ -85,7 +86,7 @@ function obtenProyecto(/*idProyecto*/){
 }
 /*aca temrmina*/
 function obtenRecursos(/*idProyecto,*/tipo){
-	var obj ={
+	obj ={
 		idProyecto : idProyecto,
 		idUsuario  : idUsuario
 	}
@@ -581,21 +582,17 @@ function grabarRecursos(){
 		}
 		
 	}
-	
+	obj={
+		idProyecto: idProyecto,
+		listaRecursosModificar: recursosModificar,
+		listaRecursosCrear: recursosGrabar,
+		listaRecursosEliminar: recursosEliminar,
+		idUsuario  : idUsuario
+	}
 	if (grabar){
-		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-			var obj={
-				idProyecto: idProyecto,
-				listaRecursosModificar: recursosModificar,
-				listaRecursosCrear: recursosGrabar,
-				listaRecursosEliminar: recursosEliminar,
-				idUsuario  : idUsuario
-				
-				
-			}
-			
+		confirmar("¿Está seguro que desea grabar los cambios realizados?",function (idProyecto,recursosModificar,recursosGrabar,recursosEliminar,idUsuario){
 			enviaDatos(obj);
-		}
+		});
 	}
 	
 }

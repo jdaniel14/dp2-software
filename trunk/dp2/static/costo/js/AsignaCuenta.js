@@ -97,8 +97,8 @@ function iniciaCuentaxActividad(){
 function agregarDataProyecto(proyecto){
 	if (proyecto!=null){
 		var nombreProyecto = proyecto.nombre;
-		var montoSinReserva = proyecto.presupuestoTotal;
-		var porcentajeReserva = proyecto.porcentajeReserva;
+		var montoSinReserva = formateaNumero(proyecto.presupuestoTotal);
+		var porcentajeReserva = formateaNumero(proyecto.porcentajeReserva);
 		indicadorCerrado = proyecto.indicadorCerrado;
 		indicadorLineaBase = proyecto.indicadorLineaBase
 		if (indicadorCerrado=="1" || indicadorLineaBase=="1"){
@@ -160,16 +160,14 @@ function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda
 		if (idAsiento==asientosContables[k].descripcion) cuenta= asientosContables[k].id;
 	}
 	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select class="form-control" '+(deshabilitado?" readonly disabled":"")+' id="tipoCuenta'+(a)+'">'+options+'</select>';
-	$("#tablaCuentaxActividad > tbody").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+costoUnitario+' '+moneda+'</td></tr>');
+	$("#tablaCuentaxActividad > tbody").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+formateaNumero(costoUnitario)+' '+moneda+'</td></tr>');
 	obtenCuentaSeleccionada(a,cuenta)
 }
 
 //Funciones para grabar
 
 $("#btnGrabar").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarEstadoCuenta();
-	}
+	confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarEstadoCuenta);
 });
 
 function enviaDatos(obj){

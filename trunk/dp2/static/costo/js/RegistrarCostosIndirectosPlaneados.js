@@ -321,9 +321,8 @@ function obtenMonedaSeleccionada(a,moneda){
 
 $("#btnGrabar").click(function(){
 	if (verificaPermisosEditar(idVista)=='1'){
-		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-			grabarRecursos();
-		}
+		confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
+		
 	}else
 		alert('Usted no tiene los permisos requeridos');
 });
