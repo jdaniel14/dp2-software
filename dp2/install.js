@@ -51,6 +51,11 @@ function noValido(){
 	return errorLista || errorBD || errorVacios;
 }
 
+function error(){
+	$("#mensaje").html("Ocurrio un error durante la instalación");
+	$("#barra").addClass("progress-bar-warning");
+}
+
 $("#instalar").click(function(){
 	$("#probarConexion").click();
 	if(noValido())return;
@@ -74,6 +79,7 @@ $("#instalar").click(function(){
 		dataType: "json",
 		data: JSON.stringify(obj["bd"]),
 		contentType: "application/json; charset=utf-8",
+		error: error,
 		success: function(){
 			$("#mensaje").html("Restaurando base de datos Linea Base...");
 			$.ajax({
@@ -82,6 +88,7 @@ $("#instalar").click(function(){
 				dataType: "json",
 				data: JSON.stringify(obj["bd"]),
 				contentType: "application/json; charset=utf-8",
+				error: error,
 				success: function(){
 					$("#mensaje").html("Creando usuario inicial...");
 						$.ajax({
@@ -90,6 +97,7 @@ $("#instalar").click(function(){
 							dataType: "json",
 							data: JSON.stringify(obj["sitio"]),
 							contentType: "application/json; charset=utf-8",
+							error: error,
 							success: function(){
 								$("#mensaje").html("Personalizando aplicación...");
 								$.ajax({
@@ -98,14 +106,18 @@ $("#instalar").click(function(){
 									dataType: "json",
 									data: JSON.stringify(obj["sitio"]),
 									contentType: "application/json; charset=utf-8",
+									error: error,
 									success: function(){
 										$("#mensaje").html("Terminando la instalación...");
 										$.ajax({
 											type: 'POST',
 											url : "api/IN_eliminarArchivos",
-											contentType: "application/json; charset=utf-8"
+											contentType: "application/json; charset=utf-8",
+											error: error,
+											success: function(){
+												window.location.href="index.html";
+											}
 										});
-										//redirigir a index
 									}
 								});
 							}
