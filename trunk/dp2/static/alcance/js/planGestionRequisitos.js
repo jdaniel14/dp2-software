@@ -109,8 +109,19 @@ $(document).ready(function(){
 		return responsables;
 	}
 
+	function validarPlan(){
+
+		clearErrors(); //limpiar los errores anteriores
+		var camposValidos = true;//comenzar a validar campos 
+		//la variable camposValidos siempre debe ir al final para evitar lazy evaluation
+		camposValidos = validateMandatory("documentacion","El campo es obligatorio") && camposValidos;
+		camposValidos = validateMandatory("seguimiento","El campo es obligatorio") && camposValidos;
+		showAlert("form-alcance",camposValidos,"Se guardaron los cambios","Hay errores en el formulario");
+		return camposValidos;
+	}
+
 	$("#modificarPlan").click(function(){
-		//if (!validarAlcance()) return; 
+		if (!validarPlan()) return; 
 		var data = $(".form-control");
 		var obj = {};
 		for(var i=0; i < data.length; i++){
