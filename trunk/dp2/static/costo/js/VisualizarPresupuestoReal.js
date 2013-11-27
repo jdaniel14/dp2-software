@@ -175,7 +175,7 @@ function agregarDataProyecto(proyecto){
 		$("#nombreProyecto").html(nombreProyecto);
 		$("#inputMontoSinReserva").val(formateaNumero(montoSinReserva));
 		$("#inputReserva").val(formateaNumero(porcentajeReserva));
-		$("#reservaTotal").val(formateaNumero((porcentajeReserva*0.01*montoSinReserva));
+		$("#reservaTotal").val(formateaNumero(porcentajeReserva*0.01*montoSinReserva));
 		$("#inputMontoConReserva").val(formateaNumero(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva));
 	}
 }
