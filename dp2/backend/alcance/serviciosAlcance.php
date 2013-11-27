@@ -128,6 +128,9 @@
 			costo=?
 			WHERE id_paquete_trabajo=?");
 			$pstmt->execute(array($res["dias"],$res["costo"],$id_paquete));
+			$pstmt = $con->prepare("SELECT id_componente_padre from PAQUETE_TRABAJO WHERE id_paquete_trabajo=?");
+			$pstmt->execute(array($id_paquete));
+			$res = $pstmt->fetch(PDO::FETCH_ASSOC)
 			if($res["id_componente_padre"]!= null){
 				actualizaPadre($res["id_componente_padre"],$con);
 			}
