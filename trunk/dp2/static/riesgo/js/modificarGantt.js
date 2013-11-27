@@ -87,27 +87,37 @@ function main(){
 
 
     $("#btnConfirmar").click(function() {
-        var data = {
-    		idActividad: $("#listaActividades").val(),
-			tiempoReal: $("#nuevosDias").val(),
-			fechaInicio: $("#fechaInicioActual2").val(),
-			idAccionesRiesgo: idAccion,
-			descripcion: nombreAccion
+        var fecha1=  new Date($("#fechaInicioActual2").val());
+        var fecha2= new Date(fechaMat);
+
+        var diferencia2 = ((((fecha1-fecha2)/1000)/60)/60)/24;
+
+        if (diferencia2>0){
+        	var data = {
+				idActividad: $("#listaActividades").val(),
+				tiempoReal: $("#nuevosDias").val(),
+				fechaInicio: $("#fechaInicioActual2").val(),
+				idAccionesRiesgo: idAccion,
+				descripcion: nombreAccion
+		    }
+		    var jsonData = JSON.stringify(data);
+		    $.ajax({			
+				type: 'PUT',
+				url: updateChanges,
+				data: jsonData,
+				success: function(data){
+					alert("Se actualizó");
+					// obtenerCostoRealActual(costoNuevo);
+					//guardar en BD
+					localStorage.removeItem("idPaquete");
+					window.location.replace("../riesgo/MostrarRiesgos.html");
+				},
+			 
+			});
+        } else {
+        	alert("La nueva fecha de inicio no puede ser antes o el mismo dia que la fecha de materialización del riesgo");
         }
-        var jsonData = JSON.stringify(data);
-        $.ajax({			
-			type: 'PUT',
-			url: updateChanges,
-			data: jsonData,
-			success: function(data){
-				alert("Se actualizó");
-				// obtenerCostoRealActual(costoNuevo);
-				//guardar en BD
-				localStorage.removeItem("idPaquete");
-				window.location.replace("../riesgo/MostrarRiesgos.html");
-			},
-		 
-		});
+        
     });
 }
 
