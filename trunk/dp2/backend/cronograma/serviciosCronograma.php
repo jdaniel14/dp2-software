@@ -365,7 +365,7 @@ function CR_modificar_actividad_BD($actividad){
 	date_default_timezone_set('America/Lima');
 	$sql= "select nombre_actividad from dp2.ACTIVIDAD where id_actividad=?;";
 	//$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where id_actividad=?;commit;";
-	$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where nombre_actividad=? and eliminado=0;commit;";
+	$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? ,predecesores=? where nombre_actividad=? and eliminado=0;commit;";
     //$lista_actividad = array();
 	
 	
@@ -376,7 +376,7 @@ function CR_modificar_actividad_BD($actividad){
         $stmt->execute(array($actividad->id));
 		if ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$stmt2 = $db->prepare($sql2);
-			$stmt2->execute(array($actividad->name,$actividad->duration+0,$actividad->fecha_inicio,$actividad->fecha_inicio,1000 * strtotime($actividad->fecha_inicio),1000 * strtotime($actividad->fecha_inicio),$p["nombre_actividad"]));
+			$stmt2->execute(array($actividad->name,$actividad->duration+0,$actividad->fecha_inicio,$actividad->fecha_inicio,1000 * strtotime($actividad->fecha_inicio),1000 * strtotime($actividad->fecha_inicio),"",$p["nombre_actividad"]));
 
 		}
         $db = null;
