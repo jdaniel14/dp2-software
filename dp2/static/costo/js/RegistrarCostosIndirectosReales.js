@@ -223,10 +223,10 @@ function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codm
 	a=i;
 	a++;
 	if 	(tipo==0)
-		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+costoIndirecto+'</td><td align="center">'+nombreMoneda+'</td></tr>');
+		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+formateaNumero(costoIndirecto)+'</td><td align="center">'+nombreMoneda+'</td></tr>');
 	else{
 		inputMoneda= creaInputMoneda(a);		
-		inputCostoIndirecto='<input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+costoIndirecto+'">';
+		inputCostoIndirecto='<input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+formateaNumero(costoIndirecto)+'">';
 	
 		
 		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+inputCostoIndirecto+'</td><td align="center">'+inputMoneda+'</td></tr>'
@@ -326,9 +326,8 @@ function obtenMonedaSeleccionada(a,moneda){
 $("#btnGrabar").click(function(){
 
 	if (verificaPermisosEditar(idVista)=='1'){
-		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-			grabarRecursos();
-		}
+		confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
+		
 	}else
 		alert('Usted no tiene los permisos requeridos');
 });

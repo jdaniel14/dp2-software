@@ -82,7 +82,7 @@ function obtieneHTMLHijoNodo(paquete,nombrePadre,numeroHijo){
 			'</div>'+
 			'<div id="'+nombrePropio+'" class="panel-collapse collapse">'+
 			  '<div class="panel-body">'+
-				'Costo subtotal:'+ paquete.costoTotalCuenta + ' ' + 'Nuevos soles';
+				'Costo subtotal:'+ formateaNumero(paquete.costoTotalCuenta,2) + ' ' + 'Nuevos soles';
 	if (paquete.listaPaquetesHijo != null)
 		for (var i = 0;i<paquete.listaPaquetesHijo.length;i++)
 			cadenaHTML += obtieneHTMLHijoNodo(paquete.listaPaquetesHijo[i],nombrePropio,i)
@@ -127,9 +127,7 @@ function agregarDataProyecto(proyecto){
 //Funciones para grabar
 
 $("#btnGrabar").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarRecursos();
-	}
+	confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
 });
 
 function grabarRecursos(){

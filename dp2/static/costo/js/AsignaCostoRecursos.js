@@ -481,9 +481,7 @@ $("#btnGrabar").click(function(){
 		borraAlerta("divContingencia","labContingencia");
 
 	if (grabar){
-		if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-			grabarRecursos();
-		}
+		confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
 	}
 });
 
