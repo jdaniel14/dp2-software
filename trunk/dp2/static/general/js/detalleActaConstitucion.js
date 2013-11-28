@@ -50,8 +50,10 @@ function cargaData(data){
 
 		
 		if(key=="fpp"){
-			$('#'+key).html(arreglo[key].substring(0,10));
-			$('#'+key).val(arreglo[key].substring(0,10));
+			if(arreglo[key] != null) {
+				$('#'+key).html(arreglo[key].substring(0,10));
+				$('#'+key).val(arreglo[key].substring(0,10));
+			}
 		} 	
 	}
 }
