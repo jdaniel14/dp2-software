@@ -27,7 +27,7 @@
 	$app->post('/AL_eliminarFase/:var','eliminarFase');
 	
 	//$app->post('/AL_mostrarRequisitoXFase','requisitoXFase');
-	$app->post('/AL_mostrarRequisitoXFase','entregableXRequisito');
+	$app->post('/AL_mostrarRequisitoXFase','entregablesXRequisito');
 	$app->post('/AL_modificarRequistoXFase','modificarRequisitoXFase');
 	$app->get('/AL_getRequisitoMatriz','getRequisitoMatriz');
 ?>
