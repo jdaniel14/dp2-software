@@ -50,7 +50,9 @@
 	  
 	  <div class="" id="RecursosProyecto">
 
-		
+		<div id="divErrorCostoI" class="form-group">			
+			<label id="labErrorCostoI" class="control-label" style="display:none">Los costos indirecos ingresados deben ser un número mayor igual a 0</label>
+		</div>
 		<input type="hidden" name="numFilas" id="numFilas" value="0">
 		
 		<table class="tablesorter table table-bordered tablesorter-bootstrap"  width="90%" id="tablaIndirectos">
@@ -86,15 +88,18 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	    
-    <script src="../../bootstrap/js/bootstrap.min.js"></script>		
+	
+	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+	<script src="../../assets/js/jquery.js"></script>
+	<script src="../../static/costo/datepicker/js/jquery-1.9.1.js"></script>
+	<script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.js"></script>
+	<script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
 	<script src="../../assets/js/header.js"></script>
 	<script src="../../static/costo/js/Utils.js"></script>
 	<script src="../../static/costo/js/RegistrarCostosIndirectosReales.js"></script>
 	
-	<script src="../../static/costo/datepicker/js/jquery-1.9.1.js"></script>
-	<script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.js"></script>
-	<script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.min.js"></script>
     <!-- Tablesorter: required for bootstrap -->
     <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
     <script src="../../tablesorter/js/jquery.tablesorter.widgets.js"></script>
@@ -107,8 +112,8 @@
     
     <!-- Tablesorter: Config filtros -->
     <script src="../../tablesorter/js/filtros.js"></script>
+	<script src="../../static/general/js/bootbox.min.js"></script>
 
-  	<script src="../../static/general/js/bootbox.min.js"></script>
 	
   </body>
 </html>
