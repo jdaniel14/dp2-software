@@ -428,6 +428,7 @@ function cambiaEditar(){
 
 function cambiaConsultar(){
 	if (verificaPermisosVer(idVista)=='1'){
+		borraTodasAlertas();
 		$("#btnEditar").show();
 		$("#btnGrabar").hide();
 		$("#btnCancelar").hide();
