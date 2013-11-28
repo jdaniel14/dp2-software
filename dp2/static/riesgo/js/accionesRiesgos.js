@@ -216,9 +216,9 @@ function listaAcciones() {
                     var tiempo = this.tiempo;
                     
                     $("#tablaAcuerdos").append("<tr>"+
-                        "<td><input class=\"tipoRiesgo input-riesgos\" name=\"accion" + index + "\" id=\"accion" + index + "\" type=\"text\" value=\"" + descripcion + "\" disabled></td>"+
-                        "<td><input class=\"tipoRiesgo input-sm\" name=\"costo" + index + "\" id=\"costo" + index + "\" type=\"text\" value=\"" + costo + "\" disabled></td>"+
-                        "<td><input class=\"tipoRiesgo input-sm\" name=\"tiempo" + index + "\" id=\"tiempo" + index + "\" type=\"text\" value=\"" + tiempo + "\" disabled></td>"+
+                        "<td><input class=\"form-control tipoRiesgo input-riesgos\" name=\"accion" + index + "\" id=\"accion" + index + "\" type=\"text\" value=\"" + descripcion + "\" disabled></td>"+
+                        "<td><input class=\"form-control tipoRiesgo input-sm\" name=\"costo" + index + "\" id=\"costo" + index + "\" type=\"text\" value=\"" + costo + "\" disabled></td>"+
+                        "<td><input class=\"form-control tipoRiesgo input-sm\" name=\"tiempo" + index + "\" id=\"tiempo" + index + "\" type=\"text\" value=\"" + tiempo + "\" disabled></td>"+
                         "<td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + index+ "\" ></span></a></td></tr>");
 
                 });
