@@ -1103,7 +1103,7 @@ function getEdt(){
       while($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
         $listaRequisito[]=$row;
       }
-      echo json_encode(array("arrRequisito" =>$listaRequisito);
+      echo json_encode(array("arrRequisito" =>$listaRequisito));
     }
     
     function modificarRequisitoXFase(){
