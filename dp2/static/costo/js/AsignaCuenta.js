@@ -127,7 +127,7 @@ function agregaDataFila(data){
 			agregaFilaCuentaActividad(i,filaAct.nombre,filaAct.costoSubtotal,filaAct.tipoCuenta,"Nuevos soles",filaAct.idActividad);
 			totalCuenta += filaAct.costoSubtotal*1;
 		}
-		$("#totalCuentas").html(totalCuenta + "");
+		$("#totalCuentas").html(formateaNumero(totalCuenta) + "");
 	}
 }
 
