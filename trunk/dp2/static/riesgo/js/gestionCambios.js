@@ -78,6 +78,25 @@ function guardar_cambios(){
                
         };
        
+        var data2 = {
+          idActividad : $("#id").val(),
+          idProyecto : idProyectoLocal
+        }
+
+        var jsonData2 = JSON.stringify(data2);
+
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: "../../api/R_obtenerCostoReal/" + jsonData2,
+             success: function(data3) {
+                console.log(data3);
+           
+            },
+            fail : alert("xD")
+            
+        });
+
        console.log(data);
      var jsonData = JSON.stringify(data);
      $.ajax({
@@ -90,6 +109,20 @@ function guardar_cambios(){
             }
             
         });
+
+     $.ajax({
+            async: false,
+            type: 'GET',
+            url: "../../api/R_obtenerCostoReal/" + jsonData2,
+             success: function(data3) {
+                console.log(data3);
+           
+            },
+            fail : alert("xD") 
+            
+        });
+
+       console.log(data);
     
     
 }
