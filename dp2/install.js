@@ -13,8 +13,8 @@ $('#probarConexion').click(function(){
 		contentType: "application/json; charset=utf-8",
 		success: function(data){
 			var resultado =data["conexion"] && data["conexionLineaBase"] && data["permisos"];
-			$("#hayError").html(resultado);
 			if(!resultado){
+				$("#hayError").html("true");
 				$("#listaErrores").html("Se encontraron los siguientes errores:<br />");
 				$("#listaErrores").append(data["mensajesError"]);
 				$("#errores").removeClass("alert-success");
@@ -22,6 +22,7 @@ $('#probarConexion').click(function(){
 				$("#errores").show();
 			}
 			else{
+				$("#hayError").html("false");
 				$("#errores").removeClass("alert-danger");
 				$("#errores").addClass("alert-success");
 				$("#listaErrores").html("Conexión exitosa");
