@@ -71,7 +71,9 @@ $("#instalar").click(function(){
 		"sitio":{
 			"nombre": $("#nombre").val(),
 			"usuarioInicial": $("#usuarioInicial").val(),
-			"passwordInicial": $("#passwordInicial").val()
+			"passwordInicial": $("#passwordInicial").val(),
+			"nombreUsuario":$("nombreUsuario").val(),
+			"apellidoUsuario":$("apellidoUsuario").val()
 		}
 	}
 	$.ajax({
@@ -92,37 +94,37 @@ $("#instalar").click(function(){
 				error: error,
 				success: function(){
 					$("#mensaje").html("Creando usuario inicial...");
-						$.ajax({
-							type: 'POST',
-							url : "api/IN_crearUsuario",
-							dataType: "json",
-							data: JSON.stringify(obj["sitio"]),
-							contentType: "application/json; charset=utf-8",
-							error: error,
-							success: function(){
-								$("#mensaje").html("Personalizando aplicación...");
-								$.ajax({
-									type: 'POST',
-									url : "api/IN_personalizarAplicacion",
-									dataType: "json",
-									data: JSON.stringify(obj["sitio"]),
-									contentType: "application/json; charset=utf-8",
-									error: error,
-									success: function(){
-										$("#mensaje").html("Terminando la instalación...");
-										$.ajax({
-											type: 'POST',
-											url : "api/IN_eliminarArchivos",
-											contentType: "application/json; charset=utf-8",
-											error: error,
-											success: function(){
-												window.location.href="index.html";
-											}
-										});
-									}
-								});
-							}
-						});
+					$.ajax({
+						type: 'POST',
+						url : "api/IN_crearUsuario",
+						dataType: "json",
+						data: JSON.stringify(obj["sitio"]),
+						contentType: "application/json; charset=utf-8",
+						error: error,
+						success: function(){
+							$("#mensaje").html("Personalizando aplicación...");
+							$.ajax({
+								type: 'POST',
+								url : "api/IN_personalizarAplicacion",
+								dataType: "json",
+								data: JSON.stringify(obj["sitio"]),
+								contentType: "application/json; charset=utf-8",
+								error: error,
+								success: function(){
+									$("#mensaje").html("Terminando la instalación...");
+									$.ajax({
+										type: 'POST',
+										url : "api/IN_eliminarArchivos",
+										contentType: "application/json; charset=utf-8",
+										error: error,
+										success: function(){
+											window.location.href="index.html";
+										}
+									});
+								}
+							});
+						}
+					});
 				}
 			});
 		}
