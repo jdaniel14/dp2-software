@@ -30,7 +30,7 @@
                 <div class="panel-body">
                     <h3 class="text-left"> Tipos de Impacto </h3>
                     <form  name="form1">
-                        <table class="table-striped" width="90%" id="tablaTiposRiesgos">
+                        <table class="table table-striped" width="90%" id="tablaTiposRiesgos">
                             <tr>
                                 <td width="20%"><b>Tipo de Impacto</b></td>
                                 <td width="20%"><b>Tipo Formato</b></td>
@@ -41,8 +41,8 @@
                             <tbody class="cuerpo-tabla" id="tablaRiesgos">
                                 <!--Contenido Tipos de Riesgos-->
                                 <tr>
-                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="tipoRiesgo input-sm" ></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                    <td><select class="numero" id="formas1"><option value="1">Número</option>
+                                    <td><input name="tipoRi1" id="tipoRi1" type="text" class="tipoRiesgo form-control" ></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <td><select class="numero form-control" id="formas1"><option value="1">Número</option>
                                                 <option value="2">Texto</option></select></td>
                                     <td><a data-toggle="modal" href="#confirmDelete" > <span class="glyphicon glyphicon-remove iconito" id="1"></span></a></td>
 
@@ -50,7 +50,7 @@
                             </tbody>
 
                         </table>
-                        <button class="btn-info" id="agregar">Agregar Item</button>
+                        <button class="btn btn-success" id="agregar">Agregar Item</button>
                         <div  class="col-md-12" style="text-align:center">
                             <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
                         </div>
