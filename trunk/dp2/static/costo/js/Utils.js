@@ -145,6 +145,14 @@ function borraAlerta(idDiv,idLab){
 	$(lab).css("display","none");
 }
 
+function borraTodasAlertas(){
+	
+	$(".has-error").attr("class","form-group");
+	$(".has-success").attr("class","form-group");
+	$(".control-label").css("display","none");
+	
+}
+
 
 function formateaNumero(numero, numDecimales){
 	if (!numDecimales && numDecimales!=0) numDecimales=2;

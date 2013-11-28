@@ -198,8 +198,7 @@ function grabarIndicadores(){
 		anio=fecha.substr(6,4);
 		
 	}else{
-		lanzaAlerta("divFecha","labFechaError","");
-		alert("Ingrese una fecha válida");
+		lanzaAlerta("divFecha","labFechaError","");	
 		return;
 	}
 	

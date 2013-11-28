@@ -647,7 +647,7 @@ function cambiaEditar(){
 function cambiaConsultar(){
 
 	permiso=verificaPermisosEditar(idVista);	
-	
+	borraTodasAlertas();
 	if (permiso=='1')
 		$("#btnEditar").show();
 	else
