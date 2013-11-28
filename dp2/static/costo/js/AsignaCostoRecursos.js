@@ -562,6 +562,17 @@ function limpiaTablaRecursos(){
 
 }
 
+function actualizaContingencia(){
+
+	var porcentajeContingencia= $("#inputPorcentajeContingencia").val();
+	if (isNaN(porcentajeContingencia)){
+		porcentajeContingencia=0;
+		//$("#inputPorcentajeContingencia").val(0);
+	}
+	obtenMontoContingencia(porcentajeContingencia);
+	actualizaCostos();
+}
+
 function actualizaCostos(){
 
 	
