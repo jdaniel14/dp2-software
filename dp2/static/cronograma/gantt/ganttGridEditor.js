@@ -32,8 +32,8 @@ function permite(obj, elEvento, permitidos, allowDecimal) {
     var numeros = "0123456789";
     var caracteres = " abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúü";
     var numerosCaracteres = " 0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúü@!=+*-¿?¡-_%$.,()" + String.fromCharCode(47) + String.fromCharCode(34) + String.fromCharCode(9) + String.fromCharCode(13);
-    var numeroscomas="0123456789,";
- //+ String.fromCharCode(34) + String.fromCharCode(39) + String.fromCharCode(47);
+    var numeroscomas = "0123456789,";
+    //+ String.fromCharCode(34) + String.fromCharCode(39) + String.fromCharCode(47);
     //var teclasEspeciales = [8, 37, 39, 46];
     switch (permitidos) {
         case 'num':
@@ -174,32 +174,32 @@ GridEditor.prototype.addTask = function(task, row) {
 
         $.each($(el).children('input'), function(e1, el1) {
             if (el1.name == "duration") {
-                el1.onkeypress=function(event) {
-                    
-                    return permite(this,event, 'num',false)
-               
+                el1.onkeypress = function(event) {
+
+                    return permite(this, event, 'num', false)
+
                 };
-                    
-                    
-                
-            
+
+
+
+
             }
             else if (el1.name == "depends") {//dependencias
 
-                            el1.onkeypress=function(event) {
-                    
-                    return permite(this,event, 'dependencias',false)
-               
+                el1.onkeypress = function(event) {
+
+                    return permite(this, event, 'dependencias', false)
+
                 };
 
             }
-           else if (el1.name == "name") {//dependencias
+            else if (el1.name == "name") {//dependencias
 
-                                      el1.onkeypress=function(event) {
-                    
-                    return permite(this,event, 'numCar',false)
-               
-                }; 
+                el1.onkeypress = function(event) {
+
+                    return permite(this, event, 'numCar', false)
+
+                };
             }
 
 
@@ -568,6 +568,50 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
 
     //taskEditor.find("#colchon").text('0'+task.id_Wbs);
     //nadal
+
+
+    taskEditor.find("#code").keypress(function(event) {
+
+        return permite(this, event, 'numCar', false)
+
+    });
+
+
+    taskEditor.find("#name").keypress(function(event) {
+
+        return permite(this, event, 'numCar', false)
+
+    });
+
+    taskEditor.find("#description").keypress(function(event) {
+
+        return permite(this, event, 'numCar', false)
+
+    });
+
+
+    taskEditor.find("#duration").keypress(function(event) {
+
+        return permite(this, event, 'num', false)
+
+    });
+
+    taskEditor.find("#progress").keypress(function(event) {
+
+        return permite(this, event, 'num', true)
+
+    });
+
+
+    taskEditor.find("#progress_cost").keypress(function(event) {
+
+        return permite(this, event, 'num', true)
+
+    });
+
+
+
+
     if (ge.lineabase == "true") {
 
         taskEditor.find("#code").attr("disabled", true);
@@ -715,15 +759,36 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
             }
         });
         //nadal
+
+        assigRow.find("[name=value]").keypress(function(event) {
+
+            return permite(this, event, 'num', false)
+
+        });
+
+        assigRow.find("[name=valueReal]").keypress(function(event) {
+
+            return permite(this, event, 'num', false)
+
+        });
+
+        assigRow.find("[name=costRateReal]").keypress(function(event) {
+
+            return permite(this, event, 'num', true)
+
+        });
+
+
+
         if (ge.lineabase == "true") {
-            assigRow.find("[name=value]").attr('disabled', true);
+            assigRow.find("[name=value]").attr('disabled', true);//
             assigRow.find("[name=resourceId]").attr('disabled', true);
             assigRow.find("[name=tipoCosto]").attr('disabled', true);
             assigRow.find("[name=costRateReal]").attr('disabled', false);
-            assigRow.find("[name=valueReal]").attr('disabled', false);
+            assigRow.find("[name=valueReal]").attr('disabled', false);//
         }
         else {
-            assigRow.find("[name=costRateReal]").attr('disabled', true);
+            assigRow.find("[name=costRateReal]").attr('disabled', true);//
             assigRow.find("[name=valueReal]").attr('disabled', true);
             assigRow.find("[name=value]").attr('disabled', false);
             assigRow.find("[name=resourceId]").attr('disabled', false);
@@ -929,7 +994,26 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
 
                 /***** Fin asignar Tipo Costo ****/
                 //nadal
-                
+                assigRow.find("[name=value]").keypress(function(event) {
+
+                    return permite(this, event, 'num', false)
+
+                });
+
+                assigRow.find("[name=valueReal]").keypress(function(event) {
+
+                    return permite(this, event, 'num', false)
+
+                });
+
+                assigRow.find("[name=costRateReal]").keypress(function(event) {
+
+                    return permite(this, event, 'num', true)
+
+                });
+
+
+
                 if (ge.lineabase == "true") {
                     assigRow.find("[name=value]").attr('disabled', true);
                     assigRow.find("[name=resourceId]").attr('disabled', true);
