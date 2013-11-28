@@ -1077,6 +1077,34 @@ function getEdt(){
       	echo json_encode(array("me" => $e->getMessage()));
       }
     }
+
+    function entregablesXRequisito(){
+      $request = \Slim\Slim::getInstance()->request(); //json parameters
+      $data = json_decode($request->getBody(),TRUE);
+      $con = getConnection();
+      $pstmt= $con->prepare(
+        "SELECT 
+         R.id_requisito,
+         F.id_fase as idFase,
+         F.descripcion as descFase,
+         IFNULL(FR.entregable,'') as entregable,
+         IFNULL(FR.fecha,'') as fecha
+         FROM REQUISITO R
+         INNER JOIN ESPECIFICACION_REQUISITOS ER 
+         ON ER.id_especificacion_requisitos = R.id_especificacion_requisitos
+         LEFT JOIN FASE F 
+         ON F.id_proyecto = ER.id_proyecto
+         LEFT JOIN FASE_X_REQUISITO FR 
+         ON FR.id_requisito=R.id_requisito AND FR.id_fase = F.id_fase
+         WHERE R.id_requisito =?"
+      );
+      $pstmt->execute(array($data["id_requisito"]));
+      $listaRequisito = array();
+      while($row=$pstmt->fetch(PDO::FETCH_ASSOC)){
+        $listaRequisito[]=$row;
+      }
+      echo json_encode(array("arrRequisito" =>$listaRequisito);
+    }
     
     function modificarRequisitoXFase(){
       try{
