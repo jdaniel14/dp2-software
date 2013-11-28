@@ -162,15 +162,15 @@ function main() {
             var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
 
             //creo inputs dinamicos
-            $('#tablaCategorizacion1').append("<tr><td><input  class=\"input puntajeMin1\" type=\"text\" id=\"puntajeMin1" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
-                                                   <td><input class=\"input puntajeMax1\" type=\"text\" id=\"puntajeMax1" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
-                                                   <td><input class=\"input prioridad1\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
-                                                   <td><select class=\"estrategia1\" id=\"estrategia" + i + "\">\n\\n\
-                                                        <option  value=\"aceptar\" >Aceptar</option>\n\
-                                                         <option  value=\"compartir\" >Compartir</option>\n\
-                                                         <option  value=\"mejorar\" >Mejorar</option>\n\
-                                                         <option  value=\"explotar\" >Explotar</option></select></td>\n\
-                                                     <td><input class=\"significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
+            $('#tablaCategorizacion1').append("<tr><td><input  class=\"form-control puntajeMin1\" type=\"text\" id=\"puntajeMin1" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+                                                   <td><input class=\"form-control puntajeMax1\" type=\"text\" id=\"puntajeMax1" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
+                                                   <td><input class=\"form-control prioridad1\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
+                                                   <td><select  readonly class=\" form-control estrategia1\" id=\"estrategia" + i + "\">\n\\n\
+                                                        <option  value=\"Aceptar\" >Aceptar</option>\n\
+                                                         <option  value=\"Compartir\" >Compartir</option>\n\
+                                                         <option  value=\"Mejorar\" >Mejorar</option>\n\
+                                                         <option  value=\"Explotar\" >Explotar</option></select></td>\n\
+                                                     <td><input class=\"form-control significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
 
             valor = valor + factorSuma;
 
@@ -209,16 +209,16 @@ function main() {
             var puntajeMaximo = Math.round(parseFloat(puntajeMinim) + parseFloat(factorSuma) - 1);
 
             //creo inputs dinamicos
-            $('#tablaCategorizacion2').append("<tr><td><input  class=\"input puntajeMin2\" type=\"text\" id=\"puntajeMin2" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
-                                                   <td><input class=\"input puntajeMax2\" type=\"text\" id=\"puntajeMax2" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
-                                                   <td><input class=\"input prioridad2\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
-                                                   <td><select class=\"estrategia2\" id=\"estrategia" + i + "\">\n\\n\
-                                                        <option  value=\"aceptar\" >Aceptar</option>\n\
-                                                        <option  value=\"evitar\" >Evitar</option>\n\
-                                                        <option  value=\"transferir\">Transferir</option>\n\
-                                                         <option  value=\"mitigar\" >Mitigar</option>\n\
+            $('#tablaCategorizacion2').append("<tr><td><input  class=\"form-control puntajeMin2\" type=\"text\" id=\"puntajeMin2" + i + "\" value =\"" + puntajeMinimo + "\"  ></td>\n\
+                                                   <td><input class=\"form-control puntajeMax2\" type=\"text\" id=\"puntajeMax2" + i + "\" value=\"" + puntajeMaximo + "\" ></td>\n\
+                                                   <td><input class=\"form-control prioridad2\" type=\"text\" id=\"prioridad" + i + "\"></td>\n\
+                                                   <td><select readonly class=\"form-control estrategia2\" id=\"estrategia" + i + "\">\n\\n\
+                                                        <option  value=\"Aceptar\" >Aceptar</option>\n\
+                                                        <option  value=\"Evitar\" >Evitar</option>\n\
+                                                        <option  value=\"Transferir\">Transferir</option>\n\
+                                                         <option  value=\"Mitigar\" >Mitigar</option>\n\
                                                         </select></td>\n\
-                                                     <td><input class=\"significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
+                                                     <td><input class=\"form-control significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + i + "\"></td></tr>");
 
             valor = valor + factorSuma;
 
@@ -390,12 +390,12 @@ function leerCategorias2() {
                 var significado = data[obj]["significado"];
 
                 $('#tablaCategorizacion2').append("<tr>\n\
-                                                     <td><input  class=\"input puntajeMin2\" type=\"text\" id=\"puntajeMin2" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
-                                                     <td><input class=\"input puntajeMax2\" type=\"text\" id=\"puntajeMax2" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
-                                                     <td><input class=\"input prioridad2\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><input  class=\"form-control puntajeMin2\" type=\"text\" id=\"puntajeMin2" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input class=\"form-control puntajeMax2\" type=\"text\" id=\"puntajeMax2" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input class=\"form-control prioridad2\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
                                                      <td><select disabled class=\"estrategia2\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
                                                               <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
-                                                     <td><input class=\"significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+                                                     <td><input class=\"form-control significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
 
             }
@@ -454,12 +454,12 @@ function leerCategorias1() {
                 var significado = data[obj]["significado"];
 
                 $('#tablaCategorizacion1').append("<tr>\n\
-                                                     <td><input  class=\"input puntajeMin1\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
-                                                     <td><input class=\"input puntajeMax1\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
-                                                     <td><input class=\"input prioridad1\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
-                                                     <td><select disabled class=\"estrategia1\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
-                                                              <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
-                                                     <td><input class=\"significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+                                                     <td><input  class=\"form-control puntajeMin1\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input class=\"form-control puntajeMax1\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input class=\"form-control prioridad1\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><select disabled class=\"form-control estrategia1\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
+                                                              <option  class=\"form-control\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
+                                                     <td><input class=\" form-control significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
 
             }
