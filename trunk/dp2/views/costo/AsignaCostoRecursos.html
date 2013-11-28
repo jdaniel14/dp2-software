@@ -77,7 +77,7 @@
 				</div>				
 				<label class="col-lg-2">Monto de reserva de Gestión (Nuevos soles)</label>
 				<div class="col-lg-4">
-				  <input type="text" class="" id="reservaTotal" placeholder="Reserva Total" readOnly="readOnly" disabled>
+				  <input type="text" class="form-control" id="reservaTotal" placeholder="Reserva Total" readOnly="readOnly" disabled>
 				</div>
 			</div>
 			
@@ -85,7 +85,7 @@
 				<label class="col-lg-2" align='right' >% contingencia</label>
 				<div class="col-lg-4">
 				  <label class="control-label" id="labContingencia" align="left" style="display:none">El % debe ser un número mayor a 0</label>
-				  <input type="text" class="form-control" id="inputPorcentajeContingencia" placeholder="% contingencia" onChange="">
+				  <input type="text" class="form-control" id="inputPorcentajeContingencia" placeholder="% contingencia" onChange="actualizaContingencia();">
 				</div>
 				<label class="col-lg-2 control-label" align='left' >Monto de contingencia</label>
 				<div class="col-lg-4">
@@ -121,7 +121,7 @@
 			
 			<table class="table-striped table-bordered" width="90%" id="tablaResumenCostoFijo">
 			<thead>
-			<tr class="tablesorter-headerRow"><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>
+			<tr class="tablesorter-headerRow"><td width="10%"><b>#</b></td><td width="40%"><b>Recurso</b></td><td width="20%"><b>Costo Unitario</b></td><td width="20%"><b>Unidad de Moneda</b></td><td width="20%"><b>Cantidad</b></td></tr>
 			</thead>
 			<tbody>
 			</tbody>
@@ -140,7 +140,7 @@
 				<tr width="100%">
 				<td width="100%" align="center"> 
 				<button type="button" class="btn btn-primary" id="btnGrabar">Grabar</button>
-				<button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>				
+				<!--<button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>				-->
 				</tr>
 			
 			</table>
