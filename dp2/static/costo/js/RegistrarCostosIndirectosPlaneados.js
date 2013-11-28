@@ -222,7 +222,7 @@ function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codm
 		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+formateaNumero(costoIndirecto,2)+'</td><td align="center">'+nombreMoneda+'</td></tr>');
 	else{
 		inputMoneda= creaInputMoneda(a);		
-		inputCostoIndirecto='<input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+formateaNumero(costoIndirecto,2)+'">';
+		inputCostoIndirecto='<div id="divCostoI'+a+'" class="form-group"><input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+formateaNumero(costoIndirecto,2)+'"></div>';
 	
 		
 		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+inputCostoIndirecto+'</td><td align="center">'+inputMoneda+'</td></tr>'
@@ -321,13 +321,49 @@ function obtenMonedaSeleccionada(a,moneda){
 
 $("#btnGrabar").click(function(){
 	if (verificaPermisosEditar(idVista)=='1'){
-		confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
+		if (validaGrabar())
+			confirmar("¿Está seguro que desea grabar los cambios realizados?",grabarRecursos);
 		
 	}else
 		alert('Usted no tiene los permisos requeridos');
 });
 
+function validaGrabar(){
+	
+	var grabar=true;
+	
+	num=$("#numFilas").val();
+	
+	borraAlerta("divErrorCostoI","labErrorCostoI");
+	
+	for (i=1; i<=num;i++){
+		codM= "#codmes"+i;
+		costoI= "#costoIndirecto"+i;
+		comboM= "#comboMoneda"+i;
+				
+		codmes=$(codM).val();
+		costo=$(costoI).val();
+		moneda=$(comboM).val();
+		
+		if (costo!='' && !isNaN(costo) && new Number(costo)>=0){
+			
+			borraAlerta("divCostoI"+i,"");
+			
+		}else{
+		
+			lanzaAlerta("divErrorCostoI","labErrorCostoI","");
+			lanzaAlerta("divCostoI"+i,"labErrorCostoI","");
+			//'costoIndirecto'+i
+			grabar= false;
+		}
+	}
+	
+	return grabar;
+
+}
+
 function grabarRecursos(){
+	
 	var costosGrabar=new Array();
 		
 	num=$("#numFilas").val();
@@ -341,21 +377,13 @@ function grabarRecursos(){
 		costo=$(costoI).val();
 		moneda=$(comboM).val();
 		
-		if (costo!='' && !isNaN(costo) && new Number(costo)>=0){
-		
-			var costoIndirecto={
-				codMes: codmes,
-				costoIndirecto: costo,
-				idMoneda: moneda
-			}
-	
-			costosGrabar.push(costoIndirecto);
-			
-		}else{
-		
-			alert('Los costos indirecos ingresados deben ser un número mayor igual a 0');
-			return;
+		var costoIndirecto={
+			codMes: codmes,
+			costoIndirecto: costo,
+			idMoneda: moneda
 		}
+	
+		costosGrabar.push(costoIndirecto);
 	}
 	
 	var obj={
