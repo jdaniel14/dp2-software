@@ -82,9 +82,11 @@ function restaurarBDLineaBase(){
 	$con = conexion($val["url"],$val["esquema"].'_lineabase',$val["usuario"],$val["password"]);
 	//leer archivo sql
 	$sql = file_get_contents('../bd_lineabase.sql');
-	$con->exec($sql);
-
-	//crear sp
+	$outputSql = renderHeader($sql,$val);
+	//descomentar la siguiente linea en caso de tener problemas con DEFINER
+	//$sql = preg_replace('@/*!50013 DEFINER.*?*/@' , '' , $sql);
+	$con->exec($outputSql);
+	//insertar datos iniciales
 
 	echo 200;
 }
@@ -95,7 +97,12 @@ function restaurarBD(){
 	$con = conexion($val["url"],$val["esquema"],$val["usuario"],$val["password"]);
 	//leer archivo sql
 	$sql = file_get_contents('../bd.sql');
-	$con->exec($sql);
+	$outputSql = renderHeader($sql,$val);
+	//descomentar la siguiente linea en caso de tener problemas con DEFINER
+	//$sql = preg_replace('@/*!50013 DEFINER.*?*/@' , '' , $sql);
+	$con->exec($outputSql);
+	//insertar los datos iniciales
+
 	//cambiar el archivo de conexion
 	//obtener el archivo plantilla
 	$code = file_get_contents('../conexion.tpl.php');
@@ -113,7 +120,11 @@ function crearUsuario(){
 	$user = $val["usuarioInicial"];
 	$pass = $val["passwordInicial"];
 	//ejecutar query;
-
+	/*
+	$con = getConnection();
+	$pstmt= $con->prepare("");
+	$pstmt->execute(array($user,$pass));
+	*/
 	echo 200;
 }
 
@@ -143,11 +154,15 @@ function renderHeader($html , $variables){
 }
 
 function eliminarArchivos(){
-	/*unlink("../install.js");
+	/*
+	unlink("../install.js");
 	unlink("../install.html");
 	unlink("../headerGeneral.tpl.html");
 	unlink("../header.tpl.html");
-	unlink("../conexion.tpl.html");*/
+	unlink("../conexion.tpl.html");
+	unlink("../bd.sql");
+	unlink("../bd_lineabase.sql");
+	*/
 }
 
 ?>
