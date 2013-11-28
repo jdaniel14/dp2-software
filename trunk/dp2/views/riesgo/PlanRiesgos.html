@@ -23,141 +23,155 @@
 
         <div class="well"></div>
 
- 
-   <div class="container">
-        <div class="col-md-12" role="main">
-            <!-- <div class="panel panel-default">
-              <div class="panel-body">
-                <label  class="col-lg-2 control-label"><b>Metodología</b></label>
-                <div class="col-lg-10">
-                    <textarea class="form-control" rows="5" id="metodologia"></textarea>
+
+        <div class="container">
+            <div class="col-md-12" role="main">
+                <!-- <div class="panel panel-default">
+                  <div class="panel-body">
+                    <label  class="col-lg-2 control-label"><b>Metodología</b></label>
+                    <div class="col-lg-10">
+                        <textarea class="form-control" rows="5" id="metodologia"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary " id="btnGuardarMetodologia">Guardar</button>
+                  </div>
+                </div> -->
+
+
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Definición del Tipo de Impacto </h3>
+                        <form class="form-horizontal">
+                            <table class="table table-striped">
+                                <thead class="titulo-tabla" id="headerTipoImpactoXNivelImpacto">
+
+                                </thead>
+                                <tbody class="cuerpo-tabla" id="tablaTipoImpactoXNivelImpacto">
+                                    <!--Contenido Tabla Impacto-->
+
+                                </tbody>
+                            </table>
+                            <div class="col-md-12"  style="text-align:center">
+                                <a data-toggle="modal" href="#modalAumentarTipoImpactoXNivelImpacto" class="btn btn-primary" id="btnAumentar">Aumentar</a>
+                                <a data-toggle="modal" href="#modalEliminarTipoImpactoXNivelImpacto" class="btn btn-danger" id="btnEliminarTipoXNivelModal">Eliminar</a>
+                            </div>
+                        </form>  
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary " id="btnGuardarMetodologia">Guardar</button>
-              </div>
-            </div> -->
 
 
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Categorización de Estrategias Positivo </h3>
+                        <div class="col-md-10">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label  class="col-lg-5 control-label">Puntaje Mínimo:</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" id="puntajeMin" class="form-control puntajeMin" disabled >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-5 control-label">Puntaje Máximo:</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" id="puntajeMax" class="form-control puntajeMax" disabled>
+                                    </div>
+                                </div>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="text-left">  Definición del Tipo de Impacto </h3>
-                    <form class="form-horizontal">
-                        <table class="table table-striped">
-                            <thead class="titulo-tabla" id="headerTipoImpactoXNivelImpacto">
+                                <div class="form-group">
+                                    <label  class="col-lg-5 control-label">Cantidad de Estrategias (Máximo 4):</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" id="cantidadEstrategias1" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
 
-                            </thead>
-                            <tbody class="cuerpo-tabla" id="tablaTipoImpactoXNivelImpacto">
-                                <!--Contenido Tabla Impacto-->
+                            <div class="col-lg-2">
+                                <button type="button" class="btn btn-success" id="btnGenerar1">Generar</button>
 
-                            </tbody>
-                        </table>
-                        <div class="col-md-12"  style="text-align:center">
-                            <a data-toggle="modal" href="#modalAumentarTipoImpactoXNivelImpacto" class="btn btn-primary" id="btnAumentar">Aumentar</a>
-                            <a data-toggle="modal" href="#modalEliminarTipoImpactoXNivelImpacto" class="btn btn-danger" id="btnEliminarTipoXNivelModal">Eliminar</a>
+                            </div>
                         </div>
-                    </form>  
-                </div>
-            </div>
-
-
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="text-left">  Categorización de Estrategias Positivo </h3>
-                    <div>
-                    <div class="form-group">
-                        <label  class="col-lg-2 control-label">Puntaje Mínimo:</label>
-                        <div class="col-lg-10">
-                            <input type="text" id="puntajeMin" class="input-mini puntajeMin" disabled >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-lg-2 control-label">Puntaje Máximo:</label>
-                        <div class="col-lg-10">
-                            <input type="text" id="puntajeMax" class="input-mini puntajeMax" disabled>
-                        </div>
-                         <label  class="col-lg-2 control-label">Cantidad de Estrategias (Máximo 4):</label>
-                         <div class="col-lg-10">
-                            <input type="text" id="cantidadEstrategias1" class="input-mini">
-                            <button type="button" class="btn-info round" id="btnGenerar1">Generar</button>
-                         
-                        </div>
-                    </div>
-                    </div>
-
-                    <form  name="form1">
-                        <table class="table-striped" width="90%" id="tablaRecursos">
+                        <form  name="form1">
+                            <table class="table table-striped" width="90%" id="tablaRecursos">
                                 <tr>
                                     <td width="20%"><b>Puntaje Min</b></td>
-                                      <td width="30%"><b>Puntaje Max</b></td>
+                                    <td width="30%"><b>Puntaje Max</b></td>
                                     <td width="24%"><b>Prioridad</b></td>
                                     <td width="20%"><b>Estrategia</b></td>
                                     <td width="20%"><b>Significado de la Estrategia</b></td>
                                 </tr>
-                            
-                            <tbody class="cuerpo-tabla" id="tablaCategorizacion1">
-                                <!--Contenido Tabla Categorizacion-->
-                            </tbody>
-                        </table>
-                        <div class="col-md-12"  style="text-align:center">
-                            <button type="button" class="btn btn-primary" id="btnGrabarCategorizacion1">Guardar</button>
-                            <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
-                        </div>
-                    </form>  
+
+                                <tbody class="cuerpo-tabla" id="tablaCategorizacion1">
+                                    <!--Contenido Tabla Categorizacion-->
+                                </tbody>
+                            </table>
+                            <div class="col-md-12"  style="text-align:center">
+                                <button type="button" class="btn btn-primary" id="btnGrabarCategorizacion1">Guardar</button>
+                                <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                            </div>
+                        </form>  
+                    </div>
                 </div>
-            </div>
 
 
-                        <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="text-left">  Categorización de Estrategias Negativo </h3>
-                    <div>
-                    <div class="form-group">
-                        <label  class="col-lg-2 control-label">Puntaje Mínimo:</label>
-                        <div class="col-lg-10">
-                            <input type="text" id="puntajeMin" class="input-mini puntajeMin" disabled >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-lg-2 control-label">Puntaje Máximo:</label>
-                        <div class="col-lg-10">
-                            <input type="text" id="puntajeMax" class="input-mini puntajeMax" disabled>
-                        </div>
-                         <label  class="col-lg-2 control-label">Cantidad de Estrategias (Máximo 4):</label>
-                         <div class="col-lg-10">
-                            <input type="text" id="cantidadEstrategias2" class="input-mini">
-                            <button type="button" class="btn-info round" id="btnGenerar2">Generar</button>
-                         
-                        </div>
-                    </div>
-                    </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="text-left">  Categorización de Estrategias Negativo </h3>
+                        <div class="col-md-10">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label  class="col-lg-5 control-label">Puntaje Mínimo:</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" id="puntajeMin" class="form-control puntajeMin" disabled >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-5 control-label">Puntaje Máximo:</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" id="puntajeMax" class="form-control puntajeMax" disabled>
+                                    </div>
+                                    <label  class="col-lg-5 control-label">Cantidad de Estrategias (Máximo 4):</label>
+                                </div>
+                                   <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <input type="text" id="cantidadEstrategias2" class="form-control">
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="col-lg-4">
+                              <button type="button" class="btn btn-success" id="btnGenerar2">Generar</button>
 
-                    <form  name="form1">
-                        <table class="table-striped" width="90%" id="tablaRecursos">
+                        </div>
+                            </div>
+                        <form  name="form1">
+                            <table class="table table-striped" width="90%" id="tablaRecursos">
                                 <tr>
                                     <td width="20%"><b>Puntaje Min</b></td>
-                                      <td width="30%"><b>Puntaje Max</b></td>
+                                    <td width="30%"><b>Puntaje Max</b></td>
                                     <td width="24%"><b>Prioridad</b></td>
                                     <td width="20%"><b>Estrategia</b></td>
                                     <td width="20%"><b>Significado de la Estrategia</b></td>
                                 </tr>
-                            
-                            <tbody class="cuerpo-tabla" id="tablaCategorizacion2">
-                                <!--Contenido Tabla Categorizacion-->
-                            </tbody>
-                        </table>
-                        <div class="col-md-12"  style="text-align:center">
-                            <button type="button" class="btn btn-primary" id="btnGrabarCategorizacion2">Guardar</button>
-                            <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
-                        </div>
-                    </form>  
+
+                                <tbody class="cuerpo-tabla" id="tablaCategorizacion2">
+                                    <!--Contenido Tabla Categorizacion-->
+                                </tbody>
+                            </table>
+                            <div class="col-md-12"  style="text-align:center">
+                                <button type="button" class="btn btn-primary" id="btnGrabarCategorizacion2">Guardar</button>
+                                <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                            </div>
+                        </form>  
+                    </div>
                 </div>
+
+
+
             </div>
 
-            
- 
-        </div>
-            
-            
+
         </div>
 
 
@@ -202,29 +216,29 @@
                     <div class="modal-body">
                         <div class="form-horizontal col-lg-12">
                             <h5><b>¿Esta seguro de querer eliminar todo el contenido de la tabla?</br>Este es un cambio que no puede ser deshecho</b></h5>
-                            
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" id="btnEliminarTipoXNivel">Continuar</button>
-                        <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </body>
-</html>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" id="btnEliminarTipoXNivel">Continuar</button>
+                                <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                </body>
+                </html>
 
 
 
 
-<script src="../../assets/js/jquery-1.7.1.min.js"></script>
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
-<!-- <script src="../../static/riesgo/js/configuracionDavid.js"></script> -->
-<script src="../../static/riesgo/js/planRiesgosDavid.js"></script>
-<!-- <script src="../../static/riesgo/js/jquery-sortable.js"></script> -->
+                <script src="../../assets/js/jquery-1.7.1.min.js"></script>
+                <script src="../../bootstrap/js/bootstrap.min.js"></script>
+                <!-- <script src="../../static/riesgo/js/configuracionDavid.js"></script> -->
+                <script src="../../static/riesgo/js/planRiesgosDavid.js"></script>
+                <!-- <script src="../../static/riesgo/js/jquery-sortable.js"></script> -->
 
-<script src="../../static/riesgo/js/planRiesgosAtenas.js"></script>
-<script src="../../assets/js/header.js"></script>
-<script>
+                <script src="../../static/riesgo/js/planRiesgosAtenas.js"></script>
+                <script src="../../assets/js/header.js"></script>
+                <script>
 
 
-</script>
+                </script>
