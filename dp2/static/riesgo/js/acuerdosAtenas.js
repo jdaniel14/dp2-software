@@ -154,7 +154,7 @@ function listarAcuerdos() {
                 var idAcuerdo = data[obj]["idAcuerdo"];
 
 
-                $("#tablaAcuerdosMod").append("<tr><td><input class=\"diaAcuerdos\" disabled name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td><input disabled  class=\"horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input type=\"text\"  class=\"acuerdosA\" disabled name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
+                $("#tablaAcuerdosMod").append("<tr><td><input readonly class=\" form-control diaAcuerdos\" disabled name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td><input disabled readonly  class=\" form-control horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input readonly type=\"text\"  class=\"form-control acuerdosA\" disabled name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
 
                 //aplicar un if $("#my_row_101").remove();
                 
