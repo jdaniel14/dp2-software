@@ -163,10 +163,12 @@ function guardarEntregables(){
 			type: 'POST',
 			url : '../../api//AL_modificarRequistoXFase',
 			dataType: "json",
+			async: false,
 			data: JSON.stringify(obj),
 			contentType: "application/json; charset=utf-8"
 		});
 	}
+	$('#tablaEntregables').modal('hide');
 }
 
 function guardarCambios(){	

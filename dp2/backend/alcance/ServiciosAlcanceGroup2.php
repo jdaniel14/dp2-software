@@ -1108,12 +1108,23 @@ function getEdt(){
     
     function modificarRequisitoXFase(){
       try{
-    	$request = \Slim\Slim::getInstance()->request(); //json parameters
-    	$data = json_decode($request->getBody()); //object convert
-    	
-    	$con = getConnection();
-    	$pstmt= $con->prepare("UPDATE FASE_X_REQUISITO set entregable=?,fecha=? WHERE id_fase= ? AND id_requisito=? ");
-    	$pstmt->execute(array($data->{"entregable"},$data->{"fecha"},$data->{"idFase"},$data->{"id_requisito"}));
+      	$request = \Slim\Slim::getInstance()->request(); //json parameters
+      	$data = json_decode($request->getBody(),TRUE); //object convert
+      	$con = getConnection();
+
+        //revisar si existe el registro
+        $pstmt= $con->prepare("SELECT * FROM FASE_X_REQUISITO WHERE id_requisito =? AND id_fase=?");
+        $pstmt->execute(array($data["id_requisito"],$data["idFase"]));
+        if($pstmt->fetch(PDO::FETCH_ASSOC)){
+          //si existe se hace update
+          $pstmt= $con->prepare("UPDATE FASE_X_REQUISITO set entregable=?,fecha=? WHERE id_fase= ? AND id_requisito=? ");
+          $pstmt->execute(array($data["entregable"],$data["fecha"],$data["idFase"],$data["id_requisito"]));
+        }
+        else{
+          //si no existe se inserta
+          $pstmt= $con->prepare("INSERT INTO FASE_X_REQUISITO (id_fase,id_requisito,entregable,fecha) VALUES (?,?,?,?)");
+          $pstmt->execute(array($data["idFase"],$data["id_requisito"],$data["entregable"],$data["fecha"]));
+        }
       }
       catch (PDOException $e) {
       	echo '{"me" : "No se pueden modificar los requisitos"}';
