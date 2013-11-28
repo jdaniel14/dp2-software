@@ -1,13 +1,18 @@
 var x;
-x = $(document);
-x.ready(inicializarEventos);
+//x = $(document);
+//x.ready(inicializarEventos);
 
-function inicializarEventos() {    
-    $("#btnBuscar").click(iniciarFlujo);
-    $("#resultados").hide();
+(function($) {
+	//function inicializarEventos() {
+	$(document).ready(function() {
+		$("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
+		$("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
+		$("#btnBuscar").click(iniciarFlujo);
+		$("#resultados").hide();
 
    // $("#fechaInicio").change(filtrarOtraFecha)
-}
+	});
+	})(jQuery);
 
 function filtrarOtraFecha() {
 
