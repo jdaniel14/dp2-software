@@ -552,7 +552,7 @@
 		
 
 		$objPHPExcel->getActiveSheet()
-                    ->fromArray($paquete,NULL,'B3');
+                    ->fromArray($paquete,NULL,'B4');
 
         //Se crea la cabecera del documento y se da formato 
 
