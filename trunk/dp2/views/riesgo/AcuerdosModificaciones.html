@@ -12,9 +12,8 @@
         <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
         <title>Matriz de Riesgos</title>
-        <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
+      <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
-        <link href="../../static/riesgo/css/application.css" rel="stylesheet">
 
         <!--<link href="../../static/riesgo/css/vendor.css" rel="stylesheet">-->
 
@@ -36,34 +35,32 @@
                     <div class="panel-body">
                         <h3 class="text-center">  Acuerdos y Modificaciones </h3>
                         <form  name="form1">
-                            <table class="table-striped" width="90%" id="tablaAcuerdosMod">
+                            <table class="table table-striped" width="100%" id="tablaAcuerdosMod">
 
                                 <tr>
-                                    <td  class="col-md-5"><b>Día</b></td>
-                                    <td  class="col-lg-offset-4"><b>Hora</b></td>
-                                    <td class="col-lg-4"><b>Acuerdos</b></td>
+                                    <td width="10%"><b>Día</b></td>
+                                    <td width="10%"><b>Hora</b></td>
+                                    <td width="80%"><b>Acuerdos</b></td>
 
                                 </tr>
-
-
 
                                 <tbody class="cuerpo-tabla" id="tablaAcuerdos">
 
                                     <!--Contenido Tabla Acuerdos-->
                                     <tr>
-                                        <td><input class="diaAcuerdos input-sm"  name="fechas1" id="fechas0" type="date"></td> <!--id 7 palabras  funciona y 1 num al final-->
-                                        <td><input class="horasAcuerdos input-sm" type="time" name="horas1" id="horas_0" ></td>
-                                        <td><input class="acuerdosA input-sm" type="text"  name="acuerdo1" id="acuerdo0" ></td>
+                                      
+                                     <td ><input readonly class="form-control diaAcuerdos"  id="fechas0" type="date"></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                    <td><input readonly class="horasAcuerdos form-control" type="time"  id="horas_0" ></td>
+                                        <td><input readonly class="acuerdosA form-control" type="text"  id="acuerdo0" ></td>
 
                                     </tr>
                                 </tbody>
                             </table>
 
 
-                            <button class="btn-info" id="agregar">Agregar</button>
+                            <button class="btn btn-success" id="agregar">Agregar</button>
 
-
-                            <div class="span6"  style="text-align:center">
+                            <div class="col-md-12"  style="text-align:center">
                                 <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
                                 <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
                             </div>
@@ -78,18 +75,9 @@
 
 
 
-
+<script src="../../assets/js/jquery-1.7.1.min.js"></script>
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
-
-<script src="../../static/riesgo/js/application.js"></script> 
 <script src="../../static/riesgo/js/planRiesgosAtenas.js"></script>
 <script src="../../assets/js/header.js"></script>
-
-
 <script src="../../static/riesgo/js/acuerdosAtenas.js"></script>
 
-
-<script>
-
-
-</script>
