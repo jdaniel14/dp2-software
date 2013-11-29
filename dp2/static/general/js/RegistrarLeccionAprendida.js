@@ -38,7 +38,7 @@ function grabarLeccionAprendida(){
 		fail: codigoError,
                 success: function(data){
                     
-                    alert("Se grabaron los datos wuju!");
+                    alert("Se grabaron los datos de la Leccion Aprendida!");
                 }
 	});
 }

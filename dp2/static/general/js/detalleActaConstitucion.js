@@ -281,6 +281,8 @@ function grabarAutoridadActa(){
 		jp: $("#jp").val(),
 		jcp: $("#jcp").val(),
 		pap: $("#pap").val(),
+		inicioP: $("#inicioP").val(),
+		finP: $("#finP").val(),
 	};
 
 

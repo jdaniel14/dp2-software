@@ -107,7 +107,7 @@ function asd(www,id){
 			contentType: "application/json; charset=utf-8",
 			url: "../../api/G_eliminarRecursoProyecto",
 	        success: function(data){
-	            alert("Recurso eliminado");
+	  
 	            $(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
 	        }
 		});	

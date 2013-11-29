@@ -16,7 +16,7 @@ function iniciaLeccionesAprendidas(){
             $(".btn.btn-info").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
 				var idLeccionAprendida = auxtd[0].innerHTML;
-				alert(idLeccionAprendida);
+
 				localStorage.setItem("idLeccionAprendida",idLeccionAprendida);
 				$(location).attr('href','ModificarLeccionAprendida.html');
 			});
@@ -35,7 +35,7 @@ function iniciaLeccionesAprendidas(){
 					data: JSON.stringify(obj),
 			        success: function(data){ 
 			        	$(location).attr('href','ListaLeccionesAprendidas.html'); 
-			        	alert("Se elimino");                  
+                
 			        }
 				});
 			});
@@ -43,7 +43,7 @@ function iniciaLeccionesAprendidas(){
 	});
 }
 function eliminarLeccionAprendida(){
-	alert("bonnie se come los mocos");
+
 	var obj ={
 		id: localStorage.getItem("idLeccionAprendida")
 	};
@@ -55,7 +55,7 @@ function eliminarLeccionAprendida(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
         success: function(data){  
-        	alert("Se elimino");                  
+                 
         }
 	});
 }
