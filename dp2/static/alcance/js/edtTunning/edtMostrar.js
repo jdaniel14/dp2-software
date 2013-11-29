@@ -75,6 +75,15 @@ jQuery(document).ready(function() {
     window.location.href = 'index.html';
   });
 
+  $("#ocultarGlosario").click(function(){
+    $(".glosarioEDT").hide("slow");
+    $("#mostrarGlosario").show();
+  })
+
+  $("#mostrarGlosario").click(function(){
+      $(".glosarioEDT").show("slow");
+      $("#mostrarGlosario").hide();
+  });
 });
 
 
@@ -443,7 +452,7 @@ function agregarHijoJson( idnodo, title, descripcion, hijos, dias,  nodos ){
       }
      }else{
         console.log("no se guarda pq no hubo cambios");
-        //window.location.href = 'index.html';
+        window.location.href = 'index.html';
      }
     
 	 
