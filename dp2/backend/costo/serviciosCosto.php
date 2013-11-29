@@ -1860,6 +1860,7 @@
 		*/
 		
 		$respuesta = null;
+
 		try {
 			$sql = "UPDATE RECURSO
 			SET
@@ -1882,13 +1883,19 @@
 
 					$fechaI = $yearI . $monthI . $dayI;
 					$fechaF = $yearF . $monthF . $dayF;
-		        	$stmt->bindParam("idProyecto", $obj->idProyecto);
-		        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
-		        	$stmt->bindParam("costoFijoDiarioReal", $recurso->costoFijoDiarioReal);
-		        	$stmt->bindParam("fechaI", $fechaI);
-		        	$stmt->bindParam("fechaF", $fechaF);
-		        	$stmt->execute();
-		        	$db = null;
+
+					if ($fechaI != null && strcmp($fechaI, '') != 0 &&
+						$fechaF != null && strcmp($fechaF, '') != 0 &&
+						$recurso->costoFijoDiarioReal != null && strcmp($recurso->costoFijoDiarioReal, '') != 0) {
+
+			        	$stmt->bindParam("idProyecto", $obj->idProyecto);
+			        	$stmt->bindParam("idRecurso", $recurso->idRecurso);
+			        	$stmt->bindParam("costoFijoDiarioReal", $recurso->costoFijoDiarioReal);
+			        	$stmt->bindParam("fechaI", $fechaI);
+			        	$stmt->bindParam("fechaF", $fechaF);
+			        	$stmt->execute();
+			        	$db = null;
+		        	}
 				}
 				unset($actividad);
 			}
