@@ -30,7 +30,7 @@ function G_postCerrarProyecto() {
     $resultado = json_decode($request->getBody());
     //$request = "{ \"id\": 1 }";
     //$resultado = json_decode($request);
-    $sql = " UPDATE PROYECTO SET estado='CERRADO' where id_proyecto=:id ";
+    $sql = " UPDATE PROYECTO SET estado='CERRADO', fecha_fin_real = SYSDATE() where id_proyecto=:id ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
