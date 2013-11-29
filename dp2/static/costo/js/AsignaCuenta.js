@@ -100,7 +100,7 @@ function agregarDataProyecto(proyecto){
 		var montoSinReserva = formateaNumero(proyecto.presupuestoTotal);
 		var porcentajeReserva = formateaNumero(proyecto.porcentajeReserva);
 		indicadorCerrado = proyecto.indicadorCerrado;
-		indicadorLineaBase = proyecto.indicadorLineaBase
+		indicadorLineaBase = proyecto.indicadorLineaBase;
 		if (indicadorCerrado=="1" || indicadorLineaBase=="1"){
 			$("#btnGrabar").hide();	
 			$("#btnCancelar").hide();	
@@ -128,6 +128,9 @@ function agregaDataFila(data){
 			totalCuenta += filaAct.costoSubtotal*1;
 		}
 		$("#totalCuentas").html(formateaNumero(totalCuenta) + "");
+		if (indicadorCerrado=="1" || indicadorLineaBase=="1") {
+			$("select").attr("disabled",true);
+		}
 	}
 }
 
@@ -206,9 +209,6 @@ function grabarEstadoCuenta(){
 
 function limpiaTablaCuentaxActividad(){
 	$("#tablaCuentaxActividad > tbody").html('');
-	$("#tablaCuentaxActividad").trigger("update");
-
-
 }
 
 
