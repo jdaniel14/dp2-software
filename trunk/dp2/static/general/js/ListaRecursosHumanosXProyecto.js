@@ -7,9 +7,10 @@ var profesion = "";
 $(document).ready(function(){
 	//$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
 	//$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
+	
+	verificaLineaBase();
 	llenar_profesion();
 	listarRRHHxProyecto();
-	verificaLineaBase();
 	//validacion();
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
@@ -210,13 +211,26 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	}
 	else
 	{
-		var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
+		var FlagLB = localStorage.getItem("FlagLB");
+		if (FlagLB=="true"){
+			var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
 
 		'</td><td>'+ arreglo["prof_act"] +
 		'</td><td>' + arreglo["costo"] +
 		'</td><td>' + arreglo["fechaini"] +
 		'</td><td>' + arreglo["fechafin"] +
-		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';		
+		'<td><button type="button"  disabled="disabled" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';	
+		}
+		else {
+			var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
+
+		'</td><td>'+ arreglo["prof_act"] +
+		'</td><td>' + arreglo["costo"] +
+		'</td><td>' + arreglo["fechaini"] +
+		'</td><td>' + arreglo["fechafin"] +
+		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';	
+		}
+			
 	}
 	
 
@@ -319,8 +333,10 @@ function verificaLineaBase() {
 				$("#btnAsignarRecursos").removeClass('disabled');
 				$(".btn.btn-danger").removeClass('disabled');
 			}	
+			localStorage.setItem("FlagLB",data["estado_linea_base"]);
 		}
 	});
+
 }
 
 /*
