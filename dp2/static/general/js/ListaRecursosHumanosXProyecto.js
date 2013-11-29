@@ -5,8 +5,8 @@ var verificarLineaBase ="../../api/G_verificaLineaBase/";
 var profesion = "";
 
 $(document).ready(function(){
-	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
-	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
+	//$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
+	//$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
 	llenar_profesion();
 	listarRRHHxProyecto();
 	verificaLineaBase();
@@ -14,7 +14,9 @@ $(document).ready(function(){
 	$(".seleccionado").removeClass("seleccionado");
     $("#pasar").click(function(){
         $(".seleccionado").each(function(){
-            	$(this).append("</td><td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>");
+        		$(this).prepend("<td></td>");
+            	$(this).append("<td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>");
+            	$(this)
             	$(this).removeClass("seleccionado");
             	$(this).addClass("noMostrar");
             	//console.log("click");
@@ -34,13 +36,14 @@ $(document).ready(function(){
 			//console.log("Valor1: " + el.cells[0].innerHTML);
 			//console.log("Valor2: " + $($( $(el).children("td")[3])).children("input").val());
 				
-				if (el.cells[4].children[0].value!="" && el.cells[5].children[0].value!="" && el.cells[6].children[0].value!="" && el.cells[7].children[0].value!=""){
+				if (el.cells[5].children[0].value!="" && el.cells[6].children[0].value!="" && el.cells[7].children[0].value!="" && el.cells[8].children[0].value!=""){
 					var rec = {
-						idrec :  el.cells[0].innerHTML, 
-						prof_act : el.cells[4].children[0].value,
-						costohh : el.cells[5].children[0].value,
-						fi : el.cells[6].children[0].value,
-						ff : el.cells[7].children[0].value,
+						idrec :  el.cells[1].innerHTML, 
+						accion : "I",
+						prof_act : el.cells[5].children[0].value,
+						costohh : el.cells[6].children[0].value,
+						fi : el.cells[7].children[0].value,
+						ff : el.cells[8].children[0].value,
 						XD : "Bonnie se come los mocos"
 					}
 					lista_recursos.push(rec);
@@ -92,7 +95,10 @@ function llenar_profesion(){
 function asd(www,id){
 	
 	if (id!=null){
-		var envio = {id_rrhhxpr : id};
+		var envio = {
+			accion : "M",
+			id_rrhhxpr : id
+		};
 		$.ajax({
 			type: 'POST',
 			dataType: "json", // data type of response
@@ -192,7 +198,7 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
+	var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
 
 		'</td><td>'+ arreglo["prof_act"] +
 		'</td><td>' + arreglo["costo"] +
@@ -265,7 +271,7 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
 	//G_listaProfesionRecurso
-//	var profesion = "<select class='form-control input-sm'>"+
+	var profesion = "<select class='form-control input-sm'>"+
 					 "<option value='6'>Analista 1</option>"+
 					 "<option value='7'>Analista 2</option>"+
 					 "<option value='8'>Desarrollador 1</option>"+
