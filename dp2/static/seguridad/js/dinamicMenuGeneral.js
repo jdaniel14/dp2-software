@@ -19,7 +19,7 @@ $(document).ready(function(){
         $(location).attr('href','../../index.html');
     }
 
-    if(idRol==1){
+    /*if(idRol==1){
 	var jqxhr = $.getJSON( "http://www.json-generator.com/j/cvrpAzgmdK?indent=4", function() {
 			}).done(function( data ) {
 			    	var menu = armaMenu( data );
@@ -52,7 +52,22 @@ $(document).ready(function(){
          menuPerfil+= '</ul></li></ul>';
      $("#perfilMenu").html(menuPerfil); 
 
-});
+});*/
+
+$.ajax({
+		type: 'GET',
+		url: '../../api/S_obtenerMenu/'+idRol,
+		dataType: "json", // data type of response	
+		fail: codigoError,
+                success: function(data){
+                    
+                    var menu = armaMenu( data );
+                    $("#seguridadMenu").html(menu);
+			    	if ($("#botonera")!= null){
+			    		$("#botonera").show();
+			    	}
+                }
+	});
 
 
 
