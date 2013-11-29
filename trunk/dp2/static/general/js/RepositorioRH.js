@@ -15,7 +15,6 @@ function iniciaRepositorio(){
             $(".btn.btn-info").click(function(){
 				var auxtd = $(this).closest("tr").find("td");
 				var idEmpleado = auxtd[0].innerHTML;
-				alert(idLeccionAprendida);
 				localStorage.setItem("idEmpleado",idEmpleado);
 				$(location).attr('href','ModificarRecursoHumano.html');
 			});

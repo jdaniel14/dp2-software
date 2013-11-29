@@ -76,8 +76,8 @@ function G_postRegistrarProyecto() {
                                             costo_empleado)
                                      VALUES (:id_proy,
                                             :jp,
-                                            :fi,
-                                            :ff,
+                                            STR_TO_DATE(:fi,'%d-%m-%Y'),
+                                            STR_TO_DATE(:ff,'%d-%m-%Y'),
                                             2,
                                             :idprofact,
                                             1,
@@ -336,13 +336,14 @@ function G_addAutoridadActa() {
     $sql = "UPDATE PROYECTO  p, MIEMBROS_EQUIPO ep
                         SET p.acta_jefe_comite=:p_jefe_comite,
                         p.acta_patrocinador=:p_patrocinador,
-                        ep.id_empleado=:p_id_jefe_proyecto
+                        ep.fecha_entrada=fecha_entrada,
                         WHERE p.id_proyecto=:p_id_proy and p.id_proyecto=ep.id_proyecto";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("p_jefe_comite", $acta->jcp);
         $stmt->bindParam("p_patrocinador", $acta->pap);
+
         //falto id_jefe_proyecto :s
         $stmt->bindParam("p_id_jefe_proyecto", $acta->jp);
 
@@ -370,6 +371,8 @@ function G_getActa($id) {
                                 p.acta_jefe_comite,
                                 p.acta_patrocinador,
                                 p.nombre_proyecto,
+                                p.fecha_inicio_planificada,
+                                p.fecha_fin_planificada,
                                 e.id_empleado
 
                         from PROYECTO p,
@@ -398,6 +401,8 @@ function G_getActa($id) {
             "calp" => $p["acta_calidad"],
             "np" => $p["nombre_proyecto"],
             "jp" => $p["id_empleado"],
+            "inicioP" => $p["fecha_inicio_planificada"],
+            "finP" => $p["fecha_fin_planificada"],
             "jcp" => $p["acta_jefe_comite"]
         );
 
