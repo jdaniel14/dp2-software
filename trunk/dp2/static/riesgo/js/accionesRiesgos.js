@@ -2,13 +2,14 @@ var addAccion = "../../api/R_registrarActividadContingencia";
 var updateCostTime = "../../api/R_actualizarCostoTiempoRiesgo";
 var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
 var verificaLineaBase = "../../api/G_verificaLineaBase";
-
+var tamanho;
 $(document).ready(main);
 var maxId;
 var idRiesgo = localStorage.getItem("idRiesgo");
 var lineaBase;
 
 function lineaBase(){
+    
     var idProyecto=localStorage.getItem("idProyecto");
     $.ajax({
         async: false,
@@ -31,8 +32,8 @@ function validar() {
     $(".tipoRiesgo").each(function() {
         if (i>=max) return false;
         var accion = $($("input.tipoRiesgo")[i]).val(); // valor de inputs
-        var costo = $($("input.tipoRiesgo")[i+1]).val(); // valor de inputs
-        var tiempo = $($("input.tipoRiesgo")[i+2]).val(); // valor de inputs
+        var costo = $($(".costo")[i]).val(); // valor de inputs
+        var tiempo = $($(".tiempo")[i]).val(); // valor de inputs
         
         if (accion === null || accion.length === 0 || costo === null || costo.length === 0 || tiempo === null || tiempo.length === 0){
             //ALERTAR
@@ -52,6 +53,7 @@ function validar() {
 
 
 function main(){
+    
 	var cantidad = $("#suma").val();
     lineaBase();
     listaAcciones();
@@ -62,10 +64,7 @@ function main(){
         $("#suma").val(cantidad);
         var valor = $("#tablaAcuerdos tr").length;
         var ultimo = parseInt(valor) - 1;
-        //el mayor-1 lo desabilito y luego lo habilito el disabled
-        // $("#accion" + ultimo).prop("disabled", false);
-        // $('#costo' + ultimo).prop("disabled", false);
-        // $('#tiempo' + ultimo).prop("disabled", false);
+
         addTableRow();
 
 
@@ -95,74 +94,125 @@ function main(){
         
         var costoPromedio;
         var tiempoPromedio;
-        var max=($(".tipoRiesgo").size());
-        var i = 0;
+   
         var j=0;
-        $(".tipoRiesgo").each(function() {
-            if (i>=max) return false;
-            
-                descripcion = $($("input.tipoRiesgo")[i]).val(); // valor de inputs
-                costo = $($("input.tipoRiesgo")[i+1]).val(); // valor de inputs
-                tiempo = $($("input.tipoRiesgo")[i+2]).val(); // valor de inputs
-            
-            i+=3;
+        var descripcion;
+        var costo;
+        var tiempo;
+        
+  
+           
+        var i = tamanho+1;
+        
+        if(parseInt(tamanho)===0){
+   
             var data = {
                 idRiesgoXProyecto: idRiesgo,
-                descripcion: descripcion,
-                costo:costo,
-                tiempo:tiempo
-            };
+                descripcion: $($("input.tipoRiesgo")[0]).val(), 
+                costo:$($(".costo")[0]).val() ,
+                tiempo: $($(".tiempo")[0]).val()
+            }
+            
             console.log(data);
             var jsonData = JSON.stringify(data);
 
+
             $.ajax({
-                async: false,
+           
                 type: 'POST',
                 url: addAccion,
                 data: jsonData,
+                dataType: "json",
                 success: function(data) {
                     obj=JSON.parse(data);
                     costoPromedio=obj.costo;
                     tiempoPromedio=obj.tiempo;
+                        alert("Se registró con exito");
+                        $("#tablaAcuerdos").html("");
+                        listaAcciones();
+                        $('#confirmSave').modal('hide');
                     
                 },
                 fail: function(data) {
                     alert(data.me);
                 }
             });
+            
 
-            if (i==max){
-                var data = {
-                    idRiesgoXProyecto: idRiesgo,
-                    costo:costoPromedio,
-                    tiempo:tiempoPromedio
-                };
-                var jsonData = JSON.stringify(data);
+        }
+        else {
+          
+        $(".tipoRiesgo").each(function() {
+              
+          var data = {
+                idRiesgoXProyecto: idRiesgo,
+                descripcion: $($("input.tipoRiesgo")[i-1]).val(), 
+                costo:$($(".costo")[i-1]).val() ,
+                tiempo: $($(".tiempo")[i-1]).val()
+            };
+            
+            i++;
+            
+            console.log(data);
+            var jsonData = JSON.stringify(data);
 
-                $.ajax({
-                    async: false,
-                    type: 'PUT',
-                    url: updateCostTime,
-                    data: jsonData,
-                    success: function(data) {
+
+            $.ajax({
+           
+                type: 'POST',
+                url: addAccion,
+                data: jsonData,
+                dataType: "json",
+                success: function(data) {
+                    obj=JSON.parse(data);
+                    costoPromedio=obj.costo;
+                    tiempoPromedio=obj.tiempo;
                         alert("Se registró con exito");
                         $("#tablaAcuerdos").html("");
                         listaAcciones();
                         $('#confirmSave').modal('hide');
-                    },
-                    fail: function(data) {
-                        alert(data.me);
-                    }
-                });
-            }
-        });
+                    
+                },
+                fail: function(data) {
+                    alert(data.me);
+                }
+            });
+              });
+        }
+
+//            if (i==max){
+//                var data = {
+//                    idRiesgoXProyecto: idRiesgo,
+//                    costo:costoPromedio,
+//                    tiempo:tiempoPromedio
+//                };
+//                var jsonData = JSON.stringify(data);
+//
+//                $.ajax({
+//                    async: false,
+//                    type: 'PUT',
+//                    url: updateCostTime,
+//                    data: jsonData,
+//                    success: function(data) {
+//                        alert("Se registró con exito");
+//                        $("#tablaAcuerdos").html("");
+//                        listaAcciones();
+//                        $('#confirmSave').modal('hide');
+//                    },
+//                    fail: function(data) {
+//                        alert(data.me);
+//                    }
+//                });
+//            }
+//        });
 
         
 
 
         
          
-    });
+  
+});
 }
 
 function addTableRow()
@@ -192,6 +242,7 @@ function addTableRow()
 }
 
 function listaAcciones() {
+
     var data = {
         idRiesgoXProyecto: idRiesgo
     };
@@ -200,6 +251,7 @@ function listaAcciones() {
         type: 'GET',
         url:  listAccions + '/' + data.idRiesgoXProyecto,
         success: function(data) {
+              
             obj = JSON.parse(data);
             console.log(obj);
             $("#tablaAcuerdos").append("<tr>"+
@@ -217,11 +269,13 @@ function listaAcciones() {
                     
                     $("#tablaAcuerdos").append("<tr>"+
                         "<td><input class=\"form-control tipoRiesgo input-riesgos\" name=\"accion" + index + "\" id=\"accion" + index + "\" type=\"text\" value=\"" + descripcion + "\" disabled></td>"+
-                        "<td><input class=\"form-control tipoRiesgo input-sm\" name=\"costo" + index + "\" id=\"costo" + index + "\" type=\"text\" value=\"" + costo + "\" disabled></td>"+
-                        "<td><input class=\"form-control tipoRiesgo input-sm\" name=\"tiempo" + index + "\" id=\"tiempo" + index + "\" type=\"text\" value=\"" + tiempo + "\" disabled></td>"+
+                        "<td><input class=\"costo form-control \" name=\"costo" + index + "\" id=\"costo" + index + "\" type=\"text\" value=\"" + costo + "\" disabled></td>"+
+                        "<td><input class=\"tiempo form-control \" name=\"tiempo" + index + "\" id=\"tiempo" + index + "\" type=\"text\" value=\"" + tiempo + "\" disabled></td>"+
                         "<td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + index+ "\" ></span></a></td></tr>");
 
                 });
+                 tamanho=parseInt(($(".tipoRiesgo").size()));
+                    console.log(tamanho);
 
             //     var fecha = new Date();
             //     var tipoRi = data[obj]["tipoRi"];
@@ -255,9 +309,9 @@ function listaAcciones() {
             console.log($("#tablaAcuerdos tr").length);
             if ($("#tablaAcuerdos tr").length == 1){
                 $("#tablaAcuerdos").append("<tr>"+
-                "<td><input class=\"tipoRiesgo input-riesgos\" name=\"accion" + 0 + "\" id=\"accion" + 0 + "\" type=\"text\" ></td>"+
-                "<td><input class=\"tipoRiesgo input-sm\" name=\"costo" + 0 + "\" id=\"costo" + 0 + "\" type=\"text\" ></td>"+
-                "<td><input class=\"tipoRiesgo input-sm\" name=\"tiempo" + 0 + "\" id=\"tiempo" + 0 + "\" type=\"text\" ></td>"+
+                "<td><input class=\" form-control  tipoRiesgo input-riesgos\" name=\"accion" + 0 + "\" id=\"accion" + 0 + "\" type=\"text\" ></td>"+
+                "<td><input class=\"costo form-control \" name=\"costo" + 0 + "\" id=\"costo" + 0 + "\" type=\"text\" ></td>"+
+                "<td><input class=\"tiempo form-control \" name=\"tiempo" + 0 + "\" id=\"tiempo" + 0 + "\" type=\"text\" ></td>"+
                 "<td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + 0+ "\" ></span></a></td></tr>");
             }
                 
