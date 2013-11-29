@@ -45,7 +45,6 @@ $(document).ready(function(){
 		url: '../../api/S_obtenerMenu/'+idRol,
 		dataType: "json", // data type of response	
                 success: function(data){
-                    alert("aki");
                     var menu = armaMenu( data );
                     $("#seguridadMenu").html(menu);
 			    	if ($("#botonera")!= null){
