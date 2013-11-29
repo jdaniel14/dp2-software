@@ -119,12 +119,18 @@ function crearUsuario(){
 	$val = json_decode($request->getBody(),TRUE);
 	$user = $val["usuarioInicial"];
 	$pass = $val["passwordInicial"];
+	$nombre = $val["nombreUsuario"];
+	$apellido = $val["apellidoUsuario"];
 	//ejecutar query;
-	/*
+	
 	$con = getConnection();
-	$pstmt= $con->prepare("");
-	$pstmt->execute(array($user,$pass));
-	*/
+
+	$pstmt= $con->prepare("INSERT INTO EMPLEADO (id_empleado,nombres,apellidos,nombre_corto,pago_mensual,id_profesion,estado) values (?,?,?,?,?,?,?)");
+	$pstmt->execute(array(1,$nombre,$apellido,$nombre.' '.$apellido,1000,1,'ACTIVO'));
+
+	$pstmt= $con->prepare("INSERT INTO SEGURIDAD (id_seguridad,user,password,nivel_autorizacion,fecha_creacion,id_empleado) values (?,?,?,?,?,?)");
+	$pstmt->execute(array(1,$user,$pass,1,date('Y-m-d H:i:s'),1));
+	
 	echo 200;
 }
 
