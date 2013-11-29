@@ -5,6 +5,8 @@ var verificarLineaBase ="../../api/G_verificaLineaBase/";
 var profesion = "";
 
 $(document).ready(function(){
+	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
 	llenar_profesion();
 	listarRRHHxProyecto();
 	verificaLineaBase();
