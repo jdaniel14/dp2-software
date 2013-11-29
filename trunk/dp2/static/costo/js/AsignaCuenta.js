@@ -161,6 +161,8 @@ function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda
 	}
 	input= '<input type=hidden name="idActividad'+(a)+'" id="idActividad'+(a)+'" value='+idAct+'><select class="form-control" '+(deshabilitado?" readonly disabled":"")+' id="tipoCuenta'+(a)+'">'+options+'</select>';
 	$("#tablaCuentaxActividad > tbody").append('<tr><td>'+a+'</td><td>'+nombreAct+'</td><td>'+input+'</td><td>'+formateaNumero(costoUnitario)+' '+moneda+'</td></tr>');
+	$("#tablaCuentaxActividad").trigger("update");
+	
 	obtenCuentaSeleccionada(a,cuenta)
 }
 
@@ -204,7 +206,8 @@ function grabarEstadoCuenta(){
 
 function limpiaTablaCuentaxActividad(){
 	$("#tablaCuentaxActividad > tbody").html('');
-			
+	$("#tablaCuentaxActividad").trigger("update");
+
 
 }
 

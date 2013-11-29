@@ -15,8 +15,7 @@ $(function(){
 	}
 	
 	if (verificaPermisosVer(idVista)=='1'){		
-		iniciaProyecto();		
-		iniciarTabla();
+		iniciaProyecto();
 	}else
 		alert('No tiene permiso para realizar esta operación');
 		
@@ -96,6 +95,9 @@ function agregaDataFila(data, tipo){
 			agregaFilaconRecursos(tipo,i,filaRecurso.idRecurso,filaRecurso.descripcion,filaRecurso.unidadMedida,filaRecurso.costoUnitario,filaRecurso.idUnidadMedida,filaRecurso.idMoneda, filaRecurso.moneda, filaRecurso.costoFijoDiario,filaRecurso.fechaInicio,filaRecurso.fechaFin, false);
 			numRecursos=i;
 		}
+		if (!editable) {
+			$("input").attr('disabled',true);		
+		}
 	}
 }
 
@@ -117,7 +119,7 @@ function agregarDataProyecto(data){
 		proy=data;
 		agregaDatosProyecto( proy.nombre);
 		editable = verificaEditable(proy.indicadorCerrado, proy.indicadorLineaBase);
-		
+		iniciarTabla();
 	}
 }
 
@@ -145,15 +147,17 @@ function agregaFilaRecurso(){
 	+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
 								);	
 	inicializaFechas(a);
+	$("#tablaRecursos").trigger("update");
 	$("#numFilas").val(a);
 }
 
 function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, fechainicio,fechafin,indRecursoHumano){
 	a=i;
 	a++;
-	if 	(tipo==0)
+	if 	(tipo==0){
 		$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+formateaNumero(costoUnitario)+'</td><td>'+nombreMoneda+'</td><td>'+formateaNumero(costoFijo)+'</td></tr>');
-	else{
+
+	}else{
 		inputRecurso= '<input id="recurso'+a+'" class="form-control" name="recurso'+a+'" value="'+nombreRecurso+'" onClick="modifica('+a+')" disabled readonly>';
 		inputMoneda= creaInputMoneda(a,true);
 		inputUnidadMedida= creaInputUnidadMedida(a,true);
@@ -184,6 +188,8 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 									);
 		inicializaFechas(a);
 	}
+	$("#tablaRecursos").trigger("update");
+
 	$("#numFilas").val(a);
 }
 
@@ -444,6 +450,11 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 	
 		$("#btnEditar").hide();
 		$("#btnGrabar").hide();
+		$("#btnCancelar").hide();
+	}else{
+		
+		$("#btnGrabar").show();
+		$("#btnCancelar").show();	
 	}
 	return !(indicadorCerrado=="1" || indicadorLineaBase=="0");
 }
@@ -455,6 +466,8 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiaTablaRecursos(){
 	$("#tablaRecursos > tbody").html('');
+	$("#tablaRecursos").trigger("update");
+	
 }
 
 $("#btnCancelar").click(function(){

@@ -184,3 +184,4 @@ bootbox.dialog({
     });
 
 }
+
