@@ -20,11 +20,12 @@ function listarCambiosGantt(){
     };
     var jsonData = JSON.stringify(data);
     console.log(data);
-    //Object {idProyecto: "8"} 
+    var i=0;
     $.ajax({
         type: 'GET',
         url: '../../api/R_obtenerAccionesParaAprobar' + '/' + data.idProyecto,
          dataType: "json",
+         
         success: function(data) {
           
        console.log(data);
@@ -38,7 +39,8 @@ function listarCambiosGantt(){
           var fechaInicioAccionRiesgo=data[obj]["fechaInicioAccionRiesgo"];
           var tiempo=data[obj]["tiempo"];
                 
-          $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + 1 + "\" ></div>");
+                i++;
+          $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + i + "\" ></div>");
 
 	cadena = "<div class=\"well\"><input id='id' type='text' style='display:none;' value='"+idActividadCronograma+"'>\n\
                 <label >Se materializó el riesgo "+idActividadCronograma  +" : "+ nombreActividadCronograma+" </label></br>"+
@@ -60,7 +62,7 @@ function listarCambiosGantt(){
                 "<label> dias</label><br></div><br>";
         
         cadena=cadena +'<button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios();">Cambiar</button></div></div></div>';
-	$("#prueba1").html(cadena);
+	$("#prueba"+i).html(cadena);
           }
         }
         //"+ idActividadCronograma + ",'"+fechaInicioActividadCronograma+"',"+duracionActividadCronograma+",'"+nombreActividadCronograma+"'
@@ -93,7 +95,7 @@ function guardar_cambios(){
                 console.log(data3);
            
             },
-            fail : alert("xD")
+       
             
         });
 
@@ -118,7 +120,7 @@ function guardar_cambios(){
                 console.log(data3);
            
             },
-            fail : alert("xD") 
+        
             
         });
 
