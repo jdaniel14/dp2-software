@@ -251,7 +251,7 @@ function G_getListaTipoProyecto() {
 function G_addInformacionActa() {
     $request = \Slim\Slim::getInstance()->request();
     $acta = json_decode($request->getBody());
-    $sql = "UPDATE PROYECTO SET acta_f_preparacion=:p_f_preparacion, 
+    $sql = "UPDATE PROYECTO SET acta_f_preparacion=STR_TO_DATE(:p_f_preparacion,'%d-%m-%Y'), 
 									id_prioridad=:p_prioridad,
 									nombre_proyecto=:p_nombre_proyecto,
 									id_tipo_proyecto=:p_id_tipo_proyecto
