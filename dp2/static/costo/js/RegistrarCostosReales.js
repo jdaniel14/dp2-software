@@ -364,7 +364,10 @@ function grabarRecursos(){
 					alert('La fecha fin del costo fijo del recurso ' + nomRecurso +' debe ser diferente de vacío');
 					return;
 				}
-			
+				if (!comparaMenorIgualFecha(diaI,mesI, anioI,diaF,mesF, anioF)){
+					alert('La fecha fin debe ser menor o igual a la fecha inicio');
+					return;
+				}
 				var recurso = {
 					idRecurso: $(recu).val(),
 					costoFijoDiarioReal: costoF,
