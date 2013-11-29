@@ -198,13 +198,27 @@ function agregaFilaRecursosHumanos2(arreglo,i){
 	a=i;
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
-	var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
+	if (i==0) 
+	{
+		var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
 
 		'</td><td>'+ arreglo["prof_act"] +
 		'</td><td>' + arreglo["costo"] +
 		'</td><td>' + arreglo["fechaini"] +
 		'</td><td>' + arreglo["fechafin"] +
-		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';
+		'<td><button type="button" disabled="disabled" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';
+	}
+	else
+	{
+		var tbody = '<tr><td>'+ arreglo["idmxe"] + '</td><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>'+ arreglo["rol"] + '</td><td>' + arreglo["prof_base"] + 
+
+		'</td><td>'+ arreglo["prof_act"] +
+		'</td><td>' + arreglo["costo"] +
+		'</td><td>' + arreglo["fechaini"] +
+		'</td><td>' + arreglo["fechafin"] +
+		'<td><button type="button" class="btn btn-danger" onclick = asd($(this).parent().parent(),'+arreglo["idmxe"]+');>Eliminar</button></td></tr>';		
+	}
+	
 
 	$("#ListaRecursosHumanosXProyecto tbody").append(tbody);
 	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
