@@ -52,9 +52,9 @@ function G_postRegistrarProyecto() {
                                       fecha_fin_planificada, 
                                       id_tipo_proyecto, estado, flag_linea_base_editable) 
                               VALUES (:nom, 
-                                     :fi,
-                                     :ff,
-                                     :tp, \"ACTIVO\", 0)";
+                                     STR_TO_DATE(:fi,'%d-%m-%Y'),
+                                     STR_TO_DATE(:ff,'%d-%m-%Y'),
+                                     :tp, \"ACTIVO\", 0)"; 
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
