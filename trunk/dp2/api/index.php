@@ -27,5 +27,8 @@ $app->contentType('text/html; charset=utf-8');
 
     //sprint 4
     include ("../backend/general/serviciosGeneral4.php");
+
+    //seguridad
+    include ("../backend/seguridad/serviciosSeguridad.php");
 $app->run();
 ?>

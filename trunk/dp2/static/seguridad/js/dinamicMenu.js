@@ -58,6 +58,9 @@ $(document).ready(function(){
 
 
      }
+
+     
+
     var nombre=localStorage.getItem("nombre");
      var menuPerfil = '<ul class="nav navbar-nav navbar-right">';
          menuPerfil+= '<li id="logeado" class="dropdown">';
