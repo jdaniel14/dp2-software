@@ -58,6 +58,7 @@ function cargaData(data){
 	}
 }
 $(document).ready(function() {
+	$("#fpp").datepicker({ dateFormat: 'dd-mm-yy' });
     var date = new Date();
     var day = date.getDate();
     var month = date.getMonth() + 1;
