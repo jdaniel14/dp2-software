@@ -227,7 +227,7 @@ and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
 function G_postAsignarRecProy() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
-    //$request = "{ \"id_proy\": 4,\"l_rrhhxpr\":[{\"idr\": \"1\",\"costo\": \"100\"},{\"idr\": \"2\",\"costo\": \"150\"}]}";
+    //$request = "{ \"id_proy\": \"18\",\"l_rrhhxpr\":[{\"idrec\": \"52\",\"prof_act\": \"6\",\"costohh\": \"199\",\"fi\": \"291212\",\"ff\": \"291213\", \"accion\": \"M\"}]}";
     //$body = json_decode($request);
     $id_proy = $body->id_proy;
     $l_rrhhxpr = $body->l_rrhhxpr;
@@ -238,28 +238,23 @@ function G_postAsignarRecProy() {
             $costo = $l_rrhhxpr[$i]->costohh;
             $fi = $l_rrhhxpr[$i]->fi;
             $ff = $l_rrhhxpr[$i]->ff;
+            $accion = $l_rrhhxpr[$i]->accion;
 
             $db = getConnection();
-            $query = "  SELECT count(*) as cantidad FROM MIEMBROS_EQUIPO where id_proyecto = :idproy and id_empleado = :idemp ";
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("idproy", $id_proy);
-            $stmt->bindParam("idemp", $idr);
-            $stmt->execute();
+//            $query = "  SELECT count(*) as cantidad FROM MIEMBROS_EQUIPO where id_proyecto = :idproy and id_empleado = :idemp and estado <> 0 ";
+//            $stmt = $db->prepare($query);
+//            $stmt->bindParam("idproy", $id_proy);
+//            $stmt->bindParam("idemp", $idr);
+//            $stmt->execute();
+//
+//            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+//            $cantidad = $res["cantidad"];
 
-            $res = $stmt->fetch(PDO::FETCH_ASSOC);
-            $cantidad = $res["cantidad"];
-
-            if ($cantidad > 0) {
-                //UPDATE
-                $update = " UPDATE MIEMBROS_EQUIPO SET COSTO_EMPLEADO = :costo, id_profesion_actual = :prof_act WHERE id_proyecto = :idproy and id_empleado = :idemp ";
-                // $db = getConnection();
-                $stmt = $db->prepare($update);
-                $stmt->bindParam("costo", $costo);
-                $stmt->bindParam("prof_act", $prof_act);
-                $stmt->bindParam("idproy", $id_proy);
-                $stmt->bindParam("idemp", $idr);
-                $stmt->execute();
-            } else {
+//            if ($cantidad > 0) {
+//                
+//            } else {
+//            
+            if ($accion=="I"){
                 //INSERT
                 $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual, estado, id_rol) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act, 1, 3) ";
                 // $db = getConnection();
@@ -272,6 +267,18 @@ function G_postAsignarRecProy() {
                 $stmt->bindParam("prof_act", $prof_act);
                 $stmt->execute();
             }
+            else if ($accion=="M") {
+                //UPDATE
+                $update = " UPDATE MIEMBROS_EQUIPO SET COSTO_EMPLEADO = :costo, id_profesion_actual = :prof_act WHERE id_miembros_equipo = :idemp ";
+                // $db = getConnection();
+                $stmt = $db->prepare($update);
+                $stmt->bindParam("costo", $costo);
+                $stmt->bindParam("prof_act", $prof_act);
+                $stmt->bindParam("idemp", $idr);
+                $stmt->execute();
+            }
+                
+           // }
         }
         $db = null;
         echo json_encode(array("me" => ""));
