@@ -29,5 +29,10 @@
                 "title" => "Ver Lista de Solicitudes de Cambios"
             );
 
+         $link_G_RepoRRHH = array(
+                "href" => "../../views/general/RepositorioRecursosHumanos.html",
+                "title" => "Repositorio de Recursos Humanos"
+            );
+
 
 ?>
