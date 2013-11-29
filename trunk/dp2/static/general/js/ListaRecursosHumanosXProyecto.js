@@ -294,8 +294,10 @@ function verificaLineaBase() {
         success: function(data){
         	if (data["estado_linea_base"]=="true") { //establecerLineaBase=TRUE
         		$("#btnAsignarRecursos").addClass('disabled');
+        		$(".btn.btn-danger").addClass('disabled');
 			} else {
 				$("#btnAsignarRecursos").removeClass('disabled');
+				$(".btn.btn-danger").removeClass('disabled');
 			}	
 		}
 	});
