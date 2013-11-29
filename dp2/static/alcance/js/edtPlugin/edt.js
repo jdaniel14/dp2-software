@@ -22,6 +22,7 @@
           html += msg;
           html += '</div>';
           $(".consoleLog").append(html);
+          $(".consoleLog").fadeOut(10000);
         }
 
         function repaint(){
