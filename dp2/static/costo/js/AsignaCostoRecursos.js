@@ -315,6 +315,7 @@ function agregaDataFilaResumen(datosActividad){
 		
 		$("#tituloActividad").html(nombreActividad);
 		$("#tablaTotalActividad").html('<tr width="100%"><td width="40%"><b>Total</b></td><td width="20%"><b>'+formateaNumero(subTotalActividad,2)+'</b></td><td width="40%">'+moneda+'</td></tr>');
+		
 	}	
 }
 
@@ -355,6 +356,7 @@ function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cant
 	a=i;
 	a++;	
 	$("#tablaResumen > tbody").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
+	$("#tablaResumen").trigger("update");
 	
 
 }
@@ -408,6 +410,7 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 								+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">'+inputHidden);
 	if (tipo==1) desabilitaMoneda(a);
+	$("#tablaRecursos").trigger("update");
 
 }
 
@@ -419,7 +422,8 @@ function agregaFilaRecursoFijo(i,idRecurso,unidadMedida, nombreRecurso, costoFij
 	$("#tablaResumenCostoFijo > tbody").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoFijoDiario,2)
 								+'</td><td>'+moneda+'</td><td>'+formateaNumero(costoFijoTotal,2)+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">');
-	
+	$("#tablaResumenCostoFijo").trigger("update");
+
 }
 
 function creaInputMoneda(num){
@@ -546,19 +550,22 @@ function cambiaCostoUnitario(){
 //Limpia la tabla
 function limpiaTablaResumen(){
 	$("#tablaResumen > tbody").html('');
-		
+	$("#tablaResumen").trigger("update");
+
 
 }
 
 function limpiaTablaRecursosFijo(){
 	$("#tablaResumenCostoFijo > tbody").html('');
-		
+	$("#tablaResumenCostoFijo").trigger("update");
+
 
 }
 
 function limpiaTablaRecursos(){
 	$("#tablaRecursos > tbody").html('');
-	
+	$("#tablaRecursos").trigger("update");
+
 
 }
 

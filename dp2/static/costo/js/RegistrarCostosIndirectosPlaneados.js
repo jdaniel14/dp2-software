@@ -218,9 +218,10 @@ function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codm
 	a=i;
 	a++;
 	
-	if 	(tipo==0)
+	if 	(tipo==0){
 		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+formateaNumero(costoIndirecto,2)+'</td><td align="center">'+nombreMoneda+'</td></tr>');
-	else{
+		$("#tablaIndirectos").trigger("update");
+	}else{
 		inputMoneda= creaInputMoneda(a);		
 		inputCostoIndirecto='<div id="divCostoI'+a+'" class="form-group"><input id="costoIndirecto'+a+'" class="form-control" name="costoIndirecto'+a+'" value="'+formateaNumero(costoIndirecto,2)+'"></div>';
 	
@@ -228,6 +229,7 @@ function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codm
 		$("#tablaIndirectos > tbody").append('<tr><td align="center">'+nombreMes+'</td><td align="center">'+inputCostoIndirecto+'</td><td align="center">'+inputMoneda+'</td></tr>'
 									+'<input type="hidden" name="codmes'+a+'" id="codmes'+a+'" value="'+codmes+'">'
 									);
+		$("#tablaIndirectos").trigger("update");
 		obtenMonedaSeleccionada(a,idmoneda);
 	}
 	$("#numFilas").val(a);
@@ -454,6 +456,8 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiatablaIndirectos(){
 	$("#tablaIndirectos > tbody").html('');
+	$("#tablaIndirectos").trigger("update");
+	
 	
 }
 
