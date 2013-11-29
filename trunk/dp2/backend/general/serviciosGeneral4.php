@@ -270,7 +270,7 @@ function G_getProfesion($id) { //Bonnie se la llevó facil :'(
 
 
 function G_getListaEmpleadosFull() {
-    $sql = " select E.id_empleado, E.nombres, E.apellidos, E.telefono, E.email, E.nombre_corto, E.pago_mensual, P.id_profesion, P.descripcion as prof_desc, S.user from EMPLEADO as E, PROFESION as P, SEGURIDAD as S  where estado = 'ACTIVO' and P.id_profesion = E.id_profesion and S.id_empleado = E.id_empleado ";
+    $sql = " select E.id_empleado, E.nombres, E.apellidos, E.telefono, E.email, E.nombre_corto, E.pago_mensual, P.id_profesion, P.descripcion as prof_desc, S.user from EMPLEADO as E, PROFESION as P, SEGURIDAD as S  where estado = 'ACTIVO' and P.id_profesion = E.id_profesion and S.id_empleado = E.id_empleado order by 1";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);

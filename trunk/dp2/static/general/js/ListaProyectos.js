@@ -41,6 +41,7 @@ function iniciaProyectos(){
 				});	
         	}
         	else{
+        		
         		$("#alertNoProyectos").show();
         	}
             		

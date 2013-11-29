@@ -646,11 +646,35 @@ ts.addWidget({
 				}
 				else
 					{
-						for (i = 0; i < cols; i++){	
+						if(document.getElementById("repositorioRH")!=null){
+
+				
+							for (i=0;i<cols;i++){
+								if (document.getElementById("repositorioRH").rows[0].cells[i].innerText == "#"){
+									k = i;
+								}
+							}
+
+							for (i = 0; i < cols; i++){	
+
+								if (k==i){
+									t += '<td style="display:none"></td>';	
+								}
+								else
+								{
+									t += '<td></td>';
+								}
+										
+							}
+						}
+						else {
+							for (i = 0; i < cols; i++){	
 
 						
 							t += '<td></td>';
+							}
 						}
+						
 								
 					}
 				

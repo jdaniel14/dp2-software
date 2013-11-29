@@ -44,34 +44,34 @@
         <h1>Repositorio de recursos </h1>
         <!--<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>-->
       </div>
-      <div id="botonera" style="display: none;">
-        <button id="btnAgregaLA" type="button" class="btn btn-lg btn-success">Agregar leccion aprendida</button>
+      <div id="botonera">
+        <button id="btnAgregaRH" type="button" class="btn btn-lg btn-success">Agregar recursos humano</button>
       </div>
     <div class="" >
-      <table align="center" id="listaLeccionAprendida" class="tablesorter - {bootstrap}" width="90%" >      
+      <table align="center" id="repositorioRH" class="tablesorter - {bootstrap}" width="90%" >      
         <thead>
           <tr>
-            <th  id="noMostrar" style="display:none">#</th>
+            <th id="noMostrar" style="display:none">#</th>
             <th><b>Nombre</b></th>
-            <th><b>Descripcion</b></th>
-            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Proyecto</b></th>
-            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Categoria</b></th>
-            <th><b>Modificar</b></th>
-            <th><b>Eliminar</b></th>
+            <th><b>Apellido</b></th>
+            <th><b>E-mail</b></th>
+            <th><b>Usuario</b></th>
+            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Profesion</b></th>
+
           </tr>
         </thead>
         <tfoot>
           <tr>
-            <th style="display:none">#</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Proyecto</th>
-            <th>Categoria</th>
-            <th>Modificar</th>
-            <th>Eliminar</th>
+            <th id="noMostrar" style="display:none">#</th>
+            <th><b>Nombre</b></th>
+            <th><b>Apellido</b></th>
+            <th><b>E-mail</b></th>
+            <th><b>Usuario</b></th>
+            <th class="filter-select filter-exact" data-placeholder="Seleccione"><b>Profesion</b></th>
+
           </tr>
           <tr>
-            <th colspan="7" class="pager form-horizontal">
+            <th colspan="5" class="pager form-horizontal">
               <button type="button" class="btn first"><i class="glyphicon glyphicon-fast-backward"></i></button>
               <button type="button" class="btn prev"><i class="glyphicon glyphicon-backward"></i></button>
               <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
@@ -100,7 +100,9 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../static/general/js/ListaLeccionesAprendidas.js"></script>
+    <script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.js"></script>
+    <script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../static/general/js/RepositorioRH.js"></script>
     <script src="../../assets/js/headerGeneral.js"></script>
     <!-- Tablesorter: required for bootstrap -->
     <script src="../../tablesorter/js/jquery.tablesorter.js"></script>
@@ -114,5 +116,6 @@
     
     <!-- Tablesorter: Config filtros -->
     <script src="../../tablesorter/js/filtros.js"></script>
+    
   </body>
 </html>
