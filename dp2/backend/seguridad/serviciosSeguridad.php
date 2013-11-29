@@ -7,13 +7,36 @@ include_once '../backend/conexion.php';
 function G_getMenu($id) {
 
 	$menu=array();
-	$submenu=array();
-	$links=array();
 
 	if($id==1){
+		//Gerente de portafolio
+		 $menu=menuGP();
+	}elseif ($id==2) {
+		//Jefe de proyecto
+		$menu=menuJP();
+	}elseif($id==3){
+		//miembro equipo
+		$menu=menuTM();
 
-		//general
-		 $link1 = array(
+	}
+	
+    echo json_encode(array("menu"=>$menu));
+}
+
+function menuGP(){
+
+	$menu=array();
+
+	array_push($menu, submenuGP_general());
+	array_push($menu, submenuGP_configuracion());
+
+	return($menu);
+}
+
+function submenuGP_general(){
+
+		$links=array();
+		$link1 = array(
                 "href" => "../../views/general/RegistrarProyecto.html",
                 "title" => "Registrar Proyecto"
             );
@@ -22,23 +45,47 @@ function G_getMenu($id) {
                 "href" => "../../views/general/RegistrarRecursoHumano.html",
                 "title" => "Registrar Recurso Humano"
             );
+		 $link3 = array(
+                "href" => "../../views/general/ListaRecursosHumanos.html",
+                "title" => "Ver Lista Recursos Humanos"
+            );
+
+		 $link4 = array(
+                "href" => "../../views/general/RegistrarLeccionAprendida.html",
+                "title" => "Registrar Leccion Aprendida"
+            );
+
+		 $link5 = array(
+                "href" => "../../views/general/ListaLeccionesAprendidas.html",
+                "title" => "Ver Lista de Lecciones Aprendidas"
+            );
+
+		 $link6 = array(
+                "href" => "../../views/general/ListaSolicitudes.html",
+                "title" => "Ver Lista de Solicitudes de Cambios"
+            );
 
 		 array_push($links, $link1);
 		 array_push($links, $link2);
+		 array_push($links, $link3);
+		 array_push($links, $link4);
+		 array_push($links, $link5);
+		 array_push($links, $link6);
 
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
                 "title" => "General"
             );
-		 array_push($menu, $submenu);
-		
-		 unset($links);
-		$links = array();
 
-		 //Configuraciones
+		 return $submenu;
 
-		 $link1 = array(
+}
+
+function submenuGP_configuracion(){
+
+		$links=array();
+		$link1 = array(
                 "href" => "",
                 "title" => "Sprint 5"
             );		 
@@ -50,19 +97,10 @@ function G_getMenu($id) {
                 "href" => "",
                 "title" => "Configuraciones"
             );
-		 array_push($menu, $submenu);
+
+		 return $submenu;
 
 
-
-	}
-	
-
-	
-	
-   
-	//$menu=eregi_replace("[\n|\r|\n\r]",'', $menu);
-	//$menu=eregi_replace("[\t]",'', $menu);
-    echo json_encode(array("menu"=>$menu));
 }
 
 
