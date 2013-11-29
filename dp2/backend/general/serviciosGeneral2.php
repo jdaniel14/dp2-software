@@ -354,10 +354,10 @@ function G_getListarRecDisp() {
         $str1 = $body->fi;
         $str2 = $body->ff;
         $fecha_Inicio = new DateTime($str1);
-        $f_ini = $fecha_Inicio->format('Y-m-d');
+        $f_ini = $fecha_Inicio->format('d-m-Y');
 
         $fecha_Fin = new DateTime($str2);
-        $f_fin = $fecha_Fin->format('Y-m-d');
+        $f_fin = $fecha_Fin->format('d-m-Y');
         $idProyecto = $body->idProyecto;
 
         /* $sql = "SELECT M.id_empleado as id
@@ -381,8 +381,8 @@ function G_getListarRecDisp() {
                     AND R.ID_PROYECTO = M.ID_PROYECTO
                     AND R.ID_PROYECTO = A.ID_PROYECTO
                     AND E.ID_EMPLEADO = M.ID_EMPLEADO
-                    AND A.FECHA_PLAN_INICIO >= :FI
-                    AND A.FECHA_PLAN_FIN <= :FF
+                    AND A.FECHA_PLAN_INICIO >= STR_TO_DATE(:FI,'%d-%m-%Y')
+                    AND A.FECHA_PLAN_FIN <= STR_TO_DATE(:FF,'%d-%m-%Y')
                     ";
                     //E.ID_EMPLEADO !=  :JP
                     //AND M.id_proyecto!=:IDPROYECTO
