@@ -104,5 +104,54 @@ function submenuGP_configuracion(){
 }
 
 
+function menuJP(){
+
+	$menu=array();
+
+	array_push($menu, submenuJP_general());
+	array_push($menu, submenuGP_configuracion());
+
+	return($menu);
+}
+
+function submenuJP_general(){
+
+		$links=array();
+			
+		 $link4 = array(
+                "href" => "../../views/general/RegistrarLeccionAprendida.html",
+                "title" => "Registrar Leccion Aprendida"
+            );
+
+		 $link5 = array(
+                "href" => "../../views/general/ListaLeccionesAprendidas.html",
+                "title" => "Ver Lista de Lecciones Aprendidas"
+            );
+
+		 
+
+		 
+		 array_push($links, $link4);
+		 array_push($links, $link5);
+
+		 $submenu = array(
+                "submenu" => $links,
+                "href" => "",
+                "title" => "General"
+            );
+
+		 return $submenu;
+
+}
+
+function menuTM(){
+
+	$menu=array();
+	$menu=menuJP();
+
+	return($menu);
+}
+
+
 	
 ?>
