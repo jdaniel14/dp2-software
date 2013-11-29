@@ -7,8 +7,8 @@ var xIni = 1;
 var yIni = 75;
 
 //Factor que se mueve en el mismo bloque
-var factorXEnB = 100;
-var factorYEnB = 150;
+var factorXEnB = 120;
+var factorYEnB = 200;
 
 //Factor que se mueve de bloque en bloque
 var factorX = 500;

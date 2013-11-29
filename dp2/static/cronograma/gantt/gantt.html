@@ -300,16 +300,20 @@
 				var indicaCosto = el.indicador_costo;
 				var indicaFecha = el.indicador_fecha;
 				console.log(indicaCosto + '-' + indicaFecha);
+                                            
+                                                                            var costo_fixed=indicaCosto.toFixed(2);
 				
-				$('#textCost').text('Indicador de Costo: ' + indicaCosto);
+				$('#textCost').text('Indicador de Costo: ' + costo_fixed);
 				
 					
 				var chris = (recomputeDuration(el.realStart,el.realEnd) + 1) / el.duration * 100;
 				
+                                                                            var fecha_fixed=chris.toFixed(2);
+                                            
 				console.log(recomputeDuration(el.realStart,el.realEnd) + 1);
 				console.log(el.duration);
 				
-				$('#textFech').text('Indicador de Fecha: ' + chris);
+				$('#textFech').text('Indicador de Fecha: ' + fecha_fixed);
 								
 				$('#indCosto').css('width',indicaCosto+ '%');
 							

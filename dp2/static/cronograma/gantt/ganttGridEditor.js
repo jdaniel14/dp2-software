@@ -621,7 +621,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
         taskEditor.find("#start").attr("disabled", true);
         taskEditor.find("#end").attr("disabled", true);
         taskEditor.find("#duration").attr("disabled", true);
-
+         taskEditor.find("#addAssig").hide();
         //taskEditor.find("#duration").attr("disabled", true);
         //  taskEditor.find("#tipoCosto").attr("disabled", true);
 
@@ -786,6 +786,9 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
             assigRow.find("[name=tipoCosto]").attr('disabled', true);
             assigRow.find("[name=costRateReal]").attr('disabled', false);
             assigRow.find("[name=valueReal]").attr('disabled', false);//
+            //$(".teamworkIcon delAssig").hide();
+             //$( this ).removeClass( "teamworkIcon delAssig" );
+              assigRow.find(".teamworkIcon").hide();
         }
         else {
             assigRow.find("[name=costRateReal]").attr('disabled', true);//
@@ -994,6 +997,9 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
 
                 /***** Fin asignar Tipo Costo ****/
                 //nadal
+                
+                 
+                
                 assigRow.find("[name=value]").keypress(function(event) {
 
                     return permite(this, event, 'num', false)
@@ -1018,6 +1024,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
                     assigRow.find("[name=value]").attr('disabled', true);
                     assigRow.find("[name=resourceId]").attr('disabled', true);
                     assigRow.find("[name=tipoCosto]").attr('disabled', true);
+                    assigRow.find(".teamworkIcon").hide();
                 }
                 else {
                     assigRow.find("[name=costRateReal]").attr('disabled', true);
