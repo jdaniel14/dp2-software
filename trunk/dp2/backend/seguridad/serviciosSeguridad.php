@@ -11,14 +11,14 @@ function G_getMenu($id) {
 	if($id==1){
 
 		$menu="{
-		            'submenu': [
+		            \"submenu\": [
 		                {
-		                    'href': '../../views/general/ListaProyectos.html', 
-		                    'title': 'Ver Lista de Proyectos'
+		                    \"href\": \"../../views/general/ListaProyectos.html\", 
+		                    \"title\": \"Ver Lista de Proyectos\"
 		                }
 		            ], 
-		            'href': '', 
-		            'title': 'General'
+		            \"href\": \"\", 
+		            \"title\": \"General\"
 		        }";
 	}
 	
@@ -27,6 +27,7 @@ function G_getMenu($id) {
 	
    
 	$menu=eregi_replace("[\n|\r|\n\r]",'', $menu);
+	$menu=eregi_replace("[\t]",'', $menu);
     echo json_encode(array("menu"=>$menu));
 }
 
