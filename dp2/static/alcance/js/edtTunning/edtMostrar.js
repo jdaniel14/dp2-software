@@ -9,6 +9,8 @@ $(window).bind('beforeunload',function(){
 });
 */
 
+
+
 var arrNombres = [];
 var autoGenerados = [];
 var errorSuma = false;
@@ -56,11 +58,22 @@ localStorage.setItem("idcontador", idnodoParam);
 jQuery(document).ready(function() {
 	console.log("Script EDT mostrar loaded");
 	//configuraciones generales
-	var idproyecto = localStorage.getItem("idProyecto");
-	var me = mostrarEDT( idproyecto );
-	if ( me == "" ){
+	
+	
 
-	}
+  if ( localStorage.getItem("edtedesdecero") == "1" ){
+   console.log("desdecero");
+   $("#CrearEDTCero").hide();
+   $("#CrearEDTCero").trigger("click");
+   
+  }else{
+    var idproyecto = localStorage.getItem("idProyecto");
+    var me = mostrarEDT( idproyecto );
+  }
+
+  $("#regresarEDT").click(function(){
+    window.location.href = 'index.html';
+  });
 
 });
 
