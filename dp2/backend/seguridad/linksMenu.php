@@ -127,7 +127,7 @@
 
          $link_CO_RegCostReal = array(
                 "href"=> "../../views/costo/RegistrarCostosReales.html", 
-                "title"=> "Visualizar Costos Reales"
+                "title"=> "Registrar Costos Reales"
         );
 
          $link_CO_RegCostCta = array(
@@ -160,7 +160,7 @@
         );
 
         $link_R_VerRiesgo = array(
-                "href"=> "../../views/riesgo/MostrarRiesgos.html", 
+                "href"=> "../../views/riesgo/index.html", 
                 "title"=> "Mostrar riesgos"
         );
 
