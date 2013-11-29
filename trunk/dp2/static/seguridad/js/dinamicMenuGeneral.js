@@ -38,7 +38,23 @@ $(document).ready(function(){
 			  })
          
          
-     }
+     }*/
+
+     $.ajax({
+		type: 'GET',
+		url: '../../api/S_obtenerMenu/'+idRol,
+		dataType: "json", // data type of response	
+                success: function(data){
+                    alert("aki");
+                    var menu = armaMenu( data );
+                    $("#seguridadMenu").html(menu);
+			    	if ($("#botonera")!= null){
+			    		$("#botonera").show();
+			    	}
+                }
+	});
+
+
      var nombre=localStorage.getItem("nombre");
      var menuPerfil = '<ul class="nav navbar-nav navbar-right">';
          menuPerfil+= '<li id="logeado" class="dropdown">';
@@ -52,22 +68,9 @@ $(document).ready(function(){
          menuPerfil+= '</ul></li></ul>';
      $("#perfilMenu").html(menuPerfil); 
 
-});*/
+});
 
-$.ajax({
-		type: 'GET',
-		url: '../../api/S_obtenerMenu/'+idRol,
-		dataType: "json", // data type of response	
-		fail: codigoError,
-                success: function(data){
-                    
-                    var menu = armaMenu( data );
-                    $("#seguridadMenu").html(menu);
-			    	if ($("#botonera")!= null){
-			    		$("#botonera").show();
-			    	}
-                }
-	});
+
 
 
 
