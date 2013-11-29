@@ -6,7 +6,7 @@ else{
 	id_proyecto =1;
 }
 function modificarRequisito(){
-	$("#selected").removeClass("selected");
+	$(".selected").removeClass("selected");
 	$(this).parent().parent().addClass("selected");
 	var obj = {
 		"id_requisito": this.getAttribute("idrequisito")
@@ -38,7 +38,7 @@ function modificarRequisito(){
 function eliminarRequisito(){
   var opt = confirm("¿Seguro que desea eliminar el requisito? esta opción no se puede deshacer");
 	if(!opt) return;
-	$("#selected").removeClass("selected");
+	$(".selected").removeClass("selected");
 	$(this).parent().parent().addClass("selected");
 	var obj = {
 		"id_requisito": this.getAttribute("idrequisito")
