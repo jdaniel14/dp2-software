@@ -101,9 +101,9 @@ function llegadaDatos(data) {
         //alert(fechaInicio);
         str = fechaInicio+"";
         
-        var year = parseInt(str.substr(0,4));
-        var month = parseInt(str.substr(5,2)) - 1;
-        var day = parseInt(str.substr(8,2));
+        var year = parseInt(str.substr(6,4));
+        var month = parseInt(str.substr(3,2)) - 1;
+        var day = parseInt(str.substr(0,2));
         var date = new Date(year, month, day);
         var mes = 0;
         var indices = new Array();
