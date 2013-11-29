@@ -1,4 +1,5 @@
  localStorage.setItem("queueEstado", "mostrando");
+ localStorage.setItem("edtedesdecero", 0);
  autoGenerados = [];
  jQuery(document).ready(function() {
 
@@ -43,7 +44,7 @@
 
 
           $("#CrearEDTCero").click(function(){
-            
+            localStorage.setItem("edtedesdecero", 1);
             window.location.href = 'edt.html';
           });
 
