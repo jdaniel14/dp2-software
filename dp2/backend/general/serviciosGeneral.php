@@ -128,6 +128,7 @@ function G_getListaProyecto($id) {
                         P.estado as es ,
                         P.flag_linea_base_editable as flag_lb,
                         P.linea_base_fecha_inicio as fecha_lb,
+                        P.fecha_fin_real as fecha_finr,
                         r.id_rol
                 FROM PROYECTO P, MIEMBROS_EQUIPO M, MIEMBROS_EQUIPO MJ, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
                 WHERE P.id_proyecto = M.id_proyecto 
@@ -159,7 +160,8 @@ function G_getListaProyecto($id) {
                                 "ff"=>$p["ff"],
                                 "es"=>$p["es"],
                                 "flag_lb"=>$p["flag_lb"],
-                                "fecha_lb"=>$p["fecha_lb"]
+                                "fecha_lb"=>$p["fecha_lb"],
+                                "fecha_finr"=>$p["fecha_finr"]
                                 );
                 array_push($lista_project, $proj);
             }
@@ -183,7 +185,8 @@ function G_getListaProyecto($id) {
                         DATE(P.fecha_fin_planificada) as ff,
                         P.estado as es ,
                         P.flag_linea_base_editable as flag_lb,
-                        P.linea_base_fecha_inicio as fecha_lb
+                        P.linea_base_fecha_inicio as fecha_lb,
+                        P.fecha_fin_real as fecha_fin_real
                 FROM PROYECTO P, MIEMBROS_EQUIPO M, EMPLEADO E, TIPO_PROYECTO T , ROL_EMPLEADO r
                 WHERE P.id_proyecto = M.id_proyecto 
                 AND E.id_empleado = M.id_empleado 
@@ -199,14 +202,16 @@ function G_getListaProyecto($id) {
 			$lista_project = array();
 			while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
                                          $proj = array("id"=>$p["id_proyecto"],
+                                                        "fecha_fin_real"=>$p["fecha_fin_real"],
                                                         "nom"=>$p["nombre_proyecto"],
                                                         "jp"=> $p["nombres"],
                                                         "tp"=> $p["nombre_tipo_proyecto"],
                                                         "fi"=>$p["fi"],
                                                         "ff"=>$p["ff"],
-                                                         "es"=>$p["es"],
+                                                        "es"=>$p["es"],
                                                         "flag_lb"=>$p["flag_lb"],
                                                         "fecha_lb"=>$p["fecha_lb"]);
+                                                        
                                         array_push($lista_project, $proj);
 
                                         
