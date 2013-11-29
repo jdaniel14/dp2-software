@@ -1233,6 +1233,5 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
         });
     }
 
-    var ndo = createBlackPage(800, 500).append(taskEditor);
-
+    var ndo = createBlackPage(950, 600).append(taskEditor);
 };
