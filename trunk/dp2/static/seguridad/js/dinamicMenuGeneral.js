@@ -42,7 +42,7 @@ $(document).ready(function(){
 
      $.ajax({
 		type: 'GET',
-		url: '../../api/S_obtenerMenu/'+idRol,
+		url: '../../api/S_obtenerMenuGeneral/'+idRol,
 		dataType: "json", // data type of response	
                 success: function(data){
                     var menu = armaMenu( data );

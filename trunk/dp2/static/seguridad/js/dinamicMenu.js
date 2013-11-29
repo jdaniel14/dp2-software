@@ -20,7 +20,7 @@ $(document).ready(function(){
         $(location).attr('href','../../index.html');
     }
 
-    if(idRol==1){
+    /*if(idRol==1){
     		
     		//menu para el GP 
 			var jqxhr = $.getJSON( "http://www.json-generator.com/j/bUkYhcRRXC?indent=4", function() {
@@ -57,7 +57,20 @@ $(document).ready(function(){
 			})
 
 
-     }
+     }*/
+
+     $.ajax({
+		type: 'GET',
+		url: '../../api/S_obtenerMenu/'+idRol,
+		dataType: "json", // data type of response	
+                success: function(data){
+                    var menu = armaMenu( data );
+                    $("#seguridadMenu").html(menu);
+			    	if ($("#botonera")!= null){
+			    		$("#botonera").show();
+			    	}
+                }
+	});
 
      
 
