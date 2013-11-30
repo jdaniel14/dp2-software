@@ -17,7 +17,6 @@ var getAllTypesImpacts = "../../api/R_listaTiposImpactoRiesgo";
 var getDescImpactLevelType = "../../api/R_obtenerDescripcionNivelImpactoTipoImpacto";
 var confirmRisk = "../../api/R_confirmarRiesgo";
 var confirmAllRisks = "../../api/R_confirmarRiesgos";
-var getProjectName = "../../api/G_listaRecursoxProyecto";
 var setMaterializada = "../../api/R_registrarMaterializacion";
 var getAllItemsMaterializados = "../../api/R_obtenerRiesgoMaterializado";
 var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo"; 
@@ -43,7 +42,7 @@ var listaTipos = [];
 
 function main() {
 
-    listarPaquetesTrabajo();
+        listarPaquetesTrabajo();
     listarResponsable();
     listarRiesgos();
     listarRiesgosComunes();
@@ -53,6 +52,8 @@ function main() {
         obtenerRiesgo(localStorage.getItem("idRiesgo"));
     }
     obtenerTitulo();
+
+    
 
 
     $("#btnRegistrar").click(function() {
@@ -94,16 +95,19 @@ function main() {
         if (validarRegistro(data, 1)) {
             var jsonData = JSON.stringify(data);
             $.ajax({
+                async:false,
                 type: 'POST',
                 url: addItem,
                 data: jsonData,
                 dataType: "json",
                 success: function(data) {
                     var item = data;
-                    alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
+                    // alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
                     // listarRiesgos();
                     // $('#myModalRegister').modal('hide');
-                    window.location.replace("../riesgo/MostrarRiesgos.html");
+                    
+                    $('#labelExitoIndex').append("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
+                    $("#modalExitoIndex").modal("show");
                 },
                 fail: codigoError
             });
@@ -148,16 +152,18 @@ function main() {
         if (validarRegistro(data, 2)) {
             var jsonData = JSON.stringify(data);
             $.ajax({
+                async:false,
                 type: 'PUT',
                 url: updateItem + '/' + data.idRiesgoXProyecto,
                 data: jsonData,
-                dataType: "json",
+                // dataType: "json",
                 success: function(data) {
                     var item = data;
-                    alert("Se actualizó exitosamente el Riesgo ");
+                    // alert("Se actualizó exitosamente el Riesgo ");
+                    $("#modalExitoModificarIndex").modal("show");
                     // listarRiesgos();
                     // $('#myModal').modal('hide');
-                    window.location.replace("../riesgo/MostrarRiesgos.html");
+                    // window.location.replace("../riesgo/index.html");
                 },
                 fail: codigoError
             });
@@ -178,16 +184,16 @@ function main() {
         // console.log(data);
         var jsonData = JSON.stringify(data);
         $.ajax({
+            async:false,
             type: 'POST',
             url: addList,
             data: jsonData,
             // dataType: "json",
             success: function(data) {
                 var item = data;
-                alert("Se agregaron exitosamente");
+                $("#modalExitoAgregarIndex").modal("show");
                 // listarRiesgos();
                 // $('#myModalRegister').modal('hide');
-                window.location.replace("../riesgo/MostrarRiesgos.html");
             },
             fail: function(data) {
                 alert(data.me);
@@ -223,6 +229,7 @@ function main() {
         // console.log(data);
         var jsonData = JSON.stringify(data);
         $.ajax({
+            async:false,
             type: 'PUT',
             url: confirmAllRisks + '/' + jsonData,
             // data: jsonData,
@@ -284,22 +291,28 @@ function main() {
         var jsonData = JSON.stringify(data);
         if (estadoLogico == 1) {
             $.ajax({
+                async:false,
                 type: 'DELETE',
                 url: physicalDeleteItem + '/' + data.idRiesgoProyecto,
                 dataType: "html",
                 success: function() {
-                    alert("Se elimino el riesgo correctamente");
+                    // alert("Se elimino el riesgo correctamente");
+                    $("#labelSuccessModalIndex").append("Se elimino el riesgo correctamente");
+                    $("#modalExitoIndex").modal("show");
                     listarRiesgos();
                 },
                 fail: codigoError
             });
         } else if (estadoLogico == 2) {
             $.ajax({
+                async:false,
                 type: 'PUT',
                 url: logicDeleteItem + '/' + data.idRiesgoProyecto,
                 dataType: "json",
                 success: function(data) {
-                    alert("Se elimino el riesgo correctamente");
+                    // alert("Se elimino el riesgo correctamente");
+                    $("#labelSuccessModalIndex").append("Se elimino el riesgo correctamente");
+                    $("#modalExitoIndex").modal("show");
                     listarRiesgos();
                 },
                 fail: codigoError
@@ -308,7 +321,11 @@ function main() {
     });
 
     $("#btnAtrasRegistrar").click(function() {
-        window.location.replace("../riesgo/MostrarRiesgos.html");
+        window.location.replace("../riesgo/index.html");
+    });
+
+    $("#btnAtrasAgregar").click(function() {
+        window.location.replace("../riesgo/index.html");
     });
 
     $("#btnMaterializar").click(function() {
@@ -322,6 +339,7 @@ function main() {
         var jsonData = JSON.stringify(data);
         console.log(jsonData);
         $.ajax({
+            async:false,
             type: 'PUT',
             url: setMaterializada,
             // dataType: "json",
@@ -331,7 +349,7 @@ function main() {
                 localStorage.setItem("idRiesgo", idRiesgo2);
                 localStorage.setItem("fechaMaterializacion",$('#fechaMat').val());
                 //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
-                window.location.replace("../riesgo/ActualizarGantt.html");
+                window.location.href = "../riesgo/ActualizarGantt.html";
             },
             fail: codigoError
         });
@@ -394,6 +412,7 @@ function listarTiposImpacto() {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getAllTypesImpacts + '/' + data.idProyecto,
         dataType: "json",
@@ -412,6 +431,7 @@ function listarPaquetesTrabajo() {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getAllPackets + '/' + data.idProyecto,
         dataType: "json",
@@ -428,6 +448,7 @@ function listarPaquetesTrabajo() {
     });
 }
 function obtenerRiesgo(id) {
+    
     limpiarImpacto();
     limpiarObtener();
     limpiarModificar();
@@ -436,6 +457,7 @@ function obtenerRiesgo(id) {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getItem + '/' + data.id_riesgo_x_proyecto,
         data: jsonData,
@@ -493,6 +515,7 @@ function listarResponsable() {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getResponsable + '/' + data.idProyecto,
         dataType: "json",
@@ -519,6 +542,7 @@ function listarRiesgos() {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getAllItems + '/' + JSON.stringify(data),
         dataType: "json",
@@ -545,6 +569,7 @@ function listarRiesgos() {
                 var idRiesgoProyecto = $(this).closest("tr").attr("id");
                 idArray = idRiesgoProyecto;
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getStatus + '/' + idRiesgoProyecto,
                     dataType: "json",
@@ -583,6 +608,7 @@ function listarRiesgos() {
                 idArray = data.idRiesgo;
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getStatus + '/' + data.idRiesgo,
                     dataType: "json",
@@ -619,6 +645,7 @@ function limpiarConfirmar() {
 function listarRiesgosComunes() {
 
     $.ajax({
+        async:false,
         type: 'GET',
         url: getAllKnownItems,
         dataType: "json",
@@ -808,6 +835,7 @@ $('#proRiesgo').change(
                 }
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getProbability + '/' + jsonData,
                     success: function(data) {
@@ -840,6 +868,7 @@ $('#proRiesgoM').change(
                 }
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getProbability + '/' + jsonData,
                     success: function(data) {
@@ -872,6 +901,7 @@ function cargarProbabilidadModificacion(probabilidad) {
     }
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getProbability + '/' + jsonData,
         success: function(data) {
@@ -900,6 +930,7 @@ $('#impRiesgo1').change(
                 }
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getImpactLevel1 + '/' + jsonData,
                     success: function(data) {
@@ -933,6 +964,7 @@ $('#impRiesgo1M').change(
                 }
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getImpactLevel1 + '/' + jsonData,
                     success: function(data) {
@@ -965,6 +997,7 @@ $('#impRiesgo2').change(
                 }
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getImpactLevel2 + '/' + jsonData,
                     success: function(data) {
@@ -997,6 +1030,7 @@ $('#impRiesgo2M').change(
                 }
                 var jsonData = JSON.stringify(data);
                 $.ajax({
+                    async:false,
                     type: 'GET',
                     url: getImpactLevel2 + '/' + jsonData,
                     success: function(data) {
@@ -1110,6 +1144,7 @@ function listarTipoXNivelImpacto(idTipoImpactoLocal, tipo, impacto) {
         // console.log(data);
         var jsonData = JSON.stringify(data);
         $.ajax({
+            async:false,
             type: 'GET',
             url: getDescImpactLevelType + '/' + jsonData,
             dataType: "json",
@@ -1203,6 +1238,7 @@ function listarTiposImpacto() {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getAllTypesImpacts + '/' + data.idProyecto,
         dataType: "json",
@@ -1416,15 +1452,7 @@ function validarRegistro(data, caso) {
 
 }
 function obtenerTitulo() {
-    $.ajax({
-        type: 'GET',
-        dataType: "json", // data type of response
-        contentType: "application/json; charset=utf-8",
-        url: getProjectName + '/' + idProyectoLocal,
-        success: function(data) {
-            document.getElementsByTagName('h2')[0].innerHTML = data["nom_proy"];
-        }
-    });
+    document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
 }
 
 
@@ -1436,6 +1464,7 @@ function listarRiesgosMaterializados() {
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url: getAllItemsMaterializados + '/' + idProyectoLocal,
         dataType: "json",
@@ -1460,6 +1489,7 @@ function listaAcciones(idARiesgos){
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
+        async:false,
         type: 'GET',
         url:  listAccions + '/' + data.idRiesgoXProyecto,
         success: function(data) {
@@ -1472,4 +1502,20 @@ function listaAcciones(idARiesgos){
             });
         }
     });
+}
+
+$("#VolverIndex").click(function() {
+    volverIndex();
+});
+
+$("#VolverAgregarIndex").click(function() {
+    volverIndex();
+});
+
+$("#VolverModificarIndex").click(function() {
+    volverIndex();
+});
+
+function volverIndex(){
+    window.location.replace("../riesgo/index.html");
 }
