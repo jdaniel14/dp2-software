@@ -98,7 +98,8 @@ function main() {
             demoraPotencial: $('#tiemRiesgo').val(),
             idEmpleado: $('#equRes').val(),
             severidad: $('#svrRiesgo').val(),
-            nombreResponsable: ''
+            nombreResponsable: '',
+            idUsuario: localStorage.getItem("idUsuario")
         };
 
         if (tipoImpacto == 1) {
@@ -155,7 +156,8 @@ function main() {
             demoraPotencial: $('#tiemRiesgoM').val(),
             idEmpleado: $('#equResM').val(),
             severidad: $('#svrRiesgoM').val(),
-            nombreResponsable: ''
+            nombreResponsable: '',
+            idUsuario: localStorage.getItem("idUsuario")
         };
 
         if (tipoImpacto == 1) {
@@ -202,7 +204,8 @@ function main() {
         });
         var data = {
             lista: arreglo,
-            idProyecto: idProyectoLocal
+            idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
         };
         // console.log(data);
         var jsonData = JSON.stringify(data);
@@ -252,7 +255,8 @@ function main() {
 
         var data = {
             lista: arreglo,
-            idProyecto: idProyectoLocal
+            idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
         };
         // console.log(data);
         var jsonData = JSON.stringify(data);
@@ -327,14 +331,18 @@ function main() {
    
 
         var data = {
-            idRiesgoProyecto: idArray
+            idRiesgoProyecto: idArray,
+            idUsuario: localStorage.getItem("idUsuario"),
+            idProyecto: localStorage.getItem("idProyecto")
+
         }
         var jsonData = JSON.stringify(data);
         if (estadoLogico == 1) {
             $.ajax({
                 async: false,
                 type: 'DELETE',
-                url: physicalDeleteItem + '/' + data.idRiesgoProyecto,
+                // url: physicalDeleteItem + '/' + data.idRiesgoProyecto,
+                url: physicalDeleteItem + '/' + jsonData,
                 dataType: "html",
                 success: function() {
                     // alert("Se elimino el riesgo correctamente");
@@ -350,7 +358,8 @@ function main() {
             $.ajax({
                 async: false,
                 type: 'PUT',
-                url: logicDeleteItem + '/' + data.idRiesgoProyecto,
+                // url: logicDeleteItem + '/' + data.idRiesgoProyecto,
+                 url: logicDeleteItem + '/' +jsonData,
                 dataType: "json",
                 success: function(data) {
                     console.log("modal cerradito");
@@ -381,7 +390,10 @@ function main() {
         var data = {
             idRiesgoProyecto: parseInt(idArray),
             fechaMat: $('#fechaMat').val(),
-            idAccionesRiesgo: $('#accionEscogida').val()
+            idAccionesRiesgo: $('#accionEscogida').val(),
+            idProyecto: localStorage.getItem("idProyecto"),
+            idUsuario: localStorage.getItem("idUsuario")
+
         };
 
         var jsonData = JSON.stringify(data);
@@ -503,12 +515,14 @@ function main() {
     function listarTiposImpacto() {
         var data = {
             idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getAllTypesImpacts + '/' + data.idProyecto,
+            // url: getAllTypesImpacts + '/' + data.idProyecto,
+            url: getAllTypesImpacts + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 listaTipos = data;
@@ -521,13 +535,15 @@ function main() {
 
     function listarPaquetesTrabajo() {
         var data = {
-            idProyecto: idProyectoLocal
+            idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getAllPackets + '/' + data.idProyecto,
+            // url: getAllPackets + '/' + data.idProyecto,
+            url: getAllTypesImpacts + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 var lista = data;
@@ -547,13 +563,17 @@ function main() {
         limpiarObtener();
         limpiarModificar();
         var data = {
-            id_riesgo_x_proyecto: id
+            id_riesgo_x_proyecto: id,
+            idProyecto: localStorage.getItem("idProyecto"),
+            idUsuario: localStorage.getItem("idUsuario")
+
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getItem + '/' + data.id_riesgo_x_proyecto,
+            // url: getItem + '/' + data.id_riesgo_x_proyecto,
+            url: getItem + '/' + jsonData,
             data: jsonData,
             dataType: "json",
             success: function(data) {
@@ -605,13 +625,16 @@ function main() {
 
     function listarResponsable() {
         var data = {
-            idProyecto: idProyectoLocal
+            idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
+
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getResponsable + '/' + data.idProyecto,
+            // url: getResponsable + '/' + data.idProyecto,
+            url: getResponsable + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 listaEquipo = data;
@@ -632,13 +655,14 @@ function main() {
             idProyecto: idProyectoLocal,
             nombre: "",
             //       idPaqueteTrabajo : $('#idPaqueteRiesgo').val(), 
-            // idCategoriaRiesgo : $('#idCategoriaRiesgo').val()    
+            // idCategoriaRiesgo : $('#idCategoriaRiesgo').val()  
+            idUsuario: localStorage.getItem("idUsuario")
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getAllItems + '/' + JSON.stringify(data),
+            url: getAllItems + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 var lista = data;
@@ -701,14 +725,18 @@ function main() {
                 $(".glyphicon.glyphicon-ok").click(function() {
 
                     var data = {
-                        idRiesgo: $(this).closest("tr").attr("id")
+                        idRiesgo: $(this).closest("tr").attr("id"),
+                        idProyecto: localStorage.getItem("idProyecto"),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     };
                     idArray = data.idRiesgo;
                     var jsonData = JSON.stringify(data);
                     $.ajax({
                         async: false,
                         type: 'GET',
-                        url: getStatus + '/' + data.idRiesgo,
+                        // url: getStatus + '/' + data.idRiesgo,
+                        url: getStatus + '/' + jsonData,
                         dataType: "json",
                         success: function(data) {
                         },
@@ -938,7 +966,9 @@ function main() {
                 if (($('#proRiesgo').val() != '') && (validarProbaImpacto($('#proRiesgo').val())) && (validarNumero($('#proRiesgo').val()))) {
                     var data = {
                         idProyecto: idProyectoLocal,
-                        valor: $('#proRiesgo').val()
+                        valor: $('#proRiesgo').val(),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     }
                     var jsonData = JSON.stringify(data);
                     $.ajax({
@@ -971,7 +1001,9 @@ function main() {
                 if (($('#proRiesgoM').val() != '') && (validarProbaImpacto($('#proRiesgoM').val())) && (validarNumero($('#proRiesgoM').val()))) {
                     var data = {
                         idProyecto: idProyectoLocal,
-                        valor: $('#proRiesgoM').val()
+                        valor: $('#proRiesgoM').val(),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     }
                     var jsonData = JSON.stringify(data);
                     $.ajax({
@@ -1004,7 +1036,9 @@ function main() {
     function cargarProbabilidadModificacion(probabilidad) {
         var data = {
             idProyecto: idProyectoLocal,
-            valor: probabilidad
+            valor: probabilidad,
+            idUsuario: localStorage.getItem("idUsuario")
+
         }
         var jsonData = JSON.stringify(data);
         $.ajax({
@@ -1033,7 +1067,9 @@ function main() {
                     var data = {
                         idProyecto: idProyectoLocal,
                         valor: $('#impRiesgo1').val(),
-                        idTipoImpacto: $('#tipoImpacto').val()
+                        idTipoImpacto: $('#tipoImpacto').val(),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     }
                     var jsonData = JSON.stringify(data);
                     $.ajax({
@@ -1067,7 +1103,9 @@ function main() {
                     var data = {
                         idProyecto: idProyectoLocal,
                         valor: $('#impRiesgo1M').val(),
-                        idTipoImpacto: $('#tipoImpactoM').val()
+                        idTipoImpacto: $('#tipoImpactoM').val(),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     }
                     var jsonData = JSON.stringify(data);
                     $.ajax({
@@ -1100,7 +1138,9 @@ function main() {
                     var data = {
                         idProyecto: idProyectoLocal,
                         idNivelImpacto: $('#impRiesgo2').val(),
-                        idTipoImpacto: $('#tipoImpacto').val()
+                        idTipoImpacto: $('#tipoImpacto').val(),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     }
                     var jsonData = JSON.stringify(data);
                     $.ajax({
@@ -1133,7 +1173,9 @@ function main() {
                     var data = {
                         idProyecto: idProyectoLocal,
                         idNivelImpacto: $('#impRiesgo2M').val(),
-                        idTipoImpacto: $('#tipoImpactoM').val()
+                        idTipoImpacto: $('#tipoImpactoM').val(),
+                        idUsuario: localStorage.getItem("idUsuario")
+
                     }
                     var jsonData = JSON.stringify(data);
                     $.ajax({
@@ -1246,7 +1288,9 @@ function main() {
         if (tipo == 1) { //Registrar
             var data = {
                 idTipoImpacto: idTipoImpactoLocal,
-                idProyecto: idProyectoLocal
+                idProyecto: idProyectoLocal,
+                idUsuario: localStorage.getItem("idUsuario")
+
             };
             // console.log(data);
             var jsonData = JSON.stringify(data);
@@ -1272,7 +1316,9 @@ function main() {
 
             var data = {
                 idTipoImpacto: idTipoImpactoLocal,
-                idProyecto: idProyectoLocal
+                idProyecto: idProyectoLocal,
+                idUsuario: localStorage.getItem("idUsuario")
+
             };
             var jsonData = JSON.stringify(data);
             $.ajax({
@@ -1342,12 +1388,15 @@ function main() {
     function listarTiposImpacto() {
         var data = {
             idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
+
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getAllTypesImpacts + '/' + data.idProyecto,
+            // url: getAllTypesImpacts + '/' + data.idProyecto,
+            url: getAllTypesImpacts + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 listaTipos = data;
@@ -1566,14 +1615,17 @@ function main() {
     function listarRiesgosMaterializados() {
         $("#tablaRiesgosMat").empty();
         var data = {
-            idProyecto: idProyectoLocal
+            idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
+
 
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getAllItemsMaterializados + '/' + idProyectoLocal,
+            // url: getAllItemsMaterializados + '/' + idProyectoLocal,
+            url: getAllItemsMaterializados + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 var lista = data;
@@ -1592,13 +1644,16 @@ function main() {
 
     function listaAcciones(idARiesgos) {
         var data = {
-            idRiesgoXProyecto: idARiesgos
+            idRiesgoXProyecto: idARiesgos,
+            idProyecto: localStorage.getItem("idProyecto"),
+            idUsuario: localStorage.getItem("idUsuario")
         };
         var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: listAccions + '/' + data.idRiesgoXProyecto,
+            // url: listAccions + '/' + data.idRiesgoXProyecto,
+            url: listAccions + '/' + jsonData,
             success: function(data) {
                 obj = JSON.parse(data);
                 console.log(obj);
