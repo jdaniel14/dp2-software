@@ -312,12 +312,12 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	a++;
 	//input= '<input type="text" class="form-control" id="proyecto'+(a)+'" value="'+arreglo[2]+'">';
 	//G_listaProfesionRecurso
-	var profesion = "<select class='form-control input-sm'>"+
-					 "<option value='6'>Analista 1</option>"+
-					 "<option value='7'>Analista 2</option>"+
-					 "<option value='8'>Desarrollador 1</option>"+
-					 "<option value='9'>Desarrollador 2</option>"+
-					"</select>";
+	//var profesion = "<select class='form-control input-sm'>"+
+	//				 "<option value='6'>Analista 1</option>"+
+	//				 "<option value='7'>Analista 2</option>"+
+	//				 "<option value='8'>Desarrollador 1</option>"+
+	//			 "<option value='9'>Desarrollador 2</option>"+
+	//				"</select>";
 	
 	var fechaini="<input class='form-control input-sm' type='date' name='fechaini'>";
 	var fechafin="<input class='form-control input-sm' type='date' name='fechafin'>";
