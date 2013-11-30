@@ -1,5 +1,6 @@
 <?php
 	include('routesRiesgoV2.php');
+    include('clasesRiesgo.php');
     
     //--------------------------------------TIPO IMPACTO--------------------------------------
 
