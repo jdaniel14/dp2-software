@@ -21,6 +21,13 @@ var setMaterializada = "../../api/R_registrarMaterializacion";
 var getAllItemsMaterializados = "../../api/R_obtenerRiesgoMaterializado";
 var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo"; 
 
+//$("#confirmDelete").modal("show");
+
+
+//$("#modalExitoIndex").modal("show");
+
+
+console.log("sape");
 $(document).ready(main);
 
 var nombre = "";
@@ -236,9 +243,9 @@ function main() {
             // dataType: "json",
             success: function(data) {
                 var item = data;
+                $('#myModalRegister').modal('hide');
                 alert(item);
                 listarRiesgos();
-                $('#myModalRegister').modal('hide');
             },
             fail: function(data) {
                 alert(data.me);
@@ -285,6 +292,8 @@ function main() {
     // });
 
     $("#btnEliminar").click(function() {
+      
+
         var data = {
             idRiesgoProyecto: idArray
         }
@@ -297,6 +306,8 @@ function main() {
                 dataType: "html",
                 success: function() {
                     // alert("Se elimino el riesgo correctamente");
+                    $('#confirmDelete').modal('hide');
+                    //$("#modalExitoIndex").modal("show");
                     $("#labelSuccessModalIndex").append("Se elimino el riesgo correctamente");
                     $("#modalExitoIndex").modal("show");
                     listarRiesgos();
@@ -310,7 +321,11 @@ function main() {
                 url: logicDeleteItem + '/' + data.idRiesgoProyecto,
                 dataType: "json",
                 success: function(data) {
+                    console.log("modal cerradito");
                     // alert("Se elimino el riesgo correctamente");
+                    // $("#myModal").modal(); 
+                    $('#confirmDelete').modal('hide');
+                    //$("#modalExitoIndex").modal("show");
                     $("#labelSuccessModalIndex").append("Se elimino el riesgo correctamente");
                     $("#modalExitoIndex").modal("show");
                     listarRiesgos();
@@ -318,6 +333,7 @@ function main() {
                 fail: codigoError
             });
         }
+        
     });
 
     $("#btnAtrasRegistrar").click(function() {
