@@ -236,8 +236,8 @@
     function R_getListaRiesgo($var){
         $riesgo = json_decode($var);
         if (R_verificaPermisoServicio(R_SERVICIO_4, $riesgo->idUsuario, $riesgo->idProyecto)) {
-            var_dump($riesgo);
-            echo "Entro";
+            // var_dump($riesgo);
+            // echo "Entro";
             $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
             TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
             PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
@@ -433,7 +433,7 @@
     function R_getDescripcionNivelImpactoTipoImpacto($var){
         $riesgo = json_decode($var);
         if (R_verificaPermisoServicio(R_SERVICIO_9, $riesgo->idUsuario, $riesgo->idProyecto)) {
-            $var = json_decode($json);
+            // $var = json_decode($json);
             $query = "SELECT * FROM TIPO_IMPACTO_X_NIVEL_IMPACTO 
                 WHERE id_proyecto=:id_proyecto AND id_tipo_impacto=:id_tipo_impacto;";
             try {

@@ -71,11 +71,11 @@
     function R_deleteTipoImpactoRiesgo($json){
         $proy = json_decode($json);
         if (R_verificaPermisoServicio(R_SERVICIO_102, $proy->idUsuario, $proy->idProyecto)) {
-            $sql = "DELETE FROM TIPO_IMPACTO WHERE id_tipo_impacto=:idImpacto";
+            $sql = "DELETE FROM TIPO_IMPACTO WHERE id_tipo_impacto = :idTipoImpacto";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam("idImpacto", $proy->$idImpacto);
+                $stmt->bindParam("idTipoImpacto", $proy->idImpacto);
                 $stmt->execute();
                 $db = null;
                 echo 'Riesgo eliminado con exito';
