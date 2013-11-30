@@ -64,7 +64,8 @@ function main() {
         
         var data = {
             idProyecto: idProyectoLocal,
-            listaFechas: []
+            listaFechas: [], 
+            idUsuario: localStorage.getItem("idUsuario")
         };
       //  var cantidad2 = $("#tablaAcuerdos tr").length;
         var i=0;
@@ -138,7 +139,8 @@ function addTableRow()
 function listarAcuerdos() {
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
