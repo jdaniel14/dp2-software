@@ -307,7 +307,8 @@ function main() {
         var data = {
             idProyecto: idProyectoLocal,
             listaEstrategias: [],
-            tipo:1
+            tipo:1,
+            idUsuario: localStorage.getItem("idUsuario")
            
         };
 
@@ -364,7 +365,8 @@ function main() {
         var data = {
             idProyecto: idProyectoLocal,
             listaEstrategias: [],
-            tipo:2
+            tipo:2,
+            idUsuario: localStorage.getItem("idUsuario")
             
         };
 
@@ -421,7 +423,8 @@ function main() {
             return;
         var data = {
             idProyecto: idProyectoLocal,
-            metodologia: $("#metodologia").val()
+            metodologia: $("#metodologia").val(),
+            idUsuario: localStorage.getItem("idUsuario")
 
         };
         var jsonData = JSON.stringify(data);
@@ -456,13 +459,15 @@ function main() {
 function leerCategorias2() {
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
+        // url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
+        url: '../../api/R_listarEstrategiasNegativo' + '/' + jsonData;
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -519,14 +524,16 @@ function leerCategorias1() {
 
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
  
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarEstrategiasPositivo' + '/' + data.idProyecto,
+        // url: '../../api/R_listarEstrategiasPositivo' + '/' + data.idProyecto,
+        url: '../../api/R_listarEstrategiasPositivo' + '/' +  jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -570,13 +577,15 @@ function  leerPuntajes() {
 //    $("#puntajeMax").val(data["puntajeMax"]);
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
-    // var jsonData = JSON.stringify(data);
+    var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_obtenerPuntajes' + '/' + data.idProyecto,
+        // url: '../../api/R_obtenerPuntajes' + '/' + data.idProyecto,
+        url: '../../api/R_obtenerPuntajes' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -594,7 +603,8 @@ function  leerPuntajes() {
 function  agregarEquipo() {
     var data = {
         idProyecto: idProyectoLocal,
-        listaEquipo: []
+        listaEquipo: [],
+        idUsuario: localStorage.getItem("idUsuario")
     };
 
     var datos = [];
@@ -640,7 +650,8 @@ function  agregarComite() {
 
     var data = {
         idProyecto: idProyectoLocal,
-        listaComite: []
+        listaComite: [],
+        idUsuario: localStorage.getItem("idUsuario")
     };
 
 
@@ -684,25 +695,29 @@ function  agregarComite() {
 function leerNivelProbabilidad1(impactos) {
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     var datos = leerMatrizPositivo();
     
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatrizPositivo' + '/' + data.idProyecto,
+        // url: '../../api/R_crearMatrizPositivo' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizPositivo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(datos) {
             $.ajax({
                 type: 'GET',
-                url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+                // url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+                url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + jsonData,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function(data) {
@@ -739,25 +754,29 @@ function leerNivelProbabilidad1(impactos) {
 function leerNivelProbabilidad2(impactos) {
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     var datos = leerMatrizNegativo();
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatrizNegativo' + '/' + data.idProyecto,
+        // url: '../../api/R_crearMatrizNegativo' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizNegativo' + '/' +jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(datos) {
             $.ajax({
                 type: 'GET',
-                url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+                // url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + data.idProyecto,
+                url: '../../api/R_listaHeadersProbabilidadRiesgo' + '/' + jsonData,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function(data) {
@@ -794,13 +813,15 @@ function leerNivelProbabilidad2(impactos) {
 function pintarMatriz1(impactos) {
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarEstrategiasPositivo' + '/' + data.idProyecto,
+        // url: '../../api/R_listarEstrategiasPositivo' + '/' + data.idProyecto,
+        url: '../../api/R_listarEstrategiasPositivo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -853,13 +874,15 @@ function pintarMatriz1(impactos) {
 function pintarMatriz2(impactos) {
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
+        // url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
+        url: '../../api/R_listarEstrategiasNegativo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -918,13 +941,15 @@ function leerNivelImpacto1() {
 
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + data.idProyecto,
+        // url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + data.idProyecto,
+        url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -945,13 +970,15 @@ function leerNivelImpacto2() {
 
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + data.idProyecto,
+        // url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + data.idProyecto,
+        url: '../../api/R_listaHeadersImpactoRiesgo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -983,14 +1010,16 @@ function  leerEquipo() {
 
     $('#equipoProyecto').append('<h4>Equipo del Proyecto </h4>');
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarIntegrantesProyecto' + '/' + data.idProyecto,
+        // url: '../../api/R_listarIntegrantesProyecto' + '/' + data.idProyecto,
+        url: '../../api/R_listarIntegrantesProyecto' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -1012,14 +1041,16 @@ function leerMatrizPositivo() {
     //var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatrizPositivo' + '/' + data.idProyecto,
+        // url: '../../api/R_crearMatrizPositivo' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizPositivo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -1038,14 +1069,16 @@ function leerMatrizNegativo() {
     //var data = $.parseJSON('[[{"valorProb":"1"},{"valorImpacto":"1","valorMult":"1"},{"valorImpacto":"2","valorMult":"2"},{"valorImpacto":"3","valorMult":"3"},{"valorImpacto":"4","valorMult":"4"},{"valorImpacto":"5","valorMult":"5"}],[{"valorProb":"2"},{"valorImpacto":"1","valorMult":"2"},{"valorImpacto":"2","valorMult":"4"},{"valorImpacto":"3","valorMult":"6"},{"valorImpacto":"4","valorMult":"8"},{"valorImpacto":"5","valorMult":"10"}],[{"valorProb":"3"},{"valorImpacto":"1","valorMult":"3"},{"valorImpacto":"2","valorMult":"6"},{"valorImpacto":"3","valorMult":"9"},{"valorImpacto":"4","valorMult":"12"},{"valorImpacto":"5","valorMult":"15"}],[{"valorProb":"4"},{"valorImpacto":"1","valorMult":"4"},{"valorImpacto":"2","valorMult":"8"},{"valorImpacto":"3","valorMult":"12"},{"valorImpacto":"4","valorMult":"16"},{"valorImpacto":"5","valorMult":"20"}]]');
 
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_crearMatrizNegativo' + '/' + data.idProyecto,
+        // url: '../../api/R_crearMatrizNegativo' + '/' + data.idProyecto,
+        url: '../../api/R_crearMatrizNegativo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -1075,13 +1108,15 @@ function  leerComite() {
 
     $('#comiteRiesgos').append('<h4>Comité de Riesgos </h4>');
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
 
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarComiteRiesgo' + '/' + data.idProyecto,
+        // url: '../../api/R_listarComiteRiesgo' + '/' + data.idProyecto,
+        url: '../../api/R_listarComiteRiesgo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
