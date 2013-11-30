@@ -117,9 +117,13 @@ function guardar_cambios(id){
              success: function(data) {
                 var item=JSON.parse(data);
                // alert(item['codRespuesta']);
-                alert("Registrado con éxito");
+                // alert("Registrado con éxito");
                 
                 $("#prueba"+idAct).hide();
+
+                ("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Registrado con éxito");
+                $('#modalExito').modal('show');
 
                  }
             

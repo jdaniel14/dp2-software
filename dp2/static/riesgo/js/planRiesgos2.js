@@ -144,9 +144,12 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 			
 			success: function(data){
 				var item = data;
-				alert(item);
-				listarTiposImpactosXNivelImpactos();
 				$('#modalEliminarTipoImpactoXNivelImpacto').modal('hide');
+				("#labelExitoModal").html("");
+                $("#labelExitoModal").append(item);
+                $('#modalExito').modal('show');
+				// alert(item);
+				listarTiposImpactosXNivelImpactos();
 			},
 			fail: codigoError
 		});
@@ -189,9 +192,12 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 				dataType: "json",
 				success: function(data){
 					var item = data;
-					alert("Se registró exitosamente el nivel");
-					listarTiposImpactosXNivelImpactos();
 					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
+					// alert("Se registró exitosamente el nivel");
+					("#labelExitoModal").html("");
+	                $("#labelExitoModal").append("Se registró exitosamente el nivel");
+	                $('#modalExito').modal('show');
+					listarTiposImpactosXNivelImpactos();
 				},
 				fail: codigoError
 			});
@@ -266,9 +272,13 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 				data: jsonData,
 				dataType: "json",
 				success: function(data){
-					alert("Se registraron exitosamente los valores del impacto ");
-					listarTiposImpactosXNivelImpactos();
 					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
+					("#labelExitoModal").html("");
+	                $("#labelExitoModal").append("Se registraron exitosamente los valores del impacto ");
+	                $('#modalExito').modal('show');
+					// alert("Se registraron exitosamente los valores del impacto ");
+					listarTiposImpactosXNivelImpactos();
+					
 				},
 				fail: codigoError
 			});
@@ -280,7 +290,10 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 
 /*-----------------------------------------ERRORES----------------------------------------------------*/
 function codigoError(){
-	alert('Error');
+	$("#labelErrorModal").html("");
+    $("#labelErrorModal").append("Se detectó un error");
+    $('#ModaldeErrores').modal('show');
+	// alert('Error');
 }
 /*-----------------------------------------FIN ERRORES----------------------------------------------------*/
 
