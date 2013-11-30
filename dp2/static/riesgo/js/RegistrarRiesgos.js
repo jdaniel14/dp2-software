@@ -412,12 +412,16 @@ function main() {
         
     if (rol == 3) {
         for (var i = 0; i < arregloPermisoJP.length-2; i++) {
-            if (i !== 1 || i !== 2) {
+            if (i !== 1 || i !== 2 ) {
                 $("#" + arregloPermisoJP[i] + "").show();
             }
             if (i === 1 || i === 2) {
                 $(".materializar").show();
                 $(".acciones").show();
+            }
+            if (i ===4) {
+                $("#confirmarRiesgo").hide();
+              
             }
         }
         
