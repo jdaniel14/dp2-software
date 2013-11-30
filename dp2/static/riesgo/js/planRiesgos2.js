@@ -60,12 +60,14 @@ function listarTiposImpactosXNivelImpactos(){
 	$("#tablaTipoImpactoXNivelImpacto").empty();
 	var data = {
 		idProyecto: idProyectoLocal, 
+		idUsuario: localStorage.getItem("idUsuario")
 	};
 
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getAllTypeImpactsXLevelImpacts + '/' + data.idProyecto,
+		// url: getAllTypeImpactsXLevelImpacts + '/' + data.idProyecto,
+		url: getAllTypeImpactsXLevelImpacts + '/' + jsonData,
 		dataType: "json",
 		success: function(data){
 			agregarDataTiposImpactosXNivelImpactos(data); 
@@ -137,11 +139,17 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 /*--------------------------Eliminar MATRIZ NIVEL X TIPO DE IMPACTO--TIPO 2-------------------------*/
 	$("#btnEliminarTipoXNivel").click( function(){
 
-		var idProyecto=idProyectoLocal;
+		// var idProyecto=idProyectoLocal;
+		var data = {
+			idProyecto: idProyectoLocal, 
+			idUsuario: localStorage.getItem("idUsuario")
+		};
+
+		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'DELETE',
-			url: deleteAllTypeImpactsXLevelImpacts + '/' + idProyecto,
-			
+			// url: deleteAllTypeImpactsXLevelImpacts + '/' + idProyecto,
+			url: deleteAllTypeImpactsXLevelImpacts + '/' + jsonData,
 			success: function(data){
 				var item = data;
 				$('#modalEliminarTipoImpactoXNivelImpacto').modal('hide');
@@ -164,7 +172,8 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 
 		var data = {
 			idProyecto: idProyectoLocal,
-			idTipoImpacto: idTipoImpacto
+			idTipoImpacto: idTipoImpacto,
+			idUsuario: localStorage.getItem("idUsuario")
 			
 		};
 		limpiarModal();
@@ -215,7 +224,8 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 
 		var data = {
 			idProyecto: idProyectoLocal,
-			idTipoImpacto: idTipoImpacto
+			idTipoImpacto: idTipoImpacto,
+			idUsuario: localStorage.getItem("idUsuario")
 			
 		};
 		limpiarModal();
@@ -302,13 +312,15 @@ function codigoError(){
 function listarTiposImpacto(listaTotal){
 	var data = {
 		idProyecto: idProyectoLocal, 
+		idUsuario: localStorage.getItem("idUsuario")
 	};
 	var jsonData = JSON.stringify(data);
 	$('#listarTiposImpactos').empty();
 	$('#listarTiposImpactos').append("<option value=\"0\" selected>Seleccione un tipo de impacto</option>");
 	$.ajax({
 		type: 'GET',                
-		url: getAllTypesImpacts + '/' + data.idProyecto,
+		// url: getAllTypesImpacts + '/' + data.idProyecto,
+		url: getAllTypesImpacts + '/' + jsonData,
 		dataType: "json",
 		success: function(data){
 			listaTipos = data;
@@ -491,11 +503,13 @@ function listarHeaderNivelImpacto(){
 	// $("#tablaImpacto").empty();
 	var data = {
 		idProyecto: idProyectoLocal, 
+		idUsuario: localStorage.getItem("idUsuario")
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getAllHeadersImpacts + '/' + data.idProyecto,
+		// url: getAllHeadersImpacts + '/' + data.idProyecto,
+		url: getAllHeadersImpacts + '/' + jsonData,
 		dataType: "json",
 		success: function(data){
 			listaNiveles = data;
