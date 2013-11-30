@@ -625,7 +625,7 @@ function getEdt(){
     function dameNombre($v){
       try{	
     	$con = getConnection();
-    	$pstmt= $con->prepare("SELECT nombres, apellidos FROM EMPLEADO WHERE id_empleado=?");
+    	$pstmt= $con->prepare("SELECT E.nombres, E.apellidos FROM EMPLEADO E, MIEMBROS_EQUIPO M WHERE M.id_miembros_equipo=? AND M.id_empleado=E.id_empleado");
     	$pstmt->execute(array($v));
     	$b=$pstmt->fetch(PDO::FETCH_ASSOC)["nombres"];
     	return $b;
@@ -639,7 +639,7 @@ function getEdt(){
     function dameApellido($v){
       try{
     	$con = getConnection();
-    	$pstmt= $con->prepare("SELECT nombres, apellidos FROM EMPLEADO WHERE id_empleado=?");
+    	$pstmt= $con->prepare("SELECT E.nombres, E.apellidos FROM EMPLEADO E, MIEMBROS_EQUIPO M WHERE M.id_miembros_equipo=? AND M.id_empleado=E.id_empleado");
     	$pstmt->execute(array($v));
     	$a=$pstmt->fetch(PDO::FETCH_ASSOC)["apellidos"];
     	return $a;
