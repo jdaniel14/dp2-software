@@ -1,6 +1,6 @@
 <?php
 	include('routesRiesgoV2.php');
-    include('clasesRiesgo.php');
+    include_once('clasesRiesgo.php');
 
    
 

@@ -1,7 +1,7 @@
 <?php
 
 	include('routesRiesgo.php');
-    include('clasesRiesgo.php');
+    include_once('clasesRiesgo.php');
     //Henry
     function R_prueba(){
         /*
