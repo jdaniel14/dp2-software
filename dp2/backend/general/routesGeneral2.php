@@ -12,7 +12,7 @@ $app->post('/G_cambiaEstadoLeccionAprendida', 'G_postBorrarLeccionAprendida'); /
 $app->post('/G_actualizarLeccionAprendida', 'G_postActualizarLeccionAprendida');
 $app->get('/G_devuelveLeccionesAprendidas', 'G_getLeccionesAprendidas'); //leer todas las lecciones aprendidas
 $app->get('/G_devuelveLeccionAprendidaById/:id', 'G_getLeccionAprendidasById');
-
+ 
 $app->post('/G_asignarRecursoProyecto', 'G_postAsignarRecProy');//inserta los recursos a un proyecto
 $app->post('/G_eliminarRecursoProyecto', 'G_postBorrarMiembroDeProyecto');//elimina un recurso del proyecto
 
