@@ -367,6 +367,7 @@ function G_getListarRecDisp() {
         
         //recursos ocupados en el rango de fechas
 		$jefe_proyecto = get_jp($idProyecto);
+        $gerente_portafolio = 1;
 
         $sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
@@ -412,7 +413,7 @@ function G_getListarRecDisp() {
 
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $j["id"];
-            if (!array_key_exists($id, $lista_falsa) && $id != $jefe_proyecto) {
+            if (!array_key_exists($id, $lista_falsa) && $id != $jefe_proyecto && $id != $gerente_portafolio) {
                 $lista[$id] = array("id" => $j["id"],
                     "nom" => $j["nom"],
                     "prof" => $j["prof"]
