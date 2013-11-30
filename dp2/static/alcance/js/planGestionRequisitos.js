@@ -86,7 +86,7 @@ $(document).ready(function(){
 					var filas = $("#listaResponsables").children();
 					for(var i=0; i < filas.length ;i++){
 						var id = $($(filas[i]).children()[0]).html();
-						if(lista.indexOf(id)>= -1){
+						if(lista.indexOf(parseInt(id)) > -1){
 							$($($(filas[i]).children()[2]).children()[0]).prop("checked",true);
 						}
 					}

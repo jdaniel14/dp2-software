@@ -79,8 +79,10 @@ function cargaLista(data){
 		fila += "</tr>";
 		$('#listaRequisitos').append(fila);
 	}
-	$(".modificar-requisito").click(modificarRequisito);
-	$(".eliminar-requisito").click(eliminarRequisito);
+	$(document).off('click', '.modificar-requisito', modificarRequisito);
+	$(document).off('click', '.eliminar-requisito', eliminarRequisito);
+	$(document).on('click', '.modificar-requisito', modificarRequisito);
+	$(document).on('click', '.eliminar-requisito', eliminarRequisito);
 	checkearPermisos();
 }
 
@@ -131,8 +133,10 @@ function inserta(data){
 	$('#listaRequisitos').append(fila);
 	resetForm();
 	$('#detalleRequisito').modal('hide');
-	$(".modificar-requisito").click(modificarRequisito);
-	$(".eliminar-requisito").click(eliminarRequisito);
+	$(document).off('click', '.modificar-requisito', modificarRequisito);
+	$(document).off('click', '.eliminar-requisito', eliminarRequisito);
+	$(document).on('click', '.modificar-requisito', modificarRequisito);
+	$(document).on('click', '.eliminar-requisito', eliminarRequisito);
 }
 function resetForm(){
 	$("input.form-control").val("");

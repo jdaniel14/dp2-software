@@ -4,7 +4,7 @@ function inicializaFechas(){
 }
 
 function modificarRequisito(){
-	$("#selected").removeClass("selected");
+	$(".selected").removeClass("selected");
 	$(".alert").remove();
 	$(this).parent().parent().addClass("selected");
 	var obj = {
@@ -32,7 +32,7 @@ function modificarRequisito(){
 }
 
 function listarFases(){
-	$("#selected").removeClass("selected");
+	$(".selected").removeClass("selected");
 	$(this).parent().parent().addClass("selected");
 	var obj = {
 		"id_requisito": this.getAttribute("idrequisito")
