@@ -5,10 +5,7 @@
                 "title" => "Registrar Proyecto"
             );
 
-		 $link_G_RegRRHH = array(
-                "href" => "../../views/general/RegistrarRecursoHumano.html",
-                "title" => "Registrar Recurso Humano"
-            );
+		 
 		 $link_G_ListRRHH = array(
                 "href" => "../../views/general/ListaRecursosHumanos.html",
                 "title" => "Ver Lista Recursos Humanos"

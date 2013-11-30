@@ -46,12 +46,12 @@
 
          $link_A_GestAlc = array(
                 "href"=> "../../views/alcance/gestionAlcance.html", 
-                "title"=> "Gesti\u00f3n de alcance"
+                "title"=> "Gestión de alcance"
         );
 
          $link_A_GesReq = array(
                 "href"=> "../../views/alcance/requisitos.html", 
-                "title"=> "Gesti\u00f3n de requisitos"
+                "title"=> "Gestión de requisitos"
         );
 
          $link_A_MatriRas = array(
@@ -66,12 +66,12 @@
 
          $link_A_PlanAlc = array(
                 "href"=> "../../views/alcance/PlanGestionAlcance.html", 
-                "title"=> "Plan de gesti\u00f3n de alcance"
+                "title"=> "Plan de gestión de alcance"
         );
 
          $link_A_PlanReq = array(
                 "href"=> "../../views/alcance/PlanGestionRequisitos.html", 
-                "title"=> "Plan de gesti\u00f3n de requisitos"
+                "title"=> "Plan de gestión de requisitos"
         );
 
          /****************************************************************************************************/
@@ -191,7 +191,7 @@
 
         $link_R_RiesMateri = array(
                 "href"=> "../../views/riesgo/RiesgosMaterializados.html", 
-                "title"=> "Reisgos Materializados"
+                "title"=> "Riesgos Materializados"
         );
 
 
