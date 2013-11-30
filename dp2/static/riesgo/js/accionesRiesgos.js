@@ -240,7 +240,7 @@ function addTableRow()
     // append the new row to the table
     $("#tablaAcuerdos").find("tbody tr:last").after($tr);
     tamanho2 = parseInt(($(".tipoRiesgo").size()));
-    alert(tamanho2);
+  
 }
 
 function listaAcciones() {
