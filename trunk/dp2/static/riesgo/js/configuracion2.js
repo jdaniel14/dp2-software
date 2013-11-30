@@ -243,7 +243,7 @@ function main(){
 				var item = data;
 				$('#modalAgregarNivelImpacto').modal('hide');
 				$("#labelExitoModal").html("");
-                $("#labelExitoModal").append("Se registró exitosamente el nivel " + item.descripcion);
+                $("#labelExitoModal").append("Se registró exitosamente el nivel");
                 $('#modalExito').modal('show');
 				// alert("Se registró exitosamente el nivel " + item.descripcion);
 				listarHeaderNivelImpacto();

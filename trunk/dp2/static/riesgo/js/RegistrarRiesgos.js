@@ -25,14 +25,6 @@ var arregloPermisoJP = new Array();
 var arregloPermisoGP = new Array();
 var arregloPermisoMP = new Array();
 var rol = localStorage.getItem("idRol");
-
-//$("#confirmDelete").modal("show");
-
-
-//$("#modalExitoIndex").modal("show");
-
-
-console.log("sape");
 $(document).ready(main);
 
 var nombre = "";
@@ -179,7 +171,7 @@ function main() {
             $.ajax({
                 async: false,
                 type: 'PUT',
-                url: updateItem + '/' + data.idRiesgoXProyecto,
+                url: updateItem,
                 data: jsonData,
                 // dataType: "json",
                 success: function(data) {
@@ -543,7 +535,7 @@ function main() {
             async: false,
             type: 'GET',
             // url: getAllPackets + '/' + data.idProyecto,
-            url: getAllTypesImpacts + '/' + jsonData,
+            url: getAllPackets + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 var lista = data;
@@ -688,12 +680,20 @@ function main() {
                     // obtenerRiesgo(id);
                 });
                 $(".glyphicon.glyphicon-remove").click(function() {
-                    var idRiesgoProyecto = $(this).closest("tr").attr("id");
+                    // var idRiesgoProyecto = $(this).closest("tr").attr("id");
+                    var data = {
+
+                        idRiesgoXProyecto : $(this).closest("tr").attr("id"),
+                        idProyecto: localStorage.getItem("idProyecto"),
+                        idUsuario: localStorage.getItem("idUsuario")
+                    }
+                    var jsonData = JSON.stringify(data);
                     idArray = idRiesgoProyecto;
                     $.ajax({
                         async: false,
                         type: 'GET',
-                        url: getStatus + '/' + idRiesgoProyecto,
+                        // url: getStatus + '/' + idRiesgoProyecto,
+                        url: getStatus + '/' + jsonData,
                         dataType: "json",
                         success: function(data) {
                             estadoLogico = data;
@@ -769,11 +769,15 @@ function main() {
     }
 
     function listarRiesgosComunes() {
-
+        var data = {
+            idProyecto: localStorage.getItem("idProyecto"),
+            idUsuario: localStorage.getItem("idUsuario")
+        };
+        var jsonData = JSON.stringify(data);
         $.ajax({
             async: false,
             type: 'GET',
-            url: getAllKnownItems,
+            url: getAllKnownItems + '/' + jsonData,
             dataType: "json",
             success: function(data) {
                 agregaDataComunFila(data);
@@ -1400,7 +1404,7 @@ function main() {
             dataType: "json",
             success: function(data) {
                 listaTipos = data;
-                // console.log(data);
+                console.log(data);
                 agregarDataTiposImpacto(data);
             },
             fail:

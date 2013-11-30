@@ -153,7 +153,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 			success: function(data){
 				var item = data;
 				$('#modalEliminarTipoImpactoXNivelImpacto').modal('hide');
-				("#labelExitoModal").html("");
+				$("#labelExitoModal").html("");
                 $("#labelExitoModal").append(item);
                 $('#modalExito').modal('show');
 				// alert(item);
@@ -203,7 +203,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 					var item = data;
 					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
 					// alert("Se registró exitosamente el nivel");
-					("#labelExitoModal").html("");
+					$("#labelExitoModal").html("");
 	                $("#labelExitoModal").append("Se registró exitosamente el nivel");
 	                $('#modalExito').modal('show');
 					listarTiposImpactosXNivelImpactos();
@@ -283,7 +283,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 				dataType: "json",
 				success: function(data){
 					$('#modalAumentarTipoImpactoXNivelImpacto').modal('hide');
-					("#labelExitoModal").html("");
+					$("#labelExitoModal").html("");
 	                $("#labelExitoModal").append("Se registraron exitosamente los valores del impacto ");
 	                $('#modalExito').modal('show');
 					// alert("Se registraron exitosamente los valores del impacto ");

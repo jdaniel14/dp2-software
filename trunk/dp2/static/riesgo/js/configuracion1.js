@@ -95,7 +95,8 @@ function main() {
 
         var data = {
             idProyecto: idProyectoLocal,
-            listaTipoImpacto: []
+            listaTipoImpacto: [],
+            idUsuario: localStorage.getItem("idUsuario")
         };
 
 
@@ -105,8 +106,7 @@ function main() {
             var obj = {
                 tipoRi: $($("input.tipoRiesgo")[i]).val(), // valor de inputs
                 formas: $($("select.numero")[i]).val(),
-                idProyecto: localStorage.getItem("idProyecto"),
-                idUsuario: localStorage.getItem("idUsuario")
+                
 
             };
             i++;
@@ -154,7 +154,7 @@ function eliminarRiesgo(idTipoRi) {
         $("#tablaRiesgos > tr>td>a>span");
         console.log(idTipoRi);
         var data = {
-            idTipoImpacto: idTipoRi,
+            idImpacto: idTipoRi,
             idProyecto: idProyectoLocal,
             idUsuario: localStorage.getItem("idUsuario")
         };

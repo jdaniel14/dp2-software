@@ -199,8 +199,8 @@ function main() {
     $("#btnGenerar1").click(function() {
         if (!validEstrategia1())
             return;
-        ("#labelExitoModal").html("");
-        $("#labelExitoModal").append("Se borrará si existe datos anteriores");
+        $("#labelExitoModal").html("");
+        $("#labelExitoModal").append("Se borrará, si existe, datos anteriores");
         $('#modalExito').modal('show');
         // alert("Se borrará si existe datos anteriores");
         var estrategias = $("#cantidadEstrategias1").val();
@@ -249,7 +249,7 @@ function main() {
     $("#btnGenerar2").click(function() {
         if (!validEstrategia2())
             return;
-        ("#labelExitoModal").html("");
+        $("#labelExitoModal").html("");
         $("#labelExitoModal").append("Se borrará si existe datos anteriores");
         $('#modalExito').modal('show');
         // alert("Se borrará si existe datos anteriores");
@@ -337,7 +337,7 @@ function main() {
             data: jsonData,
             dataType: "json",
             success: function(data) {
-                ("#labelExitoModal").html("");
+                $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Se registró la categorización exitosamente");
                 $('#modalExito').modal('show');
                 // alert("Se registró la categorización exitosamente");
@@ -393,7 +393,7 @@ function main() {
             data: jsonData,
             dataType: "json",
             success: function(data) {
-                ("#labelExitoModal").html("");
+                $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Se registró la categorización exitosamente");
                 $('#modalExito').modal('show');
                 // alert("Se registró la categorización exitosamente");
@@ -436,7 +436,7 @@ function main() {
             data: jsonData,
             dataType: "json",
             success: function(data) {
-                ("#labelExitoModal").html("");
+                $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Se registró la metodologia exitosamente");
                 $('#modalExito').modal('show');
                 // alert("Se registró la metodologia exitosamente");
@@ -622,13 +622,13 @@ function  agregarEquipo() {
     //alert("Elemento: " + $(elemento).text() + " en el indice " + index);
 
     $.ajax({
-        type: 'POST',
-        url: "../../api/R_listarcomiteRiesgo",
-        data: jsonData,
+        type: 'GET',
+        url: "../../api/R_listarComiteRiesgo" + "/" + jsonData,
+        // data: jsonData,
         dataType: "json",
         success: function(data) {
 
-            ("#labelExitoModal").html("");
+            $("#labelExitoModal").html("");
             $("#labelExitoModal").append("Se registró el equipo exitosamente");
             $('#modalExito').modal('show');
 
@@ -675,7 +675,7 @@ function  agregarComite() {
         dataType: "json",
         success: function(data) {
             // alert("Se registró el comite exitosamente");
-            ("#labelExitoModal").html("");
+            $("#labelExitoModal").html("");
             $("#labelExitoModal").append("Se registró el comite exitosamente");
             $('#modalExito').modal('show');
         },
