@@ -54,7 +54,7 @@ function noValido(){
 
 function error(){
 	$("#mensaje").html("Ocurrio un error durante la instalación");
-	$("#barra").addClass("progress-bar-warning");
+	$("#barra").addClass("progress-bar-danger");
 }
 
 $("#instalar").click(function(){
@@ -72,8 +72,8 @@ $("#instalar").click(function(){
 			"nombre": $("#nombre").val(),
 			"usuarioInicial": $("#usuarioInicial").val(),
 			"passwordInicial": $("#passwordInicial").val(),
-			"nombreUsuario":$("nombreUsuario").val(),
-			"apellidoUsuario":$("apellidoUsuario").val()
+			"nombreUsuario":$("#nombreUsuario").val(),
+			"apellidoUsuario":$("#apellidoUsuario").val()
 		}
 	}
 	$.ajax({
