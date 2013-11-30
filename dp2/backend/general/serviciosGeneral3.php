@@ -472,7 +472,7 @@ function G_postRegistraSolicitud() {
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
-}
+} 
 
 function G_getListaSolicitud() {
     $sql = "SELECT S.id_proyecto as id_proyecto, P.nombre_proyecto as nombre_proy, E.nombre_corto as nombre_jefe, 'Por aceptar' as estado, S.flag_cambio, S.id_solicitud_cambio
