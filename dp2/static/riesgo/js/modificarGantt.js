@@ -110,7 +110,7 @@ function main(){
 					// obtenerCostoRealActual(costoNuevo);
 					//guardar en BD
 					localStorage.removeItem("idPaquete");
-					window.location.replace("../riesgo/MostrarRiesgos.html");
+					window.location.replace("../riesgo/index.html");
 				},
 			 
 			});
