@@ -105,35 +105,28 @@ class R_Constants {
     			R_SERVICIO_1 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_2 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_3 => new R_PermisosServicio(false, true, false),
-    			//R_SERVICIO_4 => new R_PermisosServicio(true, true, true),
-    			R_SERVICIO_4 => new R_PermisosServicio(false, false, false),
-
+    			R_SERVICIO_4 => new R_PermisosServicio(true, true, true),
     			R_SERVICIO_5 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_6 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_7 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_8 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_9 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_10 => new R_PermisosServicio(true, true, true),
-
-    			R_SERVICIO_11 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_12 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_13 => new R_PermisosServicio(false, true, false),//x
-    			R_SERVICIO_14 => new R_PermisosServicio(true, true, false),//x
-
+    			R_SERVICIO_11 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_12 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_13 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_14 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_15 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_16 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_17 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_18 => new R_PermisosServicio(false, true, false),
-
-    			R_SERVICIO_19 => new R_PermisosServicio(true, true, true),//x
-
+    			R_SERVICIO_19 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_20 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_21 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_22 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_23 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_24 => new R_PermisosServicio(false, true, false),
-
-    			R_SERVICIO_25 => new R_PermisosServicio(true, true, false),//x
+    			R_SERVICIO_25 => new R_PermisosServicio(false, true, false),
 
     			R_SERVICIO_26 => new R_PermisosServicio(false, true, false),
     			R_SERVICIO_27 => new R_PermisosServicio(false, true, false),
@@ -149,6 +142,11 @@ class R_Constants {
     			R_SERVICIO_36 => new R_PermisosServicio(true, true, false),//x
     			R_SERVICIO_37 => new R_PermisosServicio(true, true, false),//x
     			R_SERVICIO_38 => new R_PermisosServicio(true, true, false)
+
+
+
+
+    			
     		);
     	}
     	return self::$permisosServicio;
