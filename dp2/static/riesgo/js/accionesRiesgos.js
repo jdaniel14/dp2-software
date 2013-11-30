@@ -7,6 +7,11 @@ $(document).ready(main);
 var maxId;
 var idRiesgo = localStorage.getItem("idRiesgo");
 var lineaBase;
+var arregloPermisoJP = new Array();
+var arregloPermisoGP = new Array();
+var arregloPermisoMP = new Array();
+var rol = localStorage.getItem("idRol");
+
 
 function lineaBase() {
 
@@ -67,10 +72,33 @@ function validar() {
 
 
 function main() {
+  arregloPermisoJP = ["agregar", "guardar","iconito"];
 
+
+
+//
+//    if (rol == 2) {
+//        for (var i = 0; i < arregloPermisoJP.length; i++) {
+//            $("#" + arregloPermisoJP[i] + "").show();
+//        }
+//    }
     var cantidad = $("#suma").val();
     lineaBase();
     listaAcciones();
+       for (var i = 0; i < arregloPermisoJP.length; i++) {
+        if(i!==2){
+        $("#" + arregloPermisoJP[i] + "").hide();
+    }
+       }
+    if(rol==2){
+         for (var i = 0; i < arregloPermisoJP.length; i++) {
+        if(i!==2){
+        $("#" + arregloPermisoJP[i] + "").show();
+       
+    }}   
+        
+    }
+    
     $("#agregar").click(function()
     {
 
@@ -227,6 +255,9 @@ function main() {
 //            }
 //        });
     });
+    
+
+
 }
 
 function addTableRow()
@@ -330,9 +361,11 @@ function listaAcciones() {
                         "<td><input class=\"tiempo form-control \" name=\"tiempo" + 0 + "\" id=\"tiempo" + 0 + "\" type=\"text\" ></td>" +
                         "<td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + 0 + "\" ></span></a></td></tr>");
             }
-
+            $(".iconito").hide();
+            if(rol==2) $(".iconito").show();
         }
     });
+
 }
 
 function esNumEntPos(strNum){
@@ -343,4 +376,5 @@ function esNumEntPos(strNum){
             return false;
     }
     return true;
+
 }
