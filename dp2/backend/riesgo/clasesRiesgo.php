@@ -138,25 +138,25 @@ class R_Constants {
     			R_SERVICIO_34 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_35 => new R_PermisosServicio(true, true, false),
     			R_SERVICIO_36 => new R_PermisosServicio(false, true, true),
-    			R_SERVICIO_37 => new R_PermisosServicio(true, true, true),//x
+    			R_SERVICIO_37 => new R_PermisosServicio(true, true, true),
     			R_SERVICIO_38 => new R_PermisosServicio(true, true, true),
 
-				R_SERVICIO_100 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_101 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_102 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_103 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_104 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_105 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_106 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_107 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_108 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_109 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_110 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_111 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_112 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_113 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_114 => new R_PermisosServicio(true, true, false),//x
-    			R_SERVICIO_115 => new R_PermisosServicio(true, true, false)
+				R_SERVICIO_100 => new R_PermisosServicio(true, true, true),
+    			R_SERVICIO_101 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_102 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_103 => new R_PermisosServicio(true, true, false),
+    			R_SERVICIO_104 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_105 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_106 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_107 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_108 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_109 => new R_PermisosServicio(true, true, false),
+    			R_SERVICIO_110 => new R_PermisosServicio(true, true, false),
+    			R_SERVICIO_111 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_112 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_113 => new R_PermisosServicio(false, true, false),
+    			R_SERVICIO_114 => new R_PermisosServicio(true, true, false),
+    			R_SERVICIO_115 => new R_PermisosServicio(true, true, true)
 
 
     			
