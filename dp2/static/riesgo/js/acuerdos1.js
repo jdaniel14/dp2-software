@@ -86,7 +86,7 @@ function main() {
         var data = {
             idProyecto: idProyectoLocal,
             listaFechas: [], 
-            idUsuario: localStorage.getItem("idUsuario")
+            idUsuario: localStorage.getItem("idUsuario"),
         };
       //  var cantidad2 = $("#tablaAcuerdos tr").length;
         var i=0;
@@ -174,7 +174,8 @@ function listarAcuerdos() {
     var jsonData = JSON.stringify(data);
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listarAcuerdos' + '/' + data.idProyecto,
+        // url: '../../api/R_listarAcuerdos' + '/' + data.idProyecto,
+        url: '../../api/R_listarAcuerdos' + '/' + jsonData,
         dataType: "json",
         success: function(data) {
             for (obj in data) {

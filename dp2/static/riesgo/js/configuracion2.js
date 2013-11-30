@@ -183,6 +183,7 @@ function main(){
 			descripcion: $('#descripcionProbabilidad').val(),
 			minimo: $('#probabilidadMinNivel').val(),
 			maximo: $('#probabilidadMaxNivel').val(),
+			idUsuario: localStorage.getItem("idUsuario")
 		};
 
 		$('#errorNivel').hide();
@@ -257,12 +258,14 @@ function main(){
 
 	$("#btnEliminarNivel").click(function(){
 		var data = {
-			idProyecto : idProyectoLocal
+			idProyecto : idProyectoLocal,
+			idUsuario: localStorage.getItem("idUsuario")
 		}
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'DELETE',
-			url: deleteAllProbabilities + '/' + data.idProyecto,
+			// url: deleteAllProbabilities + '/' + data.idProyecto,
+			url: deleteAllProbabilities + '/' + jsonData,
 			data: jsonData,
 			dataType: "html",
 			success: function(){
@@ -287,12 +290,14 @@ function main(){
 
 	$("#btnEliminarNivelImpacto").click(function(){
 		var data = {
-			idProyecto : idProyectoLocal
+			idProyecto : idProyectoLocal,
+			idUsuario: localStorage.getItem("idUsuario")
 		}
 		var jsonData = JSON.stringify(data);
 		$.ajax({
 			type: 'DELETE',
-			url: deleteAllImpacts + '/' + data.idProyecto,
+			// url: deleteAllImpacts + '/' + data.idProyecto,
+			url: deleteAllImpacts + '/' +jsonData,
 			data: jsonData,
 			dataType: "html",
 			success: function(){
@@ -350,10 +355,14 @@ function obtenerMayorProbabilidad () {
 
 	var data = {
 		idProyecto: idProyectoLocal, 
+		idUsuario: localStorage.getItem("idUsuario")
 	};
+	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getMaxProbability + '/' + data.idProyecto,
+		// url: getMaxProbability + '/' + data.idProyecto,
+
+		url: getMaxProbability + '/' +jsonData,
 		success: function(data){
 			var obj = JSON.parse(data);
 			// console.log(obj);
@@ -383,13 +392,15 @@ function listarProbabilidades(){
 	$("#tablaProbabilidad").empty();
 	var data = {
 		idProyecto: idProyectoLocal, 
+		idUsuario: localStorage.getItem("idUsuario")
 	};
 	
 
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getAllProbabilities + '/' + data.idProyecto,
+		// url: getAllProbabilities + '/' + data.idProyecto,
+		url: getAllProbabilities + '/' +jsonData,
 		dataType: "json",
 		success: function(data){
 			listaProbabilidades = data;
@@ -435,12 +446,14 @@ function listarHeaderNivelImpacto(){
 	$("#headerTipoImpactoXNivelImpacto").empty();
 	$("#tablaImpacto").empty();
 	var data = {
-		idProyecto: idProyectoLocal, 
+		idProyecto: idProyectoLocal,
+		 idUsuario: localStorage.getItem("idUsuario")
 	};
 	var jsonData = JSON.stringify(data);
 	$.ajax({
 		type: 'GET',                
-		url: getAllHeadersImpacts + '/' + data.idProyecto,
+		// url: getAllHeadersImpacts + '/' + data.idProyecto,
+		url: getAllHeadersImpacts + '/' +jsonData,
 		dataType: "json",
 		success: function(data){
 			listaNiveles = data;

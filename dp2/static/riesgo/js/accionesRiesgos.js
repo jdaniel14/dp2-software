@@ -163,7 +163,9 @@ function main() {
                 idRiesgoXProyecto: idRiesgo,
                 descripcion: $($("input.tipoRiesgo")[0]).val(),
                 costo: $($(".costo")[0]).val(),
-                tiempo: $($(".tiempo")[0]).val()
+                tiempo: $($(".tiempo")[0]).val(),
+                idUsuario: localStorage.getItem("idUsuario"),
+                idProyecto: localStorage.getItem("idProyecto")
             }
 
             console.log(data);
@@ -201,7 +203,9 @@ function main() {
                     idRiesgoXProyecto: idRiesgo,
                     descripcion: $($("input.tipoRiesgo")[i - 1]).val(),
                     costo: $($(".costo")[i - 1]).val(),
-                    tiempo: $($(".tiempo")[i - 1]).val()
+                    tiempo: $($(".tiempo")[i - 1]).val(),
+                    idUsuario: localStorage.getItem("idUsuario"),
+                    idProyecto: localStorage.getItem("idProyecto")
                 };
 
                 i++;
@@ -300,12 +304,14 @@ function addTableRow()
 function listaAcciones() {
 
     var data = {
-        idRiesgoXProyecto: idRiesgo
+        idRiesgoXProyecto: idRiesgo,
+        idUsuario: localStorage.getItem("idUsuario"),
+        idProyecto: localStorage.getItem("idProyecto")
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
         type: 'GET',
-        url: listAccions + '/' + data.idRiesgoXProyecto,
+        url: listAccions + '/' + jsonData,
         success: function(data) {
             $("#tablaAcuerdos").html("");
             obj = JSON.parse(data);
