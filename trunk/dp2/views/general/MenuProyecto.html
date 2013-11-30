@@ -11,25 +11,15 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="../../static/cronograma/css/cronograma.css" rel="stylesheet">
     <link href="../../static/general/css/general.css" rel="stylesheet">
-    <link href="../../static/general/css/validacion.css" rel="stylesheet">
-    
-    <script src="../../assets/js/jquery.js"></script>
-    <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/header.js"></script>
-
+    <link href="../../static/general/css/validacion.css" rel="stylesheet">    
+    <link href="../../static/costo/datepicker/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+   
+    <script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+    <script src="../../assets/js/jquery.js"></script> 
     <script src="../../static/costo/datepicker/js/jquery-1.9.1.js"></script>
     <script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.js"></script>
     <script src="../../static/costo/datepicker/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <!--Se obtiene el titulo del proyecto desde el localStorage-->
-    <script>
-      $(document).ready(function(){
-          document.getElementsByTagName('h1')[0].innerHTML=localStorage.getItem("nombreProyecto");
-      });
-    </script>
 
   </head>
 
@@ -44,94 +34,102 @@
         <h2><strong>First Step!</strong> No haz creado una acta de constitución, para crearla haz click <a href="RegistrarActaConstitucion.html" class="alert-link">aquí</a>
         </h2>
       </div>
-        <div class="well" id="muestraActa">
+        <div class="well">
   <ul class="nav nav-tabs nav-justified">
     <li class="active"><a href="#ig" data-toggle="tab">Informaci&oacute;n General </a></li>
-    <li><a href="#dp1" data-toggle="tab">Descripci&oacute;n del Proyecto</a></li>
-    <li><a href="#perp" data-toggle="tab">Performance del Proyecto</a></li>
-    <li><a href="#op" data-toggle="tab">Objetivos del Proyecto</a></li>
-    <li><a href="#ap1" data-toggle="tab">Autoridad del Proyecto</a></li>
+    <li><a href="#dp1" data-toggle="tab" style="display:none;">Descripci&oacute;n del Proyecto</a></li>
+    <li><a href="#perp" data-toggle="tab" style="display:none;">Performance del Proyecto</a></li>
+    <li><a href="#op" data-toggle="tab" style="display:none;">Objetivos del Proyecto</a></li>
+    <li><a href="#ap1" data-toggle="tab" style="display:none;">Autoridad del Proyecto</a></li>
   </ul>
   <div id="myTabContent" class="tab-content">
-      <div class="tab-pane active in" id="ig">
-        <p>
-        <form class="form-horizontal" role="form" action='' method="POST">
+    <div class="tab-pane active in" id="ig">
+      <p>
+      <form id="registrarActa1" class="form-horizontal" role="form" action='' method="POST">
         <fieldset>
-      <div class="form-group">
-        <!-- Nombre del Proyecto -->
-        <label class="col-lg-4 control-label"  for="np">Nombre del Proyecto:</label>
-        <div class="controls col-lg-6">
-        <input class="form-control" type="text" id="np" name="np" placeholder="" class="input-xlarge" >
-        <!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+        <div class="form-group" style="display:none">
+          <!-- Id del Proyecto -->
+          <label class="col-lg-4 control-label"  for="idProyecto">Id del Proyecto:</label>
+          <div class="controls col-lg-6">
+          <input class="form-control" type="text" id="idProyecto" name="idProyecto" placeholder="" class="input-xlarge">
+          <!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+          </div>
         </div>
-      </div>
+        <div class="form-group">
+          <!-- Nombre del Proyecto -->
+          <label class="col-lg-4 control-label"  for="np">Nombre del Proyecto:</label>
+          <div class="controls col-lg-6">
+          <input class="form-control" type="text" id="np" name="np" placeholder="" class="input-xlarge" >
+          <!--<p class="help-block">Username can contain any letters or numbers, without spaces</p>-->
+          </div>
+        </div>
 
-      <div class="form-group">
-        <!-- Fecha de Preparacion -->
-        <label class="col-lg-4 control-label"  for="fpp">Fecha de Preparaci&oacute;n</label>
-        <div class="controls col-lg-6">
-        <input readonly class="form-control"type="date" id="fpp" name="fpp" placeholder="" class="input-xlarge" max=today>
-        <!--<p class="help-block">Please confirm password</p>-->
+        <div class="form-group">
+          <!-- Fecha de Preparacion -->
+          <label class="col-lg-4 control-label"  for="fpp">Fecha de Preparaci&oacute;n</label>
+          <div class="controls col-lg-6">
+          <input class="form-control"type="text" id="fpp" name="fpp" placeholder="" class="input-xlarge">
+          <!--<p class="help-block">Please confirm password</p>-->
+          </div>
         </div>
-      </div>
-      <!--
-      <div class="form-group">
-         
-        <label class="col-lg-4 control-label"  for="modificacionFecha">Fecha de Modificaci&oacute;n</label>
-        <div class="controls col-lg-6">
-        <input class="form-control" type="date" id="modificacionFecha" name="modificacionFecha" placeholder="" class="input-xlarge" readonly>
+        <!--
+        <div class="form-group">
+           
+          <label class="col-lg-4 control-label"  for="modificacionFecha">Fecha de Modificaci&oacute;n</label>
+          <div class="controls col-lg-6">
+          <input class="form-control" type="date" id="modificacionFecha" name="modificacionFecha" placeholder="" class="input-xlarge" readonly>
+          </div>
         </div>
-      </div>
-      -->
-      <div class="form-group">
-        <!-- Tipo de Proyecto -->
-        <label class="col-lg-4 control-label"  for="tp">Tipo de Proyecto</label>
-        <div class="controls col-lg-6">
-        <select readonly class="form-control" id="tp" name="tp" placeholder="" class="input-xlarge">
+        -->
+        <div class="form-group">
+          <!-- Tipo de Proyecto -->
+          <label class="col-lg-4 control-label"  for="tp">Tipo de Proyecto</label>
+          <div class="controls col-lg-6">
+          <select class="form-control" id="tp" name="tp" placeholder="" class="input-xlarge">
+          
+          </select>
+          <!--<p class="help-block">Please confirm password</p>-->
+          </div>
+        </div>
         
-        </select>
-        <!--<p class="help-block">Please confirm password</p>-->
+        <div class="form-group">
+          <!-- Prioridad del Proyecto -->
+          <label class="col-lg-4 control-label"  for="pp">Prioridad del Proyecto</label>
+          <div class="controls col-lg-6">
+          <select class="form-control" id="pp" name="pp" placeholder="" class="input-xlarge">
+    
+          </select>
+          <!--<p class="help-block">Please confirm password</p>-->
+          </div>
         </div>
-      </div>
-      
-      <div class="form-group">
-        <!-- Prioridad del Proyecto -->
-        <label class="col-lg-4 control-label"  for="pp">Prioridad del Proyecto</label>
-        <div class="controls col-lg-6">
-        <select readonly class="form-control" id="pp" name="pp" placeholder="" class="input-xlarge">
-  
-        </select>
-        <!--<p class="help-block">Please confirm password</p>-->
-        </div>
-      </div>
 
 
-      <div class="form-group">
-        <!-- Button -->
-        <div class="controls">
-        <table width="100%">      
-          <tr width="100%">
-            <td width="50%" align="right">
-              <button type="button" class="btn btn-primary" id="btnGrabarInformacion">
-              Guardar
-              </button>
-            </td>
-            <td width="50%" align="left">
-              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
-              Cancelar
-              </button>
-            </td>
-          </tr>     
-        </table>
+        <div class="form-group">
+          <!-- Button -->
+          <div class="controls">
+          <table width="100%">      
+            <tr width="100%">
+              <td width="50%" align="right">
+                <button type="button" class="btn btn-primary" id="btnGrabarInformacion">
+                Guardar
+                </button>
+              </td>
+              <td width="50%" align="left">
+                <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='MenuProyecto.html'">
+                Volver
+                </button>
+              </td>
+            </tr>     
+          </table>
+          </div>
         </div>
-      </div>
-      </fieldset>
-        </form>
-        </p>
+        </fieldset>
+      </form>
+      </p>
     </div>
     <div class="tab-pane pane" id="dp1">
       <p>   
-      <form class="form-horizontal" role="form" action='' method="POST">
+      <form id="registrarActa2" class="form-horizontal" role="form" action='' method="POST">
       <fieldset>
       <div class="form-group">
         <!-- Descripcion del Proyecto -->
@@ -151,8 +149,8 @@
               </button>
             </td>
             <td width="50%" align="left">
-              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
-              Cancelar
+              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='MenuProyecto.html'">
+              Volver
               </button>
             </td>
           </tr>     
@@ -165,7 +163,7 @@
     </div>
     <div class="tab-pane pane" id="perp">
       <p>   
-      <form class="form-horizontal" role="form" action='' method="POST">
+      <form id="registrarActa3" class="form-horizontal" role="form" action='' method="POST">
       <fieldset>
       <div class="form-group">
         <!-- Costo -->
@@ -204,8 +202,8 @@
               </button>
             </td>
             <td width="50%" align="left">
-              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
-              Cancelar
+              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='MenuProyecto.html'">
+              Volver
               </button>
             </td>
           </tr>     
@@ -218,7 +216,7 @@
     </div>
     <div class="tab-pane pane" id="op">
       <p>   
-      <form class="form-horizontal" role="form" action='' method="POST">
+      <form id="registrarActa4" class="form-horizontal" role="form" action='' method="POST">
       <fieldset>
 
       <div class="table-responsive">
@@ -251,8 +249,8 @@
               </button>
             </td>
             <td width="30%" align="left">
-              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
-              Cancelar
+              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='MenuProyecto.html'">
+              Volver
               </button>
             </td>
           </tr>     
@@ -265,14 +263,14 @@
     </div>
     <div class="tab-pane pane" id="ap1">
       <p>   
-      <form class="form-horizontal" role="form" action='' method="POST">
+      <form id="registrarActa5" class="form-horizontal" role="form" action='' method="POST">
       <fieldset>
-    
+
       <div class="form-group">
         <!-- Jefe de Proyecto -->
         <label class="col-lg-4 control-label"  for="jp">Jefe de Proyecto:</label>
         <div class="controls col-lg-6">
-        <select class="form-control" id="jp" name="jp" placeholder="" class="input-xlarge" readonly>
+        <select class="form-control" id="jp" name="jp" placeholder="" class="input-xlarge">
         
         </select>
         <!--<p class="help-block">Please confirm password</p>-->
@@ -283,7 +281,7 @@
         <!-- Comite  de Seguimiento -->
         <label class="col-lg-4 control-label"  for="jcp">Jefe de Comite de Seguimiento:</label>
         <div class="controls col-lg-6">
-          <input id="jcp" name="jcp" class="form-control" placeholder="" />
+          <input class="form-control" type="text" id="jcp" name="jcp" placeholder="" class="input-xlarge">
         </div>
       </div>
       <div class="form-group">
@@ -321,8 +319,8 @@
               </button>
             </td>
             <td width="50%" align="left">
-              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='ListaProyectos.html'">
-              Cancelar
+              <button type="button" class="btn btn-primary" id="btnCancelar" onclick="location.href='MenuProyecto.html'">
+              Volver
               </button>
             </td>
           </tr>     
@@ -340,10 +338,10 @@
     <!-- Bootstrap core JavaScript
     ==================lang================================ -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>    
     <script src="../../static/general/js/jquery.validate.min.js"></script>
     <script src="../../static/general/js/bootbox.min.js"></script>
-      <script src="../../static/general/js/detalleActaConstitucion.js"></script>
-    <script src="../../static/general/js/menuHeader.js"></script>
-    
+    <script src="../../static/general/js/detalleActaConstitucion.js"></script>
+    <script src="../../assets/js/header.js"></script>    
   </body>
 </html>
