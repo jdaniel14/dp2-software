@@ -196,7 +196,6 @@ function grabarInformacionActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){                    
-                    $('[data-toggle="tab"][href="#ig"]').hide();
 					$('[data-toggle="tab"][href="#dp1"]').show();
 					$('[data-toggle="tab"][href="#dp1"]').tab('show'); 
                 }
@@ -215,7 +214,6 @@ function grabarDescripcionActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    $('[data-toggle="tab"][href="#dp1"]').hide();
 					$('[data-toggle="tab"][href="#perp"]').show();
 					$('[data-toggle="tab"][href="#perp"]').tab('show'); 
                 }
@@ -237,7 +235,6 @@ function grabarPerformanceActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){                    
-					$('[data-toggle="tab"][href="#perp"]').hide();
 					$('[data-toggle="tab"][href="#op"]').show();
 					$('[data-toggle="tab"][href="#op"]').tab('show'); 
                 }
@@ -267,7 +264,6 @@ function grabarObjetivosActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    $('[data-toggle="tab"][href="#op"]').hide();
 					$('[data-toggle="tab"][href="#ap1"]').show();
 					$('[data-toggle="tab"][href="#ap1"]').tab('show');
                 }
