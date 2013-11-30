@@ -54,14 +54,14 @@ function listarCambiosGantt(){
         cadena=cadena+""+
                     "<label>Por la siguiente actividad:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\">  <div class=\"col-lg-4 control-label\"> \n\
-            <input type=\"text\" id=\"nuevoNombre\" value=\""+nombreAccionRiesgo+"\"></div>" +
+            <input type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreAccionRiesgo+"\"></div>" +
                 " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label>\n\
-            <input type=\"date\" id=\"nuevoFechaInicio\" value=\""+fechaInicioAccionRiesgo+"\">"+
+            <input type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
                 " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  \n\
-            <input type=\"number\" id=\"nuevoDuracion\" value=\""+tiempo+"\">" +
+            <input type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
                 "<label> dias</label><br></div><br>";
         
-        cadena=cadena +'<button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios();">Cambiar</button></div></div></div>';
+        cadena=cadena +'<button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +');">Cambiar</button></div></div></div>';
 	$("#prueba"+i).html(cadena);
           }
         }
@@ -69,19 +69,19 @@ function listarCambiosGantt(){
         });
 }
 
-function guardar_cambios(){
+function guardar_cambios(id){
     
-
+        
         var data = {
-            id:$("#id").val(),
-            name: $("#nuevoNombre").val(),
-            duration:$("#nuevoDuracion").val(),
-            fecha_inicio:$("#nuevoFechaInicio").val()
+            id:id,
+            name: $("#nuevoNombre_"+id).val(),
+            duration:$("#nuevoDuracion_"+id).val(),
+            fecha_inicio:$("#nuevoFechaInicio_"+id).val()
                
         };
        
         var data2 = {
-          idActividad : $("#id").val(),
+          idActividad : id,
           idProyecto : idProyectoLocal
         }
 
