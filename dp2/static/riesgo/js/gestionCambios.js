@@ -24,7 +24,8 @@ function listarCambiosGantt(){
     var i=0;
     $.ajax({
         type: 'GET',
-        url: '../../api/R_obtenerAccionesParaAprobar' + '/' + data.idProyecto,
+        // url: '../../api/R_obtenerAccionesParaAprobar' + '/' + data.idProyecto,
+        url: '../../api/R_obtenerAccionesParaAprobar' + '/' + jsonData,
          dataType: "json",
          
         success: function(data) {

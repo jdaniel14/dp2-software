@@ -170,7 +170,8 @@ function listarAciones(){
     var jsonData = JSON.stringify(data);
     $.ajax({
         type: 'GET',
-        url:  getAccions + '/' + data.idRiesgoXProyecto,
+        // url:  getAccions + '/' + data.idRiesgoXProyecto,
+        url:  getAccions + '/' + jsonData,
         success: function(data) {
             obj = JSON.parse(data);
             console.log(obj);
