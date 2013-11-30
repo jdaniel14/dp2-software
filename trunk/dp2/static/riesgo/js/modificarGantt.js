@@ -108,7 +108,11 @@ function main(){
 				url: updateChanges,
 				data: jsonData,
 				success: function(data){
-					alert("Se actualizó");
+					// alert("Se actualizó");
+
+					("#labelExitoModal").html("");
+	                $("#labelExitoModal").append("Se actualizó");
+	                $('#modalExito').modal('show');
 					// obtenerCostoRealActual(costoNuevo);
 					//guardar en BD
 					localStorage.removeItem("idPaquete");
@@ -117,7 +121,12 @@ function main(){
 			 
 			});
         } else {
-        	alert("La nueva fecha de inicio no puede ser antes o el mismo dia que la fecha de materialización del riesgo");
+
+        	$("#labelErrorModal").html("");
+                $("#labelErrorModal").append("La nueva fecha de inicio no puede ser antes o el mismo dia que la fecha de materialización del riesgo");
+                $('#ModaldeErrores').modal('show');
+
+        	// alert("La nueva fecha de inicio no puede ser antes o el mismo dia que la fecha de materialización del riesgo");
         }
         
     });

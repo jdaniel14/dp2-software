@@ -219,7 +219,12 @@ function main() {
                 // $('#myModalRegister').modal('hide');
             },
             fail: function(data) {
-                alert(data.me);
+                // alert(data.me);
+
+                $("#labelErrorModal").html("");
+                $("#labelErrorModal").append("Error: " + data.me);
+                $('#ModaldeErrores').modal('show');
+
             }
         });
     });
@@ -260,11 +265,22 @@ function main() {
             success: function(data) {
                 var item = data;
                 $('#myModalRegister').modal('hide');
-                alert(item);
+                // alert(item);
+
+
+                ("#labelExitoModal").html("");
+                $("#labelExitoModal").append(item);
+                $('#modalExito').modal('show');
                 listarRiesgos();
             },
             fail: function(data) {
-                alert(data.me);
+                // alert(data.me);
+
+
+                $("#labelErrorModal").html("");
+                $("#labelErrorModal").append("Error: " + data.me);
+                $('#ModaldeErrores').modal('show');
+
             }
         });
     });
@@ -741,7 +757,12 @@ function main() {
 
     function codigoError() {
 
-        alert('Error');
+        // alert('Error');
+
+        $("#labelErrorModal").html("");
+                $("#labelErrorModal").append("Se encontró un error");
+                $('#ModaldeErrores').modal('show');
+
 
     }
 
@@ -887,7 +908,11 @@ function main() {
     });
 
     function grabarRiesgos() {
-        alert("Se grabó");
+        // alert("Se grabó");
+
+        ("#labelExitoModal").html("");
+        $("#labelExitoModal").append("Se grabó");
+        $('#modalExito').modal('show');
     }
 
     $("#checkearTodos").change(

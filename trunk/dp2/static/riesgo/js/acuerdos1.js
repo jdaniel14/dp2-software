@@ -18,7 +18,11 @@ function validAtenas2(){
 		if (acuerdoI === null || acuerdoI.length === 0 || fecha===null || fecha.length===0  || hora ===null || hora.length===0){
 			//ALERTAR
                         valor="vacio";
-                        alert("Debe registrar todos los campos");
+                        // alert("Debe registrar todos los campos");
+
+                        $("#labelErrorModal").html("");
+                        $("#labelErrorModal").append("Debe registrar todos los campos");
+                        $('#ModaldeErrores').modal('show');
 			return false;
                         
 		}
@@ -108,15 +112,23 @@ function main() {
             data: jsonData,
            
             success: function() {
-                alert("Registrado con éxito");
+                // alert("Registrado con éxito");
+
+                ("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Registrado con éxito");
+                $('#modalExito').modal('show');
+                
                 $("#tablaAcuerdosMod").html("");
                 listarAcuerdos();
            
 
             },
             fail: function(data) {
-                alert(data.me);
+                // alert(data.me);
                 
+                $("#labelErrorModal").html("");
+                $("#labelErrorModal").append("Error: " + data.me);
+                $('#ModaldeErrores').modal('show');
             }
         });
  
