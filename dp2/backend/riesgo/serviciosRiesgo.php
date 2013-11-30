@@ -1,6 +1,7 @@
 <?php
 
 	include('routesRiesgo.php');
+    include('clasesRiesgo.php');
     //Henry
     function R_prueba(){
         /*
@@ -23,206 +24,296 @@
         echo "Probando :D";
     }
 
+    function R_verificaPermisoServicio($idServicio, $idUsuario, $idProyecto){
+        try {
+            if ($idUsuario == 1) {
+                return true;
+            } else {
+                $rol = R_obtenerRol($idProyecto, $idUsuario);
+                return R_Constants::getPermisosServicio()[$idServicio]->getPermiso($rol);
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }    
+
+    function R_obtenerRol($idProyecto, $idEmpleado) {
+        $sql = "SELECT
+        A.ID_PROYECTO,
+        A.ID_EMPLEADO,
+        A.ID_ROL
+        FROM
+        MIEMBROS_EQUIPO A
+        WHERE
+        A.ID_PROYECTO = :idProyecto AND A.ID_EMPLEADO = :idEmpleado AND A.ESTADO<>0;";
+
+        $rol = -1;
+
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->bindParam("idEmpleado", $idEmpleado);
+            $stmt->execute();
+            $db = null;
+            
+            while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $rol = $p["ID_ROL"];
+                break;
+            }
+        } catch(PDOException $e) {
+            return $respuesta = R_crearRespuesta(-1, $e->getMessage());
+        }
+
+        return $rol;
+    }    
+
+    //RESPUESTAS
+    function R_crearRespuesta($codRespuesta, $mensaje) {
+        $respuesta = new stdClass();
+        $respuesta->codRespuesta = $codRespuesta;
+        $respuesta->mensaje = $mensaje;
+        
+        return $respuesta;
+    }
+/*
+    function CO_obtenerRespuestaPositivaDeGuardadoFalsa() {
+        return CO_crearRespuesta(0, "Ok.");
+    }
+
+    function CO_obtenerRespuestaNegativaDeGuardadoFalsa() {
+        return CO_crearRespuesta(-1, "Error XXX.");
+    }
+*/
+
+/*
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_, $riesgo->idUsuario, $riesgo->idProyecto)) {
+        
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+--------------
+
+
+*/
     //--------------------------------------RIESGO--------------------------------------
     function R_postRegistrarRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado,acciones_especificas,positivo_negativo) 
-                VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado,:acciones_especificas,:positivo_negativo)";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-           
-            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-            $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
-            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
-            $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
-            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
-            $stmt->bindParam("impacto", $riesgo->impacto);
-            $stmt->bindParam("severidad", $riesgo->severidad);
-            $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
-            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
-            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
-            $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
-            $stmt->bindParam("acciones_especificas", $riesgo->acciones);
-            $stmt->bindParam("positivo_negativo", $riesgo->tipoRiesgo);
-            $stmt->execute();
-            $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
-            $db = null;
+        if (R_verificaPermisoServicio(R_SERVICIO_1, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_paquete_trabajo,id_tipo_impacto,id_nivel_impacto,probabilidad,impacto,severidad,id_probabilidad_riesgo,costo_potencial,demora_potencial,estado,estado_logico,id_empleado,acciones_especificas,positivo_negativo) 
+                        VALUES (:id_proyecto,:nombre_riesgo,:id_paquete_trabajo,:id_tipo_impacto,:id_nivel_impacto,:probabilidad,:impacto,:severidad,:id_probabilidad_riesgo,:costo_potencial,:demora_potencial,1,1,:id_empleado,:acciones_especificas,:positivo_negativo)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+               
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("nombre_riesgo", $riesgo->nombre);
+                $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
+                $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+                $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
+                $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+                $stmt->bindParam("impacto", $riesgo->impacto);
+                $stmt->bindParam("severidad", $riesgo->severidad);
+                $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
+                $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
+                $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
+                $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
+                $stmt->bindParam("acciones_especificas", $riesgo->acciones);
+                $stmt->bindParam("positivo_negativo", $riesgo->tipoRiesgo);
+                $stmt->execute();
+                $riesgo->id_riesgo_x_proyecto = $db->lastInsertId();
+                $db = null;
 
-            echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo_x_proyecto,"nombre"=>$riesgo->nombre));
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
+                echo json_encode(array("idRiesgo"=>$riesgo->id_riesgo_x_proyecto,"nombre"=>$riesgo->nombre));
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
+        
 
     }
 
-    function R_getRiesgo($idRiesgoXProyecto){
-        
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,
-                RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, 
-                RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, 
-                PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,
-                RXP.id_empleado ,nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo
-                FROM RIESGO_X_PROYECTO RXP
-                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
-                left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
-                left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
-                left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
-                left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
-                where RXP.id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
-                            "nombre" => $row->nombre_riesgo,
-                            "idPaqueteTrabajo" => $row->id_paquete_trabajo,
-                            "paqueteTrabajo" => $row->nombre_paquete_trabajo,//PT
-                            "idTipoImpacto" => $row->id_tipo_impacto,
-                            "tipoImpacto" => $row->tipo_impacto,
-                            "impactoDescripcion" => $row->impacto_descripcion,//TI
-                            "idNivelImpacto" => $row->id_nivel_impacto,
-                            "impacto" => $row->impacto,
-                            "nivelImpactoDescripcion" => $row->nivel_impacto_descripcion,
-                            "idProbabilidadRiesgo" => $row->id_probabilidad_riesgo,
-                            "probabilidad" => $row->probabilidad,
-                            "descProbabilidad" => $row->probabilidad_descripcion,
-                            "severidad" => $row->severidad,
-                            "accionesEspecificas" => $row->acciones_especificas,//X
-                            "costoPotencial" => $row->costo_potencial,//RXP
-                            "demoraPotencial" => $row->demora_potencial,//RXP
-                            "idResponsable" => $row->id_empleado,
-                            "nombreResponsable" => $row->nombre_corto,//
-                            "nivelImpacto" => $row->nivel_impacto,//X
-                            "nivelProbabilidad" => $row->nivel_probabilidad,//X
-                            "tipoRiesgo" => $row->positivo_negativo
-                            );
-            $db = null;
-            echo json_encode($data);
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
+    function R_getRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_2, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo,RXP.id_paquete_trabajo,
+                    RXP.id_tipo_impacto,TI.tipo tipo_impacto ,PT.nombre nombre_paquete_trabajo, TI.descripcion impacto_descripcion, 
+                    RXP.id_nivel_impacto, impacto, NI.descripcion nivel_impacto_descripcion,RXP.id_probabilidad_riesgo, probabilidad, 
+                    PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial,
+                    RXP.id_empleado ,nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo
+                    FROM RIESGO_X_PROYECTO RXP
+                    left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                    left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
+                    left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
+                    left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
+                    left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
+                    where RXP.id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $data = array("idRiesgoProyecto" => $row->id_riesgo_x_proyecto, 
+                                "nombre" => $row->nombre_riesgo,
+                                "idPaqueteTrabajo" => $row->id_paquete_trabajo,
+                                "paqueteTrabajo" => $row->nombre_paquete_trabajo,//PT
+                                "idTipoImpacto" => $row->id_tipo_impacto,
+                                "tipoImpacto" => $row->tipo_impacto,
+                                "impactoDescripcion" => $row->impacto_descripcion,//TI
+                                "idNivelImpacto" => $row->id_nivel_impacto,
+                                "impacto" => $row->impacto,
+                                "nivelImpactoDescripcion" => $row->nivel_impacto_descripcion,
+                                "idProbabilidadRiesgo" => $row->id_probabilidad_riesgo,
+                                "probabilidad" => $row->probabilidad,
+                                "descProbabilidad" => $row->probabilidad_descripcion,
+                                "severidad" => $row->severidad,
+                                "accionesEspecificas" => $row->acciones_especificas,//X
+                                "costoPotencial" => $row->costo_potencial,//RXP
+                                "demoraPotencial" => $row->demora_potencial,//RXP
+                                "idResponsable" => $row->id_empleado,
+                                "nombreResponsable" => $row->nombre_corto,//
+                                "nivelImpacto" => $row->nivel_impacto,//X
+                                "nivelProbabilidad" => $row->nivel_probabilidad,//X
+                                "tipoRiesgo" => $row->positivo_negativo
+                                );
+                $db = null;
+                echo json_encode($data);
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+                    //'{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
+
 
     }    
 
-   function R_updateRiesgo($idRiesgoXProyecto){
-        
+   function R_updateRiesgo(){        
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        $query = "UPDATE RIESGO_X_PROYECTO SET  id_proyecto=:id_proyecto, nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
-        id_tipo_impacto=:id_tipo_impacto, id_nivel_impacto=:id_nivel_impacto,probabilidad=:probabilidad, impacto=:impacto, severidad=:severidad,
-        id_probabilidad_riesgo=:id_probabilidad_riesgo,
-        costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , id_empleado=:id_empleado , acciones_especificas=:acciones_especificas, positivo_negativo=:positivo_negativo
-        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+        if (R_verificaPermisoServicio(R_SERVICIO_3, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "UPDATE RIESGO_X_PROYECTO SET  id_proyecto=:id_proyecto, nombre_riesgo=:nombre_riesgo,id_paquete_trabajo=:id_paquete_trabajo, 
+            id_tipo_impacto=:id_tipo_impacto, id_nivel_impacto=:id_nivel_impacto,probabilidad=:probabilidad, impacto=:impacto, severidad=:severidad,
+            id_probabilidad_riesgo=:id_probabilidad_riesgo,
+            costo_potencial=:costo_potencial , demora_potencial=:demora_potencial , id_empleado=:id_empleado , acciones_especificas=:acciones_especificas, positivo_negativo=:positivo_negativo
+            WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
 
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
-            $stmt->bindParam("nombre_riesgo", $riesgo->nombreRiesgo);
-            $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
-            $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
-            $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
-            $stmt->bindParam("probabilidad", $riesgo->probabilidad);
-            $stmt->bindParam("impacto", $riesgo->impacto);
-            $stmt->bindParam("severidad", $riesgo->severidad);
-            $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
-            $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
-            $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
-            $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
-            $stmt->bindParam("acciones_especificas", $riesgo->acciones);
-            $stmt->bindParam("positivo_negativo", $riesgo->tipoRiesgo);
-            $stmt->execute();
-            $db = null;
-            echo json_encode($idRiesgoXProyecto);
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("nombre_riesgo", $riesgo->nombreRiesgo);
+                $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
+                $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+                $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
+                $stmt->bindParam("probabilidad", $riesgo->probabilidad);
+                $stmt->bindParam("impacto", $riesgo->impacto);
+                $stmt->bindParam("severidad", $riesgo->severidad);
+                $stmt->bindParam("id_probabilidad_riesgo", $riesgo->idProbabilidad);
+                $stmt->bindParam("costo_potencial", $riesgo->costoPotencial);
+                $stmt->bindParam("demora_potencial", $riesgo->demoraPotencial);
+                $stmt->bindParam("id_empleado", $riesgo->idEmpleado);
+                $stmt->bindParam("acciones_especificas", $riesgo->acciones);
+                $stmt->bindParam("positivo_negativo", $riesgo->tipoRiesgo);
+                $stmt->execute();
+                $db = null;
+                echo json_encode($riesgo->idRiesgoXProyecto);
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }        
     }
 
     function R_getListaRiesgo($var){
         $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_4, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            var_dump($riesgo);
+            echo "Entro";
+            $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
+            TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
+            PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
+            nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo, estado_logico
+                    FROM RIESGO_X_PROYECTO RXP
+                    left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
+                    left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
+                    left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
+                    left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
+                    left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
+                    where RXP.estado_logico!=0 and 
+                    RXP.id_proyecto=".$riesgo->idProyecto." ";
+                    //and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
+            try {
+                $arregloListaRiesgo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
+                                "nombre" => $row['nombre_riesgo'],
+                                "paqueteTrabajo" => $row['nombre_paquete_trabajo'],//PT
+                                "impactoDescripcion" => $row['impacto_descripcion'],//TI
+                                "impacto" => $row['impacto'],
+                                "nivelImpactoDescripcion" => $row['nivel_impacto_descripcion'],
+                                "probabilidad" => $row['probabilidad'],
+                                "probabilidadDescripcion" => $row['probabilidad_descripcion'],
+                                "severidad" => $row['severidad'],
+                                "accionesEspecificas" => $row['acciones_especificas'],//X
+                                "costoPotencial" => $row['costo_potencial'],//RXP
+                                "demoraPotencial" => $row['demora_potencial'],//RXP
+                                "nombreResponsable" => $row['nombre_corto'],//X
+                                "nivelImpacto" => $row['nivel_impacto'],//X
+                                "nivelProbabilidad" => $row['nivel_probabilidad'],//X
+                                "tipoRiesgo" => $row['positivo_negativo'],
+                                "estadoLogico" => $row['estado_logico']
+                                );
+                    array_push($arregloListaRiesgo,$data);
+                }
+                $db = null;
+                echo json_encode($arregloListaRiesgo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }     
 
-        $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
-        TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
-        PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
-        nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo, estado_logico
-                FROM RIESGO_X_PROYECTO RXP
-                left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
-                left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
-                left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
-                left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
-                left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
-                where RXP.estado_logico!=0 and 
-                RXP.id_proyecto=".$riesgo->idProyecto." ";
-                //and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
-        try {
-            $arregloListaRiesgo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
-                            "nombre" => $row['nombre_riesgo'],
-                            "paqueteTrabajo" => $row['nombre_paquete_trabajo'],//PT
-                            "impactoDescripcion" => $row['impacto_descripcion'],//TI
-                            "impacto" => $row['impacto'],
-                            "nivelImpactoDescripcion" => $row['nivel_impacto_descripcion'],
-                            "probabilidad" => $row['probabilidad'],
-                            "probabilidadDescripcion" => $row['probabilidad_descripcion'],
-                            "severidad" => $row['severidad'],
-                            "accionesEspecificas" => $row['acciones_especificas'],//X
-                            "costoPotencial" => $row['costo_potencial'],//RXP
-                            "demoraPotencial" => $row['demora_potencial'],//RXP
-                            "nombreResponsable" => $row['nombre_corto'],//X
-                            "nivelImpacto" => $row['nivel_impacto'],//X
-                            "nivelProbabilidad" => $row['nivel_probabilidad'],//X
-                            "tipoRiesgo" => $row['positivo_negativo'],
-                            "estadoLogico" => $row['estado_logico']
-                            );
-                array_push($arregloListaRiesgo,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
  
     function R_getListaPaquetesEDT($var){
-        $idProyecto = json_decode($var);
-        //$query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=".$idProyecto." ";
-        
-        $query ="SELECT a.* FROM PAQUETE_TRABAJO a, EDT b where  a.id_estado=1 and id_paquete_trabajo 
-         not in(select id_componente_padre from PAQUETE_TRABAJO where id_componente_padre is not null and 
-            id_estado=1) and a.id_edt=b.id_edt and b.id_estado=1 and b.id_proyecto=".$idProyecto." ";
-
-        //$query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=:id_proyecto";
-        
-        try {
-            $arregloListaPaquetesEDT= array();
-            $db=getConnection();
-            $stmt = $db->query($query);
-            //$stmt->bindParam("id_proyecto", $idProyecto);
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("id" => $row['id_paquete_trabajo'], "descripcion" => $row['nombre']);
-                array_push($arregloListaPaquetesEDT,$data);
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_5, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            //$query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=".$idProyecto." ";
+            $query ="SELECT a.* FROM PAQUETE_TRABAJO a, EDT b where  a.id_estado=1 and id_paquete_trabajo 
+             not in(select id_componente_padre from PAQUETE_TRABAJO where id_componente_padre is not null and 
+                id_estado=1) and a.id_edt=b.id_edt and b.id_estado=1 and b.id_proyecto=".$riesgo->idProyecto." ";
+            //$query = "SELECT * FROM PAQUETE_TRABAJO,EDT WHERE PAQUETE_TRABAJO.id_edt=EDT.id_edt and EDT.id_proyecto=:id_proyecto";
+            try {
+                $arregloListaPaquetesEDT= array();
+                $db=getConnection();
+                $stmt = $db->query($query);
+                //$stmt->bindParam("id_proyecto", $idProyecto);
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("id" => $row['id_paquete_trabajo'], "descripcion" => $row['nombre']);
+                    array_push($arregloListaPaquetesEDT,$data);
+                }
+                $db = null;
+                echo json_encode($arregloListaPaquetesEDT);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-            $db = null;
-            echo json_encode($arregloListaPaquetesEDT);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
+        
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 /*
     function R_getListaNivelesImpacto($idProyecto){
@@ -263,179 +354,208 @@
     }
     */
 
-    function R_getNivelImpactoTipoImpacto1($json){  
-        $impacto = json_decode($json);    
-        $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
-        FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
-        WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
-        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor 
-        order by nivel desc limit 1;";
-        try {
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
-            $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
-            $stmt->bindParam("valor", $impacto->valor);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
-            $db = null;
-            echo json_encode($data);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-    function R_getNivelImpactoTipoImpacto2($json){
-        $impacto = json_decode($json);
-        $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
-        FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
-        WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
-        TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and TIXNI.id_nivel_impacto=:id_nivel_impacto ";
-        try {
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
-            $stmt->bindParam("id_tipo_impacto", $impacto->idTipoImpacto);
-            $stmt->bindParam("id_nivel_impacto", $impacto->idNivelImpacto);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
-            $db = null;
-            echo json_encode($data);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-    }
-
-    function R_getProbabilidadRiesgo($json){
-        $impacto = json_decode($json);
-        
-        $query = "SELECT id_probabilidad_riesgo, descripcion, nivel FROM PROBABILIDAD_RIESGO
-                WHERE id_proyecto=:id_proyecto and minimo<=:valor and :valor<=maximo;";
-
-        try {
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $impacto->idProyecto);
-            $stmt->bindParam("valor", $impacto->valor);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $data=array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
-            $db = null;
-            echo json_encode($data);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-    }
-
-    function R_getDescripcionNivelImpactoTipoImpacto($json){
-        $var = json_decode($json);
-        $query = "SELECT * FROM TIPO_IMPACTO_X_NIVEL_IMPACTO 
-            WHERE id_proyecto=:id_proyecto AND id_tipo_impacto=:id_tipo_impacto;";
-        try {
-            $arreglo= array();
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $var->idProyecto);
-            $stmt->bindParam("id_tipo_impacto", $var->idTipoImpacto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'],"descripcion" => $row['descripcion']);
-                array_push($arreglo,$data);
-            }
-            $db = null;
-            echo json_encode($arreglo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-    function R_getEstadoLogicoRiesgo($idRiesgoXProyecto){
-        
-        $query = "SELECT * 
-                FROM RIESGO_X_PROYECTO
-                where id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $db = null;
-            echo json_encode($row->estado_logico);
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
-    }  
-
-    function R_setConfirmarRiesgo($idRiesgoXProyecto){
-
-        $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->execute();
-            $db = null;
-            echo "Se confirmo el riesgo";
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
-    }
-
-    function R_setConfirmarRiesgos($var){
-        $riesgolista = json_decode($var);
-        $db = getConnection();
-        foreach ($riesgolista->lista as $riesgo){
-            $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+    function R_getNivelImpactoTipoImpacto1($var){  
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_6, $riesgo->idUsuario, $riesgo->idProyecto)) { 
+            $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
+            FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
+            WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
+            TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and limite_menor<=:valor 
+            order by nivel desc limit 1;";
             try {
+                $db=getConnection();
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+                $stmt->bindParam("valor", $riesgo->valor);
                 $stmt->execute();
+                $row = $stmt->fetchObject();
+                $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
+                $db = null;
+                echo json_encode($data);
             } catch(PDOException $e) {
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-            
-        }        
-        $db = null;
-        echo 'Se confirmo los riesgos';
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
-    function R_deleteLogicoRiesgo($idRiesgoXProyecto){
-
-        $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 0 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->execute();
-            $db = null;
-            echo "Se elimino el riesgo";
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
+    function R_getNivelImpactoTipoImpacto2($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_7, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT NI.id_nivel_impacto, NI.descripcion , nivel
+            FROM NIVEL_IMPACTO NI,TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI
+            WHERE NI.id_proyecto=TIXNI.id_proyecto and NI.id_nivel_impacto=TIXNI.id_nivel_impacto AND 
+            TIXNI.id_proyecto=:id_proyecto and TIXNI.id_tipo_impacto=:id_tipo_impacto and TIXNI.id_nivel_impacto=:id_nivel_impacto ";
+            try {
+                $db=getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+                $stmt->bindParam("id_nivel_impacto", $riesgo->idNivelImpacto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $data=array("idNivelImpacto" => $row->id_nivel_impacto, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
+                $db = null;
+                echo json_encode($data);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
-
     }
 
-    function R_deleteFisicoRiesgo($idRiesgoXProyecto){
-
-        $query = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $idRiesgoXProyecto);
-            $stmt->execute();
-            $db = null;
-            echo "Riesgo eliminado con exito";
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
+    function R_getProbabilidadRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_8, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT id_probabilidad_riesgo, descripcion, nivel FROM PROBABILIDAD_RIESGO
+                    WHERE id_proyecto=:id_proyecto and minimo<=:valor and :valor<=maximo;";
+            try {
+                $db=getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("valor", $riesgo->valor);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $data=array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo, "nivel" => $row->nivel, "descripcion" => $row->descripcion);
+                $db = null;
+                echo json_encode($data);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
+    }
 
+    function R_getDescripcionNivelImpactoTipoImpacto($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_9, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $var = json_decode($json);
+            $query = "SELECT * FROM TIPO_IMPACTO_X_NIVEL_IMPACTO 
+                WHERE id_proyecto=:id_proyecto AND id_tipo_impacto=:id_tipo_impacto;";
+            try {
+                $arreglo= array();
+                $db=getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("id_tipo_impacto", $riesgo->idTipoImpacto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idTipoImpacto" => $row['id_tipo_impacto'], "idNivelImpacto" => $row['id_nivel_impacto'],"descripcion" => $row['descripcion']);
+                    array_push($arreglo,$data);
+                }
+                $db = null;
+                echo json_encode($arreglo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_getEstadoLogicoRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_10, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT * 
+                    FROM RIESGO_X_PROYECTO
+                    where id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $db = null;
+                echo json_encode($row->estado_logico);
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }  
+
+    function R_setConfirmarRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_11, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->execute();
+                $db = null;
+                echo "Se confirmo el riesgo";
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_setConfirmarRiesgos($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_12, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $db = getConnection();
+            foreach ($riesgo->lista as $riesgo1){
+                $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 2 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+                try {
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("id_riesgo_x_proyecto", $riesgo1);
+                    $stmt->execute();
+                } catch(PDOException $e) {
+                    echo '{"error":{"text":'. $e->getMessage() .'}}';
+                }
+                
+            }        
+            $db = null;
+            echo 'Se confirmo los riesgos';
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_deleteLogicoRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_13, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "UPDATE RIESGO_X_PROYECTO SET estado_logico = 0 WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->execute();
+                $db = null;
+                echo "Se elimino el riesgo";
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_deleteFisicoRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_14, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "DELETE FROM RIESGO_X_PROYECTO WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->execute();
+                $db = null;
+                echo "Riesgo eliminado con exito";
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }    
 
     //--------------------------------------CONFIGURACION--------------------------------------
@@ -468,56 +588,63 @@
 */
     //--------------------------------------RIESGOS COMUNES--------------------------------------
 
-    function R_getListaRiesgoComun(){
-        $sql = "SELECT * FROM RIESGO_COMUN";
-        $listaRiesgoComun = array();
-        try{
-            $db = getConnection();
-            $stmt = $db->query($sql);
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $arregloListaRiesgoComun= array("idRiesgoComun" => $row['id_riesgo_comun'], "nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad'],"tipo" => $row['tipo']);
-                array_push($listaRiesgoComun,$arregloListaRiesgoComun);
+    function R_getListaRiesgoComun($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_15, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $sql = "SELECT * FROM RIESGO_COMUN";
+            $listaRiesgoComun = array();
+            try{
+                $db = getConnection();
+                $stmt = $db->query($sql);
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $arregloListaRiesgoComun= array("idRiesgoComun" => $row['id_riesgo_comun'], "nombre" => $row['nombre'],"ultProbabilidad" => $row['ult_probabilidad'],"ultImpacto" => $row['ult_impacto'],"ultSeveridad" => $row['ult_severidad'],"tipo" => $row['tipo']);
+                    array_push($listaRiesgoComun,$arregloListaRiesgoComun);
+                }
+                $arregloListaRiesgoComun = $stmt->fetchAll();
+                $db = null;
+                echo json_encode($listaRiesgoComun);
+            } catch(PDOException $e){
+                echo 'ERROR EN R_getListaRiesgoComun: {"error":{"text":'. $e->getMessage() .'}}';
             }
-            $arregloListaRiesgoComun = $stmt->fetchAll();
-            $db = null;
-            echo json_encode($listaRiesgoComun);
-        } catch(PDOException $e){
-            echo 'ERROR EN R_getListaRiesgoComun: {"error":{"text":'. $e->getMessage() .'}}';
+
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
     }
 
     function R_postAsignarRiesgoComun(){//BY HENRY
-        
         $request = \Slim\Slim::getInstance()->request();
         $riesgolista = json_decode($request->getBody());
-        
-        foreach ($riesgolista->lista as $riesgo){
-            
-            $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun =".$riesgo;
-            $db = getConnection();
-            $stmt = $db->prepare($consulta);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad,estado,estado_logico,positivo_negativo) 
-                    VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad,1,1,:tipo)";
-            try {
+        if (R_verificaPermisoServicio(R_SERVICIO_16, $riesgolista->idUsuario, $riesgolista->idProyecto)) {
+            foreach ($riesgolista->lista as $riesgo){
+                
+                $consulta = "SELECT * FROM RIESGO_COMUN WHERE id_riesgo_comun =".$riesgo;
                 $db = getConnection();
-                $stmt = $db->prepare($query);
-                $stmt->bindParam("id_proyecto", $riesgolista->idProyecto);
-                $stmt->bindParam("nombre_riesgo", $row->nombre);
-                $stmt->bindParam("id_riesgo_comun", $row->id_riesgo_comun);
-                $stmt->bindParam("impacto", $row->ult_impacto);
-                $stmt->bindParam("probabilidad", $row->ult_probabilidad);
-                $stmt->bindParam("severidad", $row->ult_severidad);
-                $stmt->bindParam("tipo", $row->tipo);
+                $stmt = $db->prepare($consulta);
                 $stmt->execute();
-                $id = $db->lastInsertId();
-                $db = null;
-                echo json_encode(array("idRiesgo"=>$id,"nombre"=>$row->nombre));
-            } catch(PDOException $e) {
-                echo json_encode(array("me"=> $e->getMessage()));
-                    //'{"error":{"text":'. $e->getMessage() .'}}';
+                $row = $stmt->fetchObject();
+                $query = "INSERT INTO RIESGO_X_PROYECTO (id_proyecto,nombre_riesgo,id_riesgo_comun,impacto,probabilidad,severidad,estado,estado_logico,positivo_negativo) 
+                        VALUES (:id_proyecto,:nombre_riesgo,:id_riesgo_comun,:impacto,:probabilidad,:severidad,1,1,:tipo)";
+                try {
+                    $db = getConnection();
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("id_proyecto", $riesgolista->idProyecto);
+                    $stmt->bindParam("nombre_riesgo", $row->nombre);
+                    $stmt->bindParam("id_riesgo_comun", $row->id_riesgo_comun);
+                    $stmt->bindParam("impacto", $row->ult_impacto);
+                    $stmt->bindParam("probabilidad", $row->ult_probabilidad);
+                    $stmt->bindParam("severidad", $row->ult_severidad);
+                    $stmt->bindParam("tipo", $row->tipo);
+                    $stmt->execute();
+                    $id = $db->lastInsertId();
+                    $db = null;
+                    echo json_encode(array("idRiesgo"=>$id,"nombre"=>$row->nombre));
+                } catch(PDOException $e) {
+                    echo json_encode(array("me"=> $e->getMessage()));
+                }
             }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
     }
 
@@ -525,728 +652,785 @@
     function R_postRegistrarHeaderProbabilidadRiesgo(){
         $request = \Slim\Slim::getInstance()->request();
         $probabilidad = json_decode($request->getBody());
-        $query = "INSERT INTO PROBABILIDAD_RIESGO (id_proyecto,nivel,descripcion,minimo,maximo) 
-                VALUES (:id_proyecto,:nivel,:descripcion,:minimo,:maximo)";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $probabilidad->idProyecto);
-            $stmt->bindParam("nivel", $probabilidad->nivel);
-            $stmt->bindParam("descripcion", $probabilidad->descripcion);
-            $stmt->bindParam("minimo", $probabilidad->minimo);
-            $stmt->bindParam("maximo", $probabilidad->maximo);
-            $stmt->execute();
-            $probabilidad->id_probabilidad_riesgo = $db->lastInsertId();
-            $db = null;
-
-            echo json_encode(array("idProbabilidadRiesgo"=>$probabilidad->id_probabilidad_riesgo,"descripcion"=>$probabilidad->descripcion));
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-                //'{"error":{"text":'. $e->getMessage() .'}}';
+        if (R_verificaPermisoServicio(R_SERVICIO_17, $probabilidad->idUsuario, $probabilidad->idProyecto)) {
+            $query = "INSERT INTO PROBABILIDAD_RIESGO (id_proyecto,nivel,descripcion,minimo,maximo) 
+                    VALUES (:id_proyecto,:nivel,:descripcion,:minimo,:maximo)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $probabilidad->idProyecto);
+                $stmt->bindParam("nivel", $probabilidad->nivel);
+                $stmt->bindParam("descripcion", $probabilidad->descripcion);
+                $stmt->bindParam("minimo", $probabilidad->minimo);
+                $stmt->bindParam("maximo", $probabilidad->maximo);
+                $stmt->execute();
+                $probabilidad->id_probabilidad_riesgo = $db->lastInsertId();
+                $db = null;
+                echo json_encode(array("idProbabilidadRiesgo"=>$probabilidad->id_probabilidad_riesgo,"descripcion"=>$probabilidad->descripcion));
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
     }
 
-    function R_getListaHeadersProbabilidadRiesgo($idProyecto){
-        
-        $query = "SELECT * FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
-                    
-        try {
-            $arregloListaHeader= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("nivel" => $row['nivel'], 
-                            "descripcion" => $row['descripcion'],
-                            "minimo" => $row['minimo'],
-                            "maximo" => $row['maximo']
-                            );
-                array_push($arregloListaHeader,$data);
+    function R_getListaHeadersProbabilidadRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_18, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT * FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+                        
+            try {
+                $arregloListaHeader= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("nivel" => $row['nivel'], 
+                                "descripcion" => $row['descripcion'],
+                                "minimo" => $row['minimo'],
+                                "maximo" => $row['maximo']
+                                );
+                    array_push($arregloListaHeader,$data);
+                }
+                $db = null;
+                echo json_encode($arregloListaHeader);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-            $db = null;
-            echo json_encode($arregloListaHeader);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
+
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }     
     }    
 
-    function R_deleteListaHeadersProbabilidadRiesgo($idProyecto){
-
-        $sql = "DELETE FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:id_proyecto";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            $db = null;
-            echo 'Riesgo eliminado con exito';
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
+    function R_deleteListaHeadersProbabilidadRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_19, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $sql = "DELETE FROM PROBABILIDAD_RIESGO WHERE id_proyecto=:id_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                $db = null;
+                echo 'Riesgo eliminado con exito';
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
-
     }
-
 
     //--------------------------------------TIPO IMPACTO X NIVEL IMPACTO--------------------------------------
     
     function R_postRegistrarTipoImpactoNivelImpacto1(){
         $request = \Slim\Slim::getInstance()->request();
         $lista = json_decode($request->getBody());
-		
-        $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
-        $listaIdNivelImpacto= array();           
-        $cantidad =0;
-        
-        try {
-            $arregloListaHeaderImpactoRiesgo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $lista->idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                array_push($listaIdNivelImpacto,$row['id_nivel_impacto']);
-                $cantidad++;
+        if (R_verificaPermisoServicio(R_SERVICIO_20, $lista->idUsuario, $lista->idProyecto)) {
+            $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+            $listaIdNivelImpacto= array();           
+            $cantidad =0;
+            
+            try {
+                $arregloListaHeaderImpactoRiesgo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $lista->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    array_push($listaIdNivelImpacto,$row['id_nivel_impacto']);
+                    $cantidad++;
+                }
+                $db = null;
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }   
+
+            for ($i=0 ; $i<$cantidad;$i++){
                 
+                $query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,id_proyecto,limite_menor,limite_mayor)
+                    VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor) ";
+                try {
+                    $db = getConnection();
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
+                    $stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
+                    $stmt->bindParam("id_proyecto", $lista->idProyecto);
+                    $stmt->bindParam("limite_menor", $lista->valor[$i]->min);
+                    $stmt->bindParam("limite_mayor", $lista->valor[$i]->max);
+                    // $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+                    $stmt->execute();
+                    $db = null;
+                    
+                } catch(PDOException $e) {
+                    echo json_encode(array("me"=> $e->getMessage()));
+                }
             }
-            $db = null;
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }   
-
-		for ($i=0 ; $i<$cantidad;$i++){
-			
-			$query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,id_proyecto,limite_menor,limite_mayor)
-                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:limite_menor,:limite_mayor) ";
-			try {
-				$db = getConnection();
-				$stmt = $db->prepare($query);
-				$stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
-				$stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
-				$stmt->bindParam("id_proyecto", $lista->idProyecto);
-				$stmt->bindParam("limite_menor", $lista->valor[$i]->min);
-				$stmt->bindParam("limite_mayor", $lista->valor[$i]->max);
-				// $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
-				$stmt->execute();
-				$db = null;
-				
-			} catch(PDOException $e) {
-				echo json_encode(array("me"=> $e->getMessage()));
-			}
-		}
-		echo json_encode(array("Se registro con exito"));
-
+            echo json_encode(array("Se registro con exito"));
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
     function R_postRegistrarTipoImpactoNivelImpacto2(){
         $request = \Slim\Slim::getInstance()->request();
         $lista = json_decode($request->getBody());
-        
+        if (R_verificaPermisoServicio(R_SERVICIO_21, $lista->idUsuario, $lista->idProyecto)) {
+            $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+            $listaIdNivelImpacto= array();           
+            $cantidad =0;
+            
+            try {
+                $arregloListaHeaderImpactoRiesgo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $lista->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    array_push($listaIdNivelImpacto,$row['id_nivel_impacto']);
+                    $cantidad++;
+                    
+                }
+                $db = null;
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }   
+
+            for ($i=0 ; $i<$cantidad;$i++){
+                
+                $query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,id_proyecto,descripcion)
+                    VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:descripcion) ";
+                try {
+                    $db = getConnection();
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
+                    $stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
+                    $stmt->bindParam("id_proyecto", $lista->idProyecto);
+                    // $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
+                    $stmt->bindParam("descripcion", $lista->valor[$i]->descripcion);
+                    $stmt->execute();
+                    $db = null;
+                    
+                } catch(PDOException $e) {
+                    echo json_encode(array("me"=> $e->getMessage()));
+                }
+            }
+            echo json_encode(array("Se registro con exito"));
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_getListaTipoImpactoXNivelImpacto($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_22, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT TIXNI.id_tipo_impacto id_tipo_impacto,
+                            TI.descripcion tiDescripcion,
+                            TIXNI.id_nivel_impacto id_nivel_impacto,
+                            NI.descripcion Nidescripcion,
+                            NI.tipo,limite_menor,limite_mayor,
+                            TIXNI.descripcion tixniDescripcion,
+                            NI.nivel nivel,
+                            TI.tipo tipoVerdadero
+                    FROM TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI, TIPO_IMPACTO TI, NIVEL_IMPACTO NI 
+                    where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
+                    order by id_tipo_impacto,nivel;";
+                        
+            try {
+                $fullQuery= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
+                                "descripcionTipoImpacto" => $row['tiDescripcion'],
+                                "tipoImpacto" => $row['tipoVerdadero'],
+                                "min" => $row['limite_menor'],
+                                "max" => $row['limite_mayor'],
+                                "descripcion" => $row['tixniDescripcion'],
+                                );
+                    array_push($fullQuery,$data);
+                }
+                $db = null;
+
+                $query = "SELECT COUNT(*) TOTAL FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto";
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $cantidadColumnas = $row->TOTAL;
+                $db = null;
+
+                $auxCantidadColumnas=0;
+
+                $devuelve=array();
+                $var=array();
+                $lista=array();
+                foreach($fullQuery as $fila){
+
+                    $auxCantidadColumnas++;
+                    
+                    if($auxCantidadColumnas==1){
+                        $var = array("idTipoImpacto" => $fila['idTipoImpacto'], 
+                                "descripcionTipoImpacto" => $fila['descripcionTipoImpacto'],
+                                "tipoImpacto" => $fila['tipoImpacto'],
+                                "lista" => ""
+                            );
+                    } 
+                     $data=array("min" => $fila['min'], 
+                                "max" => $fila['max'],
+                                "descripcion" => $fila['descripcion']
+                                );
+                     array_push($lista,$data);
+
+                    if($auxCantidadColumnas==$cantidadColumnas) {
+                        $auxCantidadColumnas=0;
+                        $var['lista']=$lista;
+                        array_push($devuelve,$var);
+                        $var=array();
+                        $lista=array();
+                    }
+                }
+                echo json_encode($devuelve);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+
+    function R_getListaTipoImpacto($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_23, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT * FROM TIPO_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY descripcion";     
+            try {
+                $arregloListaTipoImpacto= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $var->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
+                                "descripcion" => $row['descripcion'],
+                                "tipo" => $row['tipo'],
+                                );
+                    array_push($arregloListaTipoImpacto,$data);
+                }
+                $db = null;
+                echo json_encode($arregloListaTipoImpacto);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }       
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }     
+  
+    function R_getListaHeadersImpactoRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_24, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
+            try {
+                $arregloListaHeaderImpactoRiesgo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idNivelImpacto" => $row['id_nivel_impacto'], 
+                                "idProyecto" => $row['id_proyecto'],
+                                "nivel" => $row['nivel'],
+                                "descripcion" => $row['descripcion'],
+                                "tipo" => $row['tipo']
+                                );
+                    array_push($arregloListaHeaderImpactoRiesgo,$data);
+                }
+                $db = null;
+                echo json_encode($arregloListaHeaderImpactoRiesgo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+   
+    }
+
+    function R_getTipoImpactoxNivelImpacto($idProyecto){//******************
         $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
-        $listaIdNivelImpacto= array();           
-        $cantidad =0;
-        
         try {
             $arregloListaHeaderImpactoRiesgo= array();
             $db = getConnection();
             $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $lista->idProyecto);
+            $stmt->bindParam("id_proyecto", $idProyecto);
             $stmt->execute();
             while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                array_push($listaIdNivelImpacto,$row['id_nivel_impacto']);
-                $cantidad++;
-                
+                $data = array("idNivelImpacto" => $row['id_nivel_impacto'], 
+                            "idProyecto" => $row['id_proyecto'],
+                            "nivel" => $row['nivel'],
+                            "descripcion" => $row['descripcion'],
+                            "tipo" => $row['tipo']
+                            );
+                array_push($arregloListaHeaderImpactoRiesgo,$data);
             }
             $db = null;
+            echo json_encode($arregloListaHeaderImpactoRiesgo);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }   
+        }
+    }//******************
 
-        for ($i=0 ; $i<$cantidad;$i++){
-            
-            $query = "INSERT INTO TIPO_IMPACTO_X_NIVEL_IMPACTO (id_tipo_impacto,id_nivel_impacto,id_proyecto,descripcion)
-                VALUES (:id_tipo_impacto,:id_nivel_impacto,:id_proyecto,:descripcion) ";
+    function R_deleteTipoImpactoxNivelImpacto($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_25, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "DELETE FROM TIPO_IMPACTO_X_NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("id_tipo_impacto", $lista->idTipoImpacto);
-                $stmt->bindParam("id_nivel_impacto", $listaIdNivelImpacto[$i]);
-                $stmt->bindParam("id_proyecto", $lista->idProyecto);
-                // $stmt->bindParam("descripcion", $impactoNivelImpacto->descripcion);
-                $stmt->bindParam("descripcion", $lista->valor[$i]->descripcion);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
                 $stmt->execute();
                 $db = null;
-                
+                echo "Tabla eliminada con exito";
             } catch(PDOException $e) {
-                echo json_encode(array("me"=> $e->getMessage()));
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
-        echo json_encode(array("Se registro con exito"));
 
     }
 
-    function R_getListaTipoImpactoXNivelImpacto($idProyecto){
-        
-        $query = "SELECT TIXNI.id_tipo_impacto id_tipo_impacto,
-                        TI.descripcion tiDescripcion,
-                        TIXNI.id_nivel_impacto id_nivel_impacto,
-                        NI.descripcion Nidescripcion,
-                        NI.tipo,limite_menor,limite_mayor,
-                        TIXNI.descripcion tixniDescripcion,
-        				NI.nivel nivel,
-                        TI.tipo tipoVerdadero
-                FROM TIPO_IMPACTO_X_NIVEL_IMPACTO TIXNI, TIPO_IMPACTO TI, NIVEL_IMPACTO NI 
-                where TIXNI.id_tipo_impacto=TI.id_tipo_impacto and TIXNI.id_nivel_impacto=NI.id_nivel_impacto and TIXNI.id_proyecto=:id_proyecto
-                order by id_tipo_impacto,nivel;";
-                    
-        try {
-            $fullQuery= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
-                            "descripcionTipoImpacto" => $row['tiDescripcion'],
-                            "tipoImpacto" => $row['tipoVerdadero'],
-                            "min" => $row['limite_menor'],
-                            "max" => $row['limite_mayor'],
-                            "descripcion" => $row['tixniDescripcion'],
-                            );
-                array_push($fullQuery,$data);
-            }
-            $db = null;
-
-            $query = "SELECT COUNT(*) TOTAL FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto";
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $cantidadColumnas = $row->TOTAL;
-            $db = null;
-
-            $auxCantidadColumnas=0;
-
-            $devuelve=array();
-            $var=array();
-            $lista=array();
-            foreach($fullQuery as $fila){
-
-                $auxCantidadColumnas++;
-                
-                if($auxCantidadColumnas==1){
-                    $var = array("idTipoImpacto" => $fila['idTipoImpacto'], 
-                            "descripcionTipoImpacto" => $fila['descripcionTipoImpacto'],
-                            "tipoImpacto" => $fila['tipoImpacto'],
-                            "lista" => ""
-                        );
-                } 
-                 $data=array("min" => $fila['min'], 
-                            "max" => $fila['max'],
-                            "descripcion" => $fila['descripcion']
-                            );
-                 array_push($lista,$data);
-
-                if($auxCantidadColumnas==$cantidadColumnas) {
-                    $auxCantidadColumnas=0;
-                    $var['lista']=$lista;
-                    array_push($devuelve,$var);
-                    $var=array();
-                    $lista=array();
-
-                }
-
-   
-            }
-            echo json_encode($devuelve);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-
-    function R_getListaTipoImpacto($idProyecto){
-        
-        $query = "SELECT * FROM TIPO_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY descripcion";
-                    
-        try {
-            $arregloListaTipoImpacto= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idTipoImpacto" => $row['id_tipo_impacto'], 
-                            "descripcion" => $row['descripcion'],
-                            "tipo" => $row['tipo'],
-                            );
-                array_push($arregloListaTipoImpacto,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaTipoImpacto);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }     
-  
-    function R_getListaHeadersImpactoRiesgo($idProyecto){
-        
-        $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
-                    
-        try {
-            $arregloListaHeaderImpactoRiesgo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idNivelImpacto" => $row['id_nivel_impacto'], 
-                            "idProyecto" => $row['id_proyecto'],
-                            "nivel" => $row['nivel'],
-                            "descripcion" => $row['descripcion'],
-                            "tipo" => $row['tipo']
-                            );
-                array_push($arregloListaHeaderImpactoRiesgo,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaHeaderImpactoRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-    function R_getTipoImpactoxNivelImpacto($idProyecto){
-        
-        $query = "SELECT * FROM NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto ORDER BY nivel";
-                    
-        try {
-            $arregloListaHeaderImpactoRiesgo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idNivelImpacto" => $row['id_nivel_impacto'], 
-                            "idProyecto" => $row['id_proyecto'],
-                            "nivel" => $row['nivel'],
-                            "descripcion" => $row['descripcion'],
-                            "tipo" => $row['tipo']
-                            );
-                array_push($arregloListaHeaderImpactoRiesgo,$data);
-            }
-            $db = null;
-            echo json_encode($arregloListaHeaderImpactoRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-    function R_deleteTipoImpactoxNivelImpacto($idProyecto){
-    
-    	$query = "DELETE FROM TIPO_IMPACTO_X_NIVEL_IMPACTO WHERE id_proyecto=:id_proyecto";
-    	try {
-    		$db = getConnection();
-    		$stmt = $db->prepare($query);
-    		$stmt->bindParam("id_proyecto", $idProyecto);
-    		$stmt->execute();
-    		$db = null;
-    		echo "Tabla eliminada con exito";
-    	} catch(PDOException $e) {
-    		echo '{"error":{"text":'. $e->getMessage() .'}}';
-    	}
-    
-    }
-    
-    
-    
-    
     //--------------------------------------EQUIPO RIESGO--------------------------------------
 
     function R_postRegistrarComiteRiesgo(){
-        
         $request = \Slim\Slim::getInstance()->request();
         $listaIntegrantes = json_decode($request->getBody());
-       
-        $query ="DELETE FROM COMITE_RIESGO WHERE id_proyecto=:id_proyecto";
-         
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-           
-            $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
-            $stmt->execute();
-            $db = null;
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-
-
-        foreach ($listaIntegrantes->listaComite as $integrante){
-            
-            //$query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
-            $query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
-                    VALUES (:id_proyecto,:id_empleado)";
+        if (R_verificaPermisoServicio(R_SERVICIO_26, $listaIntegrantes->idUsuario, $listaIntegrantes->idProyecto)) {
+            $query ="DELETE FROM COMITE_RIESGO WHERE id_proyecto=:id_proyecto";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
+               
                 $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
-                $stmt->bindParam("id_empleado", $integrante);
                 $stmt->execute();
                 $db = null;
-                
             } catch(PDOException $e) {
-                echo json_encode(array("me"=> $e->getMessage()));
-                    //'{"error":{"text":'. $e->getMessage() .'}}';
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
+            foreach ($listaIntegrantes->listaComite as $integrante){
+                //$query = "REPLACE INTO CONFIGURACION_RIESGO (id_proyecto,id_empleado) VALUES (:id_proyecto,:id_empleado)";
+                $query = "INSERT INTO COMITE_RIESGO (id_proyecto,id_empleado) 
+                        VALUES (:id_proyecto,:id_empleado)";
+                try {
+                    $db = getConnection();
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("id_proyecto", $listaIntegrantes->idProyecto);
+                    $stmt->bindParam("id_empleado", $integrante);
+                    $stmt->execute();
+                    $db = null;
+                    
+                } catch(PDOException $e) {
+                    echo json_encode(array("me"=> $e->getMessage()));
+                        //'{"error":{"text":'. $e->getMessage() .'}}';
+                }
+            }
+            echo json_encode("Se registro con exito");
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
-        echo json_encode("Se registro con exito");
     }    
 
-    function R_getListaIntegrantesProyecto($idProyecto){
-        
-        $query = "SELECT ME.id_proyecto id_proyecto, E.id_empleado id_empleado , nombres, apellidos
-                FROM MIEMBROS_EQUIPO ME,EMPLEADO E where
-                ME.id_empleado=E.id_empleado and ME.id_proyecto=:id_proyecto
-                AND ME.id_empleado not in (SELECT A.id_empleado FROM COMITE_RIESGO A JOIN MIEMBROS_EQUIPO B
-                                            ON A.id_proyecto=B.id_proyecto and B.id_proyecto=:id_proyecto and A.id_empleado=B.id_empleado 
-									GROUP BY A.id_empleado) GROUP BY E.id_empleado
-        		";
-                    
-        try {
-            $arregloListaIntegrantesProyecto= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idContacto" => $row['id_empleado'], 
-                            "nombreCompleto" => $row['nombres']." ".$row['apellidos']
-                            );
-                array_push($arregloListaIntegrantesProyecto,$data);
+    function R_getListaIntegrantesProyecto($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_27, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT ME.id_proyecto id_proyecto, E.id_empleado id_empleado , nombres, apellidos
+                    FROM MIEMBROS_EQUIPO ME,EMPLEADO E where
+                    ME.id_empleado=E.id_empleado and ME.id_proyecto=:id_proyecto
+                    AND ME.id_empleado not in (SELECT A.id_empleado FROM COMITE_RIESGO A JOIN MIEMBROS_EQUIPO B
+                                                ON A.id_proyecto=B.id_proyecto and B.id_proyecto=:id_proyecto and A.id_empleado=B.id_empleado 
+                                        GROUP BY A.id_empleado) GROUP BY E.id_empleado
+                    ";
+            try {
+                $arregloListaIntegrantesProyecto= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idContacto" => $row['id_empleado'], 
+                                "nombreCompleto" => $row['nombres']." ".$row['apellidos']
+                                );
+                    array_push($arregloListaIntegrantesProyecto,$data);
+                }
+                $db = null;
+                echo json_encode($arregloListaIntegrantesProyecto);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-            $db = null;
-            echo json_encode($arregloListaIntegrantesProyecto);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
-    function R_getComiteRiesgo($idProyecto){
-        
-        $query = "SELECT CR.id_proyecto, E.id_empleado , nombres, apellidos
-                FROM COMITE_RIESGO CR,EMPLEADO E where
-                CR.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
-        try {
-            $arregloComiteRiesgo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array("idContacto" => $row['id_empleado'], 
-                            "nombreCompleto" => $row['nombres']." ".$row['apellidos']
-                            );
-                array_push($arregloComiteRiesgo,$data);
+    function R_getComiteRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_28, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT CR.id_proyecto, E.id_empleado , nombres, apellidos
+                    FROM COMITE_RIESGO CR,EMPLEADO E where
+                    CR.id_empleado=E.id_empleado and id_proyecto=:id_proyecto";
+            try {
+                $arregloComiteRiesgo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array("idContacto" => $row['id_empleado'], 
+                                "nombreCompleto" => $row['nombres']." ".$row['apellidos']
+                                );
+                    array_push($arregloComiteRiesgo,$data);
+                }
+                $db = null;
+                echo json_encode($arregloComiteRiesgo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-            $db = null;
-            echo json_encode($arregloComiteRiesgo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }    
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
 
     //--------------------------------------Plan Contingencia--------------------------------------
 
     function R_postRegistrarActividadContingencia(){
         $request = \Slim\Slim::getInstance()->request();
         $actividad = json_decode($request->getBody());
-        $costo=0;$tiempo=0;
-        $query = "INSERT INTO ACCIONES_X_RIESGO (id_riesgo_x_proyecto,descripcion,costo,tiempo,estado) 
-                VALUES (:id_riesgo_x_proyecto,:descripcion,:costo,:tiempo,0)";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $actividad->idRiesgoXProyecto);
-            $stmt->bindParam("descripcion", $actividad->descripcion);
-            $stmt->bindParam("costo", $actividad->costo);
-            $stmt->bindParam("tiempo", $actividad->tiempo);
-            $stmt->execute();
-            $actividad->id_acciones_x_riesgo = $db->lastInsertId();
-            $db = null;
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-        }
+        if (R_verificaPermisoServicio(R_SERVICIO_29, $actividad->idUsuario, $actividad->idProyecto)) {
+            $costo=0;$tiempo=0;
+            $query = "INSERT INTO ACCIONES_X_RIESGO (id_riesgo_x_proyecto,descripcion,costo,tiempo,estado) 
+                    VALUES (:id_riesgo_x_proyecto,:descripcion,:costo,:tiempo,0)";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $actividad->idRiesgoXProyecto);
+                $stmt->bindParam("descripcion", $actividad->descripcion);
+                $stmt->bindParam("costo", $actividad->costo);
+                $stmt->bindParam("tiempo", $actividad->tiempo);
+                $stmt->execute();
+                $actividad->id_acciones_x_riesgo = $db->lastInsertId();
+                $db = null;
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
 
-        //Calcular el nuevo costo y tiempo
+            //Calcular el nuevo costo y tiempo
 
-        $query = "SELECT SUM(costo)/COUNT(*) costo , SUM(tiempo)/COUNT(*) tiempo
-                FROM ACCIONES_X_RIESGO where
-                id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $actividad->idRiesgoXProyecto);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            $costo=$row->costo;
-            $tiempo=ceil($row->tiempo);
-            $db = null;
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
+            $query = "SELECT SUM(costo)/COUNT(*) costo , SUM(tiempo)/COUNT(*) tiempo
+                    FROM ACCIONES_X_RIESGO where
+                    id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $actividad->idRiesgoXProyecto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $costo=$row->costo;
+                $tiempo=ceil($row->tiempo);
+                $db = null;
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+            echo json_encode(array("idRiesgo"=>$actividad->id_acciones_x_riesgo,"descripcion"=>$actividad->descripcion,
+                "costo"=>$costo,"tiempo"=>$tiempo));
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
-        echo json_encode(array("idRiesgo"=>$actividad->id_acciones_x_riesgo,"descripcion"=>$actividad->descripcion,
-            "costo"=>$costo,"tiempo"=>$tiempo));
     }
 
-    function R_deleteActividadContingencia($idAccionesRiesgo){
-    
-        $query = "DELETE FROM ACCIONES_X_RIESGO WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_acciones_x_riesgo", $idAccionesRiesgo);
-            $stmt->execute();
-            $db = null;
-            echo "Se elimino la accion";
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
+    function R_deleteActividadContingencia($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_30, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "DELETE FROM ACCIONES_X_RIESGO WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
+                $stmt->execute();
+                $db = null;
+                echo "Se elimino la accion";
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
     
     }
 
    function R_updateCostoTiempoRiesgo(){
-        //$request = \Slim\Slim::getInstance()->request();
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-        //$riesgo = json_decode($var);
-        $query = "UPDATE RIESGO_X_PROYECTO SET costo_potencial=:costo_potencial, demora_potencial=:demora_potencial 
-        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
-            $stmt->bindParam("costo_potencial", $riesgo->costo);
-            $stmt->bindParam("demora_potencial", $riesgo->tiempo);
-            $stmt->execute();
-            $db = null;
-            echo json_encode("Se actualizo costo y tiempo");
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
+        if (R_verificaPermisoServicio(R_SERVICIO_31, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "UPDATE RIESGO_X_PROYECTO SET costo_potencial=:costo_potencial, demora_potencial=:demora_potencial 
+            WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoXProyecto);
+                $stmt->bindParam("costo_potencial", $riesgo->costo);
+                $stmt->bindParam("demora_potencial", $riesgo->tiempo);
+                $stmt->execute();
+                $db = null;
+                echo json_encode("Se actualizo costo y tiempo");
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_getPlanContingenciaRiesgo($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_32, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT *
+                    FROM ACCIONES_X_RIESGO  WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $arreglo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto",$riesgo->idRiesgoXProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array(
+                                "idAccionesRiesgo" => $row['id_acciones_x_riesgo'],
+                                "descripcion" => $row['descripcion'], 
+                                "costo" => $row['costo'],
+                                "tiempo" => $row['tiempo']
+                                );
+                    array_push($arreglo,$data);
+                }
+                $db = null;
+                echo json_encode($arreglo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+
+    function R_getAccionesParaAprobar($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_33, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo_real,flag_aceptado_rechazado 
+                    FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
+                    WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
+                        A.id_actividad=AXR.id_actividad and
+                        RXP.id_proyecto=:id_proyecto;";
+            try {
+                $arreglo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto",$riesgo->idProyecto);
+                $stmt->execute();
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $data = array(
+                                "idActividadCronograma"=> $row['id_actividad'],
+                                "nombreActividadCronograma"=> $row['nombre_actividad'],
+                                "fechaInicioActividadCronograma"=> $row['fecha_plan_inicio'],
+                                "duracionActividadCronograma"=> $row['dias'],
+                                "nombreAccionRiesgo" => $row['descripcion'], 
+                                "fechaInicioAccionRiesgo" => $row['fecha_inicio'],
+                                "tiempo" => $row['tiempo_real'],
+                                "flagAceptadoRechazado" => $row['flag_aceptado_rechazado']
+                                );
+                    array_push($arreglo,$data);
+                }
+                $db = null;
+                echo json_encode($arreglo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
 
-    }
-
-    function R_getPlanContingenciaRiesgo($idRiesgoXProyecto){
-        $query = "SELECT *
-                FROM ACCIONES_X_RIESGO  WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        try {
-            $arreglo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto",$idRiesgoXProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array(
-                            "idAccionesRiesgo" => $row['id_acciones_x_riesgo'],
-                            "descripcion" => $row['descripcion'], 
-                            "costo" => $row['costo'],
-                            "tiempo" => $row['tiempo']
-                            );
-                array_push($arreglo,$data);
-            }
-            $db = null;
-            echo json_encode($arreglo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-
-    function R_getAccionesParaAprobar($idProyecto){
-        $query = "SELECT dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo_real,flag_aceptado_rechazado 
-                FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
-                WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
-                    A.id_actividad=AXR.id_actividad and
-                    RXP.id_proyecto=:id_proyecto;";
-        try {
-            $arreglo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto",$idProyecto);
-            $stmt->execute();
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                $data = array(
-                            "idActividadCronograma"=> $row['id_actividad'],
-                            "nombreActividadCronograma"=> $row['nombre_actividad'],
-                            "fechaInicioActividadCronograma"=> $row['fecha_plan_inicio'],
-                            "duracionActividadCronograma"=> $row['dias'],
-                            "nombreAccionRiesgo" => $row['descripcion'], 
-                            "fechaInicioAccionRiesgo" => $row['fecha_inicio'],
-                            "tiempo" => $row['tiempo_real'],
-                            "flagAceptadoRechazado" => $row['flag_aceptado_rechazado']
-                            );
-                array_push($arreglo,$data);
-            }
-            $db = null;
-            echo json_encode($arreglo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
     }
 	
    function R_updateEnviarCambio(){
-        
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
-
-        //Se selecciona la accion
-        $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_inicio=:fecha_inicio, tiempo_real=:tiempo_real , id_actividad=:id_actividad , descripcion=:descripcion
-        WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
-        var_dump($riesgo);
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
-			$stmt->bindParam("fecha_inicio", $riesgo->fechaInicio);
-			$stmt->bindParam("tiempo_real", $riesgo->tiempoReal);
-			$stmt->bindParam("id_actividad", $riesgo->idActividad);
-			$stmt->bindParam("descripcion", $riesgo->descripcion);
-            $stmt->execute();
-            $db = null;
-            echo json_encode('Se materializo el riesgo');
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
+        if (R_verificaPermisoServicio(R_SERVICIO_34, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            //Se selecciona la accion
+            $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_inicio=:fecha_inicio, tiempo_real=:tiempo_real , id_actividad=:id_actividad , descripcion=:descripcion
+            WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+            var_dump($riesgo);
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
+                $stmt->bindParam("fecha_inicio", $riesgo->fechaInicio);
+                $stmt->bindParam("tiempo_real", $riesgo->tiempoReal);
+                $stmt->bindParam("id_actividad", $riesgo->idActividad);
+                $stmt->bindParam("descripcion", $riesgo->descripcion);
+                $stmt->execute();
+                $db = null;
+                echo json_encode('Se materializo el riesgo');
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
 
-
     }
 
 
-    function R_getRiesgoMaterializado($idProyecto){
-        
-        
-        $query = "SELECT id_riesgo_x_proyecto, nombre_riesgo, fecha_materializacion,costo_potencial, demora_potencial
-                FROM RIESGO_X_PROYECTO  WHERE id_proyecto=:id_proyecto and estado=2";
-        try {
-            $arreglo= array();
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto",$idProyecto);
-            $stmt->execute();
-          
-            while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                
-                $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
-                            "nombreRiesgo" => $row['nombre_riesgo'],
-                            "fechaMaterializacion" => $row['fecha_materializacion'],
-                            "costoPotencial" => $row['costo_potencial'],
-                            "demoraPotencial" => $row['demora_potencial']
-                            );
-               
-                array_push($arreglo,$data);
+
+    function R_getProbabilidadRiesgoMaxima($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_35, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT count(*) cantidad FROM dp2.PROBABILIDAD_RIESGO
+                    where id_proyecto=:id_proyecto
+                    order by nivel desc
+                    limit 1";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                if ($row->cantidad==0) echo json_encode(null);
+                else {
+                    $query = "SELECT * FROM dp2.PROBABILIDAD_RIESGO
+                    where id_proyecto=:id_proyecto
+                    order by nivel desc
+                    limit 1";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                    $stmt->execute();
+                    $row = $stmt->fetchObject();
+                    $data = array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo,
+                            "nivel" => $row->nivel,
+                            "minimo" => $row->minimo,
+                            "maximo" => $row->maximo
+                    );
+                    $db = null;
+                    echo json_encode($data);
+                }
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-            $db = null;
-            echo json_encode($arreglo);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
-    }
-
-    function R_getProbabilidadRiesgoMaxima($idProyecto){
-
-    	$query = "SELECT count(*) cantidad FROM dp2.PROBABILIDAD_RIESGO
-                where id_proyecto=:id_proyecto
-                order by nivel desc
-                limit 1";
-    	try {
-    		$db = getConnection();
-    		$stmt = $db->prepare($query);
-    		$stmt->bindParam("id_proyecto", $idProyecto);
-    		$stmt->execute();
-    		$row = $stmt->fetchObject();
-    		if ($row->cantidad==0) echo json_encode(null);
-    		else {
-    			$query = "SELECT * FROM dp2.PROBABILIDAD_RIESGO
-                where id_proyecto=:id_proyecto
-                order by nivel desc
-                limit 1";
-    			$stmt = $db->prepare($query);
-    			$stmt->bindParam("id_proyecto", $idProyecto);
-    			$stmt->execute();
-    			$row = $stmt->fetchObject();
-    			$data = array("idProbabilidadRiesgo" => $row->id_probabilidad_riesgo,
-    					"nivel" => $row->nivel,
-    					"minimo" => $row->minimo,
-    					"maximo" => $row->maximo
-    			);
-    			$db = null;
-    			echo json_encode($data);
-    		}
-    	
-    	} catch(PDOException $e) {
-    		echo '{"error":{"text":'. $e->getMessage() .'}}';
-    	}     
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
    function R_updateMaterializacion(){
         
         $request = \Slim\Slim::getInstance()->request();
         $riesgo = json_decode($request->getBody());
+        if (R_verificaPermisoServicio(R_SERVICIO_36, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            //Se materializo en Riesgo x proyecto
+            $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion,
+            estado=2
+            WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            var_dump($riesgo);
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoProyecto);
+                $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
+                $stmt->execute();
+                $db = null;
+                //echo json_encode('Se materializo el riesgo');
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
 
-        //Se materializo en Riesgo x proyecto
-        $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion,
-        estado=2
-        WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-        var_dump($riesgo);
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoProyecto);
-            $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
-            $stmt->execute();
-            $db = null;
-            //echo json_encode('Se materializo el riesgo');
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
+            //Se selecciona la accion
+            $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_materializacion=:fecha_materializacion, estado=1
+            WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+            var_dump($riesgo);
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
+                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
+                $stmt->execute();
+                $db = null;
+                echo json_encode('Se materializo el riesgo');
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
-
-        //Se selecciona la accion
-        $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_materializacion=:fecha_materializacion, estado=1
-        WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
-        var_dump($riesgo);
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("fecha_materializacion", $riesgo->fechaMat);
-            $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
-            $stmt->execute();
-            $db = null;
-            echo json_encode('Se materializo el riesgo');
-        } catch(PDOException $e) {
-            echo json_encode(array("me"=> $e->getMessage()));
-        }
-
-
     }
     
-    function R_getCantidadDiasAproximadoxPaquete($json){  
-        $var = json_decode($json);    
-        $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo
-                AND positivo_negativo=0";
-        try {
-            $db=getConnection();
-            $stmt = $db->prepare($query);
-            $stmt->bindParam("id_proyecto", $var->idProyecto);
-            $stmt->bindParam("id_paquete_trabajo", $var->idPaqueteTrabajo);
-            $stmt->execute();
-            $row = $stmt->fetchObject();
-            //$data=array("promedio" => $row->promedio);
-            $db = null;
-            return json_encode(ceil($row->promedio));
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }        
+    function R_getRiesgoMaterializado($var){
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_37, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT id_riesgo_x_proyecto, nombre_riesgo, fecha_materializacion,costo_potencial, demora_potencial
+                    FROM RIESGO_X_PROYECTO  WHERE id_proyecto=:id_proyecto and estado=2";
+            try {
+                $arreglo= array();
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto",$riesgo->idProyecto);
+                $stmt->execute();
+              
+                while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    
+                    $data = array("idRiesgoProyecto" => $row['id_riesgo_x_proyecto'], 
+                                "nombreRiesgo" => $row['nombre_riesgo'],
+                                "fechaMaterializacion" => $row['fecha_materializacion'],
+                                "costoPotencial" => $row['costo_potencial'],
+                                "demoraPotencial" => $row['demora_potencial']
+                                );
+                   
+                    array_push($arreglo,$data);
+                }
+                $db = null;
+                echo json_encode($arreglo);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+    }
+
+    function R_getCantidadDiasAproximadoxPaquete($var){  
+        $riesgo = json_decode($var);
+        if (R_verificaPermisoServicio(R_SERVICIO_38, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo
+                    AND positivo_negativo=0";
+            try {
+                $db=getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->bindParam("id_paquete_trabajo", $riesgo->idPaqueteTrabajo);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                //$data=array("promedio" => $row->promedio);
+                $db = null;
+                return json_encode(ceil($row->promedio));
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            } 
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
 ?>
