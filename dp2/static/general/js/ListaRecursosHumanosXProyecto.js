@@ -3,10 +3,19 @@ var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
 var verificarLineaBase ="../../api/G_verificaLineaBase/";
 //var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
 var profesion = "";
-  
+
+function filtrarOtraFecha() {
+    $("#ff").attr("value", "");
+    var fecha = new Date();
+    fecha = $("#fi").datepicker("getDate");
+    fecha.setDate(fecha.getDate() + 1) ;
+    $("#ff").datepicker("option", "minDate", fecha);
+}
+
 $(document).ready(function(){
 	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
 	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#ff").change(filtrarOtraFecha);
 	
 	verificaLineaBase();
 	llenar_profesion();
