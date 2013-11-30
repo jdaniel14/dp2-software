@@ -47,7 +47,7 @@ define('R_SERVICIO_36', 36);
 define('R_SERVICIO_37', 37);
 define('R_SERVICIO_38', 38);
 
-
+define('R_SERVICIO_100', 100);
 define('R_SERVICIO_101', 101);
 define('R_SERVICIO_102', 102);
 define('R_SERVICIO_103', 103);
