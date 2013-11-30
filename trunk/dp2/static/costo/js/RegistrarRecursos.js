@@ -417,12 +417,7 @@ function grabarRecursos(){
 	num=$("#numFilas").val();
 	grabar=true;
 	
-	borraAlerta("divErrorNombre","labErrorNombre");
-	borraAlerta("divErrorCostoUnitario","labErrorCostoUnitario");
-	borraAlerta("divCostoFijo","labCostoFijo");
-	borraAlerta("divErrorFechaI","labErrorFechaI");
-	borraAlerta("divErrorFechaF","labErrorFechaF");
-	borraAlerta("divErrorFecha","labErrorFecha");
+	borraTodasAlertas();
 	
 	for (i=1; i<=num;i++){
 		recH= "#indRecursoH"+i;
@@ -696,6 +691,7 @@ $("#btnEditar").click(function(){
 });
 
 $("#btnCancelar").click(function(){
+	borraTodasAlertas();
 	cambiaConsultar();
 });
 
