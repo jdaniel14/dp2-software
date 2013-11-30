@@ -2,10 +2,19 @@ $(document).ready(function(){
 	//cargar Combos
 	$("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
 	$("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#fechaInicio").change(filtrarOtraFecha)
 	cargarComboJefeProyecto();
 	cargarComboTipoProyecto();
 	validacion();
 });
+
+function filtrarOtraFecha() {
+    $("#fechaFin").attr("value", "");
+    var fecha = new Date();
+    fecha = $("#fechaInicio").datepicker("getDate");
+    fecha.setDate(fecha.getDate() + 1) ;
+    $("#fechaFin").datepicker("option", "minDate", fecha);
+}
 
 function cargarComboJefeProyecto(){
 	$.ajax({
