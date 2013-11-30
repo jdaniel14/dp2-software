@@ -54,7 +54,7 @@ function listarCambiosGantt(){
         cadena=cadena+""+
                     "<label>Por la siguiente actividad:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\">  <div class=\"col-lg-4 control-label\"> \n\
-            <input readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreAccionRiesgo+"\"></div>" +
+            <input readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreActividadCronograma+"\"></div>" +
                 " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label>\n\
             <input readonly type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
                 " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  \n\
