@@ -3,10 +3,10 @@ var asignarRecursosProyecto = "../../api/G_asignarRecursoProyecto";
 var verificarLineaBase ="../../api/G_verificaLineaBase/";
 //var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
 var profesion = "";
-
+  
 $(document).ready(function(){
-	//$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
-	//$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
 	
 	verificaLineaBase();
 	llenar_profesion();
