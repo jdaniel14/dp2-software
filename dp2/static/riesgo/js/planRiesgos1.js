@@ -145,6 +145,11 @@ function main() {
             $("#" + arregloPermisoJP[i] + "").show();
         }
     }
+     if (rol == 1) {
+        for (var i = 0; i < arregloPermisoJP.length; i++) {
+            $("#" + arregloPermisoJP[i] + "").show();
+        }
+    }
     
      if (rol==3) {
         
@@ -418,12 +423,12 @@ function leerCategorias2() {
                 var significado = data[obj]["significado"];
 
                 $('#tablaCategorizacion2').append("<tr>\n\
-                                                     <td><input  class=\"form-control puntajeMin2\" type=\"text\" id=\"puntajeMin2" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
-                                                     <td><input class=\"form-control puntajeMax2\" type=\"text\" id=\"puntajeMax2" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
-                                                     <td><input class=\"form-control prioridad2\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><input  readonly class=\"form-control puntajeMin2\" type=\"text\" id=\"puntajeMin2" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input readonly class=\"form-control puntajeMax2\" type=\"text\" id=\"puntajeMax2" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input readonly class=\"form-control prioridad2\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
                                                      <td><select disabled class=\"estrategia2\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
                                                               <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
-                                                     <td><input class=\"form-control significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+                                                     <td><input readonly class=\"form-control significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
 
             }
@@ -482,12 +487,12 @@ function leerCategorias1() {
                 var significado = data[obj]["significado"];
 
                 $('#tablaCategorizacion1').append("<tr>\n\
-                                                     <td><input  class=\"form-control puntajeMin1\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
-                                                     <td><input class=\"form-control puntajeMax1\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
-                                                     <td><input class=\"form-control prioridad1\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
+                                                     <td><input  readonly class=\"form-control puntajeMin1\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
+                                                     <td><input readonly class=\"form-control puntajeMax1\" type=\"text\" id=\"puntajeMax" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
+                                                     <td><input readonly class=\"form-control prioridad1\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
                                                      <td><select disabled class=\"form-control estrategia1\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
                                                               <option  class=\"form-control\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
-                                                     <td><input class=\" form-control significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
+                                                     <td><input readonly class=\" form-control significado1\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
 
             }
