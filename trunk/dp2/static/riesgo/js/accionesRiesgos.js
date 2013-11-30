@@ -176,21 +176,14 @@ function main(){
 
                         $('#modalExito').modal('show');
                     },
-                    fail: function(data) {
-                        $("#labelErrorModal").value(data.me);
-                        $('#ModaldeErrores').modal('show');
-                    }
-                });
-            }
-        });
-
-                    
-                },
                 fail: function(data) {
-                    alert(data.me);
+                    $("#labelErrorModal").value(data.me);
+                    $('#ModaldeErrores').modal('show');
                 }
             });
-              });
+
+        });
+
         }
 
 
@@ -219,14 +212,7 @@ function main(){
 //                });
 //            }
 //        });
-
-        
-
-
-        
-         
-  
-});
+    });
 }
 
 function addTableRow()
