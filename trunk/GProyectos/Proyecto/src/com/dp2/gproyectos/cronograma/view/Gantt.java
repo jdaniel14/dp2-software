@@ -70,6 +70,18 @@ public class Gantt extends SherlockFragmentActivity implements Loadingable{
 		getSherlock().getActionBar().setTitle(nombreProyecto);
 		
 		myWebView = (WebView) findViewById(R.id.cr_webview);
+		myWebView.getSettings().setJavaScriptEnabled(true);
+		myWebView.getSettings().setBuiltInZoomControls(true);
+		myWebView.setWebViewClient(new WebViewClient()
+        {
+            // evita que los enlaces se abran fuera nuestra app en el navegador de android
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url)
+			{
+			    return false;
+			}   
+			 
+		});
 //		myWebView.setWebViewClient(new WebViewClient(){
 //	        @Override
 //	        public boolean shouldOverrideUrlLoading(WebView view, String url) {
