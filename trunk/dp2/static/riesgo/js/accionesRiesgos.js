@@ -43,7 +43,7 @@ function validar() {
         var costo = $($(".costo")[i]).val(); // valor de inputs
         var tiempo = $($(".tiempo")[i]).val(); // valor de inputs
 
-        if (!esNumEntPos(costo) || !esNumEntPos(tiempo)){
+        if (!esNumEntPos(costo) || !esNumEntPos(tiempo)) {
             valor = "vacio";
             $('#confirmSave').modal('hide');
             $("#labelErrorModal").html("");
@@ -72,7 +72,7 @@ function validar() {
 
 
 function main() {
-  arregloPermisoJP = ["agregar", "guardar","iconito"];
+    arregloPermisoJP = ["agregar", "guardar", "iconito"];
 
 
 
@@ -85,20 +85,31 @@ function main() {
     var cantidad = $("#suma").val();
     lineaBase();
     listaAcciones();
-       for (var i = 0; i < arregloPermisoJP.length; i++) {
-        if(i!==2){
-        $("#" + arregloPermisoJP[i] + "").hide();
+    for (var i = 0; i < arregloPermisoJP.length; i++) {
+        if (i !== 2) {
+            $("#" + arregloPermisoJP[i] + "").hide();
+        }
     }
-       }
-    if(rol==2){
-         for (var i = 0; i < arregloPermisoJP.length; i++) {
-        if(i!==2){
-        $("#" + arregloPermisoJP[i] + "").show();
-       
-    }}   
-        
+    if (rol == 2) {
+        for (var i = 0; i < arregloPermisoJP.length; i++) {
+            if (i !== 2) {
+                $("#" + arregloPermisoJP[i] + "").show();
+
+            }
+        }
     }
-    
+    if (rol == 3) {
+ for (var i = 0; i < arregloPermisoJP.length-1; i++) {
+            if (i !== 2) {
+                $("#" + arregloPermisoJP[i] + "").show();
+
+            }
+        }
+
+    }
+
+
+
     $("#agregar").click(function()
     {
 
@@ -106,7 +117,7 @@ function main() {
         $("#suma").val(cantidad);
         var valor = $("#tablaAcuerdos tr").length;
         var ultimo = parseInt(valor) - 1;
-       
+
         addTableRow();
 
 
@@ -163,7 +174,6 @@ function main() {
                 type: 'POST',
                 url: addAccion,
                 data: jsonData,
-                
                 success: function(data) {
                     obj = JSON.parse(data);
                     costoPromedio = obj.costo;
@@ -184,8 +194,8 @@ function main() {
 
         }
         else {
-            
-           for(;tamanho<tamanho2;tamanho++) {
+
+            for (; tamanho < tamanho2; tamanho++) {
 
                 var data = {
                     idRiesgoXProyecto: idRiesgo,
@@ -204,7 +214,6 @@ function main() {
                     type: 'POST',
                     url: addAccion,
                     data: jsonData,
-                    
                     success: function(data) {
                         obj = JSON.parse(data);
                         costoPromedio = obj.costo;
@@ -215,7 +224,7 @@ function main() {
                         $("#tablaAcuerdos").html("");
                         listaAcciones();
 
-                        
+
                     },
                     fail: function(data) {
                         $("#labelErrorModal").value(data.me);
@@ -255,7 +264,7 @@ function main() {
 //            }
 //        });
     });
-    
+
 
 
 }
@@ -285,7 +294,7 @@ function addTableRow()
     // append the new row to the table
     $("#tablaAcuerdos").find("tbody tr:last").after($tr);
     tamanho2 = parseInt(($(".tipoRiesgo").size()));
-  
+
 }
 
 function listaAcciones() {
@@ -362,16 +371,18 @@ function listaAcciones() {
                         "<td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + 0 + "\" ></span></a></td></tr>");
             }
             $(".iconito").hide();
-            if(rol==2) $(".iconito").show();
+            if (rol == 2)
+                $(".iconito").show();
         }
     });
 
 }
 
-function esNumEntPos(strNum){
-    if (strNum == null || strNum.length == 0) return false;
-    for (var i = 0; i < strNum.length; i++){
-        var car = strNum[i] ;
+function esNumEntPos(strNum) {
+    if (strNum == null || strNum.length == 0)
+        return false;
+    for (var i = 0; i < strNum.length; i++) {
+        var car = strNum[i];
         if (isNaN(car))
             return false;
     }
