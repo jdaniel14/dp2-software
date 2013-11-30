@@ -19,7 +19,10 @@ function validAtenas2() {
         if (tipoRi === null || tipoRi.length === 0) {
             //ALERTAR
             valor = "vacio";
-            alert("Debe registrar todos los campos");
+            // alert("Debe registrar todos los campos");
+            $("#labelErrorModal").html("");
+            $("#labelErrorModal").append("Debe registrar todos los campos");
+            $('#ModaldeErrores').modal('show');
             return false;
 
         }
@@ -101,7 +104,9 @@ function main() {
 
             var obj = {
                 tipoRi: $($("input.tipoRiesgo")[i]).val(), // valor de inputs
-                formas: $($("select.numero")[i]).val()
+                formas: $($("select.numero")[i]).val(),
+                idProyecto: localStorage.getItem("idProyecto"),
+                idUsuario: localStorage.getItem("idUsuario")
 
             };
             i++;
@@ -117,13 +122,19 @@ function main() {
             url: "../../api/R_registrarTiposImpactoRiesgo",
             data: jsonData,
             success: function(data) {
-                alert("Registrado con éxito");
+                // alert("Registrado con éxito");
+                $("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Registrado con éxito");
+                $('#modalExito').modal('show');
                 $("#tablaTiposRiesgos").html("");
                 listaTipoImpactos();
 
             },
             fail: function(data) {
-                alert(data.me);
+                // alert(data.me);
+                $("#labelErrorModal").html("");
+                $("#labelErrorModal").append("Error: " + data.me);
+                $('#ModaldeErrores').modal('show');
             }
         });
 
@@ -143,17 +154,22 @@ function eliminarRiesgo(idTipoRi) {
         $("#tablaRiesgos > tr>td>a>span");
         console.log(idTipoRi);
         var data = {
-            idTipoImpacto: idTipoRi
+            idTipoImpacto: idTipoRi,
+            idProyecto: idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
         };
         var jsonData = JSON.stringify(data);
         console.log(data);
         $.ajax({
             type: 'DELETE',
-            url: "../../api/R_eliminarTiposImpactoRiesgo" + '/' + data.idTipoImpacto,
+            url: "../../api/R_eliminarTiposImpactoRiesgo" + '/' + jsonData,
             data: jsonData,
             dataType: "html",
             success: function() {
-                alert("Se elimino el tipo de impacto correctamente");
+                $("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Se elimino el tipo de impacto correctamente");
+                $('#modalExito').modal('show');
+                // alert("Se elimino el tipo de impacto correctamente");
                 $("#tablaTiposRiesgos").html("");
                 listaTipoImpactos();
 
@@ -167,12 +183,13 @@ function eliminarRiesgo(idTipoRi) {
 
 function listaTipoImpactos() {
     var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
         type: 'GET',
-        url: '../../api/R_listaTiposImpactoRiesgo' + '/' + data.idProyecto,
+        url: '../../api/R_listaTiposImpactoRiesgo' + '/' + jsonData,
         dataType: "json",
         success: function(data) {
             for (obj in data) {

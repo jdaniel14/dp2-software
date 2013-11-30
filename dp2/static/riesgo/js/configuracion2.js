@@ -202,9 +202,13 @@ function main(){
 			dataType: "json",
 			success: function(data){
 				var item = data;
-				alert("Se registró exitosamente el nivel " + item.descripcion);
-				listarProbabilidades();
 				$('#modalAgregarNivel').modal('hide');
+				$("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Se registró exitosamente el nivel " + item.descripcion);
+                $('#modalExito').modal('show');
+				// alert("Se registró exitosamente el nivel " + item.descripcion);
+				listarProbabilidades();
+				
 			},
 			fail: codigoError
 		});
@@ -220,6 +224,7 @@ function main(){
 			idProyecto: idProyectoLocal,
 			nivel: $('#numeroPesoImpacto').val(),
 			descripcion: $('#descripcionImpacto').val(),
+			idUsuario: localStorage.getItem("idUsuario")
 		};
 
 		$('#errorPesoImpacto').hide();
@@ -235,9 +240,13 @@ function main(){
 			dataType: "json",
 			success: function(data){
 				var item = data;
-				alert("Se registró exitosamente el nivel " + item.descripcion);
-				listarHeaderNivelImpacto();
 				$('#modalAgregarNivelImpacto').modal('hide');
+				$("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Se registró exitosamente el nivel " + item.descripcion);
+                $('#modalExito').modal('show');
+				// alert("Se registró exitosamente el nivel " + item.descripcion);
+				listarHeaderNivelImpacto();
+				
 			},
 			fail: codigoError
 		});
@@ -257,10 +266,14 @@ function main(){
 			data: jsonData,
 			dataType: "html",
 			success: function(){
-				alert("Se elimino el riesgo correctamente");
+				// alert("Se elimino el riesgo correctamente");
+				$("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Se elimino el riesgo correctamente");
+                $('#modalExito').modal('show');
+
 				listarProbabilidades();
-				$('#btnModalAgregarNivel').removeAttr("disabled");
-				$('#btnAgregarNivel').removeAttr("disabled");
+				$('#btnModalAgregarNivel').prop('disabled', false);
+				$('#btnAgregarNivel').prop('disabled', false);
 			},
 			fail: codigoError
 		});
@@ -283,7 +296,11 @@ function main(){
 			data: jsonData,
 			dataType: "html",
 			success: function(){
-				alert("Se elimino el riesgo correctamente");
+				$("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Se elimino el riesgo correctamente");
+                $('#modalExito').modal('show');
+
+				// alert("Se elimino el riesgo correctamente");
 				listarHeaderNivelImpacto();
 			},
 			fail: codigoError
@@ -404,7 +421,11 @@ function agregaFilaProba(arreglo,i){
 
 /*-----------------------------------------ERRORES----------------------------------------------------*/
 function codigoError(){
-	alert('Error');
+	// alert('Error');
+	$("#labelErrorModal").html("");
+    $("#labelErrorModal").append("Se detecto un error");
+    $('#ModaldeErrores').modal('show');
+
 }
 /*-----------------------------------------FIN ERRORES----------------------------------------------------*/
 
