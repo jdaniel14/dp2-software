@@ -20,7 +20,8 @@ function lineaBase(){
             lineaBase=JSON.parse(obj.estado_linea_base);
         },
         fail: function(data) {
-            alert(data.me);
+            $("#labelErrorModal").value(data.me);
+            $('#ModaldeErrores').modal('show');
         }
     });
 }
@@ -38,7 +39,8 @@ function validar() {
         if (accion === null || accion.length === 0 || costo === null || costo.length === 0 || tiempo === null || tiempo.length === 0){
             //ALERTAR
             valor = "vacio";
-            alert("Debe registrar todos los campos");
+           $("#labelErrorModal").value("Debe registrar todos los campos");
+           $('#ModaldeErrores').modal('show');
             return false;
         }
         i+=3;
@@ -134,7 +136,8 @@ function main(){
                     
                 },
                 fail: function(data) {
-                    alert(data.me);
+                    $("#labelErrorModal").value(data.me);
+                    $('#ModaldeErrores').modal('show');
                 }
             });
             
@@ -167,10 +170,20 @@ function main(){
                     obj=JSON.parse(data);
                     costoPromedio=obj.costo;
                     tiempoPromedio=obj.tiempo;
-                        alert("Se registró con exito");
                         $("#tablaAcuerdos").html("");
                         listaAcciones();
                         $('#confirmSave').modal('hide');
+
+                        $('#modalExito').modal('show');
+                    },
+                    fail: function(data) {
+                        $("#labelErrorModal").value(data.me);
+                        $('#ModaldeErrores').modal('show');
+                    }
+                });
+            }
+        });
+
                     
                 },
                 fail: function(data) {
@@ -179,6 +192,7 @@ function main(){
             });
               });
         }
+
 
 //            if (i==max){
 //                var data = {
