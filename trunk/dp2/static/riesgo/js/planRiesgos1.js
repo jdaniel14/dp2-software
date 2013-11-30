@@ -467,7 +467,7 @@ function leerCategorias2() {
     $.ajax({
         type: 'GET',
         // url: '../../api/R_listarEstrategiasNegativo' + '/' + data.idProyecto,
-        url: '../../api/R_listarEstrategiasNegativo' + '/' + jsonData;
+        url: '../../api/R_listarEstrategiasNegativo' + '/' + jsonData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
