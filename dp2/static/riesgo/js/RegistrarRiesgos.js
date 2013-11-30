@@ -308,7 +308,7 @@ function main() {
     // });
 
     $("#btnEliminar").click(function() {
-      
+   
 
         var data = {
             idRiesgoProyecto: idArray
@@ -374,7 +374,7 @@ function main() {
             async: false,
             type: 'PUT',
             url: setMaterializada,
-            // dataType: "json",
+            //dataType: "json",
             data: jsonData,
             success: function() {
                 localStorage.setItem("idAccion", $('#accionEscogida').val());
@@ -628,6 +628,10 @@ function main() {
                 $(".acciones").click(function() {
                     var idRiesgoProyecto = $(this).closest("tr").attr("id");
                     localStorage.setItem("idRiesgo", idRiesgoProyecto);
+                });
+                $(".materializar").click(function() {
+                    idArray = $(this).closest("tr").attr("id");
+                  
                 });
 
                 $(".glyphicon.glyphicon-edit").click(function() {
