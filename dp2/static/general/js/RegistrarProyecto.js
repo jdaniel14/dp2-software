@@ -147,8 +147,8 @@ function validacion() {
 	      profesion 	 : { required: true },
 	      costohh		 : { required: true, number: true },
 	      tipoProyecto 	 : { required: true },
-	      fechaInicio	 : { required: true },
-	      fechaFin 		 : { required: true, greaterThan: "#fechaInicio" }
+	      fechaInicio	 : { required: true }//,
+	      //fechaFin 		 : { required: true, greaterThan: "#fechaInicio" }
 	    },
 
 	    messages: {
@@ -158,7 +158,7 @@ function validacion() {
 	      costohh 		 : { required: 'Debe ingresar el costo', number: 'Debe ingresar solo números' },
 	      tipoProyecto 	 : { required: 'Debe elegir un tipo de proyecto' },
 	      fechaInicio 	 : { required: 'Debe ingresar la fecha inicial' },
-	      fechaFin 		 : { required: 'Debe ingresar la fecha final', greaterThan: "La fecha final debe ser mayor a la fecha inicial" }
+	      //fechaFin 		 : { required: 'Debe ingresar la fecha final', greaterThan: "La fecha final debe ser mayor a la fecha inicial" }
 	    },
 
 		highlight: function(element) {
