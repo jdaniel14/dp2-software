@@ -395,6 +395,8 @@ function main() {
         if (i === 1 || i === 2) {
             $(".materializar").hide();
             $(".acciones").hide();
+             $(".glyphicon-edit").hide();
+              $(".glyphicon-remove").hide();
         }
     }
 
@@ -406,6 +408,8 @@ function main() {
             if (i === 1 || i === 2) {
                 $(".materializar").show();
                 $(".acciones").show();
+                 $(".glyphicon-edit").show();
+              $(".glyphicon-remove").show();
             }
         }
     }
