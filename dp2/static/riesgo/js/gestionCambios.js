@@ -28,6 +28,11 @@ function listarCambiosGantt(){
          dataType: "json",
          
         success: function(data) {
+           
+            if(data==null){
+                 $("#camposMaterializados").append("<b>No hay acciones para aprobar<b>");
+                
+            }
           
        console.log(data);
           
