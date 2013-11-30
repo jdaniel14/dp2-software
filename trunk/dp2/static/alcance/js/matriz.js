@@ -125,7 +125,7 @@ function cargaMiembros(){
 				var opt2 = $("<option></option>");
 				opt.val(data[obj]["id_empleado"]);
 				opt.html(data[obj]["nombre_corto"]);
-				opt2.val(data[obj]["id_empleado"]);
+				opt2.val(data[obj]["id_miembros_equipo"]);
 				opt2.html(data[obj]["nombre_corto"]);
 				$("#solicitado").append(opt);
 				$("#idmiembros").append(opt2);
