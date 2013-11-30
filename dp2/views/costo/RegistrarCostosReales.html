@@ -57,6 +57,19 @@
 		
 		<input type="hidden" name="numFilas" id="numFilas" value="0">
 		
+		<div id="divCostoFijo" class="form-group">			
+			<label id="labCostoFijo" class="control-label" style="display:none">EL costo fijo deben ser un número mayor a 0</label>
+		</div>
+		<div id="divErrorFechaI" class="form-group">			
+			<label id="labErrorFechaI" class="control-label" style="display:none">La fecha de inicio debe ser distinta de vacía</label>
+		</div>
+		<div id="divErrorFechaF" class="form-group">			
+			<label id="labErrorFechaF" class="control-label" style="display:none">La fecha de fin debe ser distinta de vacía</label>
+		</div>		
+		<div id="divErrorFecha" class="form-group">			
+			<label id="labErrorFecha" class="control-label" style="display:none">La fecha de inicio debe ser menor a la fecha de fin</label>
+		</div>
+		
 		<table class="tablesorter table table-bordered tablesorter-bootstrap"  width="90%" id="tablaRecursos">
 		<thead>
 			<tr width="100%"><td width="2%"><b>#</b></td><td width="25%"><b>Recurso</b></td><td width="10%"><b>Costo fijo diario (Nuevos soles)</b></td><td width="13%"><b>Fecha Inicio</b></td><td width="13%"><b>Fecha Fin</b></td></tr>
