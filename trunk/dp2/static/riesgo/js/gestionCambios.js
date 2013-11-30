@@ -3,7 +3,7 @@
 
 $(document).ready(main);
 var idProyectoLocal = localStorage.getItem("idProyecto");
-
+var idAct;
 
 function main(){
 	listarCambiosGantt();
@@ -40,29 +40,29 @@ function listarCambiosGantt(){
           var tiempo=data[obj]["tiempo"];
                 
                 i++;
-          $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + i + "\" ></div>");
+          $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + idActividadCronograma + "\" ></div>");
 
 	cadena = "<div class=\"well\"><input id='id' type='text' style='display:none;' value='"+idActividadCronograma+"'>\n\
                 <label >Se materializó el riesgo "+idActividadCronograma  +" : "+ nombreActividadCronograma+" </label></br>"+
                 "<label>Se desea cambiar la actividad:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\"> \n\
-                 <div class=\"col-lg-4 control-label\"> <input type=\"text\" id=\"antiguoNombre\" value=\""+nombreActividadCronograma+"\"></div>" +
-                " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label><input type=\"date\" id=\"antiguaFechaInicio\" value=\""+fechaInicioActividadCronograma+"\">"+
-                " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  <input type=\"number\" id=\"antiguaDuracion\" value=\""+duracionActividadCronograma+"\">" +
+                 <div class=\"col-lg-4 control-label\"> <input readonly type=\"text\" id=\"antiguoNombre\" value=\""+nombreActividadCronograma+"\"></div>" +
+                " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label><input readonly type=\"date\" id=\"antiguaFechaInicio\" value=\""+fechaInicioActividadCronograma+"\">"+
+                " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  <input readonly type=\"number\" id=\"antiguaDuracion\" value=\""+duracionActividadCronograma+"\">" +
                 "<label> dias</label><br></div></div>";
         
         cadena=cadena+""+
                     "<label>Por la siguiente actividad:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\">  <div class=\"col-lg-4 control-label\"> \n\
-            <input type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreAccionRiesgo+"\"></div>" +
+            <input readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreAccionRiesgo+"\"></div>" +
                 " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label>\n\
-            <input type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
+            <input readonly type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
                 " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  \n\
-            <input type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
+            <input readonly type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
                 "<label> dias</label><br></div><br>";
         
         cadena=cadena +'<button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +');">Cambiar</button></div></div></div>';
-	$("#prueba"+i).html(cadena);
+	$("#prueba"+idActividadCronograma).html(cadena);
           }
         }
         //"+ idActividadCronograma + ",'"+fechaInicioActividadCronograma+"',"+duracionActividadCronograma+",'"+nombreActividadCronograma+"'
@@ -71,7 +71,7 @@ function listarCambiosGantt(){
 
 function guardar_cambios(id){
     
-        
+            
         var data = {
             id:id,
             name: $("#nuevoNombre_"+id).val(),
@@ -79,11 +79,11 @@ function guardar_cambios(id){
             fecha_inicio:$("#nuevoFechaInicio_"+id).val()
                
         };
-       
+       idAct=data.id;
         var data2 = {
           idActividad : id,
           idProyecto : idProyectoLocal
-        }
+        };
 
         var jsonData2 = JSON.stringify(data2);
 
@@ -105,13 +105,18 @@ function guardar_cambios(id){
             type: 'POST',
             url: "../../api/CR_updateActividad/",
             data: jsonData,
-             success: function() {
+             success: function(data) {
+                var item=JSON.parse(data);
+               // alert(item['codRespuesta']);
                 alert("Registrado con éxito");
-           
-            }
+                
+                $("#prueba"+idAct).hide();
+
+                 }
             
         });
 
+           
      $.ajax({
             async: false,
             type: 'GET',
