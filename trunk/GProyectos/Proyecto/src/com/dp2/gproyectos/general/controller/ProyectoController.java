@@ -37,8 +37,12 @@ public class ProyectoController extends Controller {
 		return listaProyectos;
 	}*/
 
-	public ArrayList<ProyectoBean> getProyectos() {
-		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
+	public ArrayList<ProyectoBean> getProyectos(String id) {
+		String path;
+		if (id.equalsIgnoreCase("1"))
+			path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
+		else
+			path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL + "/" + id;
 		//String path = "http://localhost:8080/dp2/api/" + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
 		//Bonnie se la lleva fácil :3
 		Gson gs = new Gson();
