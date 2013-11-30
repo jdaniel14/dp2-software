@@ -4,18 +4,13 @@ var verificarLineaBase ="../../api/G_verificaLineaBase/";
 //var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
 var profesion = "";
 
-function filtrarOtraFecha() {
-    $("#ff").attr("value", "");
-    var fecha = new Date();
-    fecha = $("#fi").datepicker("getDate");
-    fecha.setDate(fecha.getDate() + 1) ;
-    $("#ff").datepicker("option", "minDate", fecha);
-}
 
 $(document).ready(function(){
 	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
 	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
-	$("#ff").change(filtrarOtraFecha);
+	//alert("aqui");
+	$("#fi").change(filtrarOtraFecha);
+	//alert("aquixD");
 	
 	verificaLineaBase();
 	llenar_profesion();
@@ -79,6 +74,15 @@ $(document).ready(function(){
     	else alert("No hay filas que modificar");
     })
 });
+
+function filtrarOtraFecha() {
+    $("#ff").attr("value", "");
+    var fecha = new Date();
+    fecha = $("#fi").datepicker("getDate");
+    //alert(fecha);
+    fecha.setDate(fecha.getDate() + 1) ;
+    $("#ff").datepicker("option", "minDate", fecha);
+}
 
 function llenar_profesion(){
 	
