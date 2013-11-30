@@ -2,6 +2,10 @@ var cantidad=0;
 $(document).ready(main);
  //localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
+var arregloPermisoJP = new Array();
+var arregloPermisoGP = new Array();
+var arregloPermisoMP = new Array();
+var rol = localStorage.getItem("idRol");
 
 function validAtenas2(){
     var i=0;
@@ -28,7 +32,20 @@ function validAtenas2(){
 }
 
 function main() {
+  arregloPermisoJP = ["agregar", "btnGuardar","btnCancelar"];
 
+
+
+    for (var i = 0; i < arregloPermisoJP.length; i++) {
+        $("#" + arregloPermisoJP[i] + "").hide();
+    }
+
+    if (rol == 2) {
+        for (var i = 0; i < arregloPermisoJP.length; i++) {
+            $("#" + arregloPermisoJP[i] + "").show();
+        }
+    }
+    
     listarAcuerdos();
     var cantidad = $("#suma").val();
   $("#agregar").click(function()
