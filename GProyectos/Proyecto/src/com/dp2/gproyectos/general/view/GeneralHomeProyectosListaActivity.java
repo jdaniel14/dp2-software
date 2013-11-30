@@ -38,6 +38,7 @@ import com.dp2.gproyectos.cronograma.view.ListaActividadesXProyecto;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.controller.UsuarioController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
+import com.dp2.gproyectos.general.entities.UsuarioBean;
 import com.dp2.gproyectos.general.view.adapter.ProyectoAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.VerticalBarraTituloActivity;
@@ -148,7 +149,7 @@ public class GeneralHomeProyectosListaActivity extends
 	@Override
 	public void loadingData() {
 		try {
-			proyectos = ProyectoController.getInstance().getProyectos();
+			proyectos = ProyectoController.getInstance().getProyectos(UsuarioController.getInstance().currentUser.id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -265,7 +266,7 @@ public class GeneralHomeProyectosListaActivity extends
             // Simulates a background job.
             try {
                 //Thread.sleep(2000);
-            	proyectos = ProyectoController.getInstance().getProyectos();
+            	proyectos = ProyectoController.getInstance().getProyectos(UsuarioController.getInstance().currentUser.id);
             } catch (Exception e) {
                 ;
             }
