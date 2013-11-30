@@ -2,7 +2,7 @@ $(document).ready(function(){
 	//cargar Combos
 	$("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
 	$("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
-	$("#fechaInicio").change(filtrarOtraFecha)
+	$("#fechaInicio").change(filtrarOtraFecha);
 	cargarComboJefeProyecto();
 	cargarComboTipoProyecto();
 	validacion();
