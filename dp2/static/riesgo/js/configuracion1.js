@@ -43,13 +43,20 @@ function main() {
 
     for (var i = 0; i < arregloPermisoJP.length; i++) {
         $("#" + arregloPermisoJP[i] + "").hide();
+       
     }
-
+  
+    
     if (rol == 2) {
         for (var i = 0; i < arregloPermisoJP.length; i++) {
             $("#" + arregloPermisoJP[i] + "").show();
+            
         }
+         
     }
+    
+   
+    
     
     listaTipoImpactos();
 
@@ -199,7 +206,8 @@ function listaTipoImpactos() {
             if ($("#tablaTiposRiesgos tr").length > 1)
                 $("#my_row_101").remove();
 
-
+   $(".iconito").hide();
+   if(rol==2)  $(".iconito").show();
         },
     });
 
