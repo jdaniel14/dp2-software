@@ -2,7 +2,7 @@ var addAccion = "../../api/R_registrarActividadContingencia";
 var updateCostTime = "../../api/R_actualizarCostoTiempoRiesgo";
 var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
 var verificaLineaBase = "../../api/G_verificaLineaBase";
-var tamanho;
+var tamanho, tamanho2;
 $(document).ready(main);
 var maxId;
 var idRiesgo = localStorage.getItem("idRiesgo");
@@ -67,7 +67,7 @@ function main() {
         $("#suma").val(cantidad);
         var valor = $("#tablaAcuerdos tr").length;
         var ultimo = parseInt(valor) - 1;
-
+       
         addTableRow();
 
 
@@ -124,7 +124,7 @@ function main() {
                 type: 'POST',
                 url: addAccion,
                 data: jsonData,
-                dataType: "json",
+                
                 success: function(data) {
                     obj = JSON.parse(data);
                     costoPromedio = obj.costo;
@@ -144,8 +144,8 @@ function main() {
 
         }
         else {
-
-            $(".tipoRiesgo").each(function() {
+            
+           for(;tamanho<tamanho2;tamanho++) {
 
                 var data = {
                     idRiesgoXProyecto: idRiesgo,
@@ -164,7 +164,7 @@ function main() {
                     type: 'POST',
                     url: addAccion,
                     data: jsonData,
-                    dataType: "json",
+                    
                     success: function(data) {
                         obj = JSON.parse(data);
                         costoPromedio = obj.costo;
@@ -182,7 +182,7 @@ function main() {
 
                 });
 
-            });
+            }
 
         }
 
@@ -239,6 +239,8 @@ function addTableRow()
 
     // append the new row to the table
     $("#tablaAcuerdos").find("tbody tr:last").after($tr);
+    tamanho2 = parseInt(($(".tipoRiesgo").size()));
+    alert(tamanho2);
 }
 
 function listaAcciones() {
