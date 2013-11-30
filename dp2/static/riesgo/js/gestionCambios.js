@@ -16,7 +16,8 @@ function main(){
 function listarCambiosGantt(){
 
  var data = {
-        idProyecto: idProyectoLocal
+        idProyecto: idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     console.log(data);
@@ -76,13 +77,16 @@ function guardar_cambios(id){
             id:id,
             name: $("#nuevoNombre_"+id).val(),
             duration:$("#nuevoDuracion_"+id).val(),
-            fecha_inicio:$("#nuevoFechaInicio_"+id).val()
+            fecha_inicio:$("#nuevoFechaInicio_"+id).val(),
+            idProyecto : idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
                
         };
        idAct=data.id;
         var data2 = {
           idActividad : id,
-          idProyecto : idProyectoLocal
+          idProyecto : idProyectoLocal,
+          idUsuario: localStorage.getItem("idUsuario")
         };
 
         var jsonData2 = JSON.stringify(data2);
