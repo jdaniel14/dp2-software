@@ -98,7 +98,9 @@ function main(){
 				tiempoReal: $("#nuevosDias").val(),
 				fechaInicio: $("#fechaInicioActual2").val(),
 				idAccionesRiesgo: idAccion,
-				descripcion: nombreAccion
+				descripcion: nombreAccion,
+				idProyecto : idProyectoLocal,
+				idUsuario: localStorage.getItem("idUsuario")
 		    }
 		    var jsonData = JSON.stringify(data);
 		    $.ajax({			
@@ -123,7 +125,8 @@ function main(){
 
 function listarActividades(){
 	var data = {
-		idProyecto:idProyectoLocal
+		idProyecto:idProyectoLocal,
+		idUsuario: localStorage.getItem("idUsuario")
 	}
 	var jsonData = JSON.stringify(data);
 	$.ajax({
@@ -151,7 +154,9 @@ function listarActividades(){
 
 function listarAciones(){
 	var data = {
-        idRiesgoXProyecto:  idRiesgo
+        idRiesgoXProyecto:  idRiesgo,
+        idProyecto : idProyectoLocal,
+        idUsuario: localStorage.getItem("idUsuario")
     };
     var jsonData = JSON.stringify(data);
     $.ajax({
