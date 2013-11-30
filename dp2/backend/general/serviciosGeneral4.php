@@ -163,6 +163,19 @@ function G_postDarbajaEmpleado() {
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
+    
+    $sql = " UPDATE MIEMBROS_EQUIPO SET estado=:estado WHERE id_empleado=:id_empleado ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("estado", 0);
+        $stmt->bindParam("id_empleado", $body->ide);
+        $stmt->execute();
+        $db = null;
+        echo json_encode(array("me" => ""));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
 }
 ///////
 function G_getLineaBase($id) {
