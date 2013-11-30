@@ -1,4 +1,8 @@
 $(document).ready(main);
+var arregloPermisoJP = new Array();
+var arregloPermisoGP = new Array();
+var arregloPermisoMP = new Array();
+var rol = localStorage.getItem("idRol");
 //localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 function validAtenas() {
@@ -123,6 +127,26 @@ $(document).on('change', '.puntajeMax', function() {
 
 
 function main() {
+    
+      arregloPermisoJP = ["btnAumentar", "btnEliminarTipoXNivelModal","btnGenerar1","btnGrabarCategorizacion1","btnCancelar1","btnCancelar2","btnGenerar2","btnGrabarCategorizacion2"];
+
+
+
+    for (var i = 0; i < arregloPermisoJP.length; i++) {
+        $("#" + arregloPermisoJP[i] + "").hide();
+    }
+
+    if (rol == 2) {
+        for (var i = 0; i < arregloPermisoJP.length; i++) {
+            $("#" + arregloPermisoJP[i] + "").show();
+        }
+    }
+    
+     if (rol==3) {
+        
+            $("#" + arregloPermisoJP[0] + "").show();
+                   
+    }
     leerEquipo();
     leerNivelImpacto1();
     leerNivelImpacto2();
