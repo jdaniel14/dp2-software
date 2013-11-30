@@ -230,8 +230,8 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		if (indRecursoHumano=='0'){
 			inputCosto='<div id="divCostoUnitario'+a+'" class="form-group"><input id="costoUnitario'+a+'" class="form-control" name="costoUnitario'+a+'" value="'+formateaNumero(costoUnitario,2)+'" onClick="modifica('+a+')"></div>';
 			inputCostoFijo='<div id="divCostoFijo'+a+'" class="form-group"><input id="costoFijo'+a+'" class="form-control" name="costoFijo'+a+'" value="'+formateaNumero(costoFijo,2)+'" onClick="modifica('+a+')"></div>';
-			inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
-			inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;"></div>';
+			inputFechaInicio='<div id="divFechaInicio'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaInicio'+a+'" name="fechaInicio'+a+'" value="'+fechaInicio+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;" onkeydown="return false;" onkeypress="return false;"></div>';
+			inputFechaFin='<div id="divFechaFin'+a+'" class="form-group"><input type="text" class="form-control calendar" id="fechaFin'+a+'" name="fechaFin'+a+'" value="'+fechaFin+'" style="width:100%" onChange="modifica('+a+')" onkeyup="return false;" onkeydown="return false;" onkeypress="return false;"></div>';
 			check= '<input type="checkBox" name="eliminar'+a+'" id="eliminar'+a+'">';
 			
 		}else{
