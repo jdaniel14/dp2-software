@@ -12,6 +12,46 @@
           return size;
       };
 
+        ///api/AL_EdtAprobado/3
+        var rutaAprobado = "../../api/AL_EdtAprobado/" + localStorage.getItem("idProyecto");
+        $.ajax({ 
+                      type: "GET",
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                      url: rutaAprobado,
+                      success: function (data) {
+                         if ( data == true){
+                          $("#editarEdtNew").hide();
+                          $("#eliminarEdt").hide();
+                          console.log("aprobado", true);
+                         }
+                      }
+                       
+                    });
+        // "../../api/AL_EdtAprobado/"
+        ///G_verificaLineaBase/
+        var rutaLineaBase = "../../api/G_verificaLineaBase/"  + localStorage.getItem("idProyecto");
+          $.ajax({ 
+                      type: "GET",
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                      url: rutaLineaBase,
+                      success: function (data) {
+                         // var obj = jQuery.parseJSON( data );
+                         console.log("aaa", data, data.estado_linea_base);
+                         if ( data.estado_linea_base == "true"){
+                          //estado_linea_base
+
+
+                          $("#editarEdtNew").hide();
+                          $("#eliminarEdt").hide();
+                          console.log("verifica", true);
+                         }else{
+                          console.log("fallo service");
+                         }
+                      }
+                       
+                    });
 
 
         function showMessage( msg ){
