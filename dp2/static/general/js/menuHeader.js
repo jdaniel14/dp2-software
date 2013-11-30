@@ -6,49 +6,13 @@ var rootURLregistrarObjActa = "../../api/G_registrarObjetivosActa";
 var rootURLregistrarAutorActa = "../../api/G_registrarAutoridadActa";
 var rootURLregistrarObjetivosActa="../../api/G_registrarObjetivosPorProyecto";
 
-$(document).ready(function(){
-	id_proyecto = localStorage.getItem("idProyecto");
-	validaActa();
-});
-function validaActa(){
-	$.ajax({
-		type: 'GET',
-		url: '../../api/G_devuelveActa/'+id_proyecto,
-		dataType: "json", // data type of response
-        success: function(data){
-
-        	if (data["acta"]["fpp"]!=null){
-        		cargarComboTipoproyecto();
-	
-				cargarComboPrioridadproyecto();
-
-				cargarComboJefeProyecto();
-
-				cargaData(data);
-
-				coso();
-
-        	}
-        	else{
-        		$("#muestraActa").hide();
-        		$("#alertNoActa").show();
-        	}
-            		
-        }
-	});
-
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
 }
-function coso(){
-	$.ajax({
-		type: 'GET',
-		url: '../../api/G_listarObjetivosPorProyecto/'+ id_proyecto,
-		dataType: "json", // data type of response
-		contentType: "application/json; charset=utf-8",
-        success: cargaObjetivos
-	});
+var id_proyecto=localStorage.getItem("idProyecto");
 
-	validacion();
-}
 function cargaData(data){
 
 	
@@ -86,48 +50,114 @@ function cargaData(data){
 
 		
 		if(key=="fpp"){
-			$('#'+key).html(arreglo[key].substring(0,10));
-			$('#'+key).val(arreglo[key].substring(0,10));
+			if(arreglo[key] != null) {
+				$('#'+key).html(arreglo[key].substring(0,10));
+				$('#'+key).val(arreglo[key].substring(0,10));
+			}
 		} 	
 	}
 }
+$(document).ready(function() {
+	$("#fpp").datepicker({ dateFormat: 'dd-mm-yy' });
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;       
+    $("#modificacionFecha").attr("value", today);
+
+
+    cargarComboTipoproyecto();
+	
+	cargarComboPrioridadproyecto();
+
+	cargarComboJefeProyecto();
+
+
+		//document.getElementById("#nameProyect").innerHTML = nombre_proyecto.val() ;
+
+	$("#idProyecto").attr("value", id_proyecto);
+	
+	$.ajax({
+		type: 'GET',
+		url : '../../api/G_devuelveActa/'+id_proyecto,
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success: cargaData
+	});
+	$.ajax({
+		type: 'GET',
+		url: '../../api/G_listarObjetivosPorProyecto/'+ id_proyecto,
+		dataType: "json", // data type of response
+		contentType: "application/json; charset=utf-8",
+        success: cargaObjetivos
+	});
+
+	validacion();
+});
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 		grabarRecursos();
 	}
 });
 $("#btnGrabarInformacion").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarInformacionActa();
-	}
+	if ($("#registrarActa1").valid()) {
+       grabarInformacionActa();
+    }
 });
+
 $("#btnGrabarDescripcion").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-              //  alert('ahora hector q dices');
-		grabarDescripcionActa();
-	}
+	if ($("#registrarActa2").valid()) {
+       grabarDescripcionActa()
+    }
 });
+
 $("#btnGrabarPerformance").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-                //alert('ona vez mas, ahora :(  hector q dices');
-		grabarPerformanceActa();
-	}
+	if ($("#registrarActa3").valid()) {
+       grabarPerformanceActa();
+    }
 });
+
 $("#btnGrabarObjetivos").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-                //alert('ona vez mas, ahora :(  hector q dices');
-		grabarObjetivosActa();
-	}
+	if ($("#registrarActa4").valid()) {
+       grabarObjetivosActa();
+    }
 });
+
 $("#btnGrabarAutoridad").click(function(){
-	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
-		grabarAutoridadActa();
-	}
+	if ($("#registrarActa5").valid()) {
+        bootbox.dialog({
+          message: "¿Estás seguro que deseas guardar los cambios realizados?",
+          title: "Confirmación",
+          buttons: {
+            success: {
+              label: "Sí",
+              className: "btn-success",
+              callback: function() {
+                grabarAutoridadActa();
+              }
+            },
+            danger: {
+              label: "No",
+              className: "btn-danger",
+              callback: function() {
+                 //cierra el modal
+              }
+            },
+          }
+        });
+    } else { return false; }
 });
+
 $("#btnAgregarObjetivo").click(function(){
 var objetivo = "<tr><td><textarea class='form-control obj' placeholder='Ingrese la descripcion del Objetivo'></textarea></td></tr>";
 	$("#Objetivos tbody").append(objetivo);
 });
+
 function cargaObjetivos(data){
 	if (data!=null){
 		arreglo=data["l_objetivos"];
@@ -165,9 +195,10 @@ function grabarInformacionActa(){
 		dataType: "json", // data type of response	
 		data: JSON.stringify(obj),
 		fail: codigoError,
-                success: function(data){
-                    
-                    alert("Se grbaron los datos wuju!");
+                success: function(data){                    
+                    $('[data-toggle="tab"][href="#ig"]').hide();
+					$('[data-toggle="tab"][href="#dp1"]').show();
+					$('[data-toggle="tab"][href="#dp1"]').tab('show'); 
                 }
 	});
 }
@@ -184,8 +215,9 @@ function grabarDescripcionActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    
-                    alert("Se grabaron los datos wuju!");
+                    $('[data-toggle="tab"][href="#dp1"]').hide();
+					$('[data-toggle="tab"][href="#perp"]').show();
+					$('[data-toggle="tab"][href="#perp"]').tab('show'); 
                 }
 	});
 }
@@ -204,9 +236,10 @@ function grabarPerformanceActa(){
 		dataType: "json", // data type of response	
 		data: JSON.stringify(obj),
 		fail: codigoError,
-                success: function(data){
-                    
-            		alert("Se grabaron los datos wuju!");
+                success: function(data){                    
+					$('[data-toggle="tab"][href="#perp"]').hide();
+					$('[data-toggle="tab"][href="#op"]').show();
+					$('[data-toggle="tab"][href="#op"]').tab('show'); 
                 }
 	});
 }
@@ -226,7 +259,7 @@ function grabarObjetivosActa(){
 		l_objetivos.push(aux);
 	}
 	obj["l_objetivos"]=l_objetivos;
-	        alert(JSON.stringify(obj));
+	        //alert(JSON.stringify(obj));
 	$.ajax({
 		type: 'POST',
 		url: rootURLregistrarObjetivosActa,
@@ -234,8 +267,9 @@ function grabarObjetivosActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    
-            		alert("Se grabaron los datos wuju!");
+                    $('[data-toggle="tab"][href="#op"]').hide();
+					$('[data-toggle="tab"][href="#ap1"]').show();
+					$('[data-toggle="tab"][href="#ap1"]').tab('show');
                 }
 	});
 }
@@ -247,6 +281,8 @@ function grabarAutoridadActa(){
 		jp: $("#jp").val(),
 		jcp: $("#jcp").val(),
 		pap: $("#pap").val(),
+		inicioP: $("#inicioP").val(),
+		finP: $("#finP").val(),
 	};
 
 
@@ -257,8 +293,7 @@ function grabarAutoridadActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    
-                    alert("Se grabaron los datos wuju!");
+                    $(location).attr('href','MenuProyecto.html');
                 }
 	});
 }
@@ -316,7 +351,7 @@ function cargarComboJefeProyecto(){
 			}
 		}
 	});
-} 
+}
 
 function validacion() {
     $('#registrarActa1').validate({
@@ -410,4 +445,19 @@ function validacion() {
     });
 }
 
+//Se implementa la regla "lettersonly" para validar que se ingresen solo letras y espacios
+jQuery.validator.addMethod("lettersonly", function(value, element) {
+  return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
+}, "Letters only please");
 
+//Se implementa la regla "greaterThan" para validar que la fecha final sea mayor a la inicial
+jQuery.validator.addMethod("greaterThan", 
+function(value, element, params) {
+
+    if (!/Invalid|NaN/.test(new Date(value))) {
+        return new Date(value) > new Date($(params).val());
+    }
+
+    return isNaN(value) && isNaN($(params).val()) 
+        || (Number(value) > Number($(params).val())); 
+},'Must be greater than {0}.');
