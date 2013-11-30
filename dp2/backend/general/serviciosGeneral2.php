@@ -295,6 +295,26 @@ function G_postBorrarMiembroDeProyecto() {
     //$body = json_decode($request);
     
     $id_miembro = $body->id_rrhhxpr;
+    
+    
+    $sql = " select count(*) as cant from MIEMBROS_EQUIPO where id_miembros_equipo = :id and id_rol=2 "; //  no se puede eliminar a un jefe de proyecto
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id_miembro);
+        $stmt->execute();
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cantidad = $res["cant"];
+        $db = null;
+        if ($cantidad>0){
+            echo json_encode(array("me" => "No se puede eliminar al jefe del proyecto. "));
+            return;
+        }
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+        return;
+    }
+            
     $sql = " select count(*) as cant from ACTIVIDAD as A, ACTIVIDAD_X_EMPLEADO as AXE, (SELECT id_proyecto as idp FROM MIEMBROS_EQUIPO where id_miembros_equipo = :id ) as H where A.id_proyecto = H.idp and A.id_actividad = AXE.id_actividad and AXE.id_miembros_equipo = :id ";
     try {
         $db = getConnection();
