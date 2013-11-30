@@ -467,6 +467,37 @@ function G_getListaRecursoProyecto($id) {
 }
 
 
+function G_getListaEmpleadosXProyecto($id) {
+    $sql = " select distinct E.id_empleado as idemp, E.nombres as nombres, E.apellidos as apellidos from MIEMBROS_EQUIPO as ME, EMPLEADO as E where ME.id_proyecto = :idproyecto and E.estado = 'ACTIVO' AND ME.estado = 1 and ME.id_empleado = E.id_empleado ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("idproyecto", $id);
+        $stmt->execute();
+
+        $lista = array();
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $idemp = $p["idemp"];
+            $nombres = $p["nombres"];
+            $apellidos = $p["apellidos"];
+            if ($nombres == null) {
+                $nombres = "";
+            }
+            if ($apellidos == null) {
+                $apellidos = "";
+            }
+            $item = array("idrecurso" => $idemp,
+                "descripcion_recurso" => $nombres.' '.$apellidos
+            );
+            array_push($lista, $item);
+        }
+        $db = null;
+        echo json_encode(array("recursos" => $lista));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
+
 
 
 ?>
