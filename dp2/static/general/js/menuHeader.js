@@ -97,7 +97,6 @@ $(document).ready(function() {
         success: cargaObjetivos
 	});
 
-	validacion();
 });
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
@@ -105,31 +104,27 @@ $("#btnGrabar").click(function(){
 	}
 });
 $("#btnGrabarInformacion").click(function(){
-	if ($("#registrarActa1").valid()) {
-       grabarInformacionActa();
-    }
+	   grabarInformacionActa();
+    
 });
 
 $("#btnGrabarDescripcion").click(function(){
-	if ($("#registrarActa2").valid()) {
-       grabarDescripcionActa()
-    }
+	   grabarDescripcionActa()
+    
 });
 
 $("#btnGrabarPerformance").click(function(){
-	if ($("#registrarActa3").valid()) {
-       grabarPerformanceActa();
-    }
+	   grabarPerformanceActa();
+    
 });
 
 $("#btnGrabarObjetivos").click(function(){
-	if ($("#registrarActa4").valid()) {
        grabarObjetivosActa();
-    }
+
 });
 
 $("#btnGrabarAutoridad").click(function(){
-	if ($("#registrarActa5").valid()) {
+\
         bootbox.dialog({
           message: "¿Estás seguro que deseas guardar los cambios realizados?",
           title: "Confirmación",
@@ -150,7 +145,7 @@ $("#btnGrabarAutoridad").click(function(){
             },
           }
         });
-    } else { return false; }
+ 
 });
 
 $("#btnAgregarObjetivo").click(function(){
@@ -348,112 +343,3 @@ function cargarComboJefeProyecto(){
 		}
 	});
 }
-
-function validacion() {
-    $('#registrarActa1').validate({
-        rules: {
-          idProyecto 	: { required: true, number: true },
-          np   			: { required: true },
-          fpp 			: { required: true },
-          tp       		: { required: true },
-          pp       		: { required: true }
-        },
-
-        messages: {
-          idProyecto 	: { required: 'Debe ingresar el id del proyecto', number: 'Debe ingresar solo numeros' },
-          np   			: { required: 'Debe ingresar el nombre del proyecto' },
-          fpp 			: { required: 'Debe ingresar la fecha de preparación del proyecto' },
-          tp       		: { required: 'Debe elegir el tipo de proyecto' },
-          pp       		: { required: 'Debe elegir la prioridad del proyecto' }
-        },
-
-        highlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-        },
-        
-        success: function(element) {
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-        }
-    });
-
-	$('#registrarActa2').validate({
-        rules: {
-          dp 	: { required: true }
-        },
-
-        messages: {
-          dp   	: { required: 'Debe ingresar la descripción del proyecto' }
-        },
-
-        highlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-        },
-        
-        success: function(element) {
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-        }
-    });
-	
-	$('#registrarActa3').validate({
-        rules: {
-          cp 	: { required: true, number: true },
-          plp   : { required: true, number: true },
-          calp  : { required: true }
-        },
-
-        messages: {
-          cp 	: { required: 'Debe ingresar el costo del proyecto', number: 'Debe ingresar solo numeros' },
-          plp   : { required: 'Debe ingresar el plazo del proyecto', number: 'Debe ingresar solo numeros' },
-          calp  : { required: 'Debe ingresar la calidad del proyecto' }
-        },
-
-        highlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-        },
-        
-        success: function(element) {
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-        }
-    });
-
-	//registrarActa4 crea html dinamicamente, x eso no hay validaciones x ahora
-
-    $('#registrarActa5').validate({
-        rules: {
-          jp 	: { required: true },
-          jcp   : { required: true, lettersonly: true },
-          pap  	: { required: true, lettersonly: true }
-        },
-
-        messages: {
-          jp 	: { required: 'Debe ingresar el jefe del proyecto' },
-          jcp   : { required: 'Debe ingresar el jefe de comite de seguimiento del proyecto', lettersonly: 'Debe ingresar solo letras' },
-          pap  	: { required: 'Debe ingresar el patrocinador del proyecto', lettersonly: 'Debe ingresar solo letras' }
-        },
-
-        highlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-        },
-        
-        success: function(element) {
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-        }
-    });
-}
-
-//Se implementa la regla "lettersonly" para validar que se ingresen solo letras y espacios
-jQuery.validator.addMethod("lettersonly", function(value, element) {
-  return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
-}, "Letters only please");
-
-//Se implementa la regla "greaterThan" para validar que la fecha final sea mayor a la inicial
-jQuery.validator.addMethod("greaterThan", 
-function(value, element, params) {
-
-    if (!/Invalid|NaN/.test(new Date(value))) {
-        return new Date(value) > new Date($(params).val());
-    }
-
-    return isNaN(value) && isNaN($(params).val()) 
-        || (Number(value) > Number($(params).val())); 
-},'Must be greater than {0}.');
