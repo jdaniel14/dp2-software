@@ -88,8 +88,7 @@
         );
 
           $link_CR_VerGesCam = array(
-                "href"=> "../../views/cronograma/GestionCambios.html", 
-                "title"=> "Mostrar Diagrama de red"
+                "href"=> "Gestion de cambios"
         );
 
          /****************************************************************************************************/
