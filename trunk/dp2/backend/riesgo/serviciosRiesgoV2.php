@@ -1,7 +1,60 @@
 <?php
 	include('routesRiesgoV2.php');
     include('clasesRiesgo.php');
-    
+
+    function R_verificaPermisoServicio($idServicio, $idUsuario, $idProyecto){
+        try {
+            if ($idUsuario == 1) {
+                return true;
+            } else {
+                $rol = R_obtenerRol($idProyecto, $idUsuario);
+                return R_Constants::getPermisosServicio()[$idServicio]->getPermiso($rol);
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }    
+
+    function R_obtenerRol($idProyecto, $idEmpleado) {
+        $sql = "SELECT
+        A.ID_PROYECTO,
+        A.ID_EMPLEADO,
+        A.ID_ROL
+        FROM
+        MIEMBROS_EQUIPO A
+        WHERE
+        A.ID_PROYECTO = :idProyecto AND A.ID_EMPLEADO = :idEmpleado AND A.ESTADO<>0;";
+
+        $rol = -1;
+
+        try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("idProyecto", $idProyecto);
+            $stmt->bindParam("idEmpleado", $idEmpleado);
+            $stmt->execute();
+            $db = null;
+            
+            while($p = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $rol = $p["ID_ROL"];
+                break;
+            }
+        } catch(PDOException $e) {
+            return $respuesta = R_crearRespuesta(-1, $e->getMessage());
+        }
+
+        return $rol;
+    }    
+
+    //RESPUESTAS
+    function R_crearRespuesta($codRespuesta, $mensaje) {
+        $respuesta = new stdClass();
+        $respuesta->codRespuesta = $codRespuesta;
+        $respuesta->mensaje = $mensaje;
+        
+        return $respuesta;
+    }
+
     //--------------------------------------TIPO IMPACTO--------------------------------------
 
     function R_getListaTipoImpactoRiesgo($json){
