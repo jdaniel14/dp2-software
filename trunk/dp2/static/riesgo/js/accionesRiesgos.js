@@ -20,7 +20,8 @@ function lineaBase() {
             lineaBase = JSON.parse(obj.estado_linea_base);
         },
         fail: function(data) {
-            $("#labelErrorModal").value(data.me);
+            $("#labelErrorModal").html("");
+            $("#labelErrorModal").append(data.me);
             $('#ModaldeErrores').modal('show');
         }
     });
@@ -37,10 +38,20 @@ function validar() {
         var costo = $($(".costo")[i]).val(); // valor de inputs
         var tiempo = $($(".tiempo")[i]).val(); // valor de inputs
 
+        if (!esNumEntPos(costo) || !esNumEntPos(tiempo)){
+            valor = "vacio";
+            $('#confirmSave').modal('hide');
+            $("#labelErrorModal").html("");
+            $("#labelErrorModal").append("Debe ingresar numeros en costo y tiempo");
+            $('#ModaldeErrores').modal('show');
+            return false;
+        }
         if (accion === null || accion.length === 0 || costo === null || costo.length === 0 || tiempo === null || tiempo.length === 0) {
             //ALERTAR
             valor = "vacio";
-            $("#labelErrorModal").value("Debe registrar todos los campos");
+            $('#confirmSave').modal('hide');
+            $("#labelErrorModal").html("");
+            $("#labelErrorModal").append("Debe registrar todos los campos");
             $('#ModaldeErrores').modal('show');
             return false;
         }
@@ -129,11 +140,12 @@ function main() {
                     obj = JSON.parse(data);
                     costoPromedio = obj.costo;
                     tiempoPromedio = obj.tiempo;
-                    alert("Se registró con exito");
+                    // alert("Se registró con exito");
                     $("#tablaAcuerdos").html("");
                     listaAcciones();
                     $('#confirmSave').modal('hide');
 
+                    $('#modalExito').modal('show');
                 },
                 fail: function(data) {
                     $("#labelErrorModal").value(data.me);
@@ -169,11 +181,13 @@ function main() {
                         obj = JSON.parse(data);
                         costoPromedio = obj.costo;
                         tiempoPromedio = obj.tiempo;
-                        $("#tablaAcuerdos").html("");
-                        listaAcciones();
                         $('#confirmSave').modal('hide');
 
                         $('#modalExito').modal('show');
+                        $("#tablaAcuerdos").html("");
+                        listaAcciones();
+
+                        
                     },
                     fail: function(data) {
                         $("#labelErrorModal").value(data.me);
@@ -253,7 +267,7 @@ function listaAcciones() {
         type: 'GET',
         url: listAccions + '/' + data.idRiesgoXProyecto,
         success: function(data) {
-
+            $("#tablaAcuerdos").html("");
             obj = JSON.parse(data);
             console.log(obj);
             $("#tablaAcuerdos").append("<tr>" +
@@ -319,4 +333,14 @@ function listaAcciones() {
 
         }
     });
+}
+
+function esNumEntPos(strNum){
+    if (strNum == null || strNum.length == 0) return false;
+    for (var i = 0; i < strNum.length; i++){
+        var car = strNum[i] ;
+        if (isNaN(car))
+            return false;
+    }
+    return true;
 }
