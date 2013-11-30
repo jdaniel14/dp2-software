@@ -47,6 +47,23 @@ define('R_SERVICIO_36', 36);
 define('R_SERVICIO_37', 37);
 define('R_SERVICIO_38', 38);
 
+
+define('R_SERVICIO_101', 101);
+define('R_SERVICIO_102', 102);
+define('R_SERVICIO_103', 103);
+define('R_SERVICIO_104', 104);
+define('R_SERVICIO_105', 105);
+define('R_SERVICIO_106', 106);
+define('R_SERVICIO_107', 107);
+define('R_SERVICIO_108', 108);
+define('R_SERVICIO_109', 109);
+define('R_SERVICIO_110', 110);
+define('R_SERVICIO_111', 111);
+define('R_SERVICIO_112', 112);
+define('R_SERVICIO_113', 113);
+define('R_SERVICIO_114', 114);
+define('R_SERVICIO_115', 115);
+
 class R_Constants {
 	private static $permisosVista = null;
 	private static $permisosServicio = null;
