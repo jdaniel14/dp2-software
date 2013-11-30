@@ -3,9 +3,8 @@ var getAllImpacts = "../../api/R_AgregarTiposImpacto";
 $(document).ready(main);
 
 var arregloPermisoJP = new Array();
-
-var arregloPermisoGP = [];
-var arregloPermisoMP = [];
+var arregloPermisoGP = new Array();
+var arregloPermisoMP = new Array();
 //localStorage.setItem("idProyecto", 1);
 var maxId;
 var idProyectoLocal = localStorage.getItem("idProyecto");
@@ -51,6 +50,7 @@ function main() {
             $("#" + arregloPermisoJP[i] + "").show();
         }
     }
+    
     listaTipoImpactos();
 
     var cantidad = $("#suma").val();
