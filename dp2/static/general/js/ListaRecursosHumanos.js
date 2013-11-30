@@ -6,6 +6,7 @@ var x;
 	//function inicializarEventos() {
 	$(document).ready(function() {
 		$("#fechaInicio").datepicker({ dateFormat: 'dd-mm-yy' });
+		$("#fechaInicio").change(filtrarOtraFecha);
 		$("#fechaFin").datepicker({ dateFormat: 'dd-mm-yy' });
 		$("#btnBuscar").click(iniciarFlujo);
 		$("#resultados").hide();
@@ -19,13 +20,9 @@ function filtrarOtraFecha() {
     $("#fechaFin").attr("value", "");
     var fecha = new Date();
     fecha = $("#fechaInicio").datepicker("getDate");
-
-    var ddd = fecha.getDate();
-    ddd += 14;
-    if (ddd < 10)
-        ddd = "0" + ddd;
-    
-    $("#fechaFin").datepicker("option", "maxDate", new Date(year, (month - 1), ddd));
+    //alert(fecha);
+    fecha.setDate(fecha.getDate() + 1) ;
+    $("#fechaFin").datepicker("option", "minDate", fecha);
 
 }
 var fechaInicio = null;
