@@ -50,6 +50,7 @@ function listarFases(){
 			var tabla = $('#dataEntregables');
 			tabla.html("");
 			for(var i =0; i< arr.length; i++){
+				if(arr[i].idFase == null) return;
 				var fila = $('<tr></tr>');
 				fila.append('<td>'+arr[i].idFase+'</td>');
 				fila.append('<td>'+arr[i].descFase+'</td>');
@@ -221,6 +222,20 @@ $(document).ready(function(){
 	var jsonCliente = {
         idproyecto : localStorage.getItem("idProyecto")                
     };
+	$.ajax({
+		type: 'POST',
+		url : '../../api/AL_mostrarFases',
+		dataType: "json",
+		data: JSON.stringify(jsonCliente),
+		contentType: "application/json; charset=utf-8",
+		async: false,
+		success: function(data){
+			if(data["listaFase"].length ==0){
+				$("#noFases").show();
+			}
+		}
+	});
+
     cargaMiembros();
     $.ajax({
       type: "POST",
