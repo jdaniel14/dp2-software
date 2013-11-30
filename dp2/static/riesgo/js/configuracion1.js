@@ -1,9 +1,15 @@
 
 var getAllImpacts = "../../api/R_AgregarTiposImpacto";
 $(document).ready(main);
+
+var arregloPermisoJP = new Array();
+
+var arregloPermisoGP = [];
+var arregloPermisoMP = [];
 //localStorage.setItem("idProyecto", 1);
 var maxId;
 var idProyectoLocal = localStorage.getItem("idProyecto");
+var rol = localStorage.getItem("idRol");
 
 function validAtenas2() {
     var i = 0;
@@ -31,8 +37,22 @@ function validAtenas2() {
 
 
 function main() {
+    arregloPermisoJP = ["agregar", "btnGuardar", "btnModalAgregarNivelImpacto", "btnModalEliminarTablaNivelImpacto",
+        "btnModalAgregarNivel", "btnModalEliminarTabla"];
 
+
+
+    for (var i = 0; i < arregloPermisoJP.length; i++) {
+        $("#" + arregloPermisoJP[i] + "").hide();
+    }
+
+    if (rol == 2) {
+        for (var i = 0; i < arregloPermisoJP.length; i++) {
+            $("#" + arregloPermisoJP[i] + "").show();
+        }
+    }
     listaTipoImpactos();
+
     var cantidad = $("#suma").val();
     $("#agregar").click(function()
     {
@@ -91,48 +111,50 @@ function main() {
             data: jsonData,
             success: function(data) {
                 alert("Registrado con éxito");
-                        $("#tablaTiposRiesgos").html("");
-listaTipoImpactos();
-                              
+                $("#tablaTiposRiesgos").html("");
+                listaTipoImpactos();
+
             },
             fail: function(data) {
                 alert(data.me);
             }
         });
-         
+
 
     });
- 
+
+
+
 
 }
 
-   
-    function eliminarRiesgo(idTipoRi){
+
+function eliminarRiesgo(idTipoRi) {
 
     $("#btnEliminar").click(function() {
-        
+
         $("#tablaRiesgos > tr>td>a>span");
-       console.log(idTipoRi);   
-      var data = {
-			idTipoImpacto : idTipoRi
-		};
-		var jsonData = JSON.stringify(data);
-                console.log(data);
-		$.ajax({
-			type: 'DELETE',
-			url: "../../api/R_eliminarTiposImpactoRiesgo" + '/' + data.idTipoImpacto,
-			data: jsonData,
-			dataType: "html",
-			success: function(){
-                             alert("Se elimino el tipo de impacto correctamente");
-                              $("#tablaTiposRiesgos").html("");
-                              listaTipoImpactos();
-                             
-		
-			},
-			fail: codigoError
-		});
-	});
+        console.log(idTipoRi);
+        var data = {
+            idTipoImpacto: idTipoRi
+        };
+        var jsonData = JSON.stringify(data);
+        console.log(data);
+        $.ajax({
+            type: 'DELETE',
+            url: "../../api/R_eliminarTiposImpactoRiesgo" + '/' + data.idTipoImpacto,
+            data: jsonData,
+            dataType: "html",
+            success: function() {
+                alert("Se elimino el tipo de impacto correctamente");
+                $("#tablaTiposRiesgos").html("");
+                listaTipoImpactos();
+
+
+            },
+            fail: codigoError
+        });
+    });
 
 }
 
@@ -154,26 +176,26 @@ function listaTipoImpactos() {
 
                 var tipo;
                 if (formas == 1) {
-                    
+
                     tipo = 'Numero';
-                    $("#tablaTiposRiesgos").append("<tr><td><input disabled class=\"form-control tipoRiesgo\" name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\" disabled></td><td><select class=\"form-control numero\" disabled selected id=\"formas" + idTipo + "\"><option value=\"" + 1 + "\">" + tipo + "</option></select></td> <td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + idTipo+ "\" ></span></a></td></tr>");
+                    $("#tablaTiposRiesgos").append("<tr><td><input disabled class=\"form-control tipoRiesgo\" name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\" disabled></td><td><select class=\"form-control numero\" disabled selected id=\"formas" + idTipo + "\"><option value=\"" + 1 + "\">" + tipo + "</option></select></td> <td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + idTipo + "\" ></span></a></td></tr>");
                 }
                 else {
-                    if(formas==2){
-                    tipo = 'Texto';
-                    $("#tablaTiposRiesgos").append("<tr><td><input disabled class=\"form-control tipoRiesgo\" name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select class=\"form-control numero\"  disabled selected id=\"formas" + idTipo + "\"><option value=\"" + 2 + "\">" + tipo +  "</option></select></td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + idTipo+ "\"></span></a></td> </tr>");
+                    if (formas == 2) {
+                        tipo = 'Texto';
+                        $("#tablaTiposRiesgos").append("<tr><td><input disabled class=\"form-control tipoRiesgo\" name=\"tipoRi" + idTipo + "\" id=\"tipoRi" + idTipo + "\" type=\"text\" value=\"" + tipoRi + "\"></td><td><select class=\"form-control numero\"  disabled selected id=\"formas" + idTipo + "\"><option value=\"" + 2 + "\">" + tipo + "</option></select></td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove iconito\" id=\"" + idTipo + "\"></span></a></td> </tr>");
                     }
                 }
 
 
             }
 
-            $(".iconito").click( function(){
-                            var  idTipoRi= $(this).closest("span").attr("id");
-                            eliminarRiesgo(idTipoRi);
+            $(".iconito").click(function() {
+                var idTipoRi = $(this).closest("span").attr("id");
+                eliminarRiesgo(idTipoRi);
 
-             });
- 
+            });
+
             if ($("#tablaTiposRiesgos tr").length > 1)
                 $("#my_row_101").remove();
 
