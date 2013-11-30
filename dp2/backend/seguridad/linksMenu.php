@@ -88,7 +88,8 @@
         );
 
           $link_CR_VerGesCam = array(
-                "href"=> "Gestion de cambios"
+                "href"=> "../../views/cronograma/GestionCambios.html", 
+                "title"=> "Gestión cambios"
         );
 
          /****************************************************************************************************/
