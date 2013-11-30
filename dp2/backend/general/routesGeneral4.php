@@ -8,6 +8,7 @@ $app->get('/G_devuelveListaEmpleados', 'G_getListaEmpleados');
 $app->post('/G_darbajaEmpleado', 'G_postDarbajaEmpleado');
 $app->get('/G_devuelveProfesion/:id', 'G_getProfesion');
 $app->get('/G_devuelveListaEmpleadosFull', 'G_getListaEmpleadosFull');
+$app->get('/G_devuelveListaEmpleadosXProyecto/:id', 'G_getListaEmpleadosXProyecto');
 
 
 //alfonso
