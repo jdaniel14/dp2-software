@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-    
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
@@ -54,44 +54,44 @@
                             <th>Encargado</th>
                             <th colspan="2">Acciones</th>
                             <th> Confirmar</br><input id="checkearTodos" type="checkbox" value=0></th>
-                             <th> </th>
-                             <th> </th>
+                            <th> </th>
+                            <th> </th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th colspan="15" class="pager form-horizontal">
-                              <button type="button" class="btn first"><i class="glyphicon glyphicon-fast-backward"></i></button>
-                              <button type="button" class="btn prev"><i class="glyphicon glyphicon-backward"></i></button>
-                              <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-                              <button type="button" class="btn next"><i class="glyphicon glyphicon-forward"></i></button>
-                              <button type="button" class="btn last"><i class="glyphicon glyphicon-fast-forward"></i></button>
-                              <select class="pagesize input-mini" title="Select page size">
-                                <option selected="selected" value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="40">40</option>
-                              </select>
-                              <select class="pagenum input-mini" title="Select page number"></select>
+                                <button type="button" class="btn first"><i class="glyphicon glyphicon-fast-backward"></i></button>
+                                <button type="button" class="btn prev"><i class="glyphicon glyphicon-backward"></i></button>
+                                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                                <button type="button" class="btn next"><i class="glyphicon glyphicon-forward"></i></button>
+                                <button type="button" class="btn last"><i class="glyphicon glyphicon-fast-forward"></i></button>
+                                <select class="pagesize input-mini" title="Select page size">
+                                    <option selected="selected" value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                </select>
+                                <select class="pagenum input-mini" title="Select page number"></select>
                             </th>
-                          </tr>
+                        </tr>
                     </tfoot>
                     <tbody class="cuerpo-tabla" id="tablaRiesgos">
 
                     </tbody>
-                    
+
 
                 </table>
             </div>
             <div>
                 <div class="col-lg-2 pull-left">
-                <a href="../riesgo/RegistrarRiesgos.html" class="btn btn-success pull-left" id="registrarRiesgo">Agregar Riesgo</a>
+                    <a href="../riesgo/RegistrarRiesgos.html" class="btn btn-success pull-left" id="registrarRiesgo">Agregar Riesgo</a>
                 </div>
                 <div class="col-lg-2 pull-left">
                     <a class="btn btn-primary pull-left" data-toggle="modal" href="#confirmRisk" id="confirmarRiesgo">Confirmar Riesgos</a>
                 </div>
-                
-                
+
+
             </div>
 
             <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -129,7 +129,11 @@
                     </div>
                 </div> 
             </div>
+<<<<<<< .mine
+
+=======
             -->
+>>>>>>> .r2044
             <div class="modal" id="confirmMaterializar">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -138,12 +142,12 @@
                         </div>
                         <div class="modal-body titulo-tabla">
                             <label class="col-lg-12 control-label">¿Esta seguro que desea materializar este riesgo?</label>
-                                <div class="col-md-5"><input type="date" class="form-control" id="fechaMat"></div>
-                                <div class="col-md-5">
-                                    <select class="form-control" id="accionEscogida">
-                                        <option value="0" disabled selected>Escoga una acción</option>
-                                    </select>
-                                </div>
+                            <div class="col-md-5"><input type="date" class="form-control" id="fechaMat"></div>
+                            <div class="col-md-5">
+                                <select class="form-control" id="accionEscogida">
+                                    <option value="0" disabled selected>Escoga una acción</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-danger" data-dismiss="modal" id="btnMaterializar">Materializar</button>
@@ -173,23 +177,37 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
         </div>
-            <div class="modal fade" id="ModaldeErroresIndex">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Se ha encontrado un error</h3>
-                        </div>
-                        <div class="modal-body titulo-tabla">
-                            <label class="col-lg-12 control-label" id="labelErrorModalIndex"></label>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
-                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
-                        </div>
+        <div class="modal fade" id="ModaldeErroresIndex">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Se ha encontrado un error</h3>
                     </div>
-                </div> 
-            </div>
+                    <div class="modal-body titulo-tabla">
+                        <label class="col-lg-12 control-label" id="labelErrorModalIndex"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                        <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div> 
+        </div>
 
+<<<<<<< .mine
+        <div class="modal hide fade" id="modalExitoIndex">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Confirmación</h3>
+                    </div>
+                    <div class="modal-body titulo-tabla">
+                        <label class="col-lg-12 control-label" id="labelSuccessModalIndex"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                        <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
+=======
 <div class="modal fade" id="modalExitoIndex" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -209,26 +227,8 @@
 
 
 
-<!--
-            <div class="modal hide fade" id="modalExitoIndex">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Confirmación</h3>
-                        </div>
-                        <div class="modal-body titulo-tabla">
-                            <label class="col-lg-12 control-label" id="labelSuccessModalIndex"></label>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
-                            <button class="btn btn-info" data-dismiss="modal">Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
 
-           
+        <script src="../../static/riesgo/js/seguridadRiesgos.js"></script>
         <script src="../../assets/js/jquery-1.7.1.min.js"></script>
         <script src="../../bootstrap/js/bootstrap.min.js"></script>
         <script src="../../static/riesgo/js/RegistrarRiesgos.js"></script>
@@ -243,9 +243,13 @@
 
         <!-- Tablesorter: Config bootstrap  -->
         <script src="../../tablesorter/js/config.js"></script>
-        
+
         <!-- Tablesorter: Config filtros  -->
         <script src="../../tablesorter/js/filtros.js"></script>
+        <script>
+            var idVista = 4;
+
+        </script>
 
     </body>
 </html>
