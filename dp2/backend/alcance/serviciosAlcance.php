@@ -140,7 +140,7 @@
 	function getComboMiembrosEquipo($id_proyecto){
 		$con=getConnection();
 
-		$pstmt = $con->prepare("SELECT M.id_empleado, E.nombre_corto FROM MIEMBROS_EQUIPO M, EMPLEADO E WHERE M.id_proyecto= ? AND E.id_empleado = M.id_empleado");
+     $pstmt = $con->prepare("SELECT M.id_empleado, E.nombre_corto, M.id_miembros_equipo FROM MIEMBROS_EQUIPO M, EMPLEADO E WHERE M.id_proyecto= ? AND E.id_empleado = M.id_empleado");
 		$pstmt->execute(array($id_proyecto));
 		$lista = array();
 		while ($miembro = $pstmt->fetch(PDO::FETCH_ASSOC)){
