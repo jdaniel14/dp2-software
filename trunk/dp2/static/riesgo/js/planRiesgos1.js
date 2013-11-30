@@ -3,8 +3,12 @@ var arregloPermisoJP = new Array();
 var arregloPermisoGP = new Array();
 var arregloPermisoMP = new Array();
 var rol = localStorage.getItem("idRol");
+var arregloPermisoJP = new Array();
+var arregloPermisoGP = new Array();
+var arregloPermisoMP = new Array();
 //localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
+var rol = localStorage.getItem("idRol");
 function validAtenas() {
     var metodologia = $("#metodologia").val();
     if (metodologia == null || metodologia.length == 0) {
@@ -128,7 +132,7 @@ $(document).on('change', '.puntajeMax', function() {
 
 function main() {
     
-      arregloPermisoJP = ["btnAumentar", "btnEliminarTipoXNivelModal","btnGenerar1","btnGrabarCategorizacion1","btnCancelar1","btnCancelar2","btnGenerar2","btnGrabarCategorizacion2"];
+      arregloPermisoJP = ["btnAumentar", "btnEliminarTipoXNivelModal","btnGenerar1","btnGrabarCategorizacion1","btnCancelar1","btnCancelar2","btnGenerar2","btnGrabarCategorizacion2","btnGuardarComite"];
 
 
 
