@@ -420,18 +420,25 @@ function grabarRecursos(){
 	borraTodasAlertas();
 	
 	for (i=1; i<=num;i++){
-		recH= "#indRecursoH"+i;
-		elim="eliminar"+i;
-		crea="#creado"+i;
-		modif="#modificado"+i;
-		recu="#idRecurso"+i;
-		cu="#costoUnitario"+i;
-		nom="#recurso"+i;
-		moned="#comboMoneda"+i;
-		med="#comboUnidadMedida"+i;
-		cof="#costoFijo"+i;
-		feI="#fechaInicio"+i;
-		feF="#fechaFin"+i;
+		var recH= "#indRecursoH"+i;
+		var elim="eliminar"+i;
+		var crea="#creado"+i;
+		var modif="#modificado"+i;
+		var recu="#idRecurso"+i;
+		var cu="#costoUnitario"+i;
+		var nom="#recurso"+i;
+		var moned="#comboMoneda"+i;
+		var med="#comboUnidadMedida"+i;
+		var cof="#costoFijo"+i;
+		var feI="#fechaInicio"+i;
+		var feF="#fechaFin"+i;
+		
+		var diaI;
+		var mesI;
+		var anioI;
+		var diaF;
+		var mesF;
+		var anioF;
 		
 		eliminar=document.getElementById(elim).checked;
 		crear=$(crea).val();
@@ -534,6 +541,18 @@ function grabarRecursos(){
 						grabar=false;
 					}
 				}
+				
+				if (costoF!="" && (isNaN(costoF) || (!isNaN(costoF)) && new Number(costoF)>0) && fechaF=="" && fechaI==""){
+				
+					lanzaAlerta("divErrorFechaI","labErrorFechaI","");
+					lanzaAlerta("divErrorFechaF","labErrorFechaF","");
+					lanzaAlerta("divFechaInicio"+i,"","");
+					lanzaAlerta("divFechaFin"+i,"","");
+					grabar=false;	
+				
+				}
+				
+				
 			
 				if (crear=='1'){
 
