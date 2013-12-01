@@ -164,15 +164,15 @@ function renderHeader($html , $variables){
 }
 
 function eliminarArchivos(){
-	/*
 	unlink("../install.js");
 	unlink("../install.html");
 	unlink("../headerGeneral.tpl.html");
 	unlink("../header.tpl.html");
-	unlink("../conexion.tpl.html");
+	unlink("../conexion.tpl.php");
 	unlink("../bd.sql");
 	unlink("../bd_lineabase.sql");
-	*/
+	unlink("../dataInicial.sql");
+	unlink("../triggers.sql");
 }
 
 ?>
