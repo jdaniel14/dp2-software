@@ -144,7 +144,7 @@ GanttMaster.prototype.init = function(place) {
     var ch;
     var row = 0;
     if (self.currentTask) {
-      ch = factory.build("tmp_" + new Date().getTime(), "", "", self.currentTask.level /*+ 1*/, self.currentTask.start, 1);
+      ch = factory.build("tmp_" + new Date().getTime(), "", "", (self.currentTask.level==0)?self.currentTask.level+1:self.currentTask.level /*+ 1*/, self.currentTask.start, 1);
       row = self.currentTask.getRow() + 1;
     } else {
       ch = factory.build("tmp_" + new Date().getTime(), "", "", 0, new Date().getTime(), 1);
