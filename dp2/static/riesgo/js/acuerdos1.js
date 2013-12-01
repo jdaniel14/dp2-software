@@ -35,13 +35,10 @@ function validAtenas2(){
         else
         return true;
 }
-function obtenerTitulo() {
-        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
-    }
 
 function main() {
   arregloPermisoJP = ["agregar", "btnGuardar","btnCancelar"];
-  obtenerTitulo();
+
 
 
     for (var i = 0; i < arregloPermisoJP.length; i++) {
@@ -115,9 +112,9 @@ function main() {
             url: "../../api/R_registrarAcuerdos",
             data: jsonData,
            
-            success: function() {
+            success: function(data) {
                 // alert("Registrado con éxito");
-
+          
                 $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Registrado con éxito");
                 $('#modalExito').modal('show');
@@ -141,7 +138,19 @@ function main() {
 
 }
 
+$(function(){
+  $(".calendar").datepicker({ dateFormat: 'yy/mm/dd' });
+});
 
+function inicializaFechas(){
+
+
+
+        $('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'yy/mm/dd' });
+
+
+
+}
 
 //////FUNCION AGREGAR FILA A LA TABLA /////////////////
 // function to add a new row to a table by cloning the last row and 
@@ -166,6 +175,7 @@ function addTableRow()
     });
     // append the new row to the table
     $("#tablaAcuerdosMod").find("tbody tr:last").after($tr);
+    inicializaFechas();
 }
 
 
@@ -190,13 +200,12 @@ function listarAcuerdos() {
                 var idAcuerdo = data[obj]["idAcuerdo"];
 
 
-                $("#tablaAcuerdosMod").append("<tr><td><input readonly class=\" form-control diaAcuerdos\"  name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td><input readonly  class=\" form-control horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input readonly type=\"text\"  class=\"form-control acuerdosA\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
-
-                //aplicar un if $("#my_row_101").remove();
+                $("#tablaAcuerdosMod").append("<tr><td><input readonly class=\" form-control diaAcuerdos calendar\"  name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"text\" value=\"" + fecha + "\"></td><td><input readonly  class=\" form-control horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input readonly type=\"text\"  class=\"form-control acuerdosA\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
+                 //aplicar un if $("#my_row_101").remove();
                 
 
             }
-
+        
 
 
         },
