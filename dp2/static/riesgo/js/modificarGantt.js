@@ -2,6 +2,7 @@ var getActivities = "../../api/CR_getListaActividad";
 var updateActivity = "../../api/CR_updateActividad";
 var getAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
 var updateChanges = "../../api/R_actualizarEnviarCambio";	 //CAMBIO NOMBRE!!!!!!
+var returnAccion = "../../api/R_cancelarMaterializacion";
 
 $(document).ready(main);
 
@@ -86,13 +87,32 @@ function main(){
         });
 
 
+    $("#limpiarAccion").click(function() {
+    	var data = {
+    		idProyecto : idProyectoLocal,
+			idUsuario: localStorage.getItem("idUsuario"),
+			idRiesgoProyecto: localStorage.getItem("idRiesgo"),
+			idAccionesRiesgo: localStorage.getItem("idAccion")
+    	}
+    	var jsonData = JSON.stringify(data);
+	    $.ajax({			
+			type: 'PUT',
+			url: returnAccion,
+			data: jsonData,
+			success: function(data){
+				window.location.replace("../riesgo/index.html");
+			},
+		 
+		});
+    });
+
     $("#btnConfirmar").click(function() {
         var fecha1=  new Date($("#fechaInicioActual2").val());
-        var fecha2= new Date(fechaMat);
+        var fecha2= new Date($("#fechaInicioActual1").val());
 
         var diferencia2 = ((((fecha1-fecha2)/1000)/60)/60)/24;
-
-        if (diferencia2>0){
+        console.log(diferencia2);
+        if (diferencia2>=0){
         	var data = {
 				idActividad: $("#listaActividades").val(),
 				tiempoReal: $("#nuevosDias").val(),
