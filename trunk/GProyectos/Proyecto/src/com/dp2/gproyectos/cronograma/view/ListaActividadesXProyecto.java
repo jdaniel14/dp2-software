@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -20,13 +18,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
-import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
-import com.dp2.gproyectos.costos.view.CostosIndicadoresChartActivity;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.ActividadesAdapter;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
-import com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.InterfazPopupMenus;
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -149,7 +144,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 				if(position > 0){	
 					rpta = "";
 					PopupOpciones popup = new PopupOpciones();
-					popup.dialog(ListaActividadesXProyecto.this, "Menï¿½", opciones, rpta);
+					popup.dialog(ListaActividadesXProyecto.this, "Menú", opciones, rpta);
 			
 				}
 			}			

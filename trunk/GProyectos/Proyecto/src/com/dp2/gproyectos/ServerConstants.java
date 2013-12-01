@@ -3,6 +3,7 @@ package com.dp2.gproyectos;
 
 public class ServerConstants {
 	public static String SERVER_URL = "http://200.16.7.112/trunk/dp2/api/";
+	//public static String SERVER_URL = "http://localhost:8080/dp2/api/";
 	
 	//PRUEBA
 	public static String GET_PRUEBA_URL = "efectopucp";
@@ -11,6 +12,9 @@ public class ServerConstants {
 	public static String GENERAL_GETLISTAPROYECTOS_URL = "G_listaProyecto";
 	public static String GENERAL_VALIDARLOGIN_URL = "G_verificaUsuario";
 	public static String GENERAL_GETLISTALECCIONES_URL = "G_devuelveLeccionesAprendidas";
+	public static String GENERAL_LISTARECURSOSXPROYECTO_URL = "/G_devuelveListaEmpleadosXProyecto/";
+	public static String GENERAL_GETINFOPROYECTO_URL = "/G_devuelveInfoProyecto/";
+	
 	
 	//COSTOS
 	public static String COSTOS_CO_GETLISTAINDICADORES_URL = "CO_obtenerIndicadores";
