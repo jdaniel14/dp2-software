@@ -223,8 +223,8 @@ function listaTipoImpactos() {
             if ($("#tablaTiposRiesgos tr").length > 1)
                 $("#my_row_101").remove();
 
-   $(".iconito").hide();
-   if(rol==2)  $(".iconito").show();
+  $(".iconito").prop("disabled",true);
+   if(rol==2)  $(".iconito").prop("disabled",false);
         },
     });
 
