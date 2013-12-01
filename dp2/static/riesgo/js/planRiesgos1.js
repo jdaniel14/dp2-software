@@ -10,8 +10,8 @@ var arregloPermisoMP = new Array();
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var rol = localStorage.getItem("idRol");
 var colores=new Array();
-112;219;147
-colores=["rgb(3,180,204)","rgb(102,205,0)","rgb(255,215,0)","rgb(255,0,0)"];
+
+colores=["rgb(3,180,204)","rgb(102,205,0)","rgb(255,215,0)","rgb(255,0,0)","rgb(255,127,36)","rgb(133,99,99)"];
 
 function validAtenas() {
     var metodologia = $("#metodologia").val();
@@ -816,8 +816,8 @@ function pintarMatriz1(impactos) {
                 });
                 i = 0;
                 j++;
-                 $("#leyendaPos").append("<div id="+j+"><label>"+puntajeMin+"-"+puntajeMax+"</label></div>");
-                 $("#"+j+"").css('background-color', colores[z]);
+                 $("#leyendaPos").append("<div id=pos"+j+"><label class='control-label'><b>"+puntajeMin+"-"+puntajeMax+"<b></label></div>");
+                 $("#pos"+j+"").css('background-color', colores[z]);
 //                r = Math.round(Math.random() * 255);
 //                g = Math.round(Math.random() * 255);
 //                b = Math.round(Math.random() * 255);
@@ -882,8 +882,8 @@ function pintarMatriz2(impactos) {
                 i = 0;
                 j++;
                 
-                 $("#leyendaNeg").append("<div id="+j+"><label>"+puntajeMin+"-"+puntajeMax+"</label></div>");
-                 $("#"+j+"").css('background-color', colores[z]);
+                 $("#leyendaNeg").append("<div  id=neg"+j+"><label class='control-label'><b>"+puntajeMin+"-"+puntajeMax+"</b></label></div>");
+                 $("#neg"+j+"").css('background-color', colores[z]);
               z++;
                 //if(parseInt(puntaje))
                 //i=longitud;
