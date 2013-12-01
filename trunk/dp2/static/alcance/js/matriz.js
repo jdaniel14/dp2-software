@@ -26,6 +26,7 @@ function modificarRequisito(){
 			$("#idestadoR").val(data["id_estado_requisito"]);
 			$("#criterio").val(data["criterio_aceptacion"]);
 			$("#idmiembros").val(data["id_miembros_equipo"]);
+			$("#cargo").val(data["cargo"]);
 		}
 	});
 	$('#detalleRequisito').modal('show');
@@ -72,6 +73,7 @@ function llena_requisitos(requisitos){
 		fila.append("<td>"+requisitos[i].idrequisito+"</td>");
 		fila.append("<td>"+requisitos[i].descripcion+"</td>");
 		fila.append("<td>"+requisitos[i].solicitado+"</td>");
+		fila.append("<td>"+requisitos[i].cargo+"</td>");
 		fila.append("<td>"+requisitos[i].fundamento+"</td>");
 		fila.append("<td>"+requisitos[i].nomPrioridad+"</td>");
 		fila.append("<td>"+requisitos[i].nomEstado+"</td>");
@@ -139,12 +141,13 @@ function modifica(data){
 	var fila = $(".selected")[0];
 	var campos = $(fila).children();
 	$(campos[2]).html(data[0]["solicitado"]);
-	$(campos[3]).html(data[0]["fundamento"]);
-	$(campos[4]).html(data[0]["nomPrioridad"]);
-	$(campos[5]).html(data[0]["nomEstado"]);
-	$(campos[6]).html(data[0]["nomCategoria"]);
-	$(campos[7]).html(data[0]["criterioAceptacion"]);
-	$(campos[8]).html(data[0]["nombre"]);
+	$(campos[3]).html(data[0]["cargo"]);
+	$(campos[4]).html(data[0]["fundamento"]);
+	$(campos[5]).html(data[0]["nomPrioridad"]);
+	$(campos[6]).html(data[0]["nomEstado"]);
+	$(campos[7]).html(data[0]["nomCategoria"]);
+	$(campos[8]).html(data[0]["criterioAceptacion"]);
+	$(campos[9]).html(data[0]["nombre"]);
 	$("#form-requisito")[0].reset();
 	$('#detalleRequisito').modal('hide');
 }
@@ -179,6 +182,7 @@ function guardarCambios(){
 	var obj = {};
 	obj["id_requisito"]= $("#id_requisito").val();
 	obj["solicitado"]= $('#solicitado').val();
+	obj["cargo"]= $('#cargo').val();
 	obj["fundamento"]= $('#objetivo').val();
 	obj["idprioridadR"]= $('#idprioridadR').val();
 	obj["idestadoR"]= $('#idestadoR').val();
