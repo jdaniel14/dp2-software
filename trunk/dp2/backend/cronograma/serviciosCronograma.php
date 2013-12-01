@@ -14,7 +14,7 @@ include_once '../backend/conexion.php';
 function CR_getActividades($json) {//servicio1
     $proy = json_decode($json);
     //$oscar=$proy->idProyecto;
-    $infoActividades = CR_consultarInfoActividades($proy->idProyecto,$proy->idUsuario);
+    $infoActividades = CR_consultarInfoActividades($proy->idProyecto);
 
     echo json_encode($infoActividades);
 }
@@ -87,7 +87,7 @@ function CR_getIndicadoresFlujo($json) {//servicio9
 function CR_getPaquetesEDT($json) {//Servicio 7
     $proy = json_decode($json);
 
-    $listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto,$proy->idUsuario);
+    $listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto);
     echo json_encode($listaPaquetes);
 }
 
