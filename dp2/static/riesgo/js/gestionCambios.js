@@ -4,13 +4,32 @@ var updateStatus= "../../api/R_actualizarEstadoRiesgoProyecto";
 $(document).ready(main);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var idAct;
-
+var lineaBase; //YA ATENAS IF(lineaBase) arreglar
 function main(){
 	listarCambiosGantt();
 
 	obtenerTitulo();
 		
 
+}
+
+function lineaBase() {
+
+    var idProyecto = localStorage.getItem("idProyecto");
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: verificaLineaBase + '/' + idProyecto,
+        success: function(data) {
+            obj = JSON.parse(data);
+            lineaBase = JSON.parse(obj.estado_linea_base);
+        },
+        fail: function(data) {
+            $("#labelErrorModal").html("");
+            $("#labelErrorModal").append(data.me);
+            $('#ModaldeErrores').modal('show');
+        }
+    });
 }
 
 function obtenerTitulo() {
@@ -81,6 +100,11 @@ function listarCambiosGantt(){
                 $("#prueba"+idActividadCronograma).html(cadena);
           }
         }
+        $(".btn-primary").show();
+        if(lineaBase) {
+          $(".btn-primary").hide();
+        } 
+
         }
         //"+ idActividadCronograma + ",'"+fechaInicioActividadCronograma+"',"+duracionActividadCronograma+",'"+nombreActividadCronograma+"'
         });
