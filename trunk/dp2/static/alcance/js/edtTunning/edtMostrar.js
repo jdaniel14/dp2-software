@@ -9,7 +9,11 @@ $(window).bind('beforeunload',function(){
 });
 */
 
-
+if ( localStorage.getItem("seguridadEDT") == "#fgh2" ){
+    //redirect
+    window.location.href = 'index.html';
+    alert("no seas vivo");
+}
 
 var arrNombres = [];
 var autoGenerados = [];
