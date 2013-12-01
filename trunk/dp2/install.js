@@ -39,11 +39,11 @@ function noValido(){
 	var campos = $(".form-control")
 	for (var i=0; i< campos.length; i++){
 		if(campos[i].id == "password") continue;
-		if(campos[i].val()==""){
+		if($(campos[i]).val()==""){
 			errorVacios = true;
 		}
 	}
-	var errorLista=$(".danger").length() >0;
+	var errorLista=$(".danger").length >0;
 	var errorBD = $("#hayError").html() =="true";
 	if (errorLista) $("#erroresTotales").append("Hay errores en los permisos de las carpetas <br />");
 	if(errorBD) $("#erroresTotales").append("Hay error en la cadena de conexión a la base de datos <br />");
