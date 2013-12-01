@@ -463,9 +463,23 @@ $("#modalErrorIndex").modal("show");
 
 
     }
-//
+inicializaFechas();
     }
 
+$(function(){
+  $(".calendar").datepicker({ dateFormat: 'yy/mm/dd' });
+});
+
+
+function inicializaFechas(){
+
+
+
+        $('.calendar').removeClass('hasDatepicker').datepicker({ dateFormat: 'yy/mm/dd' });
+
+
+
+}
     function limpiarRegistrar() {
         $('#errorNombre').hide();
         $('#errorTipoImpacto').hide();
