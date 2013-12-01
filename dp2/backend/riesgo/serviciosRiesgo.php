@@ -1231,7 +1231,7 @@
     function R_getAccionesParaAprobar($var){
         $riesgo = json_decode($var);
         if (R_verificaPermisoServicio(R_SERVICIO_33, $riesgo->idUsuario, $riesgo->idProyecto)) {
-            $query = "SELECT dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo_real,flag_aceptado_rechazado 
+            $query = "SELECT AXR.id_acciones_x_riesgo, dias,fecha_plan_inicio,AXR.id_actividad,nombre_actividad,AXR.descripcion, AXR.fecha_inicio,AXR.tiempo_real,flag_aceptado_rechazado 
                     FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
                     WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
                         A.id_actividad=AXR.id_actividad and
@@ -1244,6 +1244,7 @@
                 $stmt->execute();
                 while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                     $data = array(
+                                "idAccionesRiesgo"=> $row['id_acciones_x_riesgo'],
                                 "idActividadCronograma"=> $row['id_actividad'],
                                 "nombreActividadCronograma"=> $row['nombre_actividad'],
                                 "fechaInicioActividadCronograma"=> $row['fecha_plan_inicio'],
@@ -1445,7 +1446,7 @@
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idRiesgoXProyecto);
+                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
                 $stmt->bindParam("flag_aceptado_rechazado", $riesgo->flagAceptadoRechazado);
                 $stmt->execute();
                 $db = null;
