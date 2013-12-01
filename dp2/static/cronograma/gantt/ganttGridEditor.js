@@ -68,6 +68,11 @@ function permite(obj, elEvento, permitidos, allowDecimal) {
 
 
 GridEditor.prototype.fillEmptyLines = function() {
+
+
+	if ((ge.lineabase == "true")) return;
+
+
     var factory = new TaskFactory();
 
     //console.debug("GridEditor.fillEmptyLines");
