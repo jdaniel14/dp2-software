@@ -68,9 +68,9 @@ function main() {
         $('#fechas' + maxId).val("");
         $('#horas_' + maxId).val("");
         $('#acuerdo' + maxId).val("");
-        $('#fechas' + maxId).prop('disabled', false);
-        $('#horas_' + maxId).prop('disabled', false);
-        $('#acuerdo' + maxId).prop('disabled', false);
+        $('#fechas' + maxId).prop('readonly', false);
+        $('#horas_' + maxId).prop('readonly', false);
+        $('#acuerdo' + maxId).prop('readonly', false);
         return false;
     });
 
@@ -186,7 +186,7 @@ function listarAcuerdos() {
                 var idAcuerdo = data[obj]["idAcuerdo"];
 
 
-                $("#tablaAcuerdosMod").append("<tr><td><input readonly class=\" form-control diaAcuerdos\" disabled name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td><input disabled readonly  class=\" form-control horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input readonly type=\"text\"  class=\"form-control acuerdosA\" disabled name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
+                $("#tablaAcuerdosMod").append("<tr><td><input readonly class=\" form-control diaAcuerdos\"  name=\"fechas" + idAcuerdo + "\" id=\"fechas" + idAcuerdo + "\" type=\"date\" value=\"" + fecha + "\"></td><td><input readonly  class=\" form-control horasAcuerdos\" type=\"time\" name=\"horas_" + idAcuerdo + "\" id=\"horas_" + idAcuerdo + "\" value=\"" + hora + "\"></td> </td><td><input readonly type=\"text\"  class=\"form-control acuerdosA\"  name=\"acuerdo" + idAcuerdo + "\" id=\"acuerdo" + idAcuerdo + "\" class=\"input-xlarge\" value=\"" + acuerdo + "\"></td></td></tr>");
 
                 //aplicar un if $("#my_row_101").remove();
                 
