@@ -6,6 +6,7 @@
   //MOSTRAR EDT ===============================================================================================================
 
 function deleteEDT($idProyecto){
+ try{
   $con = getConnection();
   $con->exec("set foreign_key_checks = false");
   //obtenemos el idedt dado el id proyecto
@@ -26,9 +27,15 @@ function deleteEDT($idProyecto){
     $pstmt= $con->prepare("DELETE FROM EDT WHERE id_edt = ?");
     $pstmt->execute(array($idEdt));
   }
+ }
+ catch (PDOException $e) {
+ 	echo '{"me" : "No se puede eliminar el edt"}';
+ 	echo json_encode(array("me" => $e->getMessage()));
+ }
 }
 
 function insertarFilaEDT($idProyecto){
+ try{	
   $con = getConnection();
   $con->exec("set foreign_key_checks = false");
   $pstmt= $con->prepare("INSERT INTO EDT(version,id_estado,id_miembros_equipo,id_proyecto) VALUES(?,?,?,?) ");
@@ -38,6 +45,11 @@ function insertarFilaEDT($idProyecto){
   $pstmt->execute(array($idProyecto));
   $idEdt =$pstmt->fetch(PDO::FETCH_ASSOC)["id_edt"];
   return $idEdt;
+ }
+ catch (PDOException $e) {
+ 	echo '{"me" : "No se inserto la fila"}';
+ 	echo json_encode(array("me" => $e->getMessage()));
+ } 
 }
 
 function reconstruirEdt(){
@@ -1081,6 +1093,7 @@ function getEdt(){
     }
 
     function entregablesXRequisito(){
+      try{
       $request = \Slim\Slim::getInstance()->request(); //json parameters
       $data = json_decode($request->getBody(),TRUE);
       $con = getConnection();
@@ -1106,6 +1119,11 @@ function getEdt(){
         $listaRequisito[]=$row;
       }
       echo json_encode(array("arrRequisito" =>$listaRequisito));
+      }
+      catch (PDOException $e) {
+      	echo '{"me" : "No se puede hacer"}';
+      	echo json_encode(array("me" => $e->getMessage()));
+      }
     }
     
     function modificarRequisitoXFase(){
@@ -1136,6 +1154,7 @@ function getEdt(){
     }
     
     function getRequisitoMatriz(){
+     try{	
       $request = \Slim\Slim::getInstance()->request();
       $val = $request->params();
       $idReq= $val["id_requisito"];
@@ -1145,6 +1164,11 @@ function getEdt(){
       $pstmt->execute(array($idReq));
       $req = $pstmt->fetch(PDO::FETCH_ASSOC);
       echo json_encode($req);
+     }
+     catch (PDOException $e) {
+     	echo '{"me" : "No se puede obtener el requisito"}';
+     	echo json_encode(array("me" => $e->getMessage()));
+     }
     }
     
     
