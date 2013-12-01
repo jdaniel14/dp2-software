@@ -10,6 +10,7 @@ $app->get('/G_devuelveProfesion/:id', 'G_getProfesion');
 $app->get('/G_devuelveListaEmpleadosFull', 'G_getListaEmpleadosFull');
 $app->get('/G_devuelveListaEmpleadosXProyecto/:id', 'G_getListaEmpleadosXProyecto');
 
+$app->get('/G_devuelveInfoProyecto/:id', 'G_getInformacionProyecto');
 
 //alfonso
 $app->get('/G_verificaLineaBase/:id', 'G_getLineaBase');

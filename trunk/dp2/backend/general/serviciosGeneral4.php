@@ -500,7 +500,7 @@ function G_getListaEmpleadosXProyecto($id) {
 
 
 function G_getInformacionProyecto($id) {
-    $sql = " select P.id_proyecto, P.nombre_proyecto, PP.nombre_prioridad, P.fecha_inicio_planificada, P.fecha_fin_planificada, TP.nombre_tipo_proyecto from PROYECTO as P, TIPO_PROYECTO as TP, PRIORIDAD_PROYECTO as PP where P.id_proyecto = :idproyecto and TP.id_tipo_proyecto = P.id_tipo_proyecto and P.estado = 1 and PP.id_prioridad = P.id_prioridad ";
+    $sql = " select P.id_proyecto, P.nombre_proyecto, P.descripcion_proyecto, PP.nombre_prioridad, P.fecha_inicio_planificada, P.fecha_fin_planificada, TP.nombre_tipo_proyecto from PROYECTO as P, TIPO_PROYECTO as TP, PRIORIDAD_PROYECTO as PP where P.id_proyecto = :idproyecto and TP.id_tipo_proyecto = P.id_tipo_proyecto and P.estado = 'ACTIVO' and PP.id_prioridad = P.id_prioridad ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -510,16 +510,18 @@ function G_getInformacionProyecto($id) {
         $lista = array();
         while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $nombre_proyecto = $p["nombre_proyecto"];
+            $descripcion_proyecto = $p["descripcion_proyecto"];
             $nombre_prioridad = $p["nombre_prioridad"];
             $fecha_inicio_planificada = $p["fecha_inicio_planificada"];
             $fecha_fin_planificada = $p["fecha_fin_planificada"];
             $nombre_tipo_proyecto  = $p["nombre_tipo_proyecto"];
             
-            $item = array("nombre_proyecto" => $nombre_proyecto,
-                "nombre_prioridad" => $nombre_prioridad,
-                "fecha_inicio_planificada" => $fecha_inicio_planificada,
-                "fecha_fin_planificada" => $fecha_fin_planificada,
-                "nombre_tipo_proyecto" => $nombre_tipo_proyecto
+            $item = array("npr" => $nombre_proyecto,
+                "npri" => $nombre_prioridad,
+                "dpr" => $descripcion_proyecto,
+                "fi" => $fecha_inicio_planificada,
+                "ff" => $fecha_fin_planificada,
+                "ntp" => $nombre_tipo_proyecto
             );
             array_push($lista, $item);
         }
