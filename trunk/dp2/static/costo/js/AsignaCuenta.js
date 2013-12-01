@@ -156,7 +156,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva)
 function agregaFilaCuentaActividad(i, nombreAct, costoUnitario,idAsiento, moneda,idAct){
 	a=i;
 	a++;
-	var options ="";
+	var options ="<option value='' "+(idAsiento==""?" selected ":"")+">&lt;Seleccione&gt;</option>";
 	cuenta='';
 	for (var k = 0; k < asientosContables.length; k++){
 		options += '<option value='+asientosContables[k].id+''+(idAsiento==asientosContables[k].descripcion?' selected ':'')+'>'+asientosContables[k].descripcion+'</option>';		
@@ -196,7 +196,8 @@ function grabarEstadoCuenta(){
 		var tipoCuenta = document.getElementById("tipoCuenta"+a).options[document.getElementById("tipoCuenta"+a).selectedIndex].value;
 		actividad.idActividad = idAct;
 		actividad.tipo = tipoCuenta;
-		listaActividades.push(actividad);
+		if (tipoCuenta!="")
+			listaActividades.push(actividad);
 	}
 	var obj = {
 		idProyecto: idProyecto,
