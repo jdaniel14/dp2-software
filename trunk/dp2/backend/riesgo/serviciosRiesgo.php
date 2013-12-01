@@ -1412,7 +1412,7 @@
 
     function R_getCantidadDiasAproximadoxPaquete($var){  
         $riesgo = json_decode($var);
-        if (R_verificaPermisoServicio(R_SERVICIO_38, $riesgo->idUsuario, $riesgo->idProyecto)) {
+        //if (R_verificaPermisoServicio(R_SERVICIO_38, $riesgo->idUsuario, $riesgo->idProyecto)) {
             $query = "SELECT SUM(demora_potencial)/COUNT(*) promedio FROM RIESGO_X_PROYECTO WHERE id_proyecto=:id_proyecto AND id_paquete_trabajo=:id_paquete_trabajo
                     AND positivo_negativo=0";
             try {
@@ -1428,9 +1428,9 @@
             } catch(PDOException $e) {
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             } 
-        } else {
+        /*} else {
             echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
-        }
+        }*/
     }
 
 ?>
