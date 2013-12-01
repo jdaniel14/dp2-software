@@ -135,6 +135,21 @@ function lanzaAlerta(idDiv,idLab ,mensaje){
 	if (idLab!=null && idLab!="")
 		$(lab).css("display","inline");
 }
+function lanzaAlertaExito(idDiv,idLab ,mensaje){
+	
+	div="#" + idDiv;
+	lab="#" + idLab;
+	if (mensaje!=null && mensaje!=""){
+		
+		
+		$(lab).html(mensaje);
+		
+	}
+	
+	$(div).attr("class","form-group has-success");
+	if (idLab!=null && idLab!="")
+		$(lab).css("display","inline");
+}
 
 function borraAlerta(idDiv,idLab){
 	
