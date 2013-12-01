@@ -2,6 +2,7 @@ var addAccion = "../../api/R_registrarActividadContingencia";
 var updateCostTime = "../../api/R_actualizarCostoTiempoRiesgo";
 var listAccions = "../../api/R_obtenerPlanContingenciaRiesgo";
 var verificaLineaBase = "../../api/G_verificaLineaBase";
+var deleteAction = "../../api/R_eliminarActividadContingencia";
 var tamanho, tamanho2;
 $(document).ready(main);
 var maxId;
@@ -12,6 +13,7 @@ var arregloPermisoGP = new Array();
 var arregloPermisoMP = new Array();
 var rol = localStorage.getItem("idRol");
 tamanho2=0;
+var idActividad;
 
 
 function lineaBase() {
@@ -270,7 +272,38 @@ function main() {
 //        });
     });
 
+    $("#btnEliminar").click(function()
+    {
 
+        var data = {
+            idAccionesRiesgo:idActividad,
+            idProyecto: localStorage.getItem("idProyecto"),
+            idUsuario: localStorage.getItem("idUsuario")
+        }
+
+
+        var jsonData = JSON.stringify(data);
+
+        $.ajax({
+           type: 'DELETE',
+           url: deleteAction + "/" + jsonData,
+           success: function(data) {
+               // alert("Se eliminó con exito");
+                $('#confirmDelete').modal('hide');
+                $("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Se eliminó con exito");
+                $('#modalExito').modal('show');
+               listaAcciones();
+           },
+           fail: function(data) {
+               // alert(data.me);
+                $('#confirmDelete').modal('hide');
+                $("#labelErrorModal").html("");
+                $("#labelErrorModal").append("Se detectó un error: "+data.me);
+                $('#ModaldeErrores').modal('show');
+           }
+       });
+    });
 
 }
 
@@ -330,7 +363,7 @@ function listaAcciones() {
                 var descripcion = this.descripcion;
                 var tiempo = this.tiempo;
 
-                $("#tablaAcuerdos").append("<tr>" +
+                $("#tablaAcuerdos").append("<tr id=\""+this.idAccionesRiesgo+"\">" +
                         "<td><input class=\"form-control tipoRiesgo input-riesgos\" name=\"accion" + index + "\" id=\"accion" + index + "\" type=\"text\" value=\"" + descripcion + "\" disabled></td>" +
                         "<td><input class=\"costo form-control \" name=\"costo" + index + "\" id=\"costo" + index + "\" type=\"text\" value=\"" + costo + "\" disabled></td>" +
                         "<td><input class=\"tiempo form-control \" name=\"tiempo" + index + "\" id=\"tiempo" + index + "\" type=\"text\" value=\"" + tiempo + "\" disabled></td>" +
@@ -380,6 +413,11 @@ function listaAcciones() {
             $(".iconito").hide();
             if (rol == 2)
                 $(".iconito").show();
+
+
+            $(".glyphicon.glyphicon-remove").click(function() {
+                    idActividad = $(this).closest("tr").attr("id");
+                });
         }
     });
 

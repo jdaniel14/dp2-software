@@ -121,7 +121,7 @@ function main() {
                     // alert("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
                     // listarRiesgos();
                     // $('#myModalRegister').modal('hide');
-
+                    $('#labelExitoIndex').html("");
                     $('#labelExitoIndex').append("Se registró exitosamente el Riesgo " + item.idRiesgo + ": " + item.nombre);
                     $("#modalExitoIndex").modal("show");
                 },
