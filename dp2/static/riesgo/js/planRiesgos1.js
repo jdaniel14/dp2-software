@@ -170,11 +170,7 @@ function main() {
             $("#" + arregloPermisoJP[i] + "").show();
         }
     }
-     if (rol == 1) {
-        for (var i = 0; i < arregloPermisoJP.length; i++) {
-            $("#" + arregloPermisoJP[i] + "").show();
-        }
-    }
+   
     
      if (rol==3) {
         
