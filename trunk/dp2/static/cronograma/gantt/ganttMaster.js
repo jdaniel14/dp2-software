@@ -91,7 +91,7 @@ GanttMaster.prototype.init = function(place) {
     self.drawTask(task);
 
   }).bind("deleteCurrentTask.gantt", function(e) {
-    if ((ge.lineabase == "true")) return;
+    if ((ge.lineabase == "true")) return; 
     var row = self.currentTask.getRow();
     if (self.currentTask && (row>0 || self.currentTask.isNew())) {
       self.beginTransaction();
