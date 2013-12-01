@@ -46,8 +46,10 @@ function listarCambiosGantt(){
           var nombreAccionRiesgo=data[obj]["nombreAccionRiesgo"];
           var fechaInicioAccionRiesgo=data[obj]["fechaInicioAccionRiesgo"];
           var tiempo=data[obj]["tiempo"];
+          var flagAceptadoRechazado=data[obj]["flagAceptadoRechazado"];
                 
                 i++;
+                if(flagAceptadoRechazado==0){
           $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + idActividadCronograma + "\" ></div>");
 
 	cadena = "<div class=\"well\"><input id='id' type='text' style='display:none;' value='"+idActividadCronograma+"'>\n\
@@ -74,6 +76,7 @@ function listarCambiosGantt(){
 	
                 $("#prueba"+idActividadCronograma).html(cadena);
           }
+        }
         }
         //"+ idActividadCronograma + ",'"+fechaInicioActividadCronograma+"',"+duracionActividadCronograma+",'"+nombreActividadCronograma+"'
         });
