@@ -124,7 +124,6 @@ $("#btnGrabarObjetivos").click(function(){
 });
 
 $("#btnGrabarAutoridad").click(function(){
-\
         bootbox.dialog({
           message: "¿Estás seguro que deseas guardar los cambios realizados?",
           title: "Confirmación",
