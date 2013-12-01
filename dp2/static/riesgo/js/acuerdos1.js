@@ -34,10 +34,13 @@ function validAtenas2(){
         else
         return true;
 }
+function obtenerTitulo() {
+        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
+    }
 
 function main() {
   arregloPermisoJP = ["agregar", "btnGuardar","btnCancelar"];
-
+  obtenerTitulo();
 
 
     for (var i = 0; i < arregloPermisoJP.length; i++) {
