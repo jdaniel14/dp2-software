@@ -1,5 +1,6 @@
 var ge;  //this is the hugly but very friendly global var for the gantt editor
 var idProyecto;
+var idUsuario = localStorage.getItem("idUsuario");
 var holidays;
 if (localStorage.getItem("idProyecto")){
 	idProyecto = localStorage.getItem("idProyecto");
@@ -97,7 +98,8 @@ var currentDate = new Date();
 			var ret;
 	  		  
 			var objProy ={
-				idProyecto : idProyecto
+				idProyecto : idProyecto,
+				idUsuario : idUsuario
 			}
 			
 			var rootURL = "../../../api/CR_getActividades/"+JSON.stringify(objProy);
