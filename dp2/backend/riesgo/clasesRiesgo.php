@@ -46,6 +46,7 @@ define('R_SERVICIO_35', 35);
 define('R_SERVICIO_36', 36);
 define('R_SERVICIO_37', 37);
 define('R_SERVICIO_38', 38);
+define('R_SERVICIO_39', 39);
 
 define('R_SERVICIO_100', 100);
 define('R_SERVICIO_101', 101);
@@ -157,6 +158,7 @@ class R_Constants {
     			R_SERVICIO_36 => new R_PermisosServicio(false, true, true),
     			R_SERVICIO_37 => new R_PermisosServicio(true, true, true),
     			R_SERVICIO_38 => new R_PermisosServicio(true, true, true),
+    			R_SERVICIO_39 => new R_PermisosServicio(true, true, true),
 
 				R_SERVICIO_100 => new R_PermisosServicio(true, true, true),
     			R_SERVICIO_101 => new R_PermisosServicio(false, true, false),
