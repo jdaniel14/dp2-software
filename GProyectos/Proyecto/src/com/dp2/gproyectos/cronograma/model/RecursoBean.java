@@ -17,7 +17,7 @@ public class RecursoBean implements Serializable {
 	public String fechaentrada;
 	@SerializedName("ff")
 	public String ff;
-	@SerializedName("descripcion")
+	@SerializedName("profesion")
 	public String profesion;
 	
 	public RecursoBean() {
