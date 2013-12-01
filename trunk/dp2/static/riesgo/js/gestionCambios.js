@@ -49,7 +49,7 @@ function listarCambiosGantt(){
           var flagAceptadoRechazado=data[obj]["flagAceptadoRechazado"];
                 
                 i++;
-                if(flagAceptadoRechazado==0){
+                if(flagAceptadoRechazado==null){
           $("#camposMaterializados").append("<div class=\"well\" id=\"prueba" + idActividadCronograma + "\" ></div>");
 
 	cadena = "<div class=\"well\"><input id='id' type='text' style='display:none;' value='"+idActividadCronograma+"'>\n\
@@ -105,7 +105,7 @@ function rechazar_cambios(id,idAccionRiesgo){
                 $("#prueba"+idAct).hide();
                 $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Rechazado");
-                $('#modalExito').modal('show');
+                $('#modalRechazado').modal('show');
 
                  }
             
@@ -161,7 +161,7 @@ function guardar_cambios(id,idAccionRiesgo){
                 success: function(data1) {
                     
                   $("#labelExitoModal").html("");
-                  $("#labelExitoModal").append("Registrado con éxito");
+                  $("#labelExitoModal").append("Se ha registrado con éxito");
                   $('#modalExito').modal('show');
                 }                        
             });
