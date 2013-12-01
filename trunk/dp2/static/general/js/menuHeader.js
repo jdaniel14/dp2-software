@@ -57,38 +57,44 @@ function cargaData(data){
 		} 	
 	}
 }
-$(document).ready(function() {
-	$("#fpp").datepicker({ dateFormat: 'dd-mm-yy' });
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
 
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-
-    var today = year + "-" + month + "-" + day;       
-    $("#modificacionFecha").attr("value", today);
-
-
-    cargarComboTipoproyecto();
-	
-	cargarComboPrioridadproyecto();
-
-	cargarComboJefeProyecto();
-
-
-		//document.getElementById("#nameProyect").innerHTML = nombre_proyecto.val() ;
-
-	$("#idProyecto").attr("value", id_proyecto);
-	
+$(document).ready(function(){
+	id_proyecto = localStorage.getItem("idProyecto");
+	validaActa();
+});
+function validaActa(){
 	$.ajax({
 		type: 'GET',
-		url : '../../api/G_devuelveActa/'+id_proyecto,
-		dataType: "json",
-		contentType: "application/json; charset=utf-8",
-		success: cargaData
+		url: '../../api/G_devuelveActa/'+id_proyecto,
+		dataType: "json", // data type of response
+        success: function(data){
+        	$("#fpp").datepicker({ dateFormat: 'dd-mm-yy' });
+
+        	if (data["acta"]["fpp"]!=null){
+        		$("#acta").show();
+        		cargarComboTipoproyecto();
+	
+				cargarComboPrioridadproyecto();
+
+				cargarComboJefeProyecto();
+
+				$("#idProyecto").attr("value", id_proyecto);
+
+				cargaData(data);
+
+				coso();
+
+        	}
+        	else{
+        		$("#muestraActa").hide();
+        		$("#alertNoActa").show();
+        	}
+            		
+        }
 	});
+
+}
+function coso(){
 	$.ajax({
 		type: 'GET',
 		url: '../../api/G_listarObjetivosPorProyecto/'+ id_proyecto,
@@ -96,8 +102,7 @@ $(document).ready(function() {
 		contentType: "application/json; charset=utf-8",
         success: cargaObjetivos
 	});
-
-});
+}
 $("#btnGrabar").click(function(){
 	if (confirm("¿Está seguro que desea grabar los cambios realizados?")){
 		grabarRecursos();
@@ -270,9 +275,7 @@ function grabarAutoridadActa(){
 		carp: $("#carp").val(),
 		jp: $("#jp").val(),
 		jcp: $("#jcp").val(),
-		pap: $("#pap").val(),
-		inicioP: $("#inicioP").val(),
-		finP: $("#finP").val(),
+		pap: $("#pap").val()
 	};
 
 
@@ -283,7 +286,7 @@ function grabarAutoridadActa(){
 		data: JSON.stringify(obj),
 		fail: codigoError,
                 success: function(data){
-                    $(location).attr('href','MenuProyecto.html');
+             		  $(location).attr('href','MenuProyecto.html');
                 }
 	});
 }

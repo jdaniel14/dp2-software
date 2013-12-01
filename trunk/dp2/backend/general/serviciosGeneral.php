@@ -336,7 +336,7 @@ function G_addAutoridadActa() {
     $sql = "UPDATE PROYECTO  p, MIEMBROS_EQUIPO ep
                         SET p.acta_jefe_comite=:p_jefe_comite,
                         p.acta_patrocinador=:p_patrocinador,
-                        ep.fecha_entrada=fecha_entrada,
+                        ep.id_empleado=:p_id_jefe_proyecto
                         WHERE p.id_proyecto=:p_id_proy and p.id_proyecto=ep.id_proyecto";
     try {
         $db = getConnection();
@@ -371,8 +371,6 @@ function G_getActa($id) {
                                 p.acta_jefe_comite,
                                 p.acta_patrocinador,
                                 p.nombre_proyecto,
-                                p.fecha_inicio_planificada,
-                                p.fecha_fin_planificada,
                                 e.id_empleado
 
                         from PROYECTO p,
@@ -401,8 +399,6 @@ function G_getActa($id) {
             "calp" => $p["acta_calidad"],
             "np" => $p["nombre_proyecto"],
             "jp" => $p["id_empleado"],
-            "inicioP" => $p["fecha_inicio_planificada"],
-            "finP" => $p["fecha_fin_planificada"],
             "jcp" => $p["acta_jefe_comite"]
         );
 

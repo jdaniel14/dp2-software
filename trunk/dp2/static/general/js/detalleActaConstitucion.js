@@ -21,55 +21,44 @@ function cargaData(data){
 		arreglo=data["acta"];
 	}
 	
-	for(key in arreglo){
+		for(key in arreglo){
 
-		
-		if(key=="np"){
-			document.getElementsByTagName('h1')[0].innerHTML=arreglo[key];
-		}
-		if($('#'+key).is("select"))continue;
-			$('#'+key).html(arreglo[key]);
-			$('#'+key).val(arreglo[key]);	
-		
-	}
-
-	var selects = $("select");
-	if (data!=null){
-		arreglo=data["acta"];
-	}
-	for (var i = 0; i < selects.length; i++) {
-		$(selects[i]).val(arreglo[selects[i].id]);
-		if($(selects[i]).hasClass("changeable")){
-			$(selects[i]).attr("disabled","disabled");
-		}
-	}
-	if (data!=null){
-		arreglo=data["acta"];
-	}
-	for(key in arreglo){
-
-		
-		if(key=="fpp"){
-			if(arreglo[key] != null) {
-				$('#'+key).html(arreglo[key].substring(0,10));
-				$('#'+key).val(arreglo[key].substring(0,10));
+			
+			if(key=="np"){
+				document.getElementsByTagName('h1')[0].innerHTML=arreglo[key];
 			}
-		} 	
-	}
+			if($('#'+key).is("select"))continue;
+				$('#'+key).html(arreglo[key]);
+				$('#'+key).val(arreglo[key]);	
+			
+		}
+
+		var selects = $("select");
+		if (data!=null){
+			arreglo=data["acta"];
+		}
+		for (var i = 0; i < selects.length; i++) {
+			$(selects[i]).val(arreglo[selects[i].id]);
+			if($(selects[i]).hasClass("changeable")){
+				$(selects[i]).attr("disabled","disabled");
+			}
+		}
+		if (data!=null){
+			arreglo=data["acta"];
+		}
+		for(key in arreglo){
+
+			
+			if(key=="fpp"){
+				if(arreglo[key] != null) {
+					$('#'+key).html(arreglo[key].substring(0,10));
+					$('#'+key).val(arreglo[key].substring(0,10));
+				}
+			} 	
+		}
 }
 $(document).ready(function() {
 	$("#fpp").datepicker({ dateFormat: 'dd-mm-yy' });
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-
-    var today = year + "-" + month + "-" + day;       
-    $("#modificacionFecha").attr("value", today);
-
 
     cargarComboTipoproyecto();
 	
@@ -280,9 +269,7 @@ function grabarAutoridadActa(){
 		carp: $("#carp").val(),
 		jp: $("#jp").val(),
 		jcp: $("#jcp").val(),
-		pap: $("#pap").val(),
-		inicioP: $("#inicioP").val(),
-		finP: $("#finP").val(),
+		pap: $("#pap").val()
 	};
 
 
