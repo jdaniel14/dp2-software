@@ -78,6 +78,39 @@ function listarCambiosGantt(){
         });
 }
 
+
+function rechazar_cambios(id){
+    
+     var data = {
+            id:id,
+            flag:0,
+            idProyecto : idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
+               
+        };
+        
+        
+        var jsonData = JSON.stringify(data);
+        $.ajax({
+            type: 'POST',
+            url: "../../api/CR_updateActividad/",
+            data: jsonData,
+             success: function(data) {
+                var item=JSON.parse(data);
+                $("#prueba"+idAct).hide();
+                $("#labelExitoModal").html("");
+                $("#labelExitoModal").append("Rechazado");
+                $('#modalExito').modal('show');
+
+                 }
+            
+        });
+
+    
+}
+
+
+
 function guardar_cambios(id){
     
             
@@ -91,10 +124,19 @@ function guardar_cambios(id){
                
         };
        idAct=data.id;
-
+        var data1 = {
+            id:id,
+            flag:1,
+            idProyecto : idProyectoLocal,
+            idUsuario: localStorage.getItem("idUsuario")
+               
+        };
 
        console.log(data);
      var jsonData = JSON.stringify(data);
+     
+     
+      var jsonData1 = JSON.stringify(data1);
      $.ajax({
             type: 'POST',
             url: "../../api/CR_updateActividad/",
@@ -110,7 +152,23 @@ function guardar_cambios(id){
                 $("#labelExitoModal").append("Registrado con éxito");
                 $('#modalExito').modal('show');
 
+
+                $.ajax({
+                    type: 'POST',
+                    url: "../../api/CR_updateActividad/",
+                    data: jsonData1,
+                     success: function(data1) {
+                        
+                        
+                        
+                        
+                  
+                         }
+
+                        });
                  }
+            
+            
             
         });
 
