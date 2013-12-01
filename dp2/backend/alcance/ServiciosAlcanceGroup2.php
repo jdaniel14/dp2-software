@@ -982,9 +982,11 @@ function getEdt(){
     	$con = getConnection();
     
     	$pstmt= $con->prepare("UPDATE REQUISITO SET solicitud=?,fundamento_incorporacion=?,
-    			id_prioridad_requisito=?,id_estado_requisito=?,criterio_aceptacion=?,id_miembros_equipo=? where id_requisito=?");
+    			id_prioridad_requisito=?,id_estado_requisito=?,criterio_aceptacion=?,id_miembros_equipo=?,
+          cargo =? where id_requisito=?");
     	$pstmt->execute(array($data->{"solicitado"},$data->{"fundamento"},
-    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},$idRequisito));
+    	$data->{"idprioridadR"},$data->{"idestadoR"},$data->{"criterioAceptacion"},$data->{"idmiembros"},
+      $data->{"cargo"},$idRequisito));
     
     	//Devuelvo esto:
     	
