@@ -81,7 +81,7 @@ function agregarDataTiposImpactosXNivelImpactos(data){
 	var fila = [];
 	var columna = {};
 	var listaTotal = data;
-	console.log(listaTotal);
+	//console.log(listaTotal);
 	var idTipoImpactoXNivelImpacto;
 	var descripcionTipoImpacto;
 	var tipoImpacto;
@@ -191,7 +191,7 @@ function agregaFilaDataTiposImpactosXNivelImpactos(idTipoImpactoXNivelImpacto, d
 		};
 		data.valor=fila;
 
-		console.log(data);
+		//console.log(data);
 		var jsonData = JSON.stringify(data);
 		if (flag){
 			$.ajax({
@@ -342,7 +342,7 @@ function agregarDataTiposImpacto(data,listaTotal){
 		$.each(arreglo, function (i, value){
 			flagDisabled=true;
 			$.each(idUsados, function (j, idU){
-				console.log(idU);
+				//console.log(idU);
 
 				if (idU==value.idTipo) {
 					$('#listarTiposImpactos').append("<option value="+ value.idTipo +" disabled>" + value.tipoRi + " (Seleccionado)</option>");
@@ -513,7 +513,7 @@ function listarHeaderNivelImpacto(){
 		dataType: "json",
 		success: function(data){
 			listaNiveles = data;
-			console.log(data);
+			//console.log(data);
 			agregarDataImpacto(data);
 		},
 		fail: codigoError

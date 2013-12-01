@@ -328,7 +328,7 @@ function main() {
         
         var jsonData = JSON.stringify(data);
         
-        console.log(data);
+        //console.log(data);
 
         $.ajax({
             type: 'POST',
@@ -384,7 +384,7 @@ function main() {
             data.listaEstrategias[i - 1] = obj;
         });
         var jsonData = JSON.stringify(data);
-        console.log(data);
+        //console.log(data);
 
         $.ajax({
             type: 'POST',
@@ -470,6 +470,8 @@ function leerCategorias2() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
+           console.log("hola");
+            console.log(data);
             for (obj in data) {
                 var idEstrategia = data[obj]["idEstrategia"];
                 var puntajeMin = data[obj]["puntajeMin"];
@@ -482,7 +484,7 @@ function leerCategorias2() {
                                                      <td><input  readonly class=\"form-control puntajeMin2\" type=\"text\" id=\"puntajeMin2" + idEstrategia + "\" value =\"" + puntajeMin + "\"></td>\n\
                                                      <td><input readonly class=\"form-control puntajeMax2\" type=\"text\" id=\"puntajeMax2" + idEstrategia + "\" value=\"" + puntajeMax + "\"></td>\n\
                                                      <td><input readonly class=\"form-control prioridad2\" type=\"text\" id=\"prioridad2" + idEstrategia + "\" value=\"" + prioridad + "\"></td>\n\
-                                                     <td><select disabled class=\"estrategia2\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
+                                                     <td><select disabled class=\"form-control estrategia2\" style=\"width: 100%; id=\"estrategia" + idEstrategia + "\">\n\
                                                               <option  class=\"input\" value=\"" + estrategia + "\">" + estrategia + "</option>\n\
                                                      <td><input readonly class=\"form-control significado2\" style=\" width: 400px; type=\"text\" id=\"significado" + idEstrategia + "\" value=\"" + significado + "\"></td></tr>");
 
@@ -496,31 +498,6 @@ function leerCategorias2() {
 }
 
 function leerCategorias1() {
-
-//
-//    var data =$.parseJSON('[{"idEstrategia":1,"puntajeMin":1, "puntajeMax":25, "prioridad":"Muy Baja", "estrategia":"evitar", "significado": "No hacer nada"}, {"idEstrategia":2,"puntajeMin":26, "puntajeMax":50, "prioridad":"Baja", "estrategia":"mitigar", "significado": "Dejar por escrito"}]');
-//    console.log(data);
-//
-//   for (obj in data) {
-//       var idEstrategia = data[obj]["idEstrategia"];    
-//       var puntajeMin = data[obj]["puntajeMin"];
-//       var puntajeMax = data[obj]["puntajeMax"];
-//       var prioridad = data[obj]["prioridad"];
-//       var estrategia = data[obj]["estrategia"];
-//       var significado = data[obj]["significado"];
-//        
-//      $('#tablaCategorizacion').append("<tr>\n\
-//                                            <td><input disabled class=\"input-mini puntajeMin\" type=\"text\" id=\"puntajeMin" + idEstrategia + "\" value =\""+puntajeMin+"\"></td>\n\
-//                                            <td><input class=\"input-mini puntajeMax\" type=\"text\" id=\"puntajeMax" +  idEstrategia+ "\" value=\""+ puntajeMax+"\"></td>\n\
-//                                            <td><input class=\"input-sm prioridad\" type=\"text\" id=\"prioridad" + idEstrategia + "\" value=\""+ prioridad+"\"></td>\n\
-//                                            <td><select disabled class=\"estrategia\" id=\"estrategia" + idEstrategia + "\">\n\
-//                                                     <option  value=\""+ estrategia +"\">" +estrategia+ "</option>\n\
-//                                            <td><input class=\"input-large significado\" type=\"text\" id=\"significado" + idEstrategia + "\" value=\""+ significado+"\"></td></tr>");
-//
-//
-//   }
-
-
 
     var data = {
         idProyecto: idProyectoLocal,
@@ -833,19 +810,19 @@ function pintarMatriz1(impactos) {
                 // var idEstrategia = data[obj]["idEstrategia"];
                 var puntajeMin = data[obj]["puntajeMin"];
                 var puntajeMax = data[obj]["puntajeMax"];
-                console.log("puntajeMin" + puntajeMin);
+                //console.log("puntajeMin" + puntajeMin);
 
-                console.log("puntajeMax" + puntajeMax);
+               // console.log("puntajeMax" + puntajeMax);
                 // var prioridad = data[obj]["prioridad"];
                 // var estrategia = data[obj]["estrategia"];
                 //var significado = data[obj]["significado"];
 
                 //    for(var i;i<longitud;i++){
 
-                console.log("nuevo");
+               // console.log("nuevo");
                 $(".matriz1").each(function() {
                     var puntaje = $($(".matriz1")[i]).attr("id");
-                    console.log(puntaje);
+                    //console.log(puntaje);
                     var porcion = puntaje.substring(4);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
                         //console.log("puntaje" + porcion);
@@ -894,22 +871,22 @@ function pintarMatriz2(impactos) {
                 // var idEstrategia = data[obj]["idEstrategia"];
                 var puntajeMin = data[obj]["puntajeMin"];
                 var puntajeMax = data[obj]["puntajeMax"];
-                console.log("puntajeMin" + puntajeMin);
+               // console.log("puntajeMin" + puntajeMin);
 
-                console.log("puntajeMax" + puntajeMax);
+               // console.log("puntajeMax" + puntajeMax);
                 // var prioridad = data[obj]["prioridad"];
                 // var estrategia = data[obj]["estrategia"];
                 //var significado = data[obj]["significado"];
 
                 //    for(var i;i<longitud;i++){
 
-                console.log("nuevo");
+               // console.log("nuevo");
                 $(".matriz2").each(function() {
                     var puntaje = $($(".matriz2")[i]).attr("id");
                     var porcion = puntaje.substring(4);
-                    console.log(porcion);
+                   // console.log(porcion);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
-                        console.log("puntaje" + porcion);
+                       // console.log("puntaje" + porcion);
                         $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
                         
                
@@ -1053,7 +1030,7 @@ function leerMatrizPositivo() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-           console.log(data);
+           //console.log(data);
             return data;
         }
     });
@@ -1081,7 +1058,7 @@ function leerMatrizNegativo() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-           console.log(data);
+           //console.log(data);
             return data;
         }
     });
