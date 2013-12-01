@@ -91,6 +91,7 @@ GanttMaster.prototype.init = function(place) {
     self.drawTask(task);
 
   }).bind("deleteCurrentTask.gantt", function(e) {
+    if ((ge.lineabase == "true")) return;
     var row = self.currentTask.getRow();
     if (self.currentTask && (row>0 || self.currentTask.isNew())) {
       self.beginTransaction();
@@ -116,6 +117,7 @@ GanttMaster.prototype.init = function(place) {
 
 
   }).bind("addAboveCurrentTask.gantt", function() {
+    if ((ge.lineabase == "true")) return;
     var factory = new TaskFactory();
 
     var ch;
@@ -139,6 +141,7 @@ GanttMaster.prototype.init = function(place) {
     self.endTransaction();
 
   }).bind("addBelowCurrentTask.gantt", function() {
+    if ((ge.lineabase == "true")) return;
     var factory = new TaskFactory();
     self.beginTransaction();
     var ch;
@@ -172,12 +175,14 @@ GanttMaster.prototype.init = function(place) {
     }
 
   }).bind("moveUpCurrentTask.gantt", function() {
+    if ((ge.lineabase == "true")) return;
     if (self.currentTask) {
       self.beginTransaction();
       self.currentTask.moveUp();
       self.endTransaction();
     }
   }).bind("moveDownCurrentTask.gantt", function() {
+     if ((ge.lineabase == "true")) return;
     if (self.currentTask) {
       self.beginTransaction();
       self.currentTask.moveDown();
@@ -190,6 +195,7 @@ GanttMaster.prototype.init = function(place) {
     self.gantt.zoomGantt(false);
 
   }).bind("undo.gantt", function() {
+    if ((ge.lineabase == "true")) return;
     self.undo();
   }).bind("redo.gantt", function() {
     self.redo();
