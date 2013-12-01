@@ -1345,7 +1345,6 @@
             $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=:fecha_materializacion,
             estado=2
             WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
-            var_dump($riesgo);
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
@@ -1457,7 +1456,43 @@
         } else {
             echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
         }
+    }
 
+   function R_cancelMaterializacion(){
+        
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        if (R_verificaPermisoServicio(R_SERVICIO_36, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            //Se materializo en Riesgo x proyecto
+            $query = "UPDATE RIESGO_X_PROYECTO SET  fecha_materializacion=null , estado=1
+            WHERE id_riesgo_x_proyecto=:id_riesgo_x_proyecto";
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_riesgo_x_proyecto", $riesgo->idRiesgoProyecto);
+                $stmt->execute();
+                $db = null;
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+
+            //Se selecciona la accion
+            $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_materializacion=null, estado=0
+            WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
+            var_dump($riesgo);
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idAccionesRiesgo);
+                $stmt->execute();
+                $db = null;
+                echo json_encode('Se cancelo la materializacion del riesgo');
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
 
