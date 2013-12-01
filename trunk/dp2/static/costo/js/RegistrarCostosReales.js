@@ -154,8 +154,8 @@ function agregaFilaRecurso(){
 function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedida,costoUnitario,unidadMedida,idmoneda, nombreMoneda, costoFijo, fechainicio,fechafin,indRecursoHumano){
 	a=i;
 	a++;
-	if (fechaInicio=='00-00-0000' || fechaInicio=='0') fechaInicio='';
-	if (fechaFin=='00-00-0000' || fechaFin=='0') fechaFin='';
+	if (fechainicio=='00-00-0000' || fechainicio=='0') fechainicio='';
+	if (fechafin=='00-00-0000' || fechafin=='0') fechafin='';
 	
 	if 	(tipo==0){
 		$("#tablaRecursos > tbody").append('<tr><td>'+a+'</td><td>'+nombreRecurso+'</td><td>'+NombreUnidadMedida+'</td><td>'+formateaNumero(costoUnitario)+'</td><td>'+nombreMoneda+'</td><td>'+formateaNumero(costoFijo)+'</td></tr>');
