@@ -711,11 +711,5 @@ function G_getListaRecursosEnProyecto($id) {
     }
 }
 
-function G_prueba() {
-    $request = \Slim\Slim::getInstance()->request();
-    $acta = json_decode($request->getBody());
-
-    echo json_encode($acta);
-}
 
 ?>
