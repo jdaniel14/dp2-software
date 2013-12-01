@@ -150,16 +150,15 @@ function G_postDarbajaEmpleado() {
     $body = json_decode($request->getBody());
     //$request = "{\"ide\": \"17\"}";
     //$body = json_decode($request->getBody());
-    
+    $db = getConnection();
     $sql = " UPDATE EMPLEADO SET estado=:estado WHERE id_empleado=:id_empleado ";
     try {
-        $db = getConnection();
+        
         $stmt = $db->prepare($sql);
         $stmt->bindParam("estado", "DE BAJA");
         $stmt->bindParam("id_empleado", $body->ide);
         $stmt->execute();
-        $db = null;
-        echo json_encode(array("me" => ""));
+        
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
@@ -174,6 +173,7 @@ function G_postDarbajaEmpleado() {
         $db = null;
         echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
+        $db = null;
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
@@ -499,5 +499,35 @@ function G_getListaEmpleadosXProyecto($id) {
 }
 
 
+function G_getInformacionProyecto($id) {
+    $sql = " select P.id_proyecto, P.nombre_proyecto, PP.nombre_prioridad, P.fecha_inicio_planificada, P.fecha_fin_planificada, TP.nombre_tipo_proyecto from PROYECTO as P, TIPO_PROYECTO as TP, PRIORIDAD_PROYECTO as PP where P.id_proyecto = :idproyecto and TP.id_tipo_proyecto = P.id_tipo_proyecto and P.estado = 1 and PP.id_prioridad = P.id_prioridad ";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("idproyecto", $id);
+        $stmt->execute();
+
+        $lista = array();
+        while ($p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $nombre_proyecto = $p["nombre_proyecto"];
+            $nombre_prioridad = $p["nombre_prioridad"];
+            $fecha_inicio_planificada = $p["fecha_inicio_planificada"];
+            $fecha_fin_planificada = $p["fecha_fin_planificada"];
+            $nombre_tipo_proyecto  = $p["nombre_tipo_proyecto"];
+            
+            $item = array("nombre_proyecto" => $nombre_proyecto,
+                "nombre_prioridad" => $nombre_prioridad,
+                "fecha_inicio_planificada" => $fecha_inicio_planificada,
+                "fecha_fin_planificada" => $fecha_fin_planificada,
+                "nombre_tipo_proyecto" => $nombre_tipo_proyecto
+            );
+            array_push($lista, $item);
+        }
+        $db = null;
+        echo json_encode(array("proyecto" => $lista));
+    } catch (PDOException $e) {
+        echo json_encode(array("me" => $e->getMessage()));
+    }
+}
 
 ?>
