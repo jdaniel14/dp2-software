@@ -68,7 +68,7 @@ function main() {
     }
     obtenerTitulo();
 
-
+$("#modalErrorIndex").modal("show");
 
 
     $("#btnRegistrar").click(function() {
@@ -390,23 +390,32 @@ function main() {
 
         };
 
-        var jsonData = JSON.stringify(data);
-        console.log(jsonData);
-        $.ajax({
-            async: false,
-            type: 'PUT',
-            url: setMaterializada,
-            //dataType: "json",
-            data: jsonData,
-            success: function() {
-                localStorage.setItem("idAccion", $('#accionEscogida').val());
-                localStorage.setItem("idRiesgo", idRiesgo2);
-                localStorage.setItem("fechaMaterializacion", $('#fechaMat').val());
-                //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
-                window.location.href = "../riesgo/ActualizarGantt.html";
-            },
-            fail: codigoError
-        });
+        if ($('#fechaMat').val()=="" || $('#accionEscogida').val()==null) {
+            
+            $("#labelErrorModal").html("");
+            $("#labelErrorModal").append("Ingrese la fecha de materialización y una acción");
+            $("#ModaldeErrores").modal('show');
+
+        } else {
+            var jsonData = JSON.stringify(data);
+            console.log(jsonData);
+            $.ajax({
+                async: false,
+                type: 'PUT',
+                url: setMaterializada,
+                //dataType: "json",
+                data: jsonData,
+                success: function() {
+                    localStorage.setItem("idAccion", $('#accionEscogida').val());
+                    localStorage.setItem("idRiesgo", idRiesgo2);
+                    localStorage.setItem("fechaMaterializacion", $('#fechaMat').val());
+                    //ATENAS NO MUEVAS ESTE PEDAZO DE CODIGO PORFA! :)
+                    window.location.href = "../riesgo/ActualizarGantt.html";
+                },
+                fail: codigoError
+            });
+        }
+        
 
     });
 
