@@ -14,7 +14,7 @@ include_once '../backend/conexion.php';
 function CR_getActividades($json) {//servicio1
     $proy = json_decode($json);
     //$oscar=$proy->idProyecto;
-    $infoActividades = CR_consultarInfoActividades($proy->idProyecto);
+    $infoActividades = CR_consultarInfoActividades($proy->idProyecto,$proy->idUsuario);
 
     echo json_encode($infoActividades);
 }
@@ -87,7 +87,7 @@ function CR_getIndicadoresFlujo($json) {//servicio9
 function CR_getPaquetesEDT($json) {//Servicio 7
     $proy = json_decode($json);
 
-    $listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto);
+    $listaPaquetes = CR_consultarPaqueteEDT($proy->idProyecto,$proy->idUsuario);
     echo json_encode($listaPaquetes);
 }
 
@@ -608,7 +608,7 @@ function CR_consultarListaDependencia($idProyecto) {
     return $listaDependencias;
 }
 
-function CR_consultarPaqueteEDT($idProyecto) {
+function CR_consultarPaqueteEDT($idProyecto,$idUsuario) {
 
 
     //$sql = "SELECT a.* FROM PAQUETE_TRABAJO a, EDT b WHERE a.id_edt=b.id_estado and b.id_Proyecto=?";
@@ -624,7 +624,7 @@ function CR_consultarPaqueteEDT($idProyecto) {
 
 			//echo "a punto";
 			$valor_colchon=0;
-			$valor_colchon=json_decode(R_getCantidadDiasAproximadoxPaquete(json_encode(array("idProyecto"=>$idProyecto,"idPaqueteTrabajo"=>$p["id_paquete_trabajo"] + 0))));
+			$valor_colchon=json_decode(R_getCantidadDiasAproximadoxPaquete(json_encode(array("idProyecto"=>$idProyecto,"idPaqueteTrabajo"=>$p["id_paquete_trabajo"] + 0,"idUsuario"=>$idUsuario))));
 			//echo $valor_colchon;
 			//if ($valor_colchon==null) echo "nul ps";
             $paquete = array("id" => $p["id_paquete_trabajo"] + 0, "name" => $p["nombre"], "id_padre" => $p["id_componente_padre"],"colchon"=>(($valor_colchon==NULL)?0:$valor_colchon));
@@ -643,7 +643,7 @@ function CR_consultarPaqueteEDT($idProyecto) {
     return $lista_paquete;
 }
 
-function CR_consultarInfoActividades($idProyecto) {
+function CR_consultarInfoActividades($idProyecto,$idUsuario) {
     //realizar la conexion a la BD
     //$link=mysql_connect("200.16.7.112","dp_usuario","usuario.2013.")))
     /* $con=mysqli_connect("200.16.7.112","dp_usuario","usuario.2013.","dp2");
@@ -657,7 +657,7 @@ function CR_consultarInfoActividades($idProyecto) {
     //SELECT FROM_UNIXTIME(1384146000000/1000);
     date_default_timezone_set('America/Lima');
     $recursos = CR_obtenerRecursosTotalProyecto($idProyecto);
-    $paquetesEDT = CR_consultarPaqueteEDT($idProyecto);
+    $paquetesEDT = CR_consultarPaqueteEDT($idProyecto,$idUsuario);
     $lista_mapeo = CR_obtenerListaMaps($recursos);
     $sql = "select a.*,((DATEDIFF(a.fecha_actual_inicio,a.fecha_actual_fin)/DATEDIFF(a.fecha_plan_inicio,a.fecha_plan_fin))*100)  as 'indicador_fecha',d.indicador_costo FROM `dp2`.`ACTIVIDAD` a  left join (SELECT n.id_actividad,((sum(n.cantidadReal*n.costo_unitario_real)/sum(r.COSTO_UNITARIO_ESTIMADO*n.cantidadEstimada))*100) AS 'indicador_costo' FROM `dp2`.`ACTIVIDAD_X_RECURSO` n  inner join `dp2`.`RECURSO` r on r.id_recurso=n.id_recurso where n.estado=1 group by n.id_actividad) d on d.id_actividad=a.id_actividad WHERE a.id_proyecto=? and a.eliminado=0 order by a.numero_fila ";
     $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
