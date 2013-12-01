@@ -1071,7 +1071,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
             task.name = taskEditor.find("#name").val();
 
             task.id_Wbs = taskEditor.find("#wbsNodes").val();
-
+			task.wbsNode = "";	
             $.each(wbsNodes, function(e, el) {
                 if (el.id == task.id_Wbs) {
                     task.wbsNode = el.name;
