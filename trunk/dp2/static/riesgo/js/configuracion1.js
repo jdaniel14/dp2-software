@@ -9,6 +9,7 @@ var arregloPermisoMP = new Array();
 var maxId;
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var rol = localStorage.getItem("idRol");
+var tamanho, tamanho2=0;
 
 function validAtenas2() {
     var i = 0;
@@ -92,26 +93,35 @@ function main() {
 
         if (!validAtenas2())
             return;
-
-        var data = {
+  var i = parseInt(tamanho)-1;
+    var data = {
             idProyecto: idProyectoLocal,
             listaTipoImpacto: [],
             idUsuario: localStorage.getItem("idUsuario")
         };
+   
+         tamanho2 = parseInt(($(".tipoRiesgo").size()));
+         alert(i);
+         alert(tamanho2);
+        var j=0;
+    for (; i < tamanho2; i++) {
+      
 
 
-        var i = 0;
-        $(".tipoRiesgo").each(function() {
+      
+        //$(".tipoRiesgo").each(function() {
 
             var obj = {
                 tipoRi: $($("input.tipoRiesgo")[i]).val(), // valor de inputs
-                formas: $($("select.numero")[i]).val(),
+                formas: $($("select.numero")[i]).val()
                 
 
             };
-            i++;
-            data.listaTipoImpacto[i - 1] = obj;
-        });
+          
+            data.listaTipoImpacto[j] = obj;
+            j++;
+  }
+        //});
 
         console.log(data);
         var jsonData = JSON.stringify(data);
@@ -192,6 +202,7 @@ function listaTipoImpactos() {
         url: '../../api/R_listaTiposImpactoRiesgo' + '/' + jsonData,
         dataType: "json",
         success: function(data) {
+             $("#tablaTiposRiesgos").html("");
             for (obj in data) {
                 var fecha = new Date();
                 var tipoRi = data[obj]["tipoRi"];
@@ -211,15 +222,18 @@ function listaTipoImpactos() {
                     }
                 }
 
-
             }
-
+             $("#tablaTiposRiesgos").append("<tr><td><input name='tipoRi1' id='tipoRi1' type='text' class='tipoRiesgo form-control'></td>"+
+                                    "<td><select class='numero form-control' id='formas1'><option value='1'>Número</option>"+
+                                                "<option value='2'>Texto</option></select></td>"+
+                                    "<td><a data-toggle='modal' href='#confirmDelete' > <span class='glyphicon glyphicon-remove iconito' id='1'></span></a></td></tr>");
+    
             $(".iconito").click(function() {
                 var idTipoRi = $(this).closest("span").attr("id");
                 eliminarRiesgo(idTipoRi);
 
             });
-
+            tamanho = parseInt(($(".tipoRiesgo").size()));
             if ($("#tablaTiposRiesgos tr").length > 1)
                 $("#my_row_101").remove();
 
@@ -260,7 +274,7 @@ function addTableRow()
 
     // append the new row to the table
     $("#tablaTiposRiesgos").find("tbody tr:last").after($tr);
-
+        tamanho2 = parseInt(($(".tipoRiesgo").size()));
 
 
 }
