@@ -1663,7 +1663,7 @@ function CR_obtenerRecursosTotalProyecto($idProyecto) {
 
     $listaRecursos = array();
 
-    $sql = "SELECT a.*,b.simbolo as simbolo_unidad,b.descripcion as descripcion_unidad, c.descripcion as descripcion_moneda FROM RECURSO a left join UNIDAD_MEDIDA b on b.id_unidad_medida=a.id_unidad_medida   left join CAMBIO_MONEDA c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda   where a.id_proyecto =  ? ";
+    $sql = "SELECT a.*,b.simbolo as simbolo_unidad,b.descripcion as descripcion_unidad, c.descripcion as descripcion_moneda FROM RECURSO a left join UNIDAD_MEDIDA b on b.id_unidad_medida=a.id_unidad_medida   left join CAMBIO_MONEDA c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda   where a.id_proyecto =  ? and a.estado = 'Activo'";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
