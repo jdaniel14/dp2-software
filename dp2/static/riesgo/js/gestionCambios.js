@@ -8,10 +8,14 @@ var idAct;
 function main(){
 	listarCambiosGantt();
 
-	
+	obtenerTitulo();
 		
 
 }
+
+function obtenerTitulo() {
+        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
+    }
 
 function listarCambiosGantt(){
 

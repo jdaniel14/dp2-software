@@ -17,6 +17,9 @@ var rol = localStorage.getItem("idRol");
 tamanho2=0;
 var idActividad;
 
+function obtenerTitulo() {
+        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
+    }
 
 function lineaBase() {
 
@@ -79,7 +82,7 @@ function validar() {
 function main() {
     arregloPermisoJP = ["agregar", "guardar", "iconito"];
 
-
+    obtenerTitulo();
 
 //
 //    if (rol == 2) {

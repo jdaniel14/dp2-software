@@ -27,9 +27,13 @@ var flag=0;
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var listaActividades=[];
 
+function obtenerTitulo() {
+        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
+    }
+
 function main(){
 
-	// obtenerTitulo();
+	obtenerTitulo();
 	listarAciones();
 	listarActividades();
 	$("#listaActividades").change(function() {

@@ -13,6 +13,11 @@ var colores=new Array();
 
 colores=["rgb(3,180,204)","rgb(102,205,0)","rgb(255,215,0)","rgb(255,0,0)","rgb(255,127,36)","rgb(133,99,99)"];
 
+
+function obtenerTitulo() {
+        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
+    }
+
 function validAtenas() {
     var metodologia = $("#metodologia").val();
     if (metodologia == null || metodologia.length == 0) {
@@ -157,7 +162,7 @@ $(document).on('change', '.puntajeMax', function() {
 
 
 function main() {
-    
+    obtenerTitulo();
       arregloPermisoJP = ["btnAumentar", "btnEliminarTipoXNivelModal","btnGenerar1","btnGrabarCategorizacion1","btnCancelar1","btnCancelar2","btnGenerar2","btnGrabarCategorizacion2","btnGuardarComite"];
 
 
