@@ -105,6 +105,13 @@ function getEdt(){
        if(proyectoExiste($idproyecto)==false)return; 
        
        $con = getConnection();
+       
+       $pstmt= $con->prepare("SELECT nombre_proyecto FROM PROYECTO WHERE id_proyecto= ?");
+       $pstmt->execute(array($idproyecto));
+       $aux1=$pstmt->fetch(PDO::FETCH_ASSOC);
+       $nombreP=$aux1["nombre_proyecto"];
+       //echo $nombreP;
+       
        //$idproyecto = 1;
        //conseguir el id del paquete inicial
        $pstmt= $con->prepare("SELECT * FROM EDT WHERE id_proyecto= ?");
@@ -120,10 +127,10 @@ function getEdt(){
        $pIni = $pstmt->fetch(PDO::FETCH_ASSOC);
 
        //Obtener hijos
-       $hijos = getHijos($pIni["id_paquete_trabajo"]);
+       $hijos = getHijos($pIni["id_paquete_trabajo"],$nombreP);
 
        //armar objeto
-       $arbol = new EdtArbol($pIni["id_paquete_trabajo"], $pIni["nombre"],count($hijos) ,$pIni["dias"], $pIni["descripcion"], $hijos);
+       $arbol = new EdtArbol($nombreP,$pIni["id_paquete_trabajo"], $pIni["nombre"],count($hijos) ,$pIni["dias"], $pIni["descripcion"], $hijos);
        $arbol->idedt = intval($idEDT);
        echo json_encode($arbol);
 	}
@@ -133,7 +140,7 @@ function getEdt(){
 	}	
  }
 
-    function getHijos($idPadre){
+    function getHijos($idPadre,$nombre){
       try{	
         $con = getConnection();
         //conseguir los hijos
@@ -143,9 +150,9 @@ function getEdt(){
        
         while($hijo = $pstmt->fetch(PDO::FETCH_ASSOC)){
          //conseguir los hijos de cada hijo
-         $hijos = getHijos($hijo["id_paquete_trabajo"]);
+         $hijos = getHijos($hijo["id_paquete_trabajo"],$nombre);
          //armar objeto hijo
-         $arbolHijo = new EdtArbol($hijo["id_paquete_trabajo"], $hijo["nombre"],count($hijos) ,$hijo["dias"], $hijo["descripcion"], $hijos);
+         $arbolHijo = new EdtArbol($nombre,$hijo["id_paquete_trabajo"], $hijo["nombre"],count($hijos) ,$hijo["dias"], $hijo["descripcion"], $hijos);
          //añadir objeto a la lista 
          array_push($result, $arbolHijo);
         }
