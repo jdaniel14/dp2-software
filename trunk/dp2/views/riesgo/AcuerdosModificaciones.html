@@ -14,7 +14,12 @@
         <title>Matriz de Riesgos</title>
       <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="../../static/riesgo/css/riesgo.css" rel="stylesheet">
-
+        <link type="text/css" href="../../static/riesgo/datepicker/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+	<script src="../../static/costo/js/jquery-1.7.1.min.js"></script>
+	<script src="../../assets/js/jquery.js"></script>	
+	<script src="../../static/riesgo/datepicker/js/jquery-1.9.1.js"></script>
+	<script src="../../static/riesgo/datepicker/js/jquery-ui-1.10.3.custom.js"></script>
+	<script src="../../static/riesgo/datepicker/js/jquery-ui-1.10.3.custom.min.js"></script>
         <!--<link href="../../static/riesgo/css/vendor.css" rel="stylesheet">-->
 
     </head>
@@ -38,7 +43,7 @@
                             <table class="table table-striped" width="100%" id="tablaAcuerdosMod">
 
                                 <tr>
-                                    <td width="10%"><b>Día</b></td>
+                                    <td width="20%"><b>Día</b></td>
                                     <td width="10%"><b>Hora</b></td>
                                     <td width="80%"><b>Acuerdos</b></td>
 
@@ -49,7 +54,7 @@
                                     <!--Contenido Tabla Acuerdos-->
                                     <tr>
                                       
-                                     <td ><input  class="form-control diaAcuerdos"  id="fechas0" type="date"></td> <!--id 7 palabras  funciona y 1 num al final-->
+                                     <td ><input  class="form-control diaAcuerdos calendar"  id="fechas0" type="text"></td> <!--id 7 palabras  funciona y 1 num al final-->
                                     <td><input class="horasAcuerdos form-control" type="time"  id="horas_0" ></td>
                                         <td><input  class="acuerdosA form-control" type="text"  id="acuerdo0" ></td>
 
@@ -94,7 +99,7 @@
                         <h3 class="modal-title">Confirmación</h3>
                     </div>
                     <div class="modal-body titulo-tabla">
-                        <label class="col-lg-12 control-label"></label>
+                        <label class="col-lg-12 control-label" id="labelExitoModal"></label>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
@@ -113,7 +118,7 @@
 
 
 <script src="../../static/riesgo/js/seguridadRiesgos.js"></script>
-<script src="../../assets/js/jquery-1.7.1.min.js"></script>
+
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <script src="../../static/riesgo/js/planRiesgos1.js"></script>
 <script src="../../assets/js/header.js"></script>
