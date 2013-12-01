@@ -38,6 +38,7 @@ function listarCambiosGantt(){
        console.log(data);
           
           for(obj in data){
+          var idAccionRiesgo = data[obj]["idAccionesRiesgo"];
           var idActividadCronograma= data[obj]["idActividadCronograma"];
           var nombreActividadCronograma=data[obj]["nombreActividadCronograma"];
           var fechaInicioActividadCronograma=data[obj]["fechaInicioActividadCronograma"];
@@ -68,8 +69,8 @@ function listarCambiosGantt(){
             <input class=\"form-control\" readonly type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
                 "<label> dias</label><br></div><br><div></div><br>";
         
-        cadena=cadena +'<div class="col-md-12"  style="text-align:center"><button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +');">Cambiar</button>';
-	cadena=cadena +'&nbsp<button type="button" class="btn btn-primary rigth" id="btnRechazar" onclick="rechazar_cambios('+idActividadCronograma  +');">Rechazar</button></div></div></div>';
+        cadena=cadena +'<div class="col-md-12"  style="text-align:center"><button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +','+idAccionRiesgo+');">Cambiar</button>';
+	cadena=cadena +'&nbsp<button type="button" class="btn btn-primary rigth" id="btnRechazar" onclick="rechazar_cambios('+idActividadCronograma  +','+idAccionRiesgo+');">Rechazar</button></div></div></div>';
 	
                 $("#prueba"+idActividadCronograma).html(cadena);
           }
@@ -79,17 +80,18 @@ function listarCambiosGantt(){
 }
 
 
-function rechazar_cambios(id){
+function rechazar_cambios(id,idAccionRiesgo){
     
      var data = {
-            idRiesgoXProyecto:id,
+            
+            idAccionesRiesgo:idAccionRiesgo,
             flagAceptadoRechazado:0,
             idProyecto : idProyectoLocal,
             idUsuario: localStorage.getItem("idUsuario")
                
         };
         
-        
+        console.log(data);
         var jsonData = JSON.stringify(data);
         $.ajax({
             type: 'PUT',
@@ -111,7 +113,7 @@ function rechazar_cambios(id){
 
 
 
-function guardar_cambios(id){
+function guardar_cambios(id,idAccionRiesgo){
     
             
         var data = {
@@ -126,7 +128,7 @@ function guardar_cambios(id){
        idAct=data.id;
 
         var data1 = {
-            idRiesgoXProyecto:id,
+            idAccionesRiesgo:idAccionRiesgo,
             flagAceptadoRechazado:1,
             idProyecto : idProyectoLocal,
             idUsuario: localStorage.getItem("idUsuario")

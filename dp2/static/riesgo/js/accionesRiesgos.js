@@ -6,6 +6,8 @@ var deleteAction = "../../api/R_eliminarActividadContingencia";
 var tamanho, tamanho2;
 $(document).ready(main);
 var maxId;
+var max;
+var costoPromedio, tiempoPromedio;
 var idRiesgo = localStorage.getItem("idRiesgo");
 var lineaBase;
 var arregloPermisoJP = new Array();
@@ -148,8 +150,8 @@ function main() {
             return;
 
 
-        var costoPromedio;
-        var tiempoPromedio;
+        // var costoPromedio;
+        // var tiempoPromedio;
 
         var j = 0;
         var descripcion;
@@ -176,6 +178,7 @@ function main() {
 
 
             $.ajax({
+                async:false,
                 type: 'POST',
                 url: addAccion,
                 data: jsonData,
@@ -186,9 +189,39 @@ function main() {
                     // alert("Se registró con exito");
                     $("#tablaAcuerdos").html("");
                     listaAcciones();
-                    $('#confirmSave').modal('hide');
+                    console.log(costoPromedio + " " + tiempoPromedio);
+                    // $('#confirmSave').modal('hide');
 
-                    $('#modalExito').modal('show');
+                    // $('#modalExito').modal('show');
+                    if (tamanho>=tamanho2){
+                       console.log(costoPromedio + " " + tiempoPromedio);
+                       var data = {
+                           idRiesgoXProyecto: idRiesgo,
+                           costo:costoPromedio,
+                           tiempo:tiempoPromedio,
+                           idProyecto: localStorage.getItem("idProyecto"),
+                           idUsuario: localStorage.getItem("idUsuario")
+
+                       };
+                       var jsonData = JSON.stringify(data);
+
+                       $.ajax({
+                           async: false,
+                           type: 'PUT',
+                           url: updateCostTime,
+                           data: jsonData,
+                           success: function(data) {
+                               
+                               $('#confirmSave').modal('hide');
+                               $("#tablaAcuerdos").html("");
+                               listaAcciones();
+                               $('#modalExito').modal('show');
+                           },
+                           fail: function(data) {
+                               alert(data.me);
+                           }
+                       });
+                    }
                 },
                 fail: function(data) {
                     $("#labelErrorModal").value(data.me);
@@ -218,6 +251,7 @@ function main() {
 
 
                 $.ajax({
+                    asyn:false,
                     type: 'POST',
                     url: addAccion,
                     data: jsonData,
@@ -225,13 +259,42 @@ function main() {
                         obj = JSON.parse(data);
                         costoPromedio = obj.costo;
                         tiempoPromedio = obj.tiempo;
-                        $('#confirmSave').modal('hide');
+                        console.log(costoPromedio + " " + tiempoPromedio);
+                        // $('#confirmSave').modal('hide');
 
-                        $('#modalExito').modal('show');
+                        
                         $("#tablaAcuerdos").html("");
                         listaAcciones();
 
+                        if (tamanho>=tamanho2){
+                           console.log(costoPromedio + " " + tiempoPromedio);
+                           var data = {
+                               idRiesgoXProyecto: idRiesgo,
+                               costo:costoPromedio,
+                               tiempo:tiempoPromedio,
+                               idProyecto: localStorage.getItem("idProyecto"),
+                               idUsuario: localStorage.getItem("idUsuario")
 
+                           };
+                           var jsonData = JSON.stringify(data);
+
+                           $.ajax({
+                               async: false,
+                               type: 'PUT',
+                               url: updateCostTime,
+                               data: jsonData,
+                               success: function(data) {
+                                   
+                                   $('#confirmSave').modal('hide');
+                                   $("#tablaAcuerdos").html("");
+                                   listaAcciones();
+                                   $('#modalExito').modal('show');
+                               },
+                               fail: function(data) {
+                                   alert(data.me);
+                               }
+                           });
+                        }
                     },
                     fail: function(data) {
                         $("#labelErrorModal").value(data.me);
@@ -245,31 +308,7 @@ function main() {
         }
 
 
-//            if (i==max){
-//                var data = {
-//                    idRiesgoXProyecto: idRiesgo,
-//                    costo:costoPromedio,
-//                    tiempo:tiempoPromedio
-//                };
-//                var jsonData = JSON.stringify(data);
-//
-//                $.ajax({
-//                    async: false,
-//                    type: 'PUT',
-//                    url: updateCostTime,
-//                    data: jsonData,
-//                    success: function(data) {
-//                        alert("Se registró con exito");
-//                        $("#tablaAcuerdos").html("");
-//                        listaAcciones();
-//                        $('#confirmSave').modal('hide');
-//                    },
-//                    fail: function(data) {
-//                        alert(data.me);
-//                    }
-//                });
-//            }
-//        });
+        
     });
 
     $("#btnEliminar").click(function()
