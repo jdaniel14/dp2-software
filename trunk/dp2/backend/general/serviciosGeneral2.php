@@ -64,15 +64,15 @@ function G_getRol() {
         $p = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $rol = $p["ID_ROL"];
-        if($para->iu == 1){$rol=1;}
+        if ($para->iu == 1) {
+            $rol = 1;
+        }
         //var_dump($para->iu);
         $db = null;
         echo json_encode(array("me" => $rol));
-
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
-    
 }
 
 function G_postRegistrarLeccionAprendida() {
@@ -97,28 +97,25 @@ function G_postRegistrarLeccionAprendida() {
 
 function G_getProyectosXEmpleado($id) {
     
-   
-    
     try {
         $db = getConnection();
-        
-        if ($id == 1){
-               $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
+
+        if ($id == 1) {
+            $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
                         FROM MIEMBROS_EQUIPO EXP, PROYECTO P
                         WHERE EXP.id_proyecto = P.id_proyecto  ";
-               $stmt = $db->prepare($sql);
-               $stmt->execute();
-           }
-           else {
-               $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+        } else {
+            $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
                         FROM MIEMBROS_EQUIPO EXP, PROYECTO P
                         WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
-               
-               $stmt = $db->prepare($sql);
-                $stmt->bindParam("id", $id);
-                $stmt->execute();
-           }
-        
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("id", $id);
+            $stmt->execute();
+        }
+
         $l_proyxemp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $proy = array(
@@ -137,21 +134,34 @@ function G_getProyectosXEmpleado($id) {
 function G_postBorrarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
     $leccion = json_decode($request->getBody());
-    $sql = " UPDATE LECCION_APRENDIDA SET estado=0
-	    WHERE id_leccion_aprendida=:id ";
-    try {
-        $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("id", $leccion->id);
-        $stmt->execute();
-        $db = null;
-        echo json_encode(array("me" => ""));
-    } catch (PDOException $e) {
-        echo json_encode(array("me" => $e->getMessage()));
-    }
+    
+    $db = getConnection();
+//    $sql = "  SELECT count(*) as cantidad FROM MIEMBROS_EQUIPO where id_empleado = :idemp and estado <> 0 ";
+//    $stmt = $db->prepare($sql);
+//    $stmt->bindParam("idemp", $leccion->idemp);
+//    $stmt->execute();
+//
+//    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+//    $cantidad = $res["cantidad"];
+//    if ($cantidad > 0) {
+        $sql = " UPDATE LECCION_APRENDIDA SET estado=0
+                   WHERE id_leccion_aprendida=:id ";
+           try {
+               $db = getConnection();
+               $stmt = $db->prepare($sql);
+               $stmt->bindParam("id", $leccion->id);
+               $stmt->execute();
+               $db = null;
+               echo json_encode(array("me" => ""));
+           } catch (PDOException $e) {
+               echo json_encode(array("me" => $e->getMessage()));
+           }
+//    } else {
+//        echo json_encode(array("me" => "No puede actualizar una lección aprendida de la que no fue creador."));
+//    }
+
+   
 }
-
-
 
 function G_postActualizarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
@@ -263,12 +273,11 @@ function G_postAsignarRecProy() {
 //
 //            $res = $stmt->fetch(PDO::FETCH_ASSOC);
 //            $cantidad = $res["cantidad"];
-
 //            if ($cantidad > 0) {
 //                
 //            } else {
 //            
-            if ($accion=="I"){
+            if ($accion == "I") {
                 //INSERT
                 $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual, estado, id_rol) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act, 1, 3) ";
                 // $db = getConnection();
@@ -280,8 +289,7 @@ function G_postAsignarRecProy() {
                 $stmt->bindParam("ff", $ff);
                 $stmt->bindParam("prof_act", $prof_act);
                 $stmt->execute();
-            }
-            else if ($accion=="M") {
+            } else if ($accion == "M") {
                 //UPDATE
                 $update = " UPDATE MIEMBROS_EQUIPO SET COSTO_EMPLEADO = :costo, id_profesion_actual = :prof_act WHERE id_miembros_equipo = :idemp ";
                 // $db = getConnection();
@@ -291,8 +299,8 @@ function G_postAsignarRecProy() {
                 $stmt->bindParam("idemp", $idr);
                 $stmt->execute();
             }
-                
-           // }
+
+            // }
         }
         $db = null;
         echo json_encode(array("me" => ""));
@@ -304,13 +312,13 @@ function G_postAsignarRecProy() {
 function G_postBorrarMiembroDeProyecto() {
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
-    
+
     //$request = "{ \"id_rrhhxpr\": 40}";
     //$body = json_decode($request);
-    
+
     $id_miembro = $body->id_rrhhxpr;
-    
-    
+
+
     $sql = " select count(*) as cant from MIEMBROS_EQUIPO where id_miembros_equipo = :id and id_rol=2 "; //  no se puede eliminar a un jefe de proyecto
     try {
         $db = getConnection();
@@ -320,7 +328,7 @@ function G_postBorrarMiembroDeProyecto() {
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         $cantidad = $res["cant"];
         $db = null;
-        if ($cantidad>0){
+        if ($cantidad > 0) {
             echo json_encode(array("me" => "No se puede eliminar al jefe del proyecto. "));
             return;
         }
@@ -328,7 +336,7 @@ function G_postBorrarMiembroDeProyecto() {
         echo json_encode(array("me" => $e->getMessage()));
         return;
     }
-            
+
     $sql = " select count(*) as cant from ACTIVIDAD as A, ACTIVIDAD_X_EMPLEADO as AXE, (SELECT id_proyecto as idp FROM MIEMBROS_EQUIPO where id_miembros_equipo = :id ) as H where A.id_proyecto = H.idp and A.id_actividad = AXE.id_actividad and AXE.id_miembros_equipo = :id ";
     try {
         $db = getConnection();
@@ -338,7 +346,7 @@ function G_postBorrarMiembroDeProyecto() {
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         $cantidad = $res["cant"];
         $db = null;
-        if ($cantidad>0){
+        if ($cantidad > 0) {
             echo json_encode(array("me" => "No se puede eliminar al recurso del proyecto porque tiene actividades asignadas."));
             return;
         }
@@ -346,7 +354,7 @@ function G_postBorrarMiembroDeProyecto() {
         echo json_encode(array("me" => $e->getMessage()));
         return;
     }
-    
+
     $sql = " UPDATE MIEMBROS_EQUIPO SET estado=0
 	    WHERE id_miembros_equipo=:id ";
     try {
@@ -354,7 +362,7 @@ function G_postBorrarMiembroDeProyecto() {
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id_miembro);
         $stmt->execute();
-        
+
         $db = null;
         echo json_encode(array("me" => ""));
     } catch (PDOException $e) {
@@ -362,18 +370,18 @@ function G_postBorrarMiembroDeProyecto() {
     }
 }
 
-function get_jp( $idProyecto ) {
-	$sql = "SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = :ID AND ID_ROL = 2";
-	try{
-		$db = getConnection();
+function get_jp($idProyecto) {
+    $sql = "SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = :ID AND ID_ROL = 2";
+    try {
+        $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("ID", $idProyecto);
         $stmt->execute();
-		if ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $j["ID_EMPLEADO"];
         }
         return $id;
-	}catch (PDOException $e) {
+    } catch (PDOException $e) {
         return null;
     }
 }
@@ -398,9 +406,9 @@ function G_getListarRecDisp() {
           FROM MIEMBROS_EQUIPO M
           WHERE ( fecha_entrada <= DATE(NOW())
           AND DATE(NOW()) <= fecha_salida )"; */
-        
+
         //recursos ocupados en el rango de fechas
-		$jefe_proyecto = get_jp($idProyecto);
+        $jefe_proyecto = get_jp($idProyecto);
         $gerente_portafolio = 1;
 
         $sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
@@ -419,9 +427,9 @@ function G_getListarRecDisp() {
                     AND A.FECHA_PLAN_INICIO >= STR_TO_DATE(:FI,'%d-%m-%Y')
                     AND A.FECHA_PLAN_FIN <= STR_TO_DATE(:FF,'%d-%m-%Y')
                     ";
-                    //E.ID_EMPLEADO !=  :JP
-                    //AND M.id_proyecto!=:IDPROYECTO
-                    //AND M.ID_EMPLEADO=(SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = 66 AND ID_ROL=2);
+        //E.ID_EMPLEADO !=  :JP
+        //AND M.id_proyecto!=:IDPROYECTO
+        //AND M.ID_EMPLEADO=(SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = 66 AND ID_ROL=2);
 
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -498,7 +506,7 @@ function G_postListaTodosRecurso() {
     //echo $fecha_Inicio_IN->format('Y-m-d')." ".$fecha_Fin_IN->format('Y-m-d')."<br>";
 
     $interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
-    $num_dias = $interval / (60 * 60 * 24) ;
+    $num_dias = $interval / (60 * 60 * 24);
     //echo "NUM DIAS : ".$num_dias."<br>";
 //			echo $fecha_Inicio_IN." ".$fecha_Fin_IN. " ". $num_dias;
     $sql_empleados = "SELECT * FROM EMPLEADO where estado='ACTIVO' ORDER BY nombres ";
@@ -511,7 +519,7 @@ function G_postListaTodosRecurso() {
         $empleado["id_emp"] = $emp["id_empleado"];
         $id = $empleado["id_emp"];
         $empleado["nom"] = $emp["nombre_corto"];
-        $empleado["rol"] = 1/*$emp["ID_ROL"]*/;
+        $empleado["rol"] = 1/* $emp["ID_ROL"] */;
         $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
         for ($i = 0; $i <= $num_dias; $i++) {
             $empleado["detalle_dias"][$i] = 0;
@@ -554,15 +562,15 @@ function G_postListaTodosRecurso() {
             $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
             $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
             //echo $proy_emp["ID_ACTIVIDAD"]." ".$fecha_Inicio." ".$fecha_Final."<br>";
-            $interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24) ;
+            $interval = (strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24);
 //			echo "interval1 ".$interval."<br>";
             $a = $interval;
 
 //	          $dife = $fecha_Inicio_IN - $fecha_Inicio;
 //	          $a = Math.Abs(dife.Days);
-            $interval = (strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24) ;
+            $interval = (strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24);
 //			echo "interval2 ".$interval."<br>";
-            $b = $interval + $a ;
+            $b = $interval + $a;
 
 //	          $dife =  $fecha_Final - $fecha_Inicio;
 //	          $b = $dife.Days + a;
@@ -580,7 +588,8 @@ function G_postListaTodosRecurso() {
     }//while
     echo json_encode($lista_empleados);
 }
-function G_postListaTodosRecurso_1(){
+
+function G_postListaTodosRecurso_1() {
 
     $request = \Slim\Slim::getInstance()->request();
     $body = json_decode($request->getBody());
@@ -592,7 +601,7 @@ function G_postListaTodosRecurso_1(){
     $fecha_Fin_IN = strtotime($str2);
 
     $interval = ($fecha_Fin_IN - $fecha_Inicio_IN);
-    $num_dias = $interval / (60 * 60 * 24) ;
+    $num_dias = $interval / (60 * 60 * 24);
 
     $sql_empleados = "SELECT * FROM EMPLEADO where estado='ACTIVO' ORDER BY nombres ";
     $db = getConnection();
@@ -604,7 +613,7 @@ function G_postListaTodosRecurso_1(){
         $empleado["id_emp"] = $emp["id_empleado"];
         $id = $empleado["id_emp"];
         $empleado["nom"] = $emp["nombre_corto"];
-        $empleado["rol"] = 1/*$emp["ID_ROL"]*/;
+        $empleado["rol"] = 1/* $emp["ID_ROL"] */;
         $empleado["detalle_dias"] = new SplFixedArray($num_dias + 1);
         for ($i = 0; $i <= $num_dias; $i++) {
             $empleado["detalle_dias"][$i] = 0;
@@ -643,7 +652,7 @@ function G_postListaTodosRecurso_1(){
             
             NUEVA
             ORDER BY ID_EMPLEADO, FECHA_PLAN_INICIO"
-            ;
+    ;
     $stmt = $db->prepare($sql);
     $stmt->bindParam("fecha_ini", $str1);
     $stmt->bindParam("fecha_fin", $str2);
@@ -653,12 +662,12 @@ function G_postListaTodosRecurso_1(){
         $k = $proy_emp["ID_EMPLEADO"];
         $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
         $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
-        $interval = abs(strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24) ;
+        $interval = abs(strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24);
         //echo "interval1 ".$interval."<br>";
         $a = $interval;
-        $interval = abs(strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24) ;
+        $interval = abs(strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24);
         //echo "interval2 ".$interval."<br>";
-        $b = $interval + $a ;
+        $b = $interval + $a;
         if ($b > $num_dias)
             $b = $num_dias;
         for ($j = $a; $j <= $b; $j++) {
@@ -719,11 +728,10 @@ function G_getListaRecursosEnProyecto($id) {
             array_push($l_recxpro, $rec);
         }
         $db = null;
-        echo json_encode(array(/*"nom_proy" => $nom_proy, */"l_recurso" => $l_recxpro));
+        echo json_encode(array(/* "nom_proy" => $nom_proy, */"l_recurso" => $l_recxpro));
     } catch (PDOException $e) {
         echo json_encode(array("me" => $e->getMessage()));
     }
 }
-
 
 ?>

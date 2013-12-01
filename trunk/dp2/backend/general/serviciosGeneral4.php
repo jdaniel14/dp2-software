@@ -468,7 +468,7 @@ function G_getListaRecursoProyecto($id) {
 
 
 function G_getListaEmpleadosXProyecto($id) {
-    $sql = " select distinct E.id_empleado as idemp, E.nombres as nombres, E.apellidos as apellidos from MIEMBROS_EQUIPO as ME, EMPLEADO as E where ME.id_proyecto = :idproyecto and E.estado = 'ACTIVO' AND ME.estado = 1 and ME.id_empleado = E.id_empleado ";
+    $sql = " select distinct E.id_empleado as idemp, E.nombres as nombres, E.apellidos as apellidos, ME.id_rol, ME.fecha_entrada, ME.fecha_salida from MIEMBROS_EQUIPO as ME, EMPLEADO as E where ME.id_proyecto = :idproyecto and E.estado = 'ACTIVO' AND ME.estado = 1 and ME.id_empleado = E.id_empleado ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -480,14 +480,22 @@ function G_getListaEmpleadosXProyecto($id) {
             $idemp = $p["idemp"];
             $nombres = $p["nombres"];
             $apellidos = $p["apellidos"];
+            $rol = $p["id_rol"];
+            $fecha_entrada = $p["fecha_entrada"];
+            $fecha_salida = $p["fecha_salida"];
+            
             if ($nombres == null) {
                 $nombres = "";
             }
             if ($apellidos == null) {
                 $apellidos = "";
             }
+            
             $item = array("idrecurso" => $idemp,
-                "descripcion_recurso" => $nombres.' '.$apellidos
+                "descripcion_recurso" => $nombres.' '.$apellidos,
+                "rol" => $rol,
+                "fe" => $fecha_entrada,
+                "ff" => $fecha_salida
             );
             array_push($lista, $item);
         }
