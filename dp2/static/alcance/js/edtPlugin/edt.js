@@ -12,6 +12,12 @@
           return size;
       };
 
+
+        function showMessageAprOrLinea( msg ){
+          $("#edtMensajeLineaBase").append(msg);
+           $("#edtMensajeLineaBase").append("<br>");
+          $("#edtMensajeLineaBase").show("slow");
+        }
         ///api/AL_EdtAprobado/3
         var rutaAprobado = "../../api/AL_EdtAprobado/" + localStorage.getItem("idProyecto");
         $.ajax({ 
@@ -21,9 +27,13 @@
                       url: rutaAprobado,
                       success: function (data) {
                          if ( data == true){
+                          $("#utilsEdt").hide();
                           $("#editarEdtNew").hide();
                           $("#eliminarEdt").hide();
                           console.log("aprobado", true);
+                          //$("#controllerButton").hide();
+                          showMessageAprOrLinea("La Edt ha sido <strong>aprobada</strong>, no puede editarla");
+                          localStorage.setItem("seguridadEDT", "#fgh2");
                          }
                       }
                        
@@ -42,10 +52,13 @@
                          if ( data.estado_linea_base == "true"){
                           //estado_linea_base
 
-
+                          $("#utilsEdt").hide();
                           $("#editarEdtNew").hide();
                           $("#eliminarEdt").hide();
+                          $("#controllerButton").hide();
                           console.log("verifica", true);
+                          showMessageAprOrLinea("La <strong>Linea base se estableció </strong>, no puede editar la EDT");
+                          localStorage.setItem("seguridadEDT", "#fgh2");
                          }else{
                           console.log("fallo service");
                          }
