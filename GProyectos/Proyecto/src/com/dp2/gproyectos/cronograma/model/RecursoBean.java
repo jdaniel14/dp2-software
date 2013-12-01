@@ -12,7 +12,6 @@ public class RecursoBean implements Serializable {
 	@SerializedName("descripcion_recurso")
 	public String name;
 	
-	
 	public RecursoBean() {
 		super();
 	}

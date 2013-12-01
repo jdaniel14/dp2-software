@@ -10,7 +10,11 @@ import org.apache.http.util.EntityUtils;
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
+import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
+import com.dp2.gproyectos.cronograma.model.RecursoBean;
+import com.dp2.gproyectos.general.entities.InfoBean;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
+import com.dp2.gproyectos.general.model.GetInfoProyectoResponse;
 import com.dp2.gproyectos.general.model.GetListaProyectosResponse;
 import com.dp2.gproyectos.general.model.PruebaResponse;
 import com.google.gson.Gson;
@@ -18,6 +22,7 @@ import com.google.gson.Gson;
 public class ProyectoController extends Controller {
 	public static ProyectoController instance = null;
 	private static ArrayList<ProyectoBean> listaProyectos = null;
+	private static ArrayList<RecursoBean> listaRecursos= null;
 	
 	public static ProyectoController getInstance() {
 		if (instance == null) {
@@ -43,15 +48,11 @@ public class ProyectoController extends Controller {
 			path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
 		else
 			path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL + "/" + id;
-		//String path = "http://localhost:8080/dp2/api/" + ServerConstants.GENERAL_GETLISTAPROYECTOS_URL;
-		//Bonnie se la lleva fácil :3
 		Gson gs = new Gson();
 		String strResponse;
 		GetListaProyectosResponse objResponse = null;
 		
 		strResponse = "{\"prs\":[{\"id\":\"1\",\"nom\":\"P1\",\"jp\":\"JP\",\"tp\":\"TP\",\"fi\":\"\",\"ff\":\"\",\"es\":\"Ok\"},{\"id\":\"31\",\"nom\":\"P1\",\"jp\":\"JP\",\"tp\":\"TP\",\"fi\":\"\",\"ff\":\"\",\"es\":\"Ok\"}]}";
-		//strResponse = getStringFromPOST(path, null);
-		//deberia usarse metodo GET
 		
 		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
 		String result;
@@ -74,5 +75,64 @@ public class ProyectoController extends Controller {
 			listaProyectos = objResponse.proyectos;
 		}
 		return listaProyectos;
+	}
+	
+	public ArrayList<RecursoBean> getRecursos(int id) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_LISTARECURSOSXPROYECTO_URL+String.valueOf(id);
+		Gson gs = new Gson();
+		GetListaRecursosResponse objResponse = null;
+		String strResponse = "";
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
+		String result;
+		if (respuesta != null) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		objResponse = gs.fromJson(result, GetListaRecursosResponse.class);
+		if (objResponse!=null){
+			listaRecursos = objResponse.recursos;
+		}
+		return listaRecursos;
+	}
+	
+	public InfoBean getInformacion(String id) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETINFOPROYECTO_URL+id;
+		Gson gs = new Gson();
+		InfoBean info = null;
+		GetInfoProyectoResponse objResponse = null;
+		String strResponse = "";
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
+		String result;
+		if (respuesta != null) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		objResponse = gs.fromJson(result, GetInfoProyectoResponse.class);
+		if (objResponse!=null){
+			info = objResponse.proyecto.get(0);
+		}
+		return info;
 	}
 }

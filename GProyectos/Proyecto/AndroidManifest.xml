@@ -11,7 +11,7 @@
     
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/maleta"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
          
@@ -22,17 +22,21 @@
             
         </activity>
         <activity android:name="com.dp2.gproyectos.general.view.SplashActivity" >
-             <intent-filter>
+                        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>            
+            </intent-filter> 
+        </activity>
+        <activity android:name="com.dp2.gproyectos.general.view.GeneralHomeProyectoAdministracionS" >
         </activity>
         <activity android:name="com.dp2.gproyectos.general.view.GeneralLoginActivity" >
         </activity>
         <activity android:name="com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity" >
+            
         </activity>
-        
+        <activity android:name="com.dp2.gproyectos.general.view.ListaRecursosXProyecto" >
+        </activity>
         <activity android:name="com.dp2.gproyectos.general.view.GeneralHomeLeccionesListaActivity" >
         </activity>
          <!-- INICIO ACTIVIDADES MODULO GENERAL -->
