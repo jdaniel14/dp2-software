@@ -183,7 +183,12 @@ function enviaDatos(obj){
 		url: rootURL + 'CO_enviarTipoCuenta/'+JSON.stringify(obj),		
 		dataType: "json", 
 		async: true,
-		success:function(data,B){if (data.codRespuesta!='0') alert(data.mensaje);else alert("Exito");}
+		success:function(data){
+			if (data.codRespuesta=='0') 
+				lanzaAlertaExito("divExito","labExito","");
+			else 
+				alert(data.mensaje);
+		}
 	});
 }
 

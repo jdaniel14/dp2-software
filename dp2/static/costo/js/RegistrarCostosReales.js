@@ -440,7 +440,12 @@ function enviaDatos(obj){
 		url: rootURL + 'CO_enviarCostoFijoRealProyecto/'+JSON.stringify(obj),		
 		dataType: "json", 
 		async: true,
-		success:function(data){if (data.codRespuesta!='0') alert(data.mensaje);}
+		success:function(data){
+			if (data.codRespuesta=='0') 
+				lanzaAlertaExito("divExito","labExito","");
+			else 
+				alert(data.mensaje);
+		}
 	});
 
 	/*
