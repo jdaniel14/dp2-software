@@ -483,6 +483,7 @@ function G_getListaEmpleadosXProyecto($id) {
             $rol = $p["id_rol"];
             $fecha_entrada = $p["fecha_entrada"];
             $fecha_salida = $p["fecha_salida"];
+            $profesion = $p["descripcion"];
             
             if ($nombres == null) {
                 $nombres = "";
@@ -495,7 +496,8 @@ function G_getListaEmpleadosXProyecto($id) {
                 "descripcion_recurso" => $nombres.' '.$apellidos,
                 "rol" => $rol,
                 "fe" => $fecha_entrada,
-                "ff" => $fecha_salida
+                "ff" => $fecha_salida,
+                "profesion"=> $profesion
             );
             array_push($lista, $item);
         }
