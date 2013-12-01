@@ -54,7 +54,7 @@ function listarFases(){
 				var fila = $('<tr></tr>');
 				fila.append('<td>'+arr[i].idFase+'</td>');
 				fila.append('<td>'+arr[i].descFase+'</td>');
-				fila.append('<td><input type="text" class="form-control calendar" value="'+arr[i].fecha+'" readOnly / ></td>');
+				fila.append('<td><input type="text" class="form-control calendar" value="'+(arr[i].fecha == "0000-00-00" ? "": arr[i].fecha)+'" readOnly / ></td>');
 				fila.append('<td><input class="form-control"  value="'+arr[i].entregable+'" / ></td>');
 				tabla.append(fila);
 			}

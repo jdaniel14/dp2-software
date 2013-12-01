@@ -48,7 +48,7 @@ function cargarComboResponsable(){
 		success:function(data){
 			for(obj in data){
 				var opt = $("<option></option>");
-				opt.val(data[obj]["id_empleado"]);
+				opt.val(data[obj]["id_miembros_equipo"]);
 				opt.html(data[obj]["nombre_corto"]);
 				$("#id_empleado").append(opt);
 			}

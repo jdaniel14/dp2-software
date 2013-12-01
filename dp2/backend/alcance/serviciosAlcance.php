@@ -44,6 +44,7 @@
 		$pstmt= $con->prepare("SELECT * FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo= ?");
 		$pstmt->execute(array($id_paquete));
 		$paquete= $pstmt->fetch(PDO::FETCH_ASSOC);
+		$paquete["numero_personas"] = $paquete["numero_serie"];
 		$paquete["id_empleado"]= $paquete["id_miembros_equipo"];
 		echo json_encode($paquete);
 	}
@@ -51,7 +52,7 @@
 	function listaDiccionario($id_edt){
 
 		$con = getConnection();
-		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), IFNULL(P.ultima_actualizacion,'No actualizado'), E.descripcion as estado  ".
+		$pstmt = $con->prepare("SELECT  P.id_paquete_trabajo, P.nombre, IFNULL(P.descripcion,''), IFNULL(P.version,'1'), IFNULL(P.ultima_actualizacion,'No actualizado'), E.descripcion as estado ".
 			"FROM PAQUETE_TRABAJO P , ESTADO_EDT E ".
 			"WHERE E.id_estado = P.id_estado AND P.id_edt= ? 
 			AND (SELECT count(*) FROM PAQUETE_TRABAJO WHERE id_componente_padre = P.id_paquete_trabajo) = 0");
@@ -89,10 +90,11 @@
 			referencias_tecnicas=?,
 			informacion_contrato=?,
 			id_estado=?,
-			ultima_actualizacion=?
+			ultima_actualizacion=?,
+			numero_serie=?
 			WHERE id_paquete_trabajo=?");
 		$pstmt->execute(array(
-			$miembros_equipo,
+			$val["id_empleado"],
 			$val["descripcion"],
 			$val["criterios_aceptacion"],
 			$val["entregables"],
@@ -107,6 +109,7 @@
 			$val["informacion_contrato"],
 			$val["id_estado"],
 			date('Y-m-d H:i:s'),
+			$val["numero_personas"],
 			$val["id_paquete_trabajo"]
 		));
 		$pstmt = $con->prepare("SELECT id_componente_padre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo = ?");
@@ -120,14 +123,15 @@
 	}
 
 	function actualizaPadre($id_paquete,$con){
-		$pstmt = $con->prepare("SELECT SUM(costo) as costo, SUM(dias) as dias, id_componente_padre FROM PAQUETE_TRABAJO WHERE id_componente_padre = ?");
+		$pstmt = $con->prepare("SELECT SUM(costo) as costo, SUM(dias) as dias, SUM(CAST(numero_serie as UNSIGNED)) as numero_personas , id_componente_padre FROM PAQUETE_TRABAJO WHERE id_componente_padre = ?");
 		$pstmt->execute(array($id_paquete));
 		if($res = $pstmt->fetch(PDO::FETCH_ASSOC)){
 			$pstmt = $con->prepare("UPDATE PAQUETE_TRABAJO SET 
 			dias=?,
-			costo=?
+			costo=?,
+			numero_serie=?
 			WHERE id_paquete_trabajo=?");
-			$pstmt->execute(array($res["dias"],$res["costo"],$id_paquete));
+			$pstmt->execute(array($res["dias"],$res["costo"],$res["numero_personas"],$id_paquete));
 			$pstmt = $con->prepare("SELECT id_componente_padre from PAQUETE_TRABAJO WHERE id_paquete_trabajo=?");
 			$pstmt->execute(array($id_paquete));
 			$res = $pstmt->fetch(PDO::FETCH_ASSOC);

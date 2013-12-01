@@ -1122,8 +1122,9 @@ function getEdt(){
         }
         else{
           //si no existe se inserta
+          if($data["fecha"]=="" || $data["entregable"]=="") return;
           $pstmt= $con->prepare("INSERT INTO FASE_X_REQUISITO (id_fase,id_requisito,entregable,fecha) VALUES (?,?,?,?)");
-          $pstmt->execute(array($data["idFase"],$data["id_requisito"],$data["entregable"],$data["fecha"]));
+          $pstmt->execute(array($data["idFase"],$data["id_requisito"] ,$data["entregable"] == "" ? null :$data["entregable"] ,$data["fecha"] == "" ? null :$data["fecha"]));
         }
       }
       catch (PDOException $e) {
