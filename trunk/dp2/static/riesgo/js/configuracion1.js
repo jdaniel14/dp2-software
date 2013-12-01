@@ -11,6 +11,10 @@ var idProyectoLocal = localStorage.getItem("idProyecto");
 var rol = localStorage.getItem("idRol");
 var tamanho, tamanho2=0;
 
+function obtenerTitulo() {
+        document.getElementsByTagName('h2')[0].innerHTML = localStorage.getItem("nombreProyecto");
+    }
+
 function validAtenas2() {
     var i = 0;
     var valor;
@@ -42,7 +46,7 @@ function validAtenas2() {
 function main() {
     arregloPermisoJP = ["agregar", "btnGuardar", "btnModalAgregarNivelImpacto", "btnModalEliminarTablaNivelImpacto",
         "btnModalAgregarNivel", "btnModalEliminarTabla"];
-
+    obtenerTitulo();
 
 
     for (var i = 0; i < arregloPermisoJP.length; i++) {
