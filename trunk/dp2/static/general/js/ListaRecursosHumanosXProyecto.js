@@ -21,8 +21,8 @@ $(document).ready(function(){
         $(".seleccionado").each(function(){
         		$(this).prepend("<td></td>");
             	$(this).append("<td><button type='button' class='btn btn-danger' onclick = asd($(this).parent().parent());>Eliminar</button></td>");
-            	$(this)
-            	$(this).removeClass("seleccionado");
+              	$(this).removeClass("seleccionado");
+  				$(this).unbind( "click" );
             	$(this).addClass("noMostrar");
             	//console.log("click");
                $("#ListaRecursosHumanosXProyecto").append($(this));
