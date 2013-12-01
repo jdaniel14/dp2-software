@@ -114,7 +114,7 @@ function main() {
             success: function() {
                 // alert("Registrado con éxito");
 
-                ("#labelExitoModal").html("");
+                $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Registrado con éxito");
                 $('#modalExito').modal('show');
                 

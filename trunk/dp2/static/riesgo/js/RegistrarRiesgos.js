@@ -264,7 +264,7 @@ function main() {
                 // alert(item);
 
 
-                ("#labelExitoModal").html("");
+                $("#labelExitoModal").html("");
                 $("#labelExitoModal").append(item);
                 $('#modalExito').modal('show');
                 listarRiesgos();
@@ -323,12 +323,14 @@ function main() {
    
 
         var data = {
-            idRiesgoProyecto: idArray,
+            idRiesgoXProyecto: idArray,
             idUsuario: localStorage.getItem("idUsuario"),
             idProyecto: localStorage.getItem("idProyecto")
 
         }
         var jsonData = JSON.stringify(data);
+        console.log(estadoLogico);
+        console.log(data);
         if (estadoLogico == 1) {
             $.ajax({
                 async: false,
@@ -551,11 +553,11 @@ function main() {
     }
     function obtenerRiesgo(id) {
 
-        limpiarImpacto();
-        limpiarObtener();
-        limpiarModificar();
+        // limpiarImpacto();
+        // limpiarObtener();
+        // limpiarModificar();
         var data = {
-            id_riesgo_x_proyecto: id,
+            idRiesgoXProyecto: id,
             idProyecto: localStorage.getItem("idProyecto"),
             idUsuario: localStorage.getItem("idUsuario")
 
@@ -569,14 +571,26 @@ function main() {
             data: jsonData,
             dataType: "json",
             success: function(data) {
+                limpiarImpacto();
+                limpiarObtener();
+                limpiarModificar();
                 var item = data;
                 tipoImpacto = item.tipoImpacto;
                 $('#idRiesgoM').val(id);
                 $('#nomRiesgoM').val(item.nombre);
                 if (item.paqueteTrabajo == null) {
                     $('#paqEdtM').val(0);
-                } else
-                    $('#paqEdtM').val(item.paqueteTrabajo);
+                } else{
+
+                    // $('#paqEdtM').val(item.paqueteTrabajo);
+
+                    $.each(listaPaquetes, function(i, value) {
+                        if (value.descripcion==item.paqueteTrabajo){
+                            $('#paqEdtM').val(value.id);
+                            return false;
+                        }
+                    });
+                }
                 $('#tipoRiesgoM').val(item.tipoRiesgo);
                 if (item.idTipoImpacto != null) {
                     $('#tipoImpactoM').val(item.idTipoImpacto);
@@ -688,7 +702,7 @@ function main() {
                         idUsuario: localStorage.getItem("idUsuario")
                     }
                     var jsonData = JSON.stringify(data);
-                    idArray = idRiesgoProyecto;
+                    idArray = $(this).closest("tr").attr("id");
                     $.ajax({
                         async: false,
                         type: 'GET',
@@ -873,11 +887,15 @@ function main() {
                 arreglo.impactoDescripcion = '-';
             }
             if (arreglo.estadoLogico == 1) {
-                tipoCheckbox = "</td><td align=\"center\"><input type=\"checkbox\" value=\"" + arreglo.idRiesgoProyecto + "\">";
-                arreglo.estadoLogico = "Por confirmar"
+                tipoCheckbox = "<td align=\"center\"><input type=\"checkbox\" value=\"" + arreglo.idRiesgoProyecto + "\"></td>";
+                arreglo.estadoLogico = "Por confirmar";
+                tipoBotonAcciones= "<td><a href=\"../riesgo/AccionesRiesgos.html\" id=\"btnAcciones\" class='btn btn-primary acciones' disabled>Acciones</a></td>";
+                tipoBotonMaterializar = "<td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\" disabled>Materializar</a></td></tr>";
             } else if (arreglo.estadoLogico == 2) {
-                tipoCheckbox = "</td><td align=\"center\"><input type=\"checkbox\" value=\"" + arreglo.idRiesgoProyecto + "\" disabled >";
-                arreglo.estadoLogico = "Confirmado"
+                tipoCheckbox = "<td align=\"center\"><input type=\"checkbox\" value=\"" + arreglo.idRiesgoProyecto + "\" disabled ></td>";
+                arreglo.estadoLogico = "Confirmado";
+                tipoBotonAcciones= "<td><a href=\"../riesgo/AccionesRiesgos.html\" id=\"btnAcciones\" class='btn btn-primary acciones'>Acciones</a></td>";
+                tipoBotonMaterializar = "<td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>";
             }
             $("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto +
                     "\"><td>" + arreglo.idRiesgoProyecto +
@@ -894,10 +912,9 @@ function main() {
                     "</td><td>" + arreglo.estadoLogico +
                     "</td><td>" + arreglo.nombreResponsable +
                     "</td><td><a href=\"#\"><span class=\"glyphicon glyphicon-edit\"></span></a>" +
-                    "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a>" +
+                    "</td><td><a data-toggle=\"modal\" href=\"#confirmDelete\" > <span class=\"glyphicon glyphicon-remove\"></span></a></td>" +
                     // "</td><td><a data-toggle=\"modal\" href=\"#confirmRisk\" ><span class=\"glyphicon glyphicon-ok\"></span></a>" +
-                    tipoCheckbox + "</td><td><a href=\"../riesgo/AccionesRiesgos.html\" id=\"btnAcciones\" class='btn btn-primary acciones'>Acciones</a></td>" +
-                    "</td><td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>");
+                    tipoCheckbox + tipoBotonAcciones + tipoBotonMaterializar);
             $("#tablaRiesgosGlobal").trigger("update");
         }
     }
@@ -942,7 +959,7 @@ function main() {
     function grabarRiesgos() {
         // alert("Se grabó");
 
-        ("#labelExitoModal").html("");
+        $("#labelExitoModal").html("");
         $("#labelExitoModal").append("Se grabó");
         $('#modalExito').modal('show');
     }

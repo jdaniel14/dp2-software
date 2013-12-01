@@ -52,9 +52,9 @@ function main(){
 
 				} else { //La actividad escogida aún no se inicia
 					//LINEA BASE?
-					$("#nuevoNombre").prop("readonly",true);
+					$("#nuevoNombre").prop("readonly",false);
 					$("#nuevoNombre").val(nombreAccion);
-					$("#fechaInicioActual2").prop("readonly",false);
+					$("#fechaInicioActual2").prop("readonly",true);
 				}
 
 				fecha = new Date(value.fecha_inicio);
@@ -110,7 +110,7 @@ function main(){
 				success: function(data){
 					// alert("Se actualizó");
 
-					("#labelExitoModal").html("");
+					$("#labelExitoModal").html("");
 	                $("#labelExitoModal").append("Se actualizó");
 	                $('#modalExito').modal('show');
 					// obtenerCostoRealActual(costoNuevo);

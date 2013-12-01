@@ -11,6 +11,7 @@ var arregloPermisoJP = new Array();
 var arregloPermisoGP = new Array();
 var arregloPermisoMP = new Array();
 var rol = localStorage.getItem("idRol");
+tamanho2=0;
 
 
 function lineaBase() {
@@ -157,7 +158,7 @@ function main() {
 
         var i = tamanho + 1;
 
-        if (parseInt(tamanho) === 0) {
+        if (parseInt(tamanho2) === 0) {
 
             var data = {
                 idRiesgoXProyecto: idRiesgo,

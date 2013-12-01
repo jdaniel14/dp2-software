@@ -1273,7 +1273,7 @@
             //Se selecciona la accion
             $query = "UPDATE ACCIONES_X_RIESGO SET  fecha_inicio=:fecha_inicio, tiempo_real=:tiempo_real , id_actividad=:id_actividad , descripcion=:descripcion
             WHERE id_acciones_x_riesgo=:id_acciones_x_riesgo";
-            var_dump($riesgo);
+            // var_dump($riesgo);
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
