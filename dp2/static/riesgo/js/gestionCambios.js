@@ -1,4 +1,4 @@
-
+var updateStatus= "../../api/R_actualizarEstadoRiesgoProyecto";
 
 
 $(document).ready(main);
@@ -82,8 +82,8 @@ function listarCambiosGantt(){
 function rechazar_cambios(id){
     
      var data = {
-            id:id,
-            flag:0,
+            idRiesgoXProyecto:id,
+            flagAceptadoRechazado:0,
             idProyecto : idProyectoLocal,
             idUsuario: localStorage.getItem("idUsuario")
                
@@ -92,8 +92,8 @@ function rechazar_cambios(id){
         
         var jsonData = JSON.stringify(data);
         $.ajax({
-            type: 'POST',
-            url: "../../api/CR_updateActividad/",
+            type: 'PUT',
+            url: updateStatus,
             data: jsonData,
              success: function(data) {
                 var item=JSON.parse(data);
@@ -124,9 +124,10 @@ function guardar_cambios(id){
                
         };
        idAct=data.id;
+
         var data1 = {
-            id:id,
-            flag:1,
+            idRiesgoXProyecto:id,
+            flagAceptadoRechazado:1,
             idProyecto : idProyectoLocal,
             idUsuario: localStorage.getItem("idUsuario")
                
@@ -138,41 +139,30 @@ function guardar_cambios(id){
      
       var jsonData1 = JSON.stringify(data1);
      $.ajax({
-            type: 'POST',
-            url: "../../api/CR_updateActividad/",
-            data: jsonData,
-             success: function(data) {
-                var item=JSON.parse(data);
-               // alert(item['codRespuesta']);
-                // alert("Registrado con éxito");
-                
-                $("#prueba"+idAct).hide();
-
-                $("#labelExitoModal").html("");
-                $("#labelExitoModal").append("Registrado con éxito");
-                $('#modalExito').modal('show');
-
-
-                $.ajax({
-                    type: 'POST',
-                    url: "../../api/CR_updateActividad/",
-                    data: jsonData1,
-                     success: function(data1) {
-                        
-                        
-                        
-                        
-                  
-                         }
-
-                        });
-                 }
+        type: 'POST',
+        url: "../../api/CR_updateActividad/",
+        data: jsonData,
+        success: function(data) {
+            var item=JSON.parse(data);
+           // alert(item['codRespuesta']);
+            // alert("Registrado con éxito");
             
-            
-            
-        });
+            $("#prueba"+idAct).hide();
 
-       console.log(data);
+            $.ajax({
+                type: 'PUT',
+                url: updateStatus,
+                data: jsonData1,
+                success: function(data1) {
+                    
+                  $("#labelExitoModal").html("");
+                  $("#labelExitoModal").append("Registrado con éxito");
+                  $('#modalExito').modal('show');
+                }                        
+            });
+        }
+      });
+      console.log(data);
     
     
 }
