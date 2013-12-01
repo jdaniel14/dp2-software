@@ -1,16 +1,16 @@
 var updateStatus= "../../api/R_actualizarEstadoRiesgoProyecto";
-
+var verificaLineaBase = "../../api/G_verificaLineaBase";
 
 $(document).ready(main);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var idAct;
-var lineaBase; //YA ATENAS IF(lineaBase) arreglar
+var lineaBase1; //YA ATENAS IF(lineaBase) arreglar
 function main(){
 	listarCambiosGantt();
 
 	obtenerTitulo();
 		
-
+  lineaBase();
 }
 
 function lineaBase() {
@@ -22,7 +22,8 @@ function lineaBase() {
         url: verificaLineaBase + '/' + idProyecto,
         success: function(data) {
             obj = JSON.parse(data);
-            lineaBase = JSON.parse(obj.estado_linea_base);
+            lineaBase1 = JSON.parse(obj.estado_linea_base);
+            console.log(lineaBase1);
         },
         fail: function(data) {
             $("#labelErrorModal").html("");
@@ -101,7 +102,8 @@ function listarCambiosGantt(){
           }
         }
         $(".btn-primary").show();
-        if(lineaBase) {
+        console.log(lineaBase1);
+        if(lineaBase1) {
           $(".btn-primary").hide();
         } 
 
