@@ -189,9 +189,8 @@ public class CostosIndicadoresActivity extends SherlockFragmentActivity implemen
 					i.putExtra("descripcion", descripcion);
 					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
 					i.putExtra("idProyecto", idProyecto);
-					overridePendingTransition(0, 0);
-					startActivity(i);
-					overridePendingTransition(0, 0);
+					startActivityForResult(i, 1);
+					
 				}
 			});
 			
@@ -353,9 +352,7 @@ public class CostosIndicadoresActivity extends SherlockFragmentActivity implemen
 					i.putExtra("descripcion", descripcion);
 					i.putExtra("fecha", selectedDay + "-" + selectedMonth + "-" + selectedYear);
 					i.putExtra("idProyecto", idProyecto);
-					overridePendingTransition(0, 0);
-					startActivity(i);
-					overridePendingTransition(0, 0);
+					startActivityForResult(i, 1);
 				}
 			});
 			

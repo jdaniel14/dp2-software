@@ -6,11 +6,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.entities.InfoBean;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
+import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.components.BotonIconTexto;
 
 public class GeneralHomeProyectoAdministracionS extends SherlockActivity
@@ -35,7 +37,7 @@ public class GeneralHomeProyectoAdministracionS extends SherlockActivity
 
 		txtNombreProyecto = (TextView) findViewById(R.id.txtNombreProyecto);
 		txtPrioridad = (TextView) findViewById(R.id.txtPrioridad);
-		txtTipoProyecto = (TextView) findViewById(R.id.txtTipoProyecto);
+		txtTipoProyecto = (TextView) findViewById(R.id.txtTipo);
 		txtFechaInicio = (TextView) findViewById(R.id.txtFechaInicio);
 		txtFechaFin = (TextView) findViewById(R.id.txtFechaFin);
 		txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
@@ -47,6 +49,13 @@ public class GeneralHomeProyectoAdministracionS extends SherlockActivity
 			e.printStackTrace();
 		}
 
+		try {
+			new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

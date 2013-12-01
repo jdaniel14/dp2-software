@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@color/azul"
+        android:background="@color/barra_menu"
         android:orientation="horizontal"
         android:paddingBottom="5dp"
         android:paddingLeft="15dp"

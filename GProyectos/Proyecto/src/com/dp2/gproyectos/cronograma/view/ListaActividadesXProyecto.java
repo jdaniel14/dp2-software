@@ -102,9 +102,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 				i.putExtra("idProyecto", idProyecto);
 				i.putExtra("nombreProyecto", nombreProyecto);
 				
-				overridePendingTransition(0, 0);
-				startActivity(i);
-				overridePendingTransition(0, 0);
+				startActivityForResult(i, 1);
 				
 //				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ListaActividadesXProyecto.this);
 //				
@@ -127,7 +125,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 				Intent i = new Intent(ListaActividadesXProyecto.this, Gantt.class);
 				i.putExtra("idProyecto", idProyecto);
 				i.putExtra("nombreProyecto", nombreProyecto);
-				startActivity(i);
+				startActivityForResult(i, 1);
 			}
 		});
 		
@@ -264,7 +262,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 			i.putExtra("nombre_actividad", tasks.get(posicionPasar - 1).name);
 			i.putExtra("idProyecto", idProyecto);
 			i.putExtra("nombreProyecto", nombreProyecto);
-			startActivity(i);			
+			startActivityForResult(i, 1);			
 			
 		}
 		else if (rspta.equals(MENUACT_OP_LISTARRECURSOS)){
