@@ -422,7 +422,7 @@
     function R_postRegistrarEstrategias(){
         $request = \Slim\Slim::getInstance()->request();
         $listaEstrategia = json_decode($request->getBody());
-        //if (R_verificaPermisoServicio(R_SERVICIO_111, $listaEstrategia->idUsuario, $listaEstrategia->idProyecto)) {
+        if (R_verificaPermisoServicio(R_SERVICIO_111, $listaEstrategia->idUsuario, $listaEstrategia->idProyecto)) {
             if ($listaEstrategia->tipo == 1){
                 R_deleteEstrategiasPositivo($listaEstrategia->idProyecto);
             } else{
@@ -448,28 +448,28 @@
                     echo json_encode(array("me"=> $e->getMessage()));
                 }
             }
-        //} else {
-        //    echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
-        //}
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
     }
 
     function R_deleteEstrategiasPositivo($json){
         $proy = json_decode($json);
-        if (R_verificaPermisoServicio(R_SERVICIO_112, $proy->idUsuario, $proy->idProyecto)) {
+        //if (R_verificaPermisoServicio(R_SERVICIO_112, $proy->idUsuario, $proy->idProyecto)) {
             $sql = "DELETE FROM CATEGORIZACION_ESTRATEGIAS WHERE tipo = 1 AND id_Proyecto=:idProyecto";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam("idProyecto", $proy->idProyecto);
+                $stmt->bindParam("idProyecto", $proy);
                 $stmt->execute();
                 $db = null;
                 echo '{Categorizacion de estrategias eliminados con exito}';
             } catch(PDOException $e) {
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
-        } else {
-            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
-        }
+        //} else {
+        //    echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        //}
     }
 
     function R_deleteEstrategiasNegativo($json){
