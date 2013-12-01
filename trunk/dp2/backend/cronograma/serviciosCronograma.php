@@ -8,7 +8,7 @@ include('routesCronograma.php');
 include('clasesCronograma.php');
 include_once '../backend/conexion.php';
 
-//Servicios
+//Servicios 3S43L
 
 
 function CR_getActividades($json) {//servicio1
@@ -485,11 +485,15 @@ function CR_validarActividades($actividades){
 			and (? between A.fecha_plan_inicio and A.fecha_plan_fin)
 			and (? between A.fecha_plan_inicio and A.fecha_plan_fin) ;";
 			
+	$numero_fila=1;		
 	try {
         $db = getConnection();
 		$stmt = $db->prepare($sql);
 		foreach($actividades->task as $A){
-		
+			$id_wbs_node=(property_exists($A, 'id_Wbs')) ? $A->id_Wbs : null;
+			if (($A->level)>0 and ($id_wbs_node==-1 or $id_wbs_node==null))
+				return CR_obtenerRespuestaError("En la fila ".$numero_fila.", La actividad ". $A->name . " no tiene asignado un paquete de trabajo.");
+			//(property_exists($actividad, 'id_Wbs')) ? $actividad->id_Wbs : null
 			foreach ($A->assigs as $R){
 				$stmt->execute(array($actividades->idProyecto+0,$R->idrecurso+0));
 				$p = $stmt->fetch(PDO::FETCH_ASSOC); 
@@ -509,7 +513,7 @@ function CR_validarActividades($actividades){
 						$stmt2_1->execute(array($actividades->idProyecto+0,$id_miembros_equipo+0));
 						$p2_1 = $stmt2_1->fetch(PDO::FETCH_ASSOC) ;
 						$db = null;
-						return CR_obtenerRespuestaError("En la fila".$A->id ."El recurso ". $p["descripcion"]." fue asignado en fechas invalidas. Debe estar entre ".$p2_1["fecha_entrada"]." y ".$p2_1["fecha_salida"]);
+						return CR_obtenerRespuestaError("En la fila ".$numero_fila .", El recurso ". $p["descripcion"]." fue asignado en fechas invalidas. Debe estar entre ".$p2_1["fecha_entrada"]." y ".$p2_1["fecha_salida"]);
 					}
 					else{
 							$stmt3= $db->prepare($sql3);
@@ -519,13 +523,14 @@ function CR_validarActividades($actividades){
 							if ($p3["cantidad"]>0){
 								$db = null;
 								//echo "mira aca 2";
-								return CR_obtenerRespuestaError( "En la fila".$A->id ."El recurso ". $p["descripcion"]." ya tiene ocupado algunos dias en otro proyecto" );
+								return CR_obtenerRespuestaError( "En la fila ".$numero_fila .", El recurso ". $p["descripcion"]." ya tiene ocupado algunos dias en otro proyecto" );
 							}
 					}
 				}
 				
 				
 			}
+			$numero_fila++;
 		}
 		$db = null; 
 	} catch (PDOException $e) {
