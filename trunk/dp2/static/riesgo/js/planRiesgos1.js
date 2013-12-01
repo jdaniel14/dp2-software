@@ -27,7 +27,7 @@ function validEstrategia1() {
     if (parseInt(puntajeMax) < parseInt(cantidadEstrategias)) {
         $("#labelErrorModal").html("");
         $("#labelErrorModal").append("La cantidad de estrategias no debe ser mayor al puntaje maximo");
-        $('#ModaldeErrores').modal('show');
+        $('#ModaldeErrores').modal("show");
 
         // alert("la cantidad de estrategias no debe ser mayor al puntaje maximo");
         return false;
@@ -36,14 +36,14 @@ function validEstrategia1() {
         // alert("la cantidad de Estrategias no puede ser vacio");
         $("#labelErrorModal").html("");
         $("#labelErrorModal").append("La cantidad de Estrategias no puede ser vacio");
-        $('#ModaldeErrores').modal('show');
+        $('#ModaldeErrores').modal("show");
         return false;
     }
     if (cantidadEstrategias > 4 || cantidadEstrategias < 2) {
         // alert("la cantidad de Estrategias debe ser entre 2 y 4");
         $("#labelErrorModal").html("");
         $("#labelErrorModal").append("La cantidad de Estrategias debe ser entre 2 y 4");
-        $('#ModaldeErrores').modal('show');
+        $('#ModaldeErrores').modal("show");
         return false;
     }
 
@@ -57,21 +57,21 @@ function validEstrategia2() {
         // alert("la cantidad de estrategias no debe ser mayor al puntaje maximo");
         $("#labelErrorModal").html("");
         $("#labelErrorModal").append("La cantidad de estrategias no debe ser mayor al puntaje maximo");
-        $('#ModaldeErrores').modal('show');
+        $('#ModaldeErrores').modal("show");
         return false;
     }
     if (cantidadEstrategias == null || cantidadEstrategias.length == 0) {
         // alert("la cantidad de Estrategias no puede ser vacio");
         $("#labelErrorModal").html("");
         $("#labelErrorModal").append("La cantidad de Estrategias no puede ser vacio");
-        $('#ModaldeErrores').modal('show');
+        $('#ModaldeErrores').modal("show");
         return false;
     }
     if (cantidadEstrategias > 4 || cantidadEstrategias < 2) {
         // alert("la cantidad de Estrategias debe ser entre 2 y 4");
         $("#labelErrorModal").html("");
         $("#labelErrorModal").append("La cantidad de Estrategias debe ser entre 2 y 4");
-        $('#ModaldeErrores').modal('show');
+        $('#ModaldeErrores').modal("show");
         return false;
     }
 
@@ -93,7 +93,7 @@ function validCampos1() {
             // alert("Debe registrar todos los campos");
             $("#labelErrorModal").html("");
             $("#labelErrorModal").append("Debe registrar todos los campos");
-            $('#ModaldeErrores').modal('show');
+            $('#ModaldeErrores').modal("show");
             return false;
 
         }
@@ -595,17 +595,17 @@ function  agregarEquipo() {
         dataType: "json",
         success: function(data) {
 
-            $("#labelExitoModal").html("");
-            $("#labelExitoModal").append("Se registró el equipo exitosamente");
-            $('#modalExito').modal('show');
+            // $("#labelExitoModal").html("");
+            // $("#labelExitoModal").append("Se registró el equipo exitosamente");
+            // $("#modalExito").modal("show");
 
             // alert("Se registró el equipo exitosamente");
         },
         fail: function(data) {
-            // alert(data.me);
-            $("#labelErrorModal").html("");
-            $("#labelErrorModal").append("Se encontro un Error: "+data.me);
-            $('#ModaldeErrores').modal('show');
+            alert(data.me);
+            // $("#labelErrorModal").html("");
+            // $("#labelErrorModal").append("Se encontro un Error: "+data.me);
+            // $("#ModaldeErrores").modal("show");
         }
     });
 
@@ -641,16 +641,16 @@ function  agregarComite() {
         data: jsonData,
         dataType: "json",
         success: function(data) {
-            // alert("Se registró el comite exitosamente");
-            $("#labelExitoModal").html("");
-            $("#labelExitoModal").append("Se registró el comite exitosamente");
-            $('#modalExito').modal('show');
+            alert("Se registró el comite exitosamente");
+            // $("#labelExitoModal").html("");
+            // $("#labelExitoModal").append("Se registró el comite exitosamente");
+            // $("#modalExito").modal("show");
         },
         fail: function(data) {
-            // alert(data.me);
-            $("#labelErrorModal").html("");
-            $("#labelErrorModal").append("Se encontro un Error: "+data.me);
-            $('#ModaldeErrores').modal('show');
+            alert(data.me);
+            // $("#labelErrorModal").html("");
+            // $("#labelErrorModal").append("Se encontro un Error: "+data.me);
+            // $("#ModaldeErrores").modal("show");
         }
     });
 
