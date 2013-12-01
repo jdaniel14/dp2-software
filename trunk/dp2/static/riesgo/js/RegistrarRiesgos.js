@@ -681,7 +681,7 @@ function main() {
                 });
                 $(".materializar").click(function() {
                     idArray = $(this).closest("tr").attr("id");
-                  
+                    $("#accionEscogida").html("");
                 });
 
                 $(".glyphicon.glyphicon-edit").click(function() {

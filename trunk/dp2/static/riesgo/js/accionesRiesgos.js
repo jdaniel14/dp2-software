@@ -391,8 +391,8 @@ function listaAcciones() {
             console.log(obj);
             $("#tablaAcuerdos").append("<tr>" +
                     "<td width=\"40%\"><b>Acción</b></td>" +
-                    "<td width=\"30%\"><b>Costo</b></td>" +
-                    "<td width=\"30%\"><b>Tiempo</b></td>" +
+                    "<td width=\"30%\"><b>Costo (Soles)</b></td>" +
+                    "<td width=\"30%\"><b>Tiempo (Dias)</b></td>" +
                     "<td width=\"30%\"><b>Eliminar</b></td>" +
                     "</tr>");
             $.each(obj, function(index) {
