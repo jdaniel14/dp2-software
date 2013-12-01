@@ -66,5 +66,7 @@
 
 	//Integracion Cronograma
 	$app->get('/R_obtenerCantidadDiasAproximadoxPaquete/:var', 'R_getCantidadDiasAproximadoxPaquete');
+	$app->put('/R_actualizarEstadoRiesgoProyecto','R_updateEstadoRiesgoProyecto');
+	
 
 ?>

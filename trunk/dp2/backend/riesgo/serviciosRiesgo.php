@@ -1433,4 +1433,31 @@
         }*/
     }
 
+    
+   function R_updateEstadoRiesgoProyecto(){
+        $request = \Slim\Slim::getInstance()->request();
+        $riesgo = json_decode($request->getBody());
+        if (R_verificaPermisoServicio(R_SERVICIO_39, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            
+            $query = "UPDATE ACCIONES_X_RIESGO SET flag_aceptado_rechazado=:flag_aceptado_rechazado
+            WHERE  id_acciones_x_riesgo=:id_acciones_x_riesgo;";
+            
+            try {
+                $db = getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_acciones_x_riesgo", $riesgo->idRiesgoXProyecto);
+                $stmt->bindParam("flag_aceptado_rechazado", $riesgo->flagAceptadoRechazado);
+                $stmt->execute();
+                $db = null;
+                echo json_encode('Se actualizo el estado de la actividad');
+            } catch(PDOException $e) {
+                echo json_encode(array("me"=> $e->getMessage()));
+            }
+        } else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }
+
+    }
+
+
 ?>
