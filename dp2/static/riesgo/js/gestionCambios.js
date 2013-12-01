@@ -89,25 +89,7 @@ function guardar_cambios(id){
                
         };
        idAct=data.id;
-        var data2 = {
-          idActividad : id,
-          idProyecto : idProyectoLocal,
-          idUsuario: localStorage.getItem("idUsuario")
-        };
 
-        var jsonData2 = JSON.stringify(data2);
-
-        $.ajax({
-            async: false,
-            type: 'GET',
-            url: "../../api/R_obtenerCostoReal/" + jsonData2,
-             success: function(data3) {
-                console.log(data3);
-           
-            },
-       
-            
-        });
 
        console.log(data);
      var jsonData = JSON.stringify(data);
@@ -122,24 +104,11 @@ function guardar_cambios(id){
                 
                 $("#prueba"+idAct).hide();
 
-                ("#labelExitoModal").html("");
+                $("#labelExitoModal").html("");
                 $("#labelExitoModal").append("Registrado con éxito");
                 $('#modalExito').modal('show');
 
                  }
-            
-        });
-
-           
-     $.ajax({
-            async: false,
-            type: 'GET',
-            url: "../../api/R_obtenerCostoReal/" + jsonData2,
-             success: function(data3) {
-                console.log(data3);
-           
-            },
-        
             
         });
 
