@@ -48,7 +48,7 @@ function submenuGeneralGP_general(){
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "General"
+                "title" => "Integración"
             );
 
 		 return $submenu;
@@ -169,7 +169,7 @@ function submenuGP_general(){
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "General"
+                "title" => "Integración"
             );
 
 		 return $submenu;
