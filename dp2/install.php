@@ -102,7 +102,11 @@ function restaurarBD(){
 	//$sql = preg_replace('@/*!50013 DEFINER.*?*/@' , '' , $sql);
 	$con->exec($outputSql);
 	//insertar los datos iniciales
+	$sql = file_get_contents('../dataInicial.sql');
+	$con->exec($sql);
 
+	$sql = file_get_contents('../triggers.sql');
+	$con->exec($sql);
 	//cambiar el archivo de conexion
 	//obtener el archivo plantilla
 	$code = file_get_contents('../conexion.tpl.php');
@@ -122,15 +126,15 @@ function crearUsuario(){
 	$nombre = $val["nombreUsuario"];
 	$apellido = $val["apellidoUsuario"];
 	//ejecutar query;
-	
+	date_default_timezone_set("America/Lima");
 	$con = getConnection();
-	$con->exec("set_foreign_key_checks = false");
+	$con->exec("set foreign_key_checks = false");
 	$pstmt= $con->prepare("INSERT INTO EMPLEADO (id_empleado,nombres,apellidos,nombre_corto,pago_mensual,id_profesion,estado) values (?,?,?,?,?,?,?)");
 	$pstmt->execute(array(1,$nombre,$apellido,$nombre.' '.$apellido,1000,1,'ACTIVO'));
 
 	$pstmt= $con->prepare("INSERT INTO SEGURIDAD (id_seguridad,user,password,nivel_autorizacion,fecha_creacion,id_empleado) values (?,?,?,?,?,?)");
 	$pstmt->execute(array(1,$user,$pass,1,date('Y-m-d H:i:s'),1));
-	$con->exec("set_foreign_key_checks = true");
+	$con->exec("set foreign_key_checks = true");
 	echo 200;
 }
 

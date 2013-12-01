@@ -15,8 +15,6 @@ INSERT INTO CATEGORIA_REQUISITO VALUES (1,'Organizacional'),(2,'Funcional'),(3,'
 
 INSERT INTO ESTADO_ER VALUES (1,'Aprobado'),(2,'Rechazado');
 
-COMMIT;
-
 /*RIESGOS*/
 INSERT INTO `RIESGO_COMUN` VALUES (1,'Caida del repositorio',40,60,NULL,0),(2,'El encargado del proyecto se retira del equipo',10,90,NULL,0),(3,'Se levantó mal los requerimientos del sistema',30,80,NULL,0),(4,'El sector economico donde se ubica el proyecto ha crecido',80,40,NULL,1),(5,'Aumento del presupuesto asignado',23,70,NULL,1),(6,'El proyecto tiene un impacto positivo en los usuarios',50,90,NULL,1);
 
@@ -90,6 +88,4 @@ INSERT INTO CAMBIO_HISTORICO VALUES (3,DATE_ADD(SYSDATE(),INTERVAL 3 DAY),3.4,1/
 INSERT INTO CAMBIO_HISTORICO VALUES (1,DATE_ADD(SYSDATE(),INTERVAL 4 DAY),1,1);
 INSERT INTO CAMBIO_HISTORICO VALUES (2,DATE_ADD(SYSDATE(),INTERVAL 4 DAY),2.8,1/2.8);
 INSERT INTO CAMBIO_HISTORICO VALUES (3,DATE_ADD(SYSDATE(),INTERVAL 4 DAY),3.4,1/3.4);
-
-commit;
 
