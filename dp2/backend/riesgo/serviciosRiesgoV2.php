@@ -402,7 +402,7 @@
                 $arregloListaEstrategias= array();
                 $db=getConnection();
                 $stmt = $db->prepare($query);
-                $stmt->bindParam("idProyecto", $idProyecto);
+                $stmt->bindParam("idProyecto", $proy->idProyecto);
                 $stmt->execute();
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                     $data= array("idEstrategia" => $row['id_categorizacion_estrategias'],"puntajeMin" => $row['puntaje_limite_bajo'], "puntajeMax" => $row['puntaje_limite_alto'],
