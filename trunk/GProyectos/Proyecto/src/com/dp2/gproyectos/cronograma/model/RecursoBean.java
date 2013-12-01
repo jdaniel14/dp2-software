@@ -11,6 +11,14 @@ public class RecursoBean implements Serializable {
 	public String id;
 	@SerializedName("descripcion_recurso")
 	public String name;
+	@SerializedName("rol")
+	public String rol;
+	@SerializedName("fe")
+	public String fechaentrada;
+	@SerializedName("ff")
+	public String ff;
+	@SerializedName("descripcion")
+	public String profesion;
 	
 	public RecursoBean() {
 		super();

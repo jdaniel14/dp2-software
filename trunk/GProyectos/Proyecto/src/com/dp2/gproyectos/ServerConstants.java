@@ -13,7 +13,7 @@ public class ServerConstants {
 	public static String GENERAL_VALIDARLOGIN_URL = "G_verificaUsuario";
 	public static String GENERAL_GETLISTALECCIONES_URL = "G_devuelveLeccionesAprendidas";
 	public static String GENERAL_LISTARECURSOSXPROYECTO_URL = "/G_devuelveListaEmpleadosXProyecto/";
-	public static String GENERAL_GETINFOPROYECTO_URL = "/G_devuelveInfoProyecto/";
+	public static String GENERAL_GETINFOPROYECTO_URL = "G_devuelveInfoProyecto/";
 	
 	
 	//COSTOS

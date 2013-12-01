@@ -70,7 +70,7 @@ public class DetalleActividad extends SherlockFragmentActivity implements Loadin
 		    	Intent i = new Intent(DetalleActividad.this, ListaActividadesXProyecto.class);
 				i.putExtra("idProyecto", idProyecto);
 				i.putExtra("nombreProyecto", nombreProyecto);
-				startActivity(i);
+				startActivityForResult(i, 1);
 		    }
 		});		
 		

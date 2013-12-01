@@ -7,6 +7,7 @@
     <TextView
         android:id="@+id/txtNombreProyecto"
         android:layout_width="match_parent"
+        android:paddingTop="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
@@ -40,6 +41,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
+                android:padding="5dp"
+                android:background="@drawable/login_input_bg_unselected"
                 android:text=""
                 android:textAppearance="@android:style/TextAppearance.Small" />
         </LinearLayout>
@@ -62,7 +65,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
+                android:padding="5dp"
                 android:text=""
+                android:background="@drawable/login_input_bg_unselected"
                 android:textAppearance="@android:style/TextAppearance.Small" />
         </LinearLayout>
 
@@ -82,8 +87,10 @@
 
             <TextView
                 android:id="@+id/txtTipo"
+                android:padding="5dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/login_input_bg_unselected"
                 android:layout_weight="0.65"
                 android:text=""
                 android:textAppearance="@android:style/TextAppearance.Small" />
@@ -106,7 +113,9 @@
             <TextView
                 android:id="@+id/txtFechaInicio"
                 android:layout_width="0dp"
+                android:padding="5dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/login_input_bg_unselected"
                 android:layout_weight="0.65"
                 android:text=""
                 android:textAppearance="@android:style/TextAppearance.Small" />
@@ -132,6 +141,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
                 android:text=""
+                android:padding="5dp"
+                android:background="@drawable/login_input_bg_unselected"
                 android:textAppearance="@android:style/TextAppearance.Small" />
         </LinearLayout>
     </LinearLayout>

@@ -2,32 +2,19 @@ package com.dp2.gproyectos.general.view;
 
 import java.util.ArrayList;
 
-import org.json.JSONObject;
-
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
-import com.dp2.gproyectos.GProyectosConstants;
 import com.dp2.gproyectos.R;
-import com.dp2.gproyectos.cronograma.controller.CronogramaController;
-import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
-import com.dp2.gproyectos.cronograma.view.PopupRegistrarCosto;
-import com.dp2.gproyectos.cronograma.view.adapter.RecursosAdapter;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
+import com.dp2.gproyectos.general.view.adapter.RecursosAdapter;
 import com.dp2.gproyectos.utils.MensajesUtility;
-import com.dp2.gproyectos.view.VerticalBarraTituloActivity;
 import com.markupartist.android.widget.PullToRefreshListView;
-import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 //import android.widget.ListView;
 
@@ -67,7 +54,7 @@ public class ListaRecursosXProyecto extends SherlockActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.cronograma_actividad_recursos_lista_layout);
+		super.setContentView(R.layout.general_recursos_lista_layout);
 
 		getSherlock().getActionBar().setTitle(R.string.menu_recursos);
 		getSherlock().getActionBar().setIcon(R.drawable.maleta);
@@ -114,7 +101,7 @@ public class ListaRecursosXProyecto extends SherlockActivity implements
 		
 			if (recursos != null) {
 				adapter = new RecursosAdapter(this,
-						R.layout.cronograma_actividad_recursos_lista_item,
+						R.layout.general_recursos_lista_item,
 						recursos);
 				lvRecursos.setAdapter(adapter);
 /*
