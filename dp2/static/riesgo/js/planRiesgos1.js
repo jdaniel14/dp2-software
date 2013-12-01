@@ -80,8 +80,8 @@ function validCampos1() {
     $(".prioridad1").each(function() {
         var prioridad = $($("input.prioridad1")[i]).val(); // valor de inputs
         var significado = $($("input.significado1")[i]).val();
-        var puntajeMax = $($("input.puntajeMax")[i]).val();
-        var puntajeMin = $($("input.puntajeMin")[i]).val();
+        var puntajeMax = $($("input.puntajeMax1")[i]).val();
+        var puntajeMin = $($("input.puntajeMin1")[i]).val();
 
         if (prioridad === null || prioridad.length === 0 || significado === null || significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || puntajeMin === null || puntajeMin.length === 0) {
             //ALERTAR
@@ -111,11 +111,14 @@ function validCampos2() {
     var valor;
     $(".prioridad2").each(function() {
         var prioridad = $($("input.prioridad2")[i]).val(); // valor de inputs
+       
         var significado = $($("input.significado2")[i]).val();
-        var puntajeMax = $($("input.puntajeMax")[i]).val();
-        var puntajeMin = $($("input.puntajeMin")[i]).val();
-        if (prioridad === null || prioridad.length === 0 || significado === null || significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || puntajeMin === null || puntajeMin.length === 0) {
-            //ALERTAR
+        var puntajeMax = $($("input.puntajeMax2")[i]).val();
+        var puntajeMin = $($("input.puntajeMin2")[i]).val();
+        if (prioridad === null || prioridad.length === 0 || significado === null || 
+                significado.length === 0 || puntajeMax === null || puntajeMax.length === 0 || 
+                puntajeMin === null || puntajeMin.length === 0) {
+            //ALERTAR   
             valor = "vacio";
             // alert("Debe registrar todos los campos");
             $("#labelErrorModal").html("");
