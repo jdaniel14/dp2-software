@@ -330,7 +330,7 @@ function agregaDatosProyecto(nombreProyecto, montoSinReserva, porcentajeReserva 
 	var reseTotal= new Number(porcentajeReserva*0.01*montoSinReserva);
 	var reseForm=reseTotal.toFixed(2);
 	
-	$("#reservaTotal").val(reseForm);
+	$("#reservaTotal").val(formateaNumero(reseForm,2));
 	$("#inputMontoConReserva").val(formateaNumero(montoSinReserva*1 + porcentajeReserva*0.01*montoSinReserva,2));
 	
 	if (indCerrado=="1" || indLineaBase=="1" || indGrabar=="0"){
@@ -606,7 +606,7 @@ function actualizaCostos(){
 	
 	montoReserva= reserva*valorSinReserva/100;
 	
-	$('#reservaTotal').val(montoReserva);
+	$('#reservaTotal').val(formateaNumero(montoReserva,2));
 	
 	montoReserva++;
 	valorSinReserva++;
