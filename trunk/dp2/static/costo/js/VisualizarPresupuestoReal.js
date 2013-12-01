@@ -37,7 +37,7 @@ function obtenCostoIndirectoTotal(){
 }
 function ingresaCostoIndirectoTotal(data){
 	if (!data) return;
-	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +data.costoIndirectoTotal+" Nuevos soles");
+	$("#costoIndirectoTotal").html($("#costoIndirectoTotal").html()+" " +(data.costoIndirectoTotal==null ? 0 : data.costoIndirectoTotal)+" Nuevos soles");
 	
 }
 
