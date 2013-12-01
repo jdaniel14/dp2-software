@@ -1,3 +1,7 @@
+$(document).ready(function(){
+	$("#modalLogin").hide();
+});
+
 $("#ingresarSistema").click(function(){
 	
         var jsonUsuario = {
@@ -28,8 +32,10 @@ $("#ingresarSistema").click(function(){
         
             $(location).attr('href','views/general/ListaProyectos.html');
            }else{
-               alert("usuario incorrecto");
-               $(location).attr('href','index.html');
+               //alert("usuario incorrecto");
+        	   //$('.alert').alert();
+        	   $('#modalLogin').show();
+               //$(location).attr('href','index.html');
            }
             
 			
