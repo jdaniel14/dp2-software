@@ -35,7 +35,7 @@
         $request = \Slim\Slim::getInstance()->request();
         $listaTipoImpacto = json_decode($request->getBody());
         if (R_verificaPermisoServicio(R_SERVICIO_101, $listaTipoImpacto->idUsuario, $listaTipoImpacto->idProyecto)) {
-            $query ="DELETE FROM TIPO_IMPACTO WHERE id_proyecto=:id_proyecto";
+            /*$query ="DELETE FROM TIPO_IMPACTO WHERE id_proyecto=:id_proyecto";
             try {
                 $db = getConnection();
                 $stmt = $db->prepare($query);
@@ -44,7 +44,7 @@
                 $db = null;
             } catch(PDOException $e) {
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
-            }
+            }*/
 
             foreach($listaTipoImpacto->listaTipoImpacto as $tipoImpacto){
                 $query = "INSERT INTO TIPO_IMPACTO (id_proyecto, descripcion, tipo) VALUES (:id_proyecto,:descripcion,:tipo)";
