@@ -2,6 +2,7 @@ var ge;  //this is the hugly but very friendly global var for the gantt editor
 var idProyecto;
 var idUsuario = localStorage.getItem("idUsuario");
 var holidays;
+
 if (localStorage.getItem("idProyecto")){
 	idProyecto = localStorage.getItem("idProyecto");
 }
