@@ -4,13 +4,13 @@ include('routesGeneral2.php');
 include_once '../backend/conexion.php';
 
 function G_getCategoria() {
-    $sql = " SELECT id_categoria_lec, nombre_categoria_lec, descripcion_categoria_lec from CATEGORIA_LEC_APRENDIDA ";
+    $sql = " SELECT id_categoria_lec_aprendida, nombre_categoria_lec, descripcion_categoria_lec from CATEGORIA_LEC_APRENDIDA ";
     try {
         $db = getConnection();
         $stmt = $db->query($sql);
         $lista_cats = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $cat = array("idCategoria" => $j["id_categoria_lec"],
+            $cat = array("idCategoria" => $j["id_categoria_lec_aprendida"],
                 "nom" => $j["nombre_categoria_lec"]);
             array_push($lista_cats, $cat);
         }
@@ -80,7 +80,7 @@ function G_postRegistrarLeccionAprendida() {
     $proj = json_decode($request->getBody());
 
     try {
-        $sql = " INSERT INTO LECCION_APRENDIDA (id_MIEMBROS_EQUIPO, id_categoria_lec_aprendidas, descripcion, estado, fecha_registro, fecha_actualizacion) VALUES (:idexp, :cla, :dla, 1, SYSDATE(), SYSDATE())";
+        $sql = " INSERT INTO LECCION_APRENDIDA (id_MIEMBROS_EQUIPO, id_categoria_lec_aprendida, descripcion, estado, fecha_registro, fecha_actualizacion) VALUES (:idexp, :cla, :dla, 1, SYSDATE(), SYSDATE())";
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("idexp", $proj->idexp);
@@ -96,16 +96,29 @@ function G_postRegistrarLeccionAprendida() {
 }
 
 function G_getProyectosXEmpleado($id) {
-    $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
-                 FROM MIEMBROS_EQUIPO EXP, PROYECTO P
-                 WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
+    
+   
+    
     try {
         $db = getConnection();
-
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("id", $id);
-        $stmt->execute();
-
+        
+        if ($id == 1){
+               $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
+                        FROM MIEMBROS_EQUIPO EXP, PROYECTO P
+                        WHERE EXP.id_proyecto = P.id_proyecto  ";
+               $stmt = $db->prepare($sql);
+               $stmt->execute();
+           }
+           else {
+               $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
+                        FROM MIEMBROS_EQUIPO EXP, PROYECTO P
+                        WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
+               
+               $stmt = $db->prepare($sql);
+                $stmt->bindParam("id", $id);
+                $stmt->execute();
+           }
+        
         $l_proyxemp = array();
         while ($j = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $proy = array(
@@ -143,7 +156,7 @@ function G_postBorrarLeccionAprendida() {
 function G_postActualizarLeccionAprendida() {
     $request = \Slim\Slim::getInstance()->request();
     $leccion = json_decode($request->getBody());
-    $sql = " UPDATE LECCION_APRENDIDA SET id_MIEMBROS_EQUIPO=:idexp, id_categoria_lec_aprendidas =:cla, descripcion =:dla, fecha_actualizacion=SYSDATE()
+    $sql = " UPDATE LECCION_APRENDIDA SET id_MIEMBROS_EQUIPO=:idexp, id_categoria_lec_aprendida =:cla, descripcion =:dla, fecha_actualizacion=SYSDATE()
 	     WHERE id_leccion_aprendida=:id and estado=1 ";
     try {
         $db = getConnection();
@@ -163,12 +176,13 @@ function G_postActualizarLeccionAprendida() {
 function G_getLeccionesAprendidas() {
     $sql = " 
 select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, 
-LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC, 
+LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC_APRENDIDA, 
 CLA.nombre_categoria_lec as cla, LA.fecha_actualizacion
 from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, MIEMBROS_EQUIPO EP, CATEGORIA_LEC_APRENDIDA CLA
 where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto 
-and CLA.ID_CATEGORIA_LEC = LA.id_categoria_lec_aprendidas 
+and CLA.ID_CATEGORIA_LEC_APRENDIDA = LA.id_categoria_lec_aprendida 
 and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO and LA.estado=1 order by LA.fecha_actualizacion
+
  ";
     try {
         $db = getConnection();
@@ -194,9 +208,9 @@ and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO and LA.estado=1 order by LA.fe
 
 function G_getLeccionAprendidasById($id) {
     $sql = " 
-select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC as cla, CLA.nombre_categoria_lec, LA.fecha_actualizacion, EP.ID_MIEMBROS_EQUIPO as idexp
+select LA.id_leccion_aprendida as id, CONCAT(E.apellidos, ', ', E.nombres) as empleado, LA.descripcion as descr, P.id_proyecto, P.nombre_proyecto as np, CLA.ID_CATEGORIA_LEC_APRENDIDA as cla, CLA.nombre_categoria_lec, LA.fecha_actualizacion, EP.ID_MIEMBROS_EQUIPO as idexp
 from LECCION_APRENDIDA LA, EMPLEADO E, PROYECTO P, MIEMBROS_EQUIPO EP, CATEGORIA_LEC_APRENDIDA CLA
-where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.ID_CATEGORIA_LEC = LA.id_categoria_lec_aprendidas and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO 
+where E.id_empleado = EP.id_empleado and P.id_proyecto = EP.id_proyecto and CLA.ID_CATEGORIA_LEC_APRENDIDA = LA.id_categoria_lec_aprendida and EP.ID_MIEMBROS_EQUIPO = LA.id_MIEMBROS_EQUIPO 
 and LA.id_leccion_aprendida =:id order by LA.fecha_actualizacion
  ";
     try {
