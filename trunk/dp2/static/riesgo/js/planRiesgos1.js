@@ -9,6 +9,10 @@ var arregloPermisoMP = new Array();
 //localStorage.setItem("idProyecto", 1);
 var idProyectoLocal = localStorage.getItem("idProyecto");
 var rol = localStorage.getItem("idRol");
+var colores=new Array();
+112;219;147
+colores=["rgb(3,180,204)","rgb(102,205,0)","rgb(255,215,0)","rgb(255,0,0)"];
+
 function validAtenas() {
     var metodologia = $("#metodologia").val();
     if (metodologia == null || metodologia.length == 0) {
@@ -138,9 +142,6 @@ function validCampos2() {
 }
 
 
-
-
-
 var puntaje;
 var puntajeMin;
 var puntajeMax;
@@ -153,9 +154,6 @@ $(document).on('change', '.puntajeMax', function() {
 
 
 });
-
-
-
 
 
 function main() {
@@ -453,8 +451,6 @@ function main() {
 }
 
 
-
-
 function leerCategorias2() {
 
     var data = {
@@ -543,10 +539,6 @@ function leerCategorias1() {
 
 }
 
-
-
-
-
 function  leerPuntajes() {
 //    var data = $.parseJSON('{"puntajeMin":1,"puntajeMax":50}');
 //    $("#puntajeMin").val(data["puntajeMin"]);
@@ -574,7 +566,6 @@ function  leerPuntajes() {
 
 
 }
-
 
 function  agregarEquipo() {
     var data = {
@@ -801,32 +792,24 @@ function pintarMatriz1(impactos) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-            var i = 0,j=0;
+            var i = 0,j=0,z=0;
+            
             var longitud = impactos.length;
-            r = Math.round(Math.random() * 255);
-            g = Math.round(Math.random() * 255);
-            b = Math.round(Math.random() * 255);
+//            r = Math.round(Math.random() * 255);
+//            g = Math.round(Math.random() * 255);
+//            b = Math.round(Math.random() * 255);
             for (obj in data) {
                 // var idEstrategia = data[obj]["idEstrategia"];
                 var puntajeMin = data[obj]["puntajeMin"];
                 var puntajeMax = data[obj]["puntajeMax"];
-                //console.log("puntajeMin" + puntajeMin);
-
-               // console.log("puntajeMax" + puntajeMax);
-                // var prioridad = data[obj]["prioridad"];
-                // var estrategia = data[obj]["estrategia"];
-                //var significado = data[obj]["significado"];
-
-                //    for(var i;i<longitud;i++){
-
-               // console.log("nuevo");
+         
                 $(".matriz1").each(function() {
                     var puntaje = $($(".matriz1")[i]).attr("id");
                     //console.log(puntaje);
                     var porcion = puntaje.substring(4);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
                         //console.log("puntaje" + porcion);
-                        $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+                        $("#" + puntaje + "").css('background-color', colores[z]);
 
                     }
                     i++;
@@ -834,10 +817,11 @@ function pintarMatriz1(impactos) {
                 i = 0;
                 j++;
                  $("#leyendaPos").append("<div id="+j+"><label>"+puntajeMin+"-"+puntajeMax+"</label></div>");
-                 $("#"+j+"").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
-                r = Math.round(Math.random() * 255);
-                g = Math.round(Math.random() * 255);
-                b = Math.round(Math.random() * 255);
+                 $("#"+j+"").css('background-color', colores[z]);
+//                r = Math.round(Math.random() * 255);
+//                g = Math.round(Math.random() * 255);
+//                b = Math.round(Math.random() * 255);
+                z++;
                 //   }
                 //if(parseInt(puntaje))
                 //i=longitud;
@@ -862,7 +846,7 @@ function pintarMatriz2(impactos) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-            var i = 0,j=0;
+            var i = 0,j=0,z=0;
             var longitud = impactos.length;
             r = Math.round(Math.random() * 255);
             g = Math.round(Math.random() * 255);
@@ -887,7 +871,7 @@ function pintarMatriz2(impactos) {
                    // console.log(porcion);
                     if (parseInt(porcion) >= parseInt(puntajeMin) && parseInt(porcion) <= parseInt(puntajeMax)) {
                        // console.log("puntaje" + porcion);
-                        $("#" + puntaje + "").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
+                        $("#" + puntaje + "").css('background-color', colores[z]);
                         
                
                     }
@@ -899,11 +883,8 @@ function pintarMatriz2(impactos) {
                 j++;
                 
                  $("#leyendaNeg").append("<div id="+j+"><label>"+puntajeMin+"-"+puntajeMax+"</label></div>");
-                 $("#"+j+"").css('background-color', 'rgb(' + r + ' ,' + g + ',' + b + ')');
-                r = Math.round(Math.random() * 255);
-                g = Math.round(Math.random() * 255);
-                b = Math.round(Math.random() * 255);
-                //   }
+                 $("#"+j+"").css('background-color', colores[z]);
+              z++;
                 //if(parseInt(puntaje))
                 //i=longitud;
                 //longitud=longitud+impactos.length;
