@@ -51,25 +51,27 @@ function listarCambiosGantt(){
 
 	cadena = "<div class=\"well\"><input id='id' type='text' style='display:none;' value='"+idActividadCronograma+"'>\n\
                 <label >Se materializó el riesgo "+idActividadCronograma  +" : "+ nombreActividadCronograma+" </label></br>"+
-                "<label>Se desea cambiar la actividad:</label></br></br>\n\
-                <div class=\"col-lg-12 control-label\"> \n\
-                 <div class=\"col-lg-4 control-label\"> <input readonly type=\"text\" id=\"antiguoNombre\" value=\""+nombreActividadCronograma+"\"></div>" +
-                " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label><input readonly type=\"date\" id=\"antiguaFechaInicio\" value=\""+fechaInicioActividadCronograma+"\">"+
-                " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  <input readonly type=\"number\" id=\"antiguaDuracion\" value=\""+duracionActividadCronograma+"\">" +
+                "<label class=\"control-label\">Se desea cambiar: </label></br></br>\n\
+                <div class=\"col-lg-12\"> \n\
+                 <div class=\"col-lg-4 control-label\"> <label class=\"control-label\"> Actividad:  </label><input readonly type=\"text\" class=\"form-control\" id=\"antiguoNombre\" value=\""+nombreActividadCronograma+"\"></div>" +
+                " <div class=\"col-lg-4 control-label\"><label class=\"control-label\"> Fecha:  </label><input class=\"form-control\" readonly type=\"date\" id=\"antiguaFechaInicio\" value=\""+fechaInicioActividadCronograma+"\">"+
+                " </div> <div class=\"col-lg-4 control-label\"> <label class=\"control-label\"> Duración de:</label>  <input class=\"form-control\" readonly type=\"number\" id=\"antiguaDuracion\" value=\""+duracionActividadCronograma+"\">" +
                 "<label> dias</label><br></div></div>";
         
         cadena=cadena+""+
-                    "<label>Por la siguiente actividad:</label></br></br>\n\
+                    "<label>Por la siguiente:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\">  <div class=\"col-lg-4 control-label\"> \n\
-            <input readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreActividadCronograma+"\"></div>" +
+            <label class=\"control-label\"> Actividad:  </label><input class=\"form-control\" readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreActividadCronograma+"\"></div>" +
                 " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label>\n\
-            <input readonly type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
+            <input class=\"form-control\" readonly type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
                 " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  \n\
-            <input readonly type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
-                "<label> dias</label><br></div><br>";
+            <input class=\"form-control\" readonly type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
+                "<label> dias</label><br></div><br><div></div><br>";
         
-        cadena=cadena +'<button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +');">Cambiar</button></div></div></div>';
-	$("#prueba"+idActividadCronograma).html(cadena);
+        cadena=cadena +'<div class="col-md-12"  style="text-align:center"><button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +');">Cambiar</button>';
+	cadena=cadena +'&nbsp<button type="button" class="btn btn-primary rigth" id="btnRechazar" onclick="rechazar_cambios('+idActividadCronograma  +');">Rechazar</button></div></div></div>';
+	
+                $("#prueba"+idActividadCronograma).html(cadena);
           }
         }
         //"+ idActividadCronograma + ",'"+fechaInicioActividadCronograma+"',"+duracionActividadCronograma+",'"+nombreActividadCronograma+"'
