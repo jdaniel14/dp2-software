@@ -422,7 +422,7 @@
     function R_postRegistrarEstrategias(){
         $request = \Slim\Slim::getInstance()->request();
         $listaEstrategia = json_decode($request->getBody());
-        if (R_verificaPermisoServicio(R_SERVICIO_111, $listaEstrategia->idUsuario, $listaEstrategia->idProyecto)) {
+        //if (R_verificaPermisoServicio(R_SERVICIO_111, $listaEstrategia->idUsuario, $listaEstrategia->idProyecto)) {
             if ($listaEstrategia->tipo == 1){
                 R_deleteEstrategiasPositivo($listaEstrategia->idProyecto);
             } else{
@@ -448,9 +448,9 @@
                     echo json_encode(array("me"=> $e->getMessage()));
                 }
             }
-        } else {
-            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
-        }
+        //} else {
+        //    echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        //}
     }
 
     function R_deleteEstrategiasPositivo($json){
