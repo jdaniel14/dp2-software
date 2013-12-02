@@ -11,10 +11,7 @@
                 "title" => "Ver Lista Recursos Humanos"
             );
 
-		 $link_G_RegLec = array(
-                "href" => "../../views/general/RegistrarLeccionAprendida.html",
-                "title" => "Registrar Leccion Aprendida"
-            );
+		 
 
 		 $link_G_ListLec = array(
                 "href" => "../../views/general/ListaLeccionesAprendidas.html",

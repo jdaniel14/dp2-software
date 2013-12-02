@@ -57,13 +57,13 @@
 
          $link_A_GestAlc = array(
                 "href"=> "../../views/alcance/gestionAlcance.html", 
-                "title"=> "Gesti\u00f3n de alcance",
+                "title"=> "Gestión de alcance",
                 "subsubmenu" => $subsubmenu
         );
 
          $link_A_GesReq = array(
                 "href"=> "../../views/alcance/requisitos.html", 
-                "title"=> "Gesti\u00f3n de requisitos",
+                "title"=> "Gestión de requisitos",
                 "subsubmenu" => $subsubmenu
         );
 
@@ -81,13 +81,13 @@
 
          $link_A_PlanAlc = array(
                 "href"=> "../../views/alcance/PlanGestionAlcance.html", 
-                "title"=> "Plan de gesti\u00f3n de alcance",
+                "title"=> "Plan de gestión de alcance",
                 "subsubmenu" => $subsubmenu
         );
 
          $link_A_PlanReq = array(
                 "href"=> "../../views/alcance/PlanGestionRequisitos.html", 
-                "title"=> "Plan de gesti\u00f3n de requisitos",
+                "title"=> "Plan de gestión de requisitos",
                 "subsubmenu" => $subsubmenu
         );
 
@@ -108,7 +108,7 @@
 
           $link_CR_VerGesCam = array(
                 "href"=> "../../views/cronograma/GestionCambios.html", 
-                "title"=> "Mostrar Diagrama de red",
+                "title"=> "Gestión de cambios",
                 "subsubmenu" => $subsubmenu
         );
 

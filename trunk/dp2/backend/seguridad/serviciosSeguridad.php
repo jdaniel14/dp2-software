@@ -42,7 +42,6 @@ function submenuGeneralGP_general(){
 		 array_push($links, $link_G_RegPro);
 		 array_push($links, $link_G_RepoRRHH);
 		 array_push($links, $link_G_ListRRHH);
-		 array_push($links, $link_G_RegLec);
 		 array_push($links, $link_G_ListLec);
 		 array_push($links, $link_G_ListSol);
 
@@ -51,7 +50,7 @@ function submenuGeneralGP_general(){
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "Cronograma",
+                "title" => "Integración",
                 "subsubmenu" => $subsubmenu
             );
 
@@ -98,14 +97,14 @@ function submenuGeneralJP_general(){
 		$links=array();
 		
 		 
-		 array_push($links, $link_G_RegLec);
+		 
 		 array_push($links, $link_G_ListLec);
 		
 
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "General"
+                "title" => "Integración"
             );
 
 		 return $submenu;
