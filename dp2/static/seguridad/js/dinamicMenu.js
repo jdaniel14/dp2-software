@@ -147,9 +147,13 @@ function armaMenu( data ){
 				//<a tabindex="-1" href="#">Second level</a><menu += '<li><a tabindex="-1" href="#">Second level</a></li>';
 				menu += '<li class="dropdown-submenu">';
 				menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
-				menu += '<ul class="dropdown-menu">';
 				var subsubmenu = submenu[j].subsubmenu;
 				console.log("subsubmenu",subsubmenu,subsubmenu.length);
+				if (subsubmenu.length > 0){
+					menu += '<ul class="dropdown-menu">';
+				}
+				
+
 				for ( k = 0; k < subsubmenu.length; k++ ){
 					menu += '<li>';
 					menu += '<a href="' + subsubmenu[k].href + '">'+ subsubmenu[k].title+ '</a>';
@@ -157,7 +161,9 @@ function armaMenu( data ){
 				}
 				
 				//console.log("submenu", submenu[j]);
-				menu += '</ul>';
+				if (subsubmenu.length > 0){
+					menu += '</ul>';
+				}
 				menu += '</li>';
 
 			}
