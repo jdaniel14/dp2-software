@@ -145,24 +145,30 @@ function armaMenu( data ){
 		menu += '<ul class="dropdown-menu">';
 			for ( j = 0; j < submenu.length; j++){
 				//<a tabindex="-1" href="#">Second level</a><menu += '<li><a tabindex="-1" href="#">Second level</a></li>';
+				
+				if(submenu[j].hasOwnProperty('subsubmenu') && submenu[j].subsubmenu.length>0){
 				menu += '<li class="dropdown-submenu">';
 				menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
-				var subsubmenu = submenu[j].subsubmenu;
-				console.log("subsubmenu",subsubmenu,subsubmenu.length);
-				if (subsubmenu.length > 0){
-					menu += '<ul class="dropdown-menu">';
-				}
+				console.log('wabadada');
+				console.log(submenu[j]);
 				
-
-				for ( k = 0; k < subsubmenu.length; k++ ){
-					menu += '<li>';
-					menu += '<a href="' + subsubmenu[k].href + '">'+ subsubmenu[k].title+ '</a>';
-					menu += '</li>';
-				}
+					console.log('tiene subsubmenu');
+					menu += '<ul class="dropdown-menu">';
+				 
+					var subsubmenu = submenu[j].subsubmenu;
+					console.log("subsubmenu",subsubmenu,subsubmenu.length);
+					for ( k = 0; k < subsubmenu.length; k++ ){
+						menu += '<li>';
+						menu += '<a href="' + subsubmenu[k].href + '">'+ subsubmenu[k].title+ '</a>';
+						menu += '</li>';
+					}
 				
 				//console.log("submenu", submenu[j]);
-				if (subsubmenu.length > 0){
 					menu += '</ul>';
+				}
+				else{
+					menu += '<li>';
+					menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
 				}
 				menu += '</li>';
 
