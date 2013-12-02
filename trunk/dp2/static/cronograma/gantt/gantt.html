@@ -254,8 +254,8 @@
 	      <th class="gdfColHeader gdfResizable" style="width:200px;">Nombre</th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;">Inicio</th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;">Fin</th>
-	      <th class="gdfColHeader gdfResizable" style="width:50px;">Duración</th>
-	      <th class="gdfColHeader gdfResizable" style="width:50px;">Dependencias</th>
+	      <th class="gdfColHeader gdfResizable" style="width:55px;">Duración(días)</th>
+	      <th class="gdfColHeader gdfResizable" style="width:55px;">Dependencias</th>
 	      <th class="gdfColHeader gdfResizable" style="width:200px;">Recursos</th>
 		  
 		  <th class="gdfColHeader gdfResizable" style="width:70px;">Paquete de trabajo</th>
@@ -419,15 +419,15 @@
 			          <td colspan="2"><label for="status">Estado Actual</label><br><div id="status" class="taskStatus" status=""></div></td>
 			      </tr>
 			      <tr>
-			          <td colspan="1"><label for="progress">Porcentaje Tiempo</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
-			          <td colspan="1"><label for="progress_cost">Porcentaje Costo</label><br><input type="text" name="progress_cost" id="progress_cost" value="" size="3" class="formElements"></td>
+			          <td colspan="1"><label for="progress">Porcentaje Tiempo</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements">&nbsp;&nbsp;%</td>
+			          <td colspan="1"><label for="progress_cost">Porcentaje Costo</label><br><input type="text" name="progress_cost" id="progress_cost" value="" size="3" class="formElements">&nbsp;&nbsp;%</td>
 		          </tr>
 		          <tr>
 			          <td><label for="start">Inicio Plan</label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone" style = "display:none;"></td>
 			          <td><label for="end">Fin Plan</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements">&nbsp;&nbsp;&nbsp;<input type="checkbox" id="endIsMilestone"> Es hito</td>
 		          </tr>
 		          <tr>
-					<td class="graph"><label for="duration">Duracion</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td> 
+					<td class="graph"><label for="duration">Duración</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements">&nbsp;&nbsp;días</td> 
 					
 		          </tr>
 		          <tr>
