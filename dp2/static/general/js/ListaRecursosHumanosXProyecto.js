@@ -371,8 +371,8 @@ function agregaFilaRecursosHumanos(arreglo,i){
 }
 
 function filtrarOtraFecha2(a) {
-	alert(fechaII);
-	alert(fechaFF);
+	//alert(fechaII);
+	//alert(fechaFF);
     //$("#fi2"+a).attr("value", "");
     //var fecha = new Date();
     //fecha = $("#fi2"+a).datepicker("getDate");
