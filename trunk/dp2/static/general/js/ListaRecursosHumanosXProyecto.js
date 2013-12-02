@@ -148,7 +148,8 @@ function asd(www,id){
 			url: "../../api/G_eliminarRecursoProyecto",
 	        success: function(data){
 	  
-	            //$(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
+	            
+	        	$(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
 	        }
 		});	
 	}
@@ -386,11 +387,11 @@ function filtrarOtraFecha2(a) {
 }
 
 function filtrarOtraFecha3(a) {
-	alert(a);
+	//alert(a);
     $("#ff2"+a).attr("value", "");
     var fecha = new Date();
     fecha = $("#fi2"+a).datepicker("getDate");
-    alert(fecha);
+    //alert(fecha);
     if(fecha != null){
     	fecha.setDate(fecha.getDate() + 1) ;
     	$("#ff2"+a).datepicker("option", "minDate", fecha);
