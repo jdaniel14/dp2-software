@@ -70,5 +70,6 @@
 	//________
 	$app->put('/R_actualizarEstadoRiesgoProyecto','R_updateEstadoRiesgoProyecto');
 	$app->put('/R_cancelarMaterializacion','R_cancelMaterializacion');
+	$app->get('/R_obtenerCantidadGestionCambio/:var', 'R_getCantidadGestionCambio');
 
 ?>
