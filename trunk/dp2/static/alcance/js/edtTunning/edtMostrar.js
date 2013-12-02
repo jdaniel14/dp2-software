@@ -12,12 +12,14 @@ $(window).bind('beforeunload',function(){
 if ( localStorage.getItem("seguridadEDT") == "#fgh2" ){
     //redirect
     window.location.href = 'index.html';
-    alert("no seas vivo");
+    alert("Advertencia: uso no autorizado, no lo vuelva hacer. Gracias");
 }
-
+var np = localStorage.getItem("nombreProyectoEDT");
 var arrNombres = [];
 var autoGenerados = [];
 var errorSuma = false;
+
+$("#edtTitleWeb").append(" " + np);
 
 function Nodo ( dias, padre, actual, valoranterior) {
    this.dias = dias;
@@ -144,7 +146,7 @@ $("#CrearEDTCero").click(function(){
                 console.log("EDT DESDE EL edtMostrar");
                 $("#guardarCambios").show("slow");
                 $("#edtCrearLogError").hide("slow");
-                var titleParent = "Nombre Proyecto";
+                var titleParent = np;
                 var html = pintarOneNodoEDT( titleParent, idnodoParam , 0, 0);
                 $("#org").html( html );
                 repaint();
@@ -479,7 +481,7 @@ function showMessage( msg ){
   //alert(msg);
    var html =    '<div class="alert alert-danger alert-dismissable">';
           html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-          html += '<strong>Warning!&nbsp;</strong>';
+          html += '<strong>Advertencia!&nbsp;</strong>';
           html += msg;
           html += '</div>';
           $(".consoleLog").html(html);
@@ -493,7 +495,7 @@ function showMessage1( msg ){
           
    var html =    '<div class="alert alert-danger alert-dismissable">';
           html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-          html += '<strong>Warning!&nbsp;</strong>';
+          html += '<strong>Advertencia!&nbsp;</strong>';
           html += msg;
           html += '</div>';
           $(".consoleLog").append(html);
