@@ -141,7 +141,7 @@ function armaMenu( data ){
 	for ( i = 0; i < data.menu.length; i++ ){
 		var submenu = data.menu[i].submenu;
 		menu += '<li class="dropdown-submenu">';
-		menu += '<a tabindex = "-1" href="#" class="dropdown-toggle" data-toggle="dropdown">' + data.menu[i].title +'<b class="caret"></b></a>';
+		menu += '<a tabindex = "-1" href="#" class="dropdown-toggle" data-toggle="dropdown">' + data.menu[i].title +'<b ></b></a>'/*'<b class="caret"></b></a>'*/;
 		menu += '<ul class="dropdown-menu">';
 			for ( j = 0; j < submenu.length; j++){
 				//<a tabindex="-1" href="#">Second level</a><menu += '<li><a tabindex="-1" href="#">Second level</a></li>';
