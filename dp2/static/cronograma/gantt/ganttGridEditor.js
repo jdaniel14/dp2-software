@@ -538,7 +538,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
     selectwbs.val(task.id_Wbs);
 
 
-    if (task.id_Wbs == null or task.id_Wbs==-1) {
+    if (task.id_Wbs == null || task.id_Wbs==-1) {
         selectwbs.val(1);
         taskEditor.find("#colchon").text('0 días');
     }
