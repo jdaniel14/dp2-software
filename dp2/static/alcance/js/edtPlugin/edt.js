@@ -1,5 +1,6 @@
  localStorage.setItem("queueEstado", "mostrando");
  localStorage.setItem("edtedesdecero", 0);
+ localStorage.setItem("seguridadEDT", "#asdas");
  autoGenerados = [];
  jQuery(document).ready(function() {
 
@@ -71,7 +72,7 @@
           
           var html =  '<div class="alert alert-warning alert-dismissable">';
           html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-          html += '<strong>Warning!&nbsp;</strong>';
+          html += '<strong>Advertencia!&nbsp;</strong>';
           html += msg;
           html += '</div>';
           $(".consoleLog").append(html);
@@ -106,7 +107,10 @@
         /* FIN CREAR EDT */
 
         function edtAlgorithm( data ){
+          console.log("edtAlgorit");
             var titleParent = data.title;
+            var sapeParent = data.nombre;
+            console.log(sapeParent);
             var hijos = parseInt(data.hijos);
             var html = '<li>' +'<input class = "inputEdtTitle"  id = "title-' + data.idnodo+ '" type = "text" value = "'+ titleParent + '"> ';
             if ( hijos == 0 ){
@@ -303,6 +307,8 @@
                             //armarEdt( data, 0 );
 
                             if ( !data.idnodo ){
+                              console.log("nombre",data.nombre)
+                              localStorage.setItem("nombreProyectoEDT", data.nombre);
                               console.log("nulo", data.idnodo );
                               $("#progressEdt").hide("slow");
                               $("#edtCrearLogError").show("slow");
