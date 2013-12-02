@@ -106,7 +106,10 @@ function restaurarBD(){
 	$con->exec($sql);
 
 	$sql = file_get_contents('../triggers.sql');
-	$con->exec($sql);
+	$triggerList = explode('|',$sql);
+	foreach ($triggerList as $trigger) {
+		$con->exec($sql);
+	}
 	//cambiar el archivo de conexion
 	//obtener el archivo plantilla
 	$code = file_get_contents('../conexion.tpl.php');
