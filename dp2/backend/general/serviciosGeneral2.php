@@ -279,7 +279,8 @@ function G_postAsignarRecProy() {
 //            
             if ($accion == "I") {
                 //INSERT
-                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual, estado, id_rol) values (:idproy, :idemp, :costo, :fi, :ff, :prof_act, 1, 3) ";
+                $insert = " INSERT INTO MIEMBROS_EQUIPO (id_proyecto, id_empleado, COSTO_EMPLEADO, fecha_entrada, fecha_salida, id_profesion_actual, estado, id_rol) 
+                values (:idproy, :idemp, :costo, STR_TO_DATE(:fi,'%d-%m-%Y'), STR_TO_DATE(:ff,'%d-%m-%Y'), :prof_act, 1, 3) ";
                 // $db = getConnection();
                 $stmt = $db->prepare($insert);
                 $stmt->bindParam("idproy", $id_proy);
@@ -318,7 +319,7 @@ function G_postBorrarMiembroDeProyecto() {
 
     $id_miembro = $body->id_rrhhxpr;
 
-
+    //echo "aqui1";
     $sql = " select count(*) as cant from MIEMBROS_EQUIPO where id_miembros_equipo = :id and id_rol=2 "; //  no se puede eliminar a un jefe de proyecto
     try {
         $db = getConnection();
@@ -336,7 +337,7 @@ function G_postBorrarMiembroDeProyecto() {
         echo json_encode(array("me" => $e->getMessage()));
         return;
     }
-
+    //echo "aqui2";
     $sql = " select count(*) as cant from ACTIVIDAD as A, ACTIVIDAD_X_EMPLEADO as AXE, (SELECT id_proyecto as idp FROM MIEMBROS_EQUIPO where id_miembros_equipo = :id ) as H where A.id_proyecto = H.idp and A.id_actividad = AXE.id_actividad and AXE.id_miembros_equipo = :id ";
     try {
         $db = getConnection();
@@ -354,7 +355,7 @@ function G_postBorrarMiembroDeProyecto() {
         echo json_encode(array("me" => $e->getMessage()));
         return;
     }
-
+    //echo "aqui3";
     $sql = " UPDATE MIEMBROS_EQUIPO SET estado=0
 	    WHERE id_miembros_equipo=:id ";
     try {
@@ -411,7 +412,7 @@ function G_getListarRecDisp() {
         $jefe_proyecto = get_jp($idProyecto);
         $gerente_portafolio = 1;
 
-        $sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
+        /*$sql = "  SELECT E.ID_EMPLEADO as id, E.NOMBRE_CORTO,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO
                     FROM MIEMBROS_EQUIPO M,
                     ACTIVIDAD A,
                     ACTIVIDAD_X_RECURSO AR,
@@ -426,10 +427,60 @@ function G_getListarRecDisp() {
                     AND E.ID_EMPLEADO = M.ID_EMPLEADO
                     AND A.FECHA_PLAN_INICIO >= STR_TO_DATE(:FI,'%d-%m-%Y')
                     AND A.FECHA_PLAN_FIN <= STR_TO_DATE(:FF,'%d-%m-%Y')
-                    ";
+                    ";*/
+        /*$sql = "SELECT M.ID_EMPLEADO as id
+				FROM 
+					MIEMBROS_EQUIPO M,
+					ACTIVIDAD A,
+					ACTIVIDAD_X_RECURSO AR,
+					RECURSO R,
+					EMPLEADO E
+				WHERE 
+					E.ID_EMPLEADO = M.ID_EMPLEADO AND
+					M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO AND
+					AR.ID_RECURSO = R.ID_RECURSO AND 
+					AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
+					R.ID_PROYECTO = M.ID_PROYECTO AND 
+					R.ID_PROYECTO = A.ID_PROYECTO AND 
+					( A.FECHA_PLAN_INICIO BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
+					  A.FECHA_PLAN_FIN BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') )	
+				UNION
+
+				SELECT M.id_empleado as id
+				FROM MIEMBROS_EQUIPO M
+				WHERE ( M.fecha_entrada BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
+	  				M.fecha_salida BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') )
+				";*/
         //E.ID_EMPLEADO !=  :JP
         //AND M.id_proyecto!=:IDPROYECTO
         //AND M.ID_EMPLEADO=(SELECT ID_EMPLEADO FROM MIEMBROS_EQUIPO WHERE ID_PROYECTO = 66 AND ID_ROL=2);
+
+    $sql = "SELECT M.ID_EMPLEADO as id
+            FROM 
+                MIEMBROS_EQUIPO M,
+                ACTIVIDAD A,
+                ACTIVIDAD_X_RECURSO AR,
+                RECURSO R,
+                EMPLEADO E
+            WHERE 
+                E.ID_EMPLEADO = M.ID_EMPLEADO AND
+                M.ID_MIEMBROS_EQUIPO = R.ID_MIEMBROS_EQUIPO AND
+                AR.ID_RECURSO = R.ID_RECURSO AND 
+                AR.ID_ACTIVIDAD = A.ID_ACTIVIDAD AND 
+                R.ID_PROYECTO = M.ID_PROYECTO AND 
+                R.ID_PROYECTO = A.ID_PROYECTO AND 
+                ( A.FECHA_PLAN_INICIO BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
+                  A.FECHA_PLAN_FIN BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
+                  STR_TO_DATE(:FI,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN OR
+                  STR_TO_DATE(:FF,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN )   
+            UNION
+
+            SELECT M.id_empleado as id
+            FROM MIEMBROS_EQUIPO M
+            WHERE ( M.fecha_entrada BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
+                    M.fecha_salida BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
+                    STR_TO_DATE(:FI,'%d-%m-%Y') BETWEEN M.fecha_entrada AND M.fecha_salida OR
+                    STR_TO_DATE(:FF,'%d-%m-%Y') BETWEEN M.fecha_entrada AND M.fecha_salida ) ";
 
         $db = getConnection();
         $stmt = $db->prepare($sql);
