@@ -379,6 +379,8 @@ function filtrarOtraFecha2(a) {
     //alert(fecha);
     //fecha.setDate(fecha.getDate() + 1) ;
     $("#fi2"+a).datepicker("option", "minDate", fechaII);
+    $("#fi2"+a).datepicker("option", "maxDate", fechaFF);
+    $("#ff2"+a).datepicker("option", "minDate", fechaII);
     $("#ff2"+a).datepicker("option", "maxDate", fechaFF);
 }
 
