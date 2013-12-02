@@ -10,13 +10,19 @@ else {
 	idProyecto = "1";
 }
 var currentDate = new Date();
+
+
+		
 		  var currentMonth = currentDate.getMonth() + 1;
 		  var currentDay = currentDate.getDate();
 
 		  var output = (currentMonth<10 ? '0' : '') + currentMonth + '/' + (currentDay<10 ? '0' : '') + currentDay + '/' + currentDate.getFullYear();
 		$(function() {
-		  
-
+			//alerta de notificaciones;
+			
+			
+			
+			
 		  //load templates
 		  $("#ganttemplates").loadTemplates();
 		
@@ -126,6 +132,10 @@ var currentDate = new Date();
 		    ge.checkpoint(); //empty the undo stack
 		    console.log("Variable Global ge:");
 		    console.log(ge);
+			
+			
+			if (data.notificaciones>0)
+			$("#modalNotificacion").show();
 		    
 		}
 
