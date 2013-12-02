@@ -40,15 +40,20 @@ function submenuGeneralGP_general(){
 		$links=array();
 		
 		 array_push($links, $link_G_RegPro);
+		 array_push($links, $link_G_RegRRHH);
 		 array_push($links, $link_G_RepoRRHH);
 		 array_push($links, $link_G_ListRRHH);
+		 array_push($links, $link_G_RegLec);
 		 array_push($links, $link_G_ListLec);
 		 array_push($links, $link_G_ListSol);
+
+		 $subsubmenu = array();
 
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "Integración"
+                "title" => "Cronograma",
+                "subsubmenu" => $subsubmenu
             );
 
 		 return $submenu;
@@ -94,7 +99,7 @@ function submenuGeneralJP_general(){
 		$links=array();
 		
 		 
-		 
+		 array_push($links, $link_G_RegLec);
 		 array_push($links, $link_G_ListLec);
 		
 
@@ -166,10 +171,14 @@ function submenuGP_general(){
 		 array_push($links, $link_G_ListLinBase);
 		 array_push($links, $link_G_RegSol);
 
+		 $subsubmenu = array();
+		 //submenu - links workd (1er fila )
+		 //subsubmenu - lo antiguo
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "Integración"
+                "title" => "General"
+                
             );
 
 		 return $submenu;
@@ -191,6 +200,7 @@ function submenuGP_alcance(){
 		 array_push($links, $link_A_PlanAlc);
 		 array_push($links, $link_A_PlanReq);
 
+
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
@@ -211,6 +221,8 @@ function submenuGP_cronograma(){
 		 array_push($links, $link_CR_VerRed);
 		 array_push($links, $link_CR_VerGesCam);
 
+
+
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
@@ -226,11 +238,17 @@ function submenuGP_costos(){
 		include('linksMenu.php');
 
 		$links=array();
-		
-		 array_push($links, $link_CO_RegRec);
+		//link_CO_VerPre
+		//link_CO_RegCostReal
+		 //array_push($links, $link_CO_RegRec);
+		 /*
 		 array_push($links, $link_CO_AsigCost);
+		 */
 		 array_push($links, $link_CO_AsigCta);
 		 array_push($links, $link_CO_VerPre);
+		 array_push($links, $link_CO_RegCostReal);
+			/*
+		
 		 array_push($links, $link_CO_VerInd);
 		 array_push($links, $link_CO_VerIndGra);
 		 array_push($links, $link_CO_RegCostReal);
@@ -238,6 +256,7 @@ function submenuGP_costos(){
 		 array_push($links, $link_CO_RegCostIndPla);
 		 array_push($links, $link_CO_RegCostIndReal);
 		 array_push($links, $link_CO_VerPreReal);
+		 */
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -262,6 +281,7 @@ function submenuGP_riesgos(){
 		 array_push($links, $link_R_AcuModif);
 		 array_push($links, $link_R_MatriRiesgo);
 		 array_push($links, $link_R_RiesMateri);
+
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -301,6 +321,7 @@ function submenuJP_general(){
 		 array_push($links, $link_G_ListRRHHXPro);
 		 array_push($links, $link_G_RegSol);
 		
+
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -347,6 +368,7 @@ function submenuJP_cronograma(){
 		 array_push($links, $link_CR_VerRed);
 		 array_push($links, $link_CR_VerGesCam);
 
+
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
@@ -362,9 +384,10 @@ function submenuJP_costos(){
 		include('linksMenu.php');
 
 		$links=array();
-		
-		 array_push($links, $link_CO_RegRec);
-		 array_push($links, $link_CO_AsigCost);
+		//$link_CO_VerPre,link_CO_RegCostReal,link_CO_RegCostReal
+		 //array_push($links, $link_CO_RegRec);
+		 //array_push($links, $link_CO_AsigCost);
+		 /*
 		 array_push($links, $link_CO_AsigCta);
 		 array_push($links, $link_CO_VerPre);
 		 array_push($links, $link_CO_VerInd);
@@ -374,6 +397,8 @@ function submenuJP_costos(){
 		 array_push($links, $link_CO_RegCostIndPla);
 		 array_push($links, $link_CO_RegCostIndReal);
 		 array_push($links, $link_CO_VerPreReal);
+		*/
+
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -398,6 +423,7 @@ function submenuJP_riesgos(){
 		 array_push($links, $link_R_AcuModif);
 		 array_push($links, $link_R_MatriRiesgo);
 		 array_push($links, $link_R_RiesMateri);
+
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -433,10 +459,13 @@ function submenuTM_general(){
 		 array_push($links, $link_G_ListRRHHXPro);
 		
 
+
+
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
                 "title" => "General"
+
             );
 
 		 return $submenu;
@@ -456,6 +485,7 @@ function submenuTM_alcance(){
 		 array_push($links, $link_A_MatriRas);
 		 array_push($links, $link_A_PlanAlc);
 		 array_push($links, $link_A_PlanReq);
+
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -477,10 +507,13 @@ function submenuTM_cronograma(){
 		 array_push($links, $link_CR_VerRed);
 		 array_push($links, $link_CR_VerGesCam);
 
+		
+
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
                 "title" => "Cronograma"
+               
             );
 
 		 return $submenu;
@@ -496,6 +529,7 @@ function submenuTM_costos(){
 		 array_push($links, $link_CO_RegRec);
 		 array_push($links, $link_CO_RegCostReal);
 		 array_push($links, $link_CO_VerPreReal);
+
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -516,6 +550,7 @@ function submenuTM_riesgos(){
 		 array_push($links, $link_R_PlanRiesgo);
 		 array_push($links, $link_R_VerRiesgo);
 		 array_push($links, $link_R_MatriRiesgo);
+
 
 		 $submenu = array(
                 "submenu" => $links,
