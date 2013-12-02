@@ -238,16 +238,17 @@
         if (R_verificaPermisoServicio(R_SERVICIO_4, $riesgo->idUsuario, $riesgo->idProyecto)) {
             // var_dump($riesgo);
             // echo "Entro";
-            $query = "SELECT id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
+            $query = "SELECT RXP.id_riesgo_x_proyecto,nombre_riesgo, PT.nombre nombre_paquete_trabajo, 
             TI.descripcion impacto_descripcion, impacto, NI.descripcion nivel_impacto_descripcion, probabilidad, 
             PR.descripcion probabilidad_descripcion, severidad, acciones_especificas, costo_potencial,demora_potencial, 
-            nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo, estado_logico
+            nombre_corto, NI.nivel nivel_impacto, PR.nivel nivel_probabilidad, positivo_negativo, estado_logico, ifnull(AXR.estado,0) estado_Materializado
                     FROM RIESGO_X_PROYECTO RXP
                     left join PAQUETE_TRABAJO as PT on RXP.id_paquete_trabajo=PT.id_paquete_trabajo
                     left join PROBABILIDAD_RIESGO as PR on RXP.id_probabilidad_riesgo=PR.id_probabilidad_riesgo
                     left join NIVEL_IMPACTO as NI on RXP.id_nivel_impacto=NI.id_nivel_impacto
                     left join TIPO_IMPACTO as TI on RXP.id_tipo_impacto=TI.id_tipo_impacto
                     left join EMPLEADO as E on RXP.id_empleado=E.id_empleado
+            		left join ACCIONES_X_RIESGO as AXR on RXP.id_riesgo_x_proyecto=AXR.id_riesgo_x_proyecto and AXR.estado=1
                     where RXP.estado_logico!=0 and 
                     RXP.id_proyecto=".$riesgo->idProyecto." ";
                     //and RXP.nombre_riesgo LIKE '%".$riesgo->nombre."%'";
@@ -273,7 +274,8 @@
                                 "nivelImpacto" => $row['nivel_impacto'],//X
                                 "nivelProbabilidad" => $row['nivel_probabilidad'],//X
                                 "tipoRiesgo" => $row['positivo_negativo'],
-                                "estadoLogico" => $row['estado_logico']
+                                "estadoLogico" => $row['estado_logico'],
+                    			"estadoMaterializado" => $row['estado_Materializado']
                                 );
                     array_push($arregloListaRiesgo,$data);
                 }
