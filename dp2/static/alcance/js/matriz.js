@@ -226,6 +226,18 @@ $(document).ready(function(){
 	var jsonCliente = {
         idproyecto : localStorage.getItem("idProyecto")                
     };
+
+    $.ajax({
+			type: 'GET',
+			url : '../../api/AL_obtenerProyectoById',
+			dataType: "json",
+			data: {id_proyecto:localStorage.getItem("idProyecto") },
+			contentType: "application/json; charset=utf-8",
+			success:function(data){
+				$("#nombre_proyecto").html(data["nombre_proyecto"]);
+			}
+	});
+
 	$.ajax({
 		type: 'POST',
 		url : '../../api/AL_mostrarFases',
