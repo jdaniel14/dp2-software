@@ -18,7 +18,7 @@ class CR_Proyecto {
 }
 
 class CR_ProyectoJSON {//$actividades, 0, array(), true, true, $roles, $recursos
-
+ 
     public $tasks = array();
     public $selectedRow;
     public $deletedTaskIds = array();
