@@ -1497,5 +1497,30 @@
         }
     }
 
+    function R_getCantidadGestionCambio($var){  
+        $riesgo = json_decode($var);
+        
+        //if (R_verificaPermisoServicio(R_SERVICIO_38, $riesgo->idUsuario, $riesgo->idProyecto)) {
+            $query = "SELECT COUNT(*) cantidad
+                    FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
+                    WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
+                        A.id_actividad=AXR.id_actividad and
+                        RXP.id_proyecto=:id_proyecto ";
+            try {
+                $db=getConnection();
+                $stmt = $db->prepare($query);
+                $stmt->bindParam("id_proyecto", $riesgo->idProyecto);
+                $stmt->execute();
+                $row = $stmt->fetchObject();
+                $db = null;
+                return json_encode($row->cantidad);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            } 
+        /*} else {
+            echo json_encode(R_crearRespuesta(-2, "No tiene permiso para ejecutar esta acción."));
+        }*/
+    }
+
 
 ?>
