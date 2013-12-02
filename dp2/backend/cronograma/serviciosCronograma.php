@@ -719,7 +719,7 @@ function CR_consultarInfoActividades($idProyecto) {
     $calendario = CR_consultarCalendarioBase($idProyecto);
     $tipoCostos = CR_consultarTipoCostos();
 	$lineaBase= G_obtenerLineaBase($idProyecto);
-	$notificaciones=1; 
+	$notificaciones=json_decode(R_getCantidadGestionCambio(json_encode(array("idProyecto" => $idProyecto))))+0; 
     //$recursos = CR_obtenerRecursosTotalFalsa();
 
     $proyecto = new CR_ProyectoJSON($lista_actividad, 0, array(), true, true, $roles, $recursos, $paquetesEDT, $calendario, $tipoCostos,$lineaBase,$notificaciones);
