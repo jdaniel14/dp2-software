@@ -8,9 +8,7 @@ var profesion = "";
 $(document).ready(function(){
 	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
 	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
-	//alert("aqui");
 	$("#fi").change(filtrarOtraFecha);
-	//alert("aquixD");
 	
 	verificaLineaBase();
 	llenar_profesion();
@@ -25,7 +23,7 @@ $(document).ready(function(){
   				$(this).unbind( "click" );
             	$(this).addClass("noMostrar");
             	//console.log("click");
-               $("#ListaRecursosHumanosXProyecto").append($(this));
+                $("#ListaRecursosHumanosXProyecto").append($(this));
               	$("#ListaRecursosHumanosXProyecto").trigger("update"); 
         })
     }) 
@@ -68,10 +66,37 @@ $(document).ready(function(){
     			//console.log("listo para envio");
     			grabarRecursos(envio);
 			}
-			else alert("Llene todos los campos correctamente");
-
+			else {
+				bootbox.dialog({
+				  message: "Complete los datos correctamente",
+				  title: "Advertencia",
+				  buttons: {
+				    danger: {
+				      label: "Ok",
+				      className: "btn-primary",
+				      callback: function() {
+				         //cierra el modal
+				      }
+				    },
+				  }
+				});
+			}
     	} 
-    	else alert("No hay filas que modificar");
+    	else {
+    		bootbox.dialog({
+			  message: "No hay filas que modificar",
+			  title: "Advertencia",
+			  buttons: {
+			    danger: {
+			      label: "Ok",
+			      className: "btn-primary",
+			      callback: function() {
+			         //cierra el modal
+			      }
+			    },
+			  }
+			});
+    	}
     })
 });
 
@@ -166,6 +191,7 @@ function clickRecurso(){
 	              $(this).addClass('seleccionado');
 	           }
 }
+
 $("#btnAsignarRecursos").click(function(){
 	$("#busquedaRecursosDisponibles").show();	
 	$("#tablaRecursosDisponibles").hide();	
@@ -303,7 +329,9 @@ function agregaDataFila(data){
 			}
 			//agregaFilaRecursosHumanos(arreglo[i],i);
 		});
-		if(!bool)agregaFilaRecursosHumanos(arreglo[i],i);
+		if(!bool) {
+			agregaFilaRecursosHumanos(arreglo[i],i);
+		}
 	}
 }
 
@@ -319,18 +347,31 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	//			 "<option value='9'>Desarrollador 2</option>"+
 	//				"</select>";
 	
-	var fechaini="<input class='form-control input-sm' type='date' name='fechaini'>";
-	var fechafin="<input class='form-control input-sm' type='date' name='fechafin'>";
+	var fechaini="<input id='fi2" + a + "' class='form-control' type='text' name='fi2' placeholder='' class='input-xlarge' max=today readonly>";
+	var fechafin="<input id='ff2" + a + "' class='form-control' type='text' name='ff2' placeholder='' class='input-xlarge' max=today readonly>";
 	var rol = "Miembro de Equipo";
 
-	var costohh = "<input  class='form-control input-sm' type='text' name='costohh'>"
+	var costohh = "<input class='form-control input-sm' type='text' name='costohh'>";
 	var tbody = '<tr class="fila'+a+'"><td>'+ arreglo["id"] + '</td><td>' +  arreglo["nom"]+ '</td><td>' + rol + '</td><td>'+ arreglo["prof"] + '</td><td>' + 
 				profesion +'</td><td>' + costohh +'</td><td>' + fechaini +'</td><td>' + fechafin +'</td></tr>';
-	
+
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
-	
+
+	$("#fi2"+a).datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#ff2"+a).datepicker({ dateFormat: 'dd-mm-yy' });
+
 	$(".fila"+(i+1)).click(clickRecurso);
+//	$("#fi2"+a).change(filtrarOtraFecha2(a);
+}
+
+function filtrarOtraFecha2(a) {
+    $("#fi2"+a).attr("value", "");
+    var fecha = new Date();
+    fecha = $("#fi2"+a).datepicker("getDate");
+    //alert(fecha);
+    fecha.setDate(fecha.getDate() + 1) ;
+    $("#ff2"+a).datepicker("option", "minDate", fecha);
 }
 
 function verificaLineaBase() {
@@ -351,6 +392,28 @@ function verificaLineaBase() {
 	});
 
 }
+
+// Traducción al español de datepicker
+$(function($){
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+});
 
 /*
 function validacion() {
