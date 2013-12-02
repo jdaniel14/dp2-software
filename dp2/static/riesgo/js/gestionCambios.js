@@ -95,17 +95,17 @@ function listarCambiosGantt(){
             <input class=\"form-control\" readonly type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
                 "<label> dias</label><br></div><br><div></div><br>";
         
-        cadena=cadena +'<div class="col-md-12"  style="text-align:center"><button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +','+idAccionRiesgo+');">Cambiar</button>';
+        cadena=cadena +'<div class="col-md-12"  style="text-align:center"><button type="button" class="btn btn-primary rigth" id="btnGrabar" onclick="guardar_cambios('+idActividadCronograma  +','+idAccionRiesgo+');">Aceptar</button>';
 	cadena=cadena +'&nbsp<button type="button" class="btn btn-primary rigth" id="btnRechazar" onclick="rechazar_cambios('+idActividadCronograma  +','+idAccionRiesgo+');">Rechazar</button></div></div></div>';
 	
                 $("#prueba"+idActividadCronograma).html(cadena);
           }
         }
-        $(".btn-primary").show();
-        console.log(lineaBase1);
-        if(lineaBase1) {
-          $(".btn-primary").hide();
-        } 
+        // $(".btn-primary").show();
+        // console.log(lineaBase1);
+        // if(lineaBase1) {
+        //   $(".btn-primary").hide();
+        // } 
 
         }
         //"+ idActividadCronograma + ",'"+fechaInicioActividadCronograma+"',"+duracionActividadCronograma+",'"+nombreActividadCronograma+"'
@@ -173,30 +173,33 @@ function guardar_cambios(id,idAccionRiesgo){
      
      
       var jsonData1 = JSON.stringify(data1);
-     $.ajax({
-        type: 'POST',
-        url: "../../api/CR_updateActividad/",
-        data: jsonData,
-        success: function(data) {
-            var item=JSON.parse(data);
+     // $.ajax({
+     //    type: 'POST',
+     //    url: "../../api/CR_updateActividad/",
+     //    data: jsonData,
+     //    success: function(data) {
+     //        var item=JSON.parse(data);
            // alert(item['codRespuesta']);
             // alert("Registrado con éxito");
             
-            $("#prueba"+idAct).hide();
+            
 
             $.ajax({
                 type: 'PUT',
                 url: updateStatus,
                 data: jsonData1,
                 success: function(data1) {
-                    
+                  $("#prueba"+idAct).hide();
+
                   $("#labelExitoModal").html("");
                   $("#labelExitoModal").append("Se ha registrado con éxito");
                   $('#modalExito').modal('show');
+
+                  
                 }                        
             });
-        }
-      });
+      //   }
+      // });
       console.log(data);
     
     
