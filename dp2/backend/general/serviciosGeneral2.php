@@ -480,7 +480,7 @@ function G_getListarRecDisp() {
             WHERE ( M.fecha_entrada BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
                     M.fecha_salida BETWEEN STR_TO_DATE(:FI,'%d-%m-%Y') AND STR_TO_DATE(:FF,'%d-%m-%Y') OR
                     STR_TO_DATE(:FI,'%d-%m-%Y') BETWEEN M.fecha_entrada AND M.fecha_salida OR
-                    STR_TO_DATE(:FF,'%d-%m-%Y') BETWEEN M.fecha_entrada AND M.fecha_salida ) ";
+                    STR_TO_DATE(:FF,'%d-%m-%Y') BETWEEN M.fecha_entrada AND M.fecha_salida )  AND M.estado = 1";
 
         $db = getConnection();
         $stmt = $db->prepare($sql);
