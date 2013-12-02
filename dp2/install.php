@@ -186,6 +186,7 @@ function eliminarArchivos(){
 	unlink("../bd_lineabase.sql");
 	unlink("../dataInicial.sql");
 	unlink("../triggers.sql");
+	unlink("../sp.sql");
 }
 
 ?>
