@@ -363,11 +363,11 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
 
-	$("#fi2"+a).datepicker({ dateFormat: 'dd-mm-yy' });
-	$("#ff2"+a).datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#fi2"+a).datepicker({ dateFormat: 'dd-mm-yy', minDate : fechaII, maxDate : fechaFF });
+	$("#ff2"+a).datepicker({ dateFormat: 'dd-mm-yy', minDate : fechaII, maxDate : fechaFF });
 
 	$(".fila"+(i+1)).click(clickRecurso);
-	$("#fi2"+a).change(filtrarOtraFecha2(a));
+	$("#fi2"+a).change(filtrarOtraFecha3(a));
 }
 
 function filtrarOtraFecha2(a) {
@@ -380,8 +380,21 @@ function filtrarOtraFecha2(a) {
     //fecha.setDate(fecha.getDate() + 1) ;
     $("#fi2"+a).datepicker("option", "minDate", fechaII);
     $("#fi2"+a).datepicker("option", "maxDate", fechaFF);
+    $("#fi2"+a).change(filtrarOtraFecha3(a));
     $("#ff2"+a).datepicker("option", "minDate", fechaII);
     $("#ff2"+a).datepicker("option", "maxDate", fechaFF);
+}
+
+function filtrarOtraFecha3(a) {
+	alert(a);
+    $("#ff2"+a).attr("value", "");
+    var fecha = new Date();
+    fecha = $("#fi2"+a).datepicker("getDate");
+    alert(fecha);
+    if(fecha != null){
+    	fecha.setDate(fecha.getDate() + 1) ;
+    	$("#ff2"+a).datepicker("option", "minDate", fecha);
+    }
 }
 
 function verificaLineaBase() {
