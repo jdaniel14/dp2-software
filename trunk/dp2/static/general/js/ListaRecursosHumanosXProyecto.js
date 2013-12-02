@@ -4,6 +4,8 @@ var verificarLineaBase ="../../api/G_verificaLineaBase/";
 //var buscarRecursosProyectoFecha = "../../api/G_buscarRecursosDisponibleFecha";
 var profesion = "";
 
+var fechaII = new Date();
+var fechaFF = new Date();
 
 $(document).ready(function(){
 	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
@@ -289,6 +291,9 @@ $("#buscar").click(function(){
 				};
    	//console.log(JSON.stringify(envio));
 	//alert(JSON.stringify(envio));
+	fechaII = $("#fi").datepicker("getDate");
+	fechaFF = $("#ff").datepicker("getDate");
+
    	$.ajax({
 		type: 'POST',
 		url: buscarRecursosProyectoFecha,
@@ -362,16 +367,19 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	$("#ff2"+a).datepicker({ dateFormat: 'dd-mm-yy' });
 
 	$(".fila"+(i+1)).click(clickRecurso);
-//	$("#fi2"+a).change(filtrarOtraFecha2(a);
+	$("#fi2"+a).change(filtrarOtraFecha2(a));
 }
 
 function filtrarOtraFecha2(a) {
-    $("#fi2"+a).attr("value", "");
-    var fecha = new Date();
-    fecha = $("#fi2"+a).datepicker("getDate");
+	alert(fechaII);
+	alert(fechaFF);
+    //$("#fi2"+a).attr("value", "");
+    //var fecha = new Date();
+    //fecha = $("#fi2"+a).datepicker("getDate");
     //alert(fecha);
-    fecha.setDate(fecha.getDate() + 1) ;
-    $("#ff2"+a).datepicker("option", "minDate", fecha);
+    //fecha.setDate(fecha.getDate() + 1) ;
+    $("#fi2"+a).datepicker("option", "minDate", fechaII);
+    $("#ff2"+a).datepicker("option", "maxDate", fechaFF);
 }
 
 function verificaLineaBase() {
