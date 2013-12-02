@@ -40,7 +40,6 @@ function submenuGeneralGP_general(){
 		$links=array();
 		
 		 array_push($links, $link_G_RegPro);
-		 array_push($links, $link_G_RegRRHH);
 		 array_push($links, $link_G_RepoRRHH);
 		 array_push($links, $link_G_ListRRHH);
 		 array_push($links, $link_G_RegLec);
