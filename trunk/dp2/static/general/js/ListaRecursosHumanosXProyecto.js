@@ -8,8 +8,8 @@ var fechaII = new Date();
 var fechaFF = new Date();
 
 $(document).ready(function(){
-	$("#fi").datepicker({ dateFormat: 'dd-mm-yy' });
-	$("#ff").datepicker({ dateFormat: 'dd-mm-yy' });
+	$("#fi").datepicker({ dateFormat: 'dd/mm/yyyy' });
+	$("#ff").datepicker({ dateFormat: 'dd/mm/yyyy' });
 	$("#fi").change(filtrarOtraFecha);
 	
 	verificaLineaBase();
@@ -176,8 +176,7 @@ function grabarRecursos(envio){
 		async: true,
         success: function(data){
         	if(data.me==""){
-        		alert("Ya se inserto");
-            	$(location).attr('href','ListaRecursosHumanosXProyecto.html');
+        		$(location).attr('href','ListaRecursosHumanosXProyecto.html');
         	} else {
         		alert(data.me);
         	}
@@ -363,8 +362,8 @@ function agregaFilaRecursosHumanos(arreglo,i){
 	//$(tbody).click(clickRecurso);
 	$("#listaRecursosHumanos tbody").append(tbody);
 
-	$("#fi2"+a).datepicker({ dateFormat: 'dd-mm-yy', minDate : fechaII, maxDate : fechaFF });
-	$("#ff2"+a).datepicker({ dateFormat: 'dd-mm-yy', minDate : fechaII, maxDate : fechaFF });
+	$("#fi2"+a).datepicker({ dateFormat: 'dd/mm/yyyy', minDate : fechaII, maxDate : fechaFF });
+	$("#ff2"+a).datepicker({ dateFormat: 'dd/mm/yyyy', minDate : fechaII, maxDate : fechaFF });
 
 	$(".fila"+(i+1)).click(clickRecurso);
 	$("#fi2"+a).change(filtrarOtraFecha3(a));
