@@ -115,128 +115,66 @@
          /****************************************************************************************************/
          //costos
 
-         //subsubmenu para costos
-
-         $subsubmenu = array();
+             
  
-          $link1 = array(
+          $link_CO_RegRec = array(
                 "href"=> "../../views/costo/RegistrarRecursos.html", 
                 "title"=> "Registrar Recursos"
             );
 
-          $link2 = array(
+          $link_CO_RegCostIndPla = array(
               "href"=> "../../views/costo/RegistrarCostosIndirectosPlaneados.html", 
                 "title"=> "Costos Indirectos Planeados"
             );
 
-          $link3 = array(
+          $link_CO_AsigCta = array(
               "href"=> "../../views/costo/AsignaCuenta.html", 
                 "title"=> "Asignar cuenta contable"
             );
 
-          array_push($subsubmenu, $link1, $link2, $link3);
-
-          
-
-         $link_CO_AsigCta = array(
-                "href"=> "#", 
-                "title"=> "ESTIMAR COSTOS",
-                "subsubmenu" => $subsubmenu
-        );
-
-//link_CO_AsigCta,link_CO_VerPre
-
-
-         /*
-          
-DETERMINAR EL PRESUPUESTO
--VISUALIZAR PRESUPUESTO
--RESUMEN PRESUPUESTO/RESERVA
-         */
-
-          
-         $subsubmenu = array();
- 
-          $link1 = array(
+          $link_CO_VerPre = array(
                 "href"=> "../../views/costo/VisualizarPresupuesto.html", 
                 "title"=> "Visualizar Presupuesto"
             );
 
-          $link2 = array(
+          $link_CO_AsigCost = array(
                "href"=> "../../views/costo/AsignaCostoRecursos.html", 
                 "title"=> "Resumen presupuesto/Reserva",
             );
 
 
-          array_push($subsubmenu, $link1, $link2 );
-
-           $link_CO_VerPre = array(
-                "href"=> "#", 
-                "title"=> "DETERMINAR EL PRESUPUESTO",
-                "subsubmenu" => $subsubmenu
-            );
-
-
-        
-        /*
-          CONTROLAR COSTOS
--REGISTRAR COSTOS REALES (FIJOS)
--VISUALIZAR COSTO POR CUENTA (CONTABLE)
--VISUALIZAR PRESUPUESTO REAL
--COSTOS INDIRECTOS REALES
--VISUALIZAR INDICADORES
--VISUALIZAR INDICADORES GRAFICO
-
-        */
-//$link_CO_VerPre,link_CO_RegCostReal,link_CO_RegCostReal
-          
-        $subsubmenu = array();
- 
-          $link1 = array(
+          $link_CO_RegCostReal = array(
                "href"=> "../../views/costo/RegistrarCostosReales.html", 
-                "title"=> "Registrar Costos Reales"
+                "title"=> "Registrar Costos Reales Fijos"
             );
 
-          $link2 = array(
+          $link_CO_RegCostCta = array(
                 "href"=> "../../views/costo/VisualizarCostoPorCuenta.html", 
-                "title"=> "Visualizar Costo por Cuenta"
+                "title"=> "Visualizar Costo por Cuenta Contables"
             );
 
-          $link3 = array(
+          $link_CO_VerPreReal = array(
                 "href"=> "../../views/costo/VisualizarPresupuestoReal.html", 
                 "title"=> "Visualizar Presupuesto Real"
             );
 
-          $link4 = array(
+          $link_CO_RegCostIndReal = array(
                 "href"=> "../../views/costo/RegistrarCostosIndirectosReales.html", 
                 "title"=> "Costos Indirectos Reales"
             );
 
-          $link5 = array(
+          $link_CO_VerIndGra = array(
                "href"=> "../../views/costo/VisualizarIndicadoresGrafico.html", 
                 "title"=> "Visualizar Indicadores Grafico"
             );
 
-          array_push($subsubmenu, $link1, $link2, $link3, $link4, $link5 );
+          
 
-
-
-         $link_CO_RegCostReal = array(
-                "href"=> "#", 
-                "title"=> "CONTROLAR COSTOS",
-                "subsubmenu" => $subsubmenu
-        );
-        
+          $link_CO_VerInd = array(
+               "href"=> "../../views/costo/VisualizarIndicadores.html", 
+                "title"=> "Visualizar Indicadores"
+            );
          
-
-        
-
-        
-
-        
-
-        
-        
 
          /****************************************************************************************************/
          //riesgos

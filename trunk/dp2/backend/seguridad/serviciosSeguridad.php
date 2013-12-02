@@ -162,16 +162,52 @@ function submenuGP_general(){
 
 		$links=array();
 		
-		 array_push($links, $link_G_RegAct);
-		 array_push($links, $link_G_VerAct);
-		 array_push($links, $link_G_ListRRHHXPro);
-		 array_push($links, $link_G_MatriRRHH);
-		 array_push($links, $link_G_ListLinBase);
-		 array_push($links, $link_G_RegSol);
+		
+		 //acta de constitucion
+		 $subsubmenu_acta_constitucion = array();
+		 array_push($subsubmenu_acta_constitucion, 
+		 										$link_G_RegAct,
+		 										 $link_G_VerAct);
 
-		 $subsubmenu = array();
-		 //submenu - links workd (1er fila )
-		 //subsubmenu - lo antiguo
+		 $submenu_acta_constitucion = array(
+                "href"=> "#", 
+                "title"=> "Acta de Constitución",
+                "subsubmenu" => $subsubmenu_acta_constitucion
+        );
+
+		 //Control Integrado de Cambios
+		 $subsubmenu_control_cambios = array();
+		 array_push($subsubmenu_control_cambios, 
+		 										$link_G_ListLinBase,
+		 										 $link_G_RegSol);
+
+		 $submenu_control_cambios = array(
+                "href"=> "#", 
+                "title"=> "Control Integrado de Cambios",
+                "subsubmenu" => $subsubmenu_control_cambios
+        );
+
+		 //Gestion de RRHH
+		 $subsubmenu_gestion_rrhh = array();
+		 array_push($subsubmenu_gestion_rrhh, 
+		 										$link_G_ListRRHHXPro,
+		 										 $link_G_MatriRRHH);
+
+		 $submenu_gestion_rrhh = array(
+                "href"=> "#", 
+                "title"=> "Gestión de Recursos Humanos",
+                "subsubmenu" => $subsubmenu_gestion_rrhh
+        );
+		 
+
+		 //submenu de integracion
+		 array_push($links, 
+		 					$submenu_acta_constitucion,
+		 					$submenu_control_cambios,
+		 					$submenu_gestion_rrhh);
+
+
+
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
@@ -236,25 +272,53 @@ function submenuGP_costos(){
 		include('linksMenu.php');
 
 		$links=array();
-		//link_CO_VerPre
-		//link_CO_RegCostReal
-		 //array_push($links, $link_CO_RegRec);
-		 /*
-		 array_push($links, $link_CO_AsigCost);
-		 */
-		 array_push($links, $link_CO_AsigCta);
-		 array_push($links, $link_CO_VerPre);
-		 array_push($links, $link_CO_RegCostReal);
-			/*
 		
-		 array_push($links, $link_CO_VerInd);
-		 array_push($links, $link_CO_VerIndGra);
-		 array_push($links, $link_CO_RegCostReal);
-		 array_push($links, $link_CO_RegCostCta);
-		 array_push($links, $link_CO_RegCostIndPla);
-		 array_push($links, $link_CO_RegCostIndReal);
-		 array_push($links, $link_CO_VerPreReal);
-		 */
+
+		 //estimar costos
+		 $subsubmenu_estimar_costos = array();
+		 array_push($subsubmenu_estimar_costos, 
+		 										$link_CO_RegRec,
+		 										 $link_CO_RegCostIndPla,
+		 										  $link_CO_AsigCta);
+
+		 $submenu_estimar_costos = array(
+                "href"=> "#", 
+                "title"=> "Estimar Costos",
+                "subsubmenu" => $subsubmenu_estimar_costos
+        );
+
+		 //determinar el presupuesto
+		 $subsubmenu_determinar_presupuesto = array();
+		 array_push($subsubmenu_determinar_presupuesto, 
+		 												$link_CO_VerPre, 
+		 												$link_CO_AsigCost );
+
+           $submenu_determinar_presupuesto = array(
+                "href"=> "#", 
+                "title"=> "Determinar el Presupuesto",
+                "subsubmenu" => $subsubmenu_determinar_presupuesto
+            );
+
+         //controlar costos
+          $subsubmenu_controlar_costos = array();
+          array_push($subsubmenu_controlar_costos, 
+							          			$link_CO_RegCostReal, 
+							          			$link_CO_RegCostCta,
+							          			 $link_CO_VerPreReal, 
+							          			 $link_CO_RegCostIndReal,
+							          			 $link_CO_VerInd, 
+							          			 $link_CO_VerIndGra );
+
+         $submenu_controlar_costos = array(
+                "href"=> "#", 
+                "title"=> "Controlar Costos",
+                "subsubmenu" => $subsubmenu_controlar_costos
+        );
+
+         //submenu de costos
+		 array_push($links, $submenu_estimar_costos,$submenu_determinar_presupuesto,$submenu_controlar_costos);
+					 
+		
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -382,10 +446,9 @@ function submenuJP_costos(){
 		include('linksMenu.php');
 
 		$links=array();
-		//$link_CO_VerPre,link_CO_RegCostReal,link_CO_RegCostReal
-		 //array_push($links, $link_CO_RegRec);
-		 //array_push($links, $link_CO_AsigCost);
-		 /*
+		
+		 array_push($links, $link_CO_RegRec);
+		 array_push($links, $link_CO_AsigCost);		 
 		 array_push($links, $link_CO_AsigCta);
 		 array_push($links, $link_CO_VerPre);
 		 array_push($links, $link_CO_VerInd);
@@ -395,7 +458,7 @@ function submenuJP_costos(){
 		 array_push($links, $link_CO_RegCostIndPla);
 		 array_push($links, $link_CO_RegCostIndReal);
 		 array_push($links, $link_CO_VerPreReal);
-		*/
+		
 
 
 		 $submenu = array(
