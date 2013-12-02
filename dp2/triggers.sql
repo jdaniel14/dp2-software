@@ -1,4 +1,3 @@
-/*si desea ejecutar este script a mano debe borrar los pipes(|) y poner delimiters*/
 CREATE TRIGGER AI_MIEMBROS_EQUIPO_T1 AFTER INSERT ON MIEMBROS_EQUIPO
   FOR EACH ROW BEGIN
 
