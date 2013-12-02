@@ -148,7 +148,7 @@ function asd(www,id){
 			url: "../../api/G_eliminarRecursoProyecto",
 	        success: function(data){
 	  
-	            $(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
+	            //$(location).attr('href','ListaRecursosHumanosXProyecto.html'); 
 	        }
 		});	
 	}
@@ -318,25 +318,26 @@ function agregaDataFila(data){
 	
 	if (data!=null){
 		arreglo=data["l_recurso"];
-	}
-	
-	for (i=0; i<arreglo.length;i++){
-		var bool = false;
-		$.each(arrAux,function(e,el){
-			//console.log("Valor: " + $($(el).children("td")[0]).text());
-			//console.log($(el).children("td")[0]);
-			//console.log(arreglo[i]["id"]);
-			if($($(el).children("td")[0]).text() == arreglo[i]["id"]){
-				bool = true;
-				console.log(arreglo[i]["id"]);	
-				console.log(bool);
+		for (i=0; i<arreglo.length;i++){
+			var bool = false;
+			$.each(arrAux,function(e,el){
+				//console.log("Valor: " + $($(el).children("td")[0]).text());
+				//console.log($(el).children("td")[0]);
+				//console.log(arreglo[i]["id"]);
+				if($($(el).children("td")[0]).text() == arreglo[i]["id"]){
+					bool = true;
+					console.log(arreglo[i]["id"]);	
+					console.log(bool);
+				}
+				//agregaFilaRecursosHumanos(arreglo[i],i);
+			});
+			if(!bool) {
+				agregaFilaRecursosHumanos(arreglo[i],i);
 			}
-			//agregaFilaRecursosHumanos(arreglo[i],i);
-		});
-		if(!bool) {
-			agregaFilaRecursosHumanos(arreglo[i],i);
 		}
 	}
+	
+	
 }
 
 function agregaFilaRecursosHumanos(arreglo,i){
