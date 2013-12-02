@@ -92,9 +92,23 @@ $(document).ready(function(){
 
 
 
+/*
+
+  <ul class="dropdown-menu">
+      <li><a tabindex="-1" href="#">Second level</a></li>
+      <li class="dropdown-submenu">
+        <a href="#">More..</a>
+        <ul class="dropdown-menu">
+        	<li><a href="#">3rd level</a></li>
+        	<li><a href="#">3rd level</a></li>
+        </ul>
+      </li>
+*/
+
 function armaMenu( data ){
 	//console.log(data);
-
+	/*
+	console.log( "arma Menu ");
 	var menu = '<ul class = "nav navbar-nav">';
 	for ( i = 0 ; i < data.menu.length; i++ ){
 		var submenu = data.menu[i].submenu;
@@ -106,7 +120,12 @@ function armaMenu( data ){
 
 		for ( j = 0 ; j < submenu.length; j++ ){
 			menu += '<li>';
-			menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
+				menu += '<li class="dropdown-submenu">';
+				menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
+				menu += '<ul class="dropdown-menu">';
+				menu += '<li><a href="#">3rd level</a></li>';
+				menu += '</ul>';
+				menu += '</li>';
 			menu += '</li>';
 
 		}
@@ -116,6 +135,86 @@ function armaMenu( data ){
 	menu += '</ul>'
 
 	return menu;
+	*/
+	var i = 0;
+	var menu = '<ul class="nav navbar-nav" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">';
+	for ( i = 0; i < data.menu.length; i++ ){
+		var submenu = data.menu[i].submenu;
+		menu += '<li class="dropdown-submenu">';
+		menu += '<a tabindex = "-1" href="#" class="dropdown-toggle" data-toggle="dropdown">' + data.menu[i].title +'<b class="caret"></b></a>';
+		menu += '<ul class="dropdown-menu">';
+			for ( j = 0; j < submenu.length; j++){
+				//<a tabindex="-1" href="#">Second level</a><menu += '<li><a tabindex="-1" href="#">Second level</a></li>';
+				menu += '<li class="dropdown-submenu">';
+				menu += '<a href="' + submenu[j].href + '">'+ submenu[j].title+ '</a>';
+				menu += '<ul class="dropdown-menu">';
+				var subsubmenu = submenu[j].subsubmenu;
+				console.log("subsubmenu",subsubmenu,subsubmenu.length);
+				for ( k = 0; k < subsubmenu.length; k++ ){
+					menu += '<li>';
+					menu += '<a href="' + subsubmenu[k].href + '">'+ subsubmenu[k].title+ '</a>';
+					menu += '</li>';
+				}
+				
+				//console.log("submenu", submenu[j]);
+				menu += '</ul>';
+				menu += '</li>';
+
+			}
+	    menu += '</ul>';
+	}
+	menu += '</ul>';
+
+	//var html = '<ul class="nav navbar-nav" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">';
+	//html += '<li class="dropdown-submenu">';
+	//html += '<a tabindex="-1" href="#">More options</a>';
+	//html += '<ul class="dropdown-menu">';
+	//html += '<li><a tabindex="-1" href="#">Second level</a></li>';
+	/*
+	//html += '<li class="dropdown-submenu">';
+	//html += '<a href="#">More..</a>';
+	html += '<ul class="dropdown-menu">';
+	html += '<li><a href="#">3rd level</a></li>';
+	html += '<li><a href="#">3rd level</a></li>';
+	html += '</ul>';
+	html += '</li>';
+	html += '<li><a href="#">Second level</a></li>';
+	html += '</ul>';
+	html += '</li>';
+	html += '</ul>';
+	*/
+/*
+var html = '<ul class="nav nav-pills">';
+    html += '<li class="active"><a href="#">Regular link</a></li>';
+    html += '<li class="dropdown">';
+    html += '<a href="#" data-toggle="dropdown" class="dropdown-toggle">Dropdown <b class="caret"></b></a>';
+    html +=  '<ul class="dropdown-menu" id="menu1">';
+       html += '<li class="dropdown-submenu">';
+          html += '<a href="#">More options</a>';
+          html += '<ul class="dropdown-menu">';
+           html += '<li><a href="#">Second level link</a></li>';
+           html += '<li><a href="#">Second level link</a></li>';
+            html += '<li><a href="#">Second level link</a></li>';
+            html += '<li><a href="#">Second level link</a></li>';
+            html += '<li><a href="#">Second level link</a></li>';
+          html += '</ul>';
+        html += '</li>';
+        html += '<li><a href="#">Another action</a></li>';
+        html += '<li><a href="#">Something else here</a></li>';
+        html += '<li class="divider"></li>';
+        html += '<li><a href="#">Separated link</a></li>';
+      html += '</ul>';
+    html += '</li>';
+    html += '<li class="dropdown">';
+      html += '<a href="#">Menu</a>';
+    html += '</li>';
+    html += '<li class="dropdown">';
+      html += '<a href="#">Menu</a>';
+    html +='</li>';
+html += '</ul>';
+*/
+
+     return menu;
 
 }
 $('#logout').click(function(){
