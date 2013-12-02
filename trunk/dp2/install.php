@@ -83,10 +83,18 @@ function restaurarBDLineaBase(){
 	//leer archivo sql
 	$sql = file_get_contents('../bd_lineabase.sql');
 	$outputSql = renderHeader($sql,$val);
+
 	//descomentar la siguiente linea en caso de tener problemas con DEFINER
 	//$sql = preg_replace('@/*!50013 DEFINER.*?*/@' , '' , $sql);
 	$con->exec($outputSql);
-	//insertar datos iniciales
+	
+	//crear los sp y funciones
+	$sql = file_get_contents('../sp.sql');
+	$outputSql = renderHeader($sql,$val);
+	$spList = explode('|',$outputSql);
+	foreach ($spList as $sp) {
+		$con->exec($sp);
+	}
 
 	echo 200;
 }
@@ -101,15 +109,17 @@ function restaurarBD(){
 	//descomentar la siguiente linea en caso de tener problemas con DEFINER
 	//$sql = preg_replace('@/*!50013 DEFINER.*?*/@' , '' , $sql);
 	$con->exec($outputSql);
-	//insertar los datos iniciales
-	$sql = file_get_contents('../dataInicial.sql');
-	$con->exec($sql);
 
 	$sql = file_get_contents('../triggers.sql');
 	$triggerList = explode('|',$sql);
 	foreach ($triggerList as $trigger) {
 		$con->exec($trigger);
 	}
+
+	//insertar los datos iniciales
+	$sql = file_get_contents('../dataInicial.sql');
+	$con->exec($sql);
+
 	//cambiar el archivo de conexion
 	//obtener el archivo plantilla
 	$code = file_get_contents('../conexion.tpl.php');
