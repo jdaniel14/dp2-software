@@ -918,7 +918,12 @@ function inicializaFechas(){
                 tipoCheckbox = "<td align=\"center\"><input type=\"checkbox\" value=\"" + arreglo.idRiesgoProyecto + "\" disabled ></td>";
                 arreglo.estadoLogico = "Confirmado";
                 tipoBotonAcciones= "<td><a href=\"../riesgo/AccionesRiesgos.html\" id=\"btnAcciones\" class='btn btn-primary acciones'>Acciones</a></td>";
-                tipoBotonMaterializar = "<td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>";
+                if (arreglo.estadoMaterializado==1) {
+                    tipoBotonMaterializar = "<td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\" disabled>Materializar</a></td></tr>";
+                } else {
+                    tipoBotonMaterializar = "<td><a data-toggle=\"modal\"  href=\"#confirmMaterializar\" class='btn btn-primary materializar' href=\"#\">Materializar</a></td></tr>";
+                }
+                
             }
             $("#tablaRiesgos").append("<tr id=\"" + arreglo.idRiesgoProyecto +
                     "\"><td>" + arreglo.idRiesgoProyecto +
