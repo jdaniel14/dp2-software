@@ -391,12 +391,12 @@
 					var encontro=0;
 					for(i=0;i<paquetes.length;i++){
 						if (paquetes[i].id==select){
-							$($(this.parentNode.parentNode).find('div')).text(paquetes[i].colchon+'días');
+							$($(this.parentNode.parentNode).find('div')).text(paquetes[i].colchon+' días');
 							encontro=1;
 							break;
 						}
 					}
-					if (encontro==0)$($(this.parentNode.parentNode).find('div')).text(0+'días');
+					if (encontro==0)$($(this.parentNode.parentNode).find('div')).text('0 días');
 					
 					//console.log(paquetes[])
 					

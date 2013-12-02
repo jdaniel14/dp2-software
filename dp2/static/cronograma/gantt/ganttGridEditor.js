@@ -538,15 +538,15 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
     selectwbs.val(task.id_Wbs);
 
 
-    if (task.id_Wbs == null) {
+    if (task.id_Wbs == null or task.id_Wbs==-1) {
         selectwbs.val(1);
-        taskEditor.find("#colchon").text('0');
+        taskEditor.find("#colchon").text('0 días');
     }
     else {
         var paquetes = ge.wbsNodes;
         for (var i = 0; i < paquetes.length; i++) {
             if (paquetes[i].id == task.id_Wbs) {
-                taskEditor.find("#colchon").text(paquetes[i].colchon/*'ñacañaca'+task.id_Wbs*/);
+                taskEditor.find("#colchon").text(paquetes[i].colchon+' días'/*'ñacañaca'+task.id_Wbs*/);
 
                 break;
             }
