@@ -254,7 +254,7 @@ Task.prototype.setPeriod = function (start, end) {
 Task.prototype.moveTo = function (start, ignoreMilestones) {
   //console.debug("moveTo ",this,start,ignoreMilestones);
   //var profiler = new Profiler("gt_task_moveTo");
-
+  ignoreMilestones=true;
   if (start instanceof Date) {
     start = start.getTime();
   }
