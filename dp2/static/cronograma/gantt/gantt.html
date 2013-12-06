@@ -255,15 +255,15 @@
 	      <th class="gdfColHeader" style="width:35px;"></th>
 	      <th class="gdfColHeader" style="width:28px;">Estado</th>
 	      <th class="gdfColHeader gdfResizable" style="width:30px;">Código</th>
-	      <th class="gdfColHeader gdfResizable" style="width:10px;"></th>
+	      <th class="gdfColHeader gdfResizable" style="width:180px;">Paquete de trabajo</th>
 	      <th class="gdfColHeader gdfResizable" style="width:200px;">Nombre</th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;">Inicio</th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;">Fin</th>
 	      <th class="gdfColHeader gdfResizable" style="width:55px;">Duración(días)</th>
 	      <th class="gdfColHeader gdfResizable" style="width:55px;">Dependencias</th>
-	      <th class="gdfColHeader gdfResizable" style="width:200px;">Recursos</th>
+	      <th class="gdfColHeader gdfResizable" style="width:120px;">Recursos</th>
 		  
-		  <th class="gdfColHeader gdfResizable" style="width:70px;">Paquete de trabajo</th>
+		  
 		  <th class="gdfColHeader gdfResizable" style="width:50px;">Indicadores</th>
 	    </tr>
 	    </thead>
@@ -275,7 +275,7 @@
 	    <th class="gdfCell edit" align="right" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> <span class="teamworkIcon" style="font-size:12px;" >e</span></th>
 	    <td class="gdfCell" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
 	    <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)"></td>
-	    <td class="gdfCell"><span>-</span></td>
+	    <td class="gdfCell"  ><input  type="text" name="wbsNode"  value="(#=obj.wbsNode#)" readonly></td>
 	
 	    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;"><input type="text" name="name" value="(#=obj.name#)" style="(#=obj.level>0?'border-left:2px dotted orange':''#)"></td>
 	
@@ -287,7 +287,7 @@
 		
 		
 		
-		<td class="gdfCell"  ><input  type="text" name="wbsNode"  value="(#=obj.wbsNode#)" readonly></td>
+		
 		<td class="gdfCell" align = "center"><button data-toggle = "modal" href = "#modalIndicadores" style="(#=obj.level>0?'':'display:none;'#)" name = "(#=obj.id_task#)" class = "btn btn-info btn-xs" onclick = "
 		
 		var tarea = $(this).attr('name');
