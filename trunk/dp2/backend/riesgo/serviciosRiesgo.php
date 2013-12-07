@@ -1504,7 +1504,7 @@
             $query = "SELECT COUNT(*) cantidad
                     FROM ACCIONES_X_RIESGO AXR, RIESGO_X_PROYECTO RXP, ACTIVIDAD A
                     WHERE AXR.id_riesgo_x_proyecto=RXP.id_riesgo_x_proyecto and AXR.estado=1  and
-                        A.id_actividad=AXR.id_actividad and AXR.flag_aceptado_rechazado=null and
+                        A.id_actividad=AXR.id_actividad  and
                         RXP.id_proyecto=:id_proyecto ";
             try {
                 $db=getConnection();
