@@ -81,6 +81,8 @@ function cargarDatos(){
         	dataAJAX = data;
         	listaRed = data.listaRed;
         	iniciarFiesta();
+                 // $("#36_content").hide();
+                 
         }
 	});
 }
@@ -283,6 +285,8 @@ function iniciarFiesta(){
 	
 	//Inicializo los valores para el tama�o de cada bloque
 	factorX = widthDiagram /( dataAJAX.cantBloques+1);
+        
+                    factorX = factorX+150* dataAJAX.cantBloques
 	
 	//console.log("Inicio de la impresion de diagrama de red...");
 	//console.log(listaRed);

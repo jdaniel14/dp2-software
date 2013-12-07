@@ -151,8 +151,8 @@ Diagram = function(params)
 
 
 	//add main container for the diagram
-	var diagramcontainer='<div style="position:absolute; left:'+self.xPosition+'px;top:'+(self.yPosition+40)+'px;width:'+(self.width+4)+'px;height:'+(self.height+4)+'px;z-index:-2;padding:0px; margin:0px;" class="ui-widget-header ui-corner-all"></div>';
-	diagramcontainer+='<div id="'+self.canvid+'" style="position:absolute; left:'+(self.xPosition+2)+'px;top:'+(self.yPosition+42)+'px;width:'+(self.width)+'px;height:'+(self.height)+'px;overflow:scroll;border:1px solid #AAAAAA; background: url(\''+self.imagesPath+'bg.gif\') repeat;z-index:0;"><div id="'+self.canvid+'_templine" style="position: absolute;z-index:1000;"></div></div>';
+	var diagramcontainer='<div style="position:absolute; width:'+(self.width+4)+'px;height:'+(self.height+4)+'px;z-index:-2;padding:0px; margin:0px;" class="ui-widget-header ui-corner-all"></div>';
+	var diagramcontainer='<div id="'+self.canvid+'" style="position:absolute; width:'+(self.width)+'px;height:'+(self.height)+'px;overflow:scroll;border:1px solid #AAAAAA; background: url(\''+self.imagesPath+'bg.gif\') repeat;z-index:0;"><div id="'+self.canvid+'_templine" style="position: absolute;z-index:1000;"></div></div>';
 	$('body').append(diagramcontainer);	
 
 	
