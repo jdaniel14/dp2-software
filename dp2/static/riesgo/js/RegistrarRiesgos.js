@@ -746,6 +746,25 @@ function inicializaFechas(){
                 $(".materializar").click(function() {
                     idRiesgo2 = $(this).closest("tr").attr("id");
                     listaAcciones($(this).closest("tr").attr("id"));
+                    var data = {
+                        idRiesgoXProyecto: idRiesgo2,
+                        idProyecto: localStorage.getItem("idProyecto"),
+                        idUsuario: localStorage.getItem("idUsuario")
+
+                    };
+                    var jsonData = JSON.stringify(data);
+                    $.ajax({
+                        async: false,
+                        type: 'GET',
+                        // url: getItem + '/' + data.id_riesgo_x_proyecto,
+                        url: getItem + '/' + jsonData,
+                        data: jsonData,
+                        dataType: "json",
+                        success: function(data) {
+                            localStorage.setItem("idPaquete", data.idPaqueteTrabajo);
+                        },
+                        fail: codigoError
+                    });
                 });
 
                 //Boton para confirmar un riesgo
