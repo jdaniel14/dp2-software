@@ -88,10 +88,10 @@ function listarCambiosGantt(){
         cadena=cadena+""+
                     "<label>Por la siguiente:</label></br></br>\n\
                 <div class=\"col-lg-12 control-label\">  <div class=\"col-lg-4 control-label\"> \n\
-            <label class=\"control-label\"> Actividad:  </label><input class=\"form-control\" readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreActividadCronograma+"\"></div>" +
-                " <div class=\"col-lg-4 control-label\"><label> Fecha:  </label>\n\
+            <label class=\"control-label\"> Accion:  </label><input class=\"form-control\" readonly type=\"text\" id=\"nuevoNombre_"+idActividadCronograma  +"\" value=\""+nombreAccionRiesgo+"\"></div>" +
+                " <div class=\"col-lg-4 control-label\"><label> Nueva fecha de inicio:  </label>\n\
             <input class=\"form-control\" readonly type=\"date\" id=\"nuevoFechaInicio_"+idActividadCronograma +"\" value=\""+fechaInicioAccionRiesgo+"\">"+
-                " </div> <div class=\"col-lg-4 control-label\"> <label> Duración de:</label>  \n\
+                " </div> <div class=\"col-lg-4 control-label\"> <label> Nueva duración de:</label>  \n\
             <input class=\"form-control\" readonly type=\"number\" id=\"nuevoDuracion_"+idActividadCronograma +"\" value=\""+tiempo+"\">" +
                 "<label> dias</label><br></div><br><div></div><br>";
         
