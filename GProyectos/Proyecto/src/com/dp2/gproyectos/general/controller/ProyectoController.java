@@ -54,7 +54,7 @@ public class ProyectoController extends Controller {
 		GetListaProyectosResponse objResponse = null;
 		
 		strResponse = "{\"prs\":[{\"id\":\"1\",\"nom\":\"P1\",\"jp\":\"JP\",\"tp\":\"TP\",\"fi\":\"\",\"ff\":\"\",\"es\":\"Ok\"},{\"id\":\"31\",\"nom\":\"P1\",\"jp\":\"JP\",\"tp\":\"TP\",\"fi\":\"\",\"ff\":\"\",\"es\":\"Ok\"}]}";
-		
+		strResponse = "";
 		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
 		String result;
 		if (respuesta != null) {
