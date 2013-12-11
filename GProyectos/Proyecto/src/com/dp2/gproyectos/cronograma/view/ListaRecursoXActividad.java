@@ -147,7 +147,9 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 										"Registrar cantidad y costo", estaActividad,
 										recurso);
 							}
-							
+							else if (estadoLineaBase.equals("true")){
+								Toast.makeText(ListaRecursoXActividad.this, "No puede registrar cantidades y costos ya que la linea base esta establecida.", Toast.LENGTH_LONG).show();
+							}
 						}
 
 					}
