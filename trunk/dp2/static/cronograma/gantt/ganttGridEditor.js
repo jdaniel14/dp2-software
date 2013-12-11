@@ -1197,7 +1197,7 @@ GridEditor.prototype.openFullEditor = function(task, taskRow) {
             var gg;
             for (var i = 0; i < task.assigs.length; i++) {
                 var ass = task.assigs[i];
-                if (ass.valueReal > task.duration * 8) {
+                if (ass.typeCost == "HORAS HOMBRE" && ass.value > task.duration * 8) {
                     alert("Alguno de los recursos sobrepasa la capacidad máxima de horas asignadas en la actividad");
                     return false;
                 }
