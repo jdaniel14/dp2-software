@@ -472,6 +472,7 @@ function G_getListaRecursoProyecto($id) {
 
 function G_getListaEmpleadosXProyecto($id) {
     $sql = " select distinct E.id_empleado as idemp, E.nombres as nombres, E.apellidos as apellidos, ME.id_rol, ME.fecha_entrada, ME.fecha_salida, P.descripcion from MIEMBROS_EQUIPO as ME, EMPLEADO as E, PROFESION as P where ME.id_proyecto = :idproyecto and E.estado = 'ACTIVO' AND ME.estado = 1 and ME.id_empleado = E.id_empleado and P.id_profesion = ME.id_profesion_actual ";
+
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
