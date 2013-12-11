@@ -215,7 +215,8 @@ function G_setLineaBase($id) {
 
     $sql = " UPDATE  PROYECTO 
             SET FLAG_LINEA_BASE_EDITABLE=1, 
-            LINEA_BASE_FECHA_INICIO =:FECHA
+            LINEA_BASE_FECHA_INICIO =:FECHA,
+            LINEA_BASE_ACTIVA = LINEA_BASE_ACTIVA + 1
             WHERE ID_PROYECTO=:id";
     try {
         $db = getConnection();
