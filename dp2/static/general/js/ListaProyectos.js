@@ -110,7 +110,7 @@ function agregaFilaProyecto(arreglo,i){
 		if (arreglo["flag_lb"]==1) {
 			var tbody = '<tr><td>'+ arreglo["id"] + '</td><td>' + arreglo["nom"] + '</td><td>' + arreglo["jp"] + '</td><td>' + arreglo["tp"] + '</td><td>' + arreglo["fi"] + '</td><td>' + arreglo["ff"] + 
 			'</td><td><button type="button" class="btn btn-primary">Administrar</button>' + 
-			'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Linea Base establecida el día "' + arreglo["fecha_lb"] + '" data-original-title="Cierre">Línea Base Establecida</button>' + 
+			'</td><td><a class="btn btn-warning" data-toggle="popover" data-placement="top" title data-content="Linea Base establecida el día ' + arreglo["fecha_lb"] + '">Línea Base Establecida</button>' + 
 			'</td><td><button data-toggle="modal" id="'+ arreglo["id"] +'" href="#myModal" class="btn btn-danger" onclick="cerrarP(' + arreglo["id"]+')">Cerrar Proyecto</button></td></tr>';
 			$("#listaProyectos tbody").append(tbody);
 		} else {
