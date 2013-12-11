@@ -22,6 +22,7 @@ import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.ActividadesAdapter;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
+import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.InterfazPopupMenus;
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -32,6 +33,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 	String idProyecto;
 	String nombreProyecto = "";
 	String rpta;
+	ProyectoBean esteProyecto;
 	PullToRefreshListView listActs;
 	ActividadesAdapter adapter;
 	
@@ -171,6 +173,9 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		idProyecto = getIntent().getExtras().getString("idProyecto");
 		nombreProyecto = getIntent().getExtras().getString("nombreProyecto");
 		
+		esteProyecto = new ProyectoBean();
+		esteProyecto.id = idProyecto;
+		esteProyecto.nombre = nombreProyecto;
 		
 		new LoadTaskDialog(this, MensajesUtility.INFO_CARGANDO).execute();		
 	}
@@ -268,6 +273,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 		else if (rspta.equals(MENUACT_OP_LISTARRECURSOS)){
 			Intent intent = new Intent(ListaActividadesXProyecto.this, ListaRecursoXActividad.class);
 			intent.putExtra("actividad", (ActividadBean) listActs.getItemAtPosition(posicionPasar));
+			intent.putExtra("proyecto", (ProyectoBean) esteProyecto);
 			startActivityForResult(intent,1);
 			
 		}

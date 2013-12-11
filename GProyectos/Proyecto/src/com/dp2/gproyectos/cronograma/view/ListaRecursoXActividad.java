@@ -20,6 +20,8 @@ import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
 import com.dp2.gproyectos.cronograma.view.adapter.RecursosAdapter;
+import com.dp2.gproyectos.general.controller.ProyectoController;
+import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.VerticalBarraTituloActivity;
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -34,7 +36,9 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 	RecursosAdapter adapter;
 	Context context;
 	ActividadBean estaActividad;
+	ProyectoBean esteProyecto;
 	RecursoBean esteRecurso;
+	String estadoLineaBase;
 	String estaCantidad;
 	String esteCosto;
 	String res = "";
@@ -71,6 +75,8 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 		try {
 			estaActividad = (ActividadBean) getIntent().getSerializableExtra(
 					"actividad");
+			esteProyecto = (ProyectoBean) getIntent().getSerializableExtra(
+					"proyecto");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,6 +107,7 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 				try {
 					recursos = CronogramaController.getInstance().getRecursos(
 							Integer.parseInt(estaActividad.id));
+					estadoLineaBase = ProyectoController.getInstance().getEstadoLineaBase(Integer.parseInt(esteProyecto.id));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -131,14 +138,16 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 					public void onItemClick(AdapterView<?> l, View v, int position,
 							long id) {
 						if (position > 0) {
-							RecursoBean recurso = (RecursoBean) lvRecursos
-									.getItemAtPosition(position);
+							if (estadoLineaBase.equals("false")){
+								RecursoBean recurso = (RecursoBean) lvRecursos
+										.getItemAtPosition(position);
 
-							PopupRegistrarCosto popup = new PopupRegistrarCosto();
-							popup.dialog(ListaRecursoXActividad.this,
-									"Registrar cantidad y costo", estaActividad,
-									recurso);
-
+								PopupRegistrarCosto popup = new PopupRegistrarCosto();
+								popup.dialog(ListaRecursoXActividad.this,
+										"Registrar cantidad y costo", estaActividad,
+										recurso);
+							}
+							
 						}
 
 					}
