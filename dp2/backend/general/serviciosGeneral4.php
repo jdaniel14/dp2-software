@@ -213,12 +213,12 @@ function G_setLineaBase($id) {
     $sysdate = new DateTime('NOW');
     $fecha = $sysdate->format('c');
 
-    $sql = " UPDATE  PROYECTO 
-            SET FLAG_LINEA_BASE_EDITABLE=1, 
-            LINEA_BASE_FECHA_INICIO =:FECHA,
-            LINEA_BASE_ACTIVA = LINEA_BASE_ACTIVA + 1
-            WHERE ID_PROYECTO=:id";
     try {
+        $sql = " UPDATE  PROYECTO 
+            SET FLAG_LINEA_BASE_EDITABLE=1, 
+            LINEA_BASE_FECHA_INICIO =:FECHA
+            WHERE ID_PROYECTO=:id";
+    
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("FECHA", $fecha);
@@ -226,6 +226,13 @@ function G_setLineaBase($id) {
         $stmt->execute();
 
         $sql = "CALL grabar_linea_base(:id)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+
+        $sql = " UPDATE  PROYECTO 
+            SET LINEA_BASE_ACTIVA = LINEA_BASE_ACTIVA + 1
+            WHERE ID_PROYECTO=:id";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("id", $id);
         $stmt->execute();
