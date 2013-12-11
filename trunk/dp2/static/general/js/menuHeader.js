@@ -51,8 +51,14 @@ function cargaData(data){
 		
 		if(key=="fpp"){
 			if(arreglo[key] != null) {
-				$('#'+key).html(arreglo[key].substring(0,10));
-				$('#'+key).val(arreglo[key].substring(0,10));
+				var dia=arreglo[key].substring(8,10);
+				console.log(dia);
+				var mes=arreglo[key].substring(5,7);
+				console.log(mes);
+				var anho=arreglo[key].substring(0,4);
+				console.log(anho);
+				$('#'+key).html(dia+'-'+mes+'-'+anho);
+				$('#'+key).val(dia+'-'+mes+'-'+anho);
 			}
 		} 	
 	}
