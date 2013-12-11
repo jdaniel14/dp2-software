@@ -7,6 +7,8 @@ var actualizarObjetivos = "../../api/G_actualizarCumpObjetivosPorProyecto";
 var verificaLineaBase = "../../api/G_verificaLineaBase/";
 var idRol=localStorage.getItem("idRol");
 
+var idProyectoLineaBase;
+
 if(idRol==1){
 	rootURL = "../../api/G_listaProyecto";
 	//alert('hola');
@@ -122,16 +124,25 @@ function agregaFilaProyecto(arreglo,i){
 }
 
 function establecerLineaBaseP(idProyecto) {
+
+	idProyectoLineaBase=idProyecto;
+	
+	$("#modalConfirmar").modal("show");
+}
+
+$("#btnConfirmarLineaBase").click(function() {
+
 	$.ajax({
         type: "GET",        
-        url: establecerLineaBase + idProyecto,
+        url: establecerLineaBase + idProyectoLineaBase,
         dataType: "json",
         async: true,
         success: function (data) {
             $(location).attr('href','ListaProyectos.html');
         }
     });
-}
+
+});
 
 function cerrarP(idProyecto){	
 	setear(idProyecto);
