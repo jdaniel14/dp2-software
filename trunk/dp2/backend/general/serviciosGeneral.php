@@ -50,11 +50,11 @@ function G_postRegistrarProyecto() {
         $sql = "INSERT INTO PROYECTO (nombre_proyecto, 
                                       fecha_inicio_planificada,
                                       fecha_fin_planificada, 
-                                      id_tipo_proyecto, estado, flag_linea_base_editable) 
+                                      id_tipo_proyecto, estado, flag_linea_base_editable, linea_base_activa) 
                               VALUES (:nom, 
                                      STR_TO_DATE(:fi,'%d-%m-%Y'),
                                      STR_TO_DATE(:ff,'%d-%m-%Y'),
-                                     :tp, \"ACTIVO\", 0)"; 
+                                     :tp, \"ACTIVO\", 0, 0)"; 
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("nom", $proj->nom);
