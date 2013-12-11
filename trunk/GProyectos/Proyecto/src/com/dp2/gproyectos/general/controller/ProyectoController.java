@@ -14,6 +14,7 @@ import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
 import com.dp2.gproyectos.general.entities.InfoBean;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
+import com.dp2.gproyectos.general.model.GetEstadoLineaBaseResponse;
 import com.dp2.gproyectos.general.model.GetInfoProyectoResponse;
 import com.dp2.gproyectos.general.model.GetListaProyectosResponse;
 import com.dp2.gproyectos.general.model.PruebaResponse;
@@ -75,6 +76,36 @@ public class ProyectoController extends Controller {
 			listaProyectos = objResponse.proyectos;
 		}
 		return listaProyectos;
+	}
+	
+	public String getEstadoLineaBase(int id) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETESTADOLINEABASE_URL+String.valueOf(id);
+		Gson gs = new Gson();
+		GetEstadoLineaBaseResponse objResponse = null;
+		String strResponse = "";
+		String estado = "";
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
+		String result;
+		if (respuesta != null) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+		objResponse = gs.fromJson(result, GetEstadoLineaBaseResponse.class);
+		if (objResponse!=null){
+			estado = objResponse.estado;
+		}
+		return estado;
 	}
 	
 	public ArrayList<RecursoBean> getRecursos(int id) {
