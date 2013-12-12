@@ -356,7 +356,8 @@ function agregaFilaActividadResumen(i, unidadMedida, nombreRecurso, moneda, cant
 	a=i;
 	a++;	
 	$("#tablaResumen > tbody").append('<tr><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoUnitario,2)+'</td><td>'+moneda+'</td><td>'+cantidad+'</td></tr>');
-	//$("#tablaResumen").trigger("update");
+	$("#tablaResumen").trigger("update");
+	muestraTodaFilas("tablaResumen");
 	
 
 }
@@ -410,7 +411,8 @@ function agregaFilaRecurso(tipo,i,idRecurso,unidadMedida, nombreRecurso, costoUn
 								+'</td><td>'+moneda+'</td><td>'+canidadTotal+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">'+inputHidden);
 	if (tipo==1) desabilitaMoneda(a);
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 
 }
 
@@ -422,7 +424,8 @@ function agregaFilaRecursoFijo(i,idRecurso,unidadMedida, nombreRecurso, costoFij
 	$("#tablaResumenCostoFijo > tbody").append('<tr><td>'+a+'</td><td>'+unidadMedida+' de '+nombreRecurso+'</td><td>'+formateaNumero(costoFijoDiario,2)
 								+'</td><td>'+moneda+'</td><td>'+formateaNumero(costoFijoTotal,2)+'</td></tr><input type="hidden" id="idRecurso'
 								+(a)+'" value="'+idRecurso+'">');
-	//$("#tablaResumenCostoFijo").trigger("update");
+	$("#tablaResumenCostoFijo").trigger("update");
+	muestraTodaFilas("tablaResumenCostoFijo");
 
 }
 
@@ -550,21 +553,24 @@ function cambiaCostoUnitario(){
 //Limpia la tabla
 function limpiaTablaResumen(){
 	$("#tablaResumen > tbody").html('');
-	//$("#tablaResumen").trigger("update");
+	$("#tablaResumen").trigger("update");
+	muestraTodaFilas("tablaResumen");
 
 
 }
 
 function limpiaTablaRecursosFijo(){
 	$("#tablaResumenCostoFijo > tbody").html('');
-	//$("#tablaResumenCostoFijo").trigger("update");
+	$("#tablaResumenCostoFijo").trigger("update");
+	muestraTodaFilas("tablaResumenCostoFijo");
 
 
 }
 
 function limpiaTablaRecursos(){
 	$("#tablaRecursos > tbody").html('');
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 
 
 }

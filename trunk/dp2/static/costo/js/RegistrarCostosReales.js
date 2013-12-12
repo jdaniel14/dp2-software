@@ -147,7 +147,8 @@ function agregaFilaRecurso(){
 	+'<input type="hidden" name="modificado'+a+'"  id="modificado'+a+'" value="0" >'
 								);	
 	inicializaFechas(a);
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 	$("#numFilas").val(a);
 }
 
@@ -191,7 +192,8 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 									);
 		inicializaFechas(a);
 	}
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 
 	$("#numFilas").val(a);
 }
@@ -504,7 +506,8 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiaTablaRecursos(){
 	$("#tablaRecursos > tbody").html('');
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 	
 }
 

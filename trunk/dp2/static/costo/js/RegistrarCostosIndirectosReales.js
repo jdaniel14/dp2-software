@@ -234,7 +234,8 @@ function agregaFilaconRecursos(tipo,i,costoIndirecto,idmoneda, nombreMoneda,codm
 									);
 		obtenMonedaSeleccionada(a,idmoneda);
 	}
-	//$("#tablaIndirectos").trigger("update");
+	$("#tablaIndirectos").trigger("update");
+	muestraTodaFilas("tablaIndirectos");
 	
 	$("#numFilas").val(a);
 }
@@ -461,7 +462,8 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiatablaIndirectos(){
 	$("#tablaIndirectos > tbody").html('');
-	//$("#tablaIndirectos").trigger("update");
+	$("#tablaIndirectos").trigger("update");
+	muestraTodaFilas("tablaIndirectos");
 }
 
 

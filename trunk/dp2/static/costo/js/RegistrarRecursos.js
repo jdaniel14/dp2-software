@@ -208,7 +208,8 @@ function agregaFilaRecurso(){
 								+'<input type="hidden" name="indRecursoH'+a+'"  id="indRecursoH'+a+'" value="0" >'
 								);	
 	inicializaFechas(a);
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 	$("#numFilas").val(a);
 }
 
@@ -256,7 +257,8 @@ function agregaFilaconRecursos(tipo,i,idRecurso, nombreRecurso,NombreUnidadMedid
 		obtenMonedaSeleccionada(a,idmoneda);
 		inicializaFechas(a);
 	}
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 	$("#numFilas").val(a);
 }
 
@@ -693,7 +695,8 @@ function verificaEditable(indicadorCerrado, indicadorLineaBase){
 
 function limpiaTablaRecursos(esEdicion){
 	$("#tablaRecursos > tbody").html('');
-	//$("#tablaRecursos").trigger("update");
+	$("#tablaRecursos").trigger("update");
+	muestraTodaFilas("tablaRecursos");
 
 	if (esEdicion==0){
 		$("#tableHeaderEdicion").hide();
