@@ -1,4 +1,4 @@
-<?php
+    <?php
 		//General
 		$link_G_RegPro = array(
                 "href" => "../../views/general/RegistrarProyecto.html",
@@ -26,6 +26,11 @@
          $link_G_RepoRRHH = array(
                 "href" => "../../views/general/RepositorioRecursosHumanos.html",
                 "title" => "Repositorio de Recursos Humanos"
+            );
+
+         $link_G_Movil = array(
+                "href" => "../../views/general/RepositorioRecursosHumanos.html",
+                "title" => "Descargar"
             );
 
 

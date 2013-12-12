@@ -60,18 +60,18 @@ function submenuGeneralGP_general(){
 
 function submenuGeneralGP_configuracion(){
 
-		$links=array();
-		$link1 = array(
-                "href" => "",
-                "title" => "Sprint 5"
-            );		 
+		include('linksGeneral.php');
 
-		 array_push($links, $link1);
+
+		$links=array();
+			 
+
+		 array_push($links, $link_G_Movil);
 
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "Configuraciones"
+                "title" => "Versión Movil"
             );
 
 		 return $submenu;
