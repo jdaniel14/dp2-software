@@ -200,3 +200,9 @@ bootbox.dialog({
 
 }
 
+function muestraTodaFilas(idTabla){
+
+	var select="#"+ idTabla + " tbody tr";
+	$(select).css("display","");
+
+}
