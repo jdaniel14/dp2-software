@@ -199,7 +199,7 @@ function CR_getActividadesMovil(){
 
 function CR_guardarAvanceRecurso($recursoAsignado){
 
-	$sql = "update dp2.ACTIVIDAD_X_RECURSO set costo_unitario_real=?,cantidadReal=? where id_actividad=? and id_recurso=?; commit;";
+	$sql = "update  ACTIVIDAD_X_RECURSO set costo_unitario_real=?,cantidadReal=? where id_actividad=? and id_recurso=?; commit;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
@@ -225,8 +225,8 @@ function CR_obtenerDetalleRecurso($idActividad,$idRecurso){
 
     $rec = null;
     //$listaIds=array();
-    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and f.id_recurso=? and e.estado=1";
-    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM  `ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda' FROM  `RECURSO` a left join  `UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join  `CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda ) f on f.id_recurso=e.id_recurso inner join  `TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and f.id_recurso=? and e.estado=1";
+    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM  `ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM  `RECURSO` a left join  `UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join  `CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join  `RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -263,8 +263,8 @@ function CR_obtenerRecursosActividad($idActividad){
 
     $listaRecursos = array();
     //$listaIds=array();
-    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda  ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
-    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM  `ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda' FROM  `RECURSO` a left join  `UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join  `CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda  ) f on f.id_recurso=e.id_recurso inner join  `TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
+    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM  `ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM  `RECURSO` a left join  `UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join  `CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join  `RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -302,7 +302,7 @@ function CR_obtenerDetalleActividad($idActividad){
 	//	date_default_timezone_set('America/Lima');
 	 //$milliseconds = 1000 * strtotime('25-11-2009');
 	// echo json_encode($milliseconds);
-    $sql = " select  id_actividad,nombre_actividad,id_paquete_trabajo,fecha_plan_inicio,fecha_plan_fin,dias,avance from dp2.ACTIVIDAD where id_actividad=?;";
+    $sql = " select  id_actividad,nombre_actividad,id_paquete_trabajo,fecha_plan_inicio,fecha_plan_fin,dias,avance from  ACTIVIDAD where id_actividad=?;";
 	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
 	
     $actividad = null;
@@ -339,7 +339,7 @@ function CR_obtenerDetalleActividad($idActividad){
 
 function CR_modificar_Avance_Actividad_BD($actividad){
 
-	$sql = "update dp2.ACTIVIDAD set avance=? where id_actividad=?;commit;";
+	$sql = "update  ACTIVIDAD set avance=? where id_actividad=?;commit;";
     //$lista_actividad = array();
     try {
         $db = getConnection();
@@ -363,9 +363,9 @@ function CR_modificar_Avance_Actividad_BD($actividad){
 function CR_modificar_actividad_BD($actividad){
 
 	date_default_timezone_set('America/Lima');
-	$sql= "select nombre_actividad from dp2.ACTIVIDAD where id_actividad=?;";
-	//$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where id_actividad=?;commit;";
-	$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? ,predecesores=? where nombre_actividad=? and eliminado=0;commit;";
+	$sql= "select nombre_actividad from  ACTIVIDAD where id_actividad=?;";
+	//$sql2 = "update  ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? where id_actividad=?;commit;";
+	$sql2 = "update  ACTIVIDAD set nombre_actividad=? ,dias=? ,fecha_plan_inicio=?, fecha_plan_fin=?,inicio_hash=?,fin_hash=? ,predecesores=? where nombre_actividad=? and eliminado=0;commit;";
     //$lista_actividad = array();
 	
 	
@@ -394,8 +394,8 @@ function CR_modificar_actividad_BD($actividad){
 function CR_actualizaTest($json){
 
 	date_default_timezone_set('America/Lima');
-	$sql= "select nombre_actividad from dp2.ACTIVIDAD where id_actividad=?;";
-	$sql2 = "update dp2.ACTIVIDAD set nombre_actividad=? where nombre_actividad=? and eliminado=0;commit;";
+	$sql= "select nombre_actividad from  ACTIVIDAD where id_actividad=?;";
+	$sql2 = "update  ACTIVIDAD set nombre_actividad=? where nombre_actividad=? and eliminado=0;commit;";
 	
     //$lista_actividad = array();
 	
@@ -432,7 +432,7 @@ function CR_getListaSimpleActividad($idProyecto){
 	 //$milliseconds = 1000 * strtotime('25-11-2009');
 	// echo json_encode($milliseconds);
     $sql = " select a.id_actividad,a.nombre_actividad,a.dias, a.id_paquete_trabajo,a.fecha_plan_inicio,a.fecha_plan_fin,predecesores,(numero_fila-1) as numero_fila"
-		  ." from dp2.ACTIVIDAD a "
+		  ." from  ACTIVIDAD a "
 		  ." where  a.id_proyecto=? and a.eliminado=0 and a.profundidad>0 order by numero_fila;";
 	$sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
 	
@@ -471,10 +471,10 @@ function CR_getListaSimpleActividad($idProyecto){
 function CR_validarActividades($actividades){
 
 	$sql = "select count(*) as cantidad, id_miembros_equipo, descripcion from RECURSO where id_miembros_equipo is not null and id_proyecto=? and id_recurso=? ; ";
-	$sql2= "select count(*) as cantidad , id_empleado from dp2.MIEMBROS_EQUIPO where id_proyecto=? and id_miembros_equipo=? and (? between fecha_entrada and fecha_salida) and (? between fecha_entrada and fecha_salida) ;" ;
-	$sql2_1= "select * from dp2.MIEMBROS_EQUIPO where id_proyecto=? and id_miembros_equipo=? ;" ;
+	$sql2= "select count(*) as cantidad , id_empleado from  MIEMBROS_EQUIPO where id_proyecto=? and id_miembros_equipo=? and (? between fecha_entrada and fecha_salida) and (? between fecha_entrada and fecha_salida) ;" ;
+	$sql2_1= "select * from  MIEMBROS_EQUIPO where id_proyecto=? and id_miembros_equipo=? ;" ;
 	$sql3= "select count( A.id_actividad ) as cantidad 
-			from dp2.MIEMBROS_EQUIPO ME ,dp2.ACTIVIDAD_X_RECURSO AXR, (select AC.* from dp2.ACTIVIDAD AC, dp2.PROYECTO P where AC.id_proyecto=P.id_proyecto and AC.eliminado=0 and AC.dias>0 and P.estado='ACTIVO')A,dp2.RECURSO R 
+			from  MIEMBROS_EQUIPO ME , ACTIVIDAD_X_RECURSO AXR, (select AC.* from  ACTIVIDAD AC,  PROYECTO P where AC.id_proyecto=P.id_proyecto and AC.eliminado=0 and AC.dias>0 and P.estado='ACTIVO')A, RECURSO R 
 			where   A.id_proyecto<>? AND
 			R.estado='ACTIVO'
 			AND R.id_miembros_equipo=ME.id_miembros_equipo
@@ -661,7 +661,7 @@ function CR_consultarInfoActividades($idProyecto) {
     $recursos = CR_obtenerRecursosTotalProyecto($idProyecto);
     $paquetesEDT = CR_consultarPaqueteEDT($idProyecto);
     $lista_mapeo = CR_obtenerListaMaps($recursos);
-    $sql = "select a.*,((DATEDIFF(a.fecha_actual_inicio,a.fecha_actual_fin)/DATEDIFF(a.fecha_plan_inicio,a.fecha_plan_fin))*100)  as 'indicador_fecha',d.indicador_costo FROM `dp2`.`ACTIVIDAD` a  left join (SELECT n.id_actividad,((sum(n.cantidadReal*n.costo_unitario_real)/sum(r.COSTO_UNITARIO_ESTIMADO*n.cantidadEstimada))*100) AS 'indicador_costo' FROM `dp2`.`ACTIVIDAD_X_RECURSO` n  inner join `dp2`.`RECURSO` r on r.id_recurso=n.id_recurso where n.estado=1 group by n.id_actividad) d on d.id_actividad=a.id_actividad WHERE a.id_proyecto=? and a.eliminado=0 order by a.numero_fila ";
+    $sql = "select a.*,((DATEDIFF(a.fecha_actual_inicio,a.fecha_actual_fin)/DATEDIFF(a.fecha_plan_inicio,a.fecha_plan_fin))*100)  as 'indicador_fecha',d.indicador_costo FROM  `ACTIVIDAD` a  left join (SELECT n.id_actividad,((sum(n.cantidadReal*n.costo_unitario_real)/sum(r.COSTO_UNITARIO_ESTIMADO*n.cantidadEstimada))*100) AS 'indicador_costo' FROM  `ACTIVIDAD_X_RECURSO` n  inner join  `RECURSO` r on r.id_recurso=n.id_recurso where n.estado=1 group by n.id_actividad) d on d.id_actividad=a.id_actividad WHERE a.id_proyecto=? and a.eliminado=0 order by a.numero_fila ";
     $sql2 = "SELECT nombre FROM PAQUETE_TRABAJO WHERE id_paquete_trabajo=? ";
 	
 	
@@ -789,7 +789,7 @@ function CR_consultarCalendarioBase($idProyecto) {
     //Desconectarse(conexion);
     //Hardcode
     //$calendarioBase = CR_obtenerInfoCalendarioBaseFalsa();
-    $sql = "select b.id_calendario_base,b.nombre ,b.feriados from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
+    $sql = "select b.id_calendario_base,b.nombre ,b.feriados from CALENDARIO_PROYECTO a inner join  CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
     $rec = null;
     try {
         $db = getConnection();
@@ -828,7 +828,11 @@ function CR_consultarListaIndicadores($idProyecto) {
 
     $listaIndicadorestotal = array();
 
-    $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? and a.fecha<=sysdate() and (c.id_indicador=6 or c.id_indicador=7)order by a.id_indicador asc,a.fecha asc ";
+    $sql = "select * from  `INDICADOR_X_PROYECTO` a 
+            left join  `PROYECTO` b on a.id_proyecto=b.id_proyecto 
+            left join  `INDICADOR` c on c.id_indicador=a.id_indicador 
+            where a.id_proyecto=? and a.fecha<=sysdate() and (c.id_indicador=6 or c.id_indicador=7)
+            order by a.id_indicador asc,a.fecha asc ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -854,10 +858,10 @@ function CR_consultarListaIndicadores($idProyecto) {
 
                 array_push($listaIndicadorestotal, $listaIndicadores);
                 $listaIndicadores = array();
-                $rec = array("idindicadorxproyecto" => $j["id_indicador_x_proyecto"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
                 array_push($listaIndicadores, $rec);
             } else {
-                $rec = array("idindicadorxproyecto" => $j["id_indicador_x_proyecto"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
+                $rec = array("idindicadorxproyecto" => $j["ID_INDICADOR_X_PROYECTO"], "id_indicador" => $j["id_indicador"], "nombre_indicador" => $j["nombre"], "fecha" => $datetime1, "valor" => $j["valor"]);
                 array_push($listaIndicadores, $rec);
             }
 
@@ -1027,7 +1031,7 @@ function CR_obtenerRolesTotalFalsa() {
 }
 
 function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
-    $sql = "select b.id_calendario_base,b.nombre ,b.feriados from dp2.CALENDARIO_PROYECTO a inner join dp2.CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
+    $sql = "select b.id_calendario_base,b.nombre ,b.feriados from  CALENDARIO_PROYECTO a inner join  CALENDARIO_BASE b on a.id_calendario_base=b.id_calendario_base where a.ID_PROYECTO=?;";
     $rec = array();
     $arreglo_feriados = array();
     try {
@@ -1105,7 +1109,7 @@ function hallar_holydays_arreglos($idProyecto, $fecha_inicio, $fecha_fin) {
 
 function hallar_fechainicio_fechafin_red($idProyecto) {//simil con lo hardcodeado ATP
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from  `ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     //echo "pipipi";
     try {
         $db = getConnection();
@@ -1160,7 +1164,7 @@ function Llenar_actividades_ruta_critica($idProyecto) {//simil con lo hardcodead
     $listaActividades_criticas = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
+    $sql = "select a.* from  `ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1393,7 +1397,7 @@ function lista_predecesores($id, $listaActividades_criticas) {
     $listapredecesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.predecesores from `dp2`.`ACTIVIDAD` a where a.id_actividad=?"; //escritico=1 si si y 0 si no
+    $sql = "select a.predecesores from  `ACTIVIDAD` a where a.id_actividad=?"; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1438,7 +1442,7 @@ function lista_sucesores($id, $listaActividades_criticas, $id_projecto) {
     $listasucesores = array();
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta
 
-    $sql = "select a.numero_fila from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0  and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
+    $sql = "select a.numero_fila from  `ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0  and a.predecesores like '%$id%' "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1482,12 +1486,12 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arregl
     //CR_Dependencia("1", "11-11-2013", "14-11-2013", "0");id,fechainicio,fechafin,dependencias tal como esta 6,
     
 	$listaMapeoNumeroFilas = null;
-    //$sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
+    //$sql = "select a.* from  `ACTIVIDAD` a where a.id_proyecto=? and a.eliminado=0 order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc "; //escritico=1 si si y 0 si no
     try {
         $db = getConnection();
         
         
-        $sql2="select max(LENGTH(a.predecesores) - LENGTH(REPLACE(a.predecesores, ',', '')))+1 as 'Iteraciones' from `dp2`.`ACTIVIDAD` a where a.id_proyecto=? and   a.eliminado=0 ";
+        $sql2="select max(LENGTH(a.predecesores) - LENGTH(REPLACE(a.predecesores, ',', '')))+1 as 'Iteraciones' from  `ACTIVIDAD` a where a.id_proyecto=? and   a.eliminado=0 ";
         $stmt2 = $db->prepare($sql2);
         $stmt2->execute(array($idProyecto));
         
@@ -1496,14 +1500,14 @@ function CR_obteneListaDependenciaProyecto($idProyecto, $arreglo_critico,$arregl
             $numero_iteraciones=$j2["Iteraciones"];
         }
         
-        $sql="select d.*,group_concat(d.id_predecesores) as 'predecesores_id_concatenado' from (select b.*,c.id_actividad as 'id_predecesores' from ((select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', 1), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', 0)) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) "; 
+        $sql="select d.*,group_concat(d.id_predecesores) as 'predecesores_id_concatenado' from (select b.*,c.id_actividad as 'id_predecesores' from ((select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', 1), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', 0)) + 1),',', '') as 'numero_filas' from  `ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) "; 
             
         for ($g=1; $g<$numero_iteraciones;$g++){
             $g_1=$g+1;
-        $sql=$sql."union (select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', ".$g_1."), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', ".$g.")) + 1),',', '') as 'numero_filas' from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and  a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) ";
+        $sql=$sql."union (select  a.*,replace(SUBSTRING(SUBSTRING_INDEX(a.predecesores, ',', ".$g_1."), LENGTH(SUBSTRING_INDEX(a.predecesores, ',', ".$g.")) + 1),',', '') as 'numero_filas' from  `ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and  a.eliminado=0  order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) ";
         }
         
-        $sql=$sql.") b left join (select  a.* from `dp2`.`ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0   order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) c on c.numero_fila=b.numero_filas) d  where d.id_proyecto=? and d.eliminado=0  group by d.id_actividad order by d.fecha_plan_inicio asc,d.fecha_plan_fin desc";
+        $sql=$sql.") b left join (select  a.* from  `ACTIVIDAD` a where a.id_proyecto='" .$idProyecto."' and a.eliminado=0   order by a.fecha_plan_inicio asc,a.fecha_plan_fin desc) c on c.numero_fila=b.numero_filas) d  where d.id_proyecto=? and d.eliminado=0  group by d.id_actividad order by d.fecha_plan_inicio asc,d.fecha_plan_fin desc";
 
         
         
@@ -1619,7 +1623,7 @@ function CR_obtenerArregloActividades($listaDependencias,$listaMapeoNumeroFilas)
 function CR_obteneListaDependenciaPaqueteTrabajo($idpaquetetrabajo) {//simil con lo harcodeado
     $listaDependencias = array();
 
-    $sql = "select a.* from `dp2`.`ACTIVIDAD` a where a.id_paquete_trabajo=? ";
+    $sql = "select a.* from  `ACTIVIDAD` a where a.id_paquete_trabajo=? ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1695,7 +1699,7 @@ function CR_obtenerIndicadoresTotalProyecto($idProyecto) {
 
     $listaIndicadorestotal = array();
 
-    $sql = "select * from `dp2`.`INDICADOR_X_PROYECTO` a left join `dp2`.`PROYECTO` b on a.id_proyecto=b.id_proyecto left join `dp2`.`INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? order by a.id_indicador asc,a.fecha desc ";
+    $sql = "select * from  `INDICADOR_X_PROYECTO` a left join  `PROYECTO` b on a.id_proyecto=b.id_proyecto left join  `INDICADOR` c on c.id_indicador=a.id_indicador where a.id_proyecto=? order by a.id_indicador asc,a.fecha desc ";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -1743,8 +1747,8 @@ function CR_obtenerIndicadoresTotalProyecto($idProyecto) {
 function CR_obtenerListaRecursosAsignados($idActividad, $listaMapeoRecursos) {
     $listaRecursos = array();
     //$listaIds=array();
-    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda ) f on f.id_recurso=e.id_recurso inner join `dp2`.`TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
-    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM `dp2`.`ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM `dp2`.`RECURSO` a left join `dp2`.`UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join `dp2`.`CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join `dp2`.`RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
+    $sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real ,g.descripcion as 'descripcion_tipocosto' ,g.id_tipo_costo FROM  `ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda' FROM  `RECURSO` a left join  `UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join  `CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda ) f on f.id_recurso=e.id_recurso inner join  `TIPO_COSTO` g on g.id_tipo_costo=e.id_tipo_costo where e.id_actividad=? and e.estado=1";
+    //$sql = "SELECT f.*,e.cantidadEstimada,e.cantidadReal,e.costo_unitario_real FROM  `ACTIVIDAD_X_RECURSO` e inner join  (SELECT a.*,b.simbolo as 'simbolo_unidad',b.descripcion as 'descripcion_unidad', c.descripcion as 'descripcion_moneda', d.descripcion as 'descripcion_rubropresupuestal' FROM  `RECURSO` a left join  `UNIDAD_MEDIDA` b on b.id_unidad_medida=a.id_unidad_medida left join  `CAMBIO_MONEDA` c on a.ID_CAMBIO_MONEDA=c.id_cambio_moneda left join  `RUBRO_PRESUPUESTAL` d on a.id_rubro_presupuestal=d.id_rubro_presupuestal ) f on f.id_recurso=e.id_recurso where e.id_actividad=? and e.estado=1";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
