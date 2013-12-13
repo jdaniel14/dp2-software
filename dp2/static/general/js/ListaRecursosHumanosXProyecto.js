@@ -48,8 +48,7 @@ $(document).ready(function(){
 						prof_act : el.cells[5].children[0].value,
 						costohh : el.cells[6].children[0].value,
 						fi : el.cells[7].children[0].value,
-						ff : el.cells[8].children[0].value,
-						XD : "Bonnie se come los mocos"
+						ff : el.cells[8].children[0].value
 					}
 					lista_recursos.push(rec);
 
@@ -168,7 +167,6 @@ function enviarDataSJ(){
 }
 
 function grabarRecursos(envio){
-
 	$.ajax({
 		type: 'POST',
 		url: asignarRecursosProyecto,
