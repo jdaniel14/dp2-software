@@ -672,6 +672,7 @@ function G_postListaTodosRecurso_1() {
         $lista_empleados[$id] = $empleado;
     }
     //var_dump($lista_empleados[7]);
+
     $sql = "SELECT * FROM
 
                 (SELECT A.ID_ACTIVIDAD,A.FECHA_PLAN_INICIO,A.FECHA_PLAN_FIN,M.ID_PROYECTO, M.ID_EMPLEADO
@@ -689,7 +690,9 @@ function G_postListaTodosRecurso_1() {
                     R.ID_PROYECTO = M.ID_PROYECTO AND 
                     R.ID_PROYECTO = A.ID_PROYECTO AND 
                     ( A.FECHA_PLAN_INICIO BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') OR
-                      A.FECHA_PLAN_FIN BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') )
+                      A.FECHA_PLAN_FIN BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') OR
+                      STR_TO_DATE(:fecha_ini,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN OR
+                      STR_TO_DATE(:fecha_fin,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN )
 
                 UNION
 
@@ -697,7 +700,9 @@ function G_postListaTodosRecurso_1() {
                 FROM PROYECTO P , MIEMBROS_EQUIPO M
                 WHERE 
                     (P.FECHA_INICIO_PLANIFICADA BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') OR 
-                    P.FECHA_FIN_PLANIFICADA BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') ) AND
+                    P.FECHA_FIN_PLANIFICADA BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') OR
+                      STR_TO_DATE(:fecha_ini,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN OR
+                      STR_TO_DATE(:fecha_fin,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN  ) AND
                     M.ID_PROYECTO = P.ID_PROYECTO AND
                     M.ID_ROL = 2 AND P.ESTADO = 'ACTIVO') 
             
