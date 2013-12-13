@@ -88,6 +88,7 @@ function restaurarBDLineaBase(){
 	//$sql = preg_replace('@/*!50013 DEFINER.*?*/@' , '' , $sql);
 	$con->exec($outputSql);
 	
+	$con = conexion($val["url"],$val["esquema"],$val["usuario"],$val["password"]);
 	//crear los sp y funciones
 	$sql = file_get_contents('../sp.sql');
 	$outputSql = renderHeader($sql,$val);
