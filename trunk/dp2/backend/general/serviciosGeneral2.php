@@ -701,8 +701,8 @@ function G_postListaTodosRecurso_1() {
                 WHERE 
                     (P.FECHA_INICIO_PLANIFICADA BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') OR 
                     P.FECHA_FIN_PLANIFICADA BETWEEN STR_TO_DATE(:fecha_ini,'%d-%m-%Y') AND STR_TO_DATE(:fecha_fin,'%d-%m-%Y') OR
-                      STR_TO_DATE(:fecha_ini,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN OR
-                      STR_TO_DATE(:fecha_fin,'%d-%m-%Y') BETWEEN A.FECHA_PLAN_INICIO AND A.FECHA_PLAN_FIN  ) AND
+                      STR_TO_DATE(:fecha_ini,'%d-%m-%Y') BETWEEN P.FECHA_INICIO_PLANIFICADA AND P.FECHA_FIN_PLANIFICADA OR
+                      STR_TO_DATE(:fecha_fin,'%d-%m-%Y') BETWEEN P.FECHA_INICIO_PLANIFICADA AND P.FECHA_FIN_PLANIFICADA  ) AND
                     M.ID_PROYECTO = P.ID_PROYECTO AND
                     M.ID_ROL = 2 AND P.ESTADO = 'ACTIVO') 
             
