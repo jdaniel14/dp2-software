@@ -97,6 +97,8 @@ function restaurarBDLineaBase(){
 		$con->exec($sp);
 	}
 
+	file_put_contents('../backend/lineabase.txt',$val["esquema"].'_lineabase');
+
 	echo 200;
 }
 
