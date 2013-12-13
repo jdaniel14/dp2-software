@@ -2682,7 +2682,7 @@
 	function CO_consultarCostoIndirectoTotalEstimado($idProyecto) {
 		$sql = "SELECT 
 		f_aplica_inflacion(SUM(COSTO_ESTIMADO),f_halla_min_dia(:idProyecto),LAST_DAY(STR_TO_DATE(CONCAT(CODMES,'01'),'%Y%m%d'))) COSTO_INDIRECTO
-		FROM dp2.COSTO_INDIRECTO
+		FROM COSTO_INDIRECTO
 		WHERE
 		ID_PROYECTO=:idProyecto;";
 
@@ -2714,7 +2714,7 @@
 	function CO_consultarCostoIndirectoTotalReal($idProyecto) {
 		$sql = "SELECT 
 		SUM(COSTO_REAL) COSTO_INDIRECTO
-		FROM dp2.COSTO_INDIRECTO
+		FROM COSTO_INDIRECTO
 		WHERE
 		ID_PROYECTO= :idProyecto;";
 
