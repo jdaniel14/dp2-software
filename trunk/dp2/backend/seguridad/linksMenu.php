@@ -69,7 +69,7 @@
 
          $link_A_PlanAlc = array(
                 "href"=> "../../views/alcance/PlanGestionAlcance.html", 
-                "title"=> "Plan de gestión de alcance"
+                "title"=> "Aprobar el alcance"
         );
 
          $link_A_PlanReq = array(
@@ -82,17 +82,17 @@
 
          $link_CR_VerGantt = array(
                 "href"=> "../../views/cronograma/index.html", 
-                "title"=> "Mostrar Gantt"
+                "title"=> "Definir cronograma"
         );
 
          $link_CR_VerRed = array(
                 "href"=> "../../views/cronograma/diagramaRed.html", 
-                "title"=> "Mostrar Diagrama de red"
+                "title"=> "Diagrama de red"
         );
 
           $link_CR_VerGesCam = array(
                 "href"=> "../../views/cronograma/GestionCambios.html", 
-                "title"=> "Gestión de cambios"
+                "title"=> "Controlar cronograma"
         );
 
          /****************************************************************************************************/
@@ -162,7 +162,7 @@
          /****************************************************************************************************/
          //riesgos
 
-         $subsubmenu = array();
+        
 
         $link_R_Config = array(
                 "href"=> "../../views/riesgo/Configuracion.html", 
@@ -201,7 +201,7 @@
 
         $link_R_RiesMateri = array(
                 "href"=> "../../views/riesgo/RiesgosMaterializados.html", 
-                "title"=> "Reisgos Materializados"
+                "title"=> "Riesgos Materializados"
         );
 
 
