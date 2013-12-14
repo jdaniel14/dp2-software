@@ -718,9 +718,15 @@ function G_postListaTodosRecurso_1() {
         $k = $proy_emp["ID_EMPLEADO"];
         $fecha_Inicio = $proy_emp["FECHA_PLAN_INICIO"];
         $fecha_Final = $proy_emp["FECHA_PLAN_FIN"];
-        $interval = abs(strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24);
+        
+        if(strtotime($fecha_Inicio) < $fecha_Inicio_IN)
+            $interval = 0;
+        else
+            $interval = abs(strtotime($fecha_Inicio) - $fecha_Inicio_IN) / (60 * 60 * 24);
         //echo "interval1 ".$interval."<br>";
         $a = $interval;
+
+
         $interval = abs(strtotime($fecha_Final) - strtotime($fecha_Inicio)) / (60 * 60 * 24);
         //echo "interval2 ".$interval."<br>";
         $b = $interval + $a;
