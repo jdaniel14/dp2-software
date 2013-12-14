@@ -164,7 +164,7 @@ function submenuGP_general(){
 		
 		
 		 //acta de constitucion
-		 $subsubmenu_acta_constitucion = array();
+		 /*$subsubmenu_acta_constitucion = array();
 		 array_push($subsubmenu_acta_constitucion, 
 		 										$link_G_RegAct,
 		 										 $link_G_VerAct);
@@ -173,7 +173,7 @@ function submenuGP_general(){
                 "href"=> "#", 
                 "title"=> "Acta de Constitución",
                 "subsubmenu" => $subsubmenu_acta_constitucion
-        );
+        );*/
 
 		 //Control Integrado de Cambios
 		 $subsubmenu_control_cambios = array();
@@ -202,7 +202,7 @@ function submenuGP_general(){
 
 		 //submenu de integracion
 		 array_push($links, 
-		 					$submenu_acta_constitucion,
+		 					/*$submenu_acta_constitucion,*/
 		 					$submenu_control_cambios,
 		 					$submenu_gestion_rrhh);
 
@@ -225,15 +225,47 @@ function submenuGP_alcance(){
 
 		$links=array();
 		
-		 array_push($links, $link_A_RegEDT);
-		 array_push($links, $link_A_RegDic);
-		 array_push($links, $link_A_GestAlc);
-		 array_push($links, $link_A_GesReq);
-		 array_push($links, $link_A_MatriRas);
-		 array_push($links, $link_A_VerFase);
-		 array_push($links, $link_A_PlanAlc);
-		 array_push($links, $link_A_PlanReq);
+		 /*array_push($links, $link_A_RegEDT);-
+		 array_push($links, $link_A_RegDic);-
+		 array_push($links, $link_A_GestAlc);-
+		 array_push($links, $link_A_GesReq);-
+		 array_push($links, $link_A_MatriRas);-
+		 array_push($links, $link_A_VerFase);-
+		 array_push($links, $link_A_PlanAlc);-
+		 array_push($links, $link_A_PlanReq);*/
 
+		 //Obtener Requerimientos
+		 $subsubmenu_obt_requi = array();
+		 array_push($subsubmenu_obt_requi, 
+	 										$link_A_PlanReq,
+	 										 $link_A_GesReq,
+	 										 $link_A_MatriRas);
+
+		 $submenu_obt_requi = array(
+                "href"=> "#", 
+                "title"=> "Obtener Requerimientos",
+                "subsubmenu" => $subsubmenu_obt_requi
+        );
+
+		 //crear el edt
+		 $subsubmenu_crear_EDT = array();
+		 array_push($subsubmenu_crear_EDT, 
+	 										$link_A_RegEDT,
+	 										 $link_A_RegDic,
+	 										 $link_A_VerFase);
+
+		 $submenu_crear_EDT = array(
+                "href"=> "#", 
+                "title"=> "Crear el EDT",
+                "subsubmenu" => $subsubmenu_crear_EDT
+        );
+
+		 //submenu de alcande
+		 array_push($links, 
+		 					$submenu_obt_requi,
+		 					$link_A_GestAlc,
+		 					$submenu_crear_EDT,
+		 					$link_A_PlanAlc);
 
 		 $submenu = array(
                 "submenu" => $links,
@@ -260,7 +292,7 @@ function submenuGP_cronograma(){
 		 $submenu = array(
                 "submenu" => $links,
                 "href" => "",
-                "title" => "Cronograma"
+                "title" => "Tiempos"
             );
 
 		 return $submenu;
@@ -336,14 +368,46 @@ function submenuGP_riesgos(){
 
 		$links=array();
 		
-		 array_push($links, $link_R_Config);
+		 /*array_push($links, $link_R_Config);
 		 array_push($links, $link_R_PlanRiesgo);
 		 array_push($links, $link_R_ComiRiesgo);
 		 array_push($links, $link_R_VerRiesgo);
 		 array_push($links, $link_R_AcuModif);
 		 array_push($links, $link_R_MatriRiesgo);
-		 array_push($links, $link_R_RiesMateri);
+		 array_push($links, $link_R_RiesMateri);*/
 
+		 //PLANIFICAR LA GESTION DE RIESGOS
+		 $subsubmenu_gestion_riesgos = array();
+		 array_push($subsubmenu_gestion_riesgos, 
+		 												$link_R_PlanRiesgo, 
+		 												$link_R_ComiRiesgo,
+		 												$link_R_AcuModif );
+
+           $submenu_gestion_riesgos = array(
+                "href"=> "#", 
+                "title"=> "Planificar la gestion de riesgos",
+                "subsubmenu" => $subsubmenu_gestion_riesgos
+            );
+
+         //IDENTIFICAR RIESGOS
+		 $subsubmenu_identificar_riesgos = array();
+		 array_push($subsubmenu_identificar_riesgos, 
+		 												$link_R_VerRiesgo, 
+		 												$link_R_MatriRiesgo);
+
+           $submenu_identificar_riesgos = array(
+                "href"=> "#", 
+                "title"=> "Identificar riesgos",
+                "subsubmenu" => $subsubmenu_identificar_riesgos
+            );  
+
+          //submenu de criesgos
+		 array_push($links, 
+		 					$submenu_gestion_riesgos,
+		 					$submenu_identificar_riesgos,
+		 					$link_R_Config,
+		 					$link_R_RiesMateri);
+			
 
 		 $submenu = array(
                 "submenu" => $links,
