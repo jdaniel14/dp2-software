@@ -3,6 +3,7 @@ package com.dp2.gproyectos;
 
 public class ServerConstants {
 	public static String SERVER_URL = "http://200.16.7.112/trunk/dp2/api/";
+	public static final String SERVER_URL_DEFAULT = "http://200.16.7.112/trunk/dp2/api/";
 	//public static String SERVER_URL = "http://localhost:8080/dp2/api/";
 	
 	//PRUEBA
