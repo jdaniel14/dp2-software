@@ -325,7 +325,7 @@ function G_getListaEmpleadosFull() {
 
 function G_getListaLineaBase($id) {
 
-	$file = fopen("../lineabase.txt", "r") or exit("Unable to open file!");
+	$file = fopen("../backend/lineabase.txt", "r") or exit("Unable to open file!");
 
 	$nom_archivo = fgets($file);
 
