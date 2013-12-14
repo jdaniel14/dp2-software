@@ -29,7 +29,7 @@
             );
 
          $link_G_Movil = array(
-                "href" => "../../views/general/RepositorioRecursosHumanos.html",
+                "href" => "../../../GProyectos/Proyecto",
                 "title" => "Descargar"
             );
 
