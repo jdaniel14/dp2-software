@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.dp2.framework.view.LoadTaskDialog;
@@ -15,6 +16,7 @@ import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadDetalleBean;
 import com.dp2.gproyectos.cronograma.model.MensajeResponse;
+import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.view.InterfazPopupMenus;
 import com.google.gson.annotations.SerializedName;
@@ -27,6 +29,7 @@ public class DetalleActividad extends SherlockFragmentActivity implements Loadin
 	String nombreProyecto = "";
 	ActividadDetalleBean detalleActividad = null;
 	MensajeResponse mensaje;
+	String estadoLineaBase = "";
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -86,6 +89,7 @@ public class DetalleActividad extends SherlockFragmentActivity implements Loadin
 		System.out.println("Cargando datos");
 		try {
 			detalleActividad = CronogramaController.getInstance().getDetalleActividad(id_actividad);
+			estadoLineaBase = ProyectoController.getInstance().getEstadoLineaBase(Integer.parseInt(idProyecto));
 			if (detalleActividad == null) {
 				System.out.println("error");
 			}
@@ -124,10 +128,25 @@ public class DetalleActividad extends SherlockFragmentActivity implements Loadin
 		
 		b.setOnClickListener(new Button.OnClickListener() {
 		    public void onClick(View v) {
-		    	new GuardarHoras().execute(id_actividad + "");
+		    	try {
+		    		new GuardarHoras().execute(id_actividad + "");
+		    	}
+		    	catch (Exception e){
+		    		e.printStackTrace();
+		    	}
 		    }
 		});
 		
+		if (estadoLineaBase.equals("false")){
+			b.setEnabled(true);
+		}
+		else if (estadoLineaBase.equals("true")){
+			b.setEnabled(false);
+		}
+		else { 
+			b.setEnabled(true);
+			Toast.makeText(DetalleActividad.this, "Hubo un error al intentar cargar los datos. Intente nuevamente.", Toast.LENGTH_LONG).show();
+		}
 		//System.out.println("Imprimiendo desde el servicio");
 		//System.out.println("nombre rest: " + detalleActividad.name);
 		
@@ -167,7 +186,7 @@ public class DetalleActividad extends SherlockFragmentActivity implements Loadin
 					Intent i = new Intent(DetalleActividad.this, ListaActividadesXProyecto.class);
 					i.putExtra("idProyecto", idProyecto);
 					i.putExtra("nombreProyecto", nombreProyecto);
-					startActivity(i);
+					startActivityForResult(i,1);
 				}
 			} catch (Exception e) {
 				System.out.println(e.toString());

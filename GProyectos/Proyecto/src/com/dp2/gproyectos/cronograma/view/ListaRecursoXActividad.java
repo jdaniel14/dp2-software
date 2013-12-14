@@ -2,19 +2,17 @@ package com.dp2.gproyectos.cronograma.view;
 
 import java.util.ArrayList;
 
-import org.json.JSONObject;
-
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
-import com.dp2.gproyectos.GProyectosConstants;
 import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.cronograma.controller.CronogramaController;
 import com.dp2.gproyectos.cronograma.model.ActividadBean;
@@ -23,15 +21,13 @@ import com.dp2.gproyectos.cronograma.view.adapter.RecursosAdapter;
 import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.utils.MensajesUtility;
-import com.dp2.gproyectos.view.VerticalBarraTituloActivity;
-import com.markupartist.android.widget.PullToRefreshListView;
 import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 //import android.widget.ListView;
 
-public class ListaRecursoXActividad extends VerticalBarraTituloActivity
+public class ListaRecursoXActividad extends SherlockActivity
 		implements Loadingable {
-	PullToRefreshListView lvRecursos;
+	ListView lvRecursos;
 	ArrayList<RecursoBean> recursos;
 	RecursosAdapter adapter;
 	Context context;
@@ -69,8 +65,11 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.cronograma_actividad_recursos_lista_layout);
 
-		setAtributos(R.drawable.maleta, getString(R.string.menu_recursos),
+		/*setAtributos(R.drawable.maleta, getString(R.string.menu_recursos),
 				GProyectosConstants.FECHA_HOY);
+*/
+		getSherlock().getActionBar().setTitle(R.string.menu_recursos);
+		getSherlock().getActionBar().setIcon(R.drawable.maleta);
 
 		try {
 			estaActividad = (ActividadBean) getIntent().getSerializableExtra(
@@ -81,7 +80,8 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 			e.printStackTrace();
 		}
 
-		lvRecursos = (PullToRefreshListView) findViewById(R.id.lvRecursos);
+		lvRecursos = (ListView) findViewById(R.id.lvRecursos);
+
 		// if (primeraCarga) {
 		try {
 			accion = 1;
@@ -90,7 +90,7 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 		} catch (Exception e) {
 
 		}
-		// }
+		
 
 	}
 
@@ -137,34 +137,24 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 					@Override
 					public void onItemClick(AdapterView<?> l, View v, int position,
 							long id) {
-						if (position > 0) {
-							if (estadoLineaBase.equals("false")){
-								RecursoBean recurso = (RecursoBean) lvRecursos
-										.getItemAtPosition(position);
+						
+								if (estadoLineaBase.equals("false")){
+									RecursoBean recurso = (RecursoBean) lvRecursos
+											.getItemAtPosition(position);
 
-								PopupRegistrarCosto popup = new PopupRegistrarCosto();
-								popup.dialog(ListaRecursoXActividad.this,
-										"Registrar cantidad y costo", estaActividad,
-										recurso);
+									PopupRegistrarCosto popup = new PopupRegistrarCosto();
+									popup.dialog(ListaRecursoXActividad.this,
+											"Registrar cantidad y costo", estaActividad,
+											recurso);
+								}
+								else if (estadoLineaBase.equals("true")){
+									Toast.makeText(ListaRecursoXActividad.this, "No puede registrar cantidades y costos ya que la linea base esta establecida.", Toast.LENGTH_LONG).show();
+								}
 							}
-							else if (estadoLineaBase.equals("true")){
-								Toast.makeText(ListaRecursoXActividad.this, "No puede registrar cantidades y costos ya que la linea base esta establecida.", Toast.LENGTH_LONG).show();
-							}
-						}
-
-					}
+	
 				});
 
-				lvRecursos.setOnRefreshListener(new OnRefreshListener() {
-					@Override
-					public void onRefresh() {
-						// Do work to refresh the list here.
-						new com.dp2.framework.view.LoadTaskDialog(
-								(ListaRecursoXActividad) context,
-								MensajesUtility.INFO_CARGANDO).execute();
-					}
-				});
-
+				
 			}
 			break;
 		case 2:
@@ -176,6 +166,7 @@ public class ListaRecursoXActividad extends VerticalBarraTituloActivity
 		}
 		
 		accion = 0; //reinicio
+		
 	}
 
 	public void registrarCantidadCosto(ActividadBean act, RecursoBean rec,

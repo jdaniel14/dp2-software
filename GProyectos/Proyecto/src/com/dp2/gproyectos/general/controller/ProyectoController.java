@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.dp2.framework.controller.Controller;
 import com.dp2.framework.controller.internet.HttpConnector;
 import com.dp2.gproyectos.ServerConstants;
 import com.dp2.gproyectos.cronograma.model.GetListaRecursosResponse;
 import com.dp2.gproyectos.cronograma.model.RecursoBean;
+import com.dp2.gproyectos.general.entities.CategoriaLeccionBean;
 import com.dp2.gproyectos.general.entities.InfoBean;
 import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.model.GetEstadoLineaBaseResponse;
@@ -75,6 +79,9 @@ public class ProyectoController extends Controller {
 		if (objResponse!=null){
 			listaProyectos = objResponse.proyectos;
 		}
+		else {
+			listaProyectos = new ArrayList<ProyectoBean>();
+		}
 		return listaProyectos;
 	}
 	
@@ -108,6 +115,57 @@ public class ProyectoController extends Controller {
 		return estado;
 	}
 	
+	public ArrayList<ProyectoBean> getProyectosXEmp(int id) {
+		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETPROYECTOSXEMP_URL+String.valueOf(id);
+		Gson gs = new Gson();
+		String strResponse = "";
+		
+		HttpResponse respuesta = HttpConnector.makeGetRequest(path, "");
+		String result;
+		if (respuesta != null) {
+			try {
+				result = EntityUtils.toString(respuesta.getEntity());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				result = strResponse;
+			} catch (IOException e) {
+				e.printStackTrace();
+				result = strResponse;
+			}
+		} else {
+			result = strResponse;
+		}
+		
+
+		ArrayList<ProyectoBean> proyectos = new ArrayList<ProyectoBean>();
+		ProyectoBean proyecto;
+		JSONObject jObj;
+		JSONArray jarr;
+		
+		try {
+			jarr = new JSONArray(result);
+			for (int i=0; i<jarr.length(); i++){
+				try {
+					jObj = jarr.getJSONObject(i);
+					proyecto = new ProyectoBean();
+					proyecto.idexp = jObj.getString("idProxEmp");
+					proyecto.nombre = jObj.getString("nomProy");
+					proyectos.add(proyecto);
+				} catch (Exception e) {
+					
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			proyectos = null;
+		}
+		
+		return proyectos;
+		
+	}
+	
+	
 	public ArrayList<RecursoBean> getRecursos(int id) {
 		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_LISTARECURSOSXPROYECTO_URL+String.valueOf(id);
 		Gson gs = new Gson();
@@ -136,6 +194,8 @@ public class ProyectoController extends Controller {
 		}
 		return listaRecursos;
 	}
+	
+	
 	
 	public InfoBean getInformacion(String id) {
 		String path = ServerConstants.SERVER_URL + ServerConstants.GENERAL_GETINFOPROYECTO_URL+id;

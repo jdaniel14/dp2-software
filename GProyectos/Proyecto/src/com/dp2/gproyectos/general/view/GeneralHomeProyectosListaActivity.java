@@ -24,6 +24,7 @@ import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.GProyectosConstants;
 import com.dp2.gproyectos.R;
 import com.dp2.gproyectos.costos.view.CostosIndicadoresActivity;
+import com.dp2.gproyectos.cronograma.model.ActividadBean;
 import com.dp2.gproyectos.cronograma.view.ListaActividadesXProyecto;
 import com.dp2.gproyectos.cronograma.view.ListaRecursoXActividad;
 import com.dp2.gproyectos.cronograma.view.PopupOpciones;
@@ -104,6 +105,14 @@ public class GeneralHomeProyectosListaActivity extends
 		opciones.add(MENUACT_OP_CRONOGRAMA);
 		opciones.add(MENUACT_OP_INDICADORES);
 
+		try {
+			proyectos =  (ArrayList<ProyectoBean>) getIntent().getSerializableExtra(
+					"proyectos");
+		}
+		catch(Exception e){
+			proyectos = null;
+		}
+		
 		busquedaAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, items);
 		busquedaAdapter
@@ -162,13 +171,15 @@ public class GeneralHomeProyectosListaActivity extends
 
 	@Override
 	public void loadingData() {
-		try {
-			proyectos = ProyectoController.getInstance().getProyectos(
-					UsuarioController.getInstance().currentUser.id);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (proyectos==null){
+			try {
+				proyectos = ProyectoController.getInstance().getProyectos(
+						UsuarioController.getInstance().currentUser.id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
+		
 	}
 
 	@Override
@@ -202,12 +213,14 @@ public class GeneralHomeProyectosListaActivity extends
 				@Override
 				public void onRefresh() {
 					// Do work to refresh the list here.
+					proyectos = null;
 					new LoadTaskDialog(GeneralHomeProyectosListaActivity.this,
 							MensajesUtility.INFO_CARGANDO).execute();
 				}
 			});
 
 			adapter.getFilter().filter(edtBuscar.getText().toString());
+			lvProyectos.onRefreshComplete();
 		}
 	}
 
@@ -228,19 +241,22 @@ public class GeneralHomeProyectosListaActivity extends
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.menuGeneralListaProyectos_VerLeccionesAprendidas:
 			Log.v("XXX", "--------->Ver lecciones");
-			Intent intent = new Intent(GeneralHomeProyectosListaActivity.this,
+			intent = new Intent(GeneralHomeProyectosListaActivity.this,
 					GeneralHomeLeccionesListaActivity.class);
-			overridePendingTransition(0, 0);
+			intent.putExtra("proyectos", proyectos);
 			startActivityForResult(intent, 1);
-			overridePendingTransition(0, 0);
 			break;
 		case R.id.menuGeneralListaProyectos_Logout:
 			Log.v("XXX", "--------->Logout");
+			intent = new Intent(GeneralHomeProyectosListaActivity.this,
+					GeneralLoginActivity.class);
 			UsuarioController.getInstance().currentUser = null;
 			finish();
+			startActivity(intent);
 			break;
 		}
 		return false;

@@ -15,6 +15,10 @@ public class ServerConstants {
 	public static String GENERAL_LISTARECURSOSXPROYECTO_URL = "/G_devuelveListaEmpleadosXProyecto/";
 	public static String GENERAL_GETINFOPROYECTO_URL = "G_devuelveInfoProyecto/";
 	public static String GENERAL_GETESTADOLINEABASE_URL = "/G_verificaLineaBase/";
+	public static String GENERAL_GETCATEGORIASLECCIONES_URL = "/G_devuelveCategoria";
+	public static String GENERAL_GETPROYECTOSXEMP_URL = "/G_devuelveProyectosXEmpleado/";
+	public static String GENERAL_POSTREGISTRARLECCION_URL = "G_registrarLeccionAprendida";
+	
 	
 	
 	//COSTOS

@@ -75,12 +75,43 @@ public class GeneralHomeProyectoAdministracionS extends SherlockActivity
 	@Override
 	public void afterLoadingData() {
 		if (estaInfo != null) {
-			txtNombreProyecto.setText(estaInfo.nombre);
-			txtDescripcion.setText(estaInfo.descripcion);
-			txtPrioridad.setText(estaInfo.prioridad);
-			txtTipoProyecto.setText(estaInfo.tipoproyecto);
-			txtFechaInicio.setText(estaInfo.fechainicio);
-			txtFechaFin.setText(estaInfo.fechafin);
+			try {
+				txtNombreProyecto.setText(estaInfo.nombre);
+			}
+			catch(Exception e){
+				txtNombreProyecto.setText("");
+			}
+			try {
+				txtDescripcion.setText(estaInfo.descripcion);
+			}
+			catch(Exception e){
+				txtDescripcion.setText("");
+			}
+			try {
+				txtPrioridad.setText(estaInfo.prioridad);
+			}
+			catch(Exception e){
+				txtPrioridad.setText("");
+			}
+			try {
+				txtTipoProyecto.setText(estaInfo.tipoproyecto);
+			}
+			catch(Exception e){
+				txtTipoProyecto.setText("");
+			}
+			try {
+				txtFechaInicio.setText(estaInfo.fechainicio);
+			}
+			catch(Exception e){
+				txtFechaInicio.setText("");
+			}
+			try {
+				txtFechaFin.setText(estaInfo.fechafin);
+			}
+			catch(Exception e){
+				txtFechaFin.setText("");
+			}
+			
 		}
 
 	}

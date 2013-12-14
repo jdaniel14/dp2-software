@@ -63,7 +63,7 @@ public class PopupOpciones {
 				rpta = (String) lvOpciones.getItemAtPosition(arg2);
 				//Toast.makeText(context, a, Toast.LENGTH_LONG).show();
 				//rpta = (String) lvOpciones.getItemAtPosition(arg2);
-				dialog.dismiss();
+				//dialog.dismiss();
 				((InterfazPopupMenus) context).accionSeleccionOpcion(rpta);
 			}
 		});

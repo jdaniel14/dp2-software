@@ -1,5 +1,7 @@
 package com.dp2.gproyectos.general.view;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +15,9 @@ import android.widget.Toast;
 import com.dp2.framework.view.LoadTaskDialog;
 import com.dp2.framework.view.Loadingable;
 import com.dp2.gproyectos.R;
+import com.dp2.gproyectos.general.controller.ProyectoController;
 import com.dp2.gproyectos.general.controller.UsuarioController;
+import com.dp2.gproyectos.general.entities.ProyectoBean;
 import com.dp2.gproyectos.general.entities.UsuarioBean;
 import com.dp2.gproyectos.utils.MensajesUtility;
 import com.dp2.gproyectos.utils.ValidacionesUtility;
@@ -24,6 +28,7 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	EditText edtPassword;
 	BotonIconTexto btnInicio;
 	UsuarioBean usuario;
+	ArrayList<ProyectoBean> proyectos;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,10 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	public void loadingData() {
 		try {
 			usuario = UsuarioController.getInstance().validarUsuario(edtUser.getText().toString(), edtPassword.getText().toString());
+			if (Long.parseLong(usuario.id) >0){
+				proyectos = ProyectoController.getInstance().getProyectos(
+						UsuarioController.getInstance().currentUser.id);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,14 +113,12 @@ public class GeneralLoginActivity extends Activity implements Loadingable {
 	public void afterLoadingData() {
 		if (usuario==null){
 			//mensaje de error
-			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesión. Reintente nuevamente.", Toast.LENGTH_LONG).show();
+			Toast.makeText(GeneralLoginActivity.this, "Error al iniciar sesión. Intente nuevamente.", Toast.LENGTH_LONG).show();
 		}
 		else if (Long.parseLong(usuario.id) >0){
 			Intent intent = new Intent(GeneralLoginActivity.this, GeneralHomeProyectosListaActivity.class);
-			overridePendingTransition(0, 0);
-			startActivity(intent);
-			overridePendingTransition(0, 0);
-			finish();
+			intent.putExtra("proyectos", proyectos);
+			startActivityForResult(intent, 1);
 		}
 	}
 

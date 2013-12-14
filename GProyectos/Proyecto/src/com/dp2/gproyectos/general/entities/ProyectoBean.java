@@ -22,6 +22,8 @@ public class ProyectoBean implements Serializable {
 	@SerializedName("es")
 	public String estado;
 	
+	public String idexp; //miembro eq
+	
 	public ProyectoBean() {
 		super();
 	}
@@ -35,6 +37,11 @@ public class ProyectoBean implements Serializable {
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.estado = estado;
+	}
+	
+	@Override
+	public String toString(){
+		return nombre;
 	}
 	
 }
