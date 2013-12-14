@@ -333,6 +333,7 @@ function G_getListaLineaBase($id) {
     echo $nom_archivo."<br>";
 
     $sql = "SELECT num_linea_base, linea_base_fecha_inicio, linea_base_fecha_fin FROM " + $nom_archivo + ".PROYECTO WHERE ID_PROYECTO=:ID";
+    echo $sql;
 
     $jsonRespuesta = new stdClass();
     $jsonRespuesta->linea_base = array();
