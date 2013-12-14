@@ -1302,7 +1302,7 @@
     function R_getProbabilidadRiesgoMaxima($var){
         $riesgo = json_decode($var);
         if (R_verificaPermisoServicio(R_SERVICIO_35, $riesgo->idUsuario, $riesgo->idProyecto)) {
-            $query = "SELECT count(*) cantidad FROM dp2.PROBABILIDAD_RIESGO
+            $query = "SELECT count(*) cantidad FROM PROBABILIDAD_RIESGO
                     where id_proyecto=:id_proyecto
                     order by nivel desc
                     limit 1";
@@ -1314,7 +1314,7 @@
                 $row = $stmt->fetchObject();
                 if ($row->cantidad==0) echo json_encode(null);
                 else {
-                    $query = "SELECT * FROM dp2.PROBABILIDAD_RIESGO
+                    $query = "SELECT * FROM PROBABILIDAD_RIESGO
                     where id_proyecto=:id_proyecto
                     order by nivel desc
                     limit 1";
