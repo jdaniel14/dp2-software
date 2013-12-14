@@ -103,13 +103,13 @@ function G_getProyectosXEmpleado($id) {
         if ($id == 1) {
             $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
                         FROM MIEMBROS_EQUIPO EXP, PROYECTO P
-                        WHERE EXP.id_proyecto = P.id_proyecto  ";
+                        WHERE EXP.id_proyecto = P.id_proyecto group by 2";
             $stmt = $db->prepare($sql);
             $stmt->execute();
         } else {
             $sql = " SELECT ID_MIEMBROS_EQUIPO, nombre_proyecto 
                         FROM MIEMBROS_EQUIPO EXP, PROYECTO P
-                        WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id ";
+                        WHERE EXP.id_proyecto = P.id_proyecto and EXP.id_empleado =:id group by 2";
 
             $stmt = $db->prepare($sql);
             $stmt->bindParam("id", $id);
