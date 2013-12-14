@@ -133,7 +133,7 @@ public class ListaRecursosXProyecto extends SherlockActivity implements
 								MensajesUtility.INFO_CARGANDO).execute();
 					}
 				});*/
-
+lvRecursos.onRefreshComplete();
 			}
 		
 	}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/menuGeneralLecciones_opciones"
+        android:showAsAction="always|collapseActionView|withText"
+        android:icon="@android:drawable/ic_menu_more"
+        android:title="Opciones"
+        android:titleCondensed="Opciones">
+        <menu>
+	        <item
+	            android:id="@+id/menuGeneralLecciones_RegistrarLeccionesAprendidas"
+	            android:icon="@android:drawable/ic_menu_add"
+	            android:title="Registrar nueva" />
+	    </menu>
+    </item>
+</menu>

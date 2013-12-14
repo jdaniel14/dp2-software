@@ -2,12 +2,12 @@
 <resources>
 
     <color name="gproyectos_actionbar">#26252B</color>
-    <color name="gproyectos_background">#E7E7E7</color>
+    <color name="gproyectos_background">@color/barra_auxiliar</color>
     <color name="listas_barra">#428BCA</color>
-    <color name="barra_auxiliar">#F9F9F9</color>
+    <color name="barra_auxiliar">#F0F0F0</color>
     <color name="barra_menu">#8AAC31</color>
     
-    <color name="morado">#540583</color>
+    <color name="morado">#0A0A61</color>
     
     <color name="titulo_txt">#4a4a4a</color>
     <color name="subtitulo_txt">#7a7979</color>

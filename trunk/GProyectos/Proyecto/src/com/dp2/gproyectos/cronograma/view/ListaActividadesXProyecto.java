@@ -195,6 +195,7 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
  
 		protected void onPostExecute(Double result){
 			System.out.println("Ejecuta yei");
+			listActs.onRefreshComplete();
 		}
 		protected void onProgressUpdate(Integer... progress){
 			
@@ -257,11 +258,11 @@ public class ListaActividadesXProyecto extends SherlockFragmentActivity implemen
 				}
 			});
 			
-			AlertDialog alertDialog = dialogBuilder.create();
+			//AlertDialog alertDialog = dialogBuilder.create();
 			//alertDialog.show();
 			
 			//Nueva Funcionalidad, la anterior ya no se utiliza
-			System.out.println("Actividad selecionada: " + tasks.get(posicionPasar - 1).name);
+			//System.out.println("Actividad selecionada: " + tasks.get(posicionPasar - 1).name);
 			Intent i = new Intent(ListaActividadesXProyecto.this, DetalleActividad.class);
 			i.putExtra("id_actividad",tasks.get(posicionPasar - 1).id);
 			i.putExtra("nombre_actividad", tasks.get(posicionPasar - 1).name);
