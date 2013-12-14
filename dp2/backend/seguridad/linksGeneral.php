@@ -29,7 +29,7 @@
             );
 
          $link_G_Movil = array(
-                "href" => "../../../GProyectos/Proyecto",
+                "href" => "../../../GProyectos/Proyecto/GProyectos.apk",
                 "title" => "Descargar"
             );
 
