@@ -32,6 +32,8 @@
         </activity>
         <activity android:name="com.dp2.gproyectos.general.view.GeneralLoginActivity" >
         </activity>
+        <activity android:name="com.dp2.gproyectos.general.view.GeneralServerConfigActivity" >
+        </activity>
         <activity android:name="com.dp2.gproyectos.general.view.GeneralHomeProyectosListaActivity" >
             
         </activity>
