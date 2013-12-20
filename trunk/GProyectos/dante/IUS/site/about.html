@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>About</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Muli:400,300,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Passion+One:400,700' rel='stylesheet' type='text/css'>
+    <script src="js/jquery-1.7.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+
+    <script>
+
+        function imprimirOriginal(){
+            $("#colMedio").hide();
+            var escritor = "<h2><span class='clr-1'>Q</span>uiénes somos?</h2>                <div class='wrap'>                    <img src='images/page2-img1.jpg'  class='img-indent-2 img-border'>                    <p class='extra-wrap'>Somos una asociación civil conformada por estudiantes de la Facultad de Derecho de la Pontificia Universidad Católica del Perú, que se constituyó el 3 de octubre de 2003.</p>                </div>                <div class = 'wrap'>                <p class = 'extra-wrap'>Tenemos como fines:                <br>                <p>1.  Propiciar la difusión del Derecho Internacional tanto en el conocimiento de sus bases y temas teórico – doctrinarios.</p>                <p>2.  Analizar la Realidad Internacional en sus dimensiones política, económica y social.</p><br>                <p>Entre nuestros objetivos destacan:</p>                <p>1.  La edición y publicación periódica de una revista especializada en Derecho Internacional denominada: IUS INTER GENTES.</p>                <p>2. La organización de eventos académicos tales como seminarios, conferencias, conversatorios y cursos. </p>                </div>"
+            $("#colMedio").html(escritor);
+            $("#colMedio").show("slow");
+        }
+
+        function imprimirMedio(){
+            $("#colMedio").hide();
+            var escritor = "<h2><span class='clr-1'>C</span>onsejo Directivo</h2>                <div class = 'wrap' align = 'center'>                <p>Nuestro actual Consejo Directivo (Periodo 2013 – 2014) está conformado por:</p>                <br>                <p>Gisella Gabriela Gómez Delgado</p>                <p>Presidenta Consejo Directivo</p>                <p>gisella.gomez@pucp.pe</p>                <br>                <p>Jorge Luis Manrique de Lara Seminario</p>                <p>Vicepresidente Consejo Directivo</p>                <p>jmanriquedelara@pucp.edu.pe</p>                <br>                <p>Carlos Humberto Galarza Cépeda</p>                <p>Director de Eventos</p>                <p>c.galarza@pucp.edu.pe</p>                <br>                <p>Dante Leonardo Acuña Valencia</p>                <p>Director de Relaciones Públicas</p>                <p>dante.acuna@pucp.pe</p>                <br>                <p>Sandra Giulianna Miranda de Paz</p>                <p>Directora de Investigaciones</p>                <p>sandra.miranda@pucp.pe</p>                <br>                <p>Grecia Dayalma Mugruza Espadin</p>                <p>Directora de Publicaciones</p>                <p>gmugruza@pucp.pe</p>                <br>                <p>Blanca Victoria Olivares Sinforoso</p>                <p>Directora de Fiscalización y Desarrollo Personal</p>                <p>a20093103@pucp.edu.pe</p>";
+            $("#colMedio").html(escritor);
+            $("#colMedio").show("slow");
+        }
+
+    </script>
+	
+</head>
+<body>
+<div class="bg">
+<div class="bg-2">
+  <!--==============================header=================================-->
+    <header>
+        <h1><a href="index.html"><img src="png/logo3.png" alt=""></a></h1>
+        <nav>  
+            <ul class="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li class="current"><a href="about.html">Nosotros</a></li>
+                <li><a href="services.html">Eventos</a></li>
+                <li><a href="products.html">Publicaciones</a></li>
+                <li><a href="contacts.html">Contáctenos</a></li>
+            </ul>
+         </nav>
+    </header>   
+  <!--==============================content================================-->
+    <section id="content"><div class="ic"></div>
+        <div class="slogan top-1">
+            <p>Porque el <span class="clr-1">Derecho Internacional </span>es parte de tu vida... <span class="clr-1">sé tú</span>  parte de él.</p>
+            <p>Sé parte del cambio.</p>
+            <a href="#" class="button-2">Conócenos</a>
+        </div>
+        <div class="wrap page2-row1">
+        	<div class="page2-col-1 border-right">
+            	<h2><span class="clr-1">N</span>osotros</h2>
+                <ul class="list-1">
+                    <li><a onclick = "imprimirOriginal();">Quiénes somos</a></li>
+                	<li><a onclick = "imprimirMedio();">Consejo Directivo</a></li>
+                    <li><a href="#">Consejo Consultivo</a></li>
+                    <li><a href="#">Comisión de Eventos</a></li>
+                    <li><a href="#">Comisión de Relaciones Públicas</a></li>
+                    <li><a href="#">Comisión de Investigación</a></li>
+                    <li><a href="#">Comisión de Publicaciones</a></li>
+                </ul>
+          
+            </div> 
+
+            <!-- Columna del medio -->
+
+            <div  id = 'colMedio' class='page2-col-2 border-right'>
+            	<h2><span class='clr-1'>Q</span>uiénes somos?</h2>
+                <div class='wrap'>
+                	<img src='images/page2-img1.jpg'  class='img-indent-2 img-border'>
+                    <p class='extra-wrap'>Somos una asociación civil conformada por estudiantes de la Facultad de Derecho de la Pontificia Universidad Católica del Perú, que se constituyó el 3 de octubre de 2003.</p>
+                </div>
+                <div class = 'wrap'>
+                <p class = 'extra-wrap'>Tenemos como fines:
+                <br>
+                <p>1.  Propiciar la difusión del Derecho Internacional tanto en el conocimiento de sus bases y temas teórico – doctrinarios.</p>
+                <p>2.  Analizar la Realidad Internacional en sus dimensiones política, económica y social.</p><br>
+                <p>Entre nuestros objetivos destacan:</p>
+                <p>1.  La edición y publicación periódica de una revista especializada en Derecho Internacional denominada: IUS INTER GENTES.</p>
+                <p>2. La organización de eventos académicos tales como seminarios, conferencias, conversatorios y cursos. </p>
+                </div>
+
+<!--
+                <h2><span class='clr-1'>C</span>Consejo Directivo</h2>
+                <div class = 'wrap'>
+                <p>Nuestro actual Consejo Directivo (Periodo 2013 – 2014) está conformado por:</p>
+                <br>
+                <p>Gisella Gabriela Gómez Delgado</p>
+                <p>Presidenta Consejo Directivo</p>
+                <p>gisella.gomez@pucp.pe</p>
+                <br>
+                <p>Jorge Luis Manrique de Lara Seminario</p>
+                <p>Vicepresidente Consejo Directivo</p>
+                <p>jmanriquedelara@pucp.edu.pe</p>
+                <br>
+                <p>Carlos Humberto Galarza Cépeda</p>
+                <p>Director de Eventos</p>
+                <p>c.galarza@pucp.edu.pe</p>
+                <br>
+                <p>Dante Leonardo Acuña Valencia</p>
+                <p>Director de Relaciones Públicas</p>
+                <p>dante.acuna@pucp.pe</p>
+                <br>
+                <p>Sandra Giulianna Miranda de Paz</p>
+                <p>Directora de Investigaciones</p>
+                <p>sandra.miranda@pucp.pe</p>
+                <br>
+                <p>Grecia Dayalma Mugruza Espadin</p>
+                <p>Directora de Publicaciones</p>
+                <p>gmugruza@pucp.pe</p>
+                <br>
+                <p>Blanca Victoria Olivares Sinforoso</p>
+                <p>Directora de Fiscalización y Desarrollo Personal</p>
+                <p>a20093103@pucp.edu.pe</p>
+
+                </div>
+-->
+
+
+
+            </div>
+
+            <!-- Fin Columna del medio -->
+
+
+            <div class="page2-col-3">
+            	<h2><span class="clr-1">T</span>estimonios</h2>
+                <div class="box-3">
+                    <div class="comment">
+                        <p><img src="images/comment-top.png" alt="" >Es una magnífica oportunidad de integrar la única revista dedicada al derecho internacional en el país, la misma que ha adquirido gran prestigio en el medio académico y profesional.<img src="images/comment-bottom.png" alt=""></p>
+                        <span><strong>Fabián Novak Talavera</strong> (Miembro del Consejo Consultivo)</span>
+                    </div>
+                 </div>   
+                 <div class="box-3">
+                    <div class="comment">
+                        <p><img src="images/comment-top.png" alt="" >Ius Inter Gentes constituye un valioso esfuerzo de los estudiantes de la Facultad de Derecho con particular interés en el Derecho Internacional y las Relaciones Internacionales; por tal motivo, integrar este equipo permite a quienes lo conforman ampliar sus horizontes en tales áreas, al poder realizar tareas de investigación, organización de seminarios y actividades, así como de carácter editorial.<img src="images/comment-bottom.png" alt=""></p>
+                        <span><strong>Juan José Ruda Santolaria</strong> (Miembro del Consejo Consultivo)</span>
+                    </div>
+                </div>
+
+            </div>   
+        </div>
+    </section> 
+</div>       
+</div> 
+<!--==============================aside=================================-->
+  <aside>
+    <div class="wrap">
+      <div class="aside-col-1 border-right-2">
+            <h3><span class="clr-1">B</span>oletín:</h3>
+            <form id="form-search" method="post">
+              <span>E-mail:</span>
+              <input type="text" value="" onBlur="if(this.value=='') this.value=''" onFocus="if(this.value =='' ) this.value=''"  />
+              <a href="contacts.html" onClick="document.getElementById('form-search').submit()" class="link-2">Suscribirse</a>
+            </form>
+        </div>
+        <div class="aside-col-2 border-right-2">
+            <h3><span class="clr-1">S</span>obre Ius Inter Gentes:</h3>
+            <p>Para el desarrollo de nuestros objetivos, en los últimos años nuestra Asociación ha realizado diferentes eventos, los cuales nos llenaron de victorias que nos motivan a seguir en la difusión del Derecho Internacional y temas afines. </p>
+        </div>  
+        <div class="aside-col-3 border-right-2">
+            <dl class="adrss">
+                <dd><span>Teléfono:</span><strong>+51 996 599 210</strong></dd>
+                <dd><span>Mail: </span><a href="#" class="link">iusintergentes@pucp.edu.pe</a></dd>
+            </dl> 
+            
+        </div>  
+        <div class="aside-col-4">
+            <div class="soc-icons">
+                <a href="http://www.youtube.com/user/IusInterGentes"><img src="images/icon-1.png" alt=""></a><a href="https://www.facebook.com/iusintergentes"><img src="images/icon-2.png" alt=""></a><a href="#"><img src="images/icon-3.png" alt=""></a>
+            </div>
+        </div>  
+    </div>
+  </aside>
+<!--==============================footer=================================-->
+  <footer>
+      <p><strong>© 2014  IUS Intergentes</strong><br>
+      Ayudó <a class="link-4" href="http://www.google.com/" target="_blank" rel="nofollow">Panchito</a></p>
+  </footer>        
+</body>
+</html>
